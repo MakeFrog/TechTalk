@@ -14,12 +14,15 @@ dependencies:
 
   cupertino_icons: ^1.0.2
 
+  #Chat GPT
+  chatgpt_completions: ^0.0.5
+
   # 상태관리
   provider: ^6.0.5
 
   # 네트워크
   dio: ^5.0.3
-
+  http: ^0.13.5
 
   # Utils
   flutter_dotenv: ^5.0.2
