@@ -15,31 +15,43 @@ class OpenAIApi {
           ),
         );
 
+  // '나는 너가 프로그래머 면접관처럼 행동했으면 좋겠어. 나를 지원자라고 생각해. Swift 프로그래밍에 관련 질문이야. 질문: == 연산자와 === 연산자는 어떻게 다른가요?. 답변:$message. 모범답변: == 연산자는 값을 비교하는데 사용되고, === 연산자는 참조 값을 비교하는데 사용됩니다. 모범답변을 기준으로 답변을 0~10 사이의 점수로 엄격하게 평가해줘. 점수가 9~10 사이라면 "[correct]" 0~6 사이라면 "[incorrect]" 라는 태그 단어를 문장 제일 앞에 필수적으로 적어줘. 태그 단어 이후에는 답변에 대해 설명해줘. 점수는 절대 알려주지마.',
   Future<String> chat(String message) async {
     const String question = "(Swift 관련): Swift에서 값 타입과 참조 타입의 차이는 무엇입니까?";
-    String userAnswer = message;
+    final startTime = DateTime.now();
     try {
       final response = await dio.post(
         '/text-davinci-003/completions', // GPT-3.5 모델 사용
         data: {
-          'prompt': [
-            '질문 : (Swift 관련): Swift에서 값 타입과 참조 타입의 차이는 무엇입니까?',
-            '유저의 답변: $userAnswer',
-            '위 질문에 대한 유저의 응답이 적절한지 판단해주세요. 그리고 간략하고 간단하게 이유를 설명해주세요.',
-            '면접관이 사용하는 언어로 자연스럽게 답변해주세요.',
-            '유저의 응답이 정답의 유사하면. "정답입니다..." 라는 선행문구로 시작합니다.',
-            '유저의 응답 중 틀린 부분이 하나라도 있으면 "틀렸습니다" 라는 선행 문구로 시작합니다.',
-            '유저의 응답이 모르겠다고 전달되면 정확한 답변을 알려줍니다.',
-            '유저의 응답이 정답에 근접하지만 보충이 필요하다고 판단되면. "정답입니다. 하지만 보충할 부분이 있어요" 라는 선행 문구로 시작합니다.'
-          ].join('\n'),
+          'prompt':
+          '$question\n\n[Answer] 답변을 입력해주세요. 정답 여부를 판별해주세요. 정답이라면 [correct] 오답이라면 [incorrect] 태그 문자를 문장 제일 앞에 필수적으로 적어줘. 태그 단어 이후에는 답변에 대해 설명해줘.',
           'max_tokens': 500,
           'temperature': 1,
-          'n': 1,
+          'top_p': 1,
+          'frequency_penalty': 0,
+          'presence_penalty': 0,
         },
       );
 
       final choice = response.data['choices'][0];
-      return choice['text'].trim();
+
+      final endTime = DateTime.now();
+      // 걸린 시간 계산
+      final duration = endTime.difference(startTime);
+
+      // 걸린 시간 출력
+      print('걸린 시간: ${duration.inSeconds}s');
+
+      // OpenAI API가 반환한 응답 메시지에서 정답 여부를 확인하여, 적절한 메시지를 반환
+      if (choice['text'].startsWith('[correct]')) {
+        // 정답인 경우
+        final explanation = choice['text'].replaceAll('[correct]', '').trim();
+        return '정답입니다! $explanation';
+      } else {
+        // 오답인 경우
+        final reason = choice['text'].replaceAll('[incorrect]', '').trim();
+        return '오답입니다. $reason';
+      }
     } on DioError catch (e) {
       print(e.message);
       throw Exception('Error contacting GPT-3.5 API');
