@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 Future<void> connectToSSE() async {
@@ -8,7 +9,7 @@ Future<void> connectToSSE() async {
   // SSE endpoint URL에 GET 요청을 보냅니다.
   var client = http.Client();
   var request = http.Request('GET', url);
-  request.headers['Authorization'] = 'Bearer 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';
+  request.headers['Authorization'] = 'Bearer ${dotenv.env['OPENAPI_KEY']!}';
   request.headers['OpenAI-Intent'] = 'text-davinci-003/completions';
   request.headers['Accept'] = 'text/event-stream';
   request.headers['prompt'] = 'Hello';

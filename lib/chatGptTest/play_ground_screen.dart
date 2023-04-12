@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:moon_dap/domain/check_answer_with_stream_response_use_case.dart';
+import 'package:moon_dap/chatGptTest/useCase/check_answer_with_stream_response_use_case.dart';
 
 
 class PlayGroundScreen extends StatefulWidget {
+  const PlayGroundScreen({super.key});
+
   @override
   _PlayGroundScreenState createState() => _PlayGroundScreenState();
 }
@@ -45,7 +47,7 @@ class _PlayGroundScreenState extends State<PlayGroundScreen> {
                   final text = snapshot.data!;
                   return Text(text);
                 } else {
-                  return Text('Waiting for data...');
+                  return const Text('Waiting for data...');
                 }
               },
             ),
@@ -57,7 +59,7 @@ class _PlayGroundScreenState extends State<PlayGroundScreen> {
               const String answer = '다중 상속을 할 때 사용하는 키워드야 ';
               useCase.checkAnswer(category: category, question: question, userAnswer: answer);
             },
-            child: Text('Ask GPT-4'),
+            child: const Text('Ask GPT-4'),
           ),
         ],
       ),
