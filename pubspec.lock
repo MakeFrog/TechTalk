@@ -57,6 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  cupertino_will_pop_scope:
+    dependency: "direct main"
+    description:
+      name: cupertino_will_pop_scope
+      sha256: d312103538bee026428d785cc3c06093b34c2793249229b1ddc49a1d8a43901f
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.1"
   dio:
     dependency: "direct main"
     description:
@@ -99,6 +107,19 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_web_plugins:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
+  go_router:
+    dependency: "direct main"
+    description:
+      name: go_router
+      sha256: feab99a20fd248c658c923ba98f4449ca6e575c3dee9fdf07146f4f33482c6bc
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.5.5"
   http:
     dependency: "direct main"
     description:
@@ -131,6 +152,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  logging:
+    dependency: transitive
+    description:
+      name: logging
+      sha256: "04094f2eb032cbb06c6f6e8d3607edcfcb0455e2bb6cbc010cb01171dcb64e6d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   matcher:
     dependency: transitive
     description:
@@ -258,4 +287,4 @@ packages:
     version: "2.1.4"
 sdks:
   dart: ">=2.19.4 <3.0.0"
-  flutter: ">=1.17.0"
+  flutter: ">=3.3.0"

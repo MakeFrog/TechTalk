@@ -17,8 +17,14 @@ dependencies:
   #Chat GPT
   chatgpt_completions: ^0.0.5
 
+  # UI
+  cupertino_will_pop_scope: ^1.2.1  #pop scope (스와이프 백 제스쳐 지원)
+
   # 상태관리
   provider: ^6.0.5
+
+  # 라우팅
+  go_router: ^6.5.5
 
   # 네트워크
   dio: ^5.0.3
@@ -39,5 +45,27 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/icons/
+    - assets/images/
     - .env
 
+  fonts:
+    - family: pretendard_bold
+      fonts:
+        - asset: assets/fonts/Pretendard-Bold.otf
+
+    - family: pretendard_semiBold
+      fonts:
+        - asset: assets/fonts/Pretendard-SemiBold.otf
+
+    - family: pretendard_regular
+      fonts:
+        - asset: assets/fonts/Pretendard-Regular.otf
+
+    - family: pretendard_medium
+      fonts:
+        - asset: assets/fonts/Pretendard-Medium.otf
+
+    - family: staatliches_regular
+      fonts:
+        - asset: assets/fonts/Staatliches-Regular.ttf
