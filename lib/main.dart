@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:moon_dap/presentation/play_ground_screen.dart';
+import 'package:moon_dap/app/routes/app_pages.dart';
+import 'package:moon_dap/presentation/screens/home/home_screen.dart';
 
-
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
   runApp(const MyApp());
@@ -12,16 +12,15 @@ void main() async{
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      title: '문답',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: PlayGroundScreen(),
+      routerConfig: AppPages.router,
     );
   }
 }
