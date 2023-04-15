@@ -15,10 +15,17 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
               ElevatedButton(
-                  onPressed: () {
-                    context.push('/sampleScreen1');
-                  },
-                  child: const Text('Route to SampleScreen1'))
+                onPressed: () {
+                  context.push('/sampleScreen1');
+                },
+                child: const Text('Route to SampleScreen1'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  context.push('/sampleScreen2');
+                },
+                child: const Text('Route to SampleScreen2'),
+              ),
             ],
           ),
         ),
