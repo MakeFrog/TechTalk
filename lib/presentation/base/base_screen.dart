@@ -12,7 +12,7 @@ abstract class BaseScreen<T extends BaseViewModel> extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<T>(
       create: (context) => createViewModel(),
-      lazy: !hasOnInitEvent,
+      lazy: setLazyInit,
       builder: (BuildContext context, Widget? child) {
         return ConditionalWillPopScope(
           shouldAddCallback: preventSwipeBack,
@@ -77,7 +77,7 @@ abstract class BaseScreen<T extends BaseViewModel> extends StatelessWidget {
   bool get wrapWithSafeArea => true;
 
   @protected
-  bool get hasOnInitEvent => true;
+  bool get setLazyInit => false;
 
   @protected
   bool get setBottomSafeArea => true;
@@ -85,8 +85,15 @@ abstract class BaseScreen<T extends BaseViewModel> extends StatelessWidget {
   @protected
   bool get setTopSafeArea => true;
 
-  @protected
   T vm(BuildContext context) => Provider.of<T>(context, listen: false);
+
+  T vmR(BuildContext context) => context.read<T>();
+
+  T vmW(BuildContext context) => context.watch<T>();
+
+  S vmS<S>(BuildContext context, S Function(T) selector) {
+    return context.select((T value) => selector(value));
+  }
 
   @protected
   T createViewModel();

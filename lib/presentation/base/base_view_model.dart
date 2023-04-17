@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:moon_dap/app/routes/go_route_with_binding.dart';
 
-abstract class BaseViewModel extends ChangeNotifier {
+abstract class BaseViewModel extends ChangeNotifier{
   BaseViewModel() {
     onInit();
   }
