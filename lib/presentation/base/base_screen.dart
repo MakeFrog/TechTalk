@@ -44,7 +44,7 @@ abstract class BaseScreen<T extends BaseViewModel> extends StatelessWidget {
   }
 
   @protected
-  Color? get unSafeAreaColor => AppColor.black;
+  Color? get unSafeAreaColor => AppColor.white;
 
   @protected
   bool get resizeToAvoidBottomInset => true;
@@ -62,7 +62,7 @@ abstract class BaseScreen<T extends BaseViewModel> extends StatelessWidget {
   bool get preventSwipeBack => false;
 
   @protected
-  Color? get screenBackgroundColor => AppColor.black;
+  Color? get screenBackgroundColor => AppColor.white;
 
   @protected
   Widget? buildBottomNavigationBar(BuildContext context) => null;
@@ -85,12 +85,16 @@ abstract class BaseScreen<T extends BaseViewModel> extends StatelessWidget {
   @protected
   bool get setTopSafeArea => true;
 
+  @protected
   T vm(BuildContext context) => Provider.of<T>(context, listen: false);
 
+  @protected
   T vmR(BuildContext context) => context.read<T>();
 
+  @protected
   T vmW(BuildContext context) => context.watch<T>();
 
+  @protected
   S vmS<S>(BuildContext context, S Function(T) selector) {
     return context.select((T value) => selector(value));
   }
