@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
 import 'package:moon_dap/app/resources/uiConfig/color_config.dart';
+import 'package:moon_dap/app/resources/uiConfig/size_config.dart';
 import 'package:moon_dap/domain/enum/chat_message_type_enum.dart';
 
 /** Created By Ximiya - 2023.04.18
@@ -14,37 +15,62 @@ import 'package:moon_dap/domain/enum/chat_message_type_enum.dart';
 
 class NewChatBubble extends StatelessWidget {
   final Widget child;
+  final String message;
   final EdgeInsetsGeometry? margin;
-  final double maxWidth;
   final ChatMessageType messageType;
 
   const NewChatBubble({
     super.key,
     this.margin,
     required this.child,
-    required this.maxWidth,
     required this.messageType,
+    required this.message,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: alignmentOnType,
-      margin: margin ?? EdgeInsets.zero,
-      child: PhysicalShape(
-        clipper: clipperOnType,
-        elevation: 2,
-        color: bgColorOnType,
-        shadowColor: Colors.grey.shade200,
-        child: Container(
-          constraints: BoxConstraints(
-            maxWidth: maxWidth,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: alignmentOnType,
+      children: [
+        if (ChatMessageType.answerQuestion != messageType)
+          const CircleAvatar(
+            backgroundImage: AssetImage("assets/images/avatar_1.png"),
           ),
-          padding: paddingOnType,
-          child: child,
+        Container(
+          margin: margin ?? EdgeInsets.zero,
+          child: PhysicalShape(
+            clipper: clipperOnType,
+            elevation: 2,
+            color: bgColorOnType,
+            shadowColor: Colors.grey.shade200,
+            child: Container(
+              constraints: BoxConstraints(
+                maxWidth: SizeConfig.to.screenWidth * 0.8,
+              ),
+              padding: paddingOnType,
+              child: Text(
+                message,
+                style: TextStyle(color: textColorOnType),
+              ),
+            ),
+          ),
         ),
-      ),
+      ],
     );
+  }
+
+  Color get textColorOnType {
+    switch (messageType) {
+      case ChatMessageType.alertMessage:
+        return AppColor.black;
+
+      case ChatMessageType.replyToAnswer:
+        return AppColor.black;
+
+      case ChatMessageType.answerQuestion:
+        return AppColor.white;
+    }
   }
 
   Color get bgColorOnType {
@@ -69,14 +95,14 @@ class NewChatBubble extends StatelessWidget {
     }
   }
 
-  Alignment get alignmentOnType {
+  MainAxisAlignment get alignmentOnType {
     switch (messageType) {
       case ChatMessageType.alertMessage:
-        return Alignment.topLeft;
-      case ChatMessageType.answerQuestion:
-        return Alignment.topRight;
+        return MainAxisAlignment.start;
       case ChatMessageType.replyToAnswer:
-        return Alignment.topLeft;
+        return MainAxisAlignment.start;
+      case ChatMessageType.answerQuestion:
+        return MainAxisAlignment.end;
     }
   }
 
