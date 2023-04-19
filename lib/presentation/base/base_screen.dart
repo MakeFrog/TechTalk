@@ -22,7 +22,10 @@ abstract class BaseScreen<T extends BaseViewModel> extends StatelessWidget {
           child: Container(
             color: unSafeAreaColor,
             child: wrapWithSafeArea
-                ? SafeArea(child: _buildScaffold(context))
+                ? SafeArea(
+                    bottom: setBottomSafeArea,
+                    child: _buildScaffold(context),
+                  )
                 : _buildScaffold(context),
           ),
         );
@@ -39,7 +42,7 @@ abstract class BaseScreen<T extends BaseViewModel> extends StatelessWidget {
       backgroundColor: screenBackgroundColor,
       bottomNavigationBar: buildBottomNavigationBar(context),
       floatingActionButtonLocation: floatingActionButtonLocation,
-      floatingActionButton: buildFloatingActionButton,
+      floatingActionButton: buildFloatingActionButton(context),
     );
   }
 
@@ -50,7 +53,7 @@ abstract class BaseScreen<T extends BaseViewModel> extends StatelessWidget {
   bool get resizeToAvoidBottomInset => true;
 
   @protected
-  Widget? get buildFloatingActionButton => null;
+  Widget? buildFloatingActionButton(BuildContext context) => null;
 
   @protected
   FloatingActionButtonLocation? get floatingActionButtonLocation => null;
