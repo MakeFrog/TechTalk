@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moon_dap/app/resources/uiConfig/app_insets.dart';
+import 'package:moon_dap/app/resources/uiConfig/app_space_config.dart';
 import 'package:moon_dap/app/resources/uiConfig/color_config.dart';
 import 'package:moon_dap/app/resources/uiConfig/font_config.dart';
 import 'package:moon_dap/app/resources/uiConfig/size_config.dart';
@@ -29,93 +30,17 @@ class ChatScreen extends BaseScreen<ChatViewModel> {
   ChatViewModel createViewModel() => ChatViewModel();
 
   @override
-  bool get wrapWithSafeArea => true;
-
-
-  @override
-  bool get setBottomSafeArea => true;
-
-  @override
-  FloatingActionButtonLocation? get floatingActionButtonLocation =>
-      FloatingActionButtonLocation.centerDocked;
-
-  /// 하단 고정 입력창
-  // @override
-  // Widget? buildFloatingActionButton(BuildContext context) {
-  //   print("BOTTOM IONSET ==> ${SizeConfig.to.bottomInset}");
-  //   return Consumer<ChatViewModel>(
-  //     builder: (context, value, child) =>
-  //         AnimatedOpacity(
-  //           opacity: vm(context).selectedTabIndex == 0 ? 1 : 0,
-  //           duration: const Duration(milliseconds: 300),
-  //           child: BottomAppBar(
-  //             notchMargin: 140.0,
-  //             child: Stack(
-  //               children: [
-  //                 Container(
-  //                   decoration: const BoxDecoration(
-  //                     border: Border(
-  //                       top: BorderSide(
-  //                         color: Color(0xFFE5E5EA),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                   child: TextField(
-  //                     onChanged: vm(context).onFieldChanged,
-  //                     controller: vm(context).textEditingController,
-  //                     maxLines: null,
-  //                     textAlignVertical: TextAlignVertical.top,
-  //                     decoration: InputDecoration(
-  //                       border: InputBorder.none,
-  //                       contentPadding: const EdgeInsets.only(
-  //                           right: 42, left: 16),
-  //                       filled: true,
-  //                       fillColor: Colors.transparent,
-  //                       // fillColor: Colors.transparent,
-  //                       // ⚠️ suffix icon의 inkwell 효과를 고려하고 싶다면, TextField의 Color를 trasnparent로 설정해야됨
-  //                       hintText: '답변을 입력하세요',
-  //                       enabledBorder: OutlineInputBorder(
-  //                         borderSide: BorderSide.none,
-  //                         borderRadius: BorderRadius.circular(8.0),
-  //                       ),
-  //                       focusedBorder: OutlineInputBorder(
-  //                         borderSide: BorderSide.none,
-  //                         borderRadius: BorderRadius.circular(8.0),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ),
-  //
-  //                 // suffix 전송 버튼
-  //                 Positioned(
-  //                   bottom: 0,
-  //                   right: 0,
-  //                   child: IconButton(
-  //                     icon: SvgPicture.asset(
-  //                       "assets/icons/send.svg",
-  //                       colorFilter: ColorFilter.mode(
-  //                           vmS(
-  //                               context,
-  //                                   (value) =>
-  //                               value.isTextField
-  //                                   ? AppColor.blue
-  //                                   : const Color(0xFFBDBDC2)),
-  //                           BlendMode.srcIn),
-  //                     ),
-  //                     onPressed: () {
-  //                       debugPrint('click bait');
-  //                     },
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         ),
-  //   );
-  // }
+  Widget? buildFloatingActionButton(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        vm(context).onFieldChanged("term");
+      },
+    );
+  }
 
   @override
   Widget buildScreen(BuildContext context) {
+    print("BUILD SCIRPT CHATS");
     return Stack(children: [
       DefaultTabController(
         length: 3,
@@ -153,56 +78,22 @@ class ChatScreen extends BaseScreen<ChatViewModel> {
               child: TabBarView(
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
-                  ListView(
-                    padding: AppInset.left8 + AppInset.right16 + AppInset.top16,
-                    children: const <Widget>[
-                      NewChatBubble(
-                        messageType: ChatMessageType.answerQuestion,
-                        message:
-                            "어쩌구 저쩌구 입니다. 그래서 어쩌구 저쩌구를 하면 저쩌구가 될 수 있을 것 같아요",
-                        child: Text(
-                          "어쩌구 저쩌구 입니다. 그래서 어쩌구 저쩌구를 하면 저쩌구가 될 수 있을 것 같아요",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      NewChatBubble(
-                        messageType: ChatMessageType.replyToAnswer,
-                        message:
-                            "오답입니다\n Swift에서 upcasting과 downcasting의 개념을 이해하는 데 도움이 될 수 있지만, 불완전하거나 정확하지 않은 부분이 있습니다. 해당 답변은 Swift에서 upcasting과 downcasting의 개념을 이해하는 데 도움이 될 수 있지만, 불완전하거나 정확하지 않은 부분이 있습니다.  upcasting은 서로 상속 관계에 있는 클래스에서  자식 클래스를 부모 클래스로 타입캐스팅하는 것을 맞습니다.",
-                        child: Text(
-                          "오답입니다\n Swift에서 upcasting과 downcasting의 개념을 이해하는 데 도움이 될 수 있지만, 불완전하거나 정확하지 않은 부분이 있습니다. 해당 답변은 Swift에서 upcasting과 downcasting의 개념을 이해하는 데 도움이 될 수 있지만, 불완전하거나 정확하지 않은 부분이 있습니다.  upcasting은 서로 상속 관계에 있는 클래스에서  자식 클래스를 부모 클래스로 타입캐스팅하는 것을 맞습니다.",
-                        ),
-                      ),
-                      NewChatBubble(
-                        messageType: ChatMessageType.answerQuestion,
-                        message:
-                            "어쩌구 저쩌구 입니다. 그래서 어쩌구 저쩌구를 하면 저쩌구가 될 수 있을 것 같아요",
-                        child: Text(
-                          "어쩌구 저쩌구 입니다. 그래서 어쩌구 저쩌구를 하면 저쩌구가 될 수 있을 것 같아요",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      NewChatBubble(
-                        messageType: ChatMessageType.replyToAnswer,
-                        message:
-                            "오답입니다\n Swift에서 upcasting과 downcasting의 개념을 이해하는 데 도움이 될 수 있지만, 불완전하거나 정확하지 않은 부분이 있습니다. 해당 답변은 Swift에서 upcasting과 downcasting의 개념을 이해하는 데 도움이 될 수 있지만, 불완전하거나 정확하지 않은 부분이 있습니다.  upcasting은 서로 상속 관계에 있는 클래스에서  자식 클래스를 부모 클래스로 타입캐스팅하는 것을 맞습니다.",
-                        child: Text(
-                          "오답입니다\n Swift에서 upcasting과 downcasting의 개념을 이해하는 데 도움이 될 수 있지만, 불완전하거나 정확하지 않은 부분이 있습니다. 해당 답변은 Swift에서 upcasting과 downcasting의 개념을 이해하는 데 도움이 될 수 있지만, 불완전하거나 정확하지 않은 부분이 있습니다.  upcasting은 서로 상속 관계에 있는 클래스에서  자식 클래스를 부모 클래스로 타입캐스팅하는 것을 맞습니다.",
-                        ),
-                      ),
-                      NewChatBubble(
-                        messageType: ChatMessageType.answerQuestion,
-                        message:
-                            "어쩌구 저쩌구 입니다. 그래서 어쩌구 저쩌구를 하면 저쩌구가 될 수 있을 것 같아요",
-                        child: Text(
-                          "어쩌구 저쩌구 입니다. 그래서 어쩌구 저쩌구를 하면 저쩌구가 될 수 있을 것 같아요",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ],
+                  Selector(
+                    selector: (BuildContext context, ChatViewModel vm) =>
+                        vm.chatList,
+                    builder: (context, chatList, child) {
+                      return ListView.builder(
+                        itemCount: chatList.length,
+                        itemBuilder: (_, index) {
+                          return NewChatBubble(
+                              messageType: chatList[index].type,
+                              message: chatList[index].message);
+                        },
+                      );
+                    },
                   ),
                   Container(
-                    color: Colors.blue,
+                    color: Colors.yellow,
                   ),
                   Container(
                     color: Colors.yellow,
@@ -213,51 +104,48 @@ class ChatScreen extends BaseScreen<ChatViewModel> {
           ],
         ),
       ),
+
+      //
       Positioned(
         bottom: 0,
         child: Container(
-          color: Colors.white,
           width: SizeConfig.to.screenWidth,
-          child: Consumer<ChatViewModel>(
-            builder: (context, value, child) => AnimatedOpacity(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            border: Border(
+              top: BorderSide(
+                color: Color(0xFFE5E5EA),
+              ),
+            ),
+          ),
+          child: Consumer<ChatViewModel>(builder: (context, _, __) {
+            print("TEXT FEILD SECTION");
+            return AnimatedOpacity(
               opacity: vm(context).selectedTabIndex == 0 ? 1 : 0,
               duration: const Duration(milliseconds: 300),
               child: Stack(
                 children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        top: BorderSide(
-                          color: Color(0xFFE5E5EA),
-                        ),
+                  TextField(
+                    onChanged: vm(context).onFieldChanged,
+                    controller: vm(context).textEditingController,
+                    maxLines: null,
+                    textAlignVertical: TextAlignVertical.top,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding:
+                          const EdgeInsets.only(right: 42, left: 16, top: 18),
+                      // ⚠️ suffix icon의 inkwell 효과를 고려하고 싶다면, TextField의 Color를 trasnparent로 설정해야됨
+                      hintText: '답변을 입력하세요',
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
-                    ),
-                    child: TextField(
-                      onChanged: vm(context).onFieldChanged,
-                      controller: vm(context).textEditingController,
-                      maxLines: null,
-                      textAlignVertical: TextAlignVertical.top,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding:
-                            const EdgeInsets.only(right: 42, left: 16, top: 18),
-                        filled: true,
-                        fillColor: Colors.transparent,
-                        // fillColor: Colors.transparent,
-                        // ⚠️ suffix icon의 inkwell 효과를 고려하고 싶다면, TextField의 Color를 trasnparent로 설정해야됨
-                        hintText: '답변을 입력하세요',
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
                   ),
-
                   // suffix 전송 버튼
                   Positioned(
                     bottom: 0,
@@ -273,15 +161,13 @@ class ChatScreen extends BaseScreen<ChatViewModel> {
                                     : const Color(0xFFBDBDC2)),
                             BlendMode.srcIn),
                       ),
-                      onPressed: () {
-                        debugPrint('click bait');
-                      },
+                      onPressed: vm(context).onFieldSubmitted,
                     ),
                   ),
                 ],
               ),
-            ),
-          ),
+            );
+          }),
         ),
       ),
     ]);
