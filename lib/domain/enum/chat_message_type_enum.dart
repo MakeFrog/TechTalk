@@ -6,6 +6,7 @@
  * */
 
 enum ChatMessageType {
+  askQuestion,
   alertMessage,
   answerQuestion,
   replyToAnswer,
