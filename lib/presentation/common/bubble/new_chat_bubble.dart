@@ -14,7 +14,6 @@ import 'package:moon_dap/domain/enum/chat_message_type_enum.dart';
  * */
 
 class NewChatBubble extends StatelessWidget {
-  final Widget child;
   final String message;
   final EdgeInsetsGeometry? margin;
   final ChatMessageType messageType;
@@ -22,7 +21,6 @@ class NewChatBubble extends StatelessWidget {
   const NewChatBubble({
     super.key,
     this.margin,
-    required this.child,
     required this.messageType,
     required this.message,
   });
@@ -68,6 +66,9 @@ class NewChatBubble extends StatelessWidget {
       case ChatMessageType.replyToAnswer:
         return AppColor.black;
 
+      case ChatMessageType.askQuestion:
+        return AppColor.black;
+
       case ChatMessageType.answerQuestion:
         return AppColor.white;
     }
@@ -79,6 +80,8 @@ class NewChatBubble extends StatelessWidget {
         return const Color(0xffE7E7ED);
       case ChatMessageType.replyToAnswer:
         return const Color(0xffE7E7ED);
+      case ChatMessageType.askQuestion:
+        return const Color(0xffE7E7ED);
       case ChatMessageType.answerQuestion:
         return AppColor.blue;
     }
@@ -88,10 +91,12 @@ class NewChatBubble extends StatelessWidget {
     switch (messageType) {
       case ChatMessageType.alertMessage:
         return ChatBubbleClipper1(type: BubbleType.receiverBubble);
-      case ChatMessageType.answerQuestion:
-        return ChatBubbleClipper1(type: BubbleType.sendBubble);
       case ChatMessageType.replyToAnswer:
         return ChatBubbleClipper1(type: BubbleType.receiverBubble);
+      case ChatMessageType.askQuestion:
+        return ChatBubbleClipper1(type: BubbleType.receiverBubble);
+      case ChatMessageType.answerQuestion:
+        return ChatBubbleClipper1(type: BubbleType.sendBubble);
     }
   }
 
@@ -101,6 +106,8 @@ class NewChatBubble extends StatelessWidget {
         return MainAxisAlignment.start;
       case ChatMessageType.replyToAnswer:
         return MainAxisAlignment.start;
+      case ChatMessageType.askQuestion:
+        return MainAxisAlignment.start;
       case ChatMessageType.answerQuestion:
         return MainAxisAlignment.end;
     }
@@ -109,6 +116,8 @@ class NewChatBubble extends StatelessWidget {
   EdgeInsets get paddingOnType {
     switch (messageType) {
       case ChatMessageType.alertMessage:
+        return const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 10);
+      case ChatMessageType.askQuestion:
         return const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 10);
       case ChatMessageType.answerQuestion:
         return const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 20);
