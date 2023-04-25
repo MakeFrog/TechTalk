@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moon_dap/app/resources/uiConfig/app_insets.dart';
@@ -6,7 +5,9 @@ import 'package:moon_dap/app/resources/uiConfig/app_space_config.dart';
 import 'package:moon_dap/app/resources/uiConfig/color_config.dart';
 import 'package:moon_dap/app/resources/uiConfig/font_config.dart';
 import 'package:moon_dap/app/resources/uiConfig/size_config.dart';
-import 'package:moon_dap/domain/enum/chat_message_type_enum.dart';
+import 'package:moon_dap/chatGptTest/useCase/check_answer_with_stream_response_use_case.dart';
+import 'package:moon_dap/domain/model/chat/chat.dart';
+import 'package:moon_dap/main.dart';
 import 'package:moon_dap/presentation/base/base_screen.dart';
 import 'package:moon_dap/presentation/common/bubble/new_chat_bubble.dart';
 import 'package:moon_dap/presentation/screens/chat/chat_view_model.dart';
@@ -18,29 +19,105 @@ import 'package:provider/provider.dart';
  * */
 
 /** Todo List, 4/19
- *  1. TextField Suffix Button toggle 로직
- *  2. [ListView.builder] 기반 chat buuble expose 로직
- *  3. content inset 설정하기
+ *  1. TextField Suffix Button toggle 로직 ✅
+ *  2. [ListView.builder] 기반 chat buuble expose 로직 ✅
+ *  3. content inset 설정하기 ✅
+ * */
+
+/** Todo List, 4/20
+ * 1. Consumer && Provider or Selector 렌더링 포퍼먼스 비교 ✅
+ * R : Selector가 리렌더링을 최적화하는 방법
+ *
+ * */
+
+/** Todo List, 4/25
+ * 1. 가상 키보드 인터렉션 로직 고도화 (focus Node) ✅
+ * 2. 채팅 message 레이아웃 조정
+ * 3. Clean UI 코드 적용. 구조화
+ * 4. StreamBuilder Chat gpt 응답 고도화
  * */
 
 class ChatScreen extends BaseScreen<ChatViewModel> {
   const ChatScreen({Key? key}) : super(key: key);
 
   @override
-  ChatViewModel createViewModel() => ChatViewModel();
+  ChatViewModel createViewModel() => ChatViewModel(
+      checkAnswerWithStreamResponse:
+          getIt.get<CheckAnswerWithStreamResponseUseCase>());
+
+  @override
+  // TODO: implement floatingActionButtonLocation
+  FloatingActionButtonLocation? get floatingActionButtonLocation =>
+      FloatingActionButtonLocation.centerDocked;
 
   @override
   Widget? buildFloatingActionButton(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () {
-        vm(context).onFieldChanged("term");
-      },
+    return AnimatedOpacity(
+      opacity: vmS(context, (value) => value.showTextField ? 1 : 0),
+      duration: const Duration(milliseconds: 300),
+      child: Container(
+        constraints: const BoxConstraints(minHeight: 48),
+        width: SizeConfig.to.screenWidth,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(
+              color: Color(0xFFE5E5EA),
+            ),
+          ),
+        ),
+        child: Stack(
+          children: [
+            TextField(
+              focusNode: vm(context).focusNode,
+              onChanged: vm(context).onFieldChanged,
+              controller: vm(context).textEditingController,
+              maxLines: null,
+              textAlignVertical: TextAlignVertical.top,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding:
+                    const EdgeInsets.only(right: 42, left: 16, top: 18),
+                // ⚠️ suffix icon의 inkwell 효과를 고려하고 싶다면, TextField의 Color를 trasnparent로 설정해야됨
+                hintText: '답변을 입력하세요',
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+            ),
+            // suffix 전송 버튼
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: IconButton(
+                icon: SvgPicture.asset(
+                  "assets/icons/send.svg",
+                  colorFilter: ColorFilter.mode(
+                    vmS(
+                      context,
+                      (value) => value.isTextField
+                          ? AppColor.blue
+                          : const Color(0xFFBDBDC2),
+                    ),
+                    BlendMode.srcIn,
+                  ),
+                ),
+                onPressed: vm(context).onFieldSubmitted,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   @override
   Widget buildScreen(BuildContext context) {
-    print("BUILD SCIRPT CHATS");
     return Stack(children: [
       DefaultTabController(
         length: 3,
@@ -78,19 +155,31 @@ class ChatScreen extends BaseScreen<ChatViewModel> {
               child: TabBarView(
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
-                  Selector(
-                    selector: (BuildContext context, ChatViewModel vm) =>
-                        vm.chatList,
-                    builder: (context, chatList, child) {
-                      return ListView.builder(
-                        itemCount: chatList.length,
-                        itemBuilder: (_, index) {
-                          return NewChatBubble(
+                  GestureDetector(
+                    onTap: vm(context).onFocusKeyboard,
+                    child: Selector<ChatViewModel, List<Chat>>(
+                      // Selector 위젯으로 변경
+                      selector: (BuildContext context, ChatViewModel vm) {
+                        return vm.chatList;
+                      },
+                      builder: (context, chatList, child) {
+                        // chatList만을 인자로 받도록 수정
+                        return ListView.separated(
+                          controller: vm(context).firstTabScrollController,
+                          padding: AppInset.top12 +
+                              AppInset.horizontal12 +
+                              AppInset.bottom64,
+                          itemCount: chatList.length,
+                          itemBuilder: (_, index) {
+                            return NewChatBubble(
                               messageType: chatList[index].type,
-                              message: chatList[index].message);
-                        },
-                      );
-                    },
+                              message: chatList[index].message,
+                            );
+                          },
+                          separatorBuilder: (_, __) => AppSpace.size14,
+                        );
+                      },
+                    ),
                   ),
                   Container(
                     color: Colors.yellow,
@@ -104,72 +193,71 @@ class ChatScreen extends BaseScreen<ChatViewModel> {
           ],
         ),
       ),
-
-      //
-      Positioned(
-        bottom: 0,
-        child: Container(
-          width: SizeConfig.to.screenWidth,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            border: Border(
-              top: BorderSide(
-                color: Color(0xFFE5E5EA),
-              ),
-            ),
-          ),
-          child: Consumer<ChatViewModel>(builder: (context, _, __) {
-            print("TEXT FEILD SECTION");
-            return AnimatedOpacity(
-              opacity: vm(context).selectedTabIndex == 0 ? 1 : 0,
-              duration: const Duration(milliseconds: 300),
-              child: Stack(
-                children: [
-                  TextField(
-                    onChanged: vm(context).onFieldChanged,
-                    controller: vm(context).textEditingController,
-                    maxLines: null,
-                    textAlignVertical: TextAlignVertical.top,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      contentPadding:
-                          const EdgeInsets.only(right: 42, left: 16, top: 18),
-                      // ⚠️ suffix icon의 inkwell 효과를 고려하고 싶다면, TextField의 Color를 trasnparent로 설정해야됨
-                      hintText: '답변을 입력하세요',
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                  ),
-                  // suffix 전송 버튼
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: IconButton(
-                      icon: SvgPicture.asset(
-                        "assets/icons/send.svg",
-                        colorFilter: ColorFilter.mode(
-                            vmS(
-                                context,
-                                (value) => value.isTextField
-                                    ? AppColor.blue
-                                    : const Color(0xFFBDBDC2)),
-                            BlendMode.srcIn),
-                      ),
-                      onPressed: vm(context).onFieldSubmitted,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }),
-        ),
-      ),
+      // Positioned(
+      //   bottom: 0,
+      //   child: AnimatedOpacity(
+      //     opacity: vmS(context, (value) => value.showTextField ? 1 : 0),
+      //     duration: const Duration(milliseconds: 300),
+      //     child: Container(
+      //       constraints: const BoxConstraints(minHeight: 48),
+      //       width: SizeConfig.to.screenWidth,
+      //       decoration: const BoxDecoration(
+      //         color: Colors.white,
+      //         border: Border(
+      //           top: BorderSide(
+      //             color: Color(0xFFE5E5EA),
+      //           ),
+      //         ),
+      //       ),
+      //       child: Stack(
+      //         children: [
+      //           TextField(
+      //             focusNode: vm(context).focusNode,
+      //             onChanged: vm(context).onFieldChanged,
+      //             controller: vm(context).textEditingController,
+      //             maxLines: null,
+      //             textAlignVertical: TextAlignVertical.top,
+      //             decoration: InputDecoration(
+      //               border: InputBorder.none,
+      //               contentPadding:
+      //                   const EdgeInsets.only(right: 42, left: 16, top: 18),
+      //               // ⚠️ suffix icon의 inkwell 효과를 고려하고 싶다면, TextField의 Color를 trasnparent로 설정해야됨
+      //               hintText: '답변을 입력하세요',
+      //               enabledBorder: OutlineInputBorder(
+      //                 borderSide: BorderSide.none,
+      //                 borderRadius: BorderRadius.circular(8.0),
+      //               ),
+      //               focusedBorder: OutlineInputBorder(
+      //                 borderSide: BorderSide.none,
+      //                 borderRadius: BorderRadius.circular(8.0),
+      //               ),
+      //             ),
+      //           ),
+      //           // suffix 전송 버튼
+      //           Positioned(
+      //             bottom: 0,
+      //             right: 0,
+      //             child: IconButton(
+      //               icon: SvgPicture.asset(
+      //                 "assets/icons/send.svg",
+      //                 colorFilter: ColorFilter.mode(
+      //                   vmS(
+      //                     context,
+      //                     (value) => value.isTextField
+      //                         ? AppColor.blue
+      //                         : const Color(0xFFBDBDC2),
+      //                   ),
+      //                   BlendMode.srcIn,
+      //                 ),
+      //               ),
+      //               onPressed: vm(context).onFieldSubmitted,
+      //             ),
+      //           ),
+      //         ],
+      //       ),
+      //     ),
+      //   ),
+      // ),
     ]);
   }
 
