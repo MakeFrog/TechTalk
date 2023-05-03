@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:moon_dap/app/resources/uiConfig/size_config.dart';
 import 'package:moon_dap/chatGptTest/useCase/check_answer_with_stream_response_use_case.dart';
 import 'package:moon_dap/domain/enum/chat_message_type_enum.dart';
 import 'package:moon_dap/domain/model/chat/chat.dart';
@@ -46,32 +45,10 @@ class ChatViewModel extends BaseViewModel {
     }
   }
 
-  /// 스크롤 위치 최적화, 채팅 메세지 추가 시
-  /// 스크롤 위치 관련 info
-  /// maxScrollExtent : 현재 ListView maxScroll 포지션 크기
-  /// 48 : 기본 채팅 높이
-  /// 17 * paragraphLine : 한 줄이 추가 될 때 마다 17 사이즈가 증가.
-  void optimizeScrollPosition(int? paragraphLine) {
-    // if (paragraphLine == null) {
-    //   firstTabScrollController.animateTo(
-    //     firstTabScrollController.position.maxScrollExtent,
-    //     duration: const Duration(milliseconds: 300),
-    //     curve: Curves.easeInOut,
-    //   );
-    //   return;
-    // }
-    // print("ARANG ${firstTabScrollController.position.maxScrollExtent}");
-    //
-    // firstTabScrollController.animateTo(
-    //   firstTabScrollController.position.maxScrollExtent +
-    //       48 +
-    //       (17 * paragraphLine),
-    //   duration: const Duration(milliseconds: 300),
-    //   curve: Curves.easeInOut,
-    // );
-  }
-
+  /// 채팅이 입력되었을 때
+  /// 역순(reversed)으로 데이터가 추가되어야 함에 유의
   Future<void> onFieldSubmitted() async {
+    // 1. chat list에 첫 번째 배열 위치에 put
     chatList = [
       Chat(
         type: ChatMessageType.answerQuestion,
@@ -81,9 +58,9 @@ class ChatViewModel extends BaseViewModel {
     ];
     notifyListeners();
 
-    // final int lineCount = '\n'.allMatches(textEditingController.text).length;
-    // optimizeScrollPosition(lineCount);
-
+    // 2. 스크롤 최적화 위치
+    // 가장 위에 스크롤 된 상태에서 채팅을 입력했을 때 최근 submit한 채팅 메세지가 보이도록
+    // 스크롤 위치를 가장 아래 부분으로 변경
     await firstTabScrollController.animateTo(
       firstTabScrollController.position.minScrollExtent,
       duration: const Duration(milliseconds: 300),
@@ -99,19 +76,11 @@ class ChatViewModel extends BaseViewModel {
   // 입력창 전송 버튼 활성화 여부
   bool get isTextField => textEditingController.text.isNotEmpty;
 
-  bool get showTextField => selectedTabIndex == 0;
-
   @override
   void onInit() {
     firstTabScrollController = ScrollController();
     textEditingController = TextEditingController();
     focusNode = FocusNode();
-
-    focusNode.addListener(() {
-      if (focusNode.hasFocus) {
-        optimizeScrollPosition(null);
-      }
-    });
   }
 
   @override
