@@ -21,6 +21,6 @@ class Chat {
         message:
             "오답입니다\n Swift에서 upcasting과 downcasting의 개념을 이해하는 데 도움이 될 수 있지만, 불완전하거나 정확하지 않은 부분이 있습니다.",
       ),
-    ];
+    ].reversed.toList();
   }
 }

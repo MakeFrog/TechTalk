@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moon_dap/app/resources/uiConfig/size_config.dart';
 import 'package:moon_dap/chatGptTest/useCase/check_answer_with_stream_response_use_case.dart';
 import 'package:moon_dap/domain/enum/chat_message_type_enum.dart';
 import 'package:moon_dap/domain/model/chat/chat.dart';
@@ -51,36 +52,43 @@ class ChatViewModel extends BaseViewModel {
   /// 48 : 기본 채팅 높이
   /// 17 * paragraphLine : 한 줄이 추가 될 때 마다 17 사이즈가 증가.
   void optimizeScrollPosition(int? paragraphLine) {
-    if (paragraphLine == null) {
-      firstTabScrollController.animateTo(
-        firstTabScrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-      return;
-    }
-
-    firstTabScrollController.animateTo(
-      firstTabScrollController.position.maxScrollExtent +
-          48 +
-          (17 * paragraphLine),
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
+    // if (paragraphLine == null) {
+    //   firstTabScrollController.animateTo(
+    //     firstTabScrollController.position.maxScrollExtent,
+    //     duration: const Duration(milliseconds: 300),
+    //     curve: Curves.easeInOut,
+    //   );
+    //   return;
+    // }
+    // print("ARANG ${firstTabScrollController.position.maxScrollExtent}");
+    //
+    // firstTabScrollController.animateTo(
+    //   firstTabScrollController.position.maxScrollExtent +
+    //       48 +
+    //       (17 * paragraphLine),
+    //   duration: const Duration(milliseconds: 300),
+    //   curve: Curves.easeInOut,
+    // );
   }
 
   Future<void> onFieldSubmitted() async {
     chatList = [
-      ...chatList,
       Chat(
         type: ChatMessageType.answerQuestion,
         message: textEditingController.text,
       ),
+      ...chatList,
     ];
     notifyListeners();
 
-    final int lineCount = '\n'.allMatches(textEditingController.text).length;
-    optimizeScrollPosition(lineCount);
+    // final int lineCount = '\n'.allMatches(textEditingController.text).length;
+    // optimizeScrollPosition(lineCount);
+
+    await firstTabScrollController.animateTo(
+      firstTabScrollController.position.minScrollExtent,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
 
     textEditingController.text = '';
   }
