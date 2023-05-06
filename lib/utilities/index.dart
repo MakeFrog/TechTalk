@@ -9,5 +9,5 @@ export 'package:moon_dap/app/resources/uiConfig/app_space_config.dart';
 export 'package:moon_dap/app/resources/uiConfig/color_config.dart';
 export 'package:moon_dap/app/resources/uiConfig/size_config.dart';
 export 'package:moon_dap/presentation/base/base_view.dart';
-export 'package:moon_dap/presentation/common/bubble/new_chat_bubble.dart';
+export 'package:moon_dap/presentation/common/bubble/sender_chat_bubble.dart';
 export 'package:provider/provider.dart';

@@ -41,6 +41,7 @@ dependencies:
 
   # Utils
   flutter_dotenv: ^5.0.2
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_lints: ^2.0.1
