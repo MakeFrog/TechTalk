@@ -4,6 +4,7 @@ import 'package:moon_dap/app/resources/uiConfig/app_insets.dart';
 import 'package:moon_dap/app/resources/uiConfig/app_space_config.dart';
 import 'package:moon_dap/app/resources/uiConfig/color_config.dart';
 import 'package:moon_dap/app/resources/uiConfig/size_config.dart';
+import 'package:moon_dap/domain/enum/chat_message_type_enum.dart';
 import 'package:moon_dap/domain/model/chat/chat.dart';
 import 'package:moon_dap/presentation/base/base_view.dart';
 import 'package:moon_dap/presentation/common/bubble/new_chat_bubble.dart';
@@ -36,10 +37,22 @@ class ChatListTabView extends BaseView<ChatViewModel> {
                         AppInset.bottom16,
                     itemCount: chatList.length,
                     itemBuilder: (_, index) {
-                      return NewChatBubble(
-                        messageType: chatList[index].type,
-                        message: chatList[index].message,
-                      );
+                      if (chatList[index].type ==
+                          ChatMessageType.replyToUserAnswer) {
+                        return StreamBuilder<String>(
+                          stream: chatList[index].message,
+                          builder: (context, snapshot) {
+                            return NewChatBubble(
+                                messageType: chatList[index].type,
+                                message: snapshot.data ?? "...");
+                          },
+                        );
+                      } else {
+                        return NewChatBubble(
+                          messageType: chatList[index].type,
+                          message: chatList[index].message.value,
+                        );
+                      }
                     },
                     separatorBuilder: (_, __) => AppSpace.size14,
                   ),
