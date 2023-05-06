@@ -1,9 +1,9 @@
 import 'package:go_router/go_router.dart';
 import 'package:moon_dap/app/routes/go_route_with_binding.dart';
-import 'package:moon_dap/presentation/screens/home/home_screen.dart';
+import 'package:moon_dap/presentation/screens/chat/chat_binding.dart';
+import 'package:moon_dap/presentation/screens/chat/chat_screen.dart';
 import 'package:moon_dap/presentation/screens/sample/nested/nested_screen_1.dart';
 import 'package:moon_dap/presentation/screens/sample/nested/nested_screen_2.dart';
-import 'package:moon_dap/presentation/screens/sample/nested/test_screen.dart';
 import 'package:moon_dap/presentation/screens/sample/sample_1_binding.dart';
 import 'package:moon_dap/presentation/screens/sample/sample_screen_2.dart';
 import 'package:moon_dap/presentation/screens/sample/smaple_screen_1.dart';
@@ -15,9 +15,10 @@ abstract class AppPages {
     debugLogDiagnostics: true,
     initialLocation: '/',
     routes: [
-      GoRoute(
+      GoRouteWithBinding(
         path: '/',
-        builder: (context, state) => const SampleScreen32(),
+        binding: ChatBinding(),
+        newBuilder: (context, state) => const ChatScreen(),
       ),
       GoRouteWithBinding(
         path: '/sampleScreen1',
