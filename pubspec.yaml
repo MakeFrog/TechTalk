@@ -22,19 +22,18 @@ dependencies:
   after_layout: ^1.2.0 # Widget LifeCycle Mixin
   flutter_svg: ^2.0.5 # SVG 아이콘
   flutter_easyloading: ^3.0.5 # 로딩 UI 처리 관련
-
-
+  flutter_chat_bubble: ^2.0.2 # 말풍선
 
   # 상태관리
   provider: ^6.0.5
+  async: ^2.11.0
+  rxdart: ^0.27.7
 
   # 라우팅
   go_router: ^6.5.5
 
   # DI
   get_it: ^7.2.0
-
-
 
   # 네트워크
   dio: ^5.0.3
@@ -44,12 +43,7 @@ dependencies:
   flutter_dotenv: ^5.0.2
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-
   flutter_lints: ^2.0.1
-
-
 
 flutter:
   uses-material-design: true
