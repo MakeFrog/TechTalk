@@ -7,7 +7,8 @@ import 'package:moon_dap/app/resources/uiConfig/size_config.dart';
 import 'package:moon_dap/domain/enum/chat_message_type_enum.dart';
 import 'package:moon_dap/domain/model/chat/chat.dart';
 import 'package:moon_dap/presentation/base/base_view.dart';
-import 'package:moon_dap/presentation/common/bubble/new_chat_bubble.dart';
+import 'package:moon_dap/presentation/common/bubble/sender_chat_bubble.dart';
+import 'package:moon_dap/presentation/common/bubble/stream_base_chat_bubble.dart';
 import 'package:moon_dap/presentation/screens/chat/chat_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -37,20 +38,23 @@ class ChatListTabView extends BaseView<ChatViewModel> {
                         AppInset.bottom16,
                     itemCount: chatList.length,
                     itemBuilder: (_, index) {
-                      if (chatList[index].type ==
-                          ChatMessageType.replyToUserAnswer) {
+                      if (chatList[index].type.isReceiverType) {
                         return StreamBuilder<String>(
                           stream: chatList[index].message,
                           builder: (context, snapshot) {
-                            return NewChatBubble(
-                                messageType: chatList[index].type,
-                                message: snapshot.data ?? "...");
+                            return StreamChatBubble(
+                              messageType: chatList[index].type,
+                              message: snapshot.data ?? "...",
+                            );
                           },
                         );
                       } else {
-                        return NewChatBubble(
+                        return SenderChatBubble(
+                          index: index,
                           messageType: chatList[index].type,
                           message: chatList[index].message.value,
+                          correctness: chatList[index].correctness,
+                          sendTime: chatList[index].sendTime!,
                         );
                       }
                     },
@@ -120,7 +124,7 @@ class _StackedInputField extends BaseView<ChatViewModel> {
                 colorFilter: ColorFilter.mode(
                   vmS(
                     context,
-                    (value) => value.isTextField
+                    (value) => value.isTextFieldActivated
                         ? AppColor.blue
                         : const Color(0xFFBDBDC2),
                   ),

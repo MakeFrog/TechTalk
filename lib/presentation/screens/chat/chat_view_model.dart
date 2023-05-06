@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:moon_dap/domain/model/chat/Correctness.dart';
+import 'package:moon_dap/domain/model/question/question.dart';
 import 'package:moon_dap/domain/useCase/chat/get_gpt_reply_use_case.dart';
 import 'package:moon_dap/domain/enum/chat_message_type_enum.dart';
 import 'package:moon_dap/domain/model/chat/chat.dart';
@@ -7,19 +9,19 @@ import 'package:moon_dap/presentation/base/base_view_model.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ChatViewModel extends BaseViewModel {
-  ChatViewModel({required this.checkAnswerWithStreamResponse});
+  ChatViewModel({required this.getGptReplyUseCase});
 
   /* Data Variables */
   List<Chat> chatList = Chat.generate();
-
-  List<Chat> get chatListed => chatList;
-  List<int> tempState = [0, 1];
+  List<Question> questionList = Question.generate();
 
   /* State Variables */
   int selectedTabIndex = 0;
+  int currentQuestionIndex = 0;
+  List<int> tempState = [0, 1];
 
   /* UseCases */
-  final GetGptReplyUseCase checkAnswerWithStreamResponse;
+  final GetGptReplyUseCase getGptReplyUseCase;
 
   /* Controllers  */
   late final ScrollController firstTabScrollController;
@@ -50,11 +52,20 @@ class ChatViewModel extends BaseViewModel {
   /// 채팅이 입력되었을 때
   /// 역순(reversed)으로 데이터가 추가되어야 함에 유의
   Future<void> onFieldSubmitted() async {
+    // 0. TextField 활성화 상태가 아니라면 리턴
+    if (!isTextFieldActivated) {
+      return;
+    }
+
+    DateTime now = DateTime.now();
+
     // 1. chat list에 첫 번째 배열 위치에 put
     chatList = [
-      Chat(
+      Chat.sender(
         type: ChatMessageType.answerQuestion,
         message: BehaviorSubject.seeded(textEditingController.text),
+        sendTime: now,
+        correctness: Correctness.checking,
       ),
       ...chatList,
     ];
@@ -74,26 +85,69 @@ class ChatViewModel extends BaseViewModel {
     textEditingController.text = '';
   }
 
-  Future<void> replyToUserAnswer(String userMessage) async {
-    const String question = '프로토콜과 클래스의 차이를 설명해보세요';
-    const String category = '[iOS]Swift';
-
-    // 1. chat list에 첫 번째 배열 위치에 put
+  // 첫 번째 질문 제시
+  void showFirstQuestion() {
     chatList = [
       Chat(
-          type: ChatMessageType.replyToUserAnswer,
-          message: checkAnswerWithStreamResponse.getGptReplyOnStream(
-              category: category, question: question, userAnswer: userMessage)),
+        type: ChatMessageType.askQuestion,
+        message: returnToStream("첫 번째 질문입니다.\n${currentQuestion.question}"),
+      ),
       ...chatList,
     ];
     notifyListeners();
   }
 
-  BehaviorSubject<String> getStream(String text) {
+  // 다음 질문 제시
+  Future<void> showNestQuestion() async {
+    currentQuestionIndex++;
+    // await checkAnswer();
+    chatList = [
+      Chat(
+        type: ChatMessageType.askQuestion,
+        message: returnToStream("다음 질문입니다\n${currentQuestion.question}"),
+      ),
+      ...chatList,
+    ];
+    notifyListeners();
+  }
+
+  /// 정답 여부 확인 및 상태 변경
+  void checkUserAnswer(bool isCorrect) {
+    final index =
+        chatList.indexWhere((element) => !element.type.isReceiverType);
+
+    if (isCorrect) {
+      chatList[index].correctness = Correctness.correct;
+    } else {
+      chatList[index].correctness = Correctness.incorrect;
+    }
+    notifyListeners();
+  }
+
+  // 유저의 답변에 대한 gpt응답
+  Future<void> replyToUserAnswer(String userMessage) async {
+    // 1. chat list에 첫 번째 배열 위치에 put
+    chatList = [
+      Chat(
+        type: ChatMessageType.replyToUserAnswer,
+        message: getGptReplyUseCase.getGptReplyOnStream(
+            category: currentQuestion.category,
+            question: currentQuestion.question,
+            userAnswer: userMessage,
+            onStreamDone: showNestQuestion,
+            checkAnswer: checkUserAnswer),
+      ),
+      ...chatList,
+    ];
+    notifyListeners();
+  }
+
+  // 문자열을 받으면 Stream형태로 변환해주는 메소드
+  BehaviorSubject<String> returnToStream(String text) {
     final BehaviorSubject<String> messageSubject = BehaviorSubject<String>();
     int index = 0;
 
-    Timer.periodic(const Duration(milliseconds: 100), (timer) {
+    Timer.periodic(const Duration(milliseconds: 50), (timer) {
       if (index < text.length) {
         messageSubject.add(text.substring(0, index + 1));
         index++;
@@ -107,15 +161,24 @@ class ChatViewModel extends BaseViewModel {
   }
 
   /* Getters */
-  // 입력창 전송 버튼 활성화 여부
-  bool get isTextField => textEditingController.text.isNotEmpty;
+
+  /// 입력창 전송 버튼 활성화 여부
+  /// 1. TextField 입력 글자 존재 여부
+  /// 2. ChatGpt 응답 진행 여부
+  bool get isTextFieldActivated =>
+      textEditingController.text.isNotEmpty &&
+      getGptReplyUseCase.state == ReplyState.init;
+
+  // 현재 진행중인 질문
+  Question get currentQuestion => questionList[currentQuestionIndex];
 
   @override
   void onInit() {
     firstTabScrollController = ScrollController();
     textEditingController = TextEditingController();
     focusNode = FocusNode();
-    checkAnswerWithStreamResponse.initUseCase();
+    getGptReplyUseCase.initUseCase();
+    showFirstQuestion();
   }
 
   @override
