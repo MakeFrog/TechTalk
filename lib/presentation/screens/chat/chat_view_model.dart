@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:moon_dap/chatGptTest/useCase/check_answer_with_stream_response_use_case.dart';
+import 'package:moon_dap/domain/useCase/chat/get_gpt_reply_use_case.dart';
 import 'package:moon_dap/domain/enum/chat_message_type_enum.dart';
 import 'package:moon_dap/domain/model/chat/chat.dart';
 import 'package:moon_dap/presentation/base/base_view_model.dart';
+import 'package:rxdart/rxdart.dart';
 
 class ChatViewModel extends BaseViewModel {
   ChatViewModel({required this.checkAnswerWithStreamResponse});
@@ -17,7 +19,7 @@ class ChatViewModel extends BaseViewModel {
   int selectedTabIndex = 0;
 
   /* UseCases */
-  final CheckAnswerWithStreamResponseUseCase checkAnswerWithStreamResponse;
+  final GetGptReplyUseCase checkAnswerWithStreamResponse;
 
   /* Controllers  */
   late final ScrollController firstTabScrollController;
@@ -52,7 +54,7 @@ class ChatViewModel extends BaseViewModel {
     chatList = [
       Chat(
         type: ChatMessageType.answerQuestion,
-        message: textEditingController.text,
+        message: BehaviorSubject.seeded(textEditingController.text),
       ),
       ...chatList,
     ];
@@ -66,11 +68,43 @@ class ChatViewModel extends BaseViewModel {
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
+    await replyToUserAnswer(textEditingController.text);
 
+    // replyToUserAnswer("");
     textEditingController.text = '';
   }
 
-  Future<void> addChatList() async {}
+  Future<void> replyToUserAnswer(String userMessage) async {
+    const String question = '프로토콜과 클래스의 차이를 설명해보세요';
+    const String category = '[iOS]Swift';
+
+    // 1. chat list에 첫 번째 배열 위치에 put
+    chatList = [
+      Chat(
+          type: ChatMessageType.replyToUserAnswer,
+          message: checkAnswerWithStreamResponse.getGptReplyOnStream(
+              category: category, question: question, userAnswer: userMessage)),
+      ...chatList,
+    ];
+    notifyListeners();
+  }
+
+  BehaviorSubject<String> getStream(String text) {
+    final BehaviorSubject<String> messageSubject = BehaviorSubject<String>();
+    int index = 0;
+
+    Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      if (index < text.length) {
+        messageSubject.add(text.substring(0, index + 1));
+        index++;
+      } else {
+        timer.cancel();
+        messageSubject.close();
+      }
+    });
+
+    return messageSubject;
+  }
 
   /* Getters */
   // 입력창 전송 버튼 활성화 여부
@@ -81,6 +115,7 @@ class ChatViewModel extends BaseViewModel {
     firstTabScrollController = ScrollController();
     textEditingController = TextEditingController();
     focusNode = FocusNode();
+    checkAnswerWithStreamResponse.initUseCase();
   }
 
   @override
