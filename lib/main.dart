@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:moon_dap/app/resources/uiConfig/size_config.dart';
-import 'package:moon_dap/app/routes/app_pages.dart';
-import 'package:moon_dap/domain/useCase/chat/get_gpt_reply_use_case.dart';
-import 'package:moon_dap/presentation/screens/responsive_layout_builder.dart';
+import 'package:techtalk/app/resources/uiConfig/size_config.dart';
+import 'package:techtalk/app/routes/app_pages.dart';
+import 'package:techtalk/domain/useCase/chat/get_gpt_reply_use_case.dart';
+import 'package:techtalk/presentation/screens/responsive_layout_builder.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

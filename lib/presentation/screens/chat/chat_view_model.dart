@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:moon_dap/domain/model/chat/Correctness.dart';
-import 'package:moon_dap/domain/model/question/question.dart';
-import 'package:moon_dap/domain/useCase/chat/get_gpt_reply_use_case.dart';
-import 'package:moon_dap/domain/enum/chat_message_type_enum.dart';
-import 'package:moon_dap/domain/model/chat/chat.dart';
-import 'package:moon_dap/presentation/base/base_view_model.dart';
+import 'package:techtalk/domain/model/chat/Correctness.dart';
+import 'package:techtalk/domain/model/question/question.dart';
+import 'package:techtalk/domain/useCase/chat/get_gpt_reply_use_case.dart';
+import 'package:techtalk/domain/enum/chat_message_type_enum.dart';
+import 'package:techtalk/domain/model/chat/chat.dart';
+import 'package:techtalk/presentation/base/base_view_model.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ChatViewModel extends BaseViewModel {

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:moon_dap/app/resources/uiConfig/app_insets.dart';
-import 'package:moon_dap/app/resources/uiConfig/app_space_config.dart';
-import 'package:moon_dap/app/resources/uiConfig/color_config.dart';
-import 'package:moon_dap/app/resources/uiConfig/size_config.dart';
-import 'package:moon_dap/domain/enum/chat_message_type_enum.dart';
-import 'package:moon_dap/domain/model/chat/chat.dart';
-import 'package:moon_dap/presentation/base/base_view.dart';
-import 'package:moon_dap/presentation/common/bubble/sender_chat_bubble.dart';
-import 'package:moon_dap/presentation/common/bubble/stream_base_chat_bubble.dart';
-import 'package:moon_dap/presentation/screens/chat/chat_view_model.dart';
+import 'package:techtalk/app/resources/uiConfig/app_insets.dart';
+import 'package:techtalk/app/resources/uiConfig/app_space_config.dart';
+import 'package:techtalk/app/resources/uiConfig/color_config.dart';
+import 'package:techtalk/app/resources/uiConfig/size_config.dart';
+import 'package:techtalk/domain/enum/chat_message_type_enum.dart';
+import 'package:techtalk/domain/model/chat/chat.dart';
+import 'package:techtalk/presentation/base/base_view.dart';
+import 'package:techtalk/presentation/common/bubble/sender_chat_bubble.dart';
+import 'package:techtalk/presentation/common/bubble/stream_base_chat_bubble.dart';
+import 'package:techtalk/presentation/screens/chat/chat_view_model.dart';
 import 'package:provider/provider.dart';
 
 class ChatListTabView extends BaseView<ChatViewModel> {

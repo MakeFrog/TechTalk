@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:moon_dap/domain/useCase/sample_use_case.dart';
-import 'package:moon_dap/main.dart';
-import 'package:moon_dap/presentation/base/base_screen.dart';
-import 'package:moon_dap/presentation/screens/sample/sample_view_model.dart';
+import 'package:techtalk/domain/useCase/sample_use_case.dart';
+import 'package:techtalk/main.dart';
+import 'package:techtalk/presentation/base/base_screen.dart';
+import 'package:techtalk/presentation/screens/sample/sample_view_model.dart';
 import 'package:provider/provider.dart';
 
 class SampleScreen1 extends BaseScreen<SampleViewModel> {

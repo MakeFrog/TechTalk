@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:moon_dap/domain/enum/chat_message_type_enum.dart';
-import 'package:moon_dap/domain/model/chat/Correctness.dart';
+import 'package:techtalk/domain/enum/chat_message_type_enum.dart';
+import 'package:techtalk/domain/model/chat/Correctness.dart';
 import 'package:rxdart/rxdart.dart';
 
 class Chat {

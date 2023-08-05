@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
-import 'package:moon_dap/domain/repository/sample_reposiotry.dart';
-import 'package:moon_dap/domain/useCase/sample_use_case.dart';
-import 'package:moon_dap/main.dart';
-import 'package:moon_dap/presentation/base/base_view_model.dart';
-import 'package:moon_dap/presentation/screens/sample/sample_1_binding.dart';
+import 'package:techtalk/domain/repository/sample_reposiotry.dart';
+import 'package:techtalk/domain/useCase/sample_use_case.dart';
+import 'package:techtalk/main.dart';
+import 'package:techtalk/presentation/base/base_view_model.dart';
+import 'package:techtalk/presentation/screens/sample/sample_1_binding.dart';
 
 class SampleViewModel extends BaseViewModel {
   SampleViewModel(this._sampleUseCase);

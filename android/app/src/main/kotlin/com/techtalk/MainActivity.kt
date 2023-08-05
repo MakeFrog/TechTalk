@@ -1,4 +1,4 @@
-package com.moonDap.moon_dap
+package com.techtalk
 
 import io.flutter.embedding.android.FlutterActivity
 

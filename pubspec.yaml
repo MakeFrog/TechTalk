@@ -1,4 +1,4 @@
-name: moon_dap
+name: techtalk
 description: A new Flutter project.
 
 publish_to: 'none'
@@ -42,6 +42,7 @@ dependencies:
   # Utils
   flutter_dotenv: ^5.0.2
   intl: ^0.18.1
+  change_app_package_name: ^1.1.0
 
 dev_dependencies:
   flutter_lints: ^2.0.1

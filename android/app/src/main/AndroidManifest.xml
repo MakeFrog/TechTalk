@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.moonDap.moon_dap">
+    package="com.techtalk">
    <application
-        android:label="moon_dap"
+        android:label="테크톡"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

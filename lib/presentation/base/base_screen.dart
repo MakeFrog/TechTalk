@@ -1,7 +1,7 @@
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/material.dart';
-import 'package:moon_dap/app/resources/uiConfig/color_config.dart';
-import 'package:moon_dap/presentation/base/base_view_model.dart';
+import 'package:techtalk/app/resources/uiConfig/color_config.dart';
+import 'package:techtalk/presentation/base/base_view_model.dart';
 import 'package:provider/provider.dart';
 
 @immutable

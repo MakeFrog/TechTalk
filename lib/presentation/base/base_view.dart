@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moon_dap/presentation/base/base_view_model.dart';
+import 'package:techtalk/presentation/base/base_view_model.dart';
 import 'package:provider/provider.dart';
 
 abstract class BaseView<T extends BaseViewModel> extends StatelessWidget {
