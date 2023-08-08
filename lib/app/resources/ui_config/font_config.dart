@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:techtalk/app/resources/uiConfig/color_config.dart';
+import 'package:techtalk/app/resources/ui_config/color_config.dart';
 
 /// Created By Ximya - 2022.11.04
 /// TextStyle을 상속 받는 [PretendardTextStyle] 모듈을 기반으로 함.
@@ -106,7 +106,7 @@ class PretendardTextStyle extends TextStyle {
             color: color,
             fontSize: size,
             fontWeight: fontWeight,
-            height: height / size,
+            height: height,
             letterSpacing: letterSpacing,
             leadingDistribution: TextLeadingDistribution.even);
 
