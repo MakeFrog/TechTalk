@@ -20,7 +20,6 @@ class SampleScreen1 extends BaseScreen<SampleViewModel> {
 
   @override
   Widget buildScreen(BuildContext context) {
-    print("aim");
     return Center(
       child: FittedBox(
         child: Column(

@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:techtalk/app/resources/uiConfig/app_insets.dart';
-import 'package:techtalk/app/resources/uiConfig/app_space_config.dart';
-import 'package:techtalk/app/resources/uiConfig/color_config.dart';
-import 'package:techtalk/app/resources/uiConfig/font_config.dart';
-import 'package:techtalk/app/resources/uiConfig/size_config.dart';
-import 'package:techtalk/domain/useCase/chat/get_gpt_reply_use_case.dart';
-import 'package:techtalk/domain/model/chat/chat.dart';
+import 'package:techtalk/app/resources/ui_config/app_insets.dart';
+import 'package:techtalk/app/resources/ui_config/color_config.dart';
+import 'package:techtalk/app/resources/ui_config/font_config.dart';
+import 'package:techtalk/domain/useCase/chat/get_gpt_reply_use_case_old.dart';
 import 'package:techtalk/main.dart';
 import 'package:techtalk/presentation/base/base_screen.dart';
 import 'package:techtalk/presentation/base/base_view.dart';
-import 'package:techtalk/presentation/common/bubble/sender_chat_bubble.dart';
 import 'package:techtalk/presentation/screens/chat/chat_view_model.dart';
 import 'package:techtalk/presentation/screens/chat/local_widget/chat_list_tab_view.dart';
-import 'package:provider/provider.dart';
 
 
 class ChatScreen extends BaseScreen<ChatViewModel> {

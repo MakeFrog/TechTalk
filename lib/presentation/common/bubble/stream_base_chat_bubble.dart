@@ -3,8 +3,8 @@ library flutter_chat_bubble;
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
-import 'package:techtalk/app/resources/uiConfig/color_config.dart';
-import 'package:techtalk/app/resources/uiConfig/size_config.dart';
+import 'package:techtalk/app/resources/ui_config/color_config.dart';
+import 'package:techtalk/app/resources/ui_config/size_config.dart';
 import 'package:techtalk/domain/enum/chat_message_type_enum.dart';
 
 /** Created By Ximiya - 2023.04.18

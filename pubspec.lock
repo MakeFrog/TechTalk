@@ -267,6 +267,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.5"
+  provider_screen:
+    dependency: "direct main"
+    description:
+      name: provider_screen
+      sha256: "71fb5434a6a6688ce95ae6e63aaa6611bc622642c153018015688f1f74530328"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   rxdart:
     dependency: "direct main"
     description:
@@ -353,5 +361,5 @@ packages:
     source: hosted
     version: "6.2.2"
 sdks:
-  dart: ">=3.0.0-0 <4.0.0"
+  dart: ">=3.0.3 <4.0.0"
   flutter: ">=3.7.0-0"

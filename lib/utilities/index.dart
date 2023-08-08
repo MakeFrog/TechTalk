@@ -4,10 +4,10 @@
 
 export 'package:flutter/material.dart';
 export 'package:flutter_svg/flutter_svg.dart';
-export 'package:techtalk/app/resources/uiConfig/app_insets.dart';
-export 'package:techtalk/app/resources/uiConfig/app_space_config.dart';
-export 'package:techtalk/app/resources/uiConfig/color_config.dart';
-export 'package:techtalk/app/resources/uiConfig/size_config.dart';
+export 'package:techtalk/app/resources/ui_config/app_insets.dart';
+export 'package:techtalk/app/resources/ui_config/app_space_config.dart';
+export 'package:techtalk/app/resources/ui_config/color_config.dart';
+export 'package:techtalk/app/resources/ui_config/size_config.dart';
 export 'package:techtalk/presentation/base/base_view.dart';
 export 'package:techtalk/presentation/common/bubble/sender_chat_bubble.dart';
 export 'package:provider/provider.dart';
