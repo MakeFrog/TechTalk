@@ -2,9 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:techtalk/domain/model/chat/Correctness.dart';
 import 'package:techtalk/domain/model/question/question.dart';
-import 'package:techtalk/domain/useCase/chat/get_gpt_reply_use_case_old.dart';
 import 'package:techtalk/domain/enum/chat_message_type_enum.dart';
 import 'package:techtalk/domain/model/chat/chat.dart';
+import 'package:techtalk/domain/useCase/chat/get_gpt_reply_use_case_old.dart';
 import 'package:techtalk/presentation/base/base_view_model.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -127,15 +127,19 @@ class ChatViewModel extends BaseViewModel {
   // 유저의 답변에 대한 gpt응답
   Future<void> replyToUserAnswer(String userMessage) async {
     // 1. chat list에 첫 번째 배열 위치에 put
+
     chatList = [
       Chat(
         type: ChatMessageType.replyToUserAnswer,
-        message: getGptReplyUseCase.getGptReplyOnStream(
+        message: getGptReplyUseCase.call(
+          (
             category: currentQuestion.category,
             question: currentQuestion.question,
             userAnswer: userMessage,
             onStreamDone: showNestQuestion,
-            checkAnswer: checkUserAnswer),
+            checkAnswer: checkUserAnswer
+          ),
+        ),
       ),
       ...chatList,
     ];

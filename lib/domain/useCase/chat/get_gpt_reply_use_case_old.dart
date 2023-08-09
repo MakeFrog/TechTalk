@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:chatgpt_completions/chatgpt_completions.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:techtalk/domain/base/base_no_future_use_case.dart';
 
 /** Created By Ximya - 2023.05.06
  *  ChatGPT 요청 및 응답을 관리하는 useCase 모듈
@@ -15,24 +16,34 @@ enum ReplyState {
   answerChecked,
 }
 
-class GetGptReplyUseCase {
+class GetGptReplyUseCase extends BaseNoFutureUseCase<
+    ({
+    String category,
+    String question,
+    String userAnswer,
+    VoidCallback onStreamDone,
+    void Function(bool) checkAnswer
+    }),
+    BehaviorSubject<String>> {
   final ChatGPTCompletions completions = ChatGPTCompletions.instance;
   ReplyState state = ReplyState.init;
 
   /// ChatGpt 응답을 요청하는 메소드
-  /// [BehaviorSubject]을 리턴하여 독립적인 Stream 객체를 반환
-  BehaviorSubject<String> getGptReplyOnStream({
-    required String category,
-    required String question,
-    required String userAnswer,
-    required VoidCallback onStreamDone,
-    required void Function(bool) checkAnswer,
-  }) {
+  /// [BehaviorSubject]을 리턴하여 독립적인 Stream 객체를 반환/
+  @override
+  BehaviorSubject<String> call(
+      ({
+      String category,
+      void Function(bool) checkAnswer,
+      VoidCallback onStreamDone,
+      String question,
+      String userAnswer
+      }) request) {
     final BehaviorSubject<String> messageSubject = BehaviorSubject<String>();
     state = ReplyState.checking;
 
     final prompt =
-        '$category 프로그래밍 분야에서 "$question"라는 프로그래밍 질문에,\n"$userAnswer" 라고 답한다면 옳은 답변일까?\n정답이라면 "[correct]" 오답이라면 "[wrong]"라는 태그 단어를 문장 맨 앞에 붙여주고 이유도 간략하게 설명해줘.';
+        '${request.category} 프로그래밍 분야에서 "${request.question}"라는 프로그래밍 질문에,\n"${request.userAnswer}" 라고 답한다면 옳은 답변일까?\n정답이라면 "[correct]" 오답이라면 "[wrong]"라는 태그 단어를 문장 맨 앞에 붙여주고 이유도 간략하게 설명해줘.';
     completions.textCompletions(
       TextCompletionsParams(
         prompt: prompt,
@@ -44,7 +55,7 @@ class GetGptReplyUseCase {
         maxTokens: 500,
       ),
       onStreamValue: (response) {
-        setCorrectness(response, checkAnswer);
+        setCorrectness(response, request.checkAnswer);
         final filteredRes = formatString(response);
         messageSubject.add(filteredRes);
         print(response);
@@ -52,7 +63,7 @@ class GetGptReplyUseCase {
     ).then((_) {
       messageSubject.close();
       state = ReplyState.init;
-      onStreamDone();
+      request.onStreamDone();
     });
 
     return messageSubject;

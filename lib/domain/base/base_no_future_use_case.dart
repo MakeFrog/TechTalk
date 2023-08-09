@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 
-abstract class BaseNoNetworkingUseCase<REQUEST, RESPONSE> {
+abstract class BaseNoFutureUseCase<REQUEST, RESPONSE> {
   RESPONSE call(REQUEST param);
 
-  BaseNoNetworkingUseCase() {
+  BaseNoFutureUseCase() {
     onInit();
   }
 
