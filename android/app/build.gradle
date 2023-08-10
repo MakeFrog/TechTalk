@@ -42,6 +42,22 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
+
+    flavorDimensions "build-type"
+    productFlavors {
+        dev {
+            dimension "build-type"
+            applicationIdSuffix ".dev"
+            resValue "string", "app_name", "테크톡-개발"
+        }
+
+        prod {
+            dimension "build-type"
+            resValue "string", "app_name", "테크톡"
+        }
+    }
+
+
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.techtalk"
@@ -52,6 +68,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
+
 
     buildTypes {
         release {
