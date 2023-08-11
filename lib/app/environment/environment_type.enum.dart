@@ -1,12 +1,12 @@
 enum EnvironmentType {
-  dev(type: "DEV", url: "https://tyger_dev.com"),
-  prod(type: "PROD", url: "https://tyger.com");
+  dev(type: "DEV", firebaseId: "techtalk-dev-33"),
+  prod(type: "PROD", firebaseId: "techtalk-prod-32");
 
   final String type;
-  final String url;
+  final String firebaseId;
 
   const EnvironmentType({
     required this.type,
-    required this.url,
+    required this.firebaseId,
   });
 }
