@@ -106,7 +106,7 @@ class PretendardTextStyle extends TextStyle {
             color: color,
             fontSize: size,
             fontWeight: fontWeight,
-            height: height,
+            height: height / size,
             letterSpacing: letterSpacing,
             leadingDistribution: TextLeadingDistribution.even);
 
