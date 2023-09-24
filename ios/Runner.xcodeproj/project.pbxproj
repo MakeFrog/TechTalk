@@ -301,7 +301,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
 		};
 		FFC2EEBC93FADF11E28498DF /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -420,6 +420,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = YD8Z9K9UT3;
 				ENABLE_BITCODE = NO;
+				FLUTTER_TARGET = lib/app/environment/main_dev.dart;
 				GOOGLE_SCHEME = "com.googleusercontent.apps.481445661271-evtbkarml9forfmlkmacvfouj0sas1k8";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -498,6 +499,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = YD8Z9K9UT3;
 				ENABLE_BITCODE = NO;
+				FLUTTER_TARGET = lib/app/environment/main_dev.dart;
 				GOOGLE_SCHEME = "com.googleusercontent.apps.481445661271-evtbkarml9forfmlkmacvfouj0sas1k8";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -575,6 +577,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = YD8Z9K9UT3;
 				ENABLE_BITCODE = NO;
+				FLUTTER_TARGET = lib/app/environment/main_proddart;
 				GOOGLE_SCHEME = "com.googleusercontent.apps.680296657690-p43ha52vgppgbf76dmgq7tmepnu270pj";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -652,6 +655,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = YD8Z9K9UT3;
 				ENABLE_BITCODE = NO;
+				FLUTTER_TARGET = lib/app/environment/main_dev.dart;
 				GOOGLE_SCHEME = "com.googleusercontent.apps.481445661271-evtbkarml9forfmlkmacvfouj0sas1k8";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -785,6 +789,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = YD8Z9K9UT3;
 				ENABLE_BITCODE = NO;
+				FLUTTER_TARGET = lib/app/environment/main_prod.dart;
 				GOOGLE_SCHEME = "com.googleusercontent.apps.680296657690-p43ha52vgppgbf76dmgq7tmepnu270pj";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -810,6 +815,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = YD8Z9K9UT3;
 				ENABLE_BITCODE = NO;
+				FLUTTER_TARGET = lib/app/environment/main_proddart;
 				GOOGLE_SCHEME = "com.googleusercontent.apps.680296657690-p43ha52vgppgbf76dmgq7tmepnu270pj";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -5,19 +5,17 @@ import 'package:techtalk/app/resources/ui_config/app_insets.dart';
 import 'package:techtalk/app/resources/ui_config/color_config.dart';
 import 'package:techtalk/app/resources/ui_config/font_config.dart';
 import 'package:techtalk/domain/useCase/chat/get_gpt_reply_use_case_old.dart';
-import 'package:techtalk/main.dart';
 import 'package:techtalk/presentation/base/base_screen.dart';
 import 'package:techtalk/presentation/base/base_view.dart';
 import 'package:techtalk/presentation/screens/chat/chat_view_model.dart';
 import 'package:techtalk/presentation/screens/chat/local_widget/chat_list_tab_view.dart';
 
-
 class ChatScreen extends BaseScreen<ChatViewModel> {
   const ChatScreen({Key? key}) : super(key: key);
 
   @override
-  ChatViewModel createViewModel() => ChatViewModel(
-      getGptReplyUseCase: getIt.get<GetGptReplyUseCase>());
+  ChatViewModel createViewModel() =>
+      ChatViewModel(getGptReplyUseCase: getIt.get<GetGptReplyUseCase>());
 
   @override
   Widget buildScreen(BuildContext context) {
