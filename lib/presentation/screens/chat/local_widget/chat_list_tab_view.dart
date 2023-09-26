@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:techtalk/app/resources/ui_config/app_box.dart';
 import 'package:techtalk/app/resources/ui_config/app_insets.dart';
-import 'package:techtalk/app/resources/ui_config/app_space_config.dart';
 import 'package:techtalk/app/resources/ui_config/color_config.dart';
 import 'package:techtalk/app/resources/ui_config/size_config.dart';
 import 'package:techtalk/domain/enum/chat_message_type_enum.dart';
@@ -10,7 +11,6 @@ import 'package:techtalk/presentation/base/base_view.dart';
 import 'package:techtalk/presentation/common/bubble/sender_chat_bubble.dart';
 import 'package:techtalk/presentation/common/bubble/stream_base_chat_bubble.dart';
 import 'package:techtalk/presentation/screens/chat/chat_view_model.dart';
-import 'package:provider/provider.dart';
 
 class ChatListTabView extends BaseView<ChatViewModel> {
   const ChatListTabView({Key? key}) : super(key: key);
@@ -33,9 +33,7 @@ class ChatListTabView extends BaseView<ChatViewModel> {
                     reverse: true,
                     shrinkWrap: true,
                     controller: vm(context).firstTabScrollController,
-                    padding: AppInset.top12 +
-                        AppInset.horizontal12 +
-                        AppInset.bottom16,
+                    padding: AppInset.t12 + AppInset.h12 + AppInset.b16,
                     itemCount: chatList.length,
                     itemBuilder: (_, index) {
                       if (chatList[index].type.isReceiverType) {
@@ -58,7 +56,7 @@ class ChatListTabView extends BaseView<ChatViewModel> {
                         );
                       }
                     },
-                    separatorBuilder: (_, __) => AppSpace.size14,
+                    separatorBuilder: (_, __) => SquareBox.$14,
                   ),
                 ),
               );

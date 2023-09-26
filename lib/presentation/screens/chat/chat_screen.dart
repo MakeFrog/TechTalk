@@ -25,7 +25,7 @@ class ChatScreen extends BaseScreen<ChatViewModel> {
         children: <Widget>[
           Container(
             height: 38,
-            padding: AppInset.horizontal8,
+            padding: AppInset.h8,
             decoration: const BoxDecoration(
               border: Border(
                 bottom: BorderSide(width: 0.8, color: Color(0xFFE0E0E5)),
