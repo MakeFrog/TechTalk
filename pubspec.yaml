@@ -53,6 +53,7 @@ dependencies:
 
   # 앱 정보
   package_info_plus: ^4.1.0
+  font_awesome_flutter: ^10.5.0
 
 dev_dependencies:
   flutter_lints: ^2.0.1
@@ -66,22 +67,17 @@ flutter:
     - .env
 
   fonts:
-    - family: pretendard_bold
+    - family: pretendard
       fonts:
-        - asset: assets/fonts/Pretendard-Bold.otf
-
-    - family: pretendard_semiBold
+        - asset: assets/fonts/pretendard/Pretendard-Regular.otf
+          weight: 400
+        - asset: assets/fonts/pretendard/Pretendard-Medium.otf
+          weight: 500
+        - asset: assets/fonts/pretendard/Pretendard-SemiBold.otf
+          weight: 600
+        - asset: assets/fonts/pretendard/Pretendard-Bold.otf
+          weight: 800
+    - family: staatliches
       fonts:
-        - asset: assets/fonts/Pretendard-SemiBold.otf
-
-    - family: pretendard_regular
-      fonts:
-        - asset: assets/fonts/Pretendard-Regular.otf
-
-    - family: pretendard_medium
-      fonts:
-        - asset: assets/fonts/Pretendard-Medium.otf
-
-    - family: staatliches_regular
-      fonts:
-        - asset: assets/fonts/Staatliches-Regular.ttf
+        - asset: assets/fonts/staatliches/Staatliches-Regular.ttf
+          weight: 400
