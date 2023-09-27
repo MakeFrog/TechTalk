@@ -24,12 +24,9 @@ dependencies:
   flutter_chat_bubble: ^2.0.2 # 말풍선
   font_awesome_flutter: ^10.5.0
   flutter_hooks: ^0.20.1
-#  provider_screen: ^1.0.0 # BaseScreen, BaseViewModel
 
   # 상태관리
   provider: ^6.0.5
-  async: ^2.11.0
-#  rxdart: ^0.27.7
   hooks_riverpod: ^2.4.0
   riverpod_annotation: ^2.1.5
 
@@ -47,15 +44,17 @@ dependencies:
 
   # 네트워크
   dio: ^5.0.3
-#  http: ^0.13.5
 
   # Utils
+  async: ^2.11.0
   flutter_dotenv: ^5.0.2
   intl: ^0.18.1
   change_app_package_name: ^1.1.0
 
   # 앱 정보
   package_info_plus: ^4.1.0
+  google_sign_in: ^6.1.5
+  sign_in_with_apple: ^5.0.0
 
 dev_dependencies:
   flutter_lints: ^2.0.1
