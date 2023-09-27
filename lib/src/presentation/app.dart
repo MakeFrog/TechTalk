@@ -1,11 +1,17 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/presentation/screens/responsive_layout_builder.dart';
-import 'package:techtalk/src/app/environment/environment.dart';
+import 'package:techtalk/src/app/environment/flavor.dart';
 import 'package:techtalk/src/app/router/router.dart';
 import 'package:techtalk/utilities/index.dart';
 
-Future<void> run() async {
-  await Environment.instance.setup();
-  return runApp(const MyApp());
+Future<void> runFlavoredApp() async {
+  await Flavor.instance.setup();
+
+  return runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

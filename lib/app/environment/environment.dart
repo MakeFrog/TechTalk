@@ -1,15 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:techtalk/app/di/app_binding.dart';
-import 'package:techtalk/app/di/locator.dart';
-import 'package:techtalk/app/environment/app.dart';
-import 'package:techtalk/app/environment/environment_type.enum.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
-import 'package:techtalk/data/firebase/app_fire_storage.dart';
-import 'package:techtalk/data/firebase/app_fire_store.dart';
-import 'package:techtalk/domain/useCase/chat/get_gpt_reply_use_case_old.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:techtalk/app/di/app_binding.dart';
+import 'package:techtalk/app/environment/app.dart';
+import 'package:techtalk/app/environment/environment_type.enum.dart';
 import 'package:techtalk/app/environment/firebase/firebase_options.dart'
     as prod;
 import 'package:techtalk/app/environment/firebase/firebase_options_dev.dart'
@@ -41,7 +37,7 @@ class Environment {
 
 Future<void> initialSetup() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env");
+  await dotenv.load();
   AppBinding.dependencies();
 
   final option = await _getFirebaseOption();

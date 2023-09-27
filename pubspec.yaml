@@ -69,9 +69,14 @@ flutter:
   uses-material-design: true
 
   assets:
+    - .env
+    - assets/
+    - assets/fonts/
+    - assets/fonts/pretendard/
+    - assets/fonts/staatliches/
     - assets/icons/
     - assets/images/
-    - .env
+    - assets/logo/
 
   fonts:
     - family: pretendard

@@ -6,7 +6,8 @@ analyzer:
     missing_required_param: error # required 파라미터 없는 경우
     missing_return: error # 반환 값 있는 함수에서 return 문이 없는 경우
     todo: warning
-
+  plugins:
+    - custom_lint
 
 linter:
   rules:
