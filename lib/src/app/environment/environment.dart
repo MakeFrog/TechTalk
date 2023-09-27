@@ -23,7 +23,7 @@ class Environment {
   static Environment get instance => _instance;
   static EnvironmentType get type => _type!;
 
-  static Future<void> setup() async {
+  Future<void> setup() async {
     if (_type == null) {
       return;
     }
@@ -41,7 +41,7 @@ class Environment {
     );
   }
 
-  static Future<FirebaseOptions> _getFirebaseOption() async {
+  Future<FirebaseOptions> _getFirebaseOption() async {
     return switch (type) {
       EnvironmentType.prod => prod.DefaultFirebaseOptions.currentPlatform,
       EnvironmentType.dev => dev.DefaultFirebaseOptions.currentPlatform,

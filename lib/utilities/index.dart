@@ -4,7 +4,6 @@
 
 export 'package:flutter/material.dart';
 export 'package:flutter_svg/flutter_svg.dart';
-export 'package:provider/provider.dart';
 export 'package:techtalk/app/resources/ui_config/app_box.dart';
 export 'package:techtalk/app/resources/ui_config/app_insets.dart';
 export 'package:techtalk/app/resources/ui_config/color_config.dart';

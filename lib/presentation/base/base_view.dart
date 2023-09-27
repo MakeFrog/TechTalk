@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:techtalk/presentation/base/base_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:techtalk/presentation/base/base_view_model.dart';
 
 abstract class BaseView<T extends BaseViewModel> extends StatelessWidget {
   const BaseView({Key? key}) : super(key: key);

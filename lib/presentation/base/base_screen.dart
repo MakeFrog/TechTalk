@@ -1,8 +1,8 @@
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:techtalk/app/resources/ui_config/color_config.dart';
 import 'package:techtalk/presentation/base/base_view_model.dart';
-import 'package:provider/provider.dart';
 
 @immutable
 abstract class BaseScreen<T extends BaseViewModel> extends StatelessWidget {
@@ -105,4 +105,3 @@ abstract class BaseScreen<T extends BaseViewModel> extends StatelessWidget {
   @protected
   T createViewModel();
 }
-

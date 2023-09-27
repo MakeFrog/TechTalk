@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:techtalk/app/resources/ui_config/color_config.dart';
 import 'package:techtalk/app/resources/ui_config/size_config.dart';
 import 'package:techtalk/domain/enum/chat_message_type_enum.dart';
 import 'package:techtalk/domain/model/chat/Correctness.dart';
 import 'package:techtalk/presentation/screens/chat/chat_view_model.dart';
 import 'package:techtalk/utilities/formatter.dart';
-import 'package:provider/provider.dart';
 
 /** Created By Ximiya - 2023.04.18
  *  말풍성 UI
