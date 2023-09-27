@@ -13,11 +13,7 @@ abstract class _FilledButtonTheme {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
-      textStyle: PretendardTextStyle.baseStyle.copyWith(
-        fontSize: 16,
-        height: 22 / 16,
-        fontWeight: FontWeight.w800,
-      ),
+      textStyle: PretendardTextStyle.title1,
     ),
   );
 }

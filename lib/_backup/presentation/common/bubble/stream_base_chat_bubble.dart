@@ -1,5 +1,6 @@
 library flutter_chat_bubble;
-ble_type.dart';
+
+import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
 import 'package:techtalk/_backup/domain/enum/chat_message_type_enum.dart';
 import 'package:techtalk/_backup/utilities/index.dart';

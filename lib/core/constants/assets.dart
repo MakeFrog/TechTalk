@@ -5,6 +5,7 @@ class Assets {
   static const String iconsArrowLeft = 'assets/icons/arrow_left.svg';
   static const String iconsAvatar1 = 'assets/icons/avatar_1.svg';
   static const String iconsCorrect = 'assets/icons/correct.svg';
+  static const String iconsGoogleLogo = 'assets/icons/google_logo.svg';
   static const String iconsIncorrect = 'assets/icons/incorrect.svg';
   static const String iconsMoreCircle = 'assets/icons/more_circle.svg';
   static const String iconsSend = 'assets/icons/send.svg';
@@ -22,4 +23,5 @@ class Assets {
       'assets/fonts/pretendard/Pretendard-SemiBold.otf';
   static const String staatlichesStaatlichesRegular =
       'assets/fonts/staatliches/Staatliches-Regular.ttf';
+  static const String techTalk = '.env';
 }

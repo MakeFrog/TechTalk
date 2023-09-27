@@ -14,36 +14,49 @@ class WelcomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.of.white,
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Spacer(),
-            SvgPicture.asset(
-              Assets.logoTechTalkLogo,
-              width: 114,
-            ),
-            const HeightBox(8),
-            Center(
-              child: Text(
-                'AI 면접관과 톡톡!',
-                style: PretendardTextStyle.highlight,
+      body: const _Body(),
+    );
+  }
+}
+
+class _Body extends StatelessWidget {
+  const _Body({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Spacer(),
+          SvgPicture.asset(
+            Assets.logoTechTalkLogo,
+            width: 114,
+          ),
+          const HeightBox(8),
+          Center(
+            child: Text(
+              'AI 면접관과 톡톡!',
+              style: PretendardTextStyle.baseStyle.copyWith(
+                fontSize: 24,
+                fontWeight: FontWeight.w800,
+                height: 33 / 24,
               ),
             ),
-            const HeightBox(70),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
-              child: SvgPicture.asset(
-                Assets.imagesWelcomeTechtalk,
-              ),
+          ),
+          const HeightBox(70),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 28),
+            child: SvgPicture.asset(
+              Assets.imagesWelcomeTechtalk,
             ),
-            const HeightBox(80),
-            StartWithGoogleButton(),
-            HeightBox(8),
-            StartWithAppleButton(),
-            HeightBox(48),
-          ],
-        ),
+          ),
+          const Spacer(),
+          const StartWithGoogleButton(),
+          const HeightBox(8),
+          const StartWithAppleButton(),
+          const HeightBox(48),
+        ],
       ),
     );
   }

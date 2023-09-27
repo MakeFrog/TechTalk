@@ -1,4 +1,5 @@
-import 'package:cupertino_will_pop_scope/cupertino_will_pop_scoper.dart';
+import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
+import 'package:provider/provider.dart';
 import 'package:techtalk/_backup/presentation/base/base_view_model.dart';
 import 'package:techtalk/_backup/utilities/index.dart';
 

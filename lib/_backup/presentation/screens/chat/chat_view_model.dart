@@ -7,7 +7,7 @@ import 'package:techtalk/_backup/domain/model/chat/Correctness.dart';
 import 'package:techtalk/_backup/domain/model/chat/chat.dart';
 import 'package:techtalk/_backup/domain/model/question/question.dart';
 import 'package:techtalk/_backup/domain/useCase/chat/get_gpt_reply_use_case_old.dart';
-import 'package:techtalk/_backup/presentation/base/base_view_modell.dart';
+import 'package:techtalk/_backup/presentation/base/base_view_model.dart';
 
 class ChatViewModel extends BaseViewModel {
   ChatViewModel({required this.getGptReplyUseCase});

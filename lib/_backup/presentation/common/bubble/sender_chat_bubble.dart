@@ -1,7 +1,9 @@
 library flutter_chat_bubble;
 
 import 'package:flutter_chat_bubble/bubble_type.dart';
-import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1n/enum/chat_message_type_enum.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
+import 'package:provider/provider.dart';
+import 'package:techtalk/_backup/domain/enum/chat_message_type_enum.dart';
 import 'package:techtalk/_backup/domain/model/chat/Correctness.dart';
 import 'package:techtalk/_backup/presentation/screens/chat/chat_view_model.dart';
 import 'package:techtalk/_backup/utilities/formatter.dart';
