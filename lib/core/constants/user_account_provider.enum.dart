@@ -1,0 +1,4 @@
+enum UserAccountProvider {
+  google,
+  apple;
+}

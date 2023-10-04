@@ -6,4 +6,5 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 abstract class FireStorageService {
   static final FirebaseStorage _service = FirebaseStorage.instance;
+  
 }

@@ -24,6 +24,7 @@ dependencies:
   flutter_chat_bubble: ^2.0.2 # 말풍선
   font_awesome_flutter: ^10.5.0
   flutter_hooks: ^0.20.1
+  smooth_page_indicator: ^1.1.0
 
   # 상태관리
   provider: ^6.0.5
@@ -39,22 +40,26 @@ dependencies:
   # Firebase
   firebase_core: ^2.4.1
   firebase_auth: ^4.2.5
+  google_sign_in: ^6.1.5
   cloud_firestore: ^4.4.3
   firebase_storage: ^11.0.14
 
   # 네트워크
   dio: ^5.0.3
+  retrofit: ^4.0.1
+
 
   # Utils
   async: ^2.11.0
   flutter_dotenv: ^5.0.2
   intl: ^0.18.1
   change_app_package_name: ^1.1.0
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
+  logger: ^2.0.2+1
 
   # 앱 정보
   package_info_plus: ^4.1.0
-  google_sign_in: ^6.1.5
-  sign_in_with_apple: ^5.0.0
 
 dev_dependencies:
   flutter_lints: ^2.0.1
@@ -63,6 +68,9 @@ dev_dependencies:
   riverpod_generator: ^2.3.2
   custom_lint: ^0.5.3
   riverpod_lint: ^2.1.0
+  retrofit_generator: ^7.0.8
+  freezed: ^2.4.3
+  json_serializable: ^6.7.1
 
 flutter:
   uses-material-design: true

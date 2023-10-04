@@ -1,6 +1,8 @@
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 
@@ -11,6 +13,29 @@ class StartWithGoogleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return AuthFlowBuilder<OAuthController>(
+      provider: GoogleProvider(
+        clientId: 'clientId',
+      ),
+      listener: (oldState, newState, controller) {},
+      builder: (context, state, ctrl, child) {
+        return _buildButton(
+          onTap: () async {
+            if (ctrl.auth.currentUser != null) {
+              print(ctrl.auth.currentUser);
+              return;
+            }
+
+            ctrl.signIn(defaultTargetPlatform);
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildButton({
+    required VoidCallback onTap,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: FilledButton(
@@ -20,20 +45,7 @@ class StartWithGoogleButton extends StatelessWidget {
           textStyle: PretendardTextStyle.body1,
           padding: EdgeInsets.zero,
         ),
-        onPressed: () async {
-          GoogleSignIn googleSignIn = GoogleSignIn(
-            scopes: [
-              'email',
-              'https://www.googleapis.com/auth/contacts.readonly',
-            ],
-          );
-
-          try {
-            await googleSignIn.signIn();
-          } catch (error) {
-            print(error);
-          }
-        },
+        onPressed: onTap,
         child: Stack(
           clipBehavior: Clip.none,
           children: [

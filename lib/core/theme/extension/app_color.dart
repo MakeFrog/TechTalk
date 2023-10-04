@@ -1,28 +1,53 @@
 import 'package:flutter/material.dart';
 
 class AppColor extends ThemeExtension<AppColor> {
-  factory AppColor() => AppColor._(
-        white: const Color(0xFFFFFFFF),
-        black: const Color(0xFF09090B),
-        brand1: const Color(0xFFEBEDFF),
-        brand2: const Color(0xFF5C6DFF),
-        brand3: const Color(0xFF3446EA),
-        brand4: const Color(0xFF060E56),
-        gray1: const Color(0xFFECECF2),
-        gray2: const Color(0xFFDCDCE9),
-        gray3: const Color(0xFFA2A2B2),
-        gray4: const Color(0xFF71717E),
-        gray5: const Color(0xFF42424A),
-        gray6: const Color(0xFF282831),
-        gray7: const Color(0xFF09090B),
-        background: const Color(0xFFF7F8FD),
-        red1: const Color(0xFFFFE4E8),
-        red2: const Color(0xFFFF445A),
-        red3: const Color(0xFFF62B44),
-        green1: const Color(0xFF79F09A),
-        green2: const Color(0xFF30DE80),
-        green3: const Color(0xFF02C875),
-      );
+  static final AppColor _light = AppColor._(
+    white: const Color(0xFFFFFFFF),
+    black: const Color(0xFF09090B),
+    brand1: const Color(0xFFEBEDFF),
+    brand2: const Color(0xFF5C6DFF),
+    brand3: const Color(0xFF3446EA),
+    brand4: const Color(0xFF060E56),
+    gray1: const Color(0xFFECECF2),
+    gray2: const Color(0xFFDCDCE9),
+    gray3: const Color(0xFFA2A2B2),
+    gray4: const Color(0xFF71717E),
+    gray5: const Color(0xFF42424A),
+    gray6: const Color(0xFF282831),
+    gray7: const Color(0xFF09090B),
+    background1: const Color(0xFFF6F6F9),
+    red1: const Color(0xFFFFE4E8),
+    red2: const Color(0xFFFF445A),
+    red3: const Color(0xFFF62B44),
+    green1: const Color(0xFF79F09A),
+    green2: const Color(0xFF30DE80),
+    green3: const Color(0xFF02C875),
+  );
+
+  static final AppColor _dark = AppColor._(
+    white: const Color(0xFFFFFFFF),
+    black: const Color(0xFF09090B),
+    brand1: const Color(0xFFEBEDFF),
+    brand2: const Color(0xFF5C6DFF),
+    brand3: const Color(0xFF3446EA),
+    brand4: const Color(0xFF060E56),
+    gray1: const Color(0xFFECECF2),
+    gray2: const Color(0xFFDCDCE9),
+    gray3: const Color(0xFFA2A2B2),
+    gray4: const Color(0xFF71717E),
+    gray5: const Color(0xFF42424A),
+    gray6: const Color(0xFF282831),
+    gray7: const Color(0xFF09090B),
+    background1: const Color(0xFFF6F6F9),
+    red1: const Color(0xFFFFE4E8),
+    red2: const Color(0xFFFF445A),
+    red3: const Color(0xFFF62B44),
+    green1: const Color(0xFF79F09A),
+    green2: const Color(0xFF30DE80),
+    green3: const Color(0xFF02C875),
+  );
+  factory AppColor() => _light;
+
   AppColor._({
     required this.white,
     required this.black,
@@ -37,7 +62,7 @@ class AppColor extends ThemeExtension<AppColor> {
     required this.gray5,
     required this.gray6,
     required this.gray7,
-    required this.background,
+    required this.background1,
     required this.red1,
     required this.red2,
     required this.red3,
@@ -46,28 +71,7 @@ class AppColor extends ThemeExtension<AppColor> {
     required this.green3,
   });
 
-  factory AppColor.dark() => AppColor._(
-        white: const Color(0xFFFFFFFF),
-        black: const Color(0xFF09090B),
-        brand1: const Color(0xFFEBEDFF),
-        brand2: const Color(0xFF5C6DFF),
-        brand3: const Color(0xFF3446EA),
-        brand4: const Color(0xFF060E56),
-        gray1: const Color(0xFFECECF2),
-        gray2: const Color(0xFFDCDCE9),
-        gray3: const Color(0xFFA2A2B2),
-        gray4: const Color(0xFF71717E),
-        gray5: const Color(0xFF42424A),
-        gray6: const Color(0xFF282831),
-        gray7: const Color(0xFF09090B),
-        background: const Color(0xFFF7F8FD),
-        red1: const Color(0xFFFFE4E8),
-        red2: const Color(0xFFFF445A),
-        red3: const Color(0xFFF62B44),
-        green1: const Color(0xFF79F09A),
-        green2: const Color(0xFF30DE80),
-        green3: const Color(0xFF02C875),
-      );
+  factory AppColor.dark() => _dark;
 
   final Color white;
   final Color black;
@@ -82,7 +86,7 @@ class AppColor extends ThemeExtension<AppColor> {
   final Color gray5;
   final Color gray6;
   final Color gray7;
-  final Color background;
+  final Color background1;
   final Color red1;
   final Color red2;
   final Color red3;
@@ -111,7 +115,7 @@ class AppColor extends ThemeExtension<AppColor> {
     Color? gray5,
     Color? gray6,
     Color? gray7,
-    Color? background,
+    Color? background1,
     Color? red1,
     Color? red2,
     Color? red3,
@@ -133,7 +137,7 @@ class AppColor extends ThemeExtension<AppColor> {
       gray5: gray5 ?? this.gray5,
       gray6: gray6 ?? this.gray6,
       gray7: gray7 ?? this.gray7,
-      background: background ?? this.background,
+      background1: background1 ?? this.background1,
       red1: red1 ?? this.red1,
       red2: red2 ?? this.red2,
       red3: red3 ?? this.red3,
@@ -165,7 +169,7 @@ class AppColor extends ThemeExtension<AppColor> {
       gray5: Color.lerp(gray5, other.gray5, t)!,
       gray6: Color.lerp(gray6, other.gray6, t)!,
       gray7: Color.lerp(gray7, other.gray7, t)!,
-      background: Color.lerp(background, other.background, t)!,
+      background1: Color.lerp(background1, other.background1, t)!,
       red1: Color.lerp(red1, other.red1, t)!,
       red2: Color.lerp(red2, other.red2, t)!,
       red3: Color.lerp(red3, other.red3, t)!,

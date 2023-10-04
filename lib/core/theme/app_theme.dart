@@ -3,6 +3,7 @@ import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 
 part 'components/filled_button_theme.dart';
+part 'components/input_decoration_theme.dart';
 
 class AppTheme {
   static final ThemeData light = ThemeData(
@@ -15,6 +16,7 @@ class AppTheme {
           displayColor: AppColor().black,
         ),
     filledButtonTheme: _FilledButtonTheme.light,
+    inputDecorationTheme: _InputDecorationTheme.light,
     extensions: <ThemeExtension<dynamic>>[
       AppColor(),
     ],
