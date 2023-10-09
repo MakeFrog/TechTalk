@@ -21,6 +21,7 @@ dependencies:
   cupertino_will_pop_scope: ^1.2.1  #pop scope (스와이프 백 제스쳐 지원)
   flutter_svg: ^2.0.5 # SVG 아이콘
   flutter_easyloading: ^3.0.5 # 로딩 UI 처리 관련
+  fluttertoast: ^8.2.2
   flutter_chat_bubble: ^2.0.2 # 말풍선
   font_awesome_flutter: ^10.5.0
   flutter_hooks: ^0.20.1

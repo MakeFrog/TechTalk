@@ -7,22 +7,22 @@ part of 'router.dart';
 // **************************************************************************
 
 List<RouteBase> get $appRoutes => [
-      $welcomeRoute,
+      $signInRoute,
       $signUpRoute,
       $homeRoute,
     ];
 
-RouteBase get $welcomeRoute => GoRouteData.$route(
-      path: '/welcome',
-      name: 'welcome',
-      factory: $WelcomeRouteExtension._fromState,
+RouteBase get $signInRoute => GoRouteData.$route(
+      path: '/sign_in',
+      name: '/sign_in',
+      factory: $SignInRouteExtension._fromState,
     );
 
-extension $WelcomeRouteExtension on WelcomeRoute {
-  static WelcomeRoute _fromState(GoRouterState state) => const WelcomeRoute();
+extension $SignInRouteExtension on SignInRoute {
+  static SignInRoute _fromState(GoRouterState state) => const SignInRoute();
 
   String get location => GoRouteData.$location(
-        '/welcome',
+        '/sign_in',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -37,7 +37,7 @@ extension $WelcomeRouteExtension on WelcomeRoute {
 
 RouteBase get $signUpRoute => GoRouteData.$route(
       path: '/sign-up',
-      name: 'signUp',
+      name: '/sign-up',
       factory: $SignUpRouteExtension._fromState,
     );
 
@@ -60,7 +60,7 @@ extension $SignUpRouteExtension on SignUpRoute {
 
 RouteBase get $homeRoute => GoRouteData.$route(
       path: '/',
-      name: 'home',
+      name: '/',
       factory: $HomeRouteExtension._fromState,
     );
 

@@ -1,32 +1,33 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
-import 'package:techtalk/presentation/pages/welcome/welcome_page.dart';
+import 'package:techtalk/presentation/providers/app_user_auth_provider.dart';
 
 part 'router.g.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
-final appRouter = GoRouter(
-  debugLogDiagnostics: true,
-  navigatorKey: rootNavigatorKey,
-  initialLocation: FirebaseAuth.instance.currentUser == null ? '/welcome' : '/',
-  routes: $appRoutes,
-);
+GoRouter appRouter(WidgetRef ref) => GoRouter(
+      debugLogDiagnostics: true,
+      navigatorKey: rootNavigatorKey,
+      initialLocation: !ref.read(isUserAuthorizedProvider)
+          ? SignInRoute.name
+          : HomeRoute.name,
+      routes: $appRoutes,
+    );
 
-@TypedGoRoute<WelcomeRoute>(
-  path: '/welcome',
-  name: WelcomeRoute.name,
+@TypedGoRoute<SignInRoute>(
+  path: SignInRoute.name,
+  name: SignInRoute.name,
 )
-class WelcomeRoute extends GoRouteData {
-  const WelcomeRoute();
+class SignInRoute extends GoRouteData {
+  const SignInRoute();
 
-  static const String name = 'welcome';
+  static const String name = '/sign_in';
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return WelcomePage();
-  }
+  Widget build(BuildContext context, GoRouterState state) => const SignInPage();
 }
 
 @TypedGoRoute<SignUpRoute>(
@@ -44,15 +45,15 @@ class SignUpRoute extends GoRouteData {
 }
 
 @TypedGoRoute<HomeRoute>(
-  path: '/',
+  path: HomeRoute.name,
   name: HomeRoute.name,
 )
 class HomeRoute extends GoRouteData {
   const HomeRoute();
 
-  static const String name = 'home';
+  static const String name = '/';
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return WelcomePage();
+    return SignUpPage();
   }
 }

@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/app/environment/environment.enum.dart';
-import 'package:techtalk/core/di/app_binding.dart';
 
 class Flavor {
   Flavor._();
@@ -25,7 +25,7 @@ class Flavor {
       fileName: env.dotFileName,
     );
 
-    AppBinding.dependencies();
+    AppBinder.init();
 
     final option = env.firebaseOption;
 

@@ -1,12 +1,14 @@
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_introduction.dart';
+import 'package:techtalk/presentation/providers/app_user_auth_provider.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-class NicknameInputScreen extends StatelessWidget {
+class NicknameInputScreen extends ConsumerWidget {
   const NicknameInputScreen({super.key});
 
-  Future<void> _onTapNext() async {
+  Future<void> _onTapNext(WidgetRef ref) async {
+    await ref.read(appUserAuthProvider.notifier).signOut();
 //     final db = FirebaseFirestore.instance;
 //     // Create a new user with a first and last name
 //     final user = <String, dynamic>{
@@ -34,7 +36,7 @@ class NicknameInputScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -52,7 +54,7 @@ class NicknameInputScreen extends StatelessWidget {
           ),
           const Spacer(),
           FilledButton(
-            onPressed: _onTapNext,
+            onPressed: () => _onTapNext(ref),
             child: const Text('다음'),
           ),
         ],
