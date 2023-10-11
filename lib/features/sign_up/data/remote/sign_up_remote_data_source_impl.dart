@@ -6,7 +6,17 @@ final class SignUpRemoteDataSourceImpl implements SignUpRemoteDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
-  Future<void> createUserData(String uid) async {
-    _firestore.collection(FirestoreCollection.users.name).doc(uid);
+  Future<bool> isExistNickname(String nickname) async {
+    return _firestore
+        .collection(FirestoreCollection.users.name)
+        .where(
+          'nickname',
+          isEqualTo: nickname,
+        )
+        .count()
+        .get()
+        .then(
+          (value) => value.count > 0,
+        );
   }
 }

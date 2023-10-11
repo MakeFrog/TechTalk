@@ -8,7 +8,7 @@ final class SignUpRepositoryImpl implements SignUpRepository {
   final SignUpRemoteDataSource _signUpRemoteDataSource;
 
   @override
-  Future<void> createUserData(String uid) async {
-    await _signUpRemoteDataSource.createUserData(uid);
+  Future<bool> isExistNickname(String nickname) {
+    return _signUpRemoteDataSource.isExistNickname(nickname);
   }
 }

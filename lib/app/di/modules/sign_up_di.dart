@@ -4,7 +4,7 @@ import 'package:techtalk/features/sign_up/data/remote/sign_up_remote_data_source
 import 'package:techtalk/features/sign_up/repositories/sign_up_repository_impl.dart';
 import 'package:techtalk/features/sign_up/sign_up.dart';
 
-class SignUpDependencyInjection implements FeatureDependencyInjection {
+final class SignUpDependencyInjection extends FeatureDependencyInjection {
   @override
   void dataSources() {
     locator.registerLazySingleton<SignUpRemoteDataSource>(
@@ -23,9 +23,10 @@ class SignUpDependencyInjection implements FeatureDependencyInjection {
 
   @override
   void useCases() {
-    locator
-      ..registerFactory(
-        () => CreateUserDataUseCase(signUpRepository),
-      );
+    locator.registerFactory<IsExistNicknameUseCase>(
+      () => IsExistNicknameUseCase(
+        signUpRepository,
+      ),
+    );
   }
 }

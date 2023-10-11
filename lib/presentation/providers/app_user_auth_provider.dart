@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/features/auth/auth.dart';
-import 'package:techtalk/features/auth/usecases/sign_out_use_case.dart';
 
 part 'app_user_auth_provider.g.dart';
 
@@ -20,11 +19,17 @@ class AppUserAuth extends _$AppUserAuth {
         (event) {
           state = event;
         },
+        onDone: () => print('firebase auth onDone'),
+        onError: (e) => print('firebase auth onError'),
       );
 
   @override
   User? build() {
-    _authStateSubscription;
+    final authState = _authStateSubscription;
+
+    ref.onDispose(() {
+      authState.cancel();
+    });
 
     return FirebaseAuth.instance.currentUser;
   }

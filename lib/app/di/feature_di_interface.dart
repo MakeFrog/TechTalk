@@ -1,9 +1,5 @@
-abstract class FeatureDependencyInjection {
-  FeatureDependencyInjection() {
-    _init();
-  }
-
-  void _init() {
+abstract base class FeatureDependencyInjection {
+  void init() {
     dataSources();
     repositories();
     useCases();

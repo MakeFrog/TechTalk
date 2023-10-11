@@ -9,9 +9,9 @@ class ToastService {
 
   final FToast _fToast = FToast()..init(rootNavigatorKey.currentContext!);
 
-  Future<void> show({
+  void show({
     required CustomToast toast,
-  }) async {
+  }) {
     _fToast.showToast(
       child: toast,
     );

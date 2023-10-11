@@ -11,8 +11,8 @@ final class AppBinder {
 
   static void init() {
     _initTopPriority();
-    AuthDependencyInjection();
-    SignUpDependencyInjection();
-    UserDependencyInjection();
+    AuthDependencyInjection().init();
+    UserDependencyInjection().init();
+    SignUpDependencyInjection().init();
   }
 }

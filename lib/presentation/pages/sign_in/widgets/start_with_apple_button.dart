@@ -1,13 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/presentation/pages/sign_in/sign_in_page_event.dart';
 
-class StartWithAppleButton extends StatelessWidget {
+class StartWithAppleButton extends ConsumerWidget with SignInPageEvent {
   const StartWithAppleButton({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: FilledButton(
@@ -18,8 +19,7 @@ class StartWithAppleButton extends StatelessWidget {
           padding: EdgeInsets.zero,
         ),
         onPressed: () async {
-          // ctrl.signIn(defaultTargetPlatform);
-          await FirebaseAuth.instance.signOut();
+          await onTapSignInWithApple(ref);
         },
         child: const Stack(
           clipBehavior: Clip.none,
