@@ -4,7 +4,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_controller_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page_event.dart';
-import 'package:techtalk/presentation/pages/sign_up/steps/interested_job_select_screen.dart';
+import 'package:techtalk/presentation/pages/sign_up/steps/interested_job_group_select_screen.dart';
 import 'package:techtalk/presentation/pages/sign_up/steps/nickname_input_screen.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
@@ -45,7 +45,7 @@ class SignUpPage extends ConsumerWidget with SignUpPageEvent {
           physics: const NeverScrollableScrollPhysics(),
           children: [
             NicknameInputScreen(),
-            InterestJobSelectScreen(),
+            InterestJobGroupSelectScreen(),
             NicknameInputScreen(),
           ],
         ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/core.dart';
+import 'package:techtalk/features/job/job.dart';
+import 'package:techtalk/presentation/pages/sign_up/providers/interested_job_group_list_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_form_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_controller_provider.dart';
 
@@ -55,11 +57,35 @@ mixin class SignUpPageEvent {
     controller.clear();
   }
 
-  /// 다음단계 버튼을 눌렀을 때 실행할 콜백
+  /// 닉네임 입력 스크린의 다음단계 버튼을 눌렀을 때 실행할 콜백
   Future<void> onTapNicknamePageNext(WidgetRef ref) async {
     //? 현재는 컨트롤러 값만 바뀌주고있음
     //? 단계 변경 전 닉네임 검사를 한번 더 할지, 닉네임 검사를 끝내면 임시로 닉네임을 점유할지 등 고민 필요
 
     ref.read(signUpStepControllerProvider.notifier).next();
+  }
+
+  void addInterestGroup(
+    WidgetRef ref, {
+    required int index,
+    required JobGroupModel group,
+  }) {
+    ref.read(interestedJobGroupListProvider.notifier).addGroup(group);
+    final interestedJobGroups = ref.read(interestedJobGroupListProvider);
+    InterestedJobGroupList.stateKey.currentState!.insertItem(
+      interestedJobGroups.length - 1,
+    );
+  }
+
+  void removeInterestGroup(
+    WidgetRef ref, {
+    required int index,
+  }) {
+    ref.read(interestedJobGroupListProvider.notifier).removeGroup(index);
+
+    InterestedJobGroupList.stateKey.currentState!.removeItem(index,
+        (context, animation) {
+      return Text('test');
+    });
   }
 }

@@ -33,11 +33,13 @@ class NicknameInputScreen extends HookConsumerWidget with SignUpPageEvent {
             inputDecoration: const InputDecoration(
               hintText: '닉네임을 입력해 주세요',
             ),
-            onChanged: (value) => onChangeNicknameField(
-              ref,
-              nickname: value,
-              isRunningDebouncer: isRunningDebouncer,
-            ),
+            onChanged: (value) {
+              onChangeNicknameField(
+                ref,
+                nickname: value,
+                isRunningDebouncer: isRunningDebouncer,
+              );
+            },
             onClear: isRunningDebouncer.value
                 ? null
                 : () => onClearNicknameField(

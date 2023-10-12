@@ -8,44 +8,45 @@ class SelectedFilledChip extends StatelessWidget {
   const SelectedFilledChip({
     super.key,
     required this.label,
-    this.onTapXMark,
+    this.onTap,
   });
 
   final String label;
-  final VoidCallback? onTapXMark;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: 12,
-        vertical: 8,
-      ),
+    return Ink(
+      height: 20,
       decoration: BoxDecoration(
         color: AppColor.of.brand2,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: SizedBox(
-        height: 20,
-        child: Row(
-          children: [
-            Text(
-              label,
-              style: PretendardTextStyle.body1.copyWith(
-                color: Colors.white,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(8),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 8,
+          ),
+          child: Row(
+            children: [
+              Text(
+                label,
+                style: PretendardTextStyle.body1.copyWith(
+                  color: Colors.white,
+                ),
               ),
-            ),
-            WidthBox(2),
-            if (onTapXMark != null)
-              GestureDetector(
-                onTap: onTapXMark,
-                child: FaIcon(
+              const WidthBox(2),
+              if (onTap != null)
+                const FaIcon(
                   FontAwesomeIcons.solidCircleXmark,
                   color: Colors.white,
                   size: 16,
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );

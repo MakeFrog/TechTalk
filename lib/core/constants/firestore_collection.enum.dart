@@ -1,3 +1,4 @@
 enum FirestoreCollection {
   users,
+  jobGroups,
 }

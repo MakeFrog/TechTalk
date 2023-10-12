@@ -1,4 +1,5 @@
 import 'package:techtalk/app/di/modules/auth_di.dart';
+import 'package:techtalk/app/di/modules/job_di.dart';
 import 'package:techtalk/app/di/modules/sign_up_di.dart';
 import 'package:techtalk/app/di/modules/user_di.dart';
 
@@ -11,8 +12,14 @@ final class AppBinder {
 
   static void init() {
     _initTopPriority();
-    AuthDependencyInjection().init();
-    UserDependencyInjection().init();
-    SignUpDependencyInjection().init();
+
+    for (final di in [
+      AuthDependencyInjection(),
+      UserDependencyInjection(),
+      SignUpDependencyInjection(),
+      JobDependencyInjection(),
+    ]) {
+      di.init();
+    }
   }
 }
