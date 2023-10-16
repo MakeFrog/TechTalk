@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:techtalk/_backup/app/resources/ui_config/app_box.dart';
-import 'package:techtalk/_backup/app/resources/ui_config/app_insets.dart';
-import 'package:techtalk/_backup/app/resources/ui_config/color_config.dart';
 import 'package:techtalk/_backup/app/resources/ui_config/size_config.dart';
 import 'package:techtalk/_backup/domain/enum/chat_message_type_enum.dart';
 import 'package:techtalk/_backup/domain/model/chat/chat.dart';
-import 'package:techtalk/_backup/presentation/base/base_view.dart';
 import 'package:techtalk/_backup/presentation/common/bubble/sender_chat_bubble.dart';
 import 'package:techtalk/_backup/presentation/common/bubble/stream_base_chat_bubble.dart';
 import 'package:techtalk/_backup/presentation/screens/chat/chat_view_model.dart';

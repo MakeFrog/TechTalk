@@ -20,19 +20,4 @@ final class AuthDependencyInjection extends FeatureDependencyInjection {
       ),
     );
   }
-
-  @override
-  void useCases() {
-    locator
-      ..registerFactory<SignInOAuthUseCase>(
-        () => SignInOAuthUseCase(
-          authRepository,
-        ),
-      )
-      ..registerFactory<SignOutUseCase>(
-        () => SignOutUseCase(
-          authRepository,
-        ),
-      );
-  }
 }

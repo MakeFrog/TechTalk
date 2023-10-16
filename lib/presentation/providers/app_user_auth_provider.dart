@@ -36,12 +36,12 @@ class AppUserAuth extends _$AppUserAuth {
 
   /// OAuth 인증을 통해 로그인한다.
   Future<void> signInOAuth(UserAccountProvider provider) async {
-    await signInOAuthUseCase(provider);
+    await authRepository.signInOAuth(provider);
   }
 
   /// 로그아웃을 시도한다.
   Future<void> signOut() async {
-    await signOutUseCase();
+    await authRepository.signOut();
   }
 }
 

@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:chatgpt_completions/chatgpt_completions.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:techtalk/_backup/domain/base/base_no_future_use_case.dart';
 
 /** Created By Ximya - 2023.05.06
  *  ChatGPT 요청 및 응답을 관리하는 useCase 모듈
@@ -17,15 +16,17 @@ enum ReplyState {
   answerChecked,
 }
 
-class GetGptReplyUseCase extends BaseNoFutureUseCase<
-    ({
-      String category,
-      String question,
-      String userAnswer,
-      VoidCallback onStreamDone,
-      void Function(bool) checkAnswer
-    }),
-    BehaviorSubject<String>> {
+// <
+// ({
+// String category
+// String question,
+// String userAnswer,
+// VoidCallback onStreamDone,
+// void Function(bool) checkAnswer
+// }),
+// BehaviorSubject<String>
+
+class GetGptReplyUseCase {
   final ChatGPTCompletions completions = ChatGPTCompletions.instance;
   ReplyState state = ReplyState.init;
 
