@@ -36,7 +36,7 @@ mixin class SignInPageEvent {
 
       await _routeByUserData(ref);
     } on Exception catch (e) {
-      ToastService().show(
+      ToastService.show(
         toast: NormalToast(message: '$e'),
       );
     } finally {
@@ -57,7 +57,7 @@ mixin class SignInPageEvent {
 
       await _routeByUserData(ref);
     } on Exception catch (e) {
-      ToastService().show(
+      ToastService.show(
         toast: NormalToast(message: '$e'),
       );
     } finally {
