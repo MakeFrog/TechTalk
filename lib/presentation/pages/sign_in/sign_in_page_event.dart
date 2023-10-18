@@ -10,6 +10,21 @@ import 'package:techtalk/presentation/providers/app_user_data_provider.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 mixin class SignInPageEvent {
+  /// 유저 데이터 여부 조회 후 회원가입을 완료했는지 여부에 따라 라우팅을 분기한다.
+  Future<void> _routeByUserData(WidgetRef ref) async {
+    await ref.read(appUserDataProvider.future).then(
+      (data) {
+        if (data != null) {
+          if (data.isCompleteSignUp) {
+            const HomeRoute().go(ref.context);
+          } else {
+            const SignUpRoute().go(ref.context);
+          }
+        }
+      },
+    );
+  }
+
   Future<void> onTapSignInWithGoogle(WidgetRef ref) async {
     await EasyLoading.show();
 
@@ -19,31 +34,8 @@ mixin class SignInPageEvent {
           .read(appUserAuthProvider.notifier)
           .signInOAuth(UserAccountProvider.google);
 
-      // 계정 데이터 확인 후 데이터 유무에 따라 라우팅 분기
-      await ref.read(appUserDataProvider.future).then(
-        (data) {
-          if (data == null) {
-            const SignUpRoute().go(ref.context);
-          } else {
-            const HomeRoute().go(ref.context);
-          }
-        },
-      );
+      await _routeByUserData(ref);
     } on Exception catch (e) {
-      // TODO : usecase에서 에러를 처리
-      //   // 계정 등록 or 로그인 실패 시
-      // .catchError(
-      // test: (error) => error is FirebaseAuthException,
-      // (e) => ToastService().show(
-      // toast: NormalToast(message: 'test'),
-      // ),
-      // )
-      // // 불특정 이유로 로그인 실패 시
-      //     .catchError(
-      // (_) => ToastService().show(
-      // toast: NormalToast(message: '로그인 실패'),
-      // ),
-      // )
       ToastService().show(
         toast: NormalToast(message: '$e'),
       );
@@ -63,16 +55,7 @@ mixin class SignInPageEvent {
           .read(appUserAuthProvider.notifier)
           .signInOAuth(UserAccountProvider.apple);
 
-      // 계정 데이터 확인 후 데이터 유무에 따라 라우팅 분기
-      await ref.read(appUserDataProvider.future).then(
-        (data) {
-          if (data == null) {
-            const SignUpRoute().go(ref.context);
-          } else {
-            const HomeRoute().go(ref.context);
-          }
-        },
-      );
+      await _routeByUserData(ref);
     } on Exception catch (e) {
       ToastService().show(
         toast: NormalToast(message: '$e'),
