@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/features/auth/auth.dart';
 
@@ -12,6 +13,9 @@ part 'app_user_auth_provider.g.dart';
 /// 인증, 로그인, 로그아웃 등의 기능을 담당한다.
 @Riverpod(keepAlive: true)
 class AppUserAuth extends _$AppUserAuth {
+  final _signInOAuthUseCase = locator<SignInOAuthUseCase>();
+  final _signOutUseCase = locator<SignOutUseCase>();
+
   // 사용자 계정 정보 변경 구독 객체
   // 사용자 인증 정보가 변경되면 프로바이더를 갱신한다.
   StreamSubscription<User?> get _authStateSubscription =>
@@ -36,12 +40,12 @@ class AppUserAuth extends _$AppUserAuth {
 
   /// OAuth 인증을 통해 로그인한다.
   Future<void> signInOAuth(UserAccountProvider provider) async {
-    await signInOAuthUseCase(provider);
+    await _signInOAuthUseCase(provider);
   }
 
   /// 로그아웃을 시도한다.
   Future<void> signOut() async {
-    await signOutUseCase();
+    await _signOutUseCase();
   }
 }
 
