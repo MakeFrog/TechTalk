@@ -1,5 +1,3 @@
-import 'package:techtalk/_backup/app/routes/go_route_with_binding.dart';
-
 class ChatBinding extends Bindings {
   @override
   void dependencies() {}

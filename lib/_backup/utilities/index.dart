@@ -4,9 +4,5 @@
 
 export 'package:flutter/material.dart';
 export 'package:flutter_svg/flutter_svg.dart';
-export 'package:techtalk/_backup/app/resources/ui_config/app_box.dart';
-export 'package:techtalk/_backup/app/resources/ui_config/app_insets.dart';
-export 'package:techtalk/_backup/app/resources/ui_config/color_config.dart';
 export 'package:techtalk/_backup/app/resources/ui_config/size_config.dart';
-export 'package:techtalk/_backup/presentation/base/base_view.dart';
 export 'package:techtalk/_backup/presentation/common/bubble/sender_chat_bubble.dart';
