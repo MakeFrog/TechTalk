@@ -21,7 +21,7 @@ UserDataModel _$UserDataModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$UserDataModel {
   String get uid => throw _privateConstructorUsedError;
-  String get nickname => throw _privateConstructorUsedError;
+  String? get nickname => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +35,7 @@ abstract class $UserDataModelCopyWith<$Res> {
           UserDataModel value, $Res Function(UserDataModel) then) =
       _$UserDataModelCopyWithImpl<$Res, UserDataModel>;
   @useResult
-  $Res call({String uid, String nickname});
+  $Res call({String uid, String? nickname});
 }
 
 /// @nodoc
@@ -52,17 +52,17 @@ class _$UserDataModelCopyWithImpl<$Res, $Val extends UserDataModel>
   @override
   $Res call({
     Object? uid = null,
-    Object? nickname = null,
+    Object? nickname = freezed,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      nickname: null == nickname
+      nickname: freezed == nickname
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -75,7 +75,7 @@ abstract class _$$UserDataModelImplCopyWith<$Res>
       __$$UserDataModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String uid, String nickname});
+  $Res call({String uid, String? nickname});
 }
 
 /// @nodoc
@@ -90,25 +90,25 @@ class __$$UserDataModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? uid = null,
-    Object? nickname = null,
+    Object? nickname = freezed,
   }) {
     return _then(_$UserDataModelImpl(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      nickname: null == nickname
+      nickname: freezed == nickname
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$UserDataModelImpl implements _UserDataModel {
-  const _$UserDataModelImpl({required this.uid, required this.nickname});
+class _$UserDataModelImpl extends _UserDataModel {
+  const _$UserDataModelImpl({required this.uid, this.nickname}) : super._();
 
   factory _$UserDataModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserDataModelImplFromJson(json);
@@ -116,7 +116,7 @@ class _$UserDataModelImpl implements _UserDataModel {
   @override
   final String uid;
   @override
-  final String nickname;
+  final String? nickname;
 
   @override
   String toString() {
@@ -151,10 +151,11 @@ class _$UserDataModelImpl implements _UserDataModel {
   }
 }
 
-abstract class _UserDataModel implements UserDataModel {
+abstract class _UserDataModel extends UserDataModel {
   const factory _UserDataModel(
       {required final String uid,
-      required final String nickname}) = _$UserDataModelImpl;
+      final String? nickname}) = _$UserDataModelImpl;
+  const _UserDataModel._() : super._();
 
   factory _UserDataModel.fromJson(Map<String, dynamic> json) =
       _$UserDataModelImpl.fromJson;
@@ -162,7 +163,7 @@ abstract class _UserDataModel implements UserDataModel {
   @override
   String get uid;
   @override
-  String get nickname;
+  String? get nickname;
   @override
   @JsonKey(ignore: true)
   _$$UserDataModelImplCopyWith<_$UserDataModelImpl> get copyWith =>

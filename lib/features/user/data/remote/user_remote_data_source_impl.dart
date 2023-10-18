@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/constants/firestore_collection.enum.dart';
+import 'package:techtalk/features/user/data/remote/user_remote_data_source.dart';
 import 'package:techtalk/features/user/models/user_data_model.dart';
-import 'package:techtalk/features/user/user.dart';
 
 final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

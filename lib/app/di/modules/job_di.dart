@@ -3,7 +3,6 @@ import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/features/job/data/remote/job_remote_data_source_impl.dart';
 import 'package:techtalk/features/job/job.dart';
 import 'package:techtalk/features/job/repositories/job_repository_impl.dart';
-import 'package:techtalk/features/job/usecases/get_job_group_list_use_case.dart';
 
 final class JobDependencyInjection extends FeatureDependencyInjection {
   @override
@@ -15,6 +14,8 @@ final class JobDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void repositories() {
+    final jobRemoteDataSource = locator<JobRemoteDataSource>();
+
     locator.registerLazySingleton<JobRepository>(
       () => JobRepositoryImpl(
         jobRemoteDataSource,
@@ -24,6 +25,8 @@ final class JobDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void useCases() {
+    final jobRepository = locator<JobRepository>();
+
     locator.registerFactory<GetJobGroupListUseCase>(
       () => GetJobGroupListUseCase(
         jobRepository,

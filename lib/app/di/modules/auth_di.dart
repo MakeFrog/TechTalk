@@ -14,6 +14,8 @@ final class AuthDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void repositories() {
+    final authRemoteDataSource = locator<AuthRemoteDataSource>();
+
     locator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(
         authRemoteDataSource,
@@ -23,6 +25,8 @@ final class AuthDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void useCases() {
+    final authRepository = locator<AuthRepository>();
+
     locator
       ..registerFactory<SignInOAuthUseCase>(
         () => SignInOAuthUseCase(

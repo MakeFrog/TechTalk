@@ -7,8 +7,12 @@ part 'user_data_model.g.dart';
 class UserDataModel with _$UserDataModel {
   const factory UserDataModel({
     required String uid,
-    required String nickname,
+    String? nickname,
   }) = _UserDataModel;
+
+  const UserDataModel._();
+
+  bool get isCompleteSignUp => nickname != null;
 
   factory UserDataModel.fromJson(Map<String, dynamic> json) =>
       _$UserDataModelFromJson(json);

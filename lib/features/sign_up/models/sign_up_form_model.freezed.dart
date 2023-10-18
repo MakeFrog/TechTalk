@@ -22,6 +22,8 @@ SignUpFormModel _$SignUpFormModelFromJson(Map<String, dynamic> json) {
 mixin _$SignUpFormModel {
   String? get nickname => throw _privateConstructorUsedError;
   String? get nicknameValidation => throw _privateConstructorUsedError;
+  List<JobGroupModel> get selectedJobGroupList =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +37,10 @@ abstract class $SignUpFormModelCopyWith<$Res> {
           SignUpFormModel value, $Res Function(SignUpFormModel) then) =
       _$SignUpFormModelCopyWithImpl<$Res, SignUpFormModel>;
   @useResult
-  $Res call({String? nickname, String? nicknameValidation});
+  $Res call(
+      {String? nickname,
+      String? nicknameValidation,
+      List<JobGroupModel> selectedJobGroupList});
 }
 
 /// @nodoc
@@ -53,6 +58,7 @@ class _$SignUpFormModelCopyWithImpl<$Res, $Val extends SignUpFormModel>
   $Res call({
     Object? nickname = freezed,
     Object? nicknameValidation = freezed,
+    Object? selectedJobGroupList = null,
   }) {
     return _then(_value.copyWith(
       nickname: freezed == nickname
@@ -63,6 +69,10 @@ class _$SignUpFormModelCopyWithImpl<$Res, $Val extends SignUpFormModel>
           ? _value.nicknameValidation
           : nicknameValidation // ignore: cast_nullable_to_non_nullable
               as String?,
+      selectedJobGroupList: null == selectedJobGroupList
+          ? _value.selectedJobGroupList
+          : selectedJobGroupList // ignore: cast_nullable_to_non_nullable
+              as List<JobGroupModel>,
     ) as $Val);
   }
 }
@@ -75,7 +85,10 @@ abstract class _$$SignUpFormModelImplCopyWith<$Res>
       __$$SignUpFormModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? nickname, String? nicknameValidation});
+  $Res call(
+      {String? nickname,
+      String? nicknameValidation,
+      List<JobGroupModel> selectedJobGroupList});
 }
 
 /// @nodoc
@@ -91,6 +104,7 @@ class __$$SignUpFormModelImplCopyWithImpl<$Res>
   $Res call({
     Object? nickname = freezed,
     Object? nicknameValidation = freezed,
+    Object? selectedJobGroupList = null,
   }) {
     return _then(_$SignUpFormModelImpl(
       nickname: freezed == nickname
@@ -101,6 +115,10 @@ class __$$SignUpFormModelImplCopyWithImpl<$Res>
           ? _value.nicknameValidation
           : nicknameValidation // ignore: cast_nullable_to_non_nullable
               as String?,
+      selectedJobGroupList: null == selectedJobGroupList
+          ? _value._selectedJobGroupList
+          : selectedJobGroupList // ignore: cast_nullable_to_non_nullable
+              as List<JobGroupModel>,
     ));
   }
 }
@@ -108,8 +126,12 @@ class __$$SignUpFormModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$SignUpFormModelImpl extends _SignUpFormModel {
-  const _$SignUpFormModelImpl({this.nickname, this.nicknameValidation})
-      : super._();
+  const _$SignUpFormModelImpl(
+      {this.nickname,
+      this.nicknameValidation,
+      final List<JobGroupModel> selectedJobGroupList = const []})
+      : _selectedJobGroupList = selectedJobGroupList,
+        super._();
 
   factory _$SignUpFormModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$SignUpFormModelImplFromJson(json);
@@ -118,10 +140,19 @@ class _$SignUpFormModelImpl extends _SignUpFormModel {
   final String? nickname;
   @override
   final String? nicknameValidation;
+  final List<JobGroupModel> _selectedJobGroupList;
+  @override
+  @JsonKey()
+  List<JobGroupModel> get selectedJobGroupList {
+    if (_selectedJobGroupList is EqualUnmodifiableListView)
+      return _selectedJobGroupList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_selectedJobGroupList);
+  }
 
   @override
   String toString() {
-    return 'SignUpFormModel(nickname: $nickname, nicknameValidation: $nicknameValidation)';
+    return 'SignUpFormModel(nickname: $nickname, nicknameValidation: $nicknameValidation, selectedJobGroupList: $selectedJobGroupList)';
   }
 
   @override
@@ -132,12 +163,15 @@ class _$SignUpFormModelImpl extends _SignUpFormModel {
             (identical(other.nickname, nickname) ||
                 other.nickname == nickname) &&
             (identical(other.nicknameValidation, nicknameValidation) ||
-                other.nicknameValidation == nicknameValidation));
+                other.nicknameValidation == nicknameValidation) &&
+            const DeepCollectionEquality()
+                .equals(other._selectedJobGroupList, _selectedJobGroupList));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, nickname, nicknameValidation);
+  int get hashCode => Object.hash(runtimeType, nickname, nicknameValidation,
+      const DeepCollectionEquality().hash(_selectedJobGroupList));
 
   @JsonKey(ignore: true)
   @override
@@ -157,7 +191,8 @@ class _$SignUpFormModelImpl extends _SignUpFormModel {
 abstract class _SignUpFormModel extends SignUpFormModel {
   const factory _SignUpFormModel(
       {final String? nickname,
-      final String? nicknameValidation}) = _$SignUpFormModelImpl;
+      final String? nicknameValidation,
+      final List<JobGroupModel> selectedJobGroupList}) = _$SignUpFormModelImpl;
   const _SignUpFormModel._() : super._();
 
   factory _SignUpFormModel.fromJson(Map<String, dynamic> json) =
@@ -167,6 +202,8 @@ abstract class _SignUpFormModel extends SignUpFormModel {
   String? get nickname;
   @override
   String? get nicknameValidation;
+  @override
+  List<JobGroupModel> get selectedJobGroupList;
   @override
   @JsonKey(ignore: true)
   _$$SignUpFormModelImplCopyWith<_$SignUpFormModelImpl> get copyWith =>

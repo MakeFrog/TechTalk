@@ -9,7 +9,7 @@ part of 'user_data_model.dart';
 _$UserDataModelImpl _$$UserDataModelImplFromJson(Map<String, dynamic> json) =>
     _$UserDataModelImpl(
       uid: json['uid'] as String,
-      nickname: json['nickname'] as String,
+      nickname: json['nickname'] as String?,
     );
 
 Map<String, dynamic> _$$UserDataModelImplToJson(_$UserDataModelImpl instance) =>

@@ -18,16 +18,7 @@ class JobGroupModel with _$JobGroupModel {
 
     return JobGroupModel.fromJson(data);
   }
+
   factory JobGroupModel.fromJson(Map<String, dynamic> json) =>
       _$JobGroupModelFromJson(json);
-}
-
-@freezed
-class JobGroupListModel with _$JobGroupListModel {
-  const factory JobGroupListModel({
-    required List<JobGroupModel> groups,
-  }) = _JobGroupListModel;
-
-  factory JobGroupListModel.fromJson(Map<String, dynamic> json) =>
-      _$JobGroupListModelFromJson(json);
 }

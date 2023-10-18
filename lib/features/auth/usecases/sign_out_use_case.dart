@@ -1,7 +1,4 @@
-import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/features/auth/auth.dart';
-
-final signOutUseCase = locator<SignOutUseCase>();
 
 final class SignOutUseCase {
   const SignOutUseCase(

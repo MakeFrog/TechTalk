@@ -14,6 +14,8 @@ final class UserDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void repositories() {
+    final userRemoteDataSource = locator<UserRemoteDataSource>();
+
     locator.registerLazySingleton<UserRepository>(
       () => UserRepositoryImpl(
         userRemoteDataSource,
@@ -23,12 +25,18 @@ final class UserDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void useCases() {
+    final userRepository = locator<UserRepository>();
+
     locator
       ..registerFactory<CreateUserDataUseCase>(
-        () => CreateUserDataUseCase(userRepository),
+        () => CreateUserDataUseCase(
+          userRepository,
+        ),
       )
       ..registerFactory<GetUserDataUseCase>(
-        () => GetUserDataUseCase(userRepository),
+        () => GetUserDataUseCase(
+          userRepository,
+        ),
       );
   }
 }
