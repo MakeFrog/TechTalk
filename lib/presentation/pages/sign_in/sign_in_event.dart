@@ -10,7 +10,7 @@ import 'package:techtalk/presentation/providers/app_user_auth_provider.dart';
 import 'package:techtalk/presentation/providers/app_user_data_provider.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-abstract interface class SignInPageEventInterface {
+abstract interface class _SignInEvent {
   /// 구글 로그인을 진행한다.
   Future<void> onTapSignInWithGoogle(WidgetRef ref);
 
@@ -18,7 +18,7 @@ abstract interface class SignInPageEventInterface {
   Future<void> onTapSignInWithApple(WidgetRef ref);
 }
 
-mixin class SignInPageEvent implements SignInPageEventInterface {
+mixin class SignInEvent implements _SignInEvent {
   /// 유저 데이터 여부 조회 후 회원가입을 완료했는지 여부에 따라 라우팅을 분기한다.
   Future<void> _routeByUserData(WidgetRef ref) async {
     await ref.read(appUserDataProvider.future).then(

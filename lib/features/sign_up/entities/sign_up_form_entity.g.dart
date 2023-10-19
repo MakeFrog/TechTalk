@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'sign_up_form_model.dart';
+part of 'sign_up_form_entity.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$SignUpFormModelImpl _$$SignUpFormModelImplFromJson(
+_$SignUpFormEntityImpl _$$SignUpFormEntityImplFromJson(
         Map<String, dynamic> json) =>
-    _$SignUpFormModelImpl(
+    _$SignUpFormEntityImpl(
       nickname: json['nickname'] as String?,
       nicknameValidation: json['nicknameValidation'] as String?,
       selectedJobGroupList: (json['selectedJobGroupList'] as List<dynamic>?)
@@ -17,8 +17,8 @@ _$SignUpFormModelImpl _$$SignUpFormModelImplFromJson(
           const [],
     );
 
-Map<String, dynamic> _$$SignUpFormModelImplToJson(
-        _$SignUpFormModelImpl instance) =>
+Map<String, dynamic> _$$SignUpFormEntityImplToJson(
+        _$SignUpFormEntityImpl instance) =>
     <String, dynamic>{
       'nickname': instance.nickname,
       'nicknameValidation': instance.nicknameValidation,

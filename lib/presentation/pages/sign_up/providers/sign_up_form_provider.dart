@@ -1,15 +1,17 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/features/job/models/job_group_model.dart';
-import 'package:techtalk/features/sign_up/models/sign_up_form_model.dart';
+import 'package:techtalk/features/sign_up/entities/sign_up_form_entity.dart';
 import 'package:techtalk/features/sign_up/sign_up.dart';
 
 part 'sign_up_form_provider.g.dart';
 
 @riverpod
 class SignUpForm extends _$SignUpForm {
+  final _isExistNicknameUseCase = locator<IsExistNicknameUseCase>();
+
   @override
-  SignUpFormModel build() => const SignUpFormModel();
+  SignUpFormEntity build() => const SignUpFormEntity();
 
   Future<void> updateNickname(String nickname) async {
     if (nickname.isEmpty) {
@@ -21,7 +23,7 @@ class SignUpForm extends _$SignUpForm {
     }
 
     // TODO : 중복여부 검사 전 닉네임 형식 벨리데이션 추가
-    final isExist = await locator<IsExistNicknameUseCase>()(nickname);
+    final isExist = await _isExistNicknameUseCase(nickname);
 
     state = isExist
         ? state.copyWith(
@@ -35,20 +37,26 @@ class SignUpForm extends _$SignUpForm {
   }
 
   void addJobGroup(JobGroupModel jobGroup) {
-    state = state.copyWith(
-      selectedJobGroupList: [
-        ...state.selectedJobGroupList,
-        jobGroup,
-      ],
-    );
+    if (!state.selectedJobGroupList.contains(jobGroup)) {
+      state = state.copyWith(
+        selectedJobGroupList: [
+          ...state.selectedJobGroupList,
+          jobGroup,
+        ],
+      );
+    }
   }
 
   void removeJobGroup(int index) {
-    final selectedJobGroupList = List.of(state.selectedJobGroupList)
-      ..removeAt(index);
+    final removeTarget = state.selectedJobGroupList.elementAtOrNull(index);
 
-    state = state.copyWith(
-      selectedJobGroupList: selectedJobGroupList,
-    );
+    if (removeTarget != null) {
+      final selectedJobGroupList = List.of(state.selectedJobGroupList)
+        ..removeAt(index);
+
+      state = state.copyWith(
+        selectedJobGroupList: selectedJobGroupList,
+      );
+    }
   }
 }

@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'sign_up_form_model.dart';
+part of 'sign_up_form_entity.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-SignUpFormModel _$SignUpFormModelFromJson(Map<String, dynamic> json) {
-  return _SignUpFormModel.fromJson(json);
+SignUpFormEntity _$SignUpFormEntityFromJson(Map<String, dynamic> json) {
+  return _SignUpFormEntity.fromJson(json);
 }
 
 /// @nodoc
-mixin _$SignUpFormModel {
+mixin _$SignUpFormEntity {
   String? get nickname => throw _privateConstructorUsedError;
   String? get nicknameValidation => throw _privateConstructorUsedError;
   List<JobGroupModel> get selectedJobGroupList =>
@@ -27,15 +27,15 @@ mixin _$SignUpFormModel {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $SignUpFormModelCopyWith<SignUpFormModel> get copyWith =>
+  $SignUpFormEntityCopyWith<SignUpFormEntity> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $SignUpFormModelCopyWith<$Res> {
-  factory $SignUpFormModelCopyWith(
-          SignUpFormModel value, $Res Function(SignUpFormModel) then) =
-      _$SignUpFormModelCopyWithImpl<$Res, SignUpFormModel>;
+abstract class $SignUpFormEntityCopyWith<$Res> {
+  factory $SignUpFormEntityCopyWith(
+          SignUpFormEntity value, $Res Function(SignUpFormEntity) then) =
+      _$SignUpFormEntityCopyWithImpl<$Res, SignUpFormEntity>;
   @useResult
   $Res call(
       {String? nickname,
@@ -44,9 +44,9 @@ abstract class $SignUpFormModelCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$SignUpFormModelCopyWithImpl<$Res, $Val extends SignUpFormModel>
-    implements $SignUpFormModelCopyWith<$Res> {
-  _$SignUpFormModelCopyWithImpl(this._value, this._then);
+class _$SignUpFormEntityCopyWithImpl<$Res, $Val extends SignUpFormEntity>
+    implements $SignUpFormEntityCopyWith<$Res> {
+  _$SignUpFormEntityCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -78,11 +78,11 @@ class _$SignUpFormModelCopyWithImpl<$Res, $Val extends SignUpFormModel>
 }
 
 /// @nodoc
-abstract class _$$SignUpFormModelImplCopyWith<$Res>
-    implements $SignUpFormModelCopyWith<$Res> {
-  factory _$$SignUpFormModelImplCopyWith(_$SignUpFormModelImpl value,
-          $Res Function(_$SignUpFormModelImpl) then) =
-      __$$SignUpFormModelImplCopyWithImpl<$Res>;
+abstract class _$$SignUpFormEntityImplCopyWith<$Res>
+    implements $SignUpFormEntityCopyWith<$Res> {
+  factory _$$SignUpFormEntityImplCopyWith(_$SignUpFormEntityImpl value,
+          $Res Function(_$SignUpFormEntityImpl) then) =
+      __$$SignUpFormEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -92,11 +92,11 @@ abstract class _$$SignUpFormModelImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$SignUpFormModelImplCopyWithImpl<$Res>
-    extends _$SignUpFormModelCopyWithImpl<$Res, _$SignUpFormModelImpl>
-    implements _$$SignUpFormModelImplCopyWith<$Res> {
-  __$$SignUpFormModelImplCopyWithImpl(
-      _$SignUpFormModelImpl _value, $Res Function(_$SignUpFormModelImpl) _then)
+class __$$SignUpFormEntityImplCopyWithImpl<$Res>
+    extends _$SignUpFormEntityCopyWithImpl<$Res, _$SignUpFormEntityImpl>
+    implements _$$SignUpFormEntityImplCopyWith<$Res> {
+  __$$SignUpFormEntityImplCopyWithImpl(_$SignUpFormEntityImpl _value,
+      $Res Function(_$SignUpFormEntityImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -106,7 +106,7 @@ class __$$SignUpFormModelImplCopyWithImpl<$Res>
     Object? nicknameValidation = freezed,
     Object? selectedJobGroupList = null,
   }) {
-    return _then(_$SignUpFormModelImpl(
+    return _then(_$SignUpFormEntityImpl(
       nickname: freezed == nickname
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
@@ -125,16 +125,16 @@ class __$$SignUpFormModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$SignUpFormModelImpl extends _SignUpFormModel {
-  const _$SignUpFormModelImpl(
+class _$SignUpFormEntityImpl extends _SignUpFormEntity {
+  const _$SignUpFormEntityImpl(
       {this.nickname,
       this.nicknameValidation,
       final List<JobGroupModel> selectedJobGroupList = const []})
       : _selectedJobGroupList = selectedJobGroupList,
         super._();
 
-  factory _$SignUpFormModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$SignUpFormModelImplFromJson(json);
+  factory _$SignUpFormEntityImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SignUpFormEntityImplFromJson(json);
 
   @override
   final String? nickname;
@@ -152,14 +152,14 @@ class _$SignUpFormModelImpl extends _SignUpFormModel {
 
   @override
   String toString() {
-    return 'SignUpFormModel(nickname: $nickname, nicknameValidation: $nicknameValidation, selectedJobGroupList: $selectedJobGroupList)';
+    return 'SignUpFormEntity(nickname: $nickname, nicknameValidation: $nicknameValidation, selectedJobGroupList: $selectedJobGroupList)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SignUpFormModelImpl &&
+            other is _$SignUpFormEntityImpl &&
             (identical(other.nickname, nickname) ||
                 other.nickname == nickname) &&
             (identical(other.nicknameValidation, nicknameValidation) ||
@@ -176,27 +176,27 @@ class _$SignUpFormModelImpl extends _SignUpFormModel {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SignUpFormModelImplCopyWith<_$SignUpFormModelImpl> get copyWith =>
-      __$$SignUpFormModelImplCopyWithImpl<_$SignUpFormModelImpl>(
+  _$$SignUpFormEntityImplCopyWith<_$SignUpFormEntityImpl> get copyWith =>
+      __$$SignUpFormEntityImplCopyWithImpl<_$SignUpFormEntityImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$SignUpFormModelImplToJson(
+    return _$$SignUpFormEntityImplToJson(
       this,
     );
   }
 }
 
-abstract class _SignUpFormModel extends SignUpFormModel {
-  const factory _SignUpFormModel(
+abstract class _SignUpFormEntity extends SignUpFormEntity {
+  const factory _SignUpFormEntity(
       {final String? nickname,
       final String? nicknameValidation,
-      final List<JobGroupModel> selectedJobGroupList}) = _$SignUpFormModelImpl;
-  const _SignUpFormModel._() : super._();
+      final List<JobGroupModel> selectedJobGroupList}) = _$SignUpFormEntityImpl;
+  const _SignUpFormEntity._() : super._();
 
-  factory _SignUpFormModel.fromJson(Map<String, dynamic> json) =
-      _$SignUpFormModelImpl.fromJson;
+  factory _SignUpFormEntity.fromJson(Map<String, dynamic> json) =
+      _$SignUpFormEntityImpl.fromJson;
 
   @override
   String? get nickname;
@@ -206,6 +206,6 @@ abstract class _SignUpFormModel extends SignUpFormModel {
   List<JobGroupModel> get selectedJobGroupList;
   @override
   @JsonKey(ignore: true)
-  _$$SignUpFormModelImplCopyWith<_$SignUpFormModelImpl> get copyWith =>
+  _$$SignUpFormEntityImplCopyWith<_$SignUpFormEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

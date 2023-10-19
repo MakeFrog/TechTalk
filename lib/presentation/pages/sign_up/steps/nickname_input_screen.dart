@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/sign_up/models/sign_up_form_model.dart';
+import 'package:techtalk/features/sign_up/entities/sign_up_form_entity.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_form_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page_event.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_screen_frame.dart';
@@ -61,7 +61,7 @@ class NicknameInputScreen extends HookConsumerWidget with SignUpPageEvent {
     );
   }
 
-  Widget? _buildValidationResult(SignUpFormModel form) {
+  Widget? _buildValidationResult(SignUpFormEntity form) {
     if (form.nicknameValidation != null) {
       return Text(
         form.nicknameValidation!,
