@@ -6,7 +6,7 @@ import 'package:techtalk/features/user/models/user_data_model.dart';
 final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  /// firestore에 저장된 users 컬렉션을 조회하는 공통 메소드
+  /// firestore에 저장된 users 컬렉션을 조회한다
   CollectionReference<UserDataModel> get _userCollection => _firestore
       .collection(FirestoreCollection.users.name)
       .withConverter<UserDataModel>(
@@ -15,7 +15,7 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         toFirestore: (value, _) => value.toJson(),
       );
 
-  /// [data.uid]를 키로 가지는 도큐먼트를 조회하는 공통 메소드
+  /// [data.uid]를 키로 가지는 도큐먼트를 조회한다
   DocumentReference<UserDataModel> _userDoc(String uid) =>
       _userCollection.doc(uid);
 
@@ -41,5 +41,19 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     }
 
     return null;
+  }
+
+  @override
+  Future<bool> isExistNickname(String nickname) async {
+    return _userCollection
+        .where(
+          'nickname',
+          isEqualTo: nickname,
+        )
+        .count()
+        .get()
+        .then(
+          (value) => value.count > 0,
+        );
   }
 }

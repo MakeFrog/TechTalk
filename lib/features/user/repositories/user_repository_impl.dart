@@ -27,4 +27,9 @@ final class UserRepositoryImpl implements UserRepository {
 
     return userData;
   }
+
+  @override
+  Future<bool> isExistNickname(String nickname) {
+    return _userRemoteDataSource.isExistNickname(nickname);
+  }
 }

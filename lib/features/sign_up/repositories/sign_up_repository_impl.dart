@@ -7,9 +7,4 @@ final class SignUpRepositoryImpl implements SignUpRepository {
   );
 
   final SignUpRemoteDataSource _signUpRemoteDataSource;
-
-  @override
-  Future<bool> isExistNickname(String nickname) {
-    return _signUpRemoteDataSource.isExistNickname(nickname);
-  }
 }
