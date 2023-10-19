@@ -17,7 +17,7 @@ abstract class _InputDecorationTheme {
     errorBorder: _roundedBorderWithoutLine,
     focusedBorder: _roundedBorderWithoutLine,
     focusedErrorBorder: _roundedBorderWithoutLine,
-    hintStyle: PretendardTextStyle.body1.copyWith(
+    hintStyle: AppTextStyle.body1.copyWith(
       color: AppColor().gray3,
     ),
   );

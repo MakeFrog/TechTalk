@@ -16,36 +16,21 @@ class AppUserAuth extends _$AppUserAuth {
   final _signInOAuthUseCase = locator<SignInOAuthUseCase>();
   final _signOutUseCase = locator<SignOutUseCase>();
 
-  // 사용자 계정 정보 변경 구독 객체
-  // 사용자 인증 정보가 변경되면 프로바이더를 갱신한다.
-  StreamSubscription<User?> get _authStateSubscription =>
-      FirebaseAuth.instance.authStateChanges().listen(
-        (event) {
-          state = event;
-        },
-        onDone: () => print('firebase auth onDone'),
-        onError: (e) => print('firebase auth onError'),
-      );
-
   @override
   User? build() {
-    final authState = _authStateSubscription;
-
-    ref.onDispose(() {
-      authState.cancel();
-    });
-
     return FirebaseAuth.instance.currentUser;
   }
 
   /// OAuth 인증을 통해 로그인한다.
   Future<void> signInOAuth(UserAccountProvider provider) async {
     await _signInOAuthUseCase(provider);
+    ref.invalidateSelf();
   }
 
   /// 로그아웃을 시도한다.
   Future<void> signOut() async {
     await _signOutUseCase();
+    ref.invalidateSelf();
   }
 }
 

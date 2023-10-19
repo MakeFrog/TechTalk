@@ -18,7 +18,7 @@ class StartWithGoogleButton extends ConsumerWidget with SignInPageEvent {
         style: FilledButton.styleFrom(
           backgroundColor: const Color(0xFFF6F6F9),
           foregroundColor: const Color(0xFF282831),
-          textStyle: PretendardTextStyle.body1,
+          textStyle: AppTextStyle.body1,
           padding: EdgeInsets.zero,
         ),
         onPressed: () async {

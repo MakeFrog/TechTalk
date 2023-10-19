@@ -15,7 +15,7 @@ abstract class _FilledButtonTheme {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
-      textStyle: PretendardTextStyle.title1,
+      textStyle: AppTextStyle.title1,
     ),
   );
 }

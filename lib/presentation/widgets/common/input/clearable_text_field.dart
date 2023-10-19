@@ -136,7 +136,7 @@ class ClearableTextFormField extends HookWidget {
     );
     var inputDecoration = this.inputDecoration ?? const InputDecoration();
     inputDecoration = inputDecoration.copyWith(
-      helperStyle: PretendardTextStyle.alert2.copyWith(
+      helperStyle: AppTextStyle.alert2.copyWith(
         color: inputDecoration.errorText != null
             ? AppColor.of.red2
             : AppColor.of.brand2,
@@ -154,7 +154,7 @@ class ClearableTextFormField extends HookWidget {
       autofocus: autoFocus,
       enabled: enabled,
       obscureText: obscureText,
-      style: style ?? PretendardTextStyle.body1,
+      style: style ?? AppTextStyle.body1,
       inputFormatters: inputFormatters,
       keyboardType: keyboardType,
       decoration: inputDecoration,

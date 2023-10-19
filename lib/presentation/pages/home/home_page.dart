@@ -10,7 +10,7 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(appUserDataProvider, (previous, next) {
+    ref.listen(appUserDataProvider, (_, next) {
       if (next.valueOrNull != null) {
         if (!next.requireValue!.isCompleteSignUp) {
           const SignUpRoute().go(context);

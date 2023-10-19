@@ -9,6 +9,7 @@ part 'app_user_data_provider.g.dart';
 @riverpod
 class AppUserData extends _$AppUserData {
   final _getUserDataUseCase = locator<GetUserDataUseCase>();
+
   @override
   FutureOr<UserDataModel?> build() async {
     final userAuth = ref.watch(appUserAuthProvider);

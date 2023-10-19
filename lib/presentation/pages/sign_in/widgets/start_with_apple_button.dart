@@ -15,7 +15,7 @@ class StartWithAppleButton extends ConsumerWidget with SignInPageEvent {
         style: FilledButton.styleFrom(
           backgroundColor: const Color(0xFF09090B),
           foregroundColor: const Color(0xFFFFFFFF),
-          textStyle: PretendardTextStyle.body1,
+          textStyle: AppTextStyle.body1,
           padding: EdgeInsets.zero,
         ),
         onPressed: () async {

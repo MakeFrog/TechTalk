@@ -6,7 +6,6 @@ import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/interested_job_group_list_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page_event.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/select_result_chip_list_view.dart';
-import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_introduction.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class InterestJobGroupSelectScreen extends StatelessWidget {
@@ -17,13 +16,13 @@ class InterestJobGroupSelectScreen extends StatelessWidget {
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.all(16),
-          child: SignUpStepIntroduction(
-            title: '관심있는 직군을\n알려주세요.',
-            subTitle: '1개 이상 선택해 주세요.',
-          ),
-        ),
+        // Padding(
+        //   padding: EdgeInsets.all(16),
+        //   child: SignUpStepInfoSection(
+        //     title: '관심있는 직군을\n알려주세요.',
+        //     subTitle: '1개 이상 선택해 주세요.',
+        //   ),
+        // ),
         _InterestedJobGroupListView(),
         HeightBox(16),
         _JobGroupListView(),
@@ -53,7 +52,7 @@ class _InterestedJobGroupListView extends StatelessWidget with SignUpPageEvent {
         final interestedJobGroups = ref.watch(interestedJobGroupListProvider);
 
         return SelectResultChipListView(
-          stateKey: InterestedJobGroupList.stateKey,
+          stateKey: SignUpPageEvent.selectedJobGroupListKey,
           itemList: interestedJobGroups.map((e) => e.name).toList(),
           onTapItem: (index) => removeInterestGroup(ref, index: index),
         );
@@ -97,7 +96,7 @@ class _JobGroupListView extends ConsumerWidget with SignUpPageEvent {
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                 title: Text(
                   group.name,
-                  style: PretendardTextStyle.body2,
+                  style: AppTextStyle.body2,
                 ),
                 trailing: isSelected
                     ? FaIcon(

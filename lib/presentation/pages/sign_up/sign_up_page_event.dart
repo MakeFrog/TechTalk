@@ -2,17 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/core.dart';
-import 'package:techtalk/features/job/job.dart';
+import 'package:techtalk/features/job/models/job_group_model.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/interested_job_group_list_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_form_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_controller_provider.dart';
 
-final Debouncer _nicknameValidateDebouncer = Debouncer(1.seconds);
-
-mixin class SignUpPageEvent {
+abstract class SignUpPageEventInterface {
   /// 앱바의 [BackButton]을 눌렀을 때 실행할 콜백
-  ///
+  void onTapBackButton(WidgetRef ref);
+}
+
+mixin class SignUpPageEvent implements SignUpPageEventInterface {
+  static final _nicknameValidateDebouncer = Debouncer(1.seconds);
+  static final selectedJobGroupListKey = GlobalKey<AnimatedListState>();
+
   /// 이전 회원가입 단계로 넘어간다. 이전 단계로 넘어갈 시 현재 단계에 작성한 데이터는 삭제한다.
+  @override
   void onTapBackButton(WidgetRef ref) {
     ref.read(signUpStepControllerProvider.notifier).prev();
     // TODO : 단계별 데이터 삭제 로직
@@ -32,7 +37,7 @@ mixin class SignUpPageEvent {
     if (nickname.isEmpty) {
       isRunningDebouncer.value = false;
       _nicknameValidateDebouncer.reset();
-      ref.read(signUpFormProvider.notifier).clearNickname();
+      await ref.read(signUpFormProvider.notifier).updateNickname(nickname);
     } else {
       isRunningDebouncer.value = true;
 
@@ -53,7 +58,7 @@ mixin class SignUpPageEvent {
     WidgetRef ref, {
     required TextEditingController controller,
   }) {
-    ref.read(signUpFormProvider.notifier).clearNickname();
+    ref.read(signUpFormProvider.notifier).updateNickname('');
     controller.clear();
   }
 
@@ -72,7 +77,8 @@ mixin class SignUpPageEvent {
   }) {
     ref.read(interestedJobGroupListProvider.notifier).addGroup(group);
     final interestedJobGroups = ref.read(interestedJobGroupListProvider);
-    InterestedJobGroupList.stateKey.currentState!.insertItem(
+
+    selectedJobGroupListKey.currentState!.insertItem(
       interestedJobGroups.length - 1,
     );
   }
@@ -83,7 +89,7 @@ mixin class SignUpPageEvent {
   }) {
     ref.read(interestedJobGroupListProvider.notifier).removeGroup(index);
 
-    InterestedJobGroupList.stateKey.currentState!.removeItem(index,
+    selectedJobGroupListKey.currentState!.removeItem(index,
         (context, animation) {
       return Text('test');
     });
