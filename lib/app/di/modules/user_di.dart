@@ -37,6 +37,11 @@ final class UserDependencyInjection extends FeatureDependencyInjection {
         () => GetUserDataUseCase(
           userRepository,
         ),
+      )
+      ..registerFactory<IsExistNicknameUseCase>(
+        () => IsExistNicknameUseCase(
+          userRepository,
+        ),
       );
   }
 }

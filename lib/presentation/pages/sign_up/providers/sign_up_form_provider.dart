@@ -2,13 +2,16 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/features/job/models/job_group_model.dart';
 import 'package:techtalk/features/sign_up/entities/sign_up_form_entity.dart';
-import 'package:techtalk/features/sign_up/sign_up.dart';
+import 'package:techtalk/features/tech_skill/tech_skill.dart';
+import 'package:techtalk/features/user/user.dart';
+import 'package:techtalk/presentation/providers/app_user_data_provider.dart';
 
 part 'sign_up_form_provider.g.dart';
 
 @riverpod
 class SignUpForm extends _$SignUpForm {
   final _isExistNicknameUseCase = locator<IsExistNicknameUseCase>();
+  final _createUserDataUseCase = locator<CreateUserDataUseCase>();
 
   @override
   SignUpFormEntity build() => const SignUpFormEntity();
@@ -36,27 +39,64 @@ class SignUpForm extends _$SignUpForm {
           );
   }
 
-  void addJobGroup(JobGroupModel jobGroup) {
-    if (!state.selectedJobGroupList.contains(jobGroup)) {
+  void addJobGroup(JobGroupModel group) {
+    final isExist = state.jobGroupList.contains(group);
+
+    if (!isExist) {
       state = state.copyWith(
-        selectedJobGroupList: [
-          ...state.selectedJobGroupList,
-          jobGroup,
+        jobGroupList: [
+          ...state.jobGroupList,
+          group,
         ],
       );
     }
   }
 
-  void removeJobGroup(int index) {
-    final removeTarget = state.selectedJobGroupList.elementAtOrNull(index);
+  void removeJobGroup(JobGroupModel group) {
+    final isExist = state.jobGroupList.contains(group);
 
-    if (removeTarget != null) {
-      final selectedJobGroupList = List.of(state.selectedJobGroupList)
-        ..removeAt(index);
+    if (isExist) {
+      final selectedJobGroupList = List.of(state.jobGroupList)..remove(group);
 
       state = state.copyWith(
-        selectedJobGroupList: selectedJobGroupList,
+        jobGroupList: selectedJobGroupList,
       );
     }
+  }
+
+  void addTechSkill(TechSkillEntity skill) {
+    final isExist = state.techSkillList.contains(skill);
+
+    if (!isExist) {
+      state = state.copyWith(
+        techSkillList: [
+          ...state.techSkillList,
+          skill,
+        ],
+      );
+    }
+  }
+
+  void removeTechSkill(TechSkillEntity skill) {
+    final isExist = state.techSkillList.contains(skill);
+
+    if (isExist) {
+      final selectedTechSkillList = List.of(state.techSkillList)..remove(skill);
+
+      state = state.copyWith(
+        techSkillList: selectedTechSkillList,
+      );
+    }
+  }
+
+  Future<void> submit() async {
+    final userData = ref.read(appUserDataProvider).requireValue!.copyWith(
+          nickname: state.nickname,
+          interestedJobGroupIdList:
+              state.jobGroupList.map((e) => e.id).toList(),
+          techSkillIdList: state.techSkillList.map((e) => e.id).toList(),
+        );
+
+    await _createUserDataUseCase(userData);
   }
 }

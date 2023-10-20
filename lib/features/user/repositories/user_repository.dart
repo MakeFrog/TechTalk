@@ -1,7 +1,7 @@
-import 'package:techtalk/features/user/models/user_data_model.dart';
+import 'package:techtalk/features/user/entities/user_data_entity.dart';
 
 abstract interface class UserRepository {
-  Future<void> createUserData(UserDataModel data);
-  Future<UserDataModel?> getUserData(String uid);
+  Future<void> createUserData(UserDataEntity data);
+  Future<UserDataEntity?> getUserData(String uid);
   Future<bool> isExistNickname(String nickname);
 }

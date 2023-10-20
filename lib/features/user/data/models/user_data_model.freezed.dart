@@ -22,6 +22,9 @@ UserDataModel _$UserDataModelFromJson(Map<String, dynamic> json) {
 mixin _$UserDataModel {
   String get uid => throw _privateConstructorUsedError;
   String? get nickname => throw _privateConstructorUsedError;
+  List<String>? get interestedJobGroupIdList =>
+      throw _privateConstructorUsedError;
+  List<String>? get techSkillIdList => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +38,11 @@ abstract class $UserDataModelCopyWith<$Res> {
           UserDataModel value, $Res Function(UserDataModel) then) =
       _$UserDataModelCopyWithImpl<$Res, UserDataModel>;
   @useResult
-  $Res call({String uid, String? nickname});
+  $Res call(
+      {String uid,
+      String? nickname,
+      List<String>? interestedJobGroupIdList,
+      List<String>? techSkillIdList});
 }
 
 /// @nodoc
@@ -53,6 +60,8 @@ class _$UserDataModelCopyWithImpl<$Res, $Val extends UserDataModel>
   $Res call({
     Object? uid = null,
     Object? nickname = freezed,
+    Object? interestedJobGroupIdList = freezed,
+    Object? techSkillIdList = freezed,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -63,6 +72,14 @@ class _$UserDataModelCopyWithImpl<$Res, $Val extends UserDataModel>
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
               as String?,
+      interestedJobGroupIdList: freezed == interestedJobGroupIdList
+          ? _value.interestedJobGroupIdList
+          : interestedJobGroupIdList // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      techSkillIdList: freezed == techSkillIdList
+          ? _value.techSkillIdList
+          : techSkillIdList // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ) as $Val);
   }
 }
@@ -75,7 +92,11 @@ abstract class _$$UserDataModelImplCopyWith<$Res>
       __$$UserDataModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String uid, String? nickname});
+  $Res call(
+      {String uid,
+      String? nickname,
+      List<String>? interestedJobGroupIdList,
+      List<String>? techSkillIdList});
 }
 
 /// @nodoc
@@ -91,6 +112,8 @@ class __$$UserDataModelImplCopyWithImpl<$Res>
   $Res call({
     Object? uid = null,
     Object? nickname = freezed,
+    Object? interestedJobGroupIdList = freezed,
+    Object? techSkillIdList = freezed,
   }) {
     return _then(_$UserDataModelImpl(
       uid: null == uid
@@ -101,6 +124,14 @@ class __$$UserDataModelImplCopyWithImpl<$Res>
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
               as String?,
+      interestedJobGroupIdList: freezed == interestedJobGroupIdList
+          ? _value._interestedJobGroupIdList
+          : interestedJobGroupIdList // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      techSkillIdList: freezed == techSkillIdList
+          ? _value._techSkillIdList
+          : techSkillIdList // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }
@@ -108,7 +139,14 @@ class __$$UserDataModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$UserDataModelImpl extends _UserDataModel {
-  const _$UserDataModelImpl({required this.uid, this.nickname}) : super._();
+  const _$UserDataModelImpl(
+      {required this.uid,
+      this.nickname,
+      final List<String>? interestedJobGroupIdList,
+      final List<String>? techSkillIdList})
+      : _interestedJobGroupIdList = interestedJobGroupIdList,
+        _techSkillIdList = techSkillIdList,
+        super._();
 
   factory _$UserDataModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserDataModelImplFromJson(json);
@@ -117,10 +155,30 @@ class _$UserDataModelImpl extends _UserDataModel {
   final String uid;
   @override
   final String? nickname;
+  final List<String>? _interestedJobGroupIdList;
+  @override
+  List<String>? get interestedJobGroupIdList {
+    final value = _interestedJobGroupIdList;
+    if (value == null) return null;
+    if (_interestedJobGroupIdList is EqualUnmodifiableListView)
+      return _interestedJobGroupIdList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<String>? _techSkillIdList;
+  @override
+  List<String>? get techSkillIdList {
+    final value = _techSkillIdList;
+    if (value == null) return null;
+    if (_techSkillIdList is EqualUnmodifiableListView) return _techSkillIdList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'UserDataModel(uid: $uid, nickname: $nickname)';
+    return 'UserDataModel(uid: $uid, nickname: $nickname, interestedJobGroupIdList: $interestedJobGroupIdList, techSkillIdList: $techSkillIdList)';
   }
 
   @override
@@ -130,12 +188,21 @@ class _$UserDataModelImpl extends _UserDataModel {
             other is _$UserDataModelImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.nickname, nickname) ||
-                other.nickname == nickname));
+                other.nickname == nickname) &&
+            const DeepCollectionEquality().equals(
+                other._interestedJobGroupIdList, _interestedJobGroupIdList) &&
+            const DeepCollectionEquality()
+                .equals(other._techSkillIdList, _techSkillIdList));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, uid, nickname);
+  int get hashCode => Object.hash(
+      runtimeType,
+      uid,
+      nickname,
+      const DeepCollectionEquality().hash(_interestedJobGroupIdList),
+      const DeepCollectionEquality().hash(_techSkillIdList));
 
   @JsonKey(ignore: true)
   @override
@@ -154,7 +221,9 @@ class _$UserDataModelImpl extends _UserDataModel {
 abstract class _UserDataModel extends UserDataModel {
   const factory _UserDataModel(
       {required final String uid,
-      final String? nickname}) = _$UserDataModelImpl;
+      final String? nickname,
+      final List<String>? interestedJobGroupIdList,
+      final List<String>? techSkillIdList}) = _$UserDataModelImpl;
   const _UserDataModel._() : super._();
 
   factory _UserDataModel.fromJson(Map<String, dynamic> json) =
@@ -164,6 +233,10 @@ abstract class _UserDataModel extends UserDataModel {
   String get uid;
   @override
   String? get nickname;
+  @override
+  List<String>? get interestedJobGroupIdList;
+  @override
+  List<String>? get techSkillIdList;
   @override
   @JsonKey(ignore: true)
   _$$UserDataModelImplCopyWith<_$UserDataModelImpl> get copyWith =>

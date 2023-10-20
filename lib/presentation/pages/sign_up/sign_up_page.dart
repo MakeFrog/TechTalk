@@ -3,9 +3,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_controller_provider.dart';
-import 'package:techtalk/presentation/pages/sign_up/sign_up_page_event.dart';
-import 'package:techtalk/presentation/pages/sign_up/steps/interested_job_group_select_screen.dart';
+import 'package:techtalk/presentation/pages/sign_up/sign_up_event.dart';
+import 'package:techtalk/presentation/pages/sign_up/steps/job_group_select_screen.dart';
 import 'package:techtalk/presentation/pages/sign_up/steps/nickname_input_screen.dart';
+import 'package:techtalk/presentation/pages/sign_up/steps/tech_skill_select_screen.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
@@ -20,7 +21,7 @@ class SignUpPage extends StatelessWidget {
 }
 
 class _AppBar extends StatelessWidget
-    with SignUpPageEvent
+    with SignUpEvent
     implements PreferredSizeWidget {
   const _AppBar({super.key});
 
@@ -89,8 +90,8 @@ class _Body extends ConsumerWidget {
         physics: const NeverScrollableScrollPhysics(),
         children: const [
           NicknameInputScreen(),
-          InterestJobGroupSelectScreen(),
-          NicknameInputScreen(),
+          JobGroupSelectScreen(),
+          TechSkillSelectScreen(),
         ],
       ),
     );

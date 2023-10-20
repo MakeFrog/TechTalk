@@ -1,4 +1,4 @@
-import 'package:techtalk/features/user/models/user_data_model.dart';
+import 'package:techtalk/features/user/entities/user_data_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 
 final class GetUserDataUseCase {
@@ -8,7 +8,7 @@ final class GetUserDataUseCase {
 
   final UserRepository _userRepository;
 
-  Future<UserDataModel?> call(String uid) async {
+  Future<UserDataEntity?> call(String uid) async {
     return _userRepository.getUserData(uid);
   }
 }

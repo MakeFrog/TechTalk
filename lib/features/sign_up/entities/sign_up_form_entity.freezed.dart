@@ -22,8 +22,8 @@ SignUpFormEntity _$SignUpFormEntityFromJson(Map<String, dynamic> json) {
 mixin _$SignUpFormEntity {
   String? get nickname => throw _privateConstructorUsedError;
   String? get nicknameValidation => throw _privateConstructorUsedError;
-  List<JobGroupModel> get selectedJobGroupList =>
-      throw _privateConstructorUsedError;
+  List<JobGroupModel> get jobGroupList => throw _privateConstructorUsedError;
+  List<TechSkillEntity> get techSkillList => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -40,7 +40,8 @@ abstract class $SignUpFormEntityCopyWith<$Res> {
   $Res call(
       {String? nickname,
       String? nicknameValidation,
-      List<JobGroupModel> selectedJobGroupList});
+      List<JobGroupModel> jobGroupList,
+      List<TechSkillEntity> techSkillList});
 }
 
 /// @nodoc
@@ -58,7 +59,8 @@ class _$SignUpFormEntityCopyWithImpl<$Res, $Val extends SignUpFormEntity>
   $Res call({
     Object? nickname = freezed,
     Object? nicknameValidation = freezed,
-    Object? selectedJobGroupList = null,
+    Object? jobGroupList = null,
+    Object? techSkillList = null,
   }) {
     return _then(_value.copyWith(
       nickname: freezed == nickname
@@ -69,10 +71,14 @@ class _$SignUpFormEntityCopyWithImpl<$Res, $Val extends SignUpFormEntity>
           ? _value.nicknameValidation
           : nicknameValidation // ignore: cast_nullable_to_non_nullable
               as String?,
-      selectedJobGroupList: null == selectedJobGroupList
-          ? _value.selectedJobGroupList
-          : selectedJobGroupList // ignore: cast_nullable_to_non_nullable
+      jobGroupList: null == jobGroupList
+          ? _value.jobGroupList
+          : jobGroupList // ignore: cast_nullable_to_non_nullable
               as List<JobGroupModel>,
+      techSkillList: null == techSkillList
+          ? _value.techSkillList
+          : techSkillList // ignore: cast_nullable_to_non_nullable
+              as List<TechSkillEntity>,
     ) as $Val);
   }
 }
@@ -88,7 +94,8 @@ abstract class _$$SignUpFormEntityImplCopyWith<$Res>
   $Res call(
       {String? nickname,
       String? nicknameValidation,
-      List<JobGroupModel> selectedJobGroupList});
+      List<JobGroupModel> jobGroupList,
+      List<TechSkillEntity> techSkillList});
 }
 
 /// @nodoc
@@ -104,7 +111,8 @@ class __$$SignUpFormEntityImplCopyWithImpl<$Res>
   $Res call({
     Object? nickname = freezed,
     Object? nicknameValidation = freezed,
-    Object? selectedJobGroupList = null,
+    Object? jobGroupList = null,
+    Object? techSkillList = null,
   }) {
     return _then(_$SignUpFormEntityImpl(
       nickname: freezed == nickname
@@ -115,10 +123,14 @@ class __$$SignUpFormEntityImplCopyWithImpl<$Res>
           ? _value.nicknameValidation
           : nicknameValidation // ignore: cast_nullable_to_non_nullable
               as String?,
-      selectedJobGroupList: null == selectedJobGroupList
-          ? _value._selectedJobGroupList
-          : selectedJobGroupList // ignore: cast_nullable_to_non_nullable
+      jobGroupList: null == jobGroupList
+          ? _value._jobGroupList
+          : jobGroupList // ignore: cast_nullable_to_non_nullable
               as List<JobGroupModel>,
+      techSkillList: null == techSkillList
+          ? _value._techSkillList
+          : techSkillList // ignore: cast_nullable_to_non_nullable
+              as List<TechSkillEntity>,
     ));
   }
 }
@@ -129,8 +141,10 @@ class _$SignUpFormEntityImpl extends _SignUpFormEntity {
   const _$SignUpFormEntityImpl(
       {this.nickname,
       this.nicknameValidation,
-      final List<JobGroupModel> selectedJobGroupList = const []})
-      : _selectedJobGroupList = selectedJobGroupList,
+      final List<JobGroupModel> jobGroupList = const [],
+      final List<TechSkillEntity> techSkillList = const []})
+      : _jobGroupList = jobGroupList,
+        _techSkillList = techSkillList,
         super._();
 
   factory _$SignUpFormEntityImpl.fromJson(Map<String, dynamic> json) =>
@@ -140,19 +154,27 @@ class _$SignUpFormEntityImpl extends _SignUpFormEntity {
   final String? nickname;
   @override
   final String? nicknameValidation;
-  final List<JobGroupModel> _selectedJobGroupList;
+  final List<JobGroupModel> _jobGroupList;
   @override
   @JsonKey()
-  List<JobGroupModel> get selectedJobGroupList {
-    if (_selectedJobGroupList is EqualUnmodifiableListView)
-      return _selectedJobGroupList;
+  List<JobGroupModel> get jobGroupList {
+    if (_jobGroupList is EqualUnmodifiableListView) return _jobGroupList;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_selectedJobGroupList);
+    return EqualUnmodifiableListView(_jobGroupList);
+  }
+
+  final List<TechSkillEntity> _techSkillList;
+  @override
+  @JsonKey()
+  List<TechSkillEntity> get techSkillList {
+    if (_techSkillList is EqualUnmodifiableListView) return _techSkillList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_techSkillList);
   }
 
   @override
   String toString() {
-    return 'SignUpFormEntity(nickname: $nickname, nicknameValidation: $nicknameValidation, selectedJobGroupList: $selectedJobGroupList)';
+    return 'SignUpFormEntity(nickname: $nickname, nicknameValidation: $nicknameValidation, jobGroupList: $jobGroupList, techSkillList: $techSkillList)';
   }
 
   @override
@@ -165,13 +187,19 @@ class _$SignUpFormEntityImpl extends _SignUpFormEntity {
             (identical(other.nicknameValidation, nicknameValidation) ||
                 other.nicknameValidation == nicknameValidation) &&
             const DeepCollectionEquality()
-                .equals(other._selectedJobGroupList, _selectedJobGroupList));
+                .equals(other._jobGroupList, _jobGroupList) &&
+            const DeepCollectionEquality()
+                .equals(other._techSkillList, _techSkillList));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, nickname, nicknameValidation,
-      const DeepCollectionEquality().hash(_selectedJobGroupList));
+  int get hashCode => Object.hash(
+      runtimeType,
+      nickname,
+      nicknameValidation,
+      const DeepCollectionEquality().hash(_jobGroupList),
+      const DeepCollectionEquality().hash(_techSkillList));
 
   @JsonKey(ignore: true)
   @override
@@ -192,7 +220,8 @@ abstract class _SignUpFormEntity extends SignUpFormEntity {
   const factory _SignUpFormEntity(
       {final String? nickname,
       final String? nicknameValidation,
-      final List<JobGroupModel> selectedJobGroupList}) = _$SignUpFormEntityImpl;
+      final List<JobGroupModel> jobGroupList,
+      final List<TechSkillEntity> techSkillList}) = _$SignUpFormEntityImpl;
   const _SignUpFormEntity._() : super._();
 
   factory _SignUpFormEntity.fromJson(Map<String, dynamic> json) =
@@ -203,7 +232,9 @@ abstract class _SignUpFormEntity extends SignUpFormEntity {
   @override
   String? get nicknameValidation;
   @override
-  List<JobGroupModel> get selectedJobGroupList;
+  List<JobGroupModel> get jobGroupList;
+  @override
+  List<TechSkillEntity> get techSkillList;
   @override
   @JsonKey(ignore: true)
   _$$SignUpFormEntityImplCopyWith<_$SignUpFormEntityImpl> get copyWith =>

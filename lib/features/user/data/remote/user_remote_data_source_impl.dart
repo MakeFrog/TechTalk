@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/constants/firestore_collection.enum.dart';
+import 'package:techtalk/features/user/data/models/user_data_model.dart';
 import 'package:techtalk/features/user/data/remote/user_remote_data_source.dart';
-import 'package:techtalk/features/user/models/user_data_model.dart';
 
 final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -10,9 +10,8 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   CollectionReference<UserDataModel> get _userCollection => _firestore
       .collection(FirestoreCollection.users.name)
       .withConverter<UserDataModel>(
-        fromFirestore: (snapshot, _) =>
-            UserDataModel.fromJson(snapshot.data()!),
-        toFirestore: (value, _) => value.toJson(),
+        fromFirestore: (snapshot, _) => UserDataModel.fromFirestore(snapshot),
+        toFirestore: (value, _) => value.toFirestore(),
       );
 
   /// [data.uid]를 키로 가지는 도큐먼트를 조회한다
@@ -26,7 +25,9 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   @override
   Future<void> createUserData(UserDataModel data) async {
     if (await _isExistUserData(data.uid)) {
-      return;
+      return _userDoc(data.uid).update(
+        data.toJson(),
+      );
     }
 
     await _userDoc(data.uid).set(data);
