@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/features/interview/interview.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class TopicCard extends StatelessWidget {
   const TopicCard({
     super.key,
+    required this.topic,
     this.isSelected = false,
     this.onTap,
   });
 
+  final InterviewTopicEntity topic;
   final bool isSelected;
   final VoidCallback? onTap;
 
@@ -36,12 +38,23 @@ class TopicCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Image.asset(
-                  Assets.imagesTopicFlutter,
+                  topic.imageUrl!,
+                  color:
+                      isSelected ? AppColor.of.brand2.withOpacity(0.07) : null,
+                  colorBlendMode: BlendMode.srcATop,
+                  errorBuilder: (_, __, ___) => Center(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ),
               ),
               const HeightBox(16),
               Text(
-                'Flutter',
+                topic.name,
                 style: AppTextStyle.headline3,
               ),
             ],

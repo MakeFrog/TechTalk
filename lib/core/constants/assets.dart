@@ -64,7 +64,18 @@ class Assets {
       'assets/images/tech_talk_character_blue_06.svg';
   static const String imagesTechTalkCharacterBlue07 =
       'assets/images/tech_talk_character_blue_07.svg';
+  static const String imagesTopicAndroid = 'assets/images/topic_android.png';
+  static const String imagesTopicDataStructure =
+      'assets/images/topic_data_structure.png';
   static const String imagesTopicFlutter = 'assets/images/topic_flutter.png';
+  static const String imagesTopicIos = 'assets/images/topic_ios.png';
+  static const String imagesTopicJava = 'assets/images/topic_java.png';
+  static const String imagesTopicNestJs = 'assets/images/topic_nest_js.png';
+  static const String imagesTopicOperatingSystem =
+      'assets/images/topic_operating_system.png';
+  static const String imagesTopicReact = 'assets/images/topic_react.png';
+  static const String imagesTopicSpring = 'assets/images/topic_spring.png';
+  static const String imagesTopicSwift = 'assets/images/topic_swift.png';
   static const String imagesWelcomeTechtalk =
       'assets/images/welcome_techtalk.svg';
   static const String logoTechTalkLogo = 'assets/logo/tech_talk_logo.svg';

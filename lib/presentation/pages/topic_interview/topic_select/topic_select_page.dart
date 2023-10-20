@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/presentation/pages/topic_interview/topic_select/providers/topic_list_provider.dart';
 import 'package:techtalk/presentation/pages/topic_interview/topic_select/widgets/topic_card.dart';
 
 class TopicSelectPage extends StatelessWidget {
@@ -49,18 +51,38 @@ class _Body extends HookWidget {
     return Expanded(
       child: Container(
         padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 11,
-            mainAxisSpacing: 12,
-          ),
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return TopicCard(
-              isSelected: index == selectedTopic.value,
-              onTap: () {
-                selectedTopic.value = index;
+        child: Consumer(
+          builder: (context, ref, child) {
+            final topicListAsync = ref.watch(topicListProvider);
+
+            return topicListAsync.when(
+              loading: () => SizedBox(),
+              error: (error, stackTrace) => Text('$error'),
+              data: (data) {
+                return GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 11,
+                    mainAxisSpacing: 12,
+                  ),
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    final topic = data[index];
+                    final isSelected = index == selectedTopic.value;
+
+                    return TopicCard(
+                      topic: topic,
+                      isSelected: isSelected,
+                      onTap: () {
+                        if (isSelected) {
+                          selectedTopic.value = null;
+                        } else {
+                          selectedTopic.value = index;
+                        }
+                      },
+                    );
+                  },
+                );
               },
             );
           },
