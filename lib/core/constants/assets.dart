@@ -2,7 +2,6 @@
 class Assets {
   Assets._();
 
-  static const String constantsAssets = 'lib/core/constants/assets.dart';
   static const String iconsArrowDown = 'assets/icons/arrow_down.svg';
   static const String iconsArrowDownThick = 'assets/icons/arrow_down_thick.svg';
   static const String iconsArrowLeft = 'assets/icons/arrow_left.svg';
@@ -50,6 +49,21 @@ class Assets {
   static const String iconsUser = 'assets/icons/user.svg';
   static const String iconsWarnning = 'assets/icons/warnning.svg';
   static const String imagesAvatar1 = 'assets/images/avatar_1.png';
+  static const String imagesSparkle = 'assets/images/sparkle.svg';
+  static const String imagesTechTalkCharacterBlue01 =
+      'assets/images/tech_talk_character_blue_01.svg';
+  static const String imagesTechTalkCharacterBlue02 =
+      'assets/images/tech_talk_character_blue_02.svg';
+  static const String imagesTechTalkCharacterBlue03 =
+      'assets/images/tech_talk_character_blue_03.svg';
+  static const String imagesTechTalkCharacterBlue04 =
+      'assets/images/tech_talk_character_blue_04.svg';
+  static const String imagesTechTalkCharacterBlue05 =
+      'assets/images/tech_talk_character_blue_05.svg';
+  static const String imagesTechTalkCharacterBlue06 =
+      'assets/images/tech_talk_character_blue_06.svg';
+  static const String imagesTechTalkCharacterBlue07 =
+      'assets/images/tech_talk_character_blue_07.svg';
   static const String imagesWelcomeTechtalk =
       'assets/images/welcome_techtalk.svg';
   static const String logoTechTalkLogo = 'assets/logo/tech_talk_logo.svg';
@@ -63,4 +77,5 @@ class Assets {
       'assets/fonts/pretendard/Pretendard-SemiBold.otf';
   static const String staatlichesStaatlichesRegular =
       'assets/fonts/staatliches/Staatliches-Regular.ttf';
+  static const String techTalk = '.env';
 }
