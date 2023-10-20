@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/presentation/pages/home/home_page.dart';
+import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/providers/app_user_auth_provider.dart';
@@ -15,7 +15,7 @@ GoRouter appRouter(WidgetRef ref) => GoRouter(
       navigatorKey: rootNavigatorKey,
       initialLocation: !ref.read(isUserAuthorizedProvider)
           ? SignInRoute.name
-          : HomeRoute.name,
+          : MainRoute.name,
       routes: $appRoutes,
     );
 
@@ -45,16 +45,16 @@ class SignUpRoute extends GoRouteData {
   }
 }
 
-@TypedGoRoute<HomeRoute>(
-  path: HomeRoute.name,
-  name: HomeRoute.name,
+@TypedGoRoute<MainRoute>(
+  path: MainRoute.name,
+  name: MainRoute.name,
 )
-class HomeRoute extends GoRouteData {
-  const HomeRoute();
+class MainRoute extends GoRouteData {
+  const MainRoute();
 
   static const String name = '/';
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return HomePage();
+    return MainPage();
   }
 }
