@@ -5,7 +5,10 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/presentation/pages/home/widgets/cheer_up_message_card.dart';
+import 'package:techtalk/presentation/pages/home/widgets/practical_interview_card.dart';
+import 'package:techtalk/presentation/pages/home/widgets/topic_interview_card.dart';
 import 'package:techtalk/presentation/providers/app_user_data_provider.dart';
+import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -35,9 +38,10 @@ class HomePage extends ConsumerWidget {
         padding: EdgeInsets.symmetric(vertical: 8),
         children: [
           CheerUpMessageCard(),
-          Center(
-            child: Text('test'),
-          ),
+          HeightBox(16),
+          PracticalInterviewCard(),
+          HeightBox(16),
+          TopicInterviewCard(),
         ],
       ),
     );
