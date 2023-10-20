@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
-import 'package:techtalk/core/core.dart';
+import 'package:techtalk/core/constants/main_navigation_tab.enum.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/main/main_event.dart';
@@ -70,13 +70,6 @@ class _Body extends HookConsumerWidget {
 class _BottomNavigationBar extends ConsumerWidget with MainEvent {
   const _BottomNavigationBar({super.key});
 
-  static const _items = [
-    ('홈', Assets.iconsHome),
-    ('학습', Assets.iconsStudy),
-    ('오답노트', Assets.iconsNote),
-    ('내 정보', Assets.iconsUser),
-  ];
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(mainBottomNavigationProvider);
@@ -96,11 +89,11 @@ class _BottomNavigationBar extends ConsumerWidget with MainEvent {
         index: value,
       ),
       items: [
-        ..._items.mapIndexed(
+        ...MainNavigationTab.values.mapIndexed(
           (index, e) => BottomNavigationBarItem(
-            label: e.$1,
+            label: e.label,
             icon: SvgPicture.asset(
-              e.$2,
+              e.iconPath,
               colorFilter: ColorFilter.mode(
                 currentIndex == index ? AppColor.of.gray5 : AppColor.of.gray2,
                 BlendMode.srcIn,

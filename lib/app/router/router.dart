@@ -4,9 +4,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
+import 'package:techtalk/presentation/pages/topic_interview/topic_select/topic_select_page.dart';
 import 'package:techtalk/presentation/providers/app_user_auth_provider.dart';
 
 part 'router.g.dart';
+part 'routes/main_route.dart';
+part 'routes/sign_in_route.dart';
+part 'routes/sign_up_route.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -18,43 +22,3 @@ GoRouter appRouter(WidgetRef ref) => GoRouter(
           : MainRoute.name,
       routes: $appRoutes,
     );
-
-@TypedGoRoute<SignInRoute>(
-  path: SignInRoute.name,
-  name: SignInRoute.name,
-)
-class SignInRoute extends GoRouteData {
-  const SignInRoute();
-
-  static const String name = '/sign_in';
-  @override
-  Widget build(BuildContext context, GoRouterState state) => const SignInPage();
-}
-
-@TypedGoRoute<SignUpRoute>(
-  path: SignUpRoute.path,
-  name: SignUpRoute.path,
-)
-class SignUpRoute extends GoRouteData {
-  const SignUpRoute();
-
-  static const String path = '/sign-up';
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const SignUpPage();
-  }
-}
-
-@TypedGoRoute<MainRoute>(
-  path: MainRoute.name,
-  name: MainRoute.name,
-)
-class MainRoute extends GoRouteData {
-  const MainRoute();
-
-  static const String name = '/';
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return MainPage();
-  }
-}

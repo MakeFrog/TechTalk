@@ -64,6 +64,7 @@ class Assets {
       'assets/images/tech_talk_character_blue_06.svg';
   static const String imagesTechTalkCharacterBlue07 =
       'assets/images/tech_talk_character_blue_07.svg';
+  static const String imagesTopicFlutter = 'assets/images/topic_flutter.png';
   static const String imagesWelcomeTechtalk =
       'assets/images/welcome_techtalk.svg';
   static const String logoTechTalkLogo = 'assets/logo/tech_talk_logo.svg';

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/presentation/pages/main/screens/home/home_event.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-class TopicInterviewCard extends StatelessWidget {
+class TopicInterviewCard extends StatelessWidget with HomeEvent {
   const TopicInterviewCard({super.key});
 
   @override
@@ -29,7 +30,7 @@ class TopicInterviewCard extends StatelessWidget {
               ),
               const WidthBox(48),
               GestureDetector(
-                onTap: () {},
+                onTap: () => onTapNewTopicInterview(context),
                 child: FaIcon(
                   FontAwesomeIcons.circlePlus,
                   color: AppColor.of.brand2,

@@ -47,12 +47,12 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      children: [
-        const CheerUpMessageCard(),
-        const HeightBox(16),
-        const PracticalInterviewCard(),
-        const HeightBox(16),
-        const TopicInterviewCard(),
+      children: const [
+        CheerUpMessageCard(),
+        HeightBox(16),
+        PracticalInterviewCard(),
+        HeightBox(16),
+        TopicInterviewCard(),
       ],
     );
   }
