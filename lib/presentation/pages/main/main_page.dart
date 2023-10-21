@@ -38,16 +38,16 @@ class _Body extends HookConsumerWidget {
 
   static const _screens = <Widget>[
     HomeScreen(
-      key: ValueKey(0),
+      key: ValueKey(MainNavigationTab.home),
     ),
     HomeScreen(
-      key: ValueKey(1),
+      key: ValueKey(MainNavigationTab.study),
     ),
     HomeScreen(
-      key: ValueKey(2),
+      key: ValueKey(MainNavigationTab.note),
     ),
     HomeScreen(
-      key: ValueKey(3),
+      key: ValueKey(MainNavigationTab.myInfo),
     ),
   ];
 
@@ -56,7 +56,7 @@ class _Body extends HookConsumerWidget {
     final pageController = usePageController();
 
     ref.listen(mainBottomNavigationProvider, (_, next) {
-      pageController.jumpToPage(next);
+      pageController.jumpToPage(next.index);
     });
 
     return PageView(
@@ -72,10 +72,10 @@ class _BottomNavigationBar extends ConsumerWidget with MainEvent {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentIndex = ref.watch(mainBottomNavigationProvider);
+    final currentTab = ref.watch(mainBottomNavigationProvider);
 
     return BottomNavigationBar(
-      currentIndex: currentIndex,
+      currentIndex: currentTab.index,
       backgroundColor: Colors.white,
       type: BottomNavigationBarType.fixed,
       showSelectedLabels: true,
@@ -95,7 +95,7 @@ class _BottomNavigationBar extends ConsumerWidget with MainEvent {
             icon: SvgPicture.asset(
               e.iconPath,
               colorFilter: ColorFilter.mode(
-                currentIndex == index ? AppColor.of.gray5 : AppColor.of.gray2,
+                currentTab == index ? AppColor.of.gray5 : AppColor.of.gray2,
                 BlendMode.srcIn,
               ),
             ),

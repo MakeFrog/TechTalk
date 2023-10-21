@@ -7,12 +7,12 @@ part of 'main_bottom_navigation_provider.dart';
 // **************************************************************************
 
 String _$mainBottomNavigationHash() =>
-    r'0e11cb97ebd7c764739d6f134d62752ec092af93';
+    r'18c575d0da2983db3fed14fbb96e0d00cf327c41';
 
 /// See also [MainBottomNavigation].
 @ProviderFor(MainBottomNavigation)
 final mainBottomNavigationProvider =
-    NotifierProvider<MainBottomNavigation, int>.internal(
+    NotifierProvider<MainBottomNavigation, MainNavigationTab>.internal(
   MainBottomNavigation.new,
   name: r'mainBottomNavigationProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +22,6 @@ final mainBottomNavigationProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$MainBottomNavigation = Notifier<int>;
+typedef _$MainBottomNavigation = Notifier<MainNavigationTab>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

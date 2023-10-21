@@ -71,7 +71,7 @@ class App extends HookConsumerWidget {
     final Size designSize = switch (ScreenUtil().screenWidth) {
       // Table. 화면 너비가 800 초과 1200 이하일 경우
       //! 디자인이 없어서 임시로 너비 500을 기준으로 잡음
-      > 800 && <= 1200 => const Size(500, 812),
+      > 800 && <= 1200 => const Size(600, 812),
       // Mobile. 화면 너비가 0 이상 800 이하일 경우
       (<= 0 && <= 800) || _ => const Size(375, 812),
     };
