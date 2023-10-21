@@ -26,6 +26,6 @@ class HomeTopicSelectRoute extends GoRouteData {
   static const String name = 'topic-select';
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return TopicSelectPage();
+    return InterviewTopicSelectPage();
   }
 }

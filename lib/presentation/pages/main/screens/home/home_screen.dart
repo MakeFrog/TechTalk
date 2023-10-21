@@ -14,6 +14,8 @@ class HomeScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    useAutomaticKeepAlive();
+
     return Scaffold(
       backgroundColor: AppColor.of.background1,
       appBar: const _AppBar(),

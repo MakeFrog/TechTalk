@@ -6,8 +6,8 @@ import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/topic_interview/topic_select/providers/topic_list_provider.dart';
 import 'package:techtalk/presentation/pages/topic_interview/topic_select/widgets/topic_card.dart';
 
-class TopicSelectPage extends StatelessWidget {
-  const TopicSelectPage({super.key});
+class InterviewTopicSelectPage extends StatelessWidget {
+  const InterviewTopicSelectPage({super.key});
 
   @override
   Widget build(BuildContext context) {

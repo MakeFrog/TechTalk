@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
-import 'package:techtalk/presentation/pages/topic_interview/topic_select/topic_select_page.dart';
+import 'package:techtalk/presentation/pages/topic_interview/topic_select/interview_topic_select_page.dart';
 import 'package:techtalk/presentation/providers/app_user_auth_provider.dart';
 
 part 'router.g.dart';

@@ -8,12 +8,14 @@ part 'interview_topic_entity.g.dart';
 class InterviewTopicEntity with _$InterviewTopicEntity {
   const factory InterviewTopicEntity({
     required String name,
+    required String category,
     String? imageUrl,
   }) = _InterviewTopicEntity;
 
   factory InterviewTopicEntity.fromModel(InterviewTopicModel model) =>
       InterviewTopicEntity(
         name: model.name,
+        category: model.category,
         imageUrl: model.topicImageUrl,
       );
 

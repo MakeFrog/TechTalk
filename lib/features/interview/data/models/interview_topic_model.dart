@@ -7,6 +7,7 @@ part 'interview_topic_model.g.dart';
 class InterviewTopicModel with _$InterviewTopicModel {
   const factory InterviewTopicModel({
     required String name,
+    required String category,
     String? topicImageUrl,
   }) = _InterviewTopicModel;
 
