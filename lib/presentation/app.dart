@@ -63,6 +63,29 @@ class App extends HookConsumerWidget {
       ..dismissOnTap = false;
   }
 
+  void _initScreenUtil(BuildContext context) {
+    // 화면 너비를 가져오기위해 너비 계산 전 init한다.
+    ScreenUtil.init(context);
+
+    // 디자인 사이즈
+    final Size designSize = switch (ScreenUtil().screenWidth) {
+      // Table. 화면 너비가 800 초과 1200 이하일 경우
+      //! 디자인이 없어서 임시로 너비 500을 기준으로 잡음
+      > 800 && <= 1200 => const Size(500, 812),
+      // Mobile. 화면 너비가 0 이상 800 이하일 경우
+      (<= 0 && <= 800) || _ => const Size(375, 812),
+    };
+
+    print(ScreenUtil().screenWidth);
+    print(designSize);
+
+    // 디자인 사이즈를 가져오고 난 후 한번 더 init한다.
+    ScreenUtil.init(
+      context,
+      designSize: designSize,
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useEffect(
@@ -73,10 +96,9 @@ class App extends HookConsumerWidget {
       },
       [],
     );
-    ScreenUtil.init(
-      context,
-      designSize: const Size(375, 812),
-    );
+
+    // context 의존성때문에 build time에서 초기화한다.
+    _initScreenUtil(context);
 
     return MaterialApp.router(
       routerConfig: appRouter(ref),
