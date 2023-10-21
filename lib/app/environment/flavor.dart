@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/app/environment/environment.enum.dart';
 
@@ -21,18 +22,22 @@ class Flavor {
   Future<void> setup() async {
     WidgetsFlutterBinding.ensureInitialized();
 
+    // 환경 파일 로드
     await dotenv.load(
       fileName: env.dotFileName,
     );
 
+    // FireBase 초기화
     final option = env.firebaseOption;
-
-    /// FireBase 초기화
     await Firebase.initializeApp(
       name: option.projectId,
       options: option,
     );
 
+    // 앱 DI 실행
     AppBinder.init();
+
+    // 스크린 유틸 초기화
+    await ScreenUtil.ensureScreenSize();
   }
 }
