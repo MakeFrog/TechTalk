@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get_it/get_it.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/features/auth/auth.dart';
 
@@ -13,8 +13,8 @@ part 'app_user_auth_provider.g.dart';
 /// 인증, 로그인, 로그아웃 등의 기능을 담당한다.
 @Riverpod(keepAlive: true)
 class AppUserAuth extends _$AppUserAuth {
-  final _signInOAuthUseCase = locator<SignInOAuthUseCase>();
-  final _signOutUseCase = locator<SignOutUseCase>();
+  final _signInOAuthUseCase = GetIt.I<SignInOAuthUseCase>();
+  final _signOutUseCase = GetIt.I<SignOutUseCase>();
 
   @override
   User? build() {

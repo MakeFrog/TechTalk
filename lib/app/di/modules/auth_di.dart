@@ -1,5 +1,5 @@
+import 'package:get_it/get_it.dart';
 import 'package:techtalk/app/di/feature_di_interface.dart';
-import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/features/auth/auth.dart';
 import 'package:techtalk/features/auth/data/remote/auth_remote_data_source_impl.dart';
 import 'package:techtalk/features/auth/repositories/auth_repository_impl.dart';
@@ -7,16 +7,16 @@ import 'package:techtalk/features/auth/repositories/auth_repository_impl.dart';
 final class AuthDependencyInjection extends FeatureDependencyInjection {
   @override
   void dataSources() {
-    locator.registerLazySingleton<AuthRemoteDataSource>(
+    GetIt.I.registerLazySingleton<AuthRemoteDataSource>(
       AuthRemoteDataSourceImpl.new,
     );
   }
 
   @override
   void repositories() {
-    final authRemoteDataSource = locator<AuthRemoteDataSource>();
+    final authRemoteDataSource = GetIt.I<AuthRemoteDataSource>();
 
-    locator.registerLazySingleton<AuthRepository>(
+    GetIt.I.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(
         authRemoteDataSource,
       ),
@@ -25,9 +25,9 @@ final class AuthDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void useCases() {
-    final authRepository = locator<AuthRepository>();
+    final authRepository = GetIt.I<AuthRepository>();
 
-    locator
+    GetIt.I
       ..registerFactory<SignInOAuthUseCase>(
         () => SignInOAuthUseCase(
           authRepository,

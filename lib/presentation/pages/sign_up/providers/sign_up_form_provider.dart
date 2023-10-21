@@ -1,5 +1,5 @@
+import 'package:get_it/get_it.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/features/job/models/job_group_model.dart';
 import 'package:techtalk/features/sign_up/entities/sign_up_form_entity.dart';
 import 'package:techtalk/features/tech_skill/tech_skill.dart';
@@ -10,8 +10,8 @@ part 'sign_up_form_provider.g.dart';
 
 @riverpod
 class SignUpForm extends _$SignUpForm {
-  final _isExistNicknameUseCase = locator<IsExistNicknameUseCase>();
-  final _createUserDataUseCase = locator<CreateUserDataUseCase>();
+  final _isExistNicknameUseCase = GetIt.I<IsExistNicknameUseCase>();
+  final _createUserDataUseCase = GetIt.I<CreateUserDataUseCase>();
 
   @override
   SignUpFormEntity build() => const SignUpFormEntity();

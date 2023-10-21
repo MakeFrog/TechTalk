@@ -1,5 +1,5 @@
+import 'package:get_it/get_it.dart';
 import 'package:techtalk/app/di/feature_di_interface.dart';
-import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/features/interview/data/local/interview_local_data_source_impl.dart';
 import 'package:techtalk/features/interview/interview.dart';
 import 'package:techtalk/features/interview/repositories/interview_repository_impl.dart';
@@ -7,16 +7,16 @@ import 'package:techtalk/features/interview/repositories/interview_repository_im
 final class InterviewDependencyInjection extends FeatureDependencyInjection {
   @override
   void dataSources() {
-    locator.registerLazySingleton<InterviewLocalDataSource>(
+    GetIt.I.registerLazySingleton<InterviewLocalDataSource>(
       InterviewLocalDataSourceImpl.new,
     );
   }
 
   @override
   void repositories() {
-    final interviewRemoteDataSource = locator<InterviewLocalDataSource>();
+    final interviewRemoteDataSource = GetIt.I<InterviewLocalDataSource>();
 
-    locator.registerLazySingleton<InterviewRepository>(
+    GetIt.I.registerLazySingleton<InterviewRepository>(
       () => InterviewRepositoryImpl(
         interviewRemoteDataSource,
       ),
@@ -25,9 +25,9 @@ final class InterviewDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void useCases() {
-    final interviewRepository = locator<InterviewRepository>();
+    final interviewRepository = GetIt.I<InterviewRepository>();
 
-    locator.registerFactory<GetInterviewTopicListUseCase>(
+    GetIt.I.registerFactory<GetInterviewTopicListUseCase>(
       () => GetInterviewTopicListUseCase(
         interviewRepository,
       ),

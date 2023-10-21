@@ -1,5 +1,5 @@
+import 'package:get_it/get_it.dart';
 import 'package:techtalk/app/di/feature_di_interface.dart';
-import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/features/tech_skill/data/remote/tech_skill_remote_data_source_impl.dart';
 import 'package:techtalk/features/tech_skill/repositories/tech_skill_repository_impl.dart';
 import 'package:techtalk/features/tech_skill/tech_skill.dart';
@@ -7,16 +7,16 @@ import 'package:techtalk/features/tech_skill/tech_skill.dart';
 final class TechSkillDependencyInjection extends FeatureDependencyInjection {
   @override
   void dataSources() {
-    locator.registerLazySingleton<TechSkillRemoteDataSource>(
+    GetIt.I.registerLazySingleton<TechSkillRemoteDataSource>(
       TechSkillRemoteDataSourceImpl.new,
     );
   }
 
   @override
   void repositories() {
-    final techSkillRemoteDataSource = locator<TechSkillRemoteDataSource>();
+    final techSkillRemoteDataSource = GetIt.I<TechSkillRemoteDataSource>();
 
-    locator.registerLazySingleton<TechSkillRepository>(
+    GetIt.I.registerLazySingleton<TechSkillRepository>(
       () => TechSkillRepositoryImpl(
         techSkillRemoteDataSource,
       ),
@@ -25,9 +25,9 @@ final class TechSkillDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void useCases() {
-    final techSkillRepository = locator<TechSkillRepository>();
+    final techSkillRepository = GetIt.I<TechSkillRepository>();
 
-    locator.registerFactory<SearchTechSkillListUseCase>(
+    GetIt.I.registerFactory<SearchTechSkillListUseCase>(
       () => SearchTechSkillListUseCase(
         techSkillRepository,
       ),
