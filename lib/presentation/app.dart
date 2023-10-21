@@ -76,9 +76,6 @@ class App extends HookConsumerWidget {
       (<= 0 && <= 800) || _ => const Size(375, 812),
     };
 
-    print(ScreenUtil().screenWidth);
-    print(designSize);
-
     // 디자인 사이즈를 가져오고 난 후 한번 더 init한다.
     ScreenUtil.init(
       context,

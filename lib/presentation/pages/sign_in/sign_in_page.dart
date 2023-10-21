@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
@@ -42,18 +43,18 @@ class _Body extends StatelessWidget {
       children: [
         SvgPicture.asset(
           Assets.logoTechTalkLogo,
-          width: 114,
+          width: 114.w,
         ),
-        const HeightBox(8),
+        HeightBox(8.h),
         Center(
           child: Text(
             'AI 면접관과 톡톡!',
-            style: AppTextStyle.pretendardBoldStyle(24, 33),
+            style: AppTextStyle.pretendardBoldStyle(24.sp, 33.sp),
           ),
         ),
-        const HeightBox(70),
+        HeightBox(70.h),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28),
+          padding: EdgeInsets.symmetric(horizontal: 28.w),
           child: SvgPicture.asset(
             Assets.imagesWelcomeTechtalk,
           ),
@@ -63,12 +64,12 @@ class _Body extends StatelessWidget {
   }
 
   Widget _buildSignInButtonSection() {
-    return const Column(
+    return Column(
       children: [
-        StartWithGoogleButton(),
-        HeightBox(8),
-        StartWithAppleButton(),
-        HeightBox(48),
+        const StartWithGoogleButton(),
+        HeightBox(8.h),
+        const StartWithAppleButton(),
+        HeightBox(48.h),
       ],
     );
   }

@@ -10,7 +10,7 @@ String _$isUserAuthorizedHash() => r'6f3c62c6234d4b4f8e97451777f4db49357672a0';
 
 /// 현재 앱 사용자가 인증되었는지 여부
 ///
-/// * 현재는 단순 유저정보가 있나 없나로 판단. 테스트 후 다른 조건이 필요한지 찾아볼 것
+/// * 현재는 단순 유저 인증 정보가 있나 없나로 판단. 테스트 후 다른 조건이 필요한지 찾아볼 것
 ///
 /// Copied from [isUserAuthorized].
 @ProviderFor(isUserAuthorized)

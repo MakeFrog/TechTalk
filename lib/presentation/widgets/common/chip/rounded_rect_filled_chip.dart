@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-class SelectedFilledChip extends StatelessWidget {
-  const SelectedFilledChip({
+class RoundedRectFilledChip extends StatelessWidget {
+  const RoundedRectFilledChip({
     super.key,
     required this.label,
     this.onTap,
@@ -16,19 +17,18 @@ class SelectedFilledChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Ink(
-      height: 20,
-      decoration: BoxDecoration(
-        color: AppColor.of.brand2,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(8),
-        onTap: onTap,
+    return InkWell(
+      borderRadius: BorderRadius.circular(8.r),
+      onTap: onTap,
+      child: Ink(
+        decoration: BoxDecoration(
+          color: AppColor.of.brand2,
+          borderRadius: BorderRadius.circular(8.r),
+        ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 8,
+          padding: EdgeInsets.symmetric(
+            horizontal: 12.w,
+            vertical: 8.h,
           ),
           child: Row(
             children: [
@@ -38,13 +38,12 @@ class SelectedFilledChip extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              const WidthBox(2),
-              if (onTap != null)
-                const FaIcon(
-                  FontAwesomeIcons.solidCircleXmark,
-                  color: Colors.white,
-                  size: 16,
-                ),
+              WidthBox(2.w),
+              FaIcon(
+                FontAwesomeIcons.solidCircleXmark,
+                color: Colors.white,
+                size: 16.r,
+              ),
             ],
           ),
         ),

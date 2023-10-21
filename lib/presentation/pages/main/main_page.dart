@@ -95,7 +95,9 @@ class _BottomNavigationBar extends ConsumerWidget with MainEvent {
             icon: SvgPicture.asset(
               e.iconPath,
               colorFilter: ColorFilter.mode(
-                currentTab == index ? AppColor.of.gray5 : AppColor.of.gray2,
+                currentTab.index == index
+                    ? AppColor.of.gray5
+                    : AppColor.of.gray2,
                 BlendMode.srcIn,
               ),
             ),

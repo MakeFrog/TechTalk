@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
@@ -55,7 +56,7 @@ class _AppBar extends StatelessWidget
 
   Widget _buildStepIndicator() {
     return Padding(
-      padding: const EdgeInsets.only(right: 16),
+      padding: EdgeInsets.only(right: 16.w),
       child: Consumer(
         builder: (_, ref, __) {
           final pageController = ref.watch(signUpStepControllerProvider);
@@ -67,8 +68,8 @@ class _AppBar extends StatelessWidget
               type: WormType.thin,
               activeDotColor: AppColor.of.brand2,
               dotColor: AppColor.of.brand1,
-              dotHeight: 8,
-              dotWidth: 8,
+              dotHeight: 8.r,
+              dotWidth: 8.r,
             ),
           );
         },

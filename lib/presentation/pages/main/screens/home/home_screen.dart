@@ -35,7 +35,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: false,
       title: SvgPicture.asset(
         Assets.logoTechTalkLogo,
-        height: 26,
+        height: 26.h,
       ),
     );
   }
@@ -47,21 +47,13 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: EdgeInsets.symmetric(vertical: 8.h),
       children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Container(
-            height: 100,
-            width: 215.w,
-            color: Colors.blue,
-          ),
-        ),
-        CheerUpMessageCard(),
-        HeightBox(16),
-        PracticalInterviewCard(),
-        HeightBox(16),
-        TopicInterviewCard(),
+        const CheerUpMessageCard(),
+        HeightBox(16.h),
+        const PracticalInterviewCard(),
+        HeightBox(16.h),
+        const TopicInterviewCard(),
       ],
     );
   }

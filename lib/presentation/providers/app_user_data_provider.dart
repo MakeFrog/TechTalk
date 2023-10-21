@@ -20,4 +20,6 @@ class AppUserData extends _$AppUserData {
 
     return userData;
   }
+
+  void updateUserData() {}
 }

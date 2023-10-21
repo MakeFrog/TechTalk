@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/core.dart';
@@ -18,8 +19,8 @@ class CheerUpMessageCard extends HookWidget {
     );
     final bigSparkleHeight = useAnimation<double>(
       Tween<double>(
-        begin: 15,
-        end: 20,
+        begin: 15.h,
+        end: 20.h,
       )
           .chain(
             CurveTween(
@@ -30,8 +31,8 @@ class CheerUpMessageCard extends HookWidget {
     );
     final smallSparkleHeight = useAnimation<double>(
       Tween<double>(
-        begin: 15,
-        end: 18,
+        begin: 15.h,
+        end: 18.h,
       )
           .chain(
             CurveTween(
@@ -54,34 +55,36 @@ class CheerUpMessageCard extends HookWidget {
 
     return Container(
       clipBehavior: Clip.antiAlias,
-      margin: EdgeInsets.symmetric(horizontal: 16),
+      margin: EdgeInsets.symmetric(horizontal: 16.w),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
       ),
       child: Stack(
         children: [
           Positioned(
-            right: -15,
-            bottom: -11,
+            right: -15.w,
+            bottom: -11.h,
             child: SvgPicture.asset(
               Assets.imagesTechTalkCharacterBlue04,
-              height: 80,
+              height: 80.r,
+              width: 80.r,
             ),
           ),
           Positioned(
-            right: 50,
+            right: 52.w,
             top: bigSparkleHeight,
             child: SvgPicture.asset(
               Assets.imagesSparkle,
+              width: 24.w,
             ),
           ),
           Positioned(
-            right: 40,
+            right: 40.w,
             top: smallSparkleHeight,
             child: SvgPicture.asset(
               Assets.imagesSparkle,
-              width: 20,
+              width: 20.w,
               colorFilter: ColorFilter.mode(
                 AppColor.of.brand1,
                 BlendMode.srcIn,
@@ -89,7 +92,7 @@ class CheerUpMessageCard extends HookWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(24),
+            padding: EdgeInsets.all(24.r),
             child: Consumer(
               builder: (context, ref, child) {
                 final userName =

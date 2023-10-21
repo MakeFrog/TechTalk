@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:techtalk/presentation/widgets/common/chip/selected_filled_chip.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class SelectResultChipListView extends StatelessWidget {
@@ -15,23 +15,24 @@ class SelectResultChipListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 36,
+      height: 36.h,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
         itemCount: itemList.length,
-        separatorBuilder: (context, index) => const WidthBox(8),
-        itemBuilder: (context, index) => _buildItem(index),
+        separatorBuilder: (context, index) => WidthBox(8.w),
+        itemBuilder: (context, index) {
+          final item = itemList[index];
+
+          return Align(
+            alignment: Alignment.topCenter,
+            child: RoundedRectFilledChip(
+              label: item,
+              onTap: () => onTapItem?.call(index),
+            ),
+          );
+        },
       ),
-    );
-  }
-
-  Widget _buildItem(int index) {
-    final item = itemList[index];
-
-    return SelectedFilledChip(
-      label: item,
-      onTap: () => onTapItem?.call(index),
     );
   }
 }
