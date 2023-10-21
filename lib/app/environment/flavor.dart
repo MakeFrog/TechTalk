@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/app/environment/environment.enum.dart';
@@ -20,7 +21,11 @@ class Flavor {
 
   /// [env]에 따라 어플리케이션 초기 설정을 진행한다.
   Future<void> setup() async {
-    WidgetsFlutterBinding.ensureInitialized();
+    final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+
+    FlutterNativeSplash.preserve(
+      widgetsBinding: widgetsBinding,
+    );
 
     // 환경 파일 로드
     await dotenv.load(
