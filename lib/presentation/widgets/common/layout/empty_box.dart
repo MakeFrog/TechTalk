@@ -32,3 +32,11 @@ class WidthBox extends SizedBox {
           height: 0,
         );
 }
+
+class EmptyBox extends SizedBox {
+  const EmptyBox({super.key})
+      : super(
+          width: 0,
+          height: 0,
+        );
+}
