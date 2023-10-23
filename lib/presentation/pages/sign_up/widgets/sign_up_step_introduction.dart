@@ -21,12 +21,12 @@ class SignUpStepIntroduction extends StatelessWidget {
       children: [
         Text(
           title,
-          style: PretendardTextStyle.headline1,
+          style: AppTextStyle.headline1,
         ),
         const HeightBox(12),
         Text(
           subTitle,
-          style: PretendardTextStyle.body1.copyWith(
+          style: AppTextStyle.body1.copyWith(
             color: AppColor.of.gray4,
           ),
         ),

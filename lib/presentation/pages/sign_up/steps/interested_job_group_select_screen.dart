@@ -97,7 +97,7 @@ class _JobGroupListView extends ConsumerWidget with SignUpPageEvent {
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                 title: Text(
                   group.name,
-                  style: PretendardTextStyle.body2,
+                  style: AppTextStyle.body2,
                 ),
                 trailing: isSelected
                     ? FaIcon(

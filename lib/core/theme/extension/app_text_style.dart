@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-abstract class PretendardTextStyle {
+abstract class AppTextStyle {
   static TextStyle baseStyle(double size, double height) => TextStyle(
         fontFamily: 'pretendard',
         leadingDistribution: TextLeadingDistribution.even,

@@ -38,7 +38,7 @@ class _Body extends StatelessWidget {
           Center(
             child: Text(
               'AI 면접관과 톡톡!',
-              style: PretendardTextStyle.boldBaseStyle(24, 33),
+              style: AppTextStyle.boldBaseStyle(24, 33),
             ),
           ),
           const HeightBox(70),

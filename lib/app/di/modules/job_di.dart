@@ -3,7 +3,6 @@ import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/features/job/data/remote/job_remote_data_source_impl.dart';
 import 'package:techtalk/features/job/job.dart';
 import 'package:techtalk/features/job/repositories/job_repository_impl.dart';
-import 'package:techtalk/features/job/usecases/get_job_group_list_use_case.dart';
 
 final class JobDependencyInjection extends FeatureDependencyInjection {
   @override

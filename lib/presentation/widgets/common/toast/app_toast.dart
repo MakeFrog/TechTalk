@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 
-final TextStyle _baseTextStyle = PretendardTextStyle.baseStyle(
+final TextStyle _baseTextStyle = AppTextStyle.baseStyle(
   12,
   18,
 );

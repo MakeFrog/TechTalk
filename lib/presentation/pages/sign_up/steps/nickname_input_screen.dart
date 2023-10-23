@@ -76,14 +76,14 @@ class NicknameInputScreen extends HookConsumerWidget with SignUpPageEvent {
     if (form.nicknameValidation != null) {
       return Text(
         form.nicknameValidation!,
-        style: PretendardTextStyle.alert2.copyWith(
+        style: AppTextStyle.alert2.copyWith(
           color: AppColor.of.red2,
         ),
       );
     } else if (form.isPassNickname) {
       return Text(
         '사용가능한 닉네임입니다.',
-        style: PretendardTextStyle.alert2.copyWith(
+        style: AppTextStyle.alert2.copyWith(
           color: AppColor.of.brand3,
         ),
       );
