@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/core/utils/route_argument.dart';
+import 'package:techtalk/presentation/pages/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/providers/app_user_auth_provider.dart';
@@ -14,7 +16,7 @@ GoRouter appRouter(WidgetRef ref) => GoRouter(
       navigatorKey: rootNavigatorKey,
       initialLocation: !ref.read(isUserAuthorizedProvider)
           ? SignInRoute.name
-          : HomeRoute.name,
+          : ChatPageRoute.name,
       routes: $appRoutes,
     );
 
@@ -26,6 +28,7 @@ class SignInRoute extends GoRouteData {
   const SignInRoute();
 
   static const String name = '/sign_in';
+
   @override
   Widget build(BuildContext context, GoRouterState state) => const SignInPage();
 }
@@ -38,6 +41,7 @@ class SignUpRoute extends GoRouteData {
   const SignUpRoute();
 
   static const String path = '/sign-up';
+
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const SignUpPage();
@@ -52,8 +56,22 @@ class HomeRoute extends GoRouteData {
   const HomeRoute();
 
   static const String name = '/';
+
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return SignUpPage();
+    return const SignUpPage();
+  }
+}
+
+@TypedGoRoute<ChatPageRoute>(path: ChatPageRoute.name, name: ChatPageRoute.name)
+class ChatPageRoute extends GoRouteData {
+  const ChatPageRoute();
+
+  static const String name = '/chat';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    RouteArg.update(state.extra ?? 'ASDKJF32STSS3A');
+    return const ChatPage();
   }
 }

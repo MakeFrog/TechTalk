@@ -20,4 +20,9 @@ final class AuthDependencyInjection extends FeatureDependencyInjection {
       ),
     );
   }
+
+  @override
+  void useCases() {
+    // TODO: implement useCases
+  }
 }
