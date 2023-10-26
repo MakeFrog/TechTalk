@@ -49,6 +49,7 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      physics: ScrollPhysics(),
       padding: EdgeInsets.symmetric(vertical: 8.h),
       children: [
         const CheerUpMessageCard(),
