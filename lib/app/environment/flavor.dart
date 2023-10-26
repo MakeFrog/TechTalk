@@ -23,6 +23,7 @@ class Flavor {
   Future<void> setup() async {
     final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 
+    // 스플래시 유지
     FlutterNativeSplash.preserve(
       widgetsBinding: widgetsBinding,
     );
