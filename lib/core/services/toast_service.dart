@@ -10,7 +10,12 @@ class ToastService {
 
   static void show({
     required CustomToast toast,
+    bool afterDispose = false,
   }) {
+    if (afterDispose) {
+      _fToast.removeQueuedCustomToasts();
+    }
+
     _fToast.showToast(
       child: toast,
     );
