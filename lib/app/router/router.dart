@@ -39,13 +39,13 @@ class SignInRoute extends GoRouteData {
 /// Sign Up Route
 ///
 @TypedGoRoute<SignUpRoute>(
-  path: SignUpRoute.path,
-  name: SignUpRoute.path,
+  path: SignUpRoute.name,
+  name: SignUpRoute.name,
 )
 class SignUpRoute extends GoRouteData {
   const SignUpRoute();
 
-  static const String path = '/sign-up';
+  static const String name = '/sign-up';
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const SignUpPage();
