@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/core/helper/validation_extension.dart';
 import 'package:techtalk/features/job/models/job_group_model.dart';
 import 'package:techtalk/features/sign_up/entities/sign_up_form_entity.dart';
 import 'package:techtalk/features/tech_skill/tech_skill.dart';
@@ -22,6 +23,26 @@ class SignUpForm extends _$SignUpForm {
         nickname: null,
         nicknameValidation: null,
       );
+      return;
+    }
+
+    String? validationMessage;
+
+    if (nickname.hasSpace) {
+      validationMessage = '닉네임에 공백이 포함되어 있습니다.';
+    } else if (!nickname.hasProperCharacter ||
+        nickname.hasContainOperationWord) {
+      validationMessage = '닉네임은 한글, 알파벳, 숫자, 언더스코어(_), 하이픈(-)만 사용할 수 있습니다.';
+    } else if (nickname.hasContainFWord) {
+      validationMessage = '닉네임에 비속어가 포함되어 있습니다.';
+    }
+
+    if (validationMessage != null) {
+      state = state.copyWith(
+        nickname: null,
+        nicknameValidation: validationMessage,
+      );
+
       return;
     }
 
