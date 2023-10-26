@@ -32,15 +32,19 @@ mixin class SignInEvent implements _SignInEvent {
     );
   }
 
-  /// [provider]를 통해 OAuth 인증을 실행한다.
-  Future<void> _signInOAuth(
-    WidgetRef ref, {
-    required UserAccountProvider provider,
-  }) async {
+  @override
+  Future<void> onTapSignInWithGoogle(WidgetRef ref) async {
     try {
-      await ref
-          .read(appUserAuthProvider.notifier)
-          .signInOAuth(UserAccountProvider.google);
+      await EasyLoading.show()
+          .then(
+            (_) => ref
+                .read(appUserAuthProvider.notifier)
+                .signInOAuth(UserAccountProvider.google),
+          )
+          .then(
+            (_) => _routeByUserData(ref),
+          )
+          .whenComplete(EasyLoading.dismiss);
     } on FirebaseAuthException catch (e) {
       ToastService.show(
         toast: NormalToast(message: e.message ?? ''),
@@ -49,36 +53,16 @@ mixin class SignInEvent implements _SignInEvent {
   }
 
   @override
-  Future<void> onTapSignInWithGoogle(WidgetRef ref) async {
-    await EasyLoading.show()
-        .then(
-          (_) => _signInOAuth(
-            ref,
-            provider: UserAccountProvider.google,
-          ),
-        )
-        .then(
-          (_) => _routeByUserData(ref),
-        )
-        .then(
-          (_) => EasyLoading.dismiss(),
-        );
-  }
-
-  @override
   Future<void> onTapSignInWithApple(WidgetRef ref) async {
     await EasyLoading.show()
         .then(
-          (_) => _signInOAuth(
-            ref,
-            provider: UserAccountProvider.apple,
-          ),
+          (_) => ref
+              .read(appUserAuthProvider.notifier)
+              .signInOAuth(UserAccountProvider.apple),
         )
         .then(
           (_) => _routeByUserData(ref),
         )
-        .then(
-          (_) => EasyLoading.dismiss(),
-        );
+        .whenComplete(EasyLoading.dismiss);
   }
 }
