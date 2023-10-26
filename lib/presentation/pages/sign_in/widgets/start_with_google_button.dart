@@ -3,9 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/pages/sign_in/sign_in_page_event.dart';
+import 'package:techtalk/presentation/pages/sign_in/sign_in_event.dart';
 
-class StartWithGoogleButton extends ConsumerWidget with SignInPageEvent {
+class StartWithGoogleButton extends ConsumerWidget with SignInEvent {
   const StartWithGoogleButton({
     super.key,
   });
@@ -18,7 +18,7 @@ class StartWithGoogleButton extends ConsumerWidget with SignInPageEvent {
         style: FilledButton.styleFrom(
           backgroundColor: const Color(0xFFF6F6F9),
           foregroundColor: const Color(0xFF282831),
-          textStyle: PretendardTextStyle.body1,
+          textStyle: AppTextStyle.body1,
           padding: EdgeInsets.zero,
         ),
         onPressed: () async {

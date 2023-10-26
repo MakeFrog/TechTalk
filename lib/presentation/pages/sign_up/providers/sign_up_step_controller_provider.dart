@@ -37,23 +37,22 @@ class SignUpStepController extends _$SignUpStepController {
 
 @riverpod
 class CanBackToPreviousStep extends _$CanBackToPreviousStep {
-  void _listenController(PageController controller) {
-    state = controller.hasClients && controller.page!.ceil() >= 1;
-  }
-
   @override
   bool build() {
     final controller = ref.watch(signUpStepControllerProvider);
+    void listenController() {
+      state = controller.hasClients && controller.page!.ceil() >= 1;
+    }
 
     controller.addListener(
-      () => _listenController(controller),
+      listenController,
     );
 
-    ref.onDispose(() {
-      controller.removeListener(
-        () => _listenController(controller),
-      );
-    });
+    ref.onDispose(
+      () => controller.removeListener(
+        listenController,
+      ),
+    );
 
     return false;
   }

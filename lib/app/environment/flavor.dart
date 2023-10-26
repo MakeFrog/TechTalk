@@ -25,8 +25,6 @@ class Flavor {
       fileName: env.dotFileName,
     );
 
-    AppBinder.init();
-
     final option = env.firebaseOption;
 
     /// FireBase 초기화
@@ -34,5 +32,7 @@ class Flavor {
       name: option.projectId,
       options: option,
     );
+
+    AppBinder.init();
   }
 }

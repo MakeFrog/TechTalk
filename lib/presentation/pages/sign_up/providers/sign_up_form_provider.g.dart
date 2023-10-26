@@ -6,12 +6,12 @@ part of 'sign_up_form_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$signUpFormHash() => r'a8d95564ee45f12ec779b189b7bcd8fbdcb16de5';
+String _$signUpFormHash() => r'1adbe56713dfa7524ae3fcc4702cc6ae90c80f49';
 
 /// See also [SignUpForm].
 @ProviderFor(SignUpForm)
 final signUpFormProvider =
-    AutoDisposeNotifierProvider<SignUpForm, SignUpFormModel>.internal(
+    AutoDisposeNotifierProvider<SignUpForm, SignUpFormEntity>.internal(
   SignUpForm.new,
   name: r'signUpFormProvider',
   debugGetCreateSourceHash:
@@ -20,6 +20,6 @@ final signUpFormProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$SignUpForm = AutoDisposeNotifier<SignUpFormModel>;
+typedef _$SignUpForm = AutoDisposeNotifier<SignUpFormEntity>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

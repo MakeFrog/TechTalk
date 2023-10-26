@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/pages/sign_in/sign_in_page_event.dart';
+import 'package:techtalk/presentation/pages/sign_in/sign_in_event.dart';
 
-class StartWithAppleButton extends ConsumerWidget with SignInPageEvent {
+class StartWithAppleButton extends ConsumerWidget with SignInEvent {
   const StartWithAppleButton({super.key});
 
   @override
@@ -15,7 +15,7 @@ class StartWithAppleButton extends ConsumerWidget with SignInPageEvent {
         style: FilledButton.styleFrom(
           backgroundColor: const Color(0xFF09090B),
           foregroundColor: const Color(0xFFFFFFFF),
-          textStyle: PretendardTextStyle.body1,
+          textStyle: AppTextStyle.body1,
           padding: EdgeInsets.zero,
         ),
         onPressed: () async {

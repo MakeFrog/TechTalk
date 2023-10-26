@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/constants/firestore_collection.enum.dart';
-import 'package:techtalk/features/job/job.dart';
+import 'package:techtalk/features/job/data/remote/job_remote_data_source.dart';
 import 'package:techtalk/features/job/models/job_group_model.dart';
 
 final class JobRemoteDataSourceImpl implements JobRemoteDataSource {
@@ -14,16 +13,7 @@ final class JobRemoteDataSourceImpl implements JobRemoteDataSource {
     final snapShot =
         await _firestore.collection(FirestoreCollection.jobGroups.name).get();
 
-    log(snapShot.docs.first.data().toString());
-
-    final groups = snapShot.docs
-        .map(
-          (e) => JobGroupModel.fromFirestore(
-            e.id,
-            e.data(),
-          ),
-        )
-        .toList();
+    final groups = snapShot.docs.map(JobGroupModel.fromFirestore).toList();
 
     return JobGroupListModel(
       groups: groups,

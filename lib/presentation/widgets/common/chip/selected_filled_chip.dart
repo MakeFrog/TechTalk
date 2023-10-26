@@ -34,7 +34,7 @@ class SelectedFilledChip extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: PretendardTextStyle.body1.copyWith(
+                style: AppTextStyle.body1.copyWith(
                   color: Colors.white,
                 ),
               ),
