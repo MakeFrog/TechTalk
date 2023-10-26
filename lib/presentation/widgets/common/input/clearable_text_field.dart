@@ -12,7 +12,7 @@ class ClearableTextField extends HookWidget {
     this.controller,
     this.initialValue,
     this.style,
-    this.inputDecoration,
+    InputDecoration? inputDecoration,
     this.onClear,
     this.onChanged,
     this.obscureText = false,
@@ -21,13 +21,13 @@ class ClearableTextField extends HookWidget {
     this.autoFocus = false,
     this.inputFormatters,
     this.keyboardType,
-  });
+  }) : inputDecoration = inputDecoration ?? const InputDecoration();
 
   final FocusNode? focusNode;
   final TextEditingController? controller;
   final String? initialValue;
   final TextStyle? style;
-  final InputDecoration? inputDecoration;
+  final InputDecoration inputDecoration;
   final ValueChanged<String>? onChanged;
   final bool obscureText;
   final bool enabled;
@@ -41,20 +41,22 @@ class ClearableTextField extends HookWidget {
   /// 클리어 아이콘을 눌렀을 때 실행할 콜백
   final VoidCallback? onClear;
 
+  bool isFieldEmpty(TextEditingController controller) {
+    return useListenableSelector(
+      controller,
+      () => controller.text.isEmpty,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final controller =
         this.controller ?? useTextEditingController(text: initialValue);
-    final isFieldEmpty = useListenableSelector(
-      controller,
-      () => controller.text.isEmpty,
-    );
-    var inputDecoration = this.inputDecoration ?? const InputDecoration();
-    inputDecoration = inputDecoration.copyWith(
-      suffixIcon: activeSuffixIcon && !isFieldEmpty
-          ? _buildClearIcon(controller)
-          : null,
-    );
+    final inputDecoration = this.inputDecoration.copyWith(
+          suffixIcon: activeSuffixIcon && !isFieldEmpty(controller)
+              ? _buildClearIcon(controller)
+              : null,
+        );
 
     return TextField(
       focusNode: focusNode,
@@ -72,10 +74,7 @@ class ClearableTextField extends HookWidget {
 
   Widget _buildClearIcon(TextEditingController controller) {
     return IconButton(
-      onPressed: onClear ??
-          () {
-            controller.clear();
-          },
+      onPressed: onClear ?? () => controller.clear(),
       icon: SvgPicture.asset(
         Assets.iconsRoundedCloseThick,
         width: 22.r,
