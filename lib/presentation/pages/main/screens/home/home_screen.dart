@@ -33,8 +33,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.transparent,
-      centerTitle: false,
+      backgroundColor: AppColor.of.background1,
       title: SvgPicture.asset(
         Assets.logoTechTalkLogo,
         height: 26.h,

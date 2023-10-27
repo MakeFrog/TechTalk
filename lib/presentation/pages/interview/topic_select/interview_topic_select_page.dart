@@ -3,8 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/pages/topic_interview/topic_select/providers/topic_list_provider.dart';
-import 'package:techtalk/presentation/pages/topic_interview/topic_select/widgets/topic_card.dart';
+import 'package:techtalk/presentation/pages/interview/topic_select/providers/topic_list_provider.dart';
+import 'package:techtalk/presentation/pages/interview/topic_select/widgets/topic_card.dart';
 
 class InterviewTopicSelectPage extends StatelessWidget {
   const InterviewTopicSelectPage({super.key});

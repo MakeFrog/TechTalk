@@ -32,8 +32,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.transparent,
-      centerTitle: false,
+      backgroundColor: Colors.white,
       title: Text(
         '학습',
         style: AppTextStyle.headline2,
