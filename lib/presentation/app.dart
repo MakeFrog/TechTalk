@@ -2,8 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -41,15 +39,17 @@ Future<void> runFlavoredApp() async {
       observers: [
         ProviderLogger(),
       ],
-      child: const App(),
+      child: App(),
     ),
   );
 }
 
-class App extends HookConsumerWidget {
-  const App({super.key});
+class App extends ConsumerWidget {
+  App({super.key}) {
+    _initLoadingIndicator();
+  }
 
-  void _initLoadingIndicator() {
+  static void _initLoadingIndicator() {
     EasyLoading.instance
       ..indicatorType = EasyLoadingIndicatorType.ring
       ..loadingStyle = EasyLoadingStyle.custom
@@ -86,17 +86,6 @@ class App extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    useEffect(
-      () {
-        _initLoadingIndicator();
-
-        FlutterNativeSplash.remove();
-        return () {};
-      },
-      [],
-    );
-
-    // context 의존성때문에 build time에서 초기화한다.
     _initScreenUtil(context);
 
     return MaterialApp.router(

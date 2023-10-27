@@ -5,7 +5,7 @@ import 'package:techtalk/presentation/pages/interview/topic_select/interview_top
 import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
-import 'package:techtalk/presentation/providers/app_user_auth_provider.dart';
+import 'package:techtalk/presentation/pages/splash/splash_page.dart';
 
 part 'router.g.dart';
 
@@ -14,11 +14,27 @@ final rootNavigatorKey = GlobalKey<NavigatorState>();
 GoRouter appRouter(WidgetRef ref) => GoRouter(
       debugLogDiagnostics: true,
       navigatorKey: rootNavigatorKey,
-      initialLocation: !ref.read(isUserAuthorizedProvider)
-          ? SignInRoute.name
-          : MainRoute.name,
+      initialLocation: SplashRoute.name,
       routes: $appRoutes,
     );
+
+///
+/// splash
+///
+@TypedGoRoute<SplashRoute>(
+  path: SplashRoute.name,
+  name: SplashRoute.name,
+)
+class SplashRoute extends GoRouteData {
+  const SplashRoute();
+
+  static const String name = '/splash';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return SplashPage();
+  }
+}
 
 ///
 /// Sign In Route
