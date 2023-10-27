@@ -1,4 +1,3 @@
-import 'package:get_it/get_it.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/user/entities/user_data_entity.dart';
 import 'package:techtalk/features/user/user.dart';
@@ -8,15 +7,13 @@ part 'app_user_data_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 class AppUserData extends _$AppUserData {
-  final _getUserDataUseCase = GetIt.I<GetUserDataUseCase>();
-
   @override
   FutureOr<UserDataEntity?> build() async {
     final userAuth = ref.watch(appUserAuthProvider);
 
     if (userAuth == null) return null;
 
-    final userData = await _getUserDataUseCase(userAuth.uid);
+    final userData = await getUserDataUseCase(userAuth.uid);
 
     return userData;
   }

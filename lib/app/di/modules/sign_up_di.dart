@@ -14,8 +14,6 @@ final class SignUpDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void repositories() {
-    final signUpRemoteDataSource = GetIt.I<SignUpRemoteDataSource>();
-
     GetIt.I.registerLazySingleton<SignUpRepository>(
       () => SignUpRepositoryImpl(
         signUpRemoteDataSource,
@@ -24,7 +22,5 @@ final class SignUpDependencyInjection extends FeatureDependencyInjection {
   }
 
   @override
-  void useCases() {
-    final signUpRepository = GetIt.I<SignUpRepository>();
-  }
+  void useCases() {}
 }
