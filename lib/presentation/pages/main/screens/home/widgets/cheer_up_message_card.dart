@@ -17,30 +17,6 @@ class CheerUpMessageCard extends HookWidget {
     final sparkleAnimationController = useAnimationController(
       duration: 1.seconds,
     );
-    final bigSparkleHeight = useAnimation<double>(
-      Tween<double>(
-        begin: 15.h,
-        end: 20.h,
-      )
-          .chain(
-            CurveTween(
-              curve: Curves.easeInOut,
-            ),
-          )
-          .animate(sparkleAnimationController),
-    );
-    final smallSparkleHeight = useAnimation<double>(
-      Tween<double>(
-        begin: 15.h,
-        end: 18.h,
-      )
-          .chain(
-            CurveTween(
-              curve: Curves.easeInOut,
-            ),
-          )
-          .animate(sparkleAnimationController),
-    );
 
     useEffect(
       () {
@@ -71,25 +47,59 @@ class CheerUpMessageCard extends HookWidget {
               width: 80.r,
             ),
           ),
-          Positioned(
-            right: 52.w,
-            top: bigSparkleHeight,
-            child: SvgPicture.asset(
-              Assets.imagesSparkle,
-              width: 24.w,
-            ),
+          HookBuilder(
+            builder: (context) {
+              final bigSparkleHeight = useAnimation<double>(
+                Tween<double>(
+                  begin: 15.h,
+                  end: 20.h,
+                )
+                    .chain(
+                      CurveTween(
+                        curve: Curves.easeInOut,
+                      ),
+                    )
+                    .animate(sparkleAnimationController),
+              );
+
+              return Positioned(
+                right: 52.w,
+                top: bigSparkleHeight,
+                child: SvgPicture.asset(
+                  Assets.imagesSparkle,
+                  width: 24.w,
+                ),
+              );
+            },
           ),
-          Positioned(
-            right: 40.w,
-            top: smallSparkleHeight,
-            child: SvgPicture.asset(
-              Assets.imagesSparkle,
-              width: 20.w,
-              colorFilter: ColorFilter.mode(
-                AppColor.of.brand1,
-                BlendMode.srcIn,
-              ),
-            ),
+          HookBuilder(
+            builder: (context) {
+              final smallSparkleHeight = useAnimation<double>(
+                Tween<double>(
+                  begin: 15.h,
+                  end: 18.h,
+                )
+                    .chain(
+                      CurveTween(
+                        curve: Curves.easeInOut,
+                      ),
+                    )
+                    .animate(sparkleAnimationController),
+              );
+
+              return Positioned(
+                right: 40.w,
+                top: smallSparkleHeight,
+                child: SvgPicture.asset(
+                  Assets.imagesSparkle,
+                  width: 20.w,
+                  colorFilter: ColorFilter.mode(
+                    AppColor.of.brand1,
+                    BlendMode.srcIn,
+                  ),
+                ),
+              );
+            },
           ),
           Padding(
             padding: EdgeInsets.all(24.r),
