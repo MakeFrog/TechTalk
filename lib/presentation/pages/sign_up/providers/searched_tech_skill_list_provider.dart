@@ -1,5 +1,4 @@
-import 'package:get_it/get_it.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+iverpod_annotation.dart';
 import 'package:techtalk/features/tech_skill/tech_skill.dart';
 
 part 'searched_tech_skill_list_provider.g.dart';
@@ -18,7 +17,6 @@ class TechSkillSearchKeyword extends _$TechSkillSearchKeyword {
 Future<List<TechSkillEntity>> searchedTechSkillList(
   SearchedTechSkillListRef ref,
 ) async {
-  final searchTechSkillListUseCase = GetIt.I<SearchTechSkillListUseCase>();
   final keyword = ref.watch(techSkillSearchKeywordProvider);
 
   if (keyword.isEmpty) {

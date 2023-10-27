@@ -14,8 +14,6 @@ final class UserDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void repositories() {
-    final userRemoteDataSource = GetIt.I<UserRemoteDataSource>();
-
     GetIt.I.registerLazySingleton<UserRepository>(
       () => UserRepositoryImpl(
         userRemoteDataSource,
@@ -25,8 +23,6 @@ final class UserDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void useCases() {
-    final userRepository = GetIt.I<UserRepository>();
-
     GetIt.I
       ..registerFactory<CreateUserDataUseCase>(
         () => CreateUserDataUseCase(

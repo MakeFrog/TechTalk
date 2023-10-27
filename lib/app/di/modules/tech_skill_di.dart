@@ -14,8 +14,6 @@ final class TechSkillDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void repositories() {
-    final techSkillRemoteDataSource = GetIt.I<TechSkillRemoteDataSource>();
-
     GetIt.I.registerLazySingleton<TechSkillRepository>(
       () => TechSkillRepositoryImpl(
         techSkillRemoteDataSource,
@@ -25,8 +23,6 @@ final class TechSkillDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void useCases() {
-    final techSkillRepository = GetIt.I<TechSkillRepository>();
-
     GetIt.I.registerFactory<SearchTechSkillListUseCase>(
       () => SearchTechSkillListUseCase(
         techSkillRepository,

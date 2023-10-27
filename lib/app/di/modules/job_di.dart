@@ -14,8 +14,6 @@ final class JobDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void repositories() {
-    final jobRemoteDataSource = GetIt.I<JobRemoteDataSource>();
-
     GetIt.I.registerLazySingleton<JobRepository>(
       () => JobRepositoryImpl(
         jobRemoteDataSource,
@@ -25,8 +23,6 @@ final class JobDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void useCases() {
-    final jobRepository = GetIt.I<JobRepository>();
-
     GetIt.I.registerFactory<GetJobGroupListUseCase>(
       () => GetJobGroupListUseCase(
         jobRepository,

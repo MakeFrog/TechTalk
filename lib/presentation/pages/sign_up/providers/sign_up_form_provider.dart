@@ -1,4 +1,3 @@
-import 'package:get_it/get_it.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/helper/validation_extension.dart';
 import 'package:techtalk/features/job/models/job_group_model.dart';
@@ -11,9 +10,6 @@ part 'sign_up_form_provider.g.dart';
 
 @riverpod
 class SignUpForm extends _$SignUpForm {
-  final _isExistNicknameUseCase = GetIt.I<IsExistNicknameUseCase>();
-  final _createUserDataUseCase = GetIt.I<CreateUserDataUseCase>();
-
   @override
   SignUpFormEntity build() => const SignUpFormEntity();
 
@@ -47,7 +43,7 @@ class SignUpForm extends _$SignUpForm {
     }
 
     // TODO : 중복여부 검사 전 닉네임 형식 벨리데이션 추가
-    final isExist = await _isExistNicknameUseCase(nickname);
+    final isExist = await isExistNicknameUseCase(nickname);
 
     state = isExist
         ? state.copyWith(
@@ -118,6 +114,6 @@ class SignUpForm extends _$SignUpForm {
           techSkillIdList: state.techSkillList.map((e) => e.id).toList(),
         );
 
-    await _createUserDataUseCase(userData);
+    await createUserDataUseCase(userData);
   }
 }

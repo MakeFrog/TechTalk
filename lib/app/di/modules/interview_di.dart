@@ -14,8 +14,6 @@ final class InterviewDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void repositories() {
-    final interviewRemoteDataSource = GetIt.I<InterviewLocalDataSource>();
-
     GetIt.I.registerLazySingleton<InterviewRepository>(
       () => InterviewRepositoryImpl(
         interviewRemoteDataSource,
@@ -25,8 +23,6 @@ final class InterviewDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void useCases() {
-    final interviewRepository = GetIt.I<InterviewRepository>();
-
     GetIt.I.registerFactory<GetInterviewTopicListUseCase>(
       () => GetInterviewTopicListUseCase(
         interviewRepository,
