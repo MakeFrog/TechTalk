@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/core/utils/route_argument.dart';
+import 'package:techtalk/presentation/pages/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/home/home_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
@@ -56,5 +58,18 @@ class HomeRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return HomePage();
+  }
+}
+
+@TypedGoRoute<ChatPageRoute>(path: ChatPageRoute.name, name: ChatPageRoute.name)
+class ChatPageRoute extends GoRouteData {
+  const ChatPageRoute();
+
+  static const String name = '/chat';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    RouteArg.update(state.extra ?? 'ASDKJF32STSS3A');
+    return const ChatPage();
   }
 }

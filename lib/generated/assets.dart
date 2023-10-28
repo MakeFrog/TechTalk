@@ -53,7 +53,7 @@ class Assets {
   static const String iconsRoundedWarnningSmallRed =
       'assets/icons/rounded_warnning_small_red.svg';
   static const String iconsSearch = 'assets/icons/search.svg';
-
+  static const String iconsSearchThick = 'assets/icons/search_thick.svg';
   static const String iconsSend = 'assets/icons/send.svg';
   static const String iconsStudy = 'assets/icons/study.svg';
   static const String iconsTalker = 'assets/icons/talker.svg';
