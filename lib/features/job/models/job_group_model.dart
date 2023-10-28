@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'job_group_model.freezed.dart';
@@ -10,11 +11,13 @@ class JobGroupModel with _$JobGroupModel {
     required String name,
   }) = _JobGroupModel;
 
-  factory JobGroupModel.fromFirestore(String id, Map<String, dynamic> data) =>
-      JobGroupModel(
-        id: id,
-        name: data['name'],
-      );
+  factory JobGroupModel.fromFirestore(
+    QueryDocumentSnapshot<Map<String, dynamic>> snapshot,
+  ) {
+    final data = snapshot.data()..['id'] = snapshot.id;
+
+    return JobGroupModel.fromJson(data);
+  }
   factory JobGroupModel.fromJson(Map<String, dynamic> json) =>
       _$JobGroupModelFromJson(json);
 }

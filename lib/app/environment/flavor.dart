@@ -1,4 +1,3 @@
-import 'package:chatgpt_completions/chatgpt_completions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -36,5 +35,7 @@ class Flavor {
       name: option.projectId,
       options: option,
     );
+
+    AppBinder.init();
   }
 }

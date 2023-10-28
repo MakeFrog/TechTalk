@@ -24,7 +24,7 @@ final signUpStepControllerProvider =
 
 typedef _$SignUpStepController = AutoDisposeNotifier<PageController>;
 String _$canBackToPreviousStepHash() =>
-    r'a6c0d50fca9a86b388ba2c4b1c414ff65ec90680';
+    r'82f98912f8f6bb3aceaf0fe62ee52ac37ad942bc';
 
 /// See also [CanBackToPreviousStep].
 @ProviderFor(CanBackToPreviousStep)

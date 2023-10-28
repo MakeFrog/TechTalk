@@ -9,6 +9,7 @@ final class AuthRepositoryImpl implements AuthRepository {
   );
 
   final AuthRemoteDataSource _authRemoteDataSource;
+
   @override
   Future<UserCredential> signInOAuth(UserAccountProvider provider) async {
     final userCredential = await switch (provider) {

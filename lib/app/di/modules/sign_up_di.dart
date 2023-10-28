@@ -14,6 +14,8 @@ final class SignUpDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void repositories() {
+    final signUpRemoteDataSource = locator<SignUpRemoteDataSource>();
+
     locator.registerLazySingleton<SignUpRepository>(
       () => SignUpRepositoryImpl(
         signUpRemoteDataSource,
@@ -23,10 +25,6 @@ final class SignUpDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void useCases() {
-    locator.registerFactory<IsExistNicknameUseCase>(
-      () => IsExistNicknameUseCase(
-        signUpRepository,
-      ),
-    );
+    final signUpRepository = locator<SignUpRepository>();
   }
 }

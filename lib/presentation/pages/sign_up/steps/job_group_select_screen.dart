@@ -1,79 +1,77 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/pages/sign_up/providers/interested_job_group_list_provider.dart';
-import 'package:techtalk/presentation/pages/sign_up/sign_up_page_event.dart';
+import 'package:techtalk/presentation/pages/sign_up/providers/job_group_list_provider.dart';
+import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_form_provider.dart';
+import 'package:techtalk/presentation/pages/sign_up/sign_up_event.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/select_result_chip_list_view.dart';
-import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_introduction.dart';
+import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_intro_message.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-class InterestJobGroupSelectScreen extends StatelessWidget {
-  const InterestJobGroupSelectScreen({super.key});
+class JobGroupSelectScreen extends HookWidget {
+  const JobGroupSelectScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    useAutomaticKeepAlive();
+
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: EdgeInsets.all(16),
-          child: SignUpStepIntroduction(
+          child: SignUpStepIntroMessage(
             title: '관심있는 직군을\n알려주세요.',
             subTitle: '1개 이상 선택해 주세요.',
           ),
         ),
-        _InterestedJobGroupListView(),
+        _SelectedJobGroupListView(),
         HeightBox(16),
         _JobGroupListView(),
-        Padding(
-          padding: EdgeInsets.all(16),
-          child: FilledButton(
-            onPressed: null,
-            child: Center(
-              child: Text('다음'),
-            ),
-          ),
-        ),
+        _NextButton(),
       ],
     );
   }
 }
 
-class _InterestedJobGroupListView extends StatelessWidget with SignUpPageEvent {
-  const _InterestedJobGroupListView({
+class _SelectedJobGroupListView extends ConsumerWidget with SignUpEvent {
+  const _SelectedJobGroupListView({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, ref, child) {
-        final interestedJobGroups = ref.watch(interestedJobGroupListProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedJobGroups = ref.watch(
+      signUpFormProvider.select((v) => v.jobGroupList),
+    );
 
-        return SelectResultChipListView(
-          stateKey: InterestedJobGroupList.stateKey,
-          itemList: interestedJobGroups.map((e) => e.name).toList(),
-          onTapItem: (index) => removeInterestGroup(ref, index: index),
-        );
-      },
+    return SelectResultChipListView(
+      itemList: selectedJobGroups.map((e) => e.name).toList(),
+      onTapItem: (index) => onTapSelectedJobGroup(
+        ref,
+        group: selectedJobGroups[index],
+      ),
     );
   }
 }
 
-class _JobGroupListView extends ConsumerWidget with SignUpPageEvent {
+class _JobGroupListView extends ConsumerWidget with SignUpEvent {
   const _JobGroupListView({
     super.key,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final groupListAsync = ref.watch(jobGroupListProvider);
-    final selectedGroupList = ref.watch(interestedJobGroupListProvider);
+    final jobGroupListAsync = ref.watch(jobGroupListProvider);
+    final selectedGroupList = ref.watch(
+      signUpFormProvider.select((v) => v.jobGroupList),
+    );
 
     return Expanded(
-      child: groupListAsync.when(
+      child: jobGroupListAsync.when(
         loading: () => const Center(
           child: CircularProgressIndicator(),
         ),
@@ -106,20 +104,36 @@ class _JobGroupListView extends ConsumerWidget with SignUpPageEvent {
                         size: 20,
                       )
                     : null,
-                onTap: isSelected
-                    ? () => removeInterestGroup(
-                          ref,
-                          index: index,
-                        )
-                    : () => addInterestGroup(
-                          ref,
-                          index: index,
-                          group: group,
-                        ),
+                onTap: () => onTapJobGroupListTile(
+                  ref,
+                  group: group,
+                ),
               );
             },
           );
         },
+      ),
+    );
+  }
+}
+
+class _NextButton extends ConsumerWidget with SignUpEvent {
+  const _NextButton({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isSelectedAtLeastOne = ref.watch(
+      signUpFormProvider.select((value) => value.isSelectedAtLeastOneJobGroup),
+    );
+
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: FilledButton(
+        onPressed:
+            isSelectedAtLeastOne ? () => onTapJobGroupStepNext(ref) : null,
+        child: const Center(
+          child: Text('다음'),
+        ),
       ),
     );
   }
