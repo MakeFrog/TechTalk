@@ -23,7 +23,7 @@ mixin class ChatEvent implements _ChatEvent {
     ref.read(chatScrollControllerProvider.notifier).setScrollPositionToBottom();
 
     if (message.isEmpty) {
-      return ToastService().show(
+      return ToastService.show(
         toast: NormalToast(message: '답변을 입력해 주세요'),
       );
     }

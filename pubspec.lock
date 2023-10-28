@@ -960,14 +960,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
-  single_import_generator:
-    dependency: "direct main"
-    description:
-      name: single_import_generator
-      sha256: d26765db5c0396585f5c9e0ddb5bfb50e35261b9543ab7f3e1bb73398c8f82a6
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
   sky_engine:
     dependency: transitive
     description: flutter

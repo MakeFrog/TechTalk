@@ -1,3 +1,4 @@
+import 'package:chatgpt_completions/chatgpt_completions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -26,7 +27,6 @@ class Flavor {
     );
 
     ChatGPTCompletions.instance.initialize(apiKey: env.openApiKey);
-    AppBinder.init();
 
     final option = env.firebaseOption;
 

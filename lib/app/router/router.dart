@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/presentation/pages/home/home_page.dart';
 import 'package:techtalk/core/utils/route_argument.dart';
 import 'package:techtalk/presentation/pages/chat/chat_page.dart';
+import 'package:techtalk/presentation/pages/home/home_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/providers/app_user_auth_provider.dart';

@@ -1,8 +1,6 @@
-import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
-@CopyWith()
 class ReceivedChatEntity extends ChatEntity {
   ReceivedChatEntity(
       {required ChatType type,
