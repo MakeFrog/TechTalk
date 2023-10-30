@@ -8,6 +8,7 @@ import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
+import 'package:techtalk/presentation/pages/study/study_page.dart';
 
 part 'router.g.dart';
 
@@ -81,6 +82,10 @@ class SignUpRoute extends GoRouteData {
       path: HomeTopicSelectRoute.name,
       name: HomeTopicSelectRoute.name,
     ),
+    TypedGoRoute<StudyRoute>(
+      path: StudyRoute.name,
+      name: StudyRoute.name,
+    ),
   ],
 )
 class MainRoute extends GoRouteData {
@@ -100,6 +105,20 @@ class HomeTopicSelectRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return InterviewTopicSelectPage();
+  }
+}
+
+class StudyRoute extends GoRouteData {
+  const StudyRoute(this.topicName);
+
+  final String topicName;
+  static const String name = 'study';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return StudyPage(
+      topicName: topicName,
+    );
   }
 }
 

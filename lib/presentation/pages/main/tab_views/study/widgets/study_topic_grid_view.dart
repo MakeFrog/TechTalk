@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/features/interview/interview.dart';
 import 'package:techtalk/presentation/pages/main/tab_views/study/widgets/study_topic_card.dart';
 
@@ -29,6 +30,7 @@ class StudyTopicGridView extends StatelessWidget {
           topic: topic,
           onTap: () {
             // TODO : 라우팅
+            StudyRoute(topic.name).push(context);
           },
         );
       },

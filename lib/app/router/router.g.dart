@@ -93,6 +93,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           name: 'topic-select',
           factory: $HomeTopicSelectRouteExtension._fromState,
         ),
+        GoRouteData.$route(
+          path: 'study',
+          name: 'study',
+          factory: $StudyRouteExtension._fromState,
+        ),
       ],
     );
 
@@ -119,6 +124,28 @@ extension $HomeTopicSelectRouteExtension on HomeTopicSelectRoute {
 
   String get location => GoRouteData.$location(
         '/topic-select',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $StudyRouteExtension on StudyRoute {
+  static StudyRoute _fromState(GoRouterState state) => StudyRoute(
+        state.uri.queryParameters['topic-name']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/study',
+        queryParams: {
+          'topic-name': topicName,
+        },
       );
 
   void go(BuildContext context) => context.go(location);
