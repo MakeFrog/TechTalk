@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/core/utils/route_argument.dart';
+import 'package:techtalk/presentation/pages/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
@@ -98,5 +100,18 @@ class HomeTopicSelectRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return InterviewTopicSelectPage();
+  }
+}
+
+@TypedGoRoute<ChatPageRoute>(path: ChatPageRoute.name, name: ChatPageRoute.name)
+class ChatPageRoute extends GoRouteData {
+  const ChatPageRoute();
+
+  static const String name = '/chat';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    RouteArg.update(state.extra ?? 'ASDKJF32STSS3A');
+    return const ChatPage();
   }
 }

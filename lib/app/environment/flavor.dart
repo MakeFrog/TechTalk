@@ -1,3 +1,4 @@
+import 'package:chatgpt_completions/chatgpt_completions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -27,8 +28,11 @@ class Flavor {
       fileName: env.dotFileName,
     );
 
-    // FireBase 초기화
+    ChatGPTCompletions.instance.initialize(apiKey: env.openApiKey);
+
     final option = env.firebaseOption;
+
+    /// FireBase 초기화
     await Firebase.initializeApp(
       name: option.projectId,
       options: option,
