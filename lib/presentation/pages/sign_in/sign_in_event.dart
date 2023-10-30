@@ -34,22 +34,22 @@ mixin class SignInEvent implements _SignInEvent {
 
   @override
   Future<void> onTapSignInWithGoogle(WidgetRef ref) async {
-    try {
-      await EasyLoading.show()
-          .then(
-            (_) => ref
-                .read(appUserAuthProvider.notifier)
-                .signInOAuth(UserAccountProvider.google),
-          )
-          .then(
-            (_) => _routeByUserData(ref),
-          )
-          .whenComplete(EasyLoading.dismiss);
-    } on FirebaseAuthException catch (e) {
-      ToastService.show(
-        toast: NormalToast(message: e.message ?? ''),
-      );
-    }
+    await EasyLoading.show()
+        .then(
+          (_) => ref
+              .read(appUserAuthProvider.notifier)
+              .signInOAuth(UserAccountProvider.google),
+        )
+        .then(
+          (_) => _routeByUserData(ref),
+        )
+        .catchError(
+          (e) => ToastService.show(
+            toast: NormalToast(message: e.message ?? ''),
+          ),
+          test: (error) => error is FirebaseAuthException,
+        )
+        .whenComplete(EasyLoading.dismiss);
   }
 
   @override
@@ -62,6 +62,12 @@ mixin class SignInEvent implements _SignInEvent {
         )
         .then(
           (_) => _routeByUserData(ref),
+        )
+        .catchError(
+          (e) => ToastService.show(
+            toast: NormalToast(message: e.message ?? ''),
+          ),
+          test: (error) => error is FirebaseAuthException,
         )
         .whenComplete(EasyLoading.dismiss);
   }
