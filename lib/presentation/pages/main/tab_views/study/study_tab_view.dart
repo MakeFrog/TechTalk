@@ -4,12 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/pages/main/screens/study/providers/topic_list_provider.dart';
-import 'package:techtalk/presentation/pages/main/screens/study/widgets/study_topic_grid_view.dart';
+import 'package:techtalk/presentation/pages/main/tab_views/study/providers/topic_list_provider.dart';
+import 'package:techtalk/presentation/pages/main/tab_views/study/widgets/study_topic_grid_view.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-class StudyScreen extends HookWidget {
-  const StudyScreen({super.key});
+class StudyTabView extends HookWidget {
+  const StudyTabView({super.key});
 
   @override
   Widget build(BuildContext context) {

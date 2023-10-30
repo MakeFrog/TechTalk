@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:techtalk/features/interview/interview.dart';
-import 'package:techtalk/presentation/pages/main/screens/study/widgets/study_topic_card.dart';
+import 'package:techtalk/presentation/pages/main/tab_views/study/widgets/study_topic_card.dart';
 
 class StudyTopicGridView extends StatelessWidget {
   const StudyTopicGridView({
