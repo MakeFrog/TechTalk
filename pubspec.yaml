@@ -67,6 +67,7 @@ dependencies:
 
   # 앱 정보
   package_info_plus: ^4.1.0
+  collection: ^1.17.2
 
 dev_dependencies:
   flutter_lints: ^2.0.1

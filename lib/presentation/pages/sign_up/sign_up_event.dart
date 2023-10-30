@@ -223,7 +223,7 @@ mixin class SignUpEvent implements _SignUpEvent {
             throw Exception('회원가입 실패');
           }
 
-          const HomeRoute().go(ref.context);
+          const MainRoute().go(ref.context);
         },
       ).whenComplete(
         EasyLoading.dismiss,

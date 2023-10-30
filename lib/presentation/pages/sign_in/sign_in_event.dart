@@ -26,7 +26,7 @@ mixin class SignInEvent implements _SignInEvent {
         if (userData == null || !userData.isCompleteSignUp) {
           const SignUpRoute().go(ref.context);
         } else {
-          const HomeRoute().go(ref.context);
+          const MainRoute().go(ref.context);
         }
       },
     );

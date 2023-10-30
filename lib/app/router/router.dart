@@ -6,9 +6,13 @@ import 'package:techtalk/presentation/pages/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/home/home_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
+import 'package:techtalk/presentation/pages/topic_interview/topic_select/topic_select_page.dart';
 import 'package:techtalk/presentation/providers/app_user_auth_provider.dart';
 
 part 'router.g.dart';
+part 'routes/main_route.dart';
+part 'routes/sign_in_route.dart';
+part 'routes/sign_up_route.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -17,10 +21,9 @@ GoRouter appRouter(WidgetRef ref) => GoRouter(
       navigatorKey: rootNavigatorKey,
       initialLocation: !ref.read(isUserAuthorizedProvider)
           ? SignInRoute.name
-          : HomeRoute.name,
+          : MainRoute.name,
       routes: $appRoutes,
     );
-
 @TypedGoRoute<SignInRoute>(
   path: SignInRoute.name,
   name: SignInRoute.name,
