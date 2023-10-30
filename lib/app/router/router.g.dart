@@ -10,6 +10,8 @@ List<RouteBase> get $appRoutes => [
       $mainRoute,
       $signInRoute,
       $signUpRoute,
+      $homeRoute,
+      $chatPageRoute,
     ];
 
 RouteBase get $mainRoute => GoRouteData.$route(
@@ -94,6 +96,29 @@ extension $SignUpRouteExtension on SignUpRoute {
 
   String get location => GoRouteData.$location(
         '/sign-up',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $chatPageRoute => GoRouteData.$route(
+      path: '/chat',
+      name: '/chat',
+      factory: $ChatPageRouteExtension._fromState,
+    );
+
+extension $ChatPageRouteExtension on ChatPageRoute {
+  static ChatPageRoute _fromState(GoRouterState state) => const ChatPageRoute();
+
+  String get location => GoRouteData.$location(
+        '/chat',
       );
 
   void go(BuildContext context) => context.go(location);
