@@ -36,3 +36,14 @@ extension RiverpodRefCacheExt on AutoDisposeRef {
     onDispose(timer.cancel);
   }
 }
+
+extension RiverpodWidgetRefExt on WidgetRef {
+  ///
+  /// provider 리스트를 즉시 dispose(invalidate)
+  ///
+  void disposeProviders(List<ProviderOrFamily> providers) {
+    for (final provider in providers) {
+      invalidate(provider);
+    }
+  }
+}
