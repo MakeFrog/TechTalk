@@ -1,89 +1,68 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/interview/interview.dart';
-import 'package:techtalk/presentation/pages/main/tab_views/study/providers/topic_list_provider.dart';
+import 'package:techtalk/presentation/pages/study/providers/question_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/study/providers/selected_study_topic_provider.dart';
+import 'package:techtalk/presentation/pages/study/providers/study_question_list_provider.dart';
 import 'package:techtalk/presentation/pages/study/study_event.dart';
 import 'package:techtalk/presentation/pages/study/widgets/study_controller_bar.dart';
 import 'package:techtalk/presentation/pages/study/widgets/study_progress_indicator.dart';
 import 'package:techtalk/presentation/pages/study/widgets/study_qna_view.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-class StudyPage extends HookConsumerWidget with StudyEvent {
+class StudyPage extends HookConsumerWidget {
   const StudyPage({
     super.key,
-    required this.topicName,
   });
-
-  final String topicName;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final topicList = ref.watch(topicListProvider).requireValue.values;
-    InterviewTopicEntity? topic;
-    for (final topics in topicList) {
-      final findTopic = topics.firstWhereOrNull(
-        (element) => element.name == topicName,
-      );
+    final isInitTopic = ref.watch(selectedStudyTopicProvider) != null;
 
-      if (findTopic != null) {
-        topic = findTopic;
-        break;
-      }
-    }
-
-    if (topic == null) {
+    if (!isInitTopic) {
       return const Scaffold(
         body: Center(
-          child: Text('주제 선택 오류'),
+          child: CircularProgressIndicator(),
         ),
       );
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(selectedStudyTopicProvider.notifier).topic = topic!;
-    });
-
-    final isBlurAnswer = useState(false);
-
-    return Scaffold(
-      appBar: _AppBar(
-        isBlurAnswer: isBlurAnswer,
-      ),
-      body: _Body(
-        isBlurAnswer: isBlurAnswer.value,
-      ),
+    return const Scaffold(
+      appBar: _AppBar(),
+      body: _Body(),
     );
   }
 }
 
-class _AppBar extends HookConsumerWidget
+class _AppBar extends StatelessWidget
     with StudyEvent
     implements PreferredSizeWidget {
   const _AppBar({
     super.key,
-    required this.isBlurAnswer,
   });
-
-  final ValueNotifier<bool> isBlurAnswer;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final topic = ref.watch(selectedStudyTopicProvider);
-
+  Widget build(BuildContext context) {
     return AppBar(
       titleSpacing: 0,
-      title: Text(
-        topic.name,
-        style: AppTextStyle.headline2,
+      title: Consumer(
+        builder: (context, ref, child) {
+          final topicName = ref.watch(
+            selectedStudyTopicProvider.select(
+              (value) => value!.name,
+            ),
+          );
+
+          return Text(
+            topicName,
+            style: AppTextStyle.headline2,
+          );
+        },
       ),
       actions: [
         Text(
@@ -93,12 +72,15 @@ class _AppBar extends HookConsumerWidget
           ),
         ),
         WidthBox(8.w),
-        FlatSwitch(
-          value: isBlurAnswer.value,
-          onTap: (value) => onToggleBlurAnswer(
-            value,
-            isBlurAnswer,
-          ),
+        Consumer(
+          builder: (context, ref, child) {
+            final isBlurAnswer = ref.watch(questionAnswerBlurProvider);
+
+            return FlatSwitch(
+              value: isBlurAnswer,
+              onTap: (_) => onToggleAnswerBlur(ref),
+            );
+          },
         ),
         WidthBox(16.w),
       ],
@@ -106,45 +88,35 @@ class _AppBar extends HookConsumerWidget
   }
 }
 
-class _Body extends HookWidget {
+class _Body extends HookConsumerWidget {
   const _Body({
     super.key,
-    required this.isBlurAnswer,
   });
 
-  final bool isBlurAnswer;
-
   @override
-  Widget build(BuildContext context) {
-    final questionPageController = usePageController();
-    final currentQuestionIndex = useState(0);
-
-    const itemCount = 10;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final studyQuestionListAsync = ref.watch(studyQuestionListProvider);
 
     return SafeArea(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          HeightBox(24.h),
-          StudyProgressIndicator(
-            current: currentQuestionIndex.value + 1,
-            maxCount: itemCount,
-          ),
-          HeightBox(5.h),
-          StudyQnaView(
-            controller: questionPageController,
-            itemCount: itemCount,
-            isBlur: isBlurAnswer,
-            onChangeQuestion: (value) {
-              currentQuestionIndex.value = value;
-            },
-          ),
-          StudyControllerBar(
-            controller: questionPageController,
-            currentQnaIndex: currentQuestionIndex.value,
-            itemCount: itemCount,
-          ),
-        ],
+      child: studyQuestionListAsync.when(
+        loading: () => const Center(
+          child: CircularProgressIndicator(),
+        ),
+        error: (error, stackTrace) => Center(
+          child: Text('$error'),
+        ),
+        data: (data) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              HeightBox(24.h),
+              const StudyProgressIndicator(),
+              HeightBox(5.h),
+              const StudyQnaView(),
+              const StudyControllerBar(),
+            ],
+          );
+        },
       ),
     );
   }

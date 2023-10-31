@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/presentation/pages/study/providers/current_question_page.dart';
+import 'package:techtalk/presentation/pages/study/providers/study_question_list_provider.dart';
 
-class StudyProgressIndicator extends StatelessWidget {
+class StudyProgressIndicator extends ConsumerWidget {
   const StudyProgressIndicator({
     super.key,
-    required this.current,
-    required this.maxCount,
   });
 
-  final int current;
-  final int maxCount;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentPage = ref.watch(currentQuestionPageProvider);
+    final questionCount =
+        ref.watch(studyQuestionListProvider).requireValue.questionList.length;
+
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: 16.w,
@@ -23,13 +25,13 @@ class StudyProgressIndicator extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            '$current',
+            '${currentPage + 1}',
             style: AppTextStyle.body3.copyWith(
               color: AppColor.of.brand3,
             ),
           ),
           Text(
-            ' / $maxCount 문항',
+            ' / $questionCount 문항',
             style: AppTextStyle.body3.copyWith(
               color: AppColor.of.gray3,
             ),

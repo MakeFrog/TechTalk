@@ -1,5 +1,5 @@
-import 'package:get_it/get_it.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/features/interview/interview.dart';
 
 part 'topic_list_provider.g.dart';
@@ -8,7 +8,7 @@ part 'topic_list_provider.g.dart';
 Future<Map<String, List<InterviewTopicEntity>>> topicList(
   TopicListRef ref,
 ) async {
-  final getInterviewTopicListUseCase = GetIt.I<GetInterviewTopicListUseCase>();
+  final getInterviewTopicListUseCase = locator<GetInterviewTopicListUseCase>();
 
   final topicList = await getInterviewTopicListUseCase();
   topicList.sort(

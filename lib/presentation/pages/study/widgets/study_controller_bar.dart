@@ -1,30 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/pages/study/widgets/entire_question_list_view.dart';
+import 'package:techtalk/presentation/pages/study/providers/current_question_page.dart';
+import 'package:techtalk/presentation/pages/study/providers/study_question_list_provider.dart';
+import 'package:techtalk/presentation/pages/study/study_event.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-final _qnaAnimationDuration = 400.ms;
-const _qnaAnimationCurves = Curves.easeOutQuint;
-
-class StudyControllerBar extends StatelessWidget {
+class StudyControllerBar extends ConsumerWidget with StudyEvent {
   const StudyControllerBar({
     super.key,
-    required this.controller,
-    required this.currentQnaIndex,
-    required this.itemCount,
   });
 
-  final PageController controller;
-  final int currentQnaIndex;
-  final int itemCount;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentPage = ref.watch(currentQuestionPageProvider);
+    final questionCount =
+        ref.watch(studyQuestionListProvider).requireValue.questionList.length;
+
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: 16.h,
@@ -34,46 +30,22 @@ class StudyControllerBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _ControllerButton(
-            isActive: currentQnaIndex != 0,
+            isActive: currentPage != 0,
             label: '이전 문항',
             icon: Assets.iconsArrowLeft,
-            onTap: () {
-              controller.previousPage(
-                duration: _qnaAnimationDuration,
-                curve: _qnaAnimationCurves,
-              );
-            },
+            onTap: () => onTapPrevQuestion(ref),
           ),
           _ControllerButton(
             isActive: true,
             label: '전체 문항',
             icon: Assets.iconsMenu,
-            onTap: () async {
-              final selectedQuestionIndex = await Navigator.push<int>(
-                context,
-                MaterialPageRoute(
-                  fullscreenDialog: true,
-                  builder: (context) => EntireQuestionListView(
-                    itemCount: itemCount,
-                  ),
-                ),
-              );
-
-              if (selectedQuestionIndex != null) {
-                controller.jumpToPage(selectedQuestionIndex);
-              }
-            },
+            onTap: () => onTapEntireQuestion(ref),
           ),
           _ControllerButton(
-            isActive: currentQnaIndex != itemCount,
+            isActive: currentPage + 1 != questionCount,
             label: '다음 문항',
             icon: Assets.iconsArrowRight,
-            onTap: () {
-              controller.nextPage(
-                duration: _qnaAnimationDuration,
-                curve: _qnaAnimationCurves,
-              );
-            },
+            onTap: () => onTapNextQuestion(ref),
           ),
         ],
       ),
