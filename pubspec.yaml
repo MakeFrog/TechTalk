@@ -29,6 +29,7 @@ dependencies:
   animations: ^2.0.8
   flutter_animate: ^4.2.0+1
 
+
   # 상태관리
   provider: ^6.0.5
   hooks_riverpod: ^2.4.0
