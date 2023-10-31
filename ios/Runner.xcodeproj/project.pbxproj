@@ -10,8 +10,6 @@
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		28F95D73A4598B25784F36B1 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB42DE7C5BFFF0B1BFE6DC91 /* Pods_Runner.framework */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
-		4A52044F2AE41F88009EFB24 /* LaunchScreenDev.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4A52044B2AE41F88009EFB24 /* LaunchScreenDev.storyboard */; };
-		4A5204502AE41F88009EFB24 /* LaunchScreenProd.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4A52044D2AE41F88009EFB24 /* LaunchScreenProd.storyboard */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
@@ -37,8 +35,6 @@
 		2AB824CD2A85258800D555D2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2AB824CF2A8525B000D555D2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
-		4A52044C2AE41F88009EFB24 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreenDev.storyboard; sourceTree = "<group>"; };
-		4A52044E2AE41F88009EFB24 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreenProd.storyboard; sourceTree = "<group>"; };
 		535D49CF6C78380D348DA2B5 /* Pods-Runner.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-prod.xcconfig"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -137,8 +133,6 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
-				4A52044B2AE41F88009EFB24 /* LaunchScreenDev.storyboard */,
-				4A52044D2AE41F88009EFB24 /* LaunchScreenProd.storyboard */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
@@ -229,10 +223,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A5204502AE41F88009EFB24 /* LaunchScreenProd.storyboard in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
-				4A52044F2AE41F88009EFB24 /* LaunchScreenDev.storyboard in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 			);
@@ -361,22 +353,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		4A52044B2AE41F88009EFB24 /* LaunchScreenDev.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4A52044C2AE41F88009EFB24 /* Base */,
-			);
-			name = LaunchScreenDev.storyboard;
-			sourceTree = "<group>";
-		};
-		4A52044D2AE41F88009EFB24 /* LaunchScreenProd.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4A52044E2AE41F88009EFB24 /* Base */,
-			);
-			name = LaunchScreenProd.storyboard;
-			sourceTree = "<group>";
-		};
 		97C146FA1CF9000F007C117D /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -465,7 +441,6 @@
 				FLUTTER_TARGET = lib/app/entrypoints/main_dev.dart;
 				GOOGLE_SCHEME = "com.googleusercontent.apps.481445661271-evtbkarml9forfmlkmacvfouj0sas1k8";
 				INFOPLIST_FILE = Runner/Info.plist;
-				LAUNCH_SCREEN_STORYBOARD = LaunchScreenDev;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -545,7 +520,6 @@
 				FLUTTER_TARGET = lib/app/entrypoints/main_dev.dart;
 				GOOGLE_SCHEME = "com.googleusercontent.apps.481445661271-evtbkarml9forfmlkmacvfouj0sas1k8";
 				INFOPLIST_FILE = Runner/Info.plist;
-				LAUNCH_SCREEN_STORYBOARD = LaunchScreenDev;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -624,7 +598,6 @@
 				FLUTTER_TARGET = lib/app/entrypoints/main_proddart;
 				GOOGLE_SCHEME = "com.googleusercontent.apps.680296657690-p43ha52vgppgbf76dmgq7tmepnu270pj";
 				INFOPLIST_FILE = Runner/Info.plist;
-				LAUNCH_SCREEN_STORYBOARD = LaunchScreenProd;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -703,7 +676,6 @@
 				FLUTTER_TARGET = lib/app/entrypoints/main_dev.dart;
 				GOOGLE_SCHEME = "com.googleusercontent.apps.481445661271-evtbkarml9forfmlkmacvfouj0sas1k8";
 				INFOPLIST_FILE = Runner/Info.plist;
-				LAUNCH_SCREEN_STORYBOARD = LaunchScreenDev;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -838,7 +810,6 @@
 				FLUTTER_TARGET = lib/app/entrypoints/main_prod.dart;
 				GOOGLE_SCHEME = "com.googleusercontent.apps.680296657690-p43ha52vgppgbf76dmgq7tmepnu270pj";
 				INFOPLIST_FILE = Runner/Info.plist;
-				LAUNCH_SCREEN_STORYBOARD = LaunchScreenProd;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -865,7 +836,6 @@
 				FLUTTER_TARGET = lib/app/entrypoints/main_proddart;
 				GOOGLE_SCHEME = "com.googleusercontent.apps.680296657690-p43ha52vgppgbf76dmgq7tmepnu270pj";
 				INFOPLIST_FILE = Runner/Info.plist;
-				LAUNCH_SCREEN_STORYBOARD = LaunchScreenProd;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
