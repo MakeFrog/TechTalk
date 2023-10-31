@@ -1,4 +1,4 @@
-import 'package:get_it/get_it.dart';
+import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/features/chat/repositories/chat_repository.dart';
 import 'package:techtalk/features/chat/use_cases/get_answer_feedback_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/get_chat_list_use_case.dart';
@@ -14,6 +14,6 @@ export 'repositories/chat_repository_impl.dart';
 export 'use_cases/get_answer_feedback_use_case.dart';
 export 'use_cases/get_chat_list_use_case.dart';
 
-final chatRepository = GetIt.I<ChatRepository>();
-final getChatListUseCase = GetIt.I<GetChatListUseCase>();
-final getGptReplyOnUserResponse = GetIt.I<GetAnswerFeedbackUseCase>();
+final chatRepository = locator<ChatRepository>();
+final getChatListUseCase = locator<GetChatListUseCase>();
+final getGptReplyOnUserResponse = locator<GetAnswerFeedbackUseCase>();

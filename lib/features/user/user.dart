@@ -1,4 +1,4 @@
-import 'package:get_it/get_it.dart';
+import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/features/user/data/remote/user_remote_data_source.dart';
 import 'package:techtalk/features/user/repositories/user_repository.dart';
 import 'package:techtalk/features/user/usecases/create_user_data_use_case.dart';
@@ -11,8 +11,8 @@ export 'usecases/create_user_data_use_case.dart';
 export 'usecases/get_user_data_use_case.dart';
 export 'usecases/is_exist_nickname_use_case.dart';
 
-final userRemoteDataSource = GetIt.I<UserRemoteDataSource>();
-final userRepository = GetIt.I<UserRepository>();
-final isExistNicknameUseCase = GetIt.I<IsExistNicknameUseCase>();
-final createUserDataUseCase = GetIt.I<CreateUserDataUseCase>();
-final getUserDataUseCase = GetIt.I<GetUserDataUseCase>();
+final userRemoteDataSource = locator<UserRemoteDataSource>();
+final userRepository = locator<UserRepository>();
+final isExistNicknameUseCase = locator<IsExistNicknameUseCase>();
+final createUserDataUseCase = locator<CreateUserDataUseCase>();
+final getUserDataUseCase = locator<GetUserDataUseCase>();
