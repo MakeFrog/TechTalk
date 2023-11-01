@@ -24,7 +24,7 @@ mixin class ChatEvent implements _ChatEvent {
 
     if (message.isEmpty) {
       return ToastService.show(
-        toast: NormalToast(message: '답변을 입력해 주세요'),
+        NormalToast(message: '답변을 입력해 주세요'),
       );
     }
 

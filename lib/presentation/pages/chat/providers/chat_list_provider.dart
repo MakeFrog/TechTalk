@@ -25,7 +25,7 @@ class ChatList extends _$ChatList {
         /// 2. 구조화된 로그 (Presentation, 로깅)
         /// 3. 트스트 Alert 메세지
         log(e.toString());
-        ToastService.show(toast: NormalToast(message: '채팅 내역을 불러오지 못하였습니다'));
+        ToastService.show(NormalToast(message: '채팅 내역을 불러오지 못하였습니다'));
         throw e;
       },
     );
