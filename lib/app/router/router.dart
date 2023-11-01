@@ -117,17 +117,9 @@ class StudyRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return Consumer(
-      builder: (context, ref, child) {
-        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-          ref
-              .read(selectedStudyTopicProvider.notifier)
-              .setTopicByName(topicName);
-        });
+    SelectedStudyTopic.topicName = topicName;
 
-        return StudyPage();
-      },
-    );
+    return StudyPage();
   }
 }
 

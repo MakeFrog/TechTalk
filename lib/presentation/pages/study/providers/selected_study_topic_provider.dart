@@ -7,17 +7,15 @@ part 'selected_study_topic_provider.g.dart';
 
 @riverpod
 class SelectedStudyTopic extends _$SelectedStudyTopic {
+  static String? topicName;
+
   @override
   InterviewTopicEntity? build() {
-    return null;
-  }
-
-  void setTopicByName(String name) {
     final topicList = ref.read(topicListProvider).requireValue.values;
     InterviewTopicEntity? topic;
     for (final topics in topicList) {
       final findTopic = topics.firstWhereOrNull(
-        (element) => element.name == name,
+        (element) => element.name == topicName,
       );
 
       if (findTopic != null) {
@@ -26,6 +24,6 @@ class SelectedStudyTopic extends _$SelectedStudyTopic {
       }
     }
 
-    state = topic;
+    return topic;
   }
 }
