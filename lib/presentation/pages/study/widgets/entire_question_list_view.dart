@@ -24,10 +24,7 @@ class EntireQuestionListView extends ConsumerWidget {
           AppBar(
             backgroundColor: Colors.white,
             leading: const BackButton(),
-            title: Text(
-              '전체 문항',
-              style: AppTextStyle.headline2,
-            ),
+            title: Text('전체 문항'),
             titleSpacing: 0,
           ),
           Expanded(

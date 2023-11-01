@@ -58,10 +58,7 @@ class _AppBar extends StatelessWidget
             ),
           );
 
-          return Text(
-            topicName,
-            style: AppTextStyle.headline2,
-          );
+          return Text(topicName);
         },
       ),
       actions: [

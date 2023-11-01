@@ -16,10 +16,7 @@ class _AppBar extends ConsumerWidget implements PreferredSizeWidget {
           /// TEST
           const SignUpRoute().go(ref.context);
         },
-        child: Text(
-          'Swift',
-          style: AppTextStyle.headline2,
-        ),
+        child: Text('Swift'),
       ),
       leading: SizedBox(
         child: IconButton(

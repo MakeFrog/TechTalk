@@ -33,10 +33,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
-      title: Text(
-        '학습',
-        style: AppTextStyle.headline2,
-      ),
+      title: Text('학습'),
     );
   }
 }
