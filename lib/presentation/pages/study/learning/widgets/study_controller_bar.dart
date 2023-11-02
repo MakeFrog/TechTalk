@@ -4,12 +4,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/pages/study/providers/current_question_page.dart';
-import 'package:techtalk/presentation/pages/study/providers/study_question_list_provider.dart';
-import 'package:techtalk/presentation/pages/study/study_event.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/current_question_page.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/study_question_list_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/study_learning_event.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-class StudyControllerBar extends ConsumerWidget with StudyEvent {
+class StudyControllerBar extends ConsumerWidget with StudyLearningEvent {
   const StudyControllerBar({
     super.key,
   });

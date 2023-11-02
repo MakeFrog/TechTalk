@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/presentation/pages/study/providers/current_question_page.dart';
-import 'package:techtalk/presentation/pages/study/providers/question_answer_blur_provider.dart';
-import 'package:techtalk/presentation/pages/study/providers/question_page_controller.dart';
-import 'package:techtalk/presentation/pages/study/widgets/entire_question_list_view.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/current_question_page.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/question_answer_blur_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/question_page_controller.dart';
+import 'package:techtalk/presentation/pages/study/learning/widgets/entire_question_list_view.dart';
 
-abstract interface class _StudyEvent {
+abstract interface class _StudyLearningEvent {
   void onToggleAnswerBlur(WidgetRef ref);
 
   void onQuestionPageChanged(WidgetRef ref);
@@ -17,7 +17,7 @@ abstract interface class _StudyEvent {
   void onTapNextQuestion(WidgetRef ref);
 }
 
-mixin class StudyEvent implements _StudyEvent {
+mixin class StudyLearningEvent implements _StudyLearningEvent {
   @override
   void onToggleAnswerBlur(WidgetRef ref) {
     ref.read(questionAnswerBlurProvider.notifier).toggle();

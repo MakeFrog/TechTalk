@@ -3,12 +3,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/pages/main/tab_views/study/providers/topic_list_provider.dart';
-import 'package:techtalk/presentation/pages/main/tab_views/study/widgets/study_topic_grid_view.dart';
+import 'package:techtalk/presentation/pages/study/topic_select/providers/topic_list_provider.dart';
+import 'package:techtalk/presentation/pages/study/topic_select/study_topic_select_event.dart';
+import 'package:techtalk/presentation/pages/study/topic_select/widgets/study_topic_card.dart';
+import 'package:techtalk/presentation/pages/study/topic_select/widgets/study_topic_grid_view.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-class StudyTabView extends HookWidget {
-  const StudyTabView({super.key});
+class StudyTopicSelectPage extends HookWidget {
+  const StudyTopicSelectPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,27 +34,29 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
-      title: Text('학습'),
+      title: const Text('학습'),
     );
   }
 }
 
-class _Body extends ConsumerWidget {
+class _Body extends ConsumerWidget with StudyTopicSelectEvent {
   const _Body({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final topicListAsync = ref.watch(topicListProvider);
+    final topicListAsync = ref.watch(studyTopicListProvider);
 
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: topicListAsync.when(
           loading: SizedBox.new,
-          error: (error, stackTrace) => Text('$error'),
+          error: (error, stackTrace) => Center(
+            child: Text('$error'),
+          ),
           data: (data) {
             return ListView.builder(
-              padding: EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: 8),
               itemCount: data.length,
               itemBuilder: (context, index) {
                 final topicAndCategory = data.entries.elementAt(index);
@@ -62,9 +66,22 @@ class _Body extends ConsumerWidget {
                   children: [
                     // TODO : 라벨 공통 요소로 분리
                     _buildCategoryLabel(topicAndCategory.key),
-                    HeightBox(16),
-                    StudyTopicGridView(topicList: topicAndCategory.value),
-                    HeightBox(36),
+                    const HeightBox(16),
+                    StudyTopicGridView(
+                      topicList: topicAndCategory.value,
+                      topicCardBuilder: (context, index) {
+                        final topic = topicAndCategory.value[index];
+
+                        return StudyTopicCard(
+                          topic: topic,
+                          onTap: () => onTapCard(
+                            ref,
+                            topic: topic,
+                          ),
+                        );
+                      },
+                    ),
+                    const HeightBox(36),
                   ],
                 );
               },
@@ -79,7 +96,7 @@ class _Body extends ConsumerWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: 12,
           vertical: 8,
         ),

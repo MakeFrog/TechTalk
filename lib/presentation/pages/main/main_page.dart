@@ -7,9 +7,9 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/main_navigation_tab.enum.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/presentation/pages/home/home_page.dart';
 import 'package:techtalk/presentation/pages/main/main_event.dart';
-import 'package:techtalk/presentation/pages/main/tab_views/home/home_tab_view.dart';
-import 'package:techtalk/presentation/pages/main/tab_views/study/study_tab_view.dart';
+import 'package:techtalk/presentation/pages/study/topic_select/study_topic_select_page.dart';
 import 'package:techtalk/presentation/providers/app_user_data_provider.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
 
@@ -38,16 +38,16 @@ class _Body extends HookConsumerWidget {
   const _Body({super.key});
 
   static const _screens = <Widget>[
-    HomeTabView(
+    HomePage(
       key: ValueKey(MainNavigationTab.home),
     ),
-    StudyTabView(
+    StudyTopicSelectPage(
       key: ValueKey(MainNavigationTab.study),
     ),
-    HomeTabView(
+    HomePage(
       key: ValueKey(MainNavigationTab.note),
     ),
-    HomeTabView(
+    HomePage(
       key: ValueKey(MainNavigationTab.myInfo),
     ),
   ];

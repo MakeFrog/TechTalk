@@ -2,32 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/pages/study/providers/question_answer_blur_provider.dart';
-import 'package:techtalk/presentation/pages/study/providers/selected_study_topic_provider.dart';
-import 'package:techtalk/presentation/pages/study/providers/study_question_list_provider.dart';
-import 'package:techtalk/presentation/pages/study/study_event.dart';
-import 'package:techtalk/presentation/pages/study/widgets/study_controller_bar.dart';
-import 'package:techtalk/presentation/pages/study/widgets/study_progress_indicator.dart';
-import 'package:techtalk/presentation/pages/study/widgets/study_qna_view.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/question_answer_blur_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/selected_study_topic_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/study_question_list_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/study_learning_event.dart';
+import 'package:techtalk/presentation/pages/study/learning/widgets/study_controller_bar.dart';
+import 'package:techtalk/presentation/pages/study/learning/widgets/study_progress_indicator.dart';
+import 'package:techtalk/presentation/pages/study/learning/widgets/study_qna_view.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-class StudyPage extends HookConsumerWidget {
-  const StudyPage({
+class StudyLearningPage extends StatelessWidget {
+  const StudyLearningPage({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isInitTopic = ref.watch(selectedStudyTopicProvider) != null;
-
-    if (!isInitTopic) {
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
-
+  Widget build(BuildContext context) {
     return const Scaffold(
       appBar: _AppBar(),
       body: _Body(),
@@ -36,7 +26,7 @@ class StudyPage extends HookConsumerWidget {
 }
 
 class _AppBar extends StatelessWidget
-    with StudyEvent
+    with StudyLearningEvent
     implements PreferredSizeWidget {
   const _AppBar({
     super.key,
@@ -50,12 +40,8 @@ class _AppBar extends StatelessWidget
     return AppBar(
       titleSpacing: 0,
       title: Consumer(
-        builder: (context, ref, child) {
-          final topicName = ref.watch(
-            selectedStudyTopicProvider.select(
-              (value) => value!.name,
-            ),
-          );
+        builder: (_, ref, __) {
+          final topicName = ref.watch(selectedStudyTopicProvider).name;
 
           return Text(topicName);
         },
@@ -67,7 +53,7 @@ class _AppBar extends StatelessWidget
             color: AppColor.of.gray3,
           ),
         ),
-        WidthBox(8),
+        const WidthBox(8),
         Consumer(
           builder: (context, ref, child) {
             final isBlurAnswer = ref.watch(questionAnswerBlurProvider);
@@ -78,7 +64,7 @@ class _AppBar extends StatelessWidget
             );
           },
         ),
-        WidthBox(16),
+        const WidthBox(16),
       ],
     );
   }
@@ -102,14 +88,14 @@ class _Body extends HookConsumerWidget {
           child: Text('$error'),
         ),
         data: (data) {
-          return Column(
+          return const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HeightBox(24),
-              const StudyProgressIndicator(),
+              StudyProgressIndicator(),
               HeightBox(5),
-              const StudyQnaView(),
-              const StudyControllerBar(),
+              StudyQnaView(),
+              StudyControllerBar(),
             ],
           );
         },

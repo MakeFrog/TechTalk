@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/pages/study/providers/current_question_page.dart';
-import 'package:techtalk/presentation/pages/study/providers/study_question_list_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/current_question_page.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/study_question_list_provider.dart';
 
 class StudyProgressIndicator extends ConsumerWidget {
   const StudyProgressIndicator({

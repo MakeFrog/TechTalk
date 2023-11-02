@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/interview/interview.dart';
-import 'package:techtalk/presentation/pages/main/tab_views/study/providers/topic_list_provider.dart';
+import 'package:techtalk/presentation/pages/study/topic_select/providers/topic_list_provider.dart';
 
 part 'selected_study_topic_provider.g.dart';
 
@@ -10,8 +10,8 @@ class SelectedStudyTopic extends _$SelectedStudyTopic {
   static String? topicName;
 
   @override
-  InterviewTopicEntity? build() {
-    final topicList = ref.read(topicListProvider).requireValue.values;
+  InterviewTopicEntity build() {
+    final topicList = ref.read(studyTopicListProvider).requireValue.values;
     InterviewTopicEntity? topic;
     for (final topics in topicList) {
       final findTopic = topics.firstWhereOrNull(
@@ -22,6 +22,10 @@ class SelectedStudyTopic extends _$SelectedStudyTopic {
         topic = findTopic;
         break;
       }
+    }
+
+    if (topic == null) {
+      throw UnimplementedError;
     }
 
     return topic;

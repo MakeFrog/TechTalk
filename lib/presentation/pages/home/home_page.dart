@@ -3,13 +3,13 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
-import 'package:techtalk/presentation/pages/main/tab_views/home/widgets/cheer_up_message_card.dart';
-import 'package:techtalk/presentation/pages/main/tab_views/home/widgets/practical_interview_card.dart';
-import 'package:techtalk/presentation/pages/main/tab_views/home/widgets/topic_interview_card.dart';
+import 'package:techtalk/presentation/pages/home/widgets/cheer_up_message_card.dart';
+import 'package:techtalk/presentation/pages/home/widgets/practical_interview_card.dart';
+import 'package:techtalk/presentation/pages/home/widgets/topic_interview_card.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-class HomeTabView extends HookWidget {
-  const HomeTabView({super.key});
+class HomePage extends HookWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,14 +47,14 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      physics: ScrollPhysics(),
-      padding: EdgeInsets.symmetric(vertical: 8),
-      children: [
-        const CheerUpMessageCard(),
+      physics: const ScrollPhysics(),
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      children: const [
+        CheerUpMessageCard(),
         HeightBox(16),
-        const PracticalInterviewCard(),
+        PracticalInterviewCard(),
         HeightBox(16),
-        const TopicInterviewCard(),
+        TopicInterviewCard(),
       ],
     );
   }

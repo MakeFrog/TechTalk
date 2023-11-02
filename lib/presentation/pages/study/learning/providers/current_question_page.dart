@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/presentation/pages/study/providers/question_page_controller.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/question_page_controller.dart';
 
 part 'current_question_page.g.dart';
 

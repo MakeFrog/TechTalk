@@ -6,21 +6,22 @@ part of 'topic_list_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$topicListHash() => r'27d25771d4be3976e0b933ab08962198491a0abd';
+String _$studyTopicListHash() => r'2b5b5ef8f5e2e9f74f92d63b2ec009bb7de07549';
 
-/// See also [topicList].
-@ProviderFor(topicList)
-final topicListProvider =
+/// See also [studyTopicList].
+@ProviderFor(studyTopicList)
+final studyTopicListProvider =
     AutoDisposeFutureProvider<Map<String, List<InterviewTopicEntity>>>.internal(
-  topicList,
-  name: r'topicListProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$topicListHash,
+  studyTopicList,
+  name: r'studyTopicListProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$studyTopicListHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef TopicListRef
+typedef StudyTopicListRef
     = AutoDisposeFutureProviderRef<Map<String, List<InterviewTopicEntity>>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/pages/main/tab_views/home/home_event.dart';
+import 'package:techtalk/presentation/pages/home/home_event.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class TopicInterviewCard extends StatelessWidget with HomeEvent {

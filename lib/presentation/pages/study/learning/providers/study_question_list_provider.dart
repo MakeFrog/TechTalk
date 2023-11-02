@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/study/study.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/selected_study_topic_provider.dart';
 
 part 'study_question_list_provider.g.dart';
 
@@ -7,5 +8,9 @@ part 'study_question_list_provider.g.dart';
 Future<StudyQuestionListEntity> studyQuestionList(
   StudyQuestionListRef ref,
 ) async {
-  return getStudyQuestionListUseCase();
+  final topic = ref.watch(selectedStudyTopicProvider);
+
+  final result = await getStudyQuestionListUseCase('react');
+
+  return result.getOrThrow();
 }

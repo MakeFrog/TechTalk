@@ -1,27 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'study_question_list_provider.dart';
+part of 'selected_study_topic_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$studyQuestionListHash() => r'2914d2924445c0d27246b9aa19780c548e7f33e6';
+String _$selectedStudyTopicHash() =>
+    r'9cb001c7885b04690e21a893b945926484ebadbf';
 
-/// See also [studyQuestionList].
-@ProviderFor(studyQuestionList)
-final studyQuestionListProvider =
-    AutoDisposeFutureProvider<StudyQuestionListEntity>.internal(
-  studyQuestionList,
-  name: r'studyQuestionListProvider',
+/// See also [SelectedStudyTopic].
+@ProviderFor(SelectedStudyTopic)
+final selectedStudyTopicProvider = AutoDisposeNotifierProvider<
+    SelectedStudyTopic, InterviewTopicEntity>.internal(
+  SelectedStudyTopic.new,
+  name: r'selectedStudyTopicProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$studyQuestionListHash,
+      : _$selectedStudyTopicHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef StudyQuestionListRef
-    = AutoDisposeFutureProviderRef<StudyQuestionListEntity>;
+typedef _$SelectedStudyTopic = AutoDisposeNotifier<InterviewTopicEntity>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

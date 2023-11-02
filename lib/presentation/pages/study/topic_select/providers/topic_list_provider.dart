@@ -5,8 +5,8 @@ import 'package:techtalk/features/interview/interview.dart';
 part 'topic_list_provider.g.dart';
 
 @riverpod
-Future<Map<String, List<InterviewTopicEntity>>> topicList(
-  TopicListRef ref,
+Future<Map<String, List<InterviewTopicEntity>>> studyTopicList(
+  StudyTopicListRef ref,
 ) async {
   final getInterviewTopicListUseCase = locator<GetInterviewTopicListUseCase>();
 
