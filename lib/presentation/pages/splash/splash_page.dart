@@ -3,12 +3,10 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/core.dart';
-import 'package:techtalk/presentation/providers/app_user_auth_provider.dart';
-import 'package:techtalk/presentation/providers/app_user_data_provider.dart';
+import 'package:techtalk/presentation/pages/splash/splash_event.dart';
 
-class SplashPage extends HookConsumerWidget {
+class SplashPage extends HookConsumerWidget with SplashEvent {
   const SplashPage({super.key});
 
   @override
@@ -16,23 +14,7 @@ class SplashPage extends HookConsumerWidget {
     useEffect(
       () {
         Future.delayed(3.seconds).then((value) async {
-          final isLoggedIn = ref.read(isUserAuthorizedProvider);
-
-          if (!isLoggedIn) {
-            const SignInRoute().go(context);
-          } else {
-            await ref
-                .read(
-              appUserDataProvider.selectAsync((data) => data != null),
-            )
-                .then((hasUserData) {
-              if (hasUserData) {
-                const MainRoute().go(context);
-              } else {
-                const SignUpRoute().go(context);
-              }
-            });
-          }
+          await initUserAuthAndData(ref);
         });
 
         return () {};
