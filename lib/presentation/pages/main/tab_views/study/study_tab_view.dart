@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
@@ -47,13 +46,13 @@ class _Body extends ConsumerWidget {
 
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        padding: EdgeInsets.symmetric(horizontal: 16),
         child: topicListAsync.when(
           loading: SizedBox.new,
           error: (error, stackTrace) => Text('$error'),
           data: (data) {
             return ListView.builder(
-              padding: EdgeInsets.symmetric(vertical: 8.h),
+              padding: EdgeInsets.symmetric(vertical: 8),
               itemCount: data.length,
               itemBuilder: (context, index) {
                 final topicAndCategory = data.entries.elementAt(index);
@@ -63,9 +62,9 @@ class _Body extends ConsumerWidget {
                   children: [
                     // TODO : 라벨 공통 요소로 분리
                     _buildCategoryLabel(topicAndCategory.key),
-                    HeightBox(16.h),
+                    HeightBox(16),
                     StudyTopicGridView(topicList: topicAndCategory.value),
-                    HeightBox(36.h),
+                    HeightBox(36),
                   ],
                 );
               },
@@ -81,12 +80,12 @@ class _Body extends ConsumerWidget {
       alignment: Alignment.centerLeft,
       child: Container(
         padding: EdgeInsets.symmetric(
-          horizontal: 12.w,
-          vertical: 8.h,
+          horizontal: 12,
+          vertical: 8,
         ),
         decoration: BoxDecoration(
           color: AppColor.of.brand1,
-          borderRadius: BorderRadius.circular(8.r),
+          borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
           label,

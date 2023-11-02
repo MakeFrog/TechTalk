@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/interview/interview.dart';
@@ -24,17 +23,17 @@ class TopicCard extends StatelessWidget {
           ? AppColor.of.brand2.withOpacity(0.07)
           : AppColor.of.background1,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          width: 3.w,
+          width: 3,
           color: isSelected ? AppColor.of.brand2 : Colors.transparent,
         ),
       ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(16),
         onTap: onTap,
         child: Padding(
-          padding: EdgeInsets.all(28.r),
+          padding: EdgeInsets.all(28),
           child: Column(
             children: [
               Expanded(
@@ -53,7 +52,7 @@ class TopicCard extends StatelessWidget {
                   ),
                 ),
               ),
-              HeightBox(16.h),
+              HeightBox(16),
               Text(
                 topic.name,
                 style: AppTextStyle.headline3,

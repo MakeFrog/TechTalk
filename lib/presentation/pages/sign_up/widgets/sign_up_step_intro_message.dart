@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
@@ -24,7 +23,7 @@ class SignUpStepIntroMessage extends StatelessWidget {
           title,
           style: AppTextStyle.headline1,
         ),
-        HeightBox(12.h),
+        HeightBox(12),
         Text(
           subTitle,
           style: AppTextStyle.body1.copyWith(

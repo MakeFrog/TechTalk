@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
@@ -20,14 +19,14 @@ class RoundedRectFilledChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: AppColor.of.brand2,
-      borderRadius: BorderRadius.circular(8.r),
+      borderRadius: BorderRadius.circular(8),
       child: InkWell(
-        borderRadius: BorderRadius.circular(8.r),
+        borderRadius: BorderRadius.circular(8),
         onTap: onTap,
         child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: 12.w,
-            vertical: 8.h,
+            horizontal: 12,
+            vertical: 8,
           ),
           child: Row(
             children: [
@@ -37,10 +36,10 @@ class RoundedRectFilledChip extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              WidthBox(2.w),
+              WidthBox(2),
               SvgPicture.asset(
                 Assets.iconsRoundedCloseThick,
-                width: 16.r,
+                width: 16,
               ),
             ],
           ),

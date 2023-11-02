@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/environment/flavor.dart';
@@ -64,30 +63,8 @@ class App extends ConsumerWidget {
       ..dismissOnTap = false;
   }
 
-  void _initScreenUtil(BuildContext context) {
-    // 화면 너비를 가져오기위해 너비 계산 전 init한다.
-    ScreenUtil.init(context);
-
-    // 디자인 사이즈
-    final Size designSize = switch (ScreenUtil().screenWidth) {
-      // Table. 화면 너비가 800 초과 1200 이하일 경우
-      //! 디자인이 없어서 임시로 너비 500을 기준으로 잡음
-      > 800 && <= 1200 => const Size(600, 812),
-      // Mobile. 화면 너비가 0 이상 800 이하일 경우
-      (<= 0 && <= 800) || _ => const Size(375, 812),
-    };
-
-    // 디자인 사이즈를 가져오고 난 후 한번 더 init한다.
-    ScreenUtil.init(
-      context,
-      designSize: designSize,
-    );
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    _initScreenUtil(context);
-
     return MaterialApp.router(
       routerConfig: appRouter(ref),
       debugShowCheckedModeBanner: false,

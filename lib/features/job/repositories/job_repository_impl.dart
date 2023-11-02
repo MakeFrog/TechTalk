@@ -1,6 +1,7 @@
-import 'package:techtalk/features/job/data/remote/job_remote_data_source.dart';
-import 'package:techtalk/features/job/models/job_group_model.dart';
-import 'package:techtalk/features/job/repositories/job_repository.dart';
+import 'package:techtalk/core/models/custom_exception.dart';
+import 'package:techtalk/core/utils/result.dart';
+import 'package:techtalk/features/job/entities/job_group_list_entity.dart';
+import 'package:techtalk/features/job/job.dart';
 
 final class JobRepositoryImpl implements JobRepository {
   const JobRepositoryImpl(
@@ -10,7 +11,19 @@ final class JobRepositoryImpl implements JobRepository {
   final JobRemoteDataSource _jobRemoteDataSource;
 
   @override
-  Future<JobGroupListModel> getJobGroupList() {
-    return _jobRemoteDataSource.getJobGroupList();
+  Future<Result<JobGroupListEntity>> getJobGroupList() async {
+    try {
+      final jobGroupsModel = await _jobRemoteDataSource.getJobGroupList();
+
+      return Result.success(
+        JobGroupListEntity(
+          groups: jobGroupsModel.groups.map(JobGroupEntity.fromModel).toList(),
+        ),
+      );
+    } catch (e) {
+      return Result.failure(
+        CustomException(code: 'code', message: '$e'),
+      );
+    }
   }
 }

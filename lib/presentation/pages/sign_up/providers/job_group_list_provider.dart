@@ -4,6 +4,8 @@ import 'package:techtalk/features/job/job.dart';
 part 'job_group_list_provider.g.dart';
 
 @riverpod
-Future<JobGroupListModel> jobGroupList(JobGroupListRef ref) async {
-  return getJobGroupListUseCase();
+Future<JobGroupListEntity> jobGroupList(JobGroupListRef ref) async {
+  final result = await getJobGroupListUseCase();
+
+  return result.getOrThrow();
 }

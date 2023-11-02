@@ -47,7 +47,7 @@ class _Scaffold extends StatelessWidget {
                   indicator: UnderlineTabIndicator(
                     borderSide: BorderSide(width: 2, color: AppColor.of.black),
                     insets: EdgeInsets.symmetric(
-                      horizontal: ScreenUtil().screenWidth / 4.2,
+                      horizontal: MediaQuery.sizeOf(context).width / 4.2,
                     ),
                   ),
                   labelColor: AppColor.of.black,

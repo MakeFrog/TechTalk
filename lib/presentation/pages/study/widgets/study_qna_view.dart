@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
@@ -51,14 +50,14 @@ class _StudyQna extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: 16.w,
+            horizontal: 16,
           ),
           child: Text(
             question.question,
             style: AppTextStyle.title1,
           ),
         ),
-        HeightBox(8.h),
+        HeightBox(8),
         Expanded(
           child: ListView.builder(
             physics: const ScrollPhysics(),
@@ -74,7 +73,7 @@ class _StudyQna extends StatelessWidget {
 
   Widget _buildAnswer(String answer) {
     return Container(
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(

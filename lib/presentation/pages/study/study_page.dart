@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
@@ -68,7 +67,7 @@ class _AppBar extends StatelessWidget
             color: AppColor.of.gray3,
           ),
         ),
-        WidthBox(8.w),
+        WidthBox(8),
         Consumer(
           builder: (context, ref, child) {
             final isBlurAnswer = ref.watch(questionAnswerBlurProvider);
@@ -79,7 +78,7 @@ class _AppBar extends StatelessWidget
             );
           },
         ),
-        WidthBox(16.w),
+        WidthBox(16),
       ],
     );
   }
@@ -106,9 +105,9 @@ class _Body extends HookConsumerWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HeightBox(24.h),
+              HeightBox(24),
               const StudyProgressIndicator(),
-              HeightBox(5.h),
+              HeightBox(5),
               const StudyQnaView(),
               const StudyControllerBar(),
             ],

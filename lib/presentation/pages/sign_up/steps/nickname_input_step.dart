@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
@@ -9,8 +8,8 @@ import 'package:techtalk/presentation/pages/sign_up/sign_up_event.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_intro_message.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-class NicknameInputScreen extends HookWidget {
-  const NicknameInputScreen({super.key});
+class NicknameInputStep extends HookWidget {
+  const NicknameInputStep({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,7 @@ class NicknameInputScreen extends HookWidget {
     final isRunningDebouncer = useState<bool>(false);
 
     return Padding(
-      padding: EdgeInsets.all(16.r),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -27,7 +26,7 @@ class NicknameInputScreen extends HookWidget {
             title: '안녕하세요. 테크톡으로\n면접을 준비해볼까요?',
             subTitle: '먼저 사용할 닉네임이 필요해요.',
           ),
-          HeightBox(56.h),
+          const HeightBox(56),
           _NicknameInputSection(
             isRunningDebouncer: isRunningDebouncer,
           ),
@@ -73,11 +72,11 @@ class _NicknameInputSection extends HookConsumerWidget with SignUpEvent {
           ),
         ),
         Padding(
-          padding: EdgeInsets.all(8.0.w),
+          padding: const EdgeInsets.all(8.0),
           child: isRunningDebouncer.value
-              ? SizedBox.square(
-                  dimension: 12.r,
-                  child: const CircularProgressIndicator(
+              ? const SizedBox.square(
+                  dimension: 12,
+                  child: CircularProgressIndicator(
                     strokeWidth: 2,
                   ),
                 )

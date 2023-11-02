@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/interview/interview.dart';
@@ -17,13 +16,13 @@ class StudyTopicCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.circular(16.r),
+      borderRadius: BorderRadius.circular(16),
       onTap: onTap,
       child: Ink(
-        padding: EdgeInsets.all(16.r),
+        padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: AppColor.of.background1,
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,11 +37,11 @@ class StudyTopicCard extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: Image.asset(
                 topic.imageUrl!,
-                width: 72.r,
-                height: 72.r,
+                width: 72,
+                height: 72,
                 errorBuilder: (context, error, stackTrace) => Container(
-                  width: 72.r,
-                  height: 72.r,
+                  width: 72,
+                  height: 72,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,

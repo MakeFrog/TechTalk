@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/core.dart';
@@ -23,8 +22,8 @@ class StudyControllerBar extends ConsumerWidget with StudyEvent {
 
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical: 16.h,
-        horizontal: 18.w,
+        vertical: 16,
+        horizontal: 18,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,8 +75,8 @@ class _ControllerButton extends StatelessWidget {
         children: [
           SvgPicture.asset(
             icon,
-            width: 24.r,
-            height: 24.r,
+            width: 24,
+            height: 24,
             colorFilter: isActive
                 ? null
                 : ColorFilter.mode(
@@ -85,7 +84,7 @@ class _ControllerButton extends StatelessWidget {
                     BlendMode.srcATop,
                   ),
           ),
-          HeightBox(12.h),
+          HeightBox(12),
           Text(
             label,
             style: AppTextStyle.alert1.copyWith(

@@ -2,14 +2,14 @@ part of '../app_theme.dart';
 
 final _roundedBorderWithoutLine = OutlineInputBorder(
   borderSide: BorderSide.none,
-  borderRadius: BorderRadius.circular(16.r),
+  borderRadius: BorderRadius.circular(16),
 );
 
 abstract class _InputDecorationTheme {
   static final InputDecorationTheme light = InputDecorationTheme(
     contentPadding: EdgeInsets.symmetric(
-      vertical: 14.h,
-      horizontal: 16.w,
+      vertical: 14,
+      horizontal: 16,
     ),
     filled: true,
     fillColor: AppColor().background1,

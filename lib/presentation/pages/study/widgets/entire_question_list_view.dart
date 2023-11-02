@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
@@ -30,9 +29,9 @@ class EntireQuestionListView extends ConsumerWidget {
           Expanded(
             child: ListView.builder(
               padding: EdgeInsets.symmetric(
-                vertical: 8.h,
+                vertical: 8,
               ),
-              itemExtent: 68.h,
+              itemExtent: 68,
               itemCount: questionList.length,
               itemBuilder: (context, index) => _buildQuestion(
                 ref,
@@ -55,8 +54,8 @@ class EntireQuestionListView extends ConsumerWidget {
       onTap: () => Navigator.pop(ref.context, index),
       child: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: 16.w,
-          vertical: 24.h,
+          horizontal: 16,
+          vertical: 24,
         ),
         child: Row(
           children: [
@@ -66,7 +65,7 @@ class EntireQuestionListView extends ConsumerWidget {
                 color: AppColor.of.gray3,
               ),
             ),
-            WidthBox(16.w),
+            WidthBox(16),
             Text(
               question.question,
               style: AppTextStyle.body1,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
@@ -36,7 +35,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: AppColor.of.background1,
       title: SvgPicture.asset(
         Assets.logoTechTalkLogo,
-        height: 26.h,
+        height: 26,
       ),
     );
   }
@@ -49,12 +48,12 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       physics: ScrollPhysics(),
-      padding: EdgeInsets.symmetric(vertical: 8.h),
+      padding: EdgeInsets.symmetric(vertical: 8),
       children: [
         const CheerUpMessageCard(),
-        HeightBox(16.h),
+        HeightBox(16),
         const PracticalInterviewCard(),
-        HeightBox(16.h),
+        HeightBox(16),
         const TopicInterviewCard(),
       ],
     );
