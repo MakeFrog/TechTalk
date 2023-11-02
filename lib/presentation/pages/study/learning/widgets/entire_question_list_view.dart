@@ -14,7 +14,7 @@ class EntireQuestionListView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final questionList =
-        ref.watch(studyQuestionListProvider).requireValue.questionList;
+        ref.watch(studyQuestionListProvider).requireValue.questions;
 
     return ColoredBox(
       color: Colors.white,

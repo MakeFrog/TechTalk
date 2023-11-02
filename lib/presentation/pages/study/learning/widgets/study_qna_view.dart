@@ -20,7 +20,7 @@ class StudyQnaView extends ConsumerWidget with StudyLearningEvent {
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(questionPageControllerProvider);
     final questionList =
-        ref.watch(studyQuestionListProvider).requireValue.questionList;
+        ref.watch(studyQuestionListProvider).requireValue.questions;
 
     return Expanded(
       child: PageView.builder(
@@ -48,51 +48,58 @@ class _StudyQna extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 16,
-          ),
-          child: Text(
-            question.question,
-            style: AppTextStyle.title1,
-          ),
-        ),
-        HeightBox(8),
-        Expanded(
-          child: ListView.builder(
-            physics: const ScrollPhysics(),
-            itemCount: question.answers.length,
-            itemBuilder: (context, index) => _buildAnswer(
-              question.answers[index],
-            ),
-          ),
-        ),
+        _buildQuestion(),
+        const HeightBox(8),
+        _buildAnswers(),
       ],
     );
   }
 
-  Widget _buildAnswer(String answer) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: AppColor.of.gray2,
-          ),
-        ),
+  Widget _buildQuestion() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16,
       ),
-      child: Consumer(
-        builder: (context, ref, child) {
-          final isBlur = ref.watch(questionAnswerBlurProvider);
+      child: Text(
+        question.question,
+        style: AppTextStyle.title1,
+      ),
+    );
+  }
 
-          return ImageFiltered(
-            imageFilter: ImageFilter.blur(
-              sigmaX: isBlur ? 4 : 0,
-              sigmaY: isBlur ? 4 : 0,
+  Widget _buildAnswers() {
+    final answers = question.answers;
+    return Expanded(
+      child: ListView.builder(
+        physics: const ScrollPhysics(),
+        itemCount: question.answers.length,
+        itemBuilder: (context, index) {
+          final answer = answers[index];
+
+          return Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: AppColor.of.gray2,
+                ),
+              ),
             ),
-            child: Text(
-              answer,
-              style: AppTextStyle.body2,
+            child: Consumer(
+              builder: (context, ref, child) {
+                final isBlur = ref.watch(questionAnswerBlurProvider);
+
+                return ImageFiltered(
+                  imageFilter: ImageFilter.blur(
+                    sigmaX: isBlur ? 4 : 0,
+                    sigmaY: isBlur ? 4 : 0,
+                  ),
+                  child: Text(
+                    answer,
+                    style: AppTextStyle.body2,
+                  ),
+                );
+              },
             ),
           );
         },

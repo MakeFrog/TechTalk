@@ -18,7 +18,7 @@ class StudyControllerBar extends ConsumerWidget with StudyLearningEvent {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentPage = ref.watch(currentQuestionPageProvider);
     final questionCount =
-        ref.watch(studyQuestionListProvider).requireValue.questionList.length;
+        ref.watch(studyQuestionListProvider).requireValue.questions.length;
 
     return Padding(
       padding: EdgeInsets.symmetric(
