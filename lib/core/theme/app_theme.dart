@@ -13,6 +13,7 @@ class AppTheme {
     useMaterial3: true,
     brightness: Brightness.light,
     primarySwatch: Colors.blue,
+    splashFactory: NoSplash.splashFactory,
     textTheme: ThemeData().textTheme.apply(
           fontFamily: 'pretendard',
           bodyColor: AppColor().black,

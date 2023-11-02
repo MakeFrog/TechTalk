@@ -3,73 +3,67 @@ part of '../chat_page.dart';
 class _Scaffold extends StatelessWidget {
   const _Scaffold({
     Key? key,
-    required this.appBar,
     required this.chatTabView,
     required this.summaryTabView,
     required this.tabController,
   }) : super(key: key);
 
-  final PreferredSizeWidget appBar;
   final Widget chatTabView;
   final Widget summaryTabView;
   final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.of.white,
-      appBar: appBar,
-      body: Column(
-        children: <Widget>[
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      width: 0.5,
-                      color: AppColor.of.gray2,
-                    ),
+    return Column(
+      children: <Widget>[
+        Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    width: 0.5,
+                    color: AppColor.of.gray2,
                   ),
-                ),
-                child: TabBar(
-                  controller: tabController,
-                  tabs: const [
-                    Tab(
-                      text: '면접',
-                    ),
-                    Tab(
-                      text: '문답',
-                    ),
-                  ],
-                  indicator: UnderlineTabIndicator(
-                    borderSide: BorderSide(width: 2, color: AppColor.of.black),
-                    insets: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.sizeOf(context).width / 4.2,
-                    ),
-                  ),
-                  labelColor: AppColor.of.black,
-                  unselectedLabelColor: AppColor.of.gray3,
-                  indicatorColor: AppColor.of.black,
-                  labelStyle: AppTextStyle.title3,
-                  unselectedLabelStyle: AppTextStyle.body2,
                 ),
               ),
+              child: TabBar(
+                controller: tabController,
+                tabs: const [
+                  Tab(
+                    text: '면접',
+                  ),
+                  Tab(
+                    text: '문답',
+                  ),
+                ],
+                indicator: UnderlineTabIndicator(
+                  borderSide: BorderSide(width: 2, color: AppColor.of.black),
+                  insets: EdgeInsets.symmetric(
+                    horizontal: AppSize.to.screenWidth / 4.2,
+                  ),
+                ),
+                labelColor: AppColor.of.black,
+                unselectedLabelColor: AppColor.of.gray3,
+                indicatorColor: AppColor.of.black,
+                labelStyle: AppTextStyle.title3,
+                unselectedLabelStyle: AppTextStyle.body2,
+              ),
+            ),
+          ],
+        ),
+        Expanded(
+          child: TabBarView(
+            controller: tabController,
+            children: [
+              chatTabView,
+              summaryTabView,
             ],
           ),
-          Expanded(
-            child: TabBarView(
-              controller: tabController,
-              children: [
-                chatTabView,
-                summaryTabView,
-              ],
-            ),
-          )
-        ],
-      ),
+        )
+      ],
     );
   }
 }

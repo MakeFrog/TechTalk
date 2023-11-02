@@ -1,6 +1,8 @@
 part of '../chat_page.dart';
 
-class _AppBar extends ConsumerWidget implements PreferredSizeWidget {
+class _AppBar extends ConsumerWidget
+    with ChatEvent
+    implements PreferredSizeWidget {
   const _AppBar({Key? key}) : super(key: key);
 
   @override
@@ -11,16 +13,15 @@ class _AppBar extends ConsumerWidget implements PreferredSizeWidget {
       centerTitle: false,
       automaticallyImplyLeading: false,
       leadingWidth: 56,
-      title: GestureDetector(
-        onTap: () {
-          /// TEST
-          const SignUpRoute().go(ref.context);
-        },
-        child: Text('Swift'),
+      title: Text(
+        'Swift',
+        style: AppTextStyle.headline2,
       ),
       leading: SizedBox(
         child: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            onAppbarBackBtnTapped();
+          },
           icon: SvgPicture.asset(Assets.iconsArrowLeft),
         ),
       ),
