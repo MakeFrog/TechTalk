@@ -21,6 +21,7 @@ InterviewTopicEntity _$InterviewTopicEntityFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$InterviewTopicEntity {
   String get name => throw _privateConstructorUsedError;
+  String get category => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +36,7 @@ abstract class $InterviewTopicEntityCopyWith<$Res> {
           $Res Function(InterviewTopicEntity) then) =
       _$InterviewTopicEntityCopyWithImpl<$Res, InterviewTopicEntity>;
   @useResult
-  $Res call({String name, String? imageUrl});
+  $Res call({String name, String category, String? imageUrl});
 }
 
 /// @nodoc
@@ -53,12 +54,17 @@ class _$InterviewTopicEntityCopyWithImpl<$Res,
   @override
   $Res call({
     Object? name = null,
+    Object? category = null,
     Object? imageUrl = freezed,
   }) {
     return _then(_value.copyWith(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      category: null == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
               as String,
       imageUrl: freezed == imageUrl
           ? _value.imageUrl
@@ -76,7 +82,7 @@ abstract class _$$InterviewTopicEntityImplCopyWith<$Res>
       __$$InterviewTopicEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, String? imageUrl});
+  $Res call({String name, String category, String? imageUrl});
 }
 
 /// @nodoc
@@ -91,12 +97,17 @@ class __$$InterviewTopicEntityImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = null,
+    Object? category = null,
     Object? imageUrl = freezed,
   }) {
     return _then(_$InterviewTopicEntityImpl(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      category: null == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
               as String,
       imageUrl: freezed == imageUrl
           ? _value.imageUrl
@@ -109,7 +120,8 @@ class __$$InterviewTopicEntityImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$InterviewTopicEntityImpl implements _InterviewTopicEntity {
-  const _$InterviewTopicEntityImpl({required this.name, this.imageUrl});
+  const _$InterviewTopicEntityImpl(
+      {required this.name, required this.category, this.imageUrl});
 
   factory _$InterviewTopicEntityImpl.fromJson(Map<String, dynamic> json) =>
       _$$InterviewTopicEntityImplFromJson(json);
@@ -117,11 +129,13 @@ class _$InterviewTopicEntityImpl implements _InterviewTopicEntity {
   @override
   final String name;
   @override
+  final String category;
+  @override
   final String? imageUrl;
 
   @override
   String toString() {
-    return 'InterviewTopicEntity(name: $name, imageUrl: $imageUrl)';
+    return 'InterviewTopicEntity(name: $name, category: $category, imageUrl: $imageUrl)';
   }
 
   @override
@@ -130,13 +144,15 @@ class _$InterviewTopicEntityImpl implements _InterviewTopicEntity {
         (other.runtimeType == runtimeType &&
             other is _$InterviewTopicEntityImpl &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.category, category) ||
+                other.category == category) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name, imageUrl);
+  int get hashCode => Object.hash(runtimeType, name, category, imageUrl);
 
   @JsonKey(ignore: true)
   @override
@@ -157,6 +173,7 @@ class _$InterviewTopicEntityImpl implements _InterviewTopicEntity {
 abstract class _InterviewTopicEntity implements InterviewTopicEntity {
   const factory _InterviewTopicEntity(
       {required final String name,
+      required final String category,
       final String? imageUrl}) = _$InterviewTopicEntityImpl;
 
   factory _InterviewTopicEntity.fromJson(Map<String, dynamic> json) =
@@ -164,6 +181,8 @@ abstract class _InterviewTopicEntity implements InterviewTopicEntity {
 
   @override
   String get name;
+  @override
+  String get category;
   @override
   String? get imageUrl;
   @override

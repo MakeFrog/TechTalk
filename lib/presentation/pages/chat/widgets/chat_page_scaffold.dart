@@ -47,7 +47,7 @@ class _Scaffold extends StatelessWidget {
                   indicator: UnderlineTabIndicator(
                     borderSide: BorderSide(width: 2, color: AppColor.of.black),
                     insets: EdgeInsets.symmetric(
-                      horizontal: AppSize.to.screenWidth / 4.2,
+                      horizontal: ScreenUtil().screenWidth / 4.2,
                     ),
                   ),
                   labelColor: AppColor.of.black,
@@ -63,7 +63,7 @@ class _Scaffold extends StatelessWidget {
             child: TabBarView(
               controller: tabController,
               children: [
-                KeepAliveView(child: chatTabView),
+                chatTabView,
                 summaryTabView,
               ],
             ),

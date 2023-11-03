@@ -7,49 +7,24 @@ part of 'router.dart';
 // **************************************************************************
 
 List<RouteBase> get $appRoutes => [
-      $mainRoute,
+      $splashRoute,
       $signInRoute,
       $signUpRoute,
-      $homeRoute,
+      $mainRoute,
       $chatPageRoute,
     ];
 
-RouteBase get $mainRoute => GoRouteData.$route(
-      path: '/',
-      name: '/',
-      factory: $MainRouteExtension._fromState,
-      routes: [
-        GoRouteData.$route(
-          path: 'topic-select',
-          name: 'topic-select',
-          factory: $HomeTopicSelectRouteExtension._fromState,
-        ),
-      ],
+RouteBase get $splashRoute => GoRouteData.$route(
+      path: '/splash',
+      name: '/splash',
+      factory: $SplashRouteExtension._fromState,
     );
 
-extension $MainRouteExtension on MainRoute {
-  static MainRoute _fromState(GoRouterState state) => const MainRoute();
+extension $SplashRouteExtension on SplashRoute {
+  static SplashRoute _fromState(GoRouterState state) => const SplashRoute();
 
   String get location => GoRouteData.$location(
-        '/',
-      );
-
-  void go(BuildContext context) => context.go(location);
-
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  void replace(BuildContext context) => context.replace(location);
-}
-
-extension $HomeTopicSelectRouteExtension on HomeTopicSelectRoute {
-  static HomeTopicSelectRoute _fromState(GoRouterState state) =>
-      const HomeTopicSelectRoute();
-
-  String get location => GoRouteData.$location(
-        '/topic-select',
+        '/splash',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -96,6 +71,81 @@ extension $SignUpRouteExtension on SignUpRoute {
 
   String get location => GoRouteData.$location(
         '/sign-up',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $mainRoute => GoRouteData.$route(
+      path: '/',
+      name: '/',
+      factory: $MainRouteExtension._fromState,
+      routes: [
+        GoRouteData.$route(
+          path: 'topic-select',
+          name: 'topic-select',
+          factory: $HomeTopicSelectRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'study',
+          name: 'study',
+          factory: $StudyRouteExtension._fromState,
+        ),
+      ],
+    );
+
+extension $MainRouteExtension on MainRoute {
+  static MainRoute _fromState(GoRouterState state) => const MainRoute();
+
+  String get location => GoRouteData.$location(
+        '/',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $HomeTopicSelectRouteExtension on HomeTopicSelectRoute {
+  static HomeTopicSelectRoute _fromState(GoRouterState state) =>
+      const HomeTopicSelectRoute();
+
+  String get location => GoRouteData.$location(
+        '/topic-select',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $StudyRouteExtension on StudyRoute {
+  static StudyRoute _fromState(GoRouterState state) => StudyRoute(
+        state.uri.queryParameters['topic-name']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/study',
+        queryParams: {
+          'topic-name': topicName,
+        },
       );
 
   void go(BuildContext context) => context.go(location);

@@ -6,7 +6,7 @@ part of 'job_group_list_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$jobGroupListHash() => r'22519dde47e6ca049355af5da62a92556498eeac';
+String _$jobGroupListHash() => r'9c2da96d8b2552c611ef4364c3beb81ebe70f04d';
 
 /// See also [jobGroupList].
 @ProviderFor(jobGroupList)

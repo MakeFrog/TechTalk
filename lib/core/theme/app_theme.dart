@@ -1,9 +1,11 @@
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 
+part 'components/app_bar_theme.dart';
 part 'components/filled_button_theme.dart';
 part 'components/input_decoration_theme.dart';
 
@@ -19,10 +21,7 @@ class AppTheme {
         ),
     filledButtonTheme: _FilledButtonTheme.light,
     inputDecorationTheme: _InputDecorationTheme.light,
-    appBarTheme: const AppBarTheme(
-      systemOverlayStyle: SystemUiOverlayStyle.dark,
-    ),
-
+    appBarTheme: _AppBarTheme.light,
     // 플랫폼별 라우팅 애니메이션 속성
     pageTransitionsTheme: const PageTransitionsTheme(
       builders: {

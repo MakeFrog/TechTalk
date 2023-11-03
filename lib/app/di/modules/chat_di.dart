@@ -1,5 +1,5 @@
+import 'package:get_it/get_it.dart';
 import 'package:techtalk/app/di/feature_di_interface.dart';
-import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
 final class ChatDependencyInject extends FeatureDependencyInjection {
@@ -8,12 +8,12 @@ final class ChatDependencyInject extends FeatureDependencyInjection {
 
   @override
   void repositories() {
-    locator.registerLazySingleton<ChatRepository>(() => ChatRepositoryImpl());
+    GetIt.I.registerLazySingleton<ChatRepository>(() => ChatRepositoryImpl());
   }
 
   @override
   void useCases() {
-    locator.registerFactory(() => GetChatListUseCase(chatRepository));
-    locator.registerFactory(() => GetAnswerFeedbackUseCase());
+    GetIt.I.registerFactory(() => GetChatListUseCase(chatRepository));
+    GetIt.I.registerFactory(() => GetAnswerFeedbackUseCase());
   }
 }

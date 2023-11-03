@@ -6,7 +6,7 @@ part of 'sign_up_form_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$signUpFormHash() => r'1adbe56713dfa7524ae3fcc4702cc6ae90c80f49';
+String _$signUpFormHash() => r'4be560f1b6df661d7edbabb0c4163c5658c05dc9';
 
 /// See also [SignUpForm].
 @ProviderFor(SignUpForm)

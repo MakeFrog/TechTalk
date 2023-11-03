@@ -21,6 +21,7 @@ InterviewTopicModel _$InterviewTopicModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$InterviewTopicModel {
   String get name => throw _privateConstructorUsedError;
+  String get category => throw _privateConstructorUsedError;
   String? get topicImageUrl => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +36,7 @@ abstract class $InterviewTopicModelCopyWith<$Res> {
           InterviewTopicModel value, $Res Function(InterviewTopicModel) then) =
       _$InterviewTopicModelCopyWithImpl<$Res, InterviewTopicModel>;
   @useResult
-  $Res call({String name, String? topicImageUrl});
+  $Res call({String name, String category, String? topicImageUrl});
 }
 
 /// @nodoc
@@ -52,12 +53,17 @@ class _$InterviewTopicModelCopyWithImpl<$Res, $Val extends InterviewTopicModel>
   @override
   $Res call({
     Object? name = null,
+    Object? category = null,
     Object? topicImageUrl = freezed,
   }) {
     return _then(_value.copyWith(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      category: null == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
               as String,
       topicImageUrl: freezed == topicImageUrl
           ? _value.topicImageUrl
@@ -75,7 +81,7 @@ abstract class _$$InterviewTopicModelImplCopyWith<$Res>
       __$$InterviewTopicModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, String? topicImageUrl});
+  $Res call({String name, String category, String? topicImageUrl});
 }
 
 /// @nodoc
@@ -90,12 +96,17 @@ class __$$InterviewTopicModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = null,
+    Object? category = null,
     Object? topicImageUrl = freezed,
   }) {
     return _then(_$InterviewTopicModelImpl(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      category: null == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
               as String,
       topicImageUrl: freezed == topicImageUrl
           ? _value.topicImageUrl
@@ -108,7 +119,8 @@ class __$$InterviewTopicModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$InterviewTopicModelImpl implements _InterviewTopicModel {
-  const _$InterviewTopicModelImpl({required this.name, this.topicImageUrl});
+  const _$InterviewTopicModelImpl(
+      {required this.name, required this.category, this.topicImageUrl});
 
   factory _$InterviewTopicModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$InterviewTopicModelImplFromJson(json);
@@ -116,11 +128,13 @@ class _$InterviewTopicModelImpl implements _InterviewTopicModel {
   @override
   final String name;
   @override
+  final String category;
+  @override
   final String? topicImageUrl;
 
   @override
   String toString() {
-    return 'InterviewTopicModel(name: $name, topicImageUrl: $topicImageUrl)';
+    return 'InterviewTopicModel(name: $name, category: $category, topicImageUrl: $topicImageUrl)';
   }
 
   @override
@@ -129,13 +143,15 @@ class _$InterviewTopicModelImpl implements _InterviewTopicModel {
         (other.runtimeType == runtimeType &&
             other is _$InterviewTopicModelImpl &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.category, category) ||
+                other.category == category) &&
             (identical(other.topicImageUrl, topicImageUrl) ||
                 other.topicImageUrl == topicImageUrl));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name, topicImageUrl);
+  int get hashCode => Object.hash(runtimeType, name, category, topicImageUrl);
 
   @JsonKey(ignore: true)
   @override
@@ -155,6 +171,7 @@ class _$InterviewTopicModelImpl implements _InterviewTopicModel {
 abstract class _InterviewTopicModel implements InterviewTopicModel {
   const factory _InterviewTopicModel(
       {required final String name,
+      required final String category,
       final String? topicImageUrl}) = _$InterviewTopicModelImpl;
 
   factory _InterviewTopicModel.fromJson(Map<String, dynamic> json) =
@@ -162,6 +179,8 @@ abstract class _InterviewTopicModel implements InterviewTopicModel {
 
   @override
   String get name;
+  @override
+  String get category;
   @override
   String? get topicImageUrl;
   @override

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
@@ -18,7 +19,7 @@ class NicknameInputScreen extends HookWidget {
     final isRunningDebouncer = useState<bool>(false);
 
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.r),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -26,7 +27,7 @@ class NicknameInputScreen extends HookWidget {
             title: '안녕하세요. 테크톡으로\n면접을 준비해볼까요?',
             subTitle: '먼저 사용할 닉네임이 필요해요.',
           ),
-          const HeightBox(56),
+          HeightBox(56.h),
           _NicknameInputSection(
             isRunningDebouncer: isRunningDebouncer,
           ),
@@ -72,11 +73,11 @@ class _NicknameInputSection extends HookConsumerWidget with SignUpEvent {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(8.0.w),
           child: isRunningDebouncer.value
-              ? const SizedBox.square(
-                  dimension: 12,
-                  child: CircularProgressIndicator(
+              ? SizedBox.square(
+                  dimension: 12.r,
+                  child: const CircularProgressIndicator(
                     strokeWidth: 2,
                   ),
                 )
@@ -106,7 +107,7 @@ class _NicknameInputSection extends HookConsumerWidget with SignUpEvent {
             ),
           );
         } else {
-          return SizedBox();
+          return const SizedBox();
         }
       },
     );

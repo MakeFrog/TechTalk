@@ -8,7 +8,8 @@ import 'package:techtalk/core/constants/main_navigation_tab.enum.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/main/main_event.dart';
-import 'package:techtalk/presentation/pages/main/screens/home/home_screen.dart';
+import 'package:techtalk/presentation/pages/main/tab_views/home/home_tab_view.dart';
+import 'package:techtalk/presentation/pages/main/tab_views/study/study_tab_view.dart';
 import 'package:techtalk/presentation/providers/app_user_data_provider.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
 
@@ -37,17 +38,17 @@ class _Body extends HookConsumerWidget {
   const _Body({super.key});
 
   static const _screens = <Widget>[
-    HomeScreen(
-      key: ValueKey(0),
+    HomeTabView(
+      key: ValueKey(MainNavigationTab.home),
     ),
-    HomeScreen(
-      key: ValueKey(1),
+    StudyTabView(
+      key: ValueKey(MainNavigationTab.study),
     ),
-    HomeScreen(
-      key: ValueKey(2),
+    HomeTabView(
+      key: ValueKey(MainNavigationTab.note),
     ),
-    HomeScreen(
-      key: ValueKey(3),
+    HomeTabView(
+      key: ValueKey(MainNavigationTab.myInfo),
     ),
   ];
 
@@ -56,7 +57,7 @@ class _Body extends HookConsumerWidget {
     final pageController = usePageController();
 
     ref.listen(mainBottomNavigationProvider, (_, next) {
-      pageController.jumpToPage(next);
+      pageController.jumpToPage(next.index);
     });
 
     return PageView(
@@ -72,10 +73,10 @@ class _BottomNavigationBar extends ConsumerWidget with MainEvent {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentIndex = ref.watch(mainBottomNavigationProvider);
+    final currentTab = ref.watch(mainBottomNavigationProvider);
 
     return BottomNavigationBar(
-      currentIndex: currentIndex,
+      currentIndex: currentTab.index,
       backgroundColor: Colors.white,
       type: BottomNavigationBarType.fixed,
       showSelectedLabels: true,
@@ -95,7 +96,9 @@ class _BottomNavigationBar extends ConsumerWidget with MainEvent {
             icon: SvgPicture.asset(
               e.iconPath,
               colorFilter: ColorFilter.mode(
-                currentIndex == index ? AppColor.of.gray5 : AppColor.of.gray2,
+                currentTab.index == index
+                    ? AppColor.of.gray5
+                    : AppColor.of.gray2,
                 BlendMode.srcIn,
               ),
             ),
