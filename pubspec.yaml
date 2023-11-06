@@ -67,7 +67,7 @@ dependencies:
 
   # 앱 정보
   package_info_plus: ^4.1.0
-  collection: ^1.17.2
+  collection: ^1.17.1
   flutter_screenutil: ^5.9.0
 
 dev_dependencies:
