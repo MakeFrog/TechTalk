@@ -5,21 +5,25 @@ import 'package:techtalk/core/utils/route_argument.dart';
 import 'package:techtalk/features/chat/enums/interview_progress_state.enum.dart';
 import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
 import 'package:techtalk/presentation/pages/chat/chat_page.dart';
-import 'package:techtalk/presentation/pages/home/home_page.dart';
+import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
+import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
-import 'package:techtalk/presentation/providers/app_user_auth_provider.dart';
+import 'package:techtalk/presentation/pages/splash/splash_page.dart';
+import 'package:techtalk/presentation/pages/study/providers/selected_study_topic_provider.dart';
+import 'package:techtalk/presentation/pages/study/study_page.dart';
+import 'package:techtalk/presentation/pages/test_page/test_page.dart';
 
 part 'router.g.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
 GoRouter appRouter(WidgetRef ref) => GoRouter(
-  debugLogDiagnostics: true,
-  navigatorKey: rootNavigatorKey,
-  initialLocation: SplashRoute.name,
-  routes: $appRoutes,
-);
+      debugLogDiagnostics: true,
+      navigatorKey: rootNavigatorKey,
+      initialLocation: SplashRoute.name,
+      routes: $appRoutes,
+    );
 
 ///
 /// splash
@@ -35,7 +39,7 @@ class SplashRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return SplashPage();
+    return const SplashPage();
   }
 }
 
