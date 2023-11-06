@@ -34,9 +34,5 @@ class WidthBox extends SizedBox {
 }
 
 class EmptyBox extends SizedBox {
-  const EmptyBox({super.key})
-      : super(
-          width: 0,
-          height: 0,
-        );
+  const EmptyBox({super.key}) : super.shrink();
 }

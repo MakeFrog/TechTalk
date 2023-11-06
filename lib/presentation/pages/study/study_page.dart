@@ -11,6 +11,7 @@ import 'package:techtalk/presentation/pages/study/widgets/study_controller_bar.d
 import 'package:techtalk/presentation/pages/study/widgets/study_progress_indicator.dart';
 import 'package:techtalk/presentation/pages/study/widgets/study_qna_view.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
+import 'package:techtalk/presentation/widgets/common/input/flat_switch.dart';
 
 class StudyPage extends HookConsumerWidget {
   const StudyPage({

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:techtalk/presentation/widgets/common/chip/rounded_rect_filled_chip.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class SelectResultChipListView extends StatelessWidget {

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/utils/route_argument.dart';
+import 'package:techtalk/features/chat/enums/interview_progress_state.enum.dart';
+import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
 import 'package:techtalk/presentation/pages/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
@@ -10,6 +12,7 @@ import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
 import 'package:techtalk/presentation/pages/study/providers/selected_study_topic_provider.dart';
 import 'package:techtalk/presentation/pages/study/study_page.dart';
+import 'package:techtalk/presentation/pages/test_page/test_page.dart';
 
 part 'router.g.dart';
 
@@ -36,7 +39,7 @@ class SplashRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return SplashPage();
+    return const SplashPage();
   }
 }
 
@@ -93,6 +96,7 @@ class MainRoute extends GoRouteData {
   const MainRoute();
 
   static const String name = '/';
+
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return MainPage();
@@ -131,15 +135,42 @@ class StudyRoute extends GoRouteData {
   }
 }
 
+typedef ChatPageRouteArg = ({
+  InterviewProgressState progressState,
+  String? roomId,
+  InterviewTopic topic
+});
+
 @TypedGoRoute<ChatPageRoute>(path: ChatPageRoute.name, name: ChatPageRoute.name)
 class ChatPageRoute extends GoRouteData {
-  const ChatPageRoute();
+  const ChatPageRoute(
+      {required this.progressState, required this.roomId, required this.topic});
 
   static const String name = '/chat';
 
+  final InterviewProgressState progressState;
+  final String? roomId;
+  final InterviewTopic topic;
+
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    RouteArg.update(state.extra ?? 'ASDKJF32STSS3A');
+    final ChatPageRouteArg arg =
+        (progressState: progressState, roomId: roomId, topic: topic);
+
+    RouteArg.update(arg);
+
     return const ChatPage();
+  }
+}
+
+@TypedGoRoute<TestPageRoute>(path: TestPageRoute.name, name: TestPageRoute.name)
+class TestPageRoute extends GoRouteData {
+  const TestPageRoute();
+
+  static const String name = '/test';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const TestPage();
   }
 }

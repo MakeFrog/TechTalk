@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/core/services/toast_service.dart';
 import 'package:techtalk/core/utils/route_argument.dart';
@@ -14,9 +15,22 @@ part 'chat_list_provider.g.dart';
 class ChatList extends _$ChatList {
   @override
   FutureOr<List<ChatEntity>> build() async {
-    final response = await getChatListUseCase(RouteArg.argument);
+    final routeArg = RouteArg.argument as ChatPageRouteArg;
+    final GetChatListParam param = (
+      progressState: routeArg.progressState,
+      userName: '지혜',
+      roomId: routeArg.roomId,
+      topic: routeArg.topic
+    );
+
+    final response = await getChatListUseCase(param);
     return response.fold(
       onSuccess: (chatList) {
+        /// 처음 채팅방에 진입하였다면 첫 번째 면접 질문 제시
+        if (routeArg.progressState.isInitial) {
+          chatList.first.message.listen(null, onDone: shoQuestion);
+        }
+
         return chatList;
       },
       onFailure: (e) {
@@ -75,11 +89,11 @@ class ChatList extends _$ChatList {
       (previous) => [
         ReceivedChatEntity.createStreamChat(
           type: ChatType.replyToUserAnswer,
-          message: getGptReplyOnUserResponse.call(
+          message: getAnswerFeedBackUseCase.call(
             (
               category: 'Swift',
               checkAnswer: updateUserAnswerState,
-              onFeedBackCompleted: showNextQuestion,
+              onFeedBackCompleted: shoQuestion,
               question: state.requireValue
                   .firstWhere((chat) => chat.type.isAskQuestionMessage)
                   .message
@@ -96,7 +110,7 @@ class ChatList extends _$ChatList {
   ///
   /// 다음 면접 질문 제시
   ///
-  Future<void> showNextQuestion() async {
+  Future<void> shoQuestion() async {
     await update(
       (previous) => [
         ReceivedChatEntity.createStreamChat(

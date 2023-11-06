@@ -2,6 +2,7 @@ import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/features/chat/repositories/chat_repository.dart';
 import 'package:techtalk/features/chat/use_cases/get_answer_feedback_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/get_chat_list_use_case.dart';
+import 'package:techtalk/features/chat/use_cases/get_interview_qna_list_use_case.dart';
 
 export 'chat.dart';
 export 'entities/chat_entity.dart';
@@ -16,4 +17,5 @@ export 'use_cases/get_chat_list_use_case.dart';
 
 final chatRepository = locator<ChatRepository>();
 final getChatListUseCase = locator<GetChatListUseCase>();
-final getGptReplyOnUserResponse = locator<GetAnswerFeedbackUseCase>();
+final getAnswerFeedBackUseCase = locator<GetAnswerFeedbackUseCase>();
+final getInterviewQnaListUseCase = locator<GetInterviewQnaListUseCase>();
