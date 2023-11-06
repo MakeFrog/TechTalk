@@ -9,13 +9,23 @@ import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/chat/widgets/interview_tab_view.dart';
 import 'package:techtalk/presentation/pages/chat/widgets/qna_tab_view.dart';
-import 'package:techtalk/presentation/widgets/base/base_hook_page.dart';
+import 'package:techtalk/presentation/widgets/base/base_page.dart';
 
 part 'widgets/chat_page_app_bar.dart';
 part 'widgets/chat_page_scaffold.dart';
 
-class ChatPage extends BaseHookPage {
+class ChatPage extends BaseRefHookPage {
   const ChatPage({Key? key}) : super(key: key);
+
+  @override
+  void onInit(WidgetRef? ref) {
+    print("chat page initialized");
+  }
+
+  @override
+  void onDispose(WidgetRef? ref) {
+    print("chat page disposed");
+  }
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {

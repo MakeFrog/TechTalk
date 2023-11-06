@@ -7,12 +7,12 @@ part of 'chat_scroll_controller_provider.dart';
 // **************************************************************************
 
 String _$chatScrollControllerHash() =>
-    r'509a1e2614a2aa99cc244cbe7491341da6f9bd20';
+    r'80582be39be7c282fcc8bd22f42594e2d796a530';
 
 /// See also [ChatScrollController].
 @ProviderFor(ChatScrollController)
-final chatScrollControllerProvider =
-    NotifierProvider<ChatScrollController, ScrollController>.internal(
+final chatScrollControllerProvider = AutoDisposeNotifierProvider<
+    ChatScrollController, ScrollController>.internal(
   ChatScrollController.new,
   name: r'chatScrollControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +22,6 @@ final chatScrollControllerProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$ChatScrollController = Notifier<ScrollController>;
+typedef _$ChatScrollController = AutoDisposeNotifier<ScrollController>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

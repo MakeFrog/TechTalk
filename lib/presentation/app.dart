@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/environment/flavor.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/app_theme.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 
@@ -98,6 +99,7 @@ class App extends ConsumerWidget {
       builder: EasyLoading.init(
         builder: (context, child) {
           AppColor.init(context);
+          AppSize.to.init(context);
 
           return FToastBuilder()(
             context,

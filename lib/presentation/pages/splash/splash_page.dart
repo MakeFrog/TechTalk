@@ -15,7 +15,7 @@ class SplashPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     useEffect(
       () {
-        Future.delayed(3.seconds).then((value) async {
+        Future.delayed(1.seconds).then((value) async {
           final isLoggedIn = ref.read(isUserAuthorizedProvider);
 
           if (!isLoggedIn) {
@@ -27,9 +27,13 @@ class SplashPage extends HookConsumerWidget {
             )
                 .then((hasUserData) {
               if (hasUserData) {
-                const MainRoute().go(context);
+                const TestPageRoute().go(context);
+
+                // const MainRoute().go(context);
               } else {
-                const SignUpRoute().go(context);
+                const TestPageRoute().go(context);
+
+                // const SignUpRoute().go(context);
               }
             });
           }
