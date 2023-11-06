@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
-import 'package:techtalk/presentation/widgets/common/state/keep_alive_view.dart';
 
 class Bubble extends StatelessWidget {
   const Bubble({
@@ -61,28 +61,32 @@ class Bubble extends StatelessWidget {
                   builder: (BuildContext context) {
                     if (item.isStreamApplied) {
                       /// STREAMED MESSAGE
-                      return KeepAliveView(
-                        child: StreamBuilder<String>(
-                          stream: item.message.stream,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return Text(
-                                snapshot.requireData,
-                                style: AppTextStyle.alert2,
-                              );
-                            } else {
-                              /// LOADING INDICATOR
-                              return SizedBox(
-                                height: 17,
-                                width: 17,
-                                child: CircularProgressIndicator(
-                                  color: AppColor.of.gray3,
-                                  strokeWidth: 2,
-                                ),
-                              );
-                            }
-                          },
-                        ),
+                      return HookBuilder(
+                        builder: (context) {
+                          useAutomaticKeepAlive();
+
+                          return StreamBuilder<String>(
+                            stream: item.message.stream,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Text(
+                                  snapshot.requireData,
+                                  style: AppTextStyle.alert2,
+                                );
+                              } else {
+                                /// LOADING INDICATOR
+                                return SizedBox(
+                                  height: 17,
+                                  width: 17,
+                                  child: CircularProgressIndicator(
+                                    color: AppColor.of.gray3,
+                                    strokeWidth: 2,
+                                  ),
+                                );
+                              }
+                            },
+                          );
+                        },
                       );
                     } else {
                       /// STATIC MESSAGE

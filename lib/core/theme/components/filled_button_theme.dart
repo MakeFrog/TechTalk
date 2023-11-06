@@ -8,12 +8,12 @@ abstract class _FilledButtonTheme {
       foregroundColor: AppColor().white,
       disabledForegroundColor: AppColor().white,
       elevation: 0,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 36,
-        vertical: 18,
+      padding: EdgeInsets.symmetric(
+        horizontal: 36.w,
+        vertical: 18.h,
       ),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
       ),
       textStyle: AppTextStyle.title1,
     ),

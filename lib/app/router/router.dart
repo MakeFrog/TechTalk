@@ -8,26 +8,40 @@ import 'package:techtalk/presentation/pages/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/home/home_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
-import 'package:techtalk/presentation/pages/test_page/test_page.dart';
 import 'package:techtalk/presentation/providers/app_user_auth_provider.dart';
 
 part 'router.g.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
-void routeBack() {
-  rootNavigatorKey.currentContext!.pop();
+GoRouter appRouter(WidgetRef ref) => GoRouter(
+  debugLogDiagnostics: true,
+  navigatorKey: rootNavigatorKey,
+  initialLocation: SplashRoute.name,
+  routes: $appRoutes,
+);
+
+///
+/// splash
+///
+@TypedGoRoute<SplashRoute>(
+  path: SplashRoute.name,
+  name: SplashRoute.name,
+)
+class SplashRoute extends GoRouteData {
+  const SplashRoute();
+
+  static const String name = '/splash';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return SplashPage();
+  }
 }
 
-GoRouter appRouter(WidgetRef ref) => GoRouter(
-      debugLogDiagnostics: true,
-      navigatorKey: rootNavigatorKey,
-      initialLocation: !ref.read(isUserAuthorizedProvider)
-          ? TestPageRoute.name
-          : TestPageRoute.name,
-      routes: $appRoutes,
-    );
-
+///
+/// Sign In Route
+///
 @TypedGoRoute<SignInRoute>(
   path: SignInRoute.name,
   name: SignInRoute.name,
@@ -36,38 +50,84 @@ class SignInRoute extends GoRouteData {
   const SignInRoute();
 
   static const String name = '/sign_in';
-
   @override
   Widget build(BuildContext context, GoRouterState state) => const SignInPage();
 }
 
+///
+/// Sign Up Route
+///
 @TypedGoRoute<SignUpRoute>(
-  path: SignUpRoute.path,
-  name: SignUpRoute.path,
+  path: SignUpRoute.name,
+  name: SignUpRoute.name,
 )
 class SignUpRoute extends GoRouteData {
   const SignUpRoute();
 
-  static const String path = '/sign-up';
-
+  static const String name = '/sign-up';
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const SignUpPage();
   }
 }
 
-@TypedGoRoute<HomeRoute>(
-  path: HomeRoute.name,
-  name: HomeRoute.name,
+///
+/// Main Route
+///
+@TypedGoRoute<MainRoute>(
+  path: MainRoute.name,
+  name: MainRoute.name,
+  routes: [
+    TypedGoRoute<HomeTopicSelectRoute>(
+      path: HomeTopicSelectRoute.name,
+      name: HomeTopicSelectRoute.name,
+    ),
+    TypedGoRoute<StudyRoute>(
+      path: StudyRoute.name,
+      name: StudyRoute.name,
+    ),
+  ],
 )
-class HomeRoute extends GoRouteData {
-  const HomeRoute();
+class MainRoute extends GoRouteData {
+  const MainRoute();
 
   static const String name = '/';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return HomePage();
+    return MainPage();
+  }
+}
+
+class HomeTopicSelectRoute extends GoRouteData {
+  const HomeTopicSelectRoute();
+
+  static const String name = 'topic-select';
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return InterviewTopicSelectPage();
+  }
+}
+
+class StudyRoute extends GoRouteData {
+  const StudyRoute(this.topicName);
+
+  final String topicName;
+  static const String name = 'study';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return Consumer(
+      builder: (context, ref, child) {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          ref
+              .read(selectedStudyTopicProvider.notifier)
+              .setTopicByName(topicName);
+        });
+
+        return StudyPage();
+      },
+    );
   }
 }
 

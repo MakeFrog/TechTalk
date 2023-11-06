@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
@@ -10,11 +11,13 @@ import 'package:techtalk/presentation/pages/chat/providers/chat_list_provider.da
 import 'package:techtalk/presentation/pages/chat/providers/chat_scroll_controller_provider.dart';
 import 'package:techtalk/presentation/pages/chat/widgets/bubble.dart';
 
-class InterviewTabView extends ConsumerWidget with ChatEvent {
+class InterviewTabView extends HookConsumerWidget with ChatEvent {
   const InterviewTabView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useAutomaticKeepAlive();
+
     return Column(
       children: [
         Consumer(

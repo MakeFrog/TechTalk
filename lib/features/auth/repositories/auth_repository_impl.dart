@@ -12,12 +12,18 @@ final class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<UserCredential> signInOAuth(UserAccountProvider provider) async {
-    final userCredential = await switch (provider) {
-      UserAccountProvider.google => _authRemoteDataSource.signInWithGoogle(),
-      UserAccountProvider.apple => _authRemoteDataSource.signInWithApple(),
-    };
+    try {
+      final userCredential = await switch (provider) {
+        UserAccountProvider.google => _authRemoteDataSource.signInWithGoogle(),
+        UserAccountProvider.apple => _authRemoteDataSource.signInWithApple(),
+      };
 
-    return userCredential;
+      return userCredential;
+    } on FirebaseAuthException catch (e) {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override

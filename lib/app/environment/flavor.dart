@@ -2,6 +2,7 @@ import 'package:chatgpt_completions/chatgpt_completions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/app/environment/environment.enum.dart';
 
@@ -20,8 +21,9 @@ class Flavor {
 
   /// [env]에 따라 어플리케이션 초기 설정을 진행한다.
   Future<void> setup() async {
-    WidgetsFlutterBinding.ensureInitialized();
+    final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 
+    // 환경 파일 로드
     await dotenv.load(
       fileName: env.dotFileName,
     );
@@ -36,6 +38,10 @@ class Flavor {
       options: option,
     );
 
+    // 앱 DI 실행
     AppBinder.init();
+
+    // 스크린 유틸 초기화
+    await ScreenUtil.ensureScreenSize();
   }
 }

@@ -26,59 +26,49 @@ mixin class SignInEvent implements _SignInEvent {
         if (userData == null || !userData.isCompleteSignUp) {
           const SignUpRoute().go(ref.context);
         } else {
-          const HomeRoute().go(ref.context);
+          const MainRoute().go(ref.context);
         }
       },
     );
-  }
-
-  /// [provider]를 통해 OAuth 인증을 실행한다.
-  Future<void> _signInOAuth(
-    WidgetRef ref, {
-    required UserAccountProvider provider,
-  }) async {
-    try {
-      await ref
-          .read(appUserAuthProvider.notifier)
-          .signInOAuth(UserAccountProvider.google);
-    } on FirebaseAuthException catch (e) {
-      ToastService.show(
-        toast: NormalToast(message: e.message ?? ''),
-      );
-    }
   }
 
   @override
   Future<void> onTapSignInWithGoogle(WidgetRef ref) async {
     await EasyLoading.show()
         .then(
-          (_) => _signInOAuth(
-            ref,
-            provider: UserAccountProvider.google,
-          ),
+          (_) => ref
+              .read(appUserAuthProvider.notifier)
+              .signInOAuth(UserAccountProvider.google),
         )
         .then(
           (_) => _routeByUserData(ref),
         )
-        .then(
-          (_) => EasyLoading.dismiss(),
-        );
+        .catchError(
+          (e) => ToastService.show(
+            toast: NormalToast(message: e.message ?? ''),
+          ),
+          test: (error) => error is FirebaseAuthException,
+        )
+        .whenComplete(EasyLoading.dismiss);
   }
 
   @override
   Future<void> onTapSignInWithApple(WidgetRef ref) async {
     await EasyLoading.show()
         .then(
-          (_) => _signInOAuth(
-            ref,
-            provider: UserAccountProvider.apple,
-          ),
+          (_) => ref
+              .read(appUserAuthProvider.notifier)
+              .signInOAuth(UserAccountProvider.apple),
         )
         .then(
           (_) => _routeByUserData(ref),
         )
-        .then(
-          (_) => EasyLoading.dismiss(),
-        );
+        .catchError(
+          (e) => ToastService.show(
+            toast: NormalToast(message: e.message ?? ''),
+          ),
+          test: (error) => error is FirebaseAuthException,
+        )
+        .whenComplete(EasyLoading.dismiss);
   }
 }
