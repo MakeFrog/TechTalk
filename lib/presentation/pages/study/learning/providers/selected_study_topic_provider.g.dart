@@ -7,12 +7,12 @@ part of 'selected_study_topic_provider.dart';
 // **************************************************************************
 
 String _$selectedStudyTopicHash() =>
-    r'9cb001c7885b04690e21a893b945926484ebadbf';
+    r'ced13faf3289372cccc8bfce008036fa17c0ac30';
 
 /// See also [SelectedStudyTopic].
 @ProviderFor(SelectedStudyTopic)
-final selectedStudyTopicProvider = AutoDisposeNotifierProvider<
-    SelectedStudyTopic, InterviewTopicEntity>.internal(
+final selectedStudyTopicProvider =
+    AutoDisposeNotifierProvider<SelectedStudyTopic, InterviewTopic>.internal(
   SelectedStudyTopic.new,
   name: r'selectedStudyTopicProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +22,6 @@ final selectedStudyTopicProvider = AutoDisposeNotifierProvider<
   allTransitiveDependencies: null,
 );
 
-typedef _$SelectedStudyTopic = AutoDisposeNotifier<InterviewTopicEntity>;
+typedef _$SelectedStudyTopic = AutoDisposeNotifier<InterviewTopic>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

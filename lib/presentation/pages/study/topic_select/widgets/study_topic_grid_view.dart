@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:techtalk/features/interview/interview.dart';
+import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
 
 class StudyTopicGridView extends StatelessWidget {
   const StudyTopicGridView({
@@ -8,7 +8,7 @@ class StudyTopicGridView extends StatelessWidget {
     required this.topicCardBuilder,
   });
 
-  final List<InterviewTopicEntity> topicList;
+  final List<InterviewTopic> topicList;
   final IndexedWidgetBuilder topicCardBuilder;
 
   @override

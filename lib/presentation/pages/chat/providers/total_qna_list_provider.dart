@@ -29,7 +29,7 @@ class TotalQnaList extends _$TotalQnaList {
       },
       onFailure: (e) {
         ToastService.show(
-          toast: NormalToast(message: '$e'),
+          NormalToast(message: '$e'),
         );
         throw e;
       },

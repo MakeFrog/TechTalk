@@ -9,7 +9,9 @@ import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/home/home_page.dart';
 import 'package:techtalk/presentation/pages/main/main_event.dart';
+import 'package:techtalk/presentation/pages/review_note/review_note_page.dart';
 import 'package:techtalk/presentation/pages/study/topic_select/study_topic_select_page.dart';
+import 'package:techtalk/presentation/pages/test_page/test_page.dart';
 import 'package:techtalk/presentation/providers/app_user_data_provider.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
 
@@ -44,10 +46,10 @@ class _Body extends HookConsumerWidget {
     StudyTopicSelectPage(
       key: ValueKey(MainNavigationTab.study),
     ),
-    HomePage(
+    ReviewNotePage(
       key: ValueKey(MainNavigationTab.note),
     ),
-    HomePage(
+    TestPage(
       key: ValueKey(MainNavigationTab.myInfo),
     ),
   ];

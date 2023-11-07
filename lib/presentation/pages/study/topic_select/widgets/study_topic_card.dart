@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/interview/interview.dart';
+import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
 
 class StudyTopicCard extends StatelessWidget {
   const StudyTopicCard({
@@ -10,7 +10,7 @@ class StudyTopicCard extends StatelessWidget {
     this.onTap,
   });
 
-  final InterviewTopicEntity topic;
+  final InterviewTopic topic;
   final VoidCallback? onTap;
 
   @override
@@ -35,16 +35,19 @@ class StudyTopicCard extends StatelessWidget {
             ),
             Align(
               alignment: Alignment.centerRight,
-              child: Image.asset(
-                topic.imageUrl!,
-                width: 72,
-                height: 72,
-                errorBuilder: (context, error, stackTrace) => Container(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(72),
+                child: Image.asset(
+                  topic.imageUrl!,
                   width: 72,
                   height: 72,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    width: 72,
+                    height: 72,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
                   ),
                 ),
               ),
