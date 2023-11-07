@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:techtalk/generated/assets.dart';
+import 'package:techtalk/core/constants/assets.dart';
 
 class BulletText extends StatelessWidget {
   const BulletText(

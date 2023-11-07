@@ -10,6 +10,7 @@ import 'package:techtalk/presentation/pages/study/learning/widgets/study_control
 import 'package:techtalk/presentation/pages/study/learning/widgets/study_progress_indicator.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/study_qna_view.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
+import 'package:techtalk/presentation/widgets/common/input/flat_switch.dart';
 
 class StudyLearningPage extends StatelessWidget {
   const StudyLearningPage({

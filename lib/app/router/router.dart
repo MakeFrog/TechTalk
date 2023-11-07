@@ -10,10 +10,9 @@ import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
-import 'package:techtalk/presentation/pages/study/learning/providers/selected_study_topic_provider.dart';
-import 'package:techtalk/presentation/pages/study/learning/study_learning_page.dart';
+import 'package:techtalk/presentation/pages/study/providers/selected_study_topic_provider.dart';
+import 'package:techtalk/presentation/pages/study/study_page.dart';
 import 'package:techtalk/presentation/pages/test_page/test_page.dart';
-import 'package:techtalk/presentation/providers/app_user_auth_provider.dart';
 
 part 'router.g.dart';
 
@@ -40,7 +39,7 @@ class SplashRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return SplashPage();
+    return const SplashPage();
   }
 }
 
@@ -71,6 +70,7 @@ class SignUpRoute extends GoRouteData {
   const SignUpRoute();
 
   static const String name = '/sign-up';
+
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const SignUpPage();

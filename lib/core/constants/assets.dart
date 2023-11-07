@@ -17,13 +17,18 @@ class Assets {
   static const String iconsArrowUp = 'assets/icons/arrow_up.svg';
   static const String iconsArrowUpThick = 'assets/icons/arrow_up_thick.svg';
   static const String iconsAvatar1 = 'assets/icons/avatar_1.svg';
+  static const String iconsBullet = 'assets/icons/bullet.svg';
   static const String iconsCamera = 'assets/icons/camera.svg';
   static const String iconsCheck = 'assets/icons/check.svg';
   static const String iconsCheckThick = 'assets/icons/check_thick.svg';
   static const String iconsClose = 'assets/icons/close.svg';
   static const String iconsCloseThick = 'assets/icons/close_thick.svg';
   static const String iconsCorrect = 'assets/icons/correct.svg';
+  static const String iconsCorrectIndicator =
+      'assets/icons/correct_indicator.svg';
   static const String iconsDataStructure = 'assets/icons/data_structure.svg';
+  static const String iconsExpansionArrowIndicator =
+      'assets/icons/expansion_arrow_indicator.svg';
   static const String iconsGoogleLogo = 'assets/icons/google_logo.svg';
   static const String iconsHome = 'assets/icons/home.svg';
   static const String iconsIncorrect = 'assets/icons/incorrect.svg';
@@ -53,12 +58,13 @@ class Assets {
   static const String iconsRoundedWarnningSmallRed =
       'assets/icons/rounded_warnning_small_red.svg';
   static const String iconsSearch = 'assets/icons/search.svg';
-
+  static const String iconsSearchThick = 'assets/icons/search_thick.svg';
   static const String iconsSend = 'assets/icons/send.svg';
   static const String iconsStudy = 'assets/icons/study.svg';
   static const String iconsTalker = 'assets/icons/talker.svg';
   static const String iconsUser = 'assets/icons/user.svg';
   static const String iconsWarnning = 'assets/icons/warnning.svg';
+  static const String iconsWrongIndicator = 'assets/icons/wrong_indicator.svg';
   static const String imagesAvatar1 = 'assets/images/avatar_1.png';
   static const String imagesSparkle = 'assets/images/sparkle.svg';
   static const String imagesSplashImage = 'assets/images/splash_image.png';
