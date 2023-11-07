@@ -4,4 +4,5 @@ enum FirestoreCollection {
   techSkills,
   interviewTopics,
   study,
+  reviewNotes,
 }

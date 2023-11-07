@@ -200,8 +200,14 @@ const _$InterviewProgressStateEnumMap = {
 };
 
 const _$InterviewTopicEnumMap = {
+  InterviewTopic.java: 'java',
+  InterviewTopic.spring: 'spring',
+  InterviewTopic.react: 'react',
   InterviewTopic.swift: 'swift',
   InterviewTopic.flutter: 'flutter',
+  InterviewTopic.android: 'android',
+  InterviewTopic.dataStructure: 'data-structure',
+  InterviewTopic.operatingSystem: 'operating-system',
 };
 
 extension<T extends Enum> on Map<T, String> {
