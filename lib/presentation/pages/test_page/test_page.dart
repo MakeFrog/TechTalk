@@ -5,8 +5,21 @@ import 'package:techtalk/features/chat/enums/interview_progress_state.enum.dart'
 import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 
-class TestPage extends BasePage {
+class TestPage extends BaseRefHookPage {
   const TestPage({Key? key}) : super(key: key);
+
+  @override
+  void onInit(WidgetRef? ref) {
+    print("화면이 초기화 됨");
+  }
+
+  @override
+  void onDispose(WidgetRef? ref) {
+    print("화면이 없어짐");
+  }
+
+  @override
+  Color? get screenBackgroundColor => Colors.red;
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
@@ -27,7 +40,7 @@ class TestPage extends BasePage {
                   progressState: InterviewProgressState.initial,
                   roomId: 'RWNSK@32ASDF3',
                   topic: InterviewTopic.swift,
-                ).push(ref.context);
+                ).go(ref.context);
               },
               child: const Text(
                 '면접 입장',

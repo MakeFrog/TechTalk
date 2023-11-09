@@ -6,7 +6,7 @@ part of 'completed_qna_list_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$completedQnAListHash() => r'05ae338702982be665a3daeecfced4a4b9dbdd78';
+String _$completedQnAListHash() => r'5655c02eae5bb63409e3607d430e9109d25a6d25';
 
 ///
 /// [totalQnaListProvider]의 QnA 리스트 중
@@ -16,7 +16,7 @@ String _$completedQnAListHash() => r'05ae338702982be665a3daeecfced4a4b9dbdd78';
 /// Copied from [completedQnAList].
 @ProviderFor(completedQnAList)
 final completedQnAListProvider =
-    Provider<AsyncValue<List<InterviewQnAEntity>>>.internal(
+    AutoDisposeProvider<AsyncValue<List<InterviewQnAEntity>>>.internal(
   completedQnAList,
   name: r'completedQnAListProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -26,6 +26,7 @@ final completedQnAListProvider =
   allTransitiveDependencies: null,
 );
 
-typedef CompletedQnAListRef = ProviderRef<AsyncValue<List<InterviewQnAEntity>>>;
+typedef CompletedQnAListRef
+    = AutoDisposeProviderRef<AsyncValue<List<InterviewQnAEntity>>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
