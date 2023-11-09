@@ -14,20 +14,22 @@ final class StudyRepositoryImpl implements StudyRepository {
 
   @override
   Future<Result<StudyQuestionListEntity>> getQuestionList(String techId) async {
-    StudyQuestionListModel questionsModel;
-
-    StudyQuestionListModel? cacheQuestionsModel =
+    StudyQuestionListModel? questionsModel =
         await _studyLocalDataSource.getQuestionList(techId);
 
-    if (cacheQuestionsModel != null) {
-      final lastUpdateDate =
-          await _studyRemoteDataSource.getLastQuestionsUpdateDate(techId);
-      if (lastUpdateDate.compareTo(cacheQuestionsModel.updateDate) == 0) {
-        questionsModel = cacheQuestionsModel;
-      } else {
-        questionsModel = await _studyRemoteDataSource.getQuestionList(techId);
-      }
-    } else {
+    // 캐시 데이터가 존재하지 않을때는 바로 원격 데이터를 요청, 반환
+    if (questionsModel == null) {
+      questionsModel = await _studyRemoteDataSource.getQuestionList(techId);
+
+      return Result.success(
+        StudyQuestionListEntity.fromModel(questionsModel),
+      );
+    }
+
+    // 업데이트 날짜를 비교하여 최신이 아니면 최신 데이터 조회,캐시 업데이트 후 반환
+    final lastUpdateDate =
+        await _studyRemoteDataSource.getLastQuestionsUpdateDate(techId);
+    if (lastUpdateDate.compareTo(questionsModel.updateDate) != 0) {
       questionsModel = await _studyRemoteDataSource.getQuestionList(techId);
     }
 
