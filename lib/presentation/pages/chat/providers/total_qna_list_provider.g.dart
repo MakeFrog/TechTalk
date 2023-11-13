@@ -6,12 +6,12 @@ part of 'total_qna_list_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$totalQnaListHash() => r'5410ff7eb44659ba42aa308b48334ea916f42c9e';
+String _$totalQnaListHash() => r'f6d739c03c3b2a55cc2ad43d47336085ee40f7a5';
 
 /// See also [TotalQnaList].
 @ProviderFor(TotalQnaList)
-final totalQnaListProvider = AutoDisposeAsyncNotifierProvider<TotalQnaList,
-    List<InterviewQnAEntity>>.internal(
+final totalQnaListProvider = NotifierProvider<TotalQnaList,
+    AsyncValue<List<InterviewQnAEntity>>>.internal(
   TotalQnaList.new,
   name: r'totalQnaListProvider',
   debugGetCreateSourceHash:
@@ -20,6 +20,6 @@ final totalQnaListProvider = AutoDisposeAsyncNotifierProvider<TotalQnaList,
   allTransitiveDependencies: null,
 );
 
-typedef _$TotalQnaList = AutoDisposeAsyncNotifier<List<InterviewQnAEntity>>;
+typedef _$TotalQnaList = Notifier<AsyncValue<List<InterviewQnAEntity>>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -7,6 +7,8 @@ import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/core/services/toast_service.dart';
 import 'package:techtalk/core/utils/route_argument.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/presentation/pages/chat/providers/is_chat_available_provider.dart';
+import 'package:techtalk/presentation/pages/chat/providers/total_qna_list_provider.dart';
 import 'package:techtalk/presentation/widgets/common/toast/app_toast.dart';
 
 part 'chat_list_provider.g.dart';
@@ -15,6 +17,11 @@ part 'chat_list_provider.g.dart';
 class ChatList extends _$ChatList {
   @override
   FutureOr<List<ChatEntity>> build() async {
+    ref.onDispose(() {
+      ref.invalidate(totalQnaListProvider);
+      ref.invalidate(isChatAvailableProvider);
+    });
+
     final routeArg = RouteArg.argument as ChatPageRouteArg;
     final GetChatListParam param = (
       progressState: routeArg.progressState,
@@ -25,11 +32,23 @@ class ChatList extends _$ChatList {
 
     final response = await getChatListUseCase(param);
     return response.fold(
-      onSuccess: (chatList) {
-        /// 처음 채팅방에 진입하였다면 첫 번째 면접 질문 제시
+      onSuccess: (chatList) async {
+        // 처음 채팅방에 진입한 경우
         if (routeArg.progressState.isInitial) {
-          chatList.first.message.listen(null, onDone: shoQuestion);
+          ref.read(totalQnaListProvider.notifier).initializeQnaList();
+          await addRandomQuestionToQnaList();
+          chatList.first.message.listen(null, onDone: () {
+            showFirstQuestion();
+            chatList.first.message.close();
+          });
         }
+        // 기존 진행중인 채팅방에 진입한 경우
+        else {
+          ref.read(totalQnaListProvider.notifier).updateQnaListByChat(chatList);
+          setChatAvailableState(isAvailable: true);
+        }
+
+        unawaited(addRandomQuestionToQnaList());
 
         return chatList;
       },
@@ -49,12 +68,180 @@ class ChatList extends _$ChatList {
   /// 유저 채팅 응답 추가
   ///
   Future<void> addUserChatResponse({required String message}) async {
+    final answeredQuestion =
+        state.requireValue.lastWhere((chat) => chat.type.isAskQuestionMessage)
+            as QuestionChatEntity;
+
     await update(
       (previous) => [
-        SentChatEntity.create(message: message),
+        SentChatEntity.initial(
+          message: message,
+          questionId: answeredQuestion.questionId,
+        ),
         ...previous,
       ],
     );
+  }
+
+  ///
+  /// 유저의 면접 질문 대답에 응답
+  /// 정답 여부를 판별하고
+  /// 간단한 설명을 덧붙여 피드백을 함.
+  ///
+  Future<void> respondToUserAnswer({required String userAnswer}) async {
+    await update(
+      (previous) => [
+        FeedbackChatEntity.createStreamChat(
+          messageStream: getAnswerFeedBackUseCase.call(
+            (
+              category: 'Swift',
+              checkAnswer: updateUserAnswerState,
+              onFeedBackCompleted: onFeedbackCompleted,
+              question: state.requireValue
+                  .firstWhere((chat) => chat.type.isAskQuestionMessage)
+                  .message
+                  .value,
+              userAnswer: userAnswer,
+            ),
+          ),
+        ),
+        ...previous
+      ],
+    );
+  }
+
+  ///
+  /// 첫 번째 질문 제시
+  ///
+  Future<void> showFirstQuestion() async {
+    final totalQnaList = ref.watch(totalQnaListProvider.notifier);
+
+    final targetQuestion = totalQnaList
+        .returnQnaList()
+        .firstWhere((qna) => qna.hasUserNotRespondedYet);
+
+    final streamedChatMessage = targetQuestion.question.convertToStreamText;
+    streamedChatMessage.listen(null, onDone: () {
+      setChatAvailableState(isAvailable: true);
+      streamedChatMessage.close();
+    });
+
+    await update(
+      (previous) => [
+        QuestionChatEntity.createStreamedChat(
+          questionId: targetQuestion.id,
+          idealAnswers: targetQuestion.idealAnswer,
+          streamedMessage: streamedChatMessage,
+        ),
+        ...previous,
+      ],
+    );
+  }
+
+  ///
+  /// 다음 면접 질문 제시
+  ///
+  Future<void> showNextQuestion() async {
+    final preparedQuestionAsync = ref.read(totalQnaListProvider);
+    preparedQuestionAsync.map(
+      data: (preparedQuestions) {
+        final nextQuestion = preparedQuestions.value.last;
+        final streamedChatMessage = nextQuestion.question.convertToStreamText;
+        streamedChatMessage.listen(null, onDone: () {
+          setChatAvailableState(isAvailable: true);
+          streamedChatMessage.close();
+        });
+
+        update(
+          (previous) => [
+            QuestionChatEntity.createStreamedChat(
+              streamedMessage: streamedChatMessage,
+              questionId: nextQuestion.id,
+              idealAnswers: nextQuestion.idealAnswer,
+            ),
+            ...previous,
+          ],
+        );
+
+        /// Qna 리스트에 다음 면접 질문 추가
+        addRandomQuestionToQnaList();
+      },
+      error: (e) {
+        throw e;
+      },
+      loading: (_) {},
+    );
+  }
+
+  ///
+  /// 유저의 답변에 대한 피드백이 완료 되었을 때
+  /// 실행되는 메소드
+  ///
+  void onFeedbackCompleted() {
+    final guideStreamedText = '다음 질문을 드리겠습니다'.convertToStreamText;
+    guideStreamedText.listen(null, onDone: () {
+      showNextQuestion();
+      guideStreamedText.close();
+    });
+    update(
+      (previous) => [
+        GuideChatEntity.createStream(
+          guideStreamedText,
+        ),
+        ...previous,
+      ],
+    );
+  }
+
+  ///
+  /// QnA 리스트 : 새로운 질문 추가
+  ///
+  Future<void> addRandomQuestionToQnaList() async {
+    final response =
+        await getRandomInterviewQuestionUseCase.call(InterviewTopic.swift);
+    final newQuestion = response.getOrThrow();
+
+    await ref.read(totalQnaListProvider.notifier).addQnaList(newQuestion);
+  }
+
+  ///
+  /// 1. 채팅 리스트 유저 답변 정답 체크
+  /// 2. QnA 리스트 상태 업데이트 (유저 응답)
+  /// TODO: 리팩토링 필요
+  ///
+  Future<void> updateUserAnswerState({required bool isCorrect}) async {
+    // 1. 채팅 리스트 유저 답변 정답 체크
+    final chatList = state.requireValue;
+
+    final answeredChat = chatList.firstWhere((chat) => chat.type.isSentMessage)
+        as SentChatEntity;
+
+    final targetIndex = chatList.indexWhere((chat) => chat == answeredChat);
+
+    chatList[targetIndex] = answeredChat.copyWith(
+        answerState: isCorrect ? AnswerState.correct : AnswerState.wrong);
+
+    await update((_) => chatList);
+
+    // 2. QnA 리스트 상태 업데이트 (유저 응답)
+    final updatedSentChat = chatList
+        .firstWhere((chat) => chat.type.isSentMessage) as SentChatEntity;
+
+    final userResponse = UserInterviewResponse(
+      updatedSentChat.message.value,
+      state: updatedSentChat.answerState,
+    );
+
+    await ref
+        .read(totalQnaListProvider.notifier)
+        .updateUserQnaResponse(userResponse);
+  }
+
+  ///
+  /// 채팅 가능 여부 state 변경
+  ///
+  void setChatAvailableState({required bool isAvailable}) {
+    ref.read(isChatAvailableProvider.notifier).change(isAvailable: isAvailable);
   }
 
   ///
@@ -77,67 +264,5 @@ class ChatList extends _$ChatList {
     }
 
     return false;
-  }
-
-  ///
-  /// 유저의 면접 질문 대답에 응답
-  /// 정답 여부를 판별하고
-  /// 간단한 설명을 덧붙여 피드백을 함.
-  ///
-  Future<void> respondToUserAnswer({required String userAnswer}) async {
-    await update(
-      (previous) => [
-        ReceivedChatEntity.createStreamChat(
-          type: ChatType.replyToUserAnswer,
-          message: getAnswerFeedBackUseCase.call(
-            (
-              category: 'Swift',
-              checkAnswer: updateUserAnswerState,
-              onFeedBackCompleted: shoQuestion,
-              question: state.requireValue
-                  .firstWhere((chat) => chat.type.isAskQuestionMessage)
-                  .message
-                  .value,
-              userAnswer: userAnswer,
-            ),
-          ),
-        ),
-        ...previous
-      ],
-    );
-  }
-
-  ///
-  /// 다음 면접 질문 제시
-  ///
-  Future<void> shoQuestion() async {
-    await update(
-      (previous) => [
-        ReceivedChatEntity.createStreamChat(
-          message: 'Swift의 upcasting과 downcasting의 차이에 대해서 설명해보세요.'
-              .convertToStreamText,
-          type: ChatType.askQuestion,
-        ),
-        ...previous,
-      ],
-    );
-  }
-
-  ///
-  /// 유저 답변 정답 여부 상태 변경
-  ///
-  void updateUserAnswerState({required bool isCorrect}) {
-    final chatList = state.requireValue;
-
-    final item = chatList.firstWhere((element) => element.type.isSentMessage)
-        as SentChatEntity;
-
-    if (isCorrect) {
-      chatList[1] = item.copyWith(answerState: AnswerState.correct);
-    } else {
-      chatList[1] = item.copyWith(answerState: AnswerState.wrong);
-    }
-
-    update((previous) => chatList);
   }
 }
