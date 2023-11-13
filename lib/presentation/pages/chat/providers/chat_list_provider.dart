@@ -7,7 +7,7 @@ import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/core/services/toast_service.dart';
 import 'package:techtalk/core/utils/route_argument.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/presentation/pages/chat/providers/is_chat_available_provider.dart';
+import 'package:techtalk/presentation/pages/chat/providers/is_available_to_answer.dart';
 import 'package:techtalk/presentation/pages/chat/providers/total_qna_list_provider.dart';
 import 'package:techtalk/presentation/widgets/common/toast/app_toast.dart';
 
@@ -19,7 +19,7 @@ class ChatList extends _$ChatList {
   FutureOr<List<ChatEntity>> build() async {
     ref.onDispose(() {
       ref.invalidate(totalQnaListProvider);
-      ref.invalidate(isChatAvailableProvider);
+      ref.invalidate(isAvailableToAnswerProvider);
     });
 
     final routeArg = RouteArg.argument as ChatPageRouteArg;
@@ -241,7 +241,9 @@ class ChatList extends _$ChatList {
   /// 채팅 가능 여부 state 변경
   ///
   void setChatAvailableState({required bool isAvailable}) {
-    ref.read(isChatAvailableProvider.notifier).change(isAvailable: isAvailable);
+    ref
+        .read(isAvailableToAnswerProvider.notifier)
+        .change(isAvailable: isAvailable);
   }
 
   ///

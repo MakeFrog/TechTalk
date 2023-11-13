@@ -1,23 +1,23 @@
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
 import 'package:techtalk/core/services/toast_service.dart';
 import 'package:techtalk/presentation/pages/chat/providers/chat_input_provider.dart';
 import 'package:techtalk/presentation/pages/chat/providers/chat_list_provider.dart';
 import 'package:techtalk/presentation/pages/chat/providers/chat_scroll_controller_provider.dart';
+import 'package:techtalk/presentation/pages/chat/providers/is_available_to_answer.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
 abstract class _ChatEvent {
   /// 채팅 입력창이 전송 되었을 때
-  Future<void> onChatFieldSubmitted(WidgetRef ref, {required String message});
+  Future<void> onChatFieldSubmitted(WidgetRef ref,
+      {required String message,
+      required TextEditingController textEditingController});
 
   /// 앱바 뒤로 가기 버튼이 클릭 되었을 때
-  void onAppbarBackBtnTapped();
-
-  /// 모든 provider 제거
-  void disposeProviders(WidgetRef ref);
+  void onAppbarBackBtnTapped(BuildContext context);
 }
 
 mixin class ChatEvent implements _ChatEvent {
@@ -29,8 +29,9 @@ mixin class ChatEvent implements _ChatEvent {
   ///
   @override
   Future<void> onChatFieldSubmitted(WidgetRef ref,
-      {required String message}) async {
-    ref.read(chatScrollControllerProvider.notifier).setScrollPositionToBottom();
+      {required String message,
+      required TextEditingController textEditingController}) async {
+    final isChatAvailable = ref.read(isAvailableToAnswerProvider);
 
     if (message.isEmpty) {
       return ToastService.show(
@@ -38,6 +39,18 @@ mixin class ChatEvent implements _ChatEvent {
       );
     }
 
+    if (!isChatAvailable) {
+      return ToastService.show(
+        toast: NormalToast(message: '질문이 끝날 때까지 기다려주세요'),
+      );
+    }
+
+    textEditingController.clear();
+    ref.read(chatScrollControllerProvider.notifier).setScrollPositionToBottom();
+
+    ref
+        .read(chatListProvider.notifier)
+        .setChatAvailableState(isAvailable: false);
     await ref
         .read(chatListProvider.notifier)
         .addUserChatResponse(message: message);
@@ -49,7 +62,7 @@ mixin class ChatEvent implements _ChatEvent {
   }
 
   @override
-  void onAppbarBackBtnTapped() {
+  void onAppbarBackBtnTapped(BuildContext context) {
     DialogService.show(
       dialog: AppDialog.dividedBtn(
         title: '알림',
@@ -58,27 +71,16 @@ mixin class ChatEvent implements _ChatEvent {
         leftBtnContent: '취소',
         rightBtnContent: '확인',
         onRightBtnClicked: () {
-          rootNavigatorKey.currentContext!.pop();
-          rootNavigatorKey.currentContext!.pop();
+          context.pop();
+          context.pop();
+          // rootNavigatorKey.currentContext!.pop();
+          // rootNavigatorKey.currentContext!.pop();
         },
         onLeftBtnClicked: () {
-          rootNavigatorKey.currentContext!.pop();
+          context.pop();
+          // rootNavigatorKey.currentContext!.pop();
         },
       ),
     );
-  }
-
-  @override
-  void disposeProviders(WidgetRef ref) {
-    // ref.invalidate(chatFocusNodeProvider);
-
-    // ref.disposeProviders([
-    //   chatFocusNodeProvider,
-    //   chatInputProvider,
-    //   chatListProvider,
-    //   chatScrollControllerProvider,
-    //   completedQnAListProvider,
-    //   totalQnaListProvider,
-    // ]);
   }
 }
