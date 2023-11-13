@@ -76,25 +76,13 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
   }
 }
 
-class _BottomInputField extends ConsumerStatefulWidget {
+class _BottomInputField extends HookConsumerWidget with ChatEvent {
   const _BottomInputField({Key? key}) : super(key: key);
 
   @override
-  ConsumerState createState() => _BottomInputFieldState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final textEditingController = TextEditingController();
 
-class _BottomInputFieldState extends ConsumerState<_BottomInputField>
-    with ChatEvent {
-  final textEditingController = TextEditingController();
-
-  @override
-  void dispose() {
-    super.dispose();
-    textEditingController.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
         color: AppColor.of.white,
@@ -152,8 +140,8 @@ class _BottomInputFieldState extends ConsumerState<_BottomInputField>
                       onChatFieldSubmitted(
                         ref,
                         message: textEditingController.text,
+                        textEditingController: textEditingController,
                       );
-                      textEditingController.clear();
                     },
                   );
                 },

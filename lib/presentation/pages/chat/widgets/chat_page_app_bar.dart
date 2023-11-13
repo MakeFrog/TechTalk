@@ -20,7 +20,7 @@ class _AppBar extends ConsumerWidget
       leading: SizedBox(
         child: IconButton(
           onPressed: () {
-            onAppbarBackBtnTapped();
+            onAppbarBackBtnTapped(context);
           },
           icon: SvgPicture.asset(Assets.iconsArrowLeft),
         ),

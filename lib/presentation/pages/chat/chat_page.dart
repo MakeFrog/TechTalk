@@ -14,18 +14,8 @@ import 'package:techtalk/presentation/widgets/base/base_page.dart';
 part 'widgets/chat_page_app_bar.dart';
 part 'widgets/chat_page_scaffold.dart';
 
-class ChatPage extends BaseRefHookPage {
+class ChatPage extends BasePage {
   const ChatPage({Key? key}) : super(key: key);
-
-  @override
-  void onInit(WidgetRef? ref) {
-    print("chat page initialized");
-  }
-
-  @override
-  void onDispose(WidgetRef? ref) {
-    print("chat page disposed");
-  }
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {

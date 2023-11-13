@@ -520,14 +520,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.2.2"
-  focus_detector_v2:
-    dependency: "direct main"
-    description:
-      name: focus_detector_v2
-      sha256: d4abc4c755ba894238ab92f42f6eee7ade78aa285199e112f45926c7053f90c6
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.1.0+1"
   font_awesome_flutter:
     dependency: "direct main"
     description:
@@ -752,6 +744,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  lorem_ipsum_generator:
+    dependency: "direct main"
+    description:
+      name: lorem_ipsum_generator
+      sha256: "8fc3db0cac58b06fa2ef53deec6836ddd3a87d6acdeb25b8e8475c962146f46c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   matcher:
     dependency: transitive
     description:
@@ -968,6 +968,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  single_import_generator:
+    dependency: "direct main"
+    description:
+      name: single_import_generator
+      sha256: d26765db5c0396585f5c9e0ddb5bfb50e35261b9543ab7f3e1bb73398c8f82a6
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -1133,14 +1141,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
-  visibility_detector:
-    dependency: transitive
-    description:
-      name: visibility_detector
-      sha256: dd5cc11e13494f432d15939c3aa8ae76844c42b723398643ce9addb88a5ed420
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.0+2"
   vm_service:
     dependency: transitive
     description:

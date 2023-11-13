@@ -8,15 +8,14 @@ import 'package:techtalk/core/theme/extension/app_color.dart';
 /// 앱의 화면 페이지를 생성하는 유틸리티 클래스
 /// [HookConsumerWidget]을 상속하여 hook과 WidetRef로직에 접근할 수 있음
 ///
-abstract class BaseRefHookPage extends HookConsumerWidget {
-  const BaseRefHookPage({Key? key}) : super(key: key);
+abstract class BasePage extends HookConsumerWidget {
+  const BasePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     /// 페이지의 초기화 및 해제를 처리
     useEffect(() {
       onInit(ref);
-
       return () => onDispose(ref);
     });
 
@@ -128,25 +127,25 @@ abstract class BaseRefHookPage extends HookConsumerWidget {
 
   /// 앱이 활성화된 상태로 돌아올 때 호출
   @protected
-  void onResumed(WidgetRef? ref) {}
+  void onResumed(WidgetRef ref) {}
 
   /// 앱이 일시 정지될 때 호출
   @protected
-  void onPaused(WidgetRef? ref) {}
+  void onPaused(WidgetRef ref) {}
 
   /// 앱이 비활성 상태로 전환될 때 호출
   @protected
-  void onInactive(WidgetRef? ref) {}
+  void onInactive(WidgetRef ref) {}
 
   /// 앱이 분리되었을 때 호출
   @protected
-  void onDetached(WidgetRef? ref) {}
+  void onDetached(WidgetRef ref) {}
 
   /// 페이지 초기화 시 호출
   @protected
-  void onInit(WidgetRef? ref) {}
+  void onInit(WidgetRef ref) {}
 
   /// 페이지 해제 시 호출
   @protected
-  void onDispose(WidgetRef? ref) {}
+  void onDispose(WidgetRef ref) {}
 }

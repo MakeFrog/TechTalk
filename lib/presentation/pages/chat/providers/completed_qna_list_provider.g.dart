@@ -6,7 +6,7 @@ part of 'completed_qna_list_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$completedQnAListHash() => r'5655c02eae5bb63409e3607d430e9109d25a6d25';
+String _$completedQnAListHash() => r'fc6d8ab644e03c6c2a838ab8639cfcf99f2bec1d';
 
 ///
 /// [totalQnaListProvider]의 QnA 리스트 중
