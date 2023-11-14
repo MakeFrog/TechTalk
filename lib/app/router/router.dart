@@ -19,7 +19,7 @@ part 'router.g.dart';
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
 GoRouter appRouter(WidgetRef ref) => GoRouter(
-      debugLogDiagnostics: true,
+      debugLogDiagnostics: false,
       navigatorKey: rootNavigatorKey,
       initialLocation: SplashRoute.name,
       routes: $appRoutes,
@@ -109,6 +109,7 @@ class HomeTopicSelectRoute extends GoRouteData {
   const HomeTopicSelectRoute();
 
   static const String name = 'topic-select';
+
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return InterviewTopicSelectPage();
@@ -129,18 +130,36 @@ class StudyRoute extends GoRouteData {
   }
 }
 
+@TypedGoRoute<TestPageRoute>(
+  path: TestPageRoute.name,
+  name: TestPageRoute.name,
+  routes: [
+    TypedGoRoute<ChatPageRoute>(
+        path: ChatPageRoute.name, name: ChatPageRoute.name)
+  ],
+)
+class TestPageRoute extends GoRouteData {
+  const TestPageRoute();
+
+  static const String name = '/test';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const TestPage();
+  }
+}
+
 typedef ChatPageRouteArg = ({
   InterviewProgressState progressState,
   String? roomId,
   InterviewTopic topic
 });
 
-@TypedGoRoute<ChatPageRoute>(path: ChatPageRoute.name, name: ChatPageRoute.name)
 class ChatPageRoute extends GoRouteData {
   const ChatPageRoute(
       {required this.progressState, required this.roomId, required this.topic});
 
-  static const String name = '/chat';
+  static const String name = 'chat';
 
   final InterviewProgressState progressState;
   final String? roomId;
@@ -152,19 +171,6 @@ class ChatPageRoute extends GoRouteData {
         (progressState: progressState, roomId: roomId, topic: topic);
 
     RouteArg.update(arg);
-
     return const ChatPage();
-  }
-}
-
-@TypedGoRoute<TestPageRoute>(path: TestPageRoute.name, name: TestPageRoute.name)
-class TestPageRoute extends GoRouteData {
-  const TestPageRoute();
-
-  static const String name = '/test';
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const TestPage();
   }
 }

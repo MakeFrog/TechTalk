@@ -11,7 +11,6 @@ List<RouteBase> get $appRoutes => [
       $signInRoute,
       $signUpRoute,
       $mainRoute,
-      $chatPageRoute,
       $testPageRoute,
     ];
 
@@ -159,11 +158,35 @@ extension $StudyRouteExtension on StudyRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $chatPageRoute => GoRouteData.$route(
-      path: '/chat',
-      name: '/chat',
-      factory: $ChatPageRouteExtension._fromState,
+RouteBase get $testPageRoute => GoRouteData.$route(
+      path: '/test',
+      name: '/test',
+      factory: $TestPageRouteExtension._fromState,
+      routes: [
+        GoRouteData.$route(
+          path: 'chat',
+          name: 'chat',
+          factory: $ChatPageRouteExtension._fromState,
+        ),
+      ],
     );
+
+extension $TestPageRouteExtension on TestPageRoute {
+  static TestPageRoute _fromState(GoRouterState state) => const TestPageRoute();
+
+  String get location => GoRouteData.$location(
+        '/test',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
 
 extension $ChatPageRouteExtension on ChatPageRoute {
   static ChatPageRoute _fromState(GoRouterState state) => ChatPageRoute(
@@ -175,7 +198,7 @@ extension $ChatPageRouteExtension on ChatPageRoute {
       );
 
   String get location => GoRouteData.$location(
-        '/chat',
+        '/test/chat',
         queryParams: {
           'progress-state': _$InterviewProgressStateEnumMap[progressState],
           if (roomId != null) 'room-id': roomId,
@@ -213,27 +236,4 @@ const _$InterviewTopicEnumMap = {
 extension<T extends Enum> on Map<T, String> {
   T _$fromName(String value) =>
       entries.singleWhere((element) => element.value == value).key;
-}
-
-RouteBase get $testPageRoute => GoRouteData.$route(
-      path: '/test',
-      name: '/test',
-      factory: $TestPageRouteExtension._fromState,
-    );
-
-extension $TestPageRouteExtension on TestPageRoute {
-  static TestPageRoute _fromState(GoRouterState state) => const TestPageRoute();
-
-  String get location => GoRouteData.$location(
-        '/test',
-      );
-
-  void go(BuildContext context) => context.go(location);
-
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  void replace(BuildContext context) => context.replace(location);
 }
