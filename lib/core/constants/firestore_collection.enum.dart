@@ -3,4 +3,6 @@ enum FirestoreCollection {
   jobGroups,
   techSkills,
   interviewTopics,
+  study,
+  reviewNotes,
 }

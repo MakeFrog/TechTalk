@@ -4,7 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/core.dart';
-import 'package:techtalk/features/job/models/job_group_model.dart';
+import 'package:techtalk/features/job/entities/job_group_entity.dart';
 import 'package:techtalk/features/tech_skill/tech_skill.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/searched_tech_skill_list_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_form_provider.dart';
@@ -41,12 +41,12 @@ abstract class _SignUpEvent {
 
   void onTapSelectedJobGroup(
     WidgetRef ref, {
-    required JobGroupModel group,
+    required JobGroupEntity group,
   });
 
   void onTapJobGroupListTile(
     WidgetRef ref, {
-    required JobGroupModel group,
+    required JobGroupEntity group,
   });
 
   void onTapJobGroupStepNext(WidgetRef ref);
@@ -139,7 +139,7 @@ mixin class SignUpEvent implements _SignUpEvent {
   @override
   void onTapJobGroupListTile(
     WidgetRef ref, {
-    required JobGroupModel group,
+    required JobGroupEntity group,
   }) {
     final jobGroupList = ref.read(
       signUpFormProvider.select((v) => v.jobGroupList),
@@ -155,7 +155,7 @@ mixin class SignUpEvent implements _SignUpEvent {
   @override
   void onTapSelectedJobGroup(
     WidgetRef ref, {
-    required JobGroupModel group,
+    required JobGroupEntity group,
   }) {
     ref.read(signUpFormProvider.notifier).removeJobGroup(group);
   }

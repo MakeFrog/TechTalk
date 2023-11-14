@@ -6,7 +6,7 @@ part of 'total_qna_list_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$totalQnaListHash() => r'5410ff7eb44659ba42aa308b48334ea916f42c9e';
+String _$totalQnaListHash() => r'1a181a86054b32d5b9c59cd28a258d37a4864514';
 
 /// See also [TotalQnaList].
 @ProviderFor(TotalQnaList)

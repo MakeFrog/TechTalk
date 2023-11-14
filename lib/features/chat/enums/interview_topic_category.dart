@@ -3,7 +3,9 @@
 ///
 enum InterviewTopicCategory {
   cs(id: 'c', text: 'CS'),
-  technologyFrameworks(id: 'f', text: '기술 스택');
+  technologyFrameworks(id: 'f', text: '기술 스택'),
+
+  programmingLanguage(id: 'pl', text: '개발 언어');
 
   final String id;
   final String text;

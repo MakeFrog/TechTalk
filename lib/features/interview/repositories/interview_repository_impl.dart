@@ -1,16 +1,51 @@
+import 'package:techtalk/core/utils/result.dart';
+import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/entities/interview_qna_entity.dart';
+import 'package:techtalk/features/chat/entities/user_interview_response.dart';
+import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
 import 'package:techtalk/features/interview/interview.dart';
 
 class InterviewRepositoryImpl implements InterviewRepository {
-  const InterviewRepositoryImpl(
-    this._interviewLocalDataSource,
-  );
+  const InterviewRepositoryImpl({
+    required InterviewLocalDataSource interviewLocalDataSource,
+    required InterviewRemoteDataSource interviewRemoteDataSource,
+  })  : _interviewLocalDataSource = interviewLocalDataSource,
+        _interviewRemoteDataSource = interviewRemoteDataSource;
   final InterviewLocalDataSource _interviewLocalDataSource;
+  final InterviewRemoteDataSource _interviewRemoteDataSource;
 
   @override
-  Future<List<InterviewTopicEntity>> getInterviewTopicList() async {
-    final model = _interviewLocalDataSource.getInterviewTopicList();
-    final topicList = model.map(InterviewTopicEntity.fromModel).toList();
+  List<InterviewTopic> getTopics() {
+    return _interviewLocalDataSource.getTopics();
+  }
 
-    return topicList;
+  @override
+  Future<Result<List<InterviewQnAEntity>>> getReviewNoteQuestions({
+    required String userUid,
+    required String topicId,
+  }) async {
+    try {
+      final questionsModel =
+          await _interviewRemoteDataSource.getReviewNoteQuestions(
+        userUid: userUid,
+        topicId: topicId,
+      );
+
+      final questionsEntity = questionsModel.map((e) {
+        return InterviewQnAEntity(
+          id: e.id,
+          question: e.question,
+          idealAnswer: e.answers,
+          response: UserInterviewResponse(
+            e.myAnswer,
+            state: AnswerState.wrong,
+          ),
+        );
+      }).toList();
+
+      return Result.success(questionsEntity);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
   }
 }

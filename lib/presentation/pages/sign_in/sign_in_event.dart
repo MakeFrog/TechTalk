@@ -45,7 +45,7 @@ mixin class SignInEvent implements _SignInEvent {
         )
         .catchError(
           (e) => ToastService.show(
-            toast: NormalToast(message: e.message ?? ''),
+            NormalToast(message: e.message ?? ''),
           ),
           test: (error) => error is FirebaseAuthException,
         )
@@ -65,7 +65,7 @@ mixin class SignInEvent implements _SignInEvent {
         )
         .catchError(
           (e) => ToastService.show(
-            toast: NormalToast(message: e.message ?? ''),
+            NormalToast(message: e.message ?? ''),
           ),
           test: (error) => error is FirebaseAuthException,
         )

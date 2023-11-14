@@ -7,11 +7,12 @@ import 'package:techtalk/features/study/study.dart';
 
 final class StudyRemoteDataSourceFake implements StudyRemoteDataSource {
   @override
-  Future<StudyQuestionListModel> getQuestionList() async {
+  Future<StudyQuestionListModel> getQuestionList(String techId) async {
     await Future.delayed(2.seconds);
 
     return StudyQuestionListModel(
-      questionList: List.generate(
+      updateDate: DateTime.now(),
+      questions: List.generate(
         50,
         (index) => StudyQuestionModel(
           question: 'Self와 self의 차이는 무엇인가요?',
@@ -25,5 +26,11 @@ final class StudyRemoteDataSourceFake implements StudyRemoteDataSource {
         ),
       ),
     );
+  }
+
+  @override
+  Future<DateTime> getLastQuestionsUpdateDate(String techId) {
+    // TODO: implement getLastQuestionsUpdateDate
+    throw UnimplementedError();
   }
 }

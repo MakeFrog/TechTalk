@@ -9,7 +9,8 @@ part of 'study_question_list_model.dart';
 StudyQuestionListModel _$StudyQuestionListModelFromJson(
         Map<String, dynamic> json) =>
     StudyQuestionListModel(
-      questionList: (json['question_list'] as List<dynamic>)
-          .map((e) => StudyQuestionModel.fromJson(e as Map<String, dynamic>))
+      updateDate: DateTime.parse(json['update_date'] as String),
+      questions: (json['questions'] as List<dynamic>?)
+          ?.map((e) => StudyQuestionModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );

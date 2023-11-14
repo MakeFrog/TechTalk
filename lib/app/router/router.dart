@@ -10,8 +10,8 @@ import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
-import 'package:techtalk/presentation/pages/study/providers/selected_study_topic_provider.dart';
-import 'package:techtalk/presentation/pages/study/study_page.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/selected_study_topic_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/study_learning_page.dart';
 import 'package:techtalk/presentation/pages/test_page/test_page.dart';
 
 part 'router.g.dart';
@@ -124,17 +124,9 @@ class StudyRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return Consumer(
-      builder: (context, ref, child) {
-        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-          ref
-              .read(selectedStudyTopicProvider.notifier)
-              .setTopicByName(topicName);
-        });
+    SelectedStudyTopic.topicName = topicName;
 
-        return StudyPage();
-      },
-    );
+    return StudyLearningPage();
   }
 }
 
