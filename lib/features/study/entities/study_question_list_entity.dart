@@ -9,13 +9,12 @@ part 'study_question_list_entity.g.dart';
 @freezed
 class StudyQuestionListEntity with _$StudyQuestionListEntity {
   const factory StudyQuestionListEntity({
-    required List<StudyQuestionEntity> questionList,
+    required List<StudyQuestionEntity> questions,
   }) = _StudyQuestionListEntity;
 
   factory StudyQuestionListEntity.fromModel(StudyQuestionListModel model) {
     return StudyQuestionListEntity(
-      questionList:
-          model.questionList.map(StudyQuestionEntity.fromModel).toList(),
+      questions: model.questions.map(StudyQuestionEntity.fromModel).toList(),
     );
   }
   factory StudyQuestionListEntity.fromJson(Map<String, dynamic> json) =>

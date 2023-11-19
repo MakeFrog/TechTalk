@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/providers/topic_list_provider.dart';
@@ -26,7 +25,7 @@ class _Body extends HookWidget {
     final selectedTopic = useState<int?>(null);
 
     return SafeArea(
-      minimum: EdgeInsets.only(bottom: 16.h),
+      minimum: EdgeInsets.only(bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -40,7 +39,7 @@ class _Body extends HookWidget {
 
   Widget _buildInfoMessage() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      padding: EdgeInsets.symmetric(horizontal: 16),
       child: Text(
         'AI 면접을 진행할\n주제를 알려주세요',
         style: AppTextStyle.headline1,
@@ -51,7 +50,7 @@ class _Body extends HookWidget {
   Widget _buildTopicListView(ValueNotifier<int?> selectedTopic) {
     return Expanded(
       child: Container(
-        padding: EdgeInsets.fromLTRB(16.w, 24.h, 16.w, 16.h),
+        padding: EdgeInsets.fromLTRB(16, 24, 16, 16),
         child: Consumer(
           builder: (context, ref, child) {
             final topicListAsync = ref.watch(topicListProvider);
@@ -62,9 +61,9 @@ class _Body extends HookWidget {
               data: (data) {
                 return GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: ScreenUtil().screenWidth < 800 ? 2 : 3,
-                    crossAxisSpacing: 11.w,
-                    mainAxisSpacing: 12.w,
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 11,
+                    mainAxisSpacing: 12,
                   ),
                   itemCount: data.length,
                   itemBuilder: (context, index) {
@@ -94,7 +93,7 @@ class _Body extends HookWidget {
 
   Widget _buildNextButton(ValueNotifier<int?> selectedTopic) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.r),
+      padding: EdgeInsets.symmetric(horizontal: 16),
       child: FilledButton(
         onPressed: selectedTopic.value != null ? () {} : null,
         child: Center(

@@ -2,7 +2,6 @@ import 'package:chatgpt_completions/chatgpt_completions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/app/environment/environment.enum.dart';
 
@@ -40,8 +39,5 @@ class Flavor {
 
     // 앱 DI 실행
     AppBinder.init();
-
-    // 스크린 유틸 초기화
-    await ScreenUtil.ensureScreenSize();
   }
 }

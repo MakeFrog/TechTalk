@@ -1,5 +1,5 @@
-import 'package:techtalk/features/interview/data/models/interview_topic_model.dart';
+import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
 
 abstract interface class InterviewLocalDataSource {
-  List<InterviewTopicModel> getInterviewTopicList();
+  List<InterviewTopic> getTopics();
 }

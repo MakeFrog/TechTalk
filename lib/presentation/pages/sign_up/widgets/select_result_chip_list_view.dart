@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:techtalk/presentation/widgets/common/chip/rounded_rect_filled_chip.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class SelectResultChipListView extends StatelessWidget {
@@ -16,12 +14,12 @@ class SelectResultChipListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 36.h,
+      height: 36,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        padding: EdgeInsets.symmetric(horizontal: 16),
         itemCount: itemList.length,
-        separatorBuilder: (context, index) => WidthBox(8.w),
+        separatorBuilder: (context, index) => WidthBox(8),
         itemBuilder: (context, index) {
           final item = itemList[index];
 

@@ -1,3 +1,5 @@
+import 'package:techtalk/core/utils/result.dart';
+import 'package:techtalk/features/job/entities/job_group_list_entity.dart';
 import 'package:techtalk/features/job/job.dart';
 
 final class GetJobGroupListUseCase {
@@ -7,7 +9,7 @@ final class GetJobGroupListUseCase {
 
   final JobRepository _jobRepository;
 
-  Future<JobGroupListModel> call() async {
+  Future<Result<JobGroupListEntity>> call() async {
     return _jobRepository.getJobGroupList();
   }
 }

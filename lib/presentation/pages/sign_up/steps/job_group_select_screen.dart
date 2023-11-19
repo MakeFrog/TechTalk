@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
@@ -26,7 +25,7 @@ class JobGroupSelectScreen extends HookWidget {
             slivers: [
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 4).r,
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
                   child: const SignUpStepIntroMessage(
                     title: '관심있는 직군을\n알려주세요.',
                     subTitle: '1개 이상 선택해 주세요.',
@@ -75,7 +74,7 @@ class _SelectedJobGroupListDelegate extends SliverPersistentHeaderDelegate {
     required this.onTapItem,
   });
 
-  final List<JobGroupModel> jobGroupList;
+  final List<JobGroupEntity> jobGroupList;
   final void Function(int index) onTapItem;
 
   @override
@@ -86,7 +85,7 @@ class _SelectedJobGroupListDelegate extends SliverPersistentHeaderDelegate {
   ) {
     return Container(
       alignment: Alignment.center,
-      height: 68.h,
+      height: 68,
       color: Colors.white,
       child: SelectResultChipListView(
         itemList: jobGroupList.map((e) => e.name).toList(),
@@ -96,10 +95,10 @@ class _SelectedJobGroupListDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 68.h;
+  double get maxExtent => 68;
 
   @override
-  double get minExtent => 68.h;
+  double get minExtent => 68;
 
   @override
   bool shouldRebuild(covariant _SelectedJobGroupListDelegate oldDelegate) {
@@ -144,7 +143,7 @@ class _JobGroupListView extends ConsumerWidget with SignUpEvent {
               selectedColor: AppColor.of.black,
               selectedTileColor: AppColor.of.background1,
               minVerticalPadding: 0,
-              contentPadding: EdgeInsets.symmetric(horizontal: 16.w),
+              contentPadding: EdgeInsets.symmetric(horizontal: 16),
               title: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -156,12 +155,12 @@ class _JobGroupListView extends ConsumerWidget with SignUpEvent {
                   ? FaIcon(
                       FontAwesomeIcons.solidCircleCheck,
                       color: AppColor.of.brand2,
-                      size: 20.r,
+                      size: 20,
                     )
                   // ? SvgPicture.asset(
                   //     Assets.iconsRoundedCheckThick,
                   //     // color: AppColor.of.brand2,
-                  //     width: 20.r,
+                  //     width: 20,
                   //   )
                   : null,
               onTap: () => onTapJobGroupListTile(
@@ -186,7 +185,7 @@ class _NextButton extends ConsumerWidget with SignUpEvent {
     );
 
     return Padding(
-      padding: EdgeInsets.all(16.r),
+      padding: EdgeInsets.all(16),
       child: FilledButton(
         onPressed:
             isSelectedAtLeastOne ? () => onTapJobGroupStepNext(ref) : null,

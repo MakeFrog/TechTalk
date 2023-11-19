@@ -8,16 +8,11 @@ class ToastService {
   static final FToast _fToast = FToast()
     ..init(rootNavigatorKey.currentContext!);
 
-  static void show({
-    required CustomToast toast,
-    bool afterDispose = false,
-  }) {
-    if (afterDispose) {
-      _fToast.removeQueuedCustomToasts();
-    }
-
-    _fToast.showToast(
-      child: toast,
-    );
+  static void show(CustomToast toast) {
+    _fToast
+      ..removeQueuedCustomToasts()
+      ..showToast(
+        child: toast,
+      );
   }
 }
