@@ -24,7 +24,7 @@ class Bubble extends StatelessWidget {
   Widget build(BuildContext context) {
     /// RECEIVED CHAT
     if (chat.type.isReceivedMessage) {
-      final item = chat as ReceivedChatEntity;
+      final item = chat;
       return Align(
         alignment: Alignment.centerLeft,
         child: Row(
@@ -91,7 +91,7 @@ class Bubble extends StatelessWidget {
                     } else {
                       /// STATIC MESSAGE
                       return Text(
-                        item.message.value,
+                        item.message.valueOrNull ?? '  ',
                         style: AppTextStyle.alert2,
                       );
                     }

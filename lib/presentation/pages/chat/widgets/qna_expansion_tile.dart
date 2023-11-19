@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:techtalk/core/core.dart';
+import 'package:techtalk/core/constants/constants.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/chat/entities/interview_qna_entity.dart';
@@ -80,11 +80,11 @@ class QnAExpansionTile extends HookWidget {
 
             /// LIST OF IDEAL ANSWER
             ...List.generate(
-              item.idealAnswer!.length,
+              item.idealAnswer.length,
               (index) => Padding(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: BulletText(
-                  'Self는 프로토콜에서 사용되면 프로토콜을 채택하는 타입을 의미하고, 클래스, 구조체, 열거형에서 사용되면 선언에 사용된 타입을 의미합니다.',
+                  item.idealAnswer[index],
                   style: AppTextStyle.alert2,
                 ),
               ),

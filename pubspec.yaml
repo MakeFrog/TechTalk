@@ -64,6 +64,8 @@ dependencies:
   json_annotation: ^4.8.1
   logger: ^2.0.2+1
   uuid: ^4.1.0
+  single_import_generator: ^1.0.0 # barrel file generator
+  lorem_ipsum_generator: ^0.0.1 # 랜던 텍스트 generator(삭제 예정)
 
   # 앱 정보
   package_info_plus: ^4.1.0

@@ -18,13 +18,11 @@ AsyncValue<List<InterviewQnAEntity>> completedQnAList(
   return qnaList.map(
     data: (list) {
       final filteredValue = list.value.where((e) {
-        if (e.hasUserResponded) {
-          // 유저 응답 여부
-          if (e.response!.state.isCompleted) {
-            // 정답 확인 완료 여부
-            return true;
-          }
+        // 정답 확인 완료 여부
+        if (e.hasUserResponded && e.response!.state.isCompleted) {
+          return true;
         }
+
         return false;
       }).toList();
       return AsyncData(filteredValue);

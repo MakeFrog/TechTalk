@@ -5,7 +5,7 @@ import 'package:techtalk/features/chat/enums/interview_progress_state.enum.dart'
 import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 
-class TestPage extends BaseRefHookPage {
+class TestPage extends BasePage {
   const TestPage({Key? key}) : super(key: key);
 
   @override

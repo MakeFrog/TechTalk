@@ -21,7 +21,7 @@ extension StringExtensions on String {
     int index = 0;
 
     Timer.periodic(
-      const Duration(milliseconds: 50),
+      const Duration(milliseconds: 20),
       (timer) {
         if (index < length) {
           messageSubject.add(substring(0, index + 1));
