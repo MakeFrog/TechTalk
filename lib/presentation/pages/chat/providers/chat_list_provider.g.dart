@@ -8,6 +8,7 @@ part of 'chat_list_provider.dart';
 
 String _$chatListHash() => r'20e74f4180e3b468f2d332d0d346dcb6ef06f5f7';
 
+
 /// See also [ChatList].
 @ProviderFor(ChatList)
 final chatListProvider =

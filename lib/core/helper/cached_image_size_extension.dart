@@ -21,6 +21,6 @@ import 'package:flutter/material.dart';
 
 extension CachedImgSizeExtension on num {
   int cacheSize(BuildContext context) {
-    return (this * MediaQuery.of(context).devicePixelRatio).round();
+    return (this * MediaQuery.of(context).devicePixelRatio).ceil();
   }
 }

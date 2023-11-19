@@ -9,11 +9,11 @@ abstract class _FilledButtonTheme {
       disabledForegroundColor: AppColor().white,
       elevation: 0,
       padding: EdgeInsets.symmetric(
-        horizontal: 36.w,
-        vertical: 18.h,
+        horizontal: 36,
+        vertical: 18,
       ),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(16),
       ),
       textStyle: AppTextStyle.title1,
     ),

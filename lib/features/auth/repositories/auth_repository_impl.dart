@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:techtalk/core/core.dart';
+import 'package:techtalk/core/models/custom_exception.dart';
+import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/auth/data/remote/auth_remote_data_source.dart';
 import 'package:techtalk/features/auth/repositories/auth_repository.dart';
 
@@ -11,18 +13,27 @@ final class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource _authRemoteDataSource;
 
   @override
-  Future<UserCredential> signInOAuth(UserAccountProvider provider) async {
+  Future<Result<UserCredential>> signInOAuth(
+    UserAccountProvider provider,
+  ) async {
     try {
       final userCredential = await switch (provider) {
         UserAccountProvider.google => _authRemoteDataSource.signInWithGoogle(),
         UserAccountProvider.apple => _authRemoteDataSource.signInWithApple(),
       };
 
-      return userCredential;
+      return Result.success(userCredential);
     } on FirebaseAuthException catch (e) {
-      rethrow;
+      return Result.failure(
+        CustomException(
+          code: e.code,
+          message: e.message ?? e.code,
+        ),
+      );
     } catch (e) {
-      rethrow;
+      return Result.failure(
+        Exception(e),
+      );
     }
   }
 

@@ -1,1 +1,3 @@
-abstract interface class SignUpRemoteDataSource {}
+abstract interface class SignUpRemoteDataSource {
+  Future<bool> isExistNickname(String nickname);
+}

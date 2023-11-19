@@ -1,7 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/helper/validation_extension.dart';
-import 'package:techtalk/features/job/models/job_group_model.dart';
+import 'package:techtalk/features/job/entities/job_group_entity.dart';
 import 'package:techtalk/features/sign_up/entities/sign_up_form_entity.dart';
+import 'package:techtalk/features/sign_up/sign_up.dart';
 import 'package:techtalk/features/tech_skill/tech_skill.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/providers/app_user_data_provider.dart';
@@ -11,7 +12,23 @@ part 'sign_up_form_provider.g.dart';
 @riverpod
 class SignUpForm extends _$SignUpForm {
   @override
-  SignUpFormEntity build() => const SignUpFormEntity();
+  SignUpFormEntity build() => SignUpFormEntity();
+
+  String? _validateNickname(String nickname) {
+    String? validationMessage;
+
+    if (nickname.hasSpace) {
+      validationMessage = '닉네임에 공백이 포함되어 있습니다.';
+    } else if (!nickname.hasProperCharacter) {
+      validationMessage = '닉네임은 한글, 알파벳, 숫자, 언더스코어(_), 하이픈(-)만 사용할 수 있습니다.';
+    } else if (nickname.hasContainFWord) {
+      validationMessage = '닉네임에 비속어가 포함되어 있습니다.';
+    } else if (nickname.hasContainOperationWord) {
+      validationMessage = '허용되지 않는 단어가 포함되어 있습니다.';
+    }
+
+    return validationMessage;
+  }
 
   Future<void> updateNickname(String nickname) async {
     if (nickname.isEmpty) {
@@ -22,17 +39,7 @@ class SignUpForm extends _$SignUpForm {
       return;
     }
 
-    String? validationMessage;
-
-    if (nickname.hasSpace) {
-      validationMessage = '닉네임에 공백이 포함되어 있습니다.';
-    } else if (!nickname.hasProperCharacter ||
-        nickname.hasContainOperationWord) {
-      validationMessage = '닉네임은 한글, 알파벳, 숫자, 언더스코어(_), 하이픈(-)만 사용할 수 있습니다.';
-    } else if (nickname.hasContainFWord) {
-      validationMessage = '닉네임에 비속어가 포함되어 있습니다.';
-    }
-
+    final validationMessage = _validateNickname(nickname);
     if (validationMessage != null) {
       state = state.copyWith(
         nickname: null,
@@ -42,10 +49,8 @@ class SignUpForm extends _$SignUpForm {
       return;
     }
 
-    // TODO : 중복여부 검사 전 닉네임 형식 벨리데이션 추가
-    final isExist = await isExistNicknameUseCase(nickname);
-
-    state = isExist
+    final result = await isNicknameDuplicatedUseCase(nickname);
+    state = result.getOrThrow()
         ? state.copyWith(
             nickname: null,
             nicknameValidation: '중복된 닉네임입니다.',
@@ -56,7 +61,7 @@ class SignUpForm extends _$SignUpForm {
           );
   }
 
-  void addJobGroup(JobGroupModel group) {
+  void addJobGroup(JobGroupEntity group) {
     final isExist = state.jobGroupList.contains(group);
 
     if (!isExist) {
@@ -69,7 +74,7 @@ class SignUpForm extends _$SignUpForm {
     }
   }
 
-  void removeJobGroup(JobGroupModel group) {
+  void removeJobGroup(JobGroupEntity group) {
     final isExist = state.jobGroupList.contains(group);
 
     if (isExist) {

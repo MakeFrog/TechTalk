@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_controller_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_event.dart';
 import 'package:techtalk/presentation/pages/sign_up/steps/job_group_select_screen.dart';
-import 'package:techtalk/presentation/pages/sign_up/steps/nickname_input_screen.dart';
+import 'package:techtalk/presentation/pages/sign_up/steps/nickname_input_step.dart';
 import 'package:techtalk/presentation/pages/sign_up/steps/tech_skill_select_screen.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -14,7 +13,7 @@ class SignUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.white,
       appBar: _AppBar(),
       body: _Body(),
@@ -58,7 +57,7 @@ class _AppBar extends StatelessWidget
 
   Widget _buildStepIndicator() {
     return Padding(
-      padding: EdgeInsets.only(right: 16.w),
+      padding: EdgeInsets.only(right: 16),
       child: Consumer(
         builder: (_, ref, __) {
           final pageController = ref.watch(signUpStepControllerProvider);
@@ -70,8 +69,8 @@ class _AppBar extends StatelessWidget
               type: WormType.thin,
               activeDotColor: AppColor.of.brand2,
               dotColor: AppColor.of.brand1,
-              dotHeight: 8.r,
-              dotWidth: 8.r,
+              dotHeight: 8,
+              dotWidth: 8,
             ),
           );
         },
@@ -92,7 +91,7 @@ class _Body extends ConsumerWidget {
         controller: pageController,
         physics: const NeverScrollableScrollPhysics(),
         children: const [
-          NicknameInputScreen(),
+          NicknameInputStep(),
           JobGroupSelectScreen(),
           TechSkillSelectScreen(),
         ],

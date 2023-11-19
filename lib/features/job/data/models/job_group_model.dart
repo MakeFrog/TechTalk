@@ -12,11 +12,14 @@ class JobGroupModel with _$JobGroupModel {
   }) = _JobGroupModel;
 
   factory JobGroupModel.fromFirestore(
-    QueryDocumentSnapshot<Map<String, dynamic>> snapshot,
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
   ) {
-    final data = snapshot.data()..['id'] = snapshot.id;
+    final data = snapshot.data()!;
 
-    return JobGroupModel.fromJson(data);
+    return JobGroupModel(
+      id: snapshot.id,
+      name: data['name'],
+    );
   }
 
   factory JobGroupModel.fromJson(Map<String, dynamic> json) =>

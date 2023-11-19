@@ -21,8 +21,7 @@ StudyQuestionListEntity _$StudyQuestionListEntityFromJson(
 
 /// @nodoc
 mixin _$StudyQuestionListEntity {
-  List<StudyQuestionEntity> get questionList =>
-      throw _privateConstructorUsedError;
+  List<StudyQuestionEntity> get questions => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +35,7 @@ abstract class $StudyQuestionListEntityCopyWith<$Res> {
           $Res Function(StudyQuestionListEntity) then) =
       _$StudyQuestionListEntityCopyWithImpl<$Res, StudyQuestionListEntity>;
   @useResult
-  $Res call({List<StudyQuestionEntity> questionList});
+  $Res call({List<StudyQuestionEntity> questions});
 }
 
 /// @nodoc
@@ -53,12 +52,12 @@ class _$StudyQuestionListEntityCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? questionList = null,
+    Object? questions = null,
   }) {
     return _then(_value.copyWith(
-      questionList: null == questionList
-          ? _value.questionList
-          : questionList // ignore: cast_nullable_to_non_nullable
+      questions: null == questions
+          ? _value.questions
+          : questions // ignore: cast_nullable_to_non_nullable
               as List<StudyQuestionEntity>,
     ) as $Val);
   }
@@ -73,7 +72,7 @@ abstract class _$$StudyQuestionListEntityImplCopyWith<$Res>
       __$$StudyQuestionListEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<StudyQuestionEntity> questionList});
+  $Res call({List<StudyQuestionEntity> questions});
 }
 
 /// @nodoc
@@ -89,12 +88,12 @@ class __$$StudyQuestionListEntityImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? questionList = null,
+    Object? questions = null,
   }) {
     return _then(_$StudyQuestionListEntityImpl(
-      questionList: null == questionList
-          ? _value._questionList
-          : questionList // ignore: cast_nullable_to_non_nullable
+      questions: null == questions
+          ? _value._questions
+          : questions // ignore: cast_nullable_to_non_nullable
               as List<StudyQuestionEntity>,
     ));
   }
@@ -106,23 +105,23 @@ class _$StudyQuestionListEntityImpl
     with DiagnosticableTreeMixin
     implements _StudyQuestionListEntity {
   const _$StudyQuestionListEntityImpl(
-      {required final List<StudyQuestionEntity> questionList})
-      : _questionList = questionList;
+      {required final List<StudyQuestionEntity> questions})
+      : _questions = questions;
 
   factory _$StudyQuestionListEntityImpl.fromJson(Map<String, dynamic> json) =>
       _$$StudyQuestionListEntityImplFromJson(json);
 
-  final List<StudyQuestionEntity> _questionList;
+  final List<StudyQuestionEntity> _questions;
   @override
-  List<StudyQuestionEntity> get questionList {
-    if (_questionList is EqualUnmodifiableListView) return _questionList;
+  List<StudyQuestionEntity> get questions {
+    if (_questions is EqualUnmodifiableListView) return _questions;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_questionList);
+    return EqualUnmodifiableListView(_questions);
   }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'StudyQuestionListEntity(questionList: $questionList)';
+    return 'StudyQuestionListEntity(questions: $questions)';
   }
 
   @override
@@ -130,7 +129,7 @@ class _$StudyQuestionListEntityImpl
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'StudyQuestionListEntity'))
-      ..add(DiagnosticsProperty('questionList', questionList));
+      ..add(DiagnosticsProperty('questions', questions));
   }
 
   @override
@@ -139,13 +138,13 @@ class _$StudyQuestionListEntityImpl
         (other.runtimeType == runtimeType &&
             other is _$StudyQuestionListEntityImpl &&
             const DeepCollectionEquality()
-                .equals(other._questionList, _questionList));
+                .equals(other._questions, _questions));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_questionList));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_questions));
 
   @JsonKey(ignore: true)
   @override
@@ -164,14 +163,14 @@ class _$StudyQuestionListEntityImpl
 
 abstract class _StudyQuestionListEntity implements StudyQuestionListEntity {
   const factory _StudyQuestionListEntity(
-          {required final List<StudyQuestionEntity> questionList}) =
+          {required final List<StudyQuestionEntity> questions}) =
       _$StudyQuestionListEntityImpl;
 
   factory _StudyQuestionListEntity.fromJson(Map<String, dynamic> json) =
       _$StudyQuestionListEntityImpl.fromJson;
 
   @override
-  List<StudyQuestionEntity> get questionList;
+  List<StudyQuestionEntity> get questions;
   @override
   @JsonKey(ignore: true)
   _$$StudyQuestionListEntityImplCopyWith<_$StudyQuestionListEntityImpl>

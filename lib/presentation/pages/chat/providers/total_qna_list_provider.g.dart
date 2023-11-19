@@ -8,6 +8,7 @@ part of 'total_qna_list_provider.dart';
 
 String _$totalQnaListHash() => r'f6d739c03c3b2a55cc2ad43d47336085ee40f7a5';
 
+
 /// See also [TotalQnaList].
 @ProviderFor(TotalQnaList)
 final totalQnaListProvider = NotifierProvider<TotalQnaList,

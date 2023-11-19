@@ -9,7 +9,7 @@ part of 'study_question_list_entity.dart';
 _$StudyQuestionListEntityImpl _$$StudyQuestionListEntityImplFromJson(
         Map<String, dynamic> json) =>
     _$StudyQuestionListEntityImpl(
-      questionList: (json['questionList'] as List<dynamic>)
+      questions: (json['questions'] as List<dynamic>)
           .map((e) => StudyQuestionEntity.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
@@ -17,5 +17,5 @@ _$StudyQuestionListEntityImpl _$$StudyQuestionListEntityImplFromJson(
 Map<String, dynamic> _$$StudyQuestionListEntityImplToJson(
         _$StudyQuestionListEntityImpl instance) =>
     <String, dynamic>{
-      'questionList': instance.questionList,
+      'questions': instance.questions,
     };
