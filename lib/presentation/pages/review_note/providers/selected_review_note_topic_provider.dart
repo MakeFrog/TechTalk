@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
+import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/providers/app_user_data_provider.dart';
 
 part 'selected_review_note_topic_provider.g.dart';

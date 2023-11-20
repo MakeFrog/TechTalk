@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:techtalk/core/constants/constants.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/chat/entities/interview_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/interview_qna_entity.dart';
 import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 import 'package:techtalk/presentation/widgets/common/text/bullet_text.dart';
 import 'package:techtalk/presentation/widgets/common/tile/flexible_expansion_tile.dart';

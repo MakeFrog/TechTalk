@@ -1,8 +1,5 @@
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/entities/interview_qna_entity.dart';
-import 'package:techtalk/features/chat/entities/user_interview_response.dart';
-import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
 import 'package:techtalk/features/interview/interview.dart';
 
 class InterviewRepositoryImpl implements InterviewRepository {

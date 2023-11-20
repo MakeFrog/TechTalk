@@ -1,0 +1,90 @@
+{
+  "interviewerId": "bluePlus",
+  "topicId": "swift",
+  "totalQuestionCount": 0,
+  "correctAnswerCount":24,
+  "incorrectAnswerCount": 0,
+  "chatRoomId": "zxcifj3asD2aAs",
+  "messages": [
+    {
+      "id": "4444",
+      "timestamp": "TIMESTAMP",
+      "message": "...",
+      "type": "feedback"
+    },
+    {
+      "id": "3333",
+      "message": "...",
+      "type": "sent",
+      "timestamp": "TIMESTAMP",
+      "qna": {
+        "questionId": "swift-1",
+        "state": "correct"
+      }
+    },
+    {
+      "id": "2222",
+      "timestamp": "TIMESTAMP",
+      "message": "...",
+      "type": "question",
+      "qna": {
+        "questionId": "swift-1",
+        "idealAnswers": [
+          "모범답변1",
+          "모범답변2"
+        ]
+      }
+    },
+    {
+      "id": "55555",
+      "timestamp": "TIMESTAMP",
+      "message": "...",
+      "type": "question",
+      "qna": {
+        "questionId": "swift-34",
+        "state": "initial"
+      }
+    },
+    {
+      "id": "2223333",
+      "message": "...",
+      "type": "guide",
+      "timestamp": "TIMESTAMP"
+    },
+    {
+      "id": "4444",
+      "timestamp": "TIMESTAMP",
+      "message": "....",
+      "type": "feedback"
+    },
+    {
+      "id": "3333",
+      "message": "순서가 중요하지 않고 데이터를 중복없이 고유하게 관리할 때 Set을 사용하는 것이 더 좋습니다",
+      "type": "sent",
+      "timestamp": "TIMESTAMP",
+      "qna": {
+        "questionId": "swift-1",
+        "state": "correct"
+      }
+    },
+    {
+      "id": "2222",
+      "timestamp": "TIMESTAMP",
+      "message": "Array보다 Set을 사용하는게 더 좋을 때는 언제일까요?",
+      "type": "question",
+      "qna": {
+        "questionId": "swift-1",
+        "idealAnswers": [
+          "모범답변1",
+          "모범답변2"
+        ]
+      }
+    },
+    {
+      "id": "1111",
+      "timestamp": "TIMESTAMP",
+      "message": "반가워요! 지혜님. Swift면접 질문을 드리겠습니다",
+      "type": "guide"
+    }
+  ]
+}

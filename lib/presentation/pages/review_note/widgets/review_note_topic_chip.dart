@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
+import 'package:techtalk/features/chat/chat.dart';
 
 class ReviewNoteTopicChip extends StatelessWidget {
   const ReviewNoteTopicChip({
@@ -25,7 +25,6 @@ class ReviewNoteTopicChip extends StatelessWidget {
       ),
       backgroundColor: AppColor.of.background1,
       selectedColor: AppColor.of.brand2,
-      showCheckmark: false,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),

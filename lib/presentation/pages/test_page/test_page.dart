@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
-import 'package:techtalk/features/chat/enums/interview_progress_state.enum.dart';
-import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
+import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 
 class TestPage extends BasePage {

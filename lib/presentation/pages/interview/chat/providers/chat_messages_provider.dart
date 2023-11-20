@@ -7,16 +7,16 @@ import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/core/services/toast_service.dart';
 import 'package:techtalk/core/utils/route_argument.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/presentation/pages/chat/providers/is_available_to_answer.dart';
-import 'package:techtalk/presentation/pages/chat/providers/total_qna_list_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/is_available_to_answer.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/total_qna_list_provider.dart';
 import 'package:techtalk/presentation/widgets/common/toast/app_toast.dart';
 
-part 'chat_list_provider.g.dart';
+part 'chat_messages_provider.g.dart';
 
 @riverpod
-class ChatList extends _$ChatList {
+class ChatMessages extends _$ChatMessages {
   @override
-  FutureOr<List<ChatEntity>> build() async {
+  FutureOr<List<MessageEntity>> build() async {
     ref.onDispose(() {
       ref.invalidate(totalQnaListProvider);
       ref.invalidate(isAvailableToAnswerProvider);
@@ -30,7 +30,7 @@ class ChatList extends _$ChatList {
       topic: routeArg.topic
     );
 
-    final response = await getChatListUseCase(param);
+    final response = await getChatMessagesUseCase(param);
     return response.fold(
       onSuccess: (chatList) async {
         // 처음 채팅방에 진입한 경우
@@ -70,11 +70,11 @@ class ChatList extends _$ChatList {
   Future<void> addUserChatResponse({required String message}) async {
     final answeredQuestion =
         state.requireValue.lastWhere((chat) => chat.type.isAskQuestionMessage)
-            as QuestionChatEntity;
+            as QuestionMessageEntity;
 
     await update(
       (previous) => [
-        SentChatEntity.initial(
+        SentMessageEntity.initial(
           message: message,
           questionId: answeredQuestion.questionId,
         ),
@@ -91,7 +91,7 @@ class ChatList extends _$ChatList {
   Future<void> respondToUserAnswer({required String userAnswer}) async {
     await update(
       (previous) => [
-        FeedbackChatEntity.createStreamChat(
+        FeedbackMessageEntity.createStreamChat(
           messageStream: getAnswerFeedBackUseCase.call(
             (
               category: 'Swift',
@@ -128,7 +128,7 @@ class ChatList extends _$ChatList {
 
     await update(
       (previous) => [
-        QuestionChatEntity.createStreamedChat(
+        QuestionMessageEntity.createStreamedChat(
           questionId: targetQuestion.id,
           idealAnswers: targetQuestion.idealAnswer,
           streamedMessage: streamedChatMessage,
@@ -154,7 +154,7 @@ class ChatList extends _$ChatList {
 
         update(
           (previous) => [
-            QuestionChatEntity.createStreamedChat(
+            QuestionMessageEntity.createStreamedChat(
               streamedMessage: streamedChatMessage,
               questionId: nextQuestion.id,
               idealAnswers: nextQuestion.idealAnswer,
@@ -185,7 +185,7 @@ class ChatList extends _$ChatList {
     });
     update(
       (previous) => [
-        GuideChatEntity.createStream(
+        GuideMessageEntity.createStream(
           guideStreamedText,
         ),
         ...previous,
@@ -214,7 +214,7 @@ class ChatList extends _$ChatList {
     final chatList = state.requireValue;
 
     final answeredChat = chatList.firstWhere((chat) => chat.type.isSentMessage)
-        as SentChatEntity;
+        as SentMessageEntity;
 
     final targetIndex = chatList.indexWhere((chat) => chat == answeredChat);
 
@@ -225,7 +225,7 @@ class ChatList extends _$ChatList {
 
     // 2. QnA 리스트 상태 업데이트 (유저 응답)
     final updatedSentChat = chatList
-        .firstWhere((chat) => chat.type.isSentMessage) as SentChatEntity;
+        .firstWhere((chat) => chat.type.isSentMessage) as SentMessageEntity;
 
     final userResponse = UserInterviewResponse(
       updatedSentChat.message.value,
@@ -251,8 +251,8 @@ class ChatList extends _$ChatList {
   /// 하나의 질문 단위로 섹션이 구분
   ///
   /// ex)
-  /// [ReceivedChatEntity](N) - [ReceivedChatEntity](Y) - [SentChatEntity]
-  /// [ReceivedChatEntity](N) - [ReceivedChatEntity](Y) - [SentChatEntity] - [ReceivedChatEntity](N) - [ReceivedChatEntity](Y)
+  /// [ReceivedChatEntity](N) - [ReceivedChatEntity](Y) - [SentMessageEntity]
+  /// [ReceivedChatEntity](N) - [ReceivedChatEntity](Y) - [SentMessageEntity] - [ReceivedChatEntity](N) - [ReceivedChatEntity](Y)
   ///
   bool isLastReceivedChatInEachQuestion({required int index}) {
     final chatList = state.requireValue;

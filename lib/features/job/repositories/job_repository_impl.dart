@@ -1,6 +1,5 @@
-import 'package:techtalk/core/models/custom_exception.dart';
+import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/job/entities/job_group_list_entity.dart';
 import 'package:techtalk/features/job/job.dart';
 
 final class JobRepositoryImpl implements JobRepository {

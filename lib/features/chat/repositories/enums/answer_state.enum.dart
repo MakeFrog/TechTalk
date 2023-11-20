@@ -17,4 +17,11 @@ enum AnswerState {
   bool get isLoading => this == AnswerState.loading;
   bool get isCorrect => this == AnswerState.correct;
   bool get isWrong => this == AnswerState.wrong;
+
+  static AnswerState getStateById(String id) {
+    return values.firstWhere(
+      (state) => state.tag == id,
+      orElse: () => throw Exception('Unexpected Topic Id Value'),
+    );
+  }
 }

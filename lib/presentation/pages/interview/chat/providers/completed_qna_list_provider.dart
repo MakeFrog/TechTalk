@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/features/chat/entities/interview_qna_entity.dart';
-import 'package:techtalk/presentation/pages/chat/providers/total_qna_list_provider.dart';
+import 'package:techtalk/features/chat/repositories/entities/interview_qna_entity.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/total_qna_list_provider.dart';
 
 part 'completed_qna_list_provider.g.dart';
 

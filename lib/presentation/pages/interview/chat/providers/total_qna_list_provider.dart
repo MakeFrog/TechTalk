@@ -25,7 +25,7 @@ class TotalQnaList extends _$TotalQnaList {
   ///
   /// 채팅 기록을 기반으로 Qna 리스트 초기화 (진행중인 채팅방에 진입할 경우)
   ///
-  void updateQnaListByChat(List<ChatEntity> chats) {
+  void updateQnaListByChat(List<MessageEntity> chats) {
     final response = retrieveQnaListFromChatListUseCase(chats);
     return response.fold(
       onSuccess: (totalQnaList) {

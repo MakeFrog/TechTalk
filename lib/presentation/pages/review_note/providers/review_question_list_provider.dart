@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/features/chat/entities/interview_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/interview_qna_entity.dart';
 import 'package:techtalk/features/interview/interview.dart';
 import 'package:techtalk/presentation/pages/review_note/providers/selected_review_note_topic_provider.dart';
 import 'package:techtalk/presentation/providers/app_user_data_provider.dart';

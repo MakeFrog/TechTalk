@@ -1,5 +1,5 @@
 import 'package:techtalk/core/core.dart';
-import 'package:techtalk/features/chat/enums/interview_topic_category.dart';
+import 'package:techtalk/features/chat/repositories/enums/interview_topic_category.dart';
 
 ///
 /// 인터뷰 주제

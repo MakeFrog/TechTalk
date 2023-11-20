@@ -3,10 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
 import 'package:techtalk/core/services/toast_service.dart';
-import 'package:techtalk/presentation/pages/chat/providers/chat_input_provider.dart';
-import 'package:techtalk/presentation/pages/chat/providers/chat_list_provider.dart';
-import 'package:techtalk/presentation/pages/chat/providers/chat_scroll_controller_provider.dart';
-import 'package:techtalk/presentation/pages/chat/providers/is_available_to_answer.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_input_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_messages_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/is_available_to_answer.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
@@ -41,7 +41,7 @@ mixin class ChatEvent implements _ChatEvent {
 
     if (!isChatAvailable) {
       return ToastService.show(
-        toast: NormalToast(message: '질문이 끝날 때까지 기다려주세요'),
+        NormalToast(message: '질문이 끝날 때까지 기다려주세요'),
       );
     }
 
@@ -49,13 +49,13 @@ mixin class ChatEvent implements _ChatEvent {
     ref.read(chatScrollControllerProvider.notifier).setScrollPositionToBottom();
 
     ref
-        .read(chatListProvider.notifier)
+        .read(chatMessagesProvider.notifier)
         .setChatAvailableState(isAvailable: false);
     await ref
-        .read(chatListProvider.notifier)
+        .read(chatMessagesProvider.notifier)
         .addUserChatResponse(message: message);
     await ref
-        .read(chatListProvider.notifier)
+        .read(chatMessagesProvider.notifier)
         .respondToUserAnswer(userAnswer: message);
 
     ref.read(chatInputProvider.notifier).reset();

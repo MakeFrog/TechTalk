@@ -15,7 +15,7 @@ class Bubble extends StatelessWidget {
   }) : super(key: key);
 
   /// 채팅 정보
-  final ChatEntity chat;
+  final MessageEntity chat;
 
   /// '받은' 채팅중 가장 최신 상태 여부 (문제 섹션 단위)
   final bool isLatestReceivedChatInEachSection;
@@ -104,7 +104,7 @@ class Bubble extends StatelessWidget {
       );
     } else {
       /// SENT CHAT
-      final item = chat as SentChatEntity;
+      final item = chat as SentMessageEntity;
       return Align(
         alignment: Alignment.centerRight,
         child: Column(

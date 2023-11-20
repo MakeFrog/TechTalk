@@ -3,8 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/pages/chat/providers/completed_qna_list_provider.dart';
-import 'package:techtalk/presentation/pages/chat/widgets/qna_expansion_tile.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/completed_qna_list_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/widgets/qna_expansion_tile.dart';
 import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 import 'package:techtalk/presentation/widgets/common/box/skeleton_box.dart';
 

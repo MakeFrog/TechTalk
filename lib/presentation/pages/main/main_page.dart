@@ -8,10 +8,10 @@ import 'package:techtalk/core/constants/main_navigation_tab.enum.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/home/home_page.dart';
+import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/main/main_event.dart';
 import 'package:techtalk/presentation/pages/review_note/review_note_page.dart';
 import 'package:techtalk/presentation/pages/study/topic_select/study_topic_select_page.dart';
-import 'package:techtalk/presentation/pages/test_page/test_page.dart';
 import 'package:techtalk/presentation/providers/app_user_data_provider.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
 
@@ -49,9 +49,12 @@ class _Body extends HookConsumerWidget {
     ReviewNotePage(
       key: ValueKey(MainNavigationTab.note),
     ),
-    TestPage(
+    ChatListPage(
       key: ValueKey(MainNavigationTab.myInfo),
     ),
+    // TestPage(
+    //   key: ValueKey(MainNavigationTab.myInfo),
+    // ),
   ];
 
   @override

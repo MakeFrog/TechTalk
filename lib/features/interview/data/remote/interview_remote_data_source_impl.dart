@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/constants/firestore_collection.enum.dart';
-import 'package:techtalk/core/models/custom_exception.dart';
+import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/features/interview/data/models/interview_qna_model.dart';
 import 'package:techtalk/features/interview/interview.dart';
 

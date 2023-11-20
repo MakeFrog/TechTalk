@@ -4,12 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
-import 'package:techtalk/presentation/pages/chat/chat_event.dart';
-import 'package:techtalk/presentation/pages/chat/providers/chat_focus_node_provider.dart';
-import 'package:techtalk/presentation/pages/chat/providers/chat_input_provider.dart';
-import 'package:techtalk/presentation/pages/chat/providers/chat_list_provider.dart';
-import 'package:techtalk/presentation/pages/chat/providers/chat_scroll_controller_provider.dart';
-import 'package:techtalk/presentation/pages/chat/widgets/bubble.dart';
+import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_focus_node_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_input_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_messages_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/widgets/bubble.dart';
 
 class InterviewTabView extends HookConsumerWidget with ChatEvent {
   const InterviewTabView({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
       children: [
         Consumer(
           builder: (context, ref, _) {
-            final chatListAsync = ref.watch(chatListProvider);
+            final chatListAsync = ref.watch(chatMessagesProvider);
             return Expanded(
               child: GestureDetector(
                 onVerticalDragStart: (_) {
@@ -51,7 +51,7 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
                           return Bubble(
                             chat: item,
                             isLatestReceivedChatInEachSection: ref
-                                .read(chatListProvider.notifier)
+                                .read(chatMessagesProvider.notifier)
                                 .isLastReceivedChatInEachQuestion(index: index),
                           );
                         },

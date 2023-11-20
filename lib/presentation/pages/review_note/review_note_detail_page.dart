@@ -7,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/chat/entities/interview_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/interview_qna_entity.dart';
 import 'package:techtalk/presentation/pages/review_note/providers/detail_page_controller_provider.dart';
 import 'package:techtalk/presentation/pages/review_note/providers/question_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/review_note/providers/review_question_list_provider.dart';

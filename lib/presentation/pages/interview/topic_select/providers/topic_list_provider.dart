@@ -1,6 +1,6 @@
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
+import 'package:techtalk/features/chat/repositories/enums/interview_topic.enum.dart';
 import 'package:techtalk/features/interview/interview.dart';
 
 part 'topic_list_provider.g.dart';

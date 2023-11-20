@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
+import 'package:techtalk/features/chat/chat.dart';
 
 class StudyTopicCard extends StatelessWidget {
   const StudyTopicCard({

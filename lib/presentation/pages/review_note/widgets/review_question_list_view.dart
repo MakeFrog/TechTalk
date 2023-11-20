@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/chat/entities/interview_qna_entity.dart';
-import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
-import 'package:techtalk/presentation/pages/review_note/providers/detail_page_controller_provider.dart';
-import 'package:techtalk/presentation/pages/review_note/providers/selected_review_note_topic_provider.dart';
+import 'package:techtalk/features/chat/repositories/entities/interview_qna_entity.dart';
 import 'package:techtalk/presentation/pages/review_note/review_note_detail_page.dart';
 
 class ReviewQuestionListView extends StatelessWidget {
