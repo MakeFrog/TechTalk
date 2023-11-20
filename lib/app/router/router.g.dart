@@ -98,6 +98,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           name: 'study',
           factory: $StudyRouteExtension._fromState,
         ),
+        GoRouteData.$route(
+          path: 'chat-list',
+          name: 'chat-list',
+          factory: $ChatListPageRouteExtension._fromState,
+        ),
       ],
     );
 
@@ -146,6 +151,24 @@ extension $StudyRouteExtension on StudyRoute {
         queryParams: {
           'topic-name': topicName,
         },
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $ChatListPageRouteExtension on ChatListPageRoute {
+  static ChatListPageRoute _fromState(GoRouterState state) =>
+      const ChatListPageRoute();
+
+  String get location => GoRouteData.$location(
+        '/chat-list',
       );
 
   void go(BuildContext context) => context.go(location);

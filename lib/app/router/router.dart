@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/utils/route_argument.dart';
-import 'package:techtalk/features/chat/enums/interview_progress_state.enum.dart';
-import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
-import 'package:techtalk/presentation/pages/chat/chat_page.dart';
+import 'package:techtalk/features/chat/repositories/enums/interview_progress_state.enum.dart';
+import 'package:techtalk/features/chat/repositories/enums/interview_topic.enum.dart';
+import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
+import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
@@ -14,6 +15,7 @@ import 'package:techtalk/presentation/pages/study/learning/providers/selected_st
 import 'package:techtalk/presentation/pages/study/learning/study_learning_page.dart';
 import 'package:techtalk/presentation/pages/test_page/test_page.dart';
 
+part 'route_argument.dart';
 part 'router.g.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -92,6 +94,10 @@ class SignUpRoute extends GoRouteData {
       path: StudyRoute.name,
       name: StudyRoute.name,
     ),
+    TypedGoRoute<ChatListPageRoute>(
+      path: ChatListPageRoute.name,
+      name: ChatListPageRoute.name,
+    ),
   ],
 )
 class MainRoute extends GoRouteData {
@@ -130,6 +136,17 @@ class StudyRoute extends GoRouteData {
   }
 }
 
+class ChatListPageRoute extends GoRouteData {
+  const ChatListPageRoute();
+
+  static const String name = 'chat-list';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ChatListPage();
+  }
+}
+
 @TypedGoRoute<TestPageRoute>(
   path: TestPageRoute.name,
   name: TestPageRoute.name,
@@ -148,12 +165,6 @@ class TestPageRoute extends GoRouteData {
     return const TestPage();
   }
 }
-
-typedef ChatPageRouteArg = ({
-  InterviewProgressState progressState,
-  String? roomId,
-  InterviewTopic topic
-});
 
 class ChatPageRoute extends GoRouteData {
   const ChatPageRoute(
