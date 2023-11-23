@@ -3,36 +3,43 @@ import 'dart:math';
 import 'package:lorem_ipsum_generator/lorem_ipsum_generator.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
 
 final class ChatRepositoryImpl implements ChatRepository {
-  @override
-  Future<Result<List<ChatEntity>>> getChatList(String roomId) async {
-    final List<ChatEntity> result = [
-      QuestionChatEntity.createStaticChat(
-        questionId: 'swift-29',
-        idealAnswers: ['1', '2'],
-        message: 'Swift의 upcasting과 downcasting의 차이에 대해서 설명해보세요22',
-      ),
-      GuideChatEntity.createStatic(
-        '다음 문제 입니다',
-      ),
-      FeedbackChatEntity.createStatic('잘 답변하셨어요'),
-      SentChatEntity(
-        message: '옳바르게 답변한 내용입니다.',
-        answerState: AnswerState.correct,
-        questionId: 'swift-1',
-      ),
-      QuestionChatEntity.createStaticChat(
-        questionId: 'swift-1',
-        idealAnswers: ['1', '2'],
-        message: 'Swift의 upcasting과 downcasting의 차이에 대해서 설명해보세요.',
-      ),
-      GuideChatEntity.createStatic(
-        '반가워요! 지혜님. Swift 면접 질문을 드리겠습니다.',
-      ),
-    ];
+  ChatRepositoryImpl(this._remoteDataSource);
 
-    return Result.success(result);
+  final ChatRemoteDataSource _remoteDataSource;
+
+  @override
+  Future<Result<List<ChatRoomListItemEntity>>> getChatRoomList(
+      String topicId) async {
+    try {
+      final chatRoomResponse = await _remoteDataSource.getChatRoomList(topicId);
+      final asyncResult = chatRoomResponse.map((e) async {
+        final messageResponse =
+            await _remoteDataSource.getLastedChatMessage(e.chatRoomId);
+        return ChatRoomListItemEntity.fromFireStore(
+          chatRoom: e,
+          message: messageResponse,
+        );
+      }).toList();
+      final result = await Future.wait(asyncResult);
+
+      return Result.success(result);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<List<MessageEntity>>> getChatHistory(String roomId) async {
+    try {
+      final response = await _remoteDataSource.getChatHistory(roomId);
+      final result = response.map((e) => MessageEntity.fromModel(e)).toList();
+      return Result.success(result);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
   }
 
   @override

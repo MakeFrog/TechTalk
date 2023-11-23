@@ -15,6 +15,7 @@ final class JobRemoteDataSourceImpl implements JobRemoteDataSource {
                 JobGroupModel.fromFirestore(snapshot),
             toFirestore: (value, _) => value.toJson(),
           );
+
   @override
   Future<JobGroupListModel> getJobGroupList() async {
     final collection = await _jobGroupCollection.get();

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
+import 'package:techtalk/features/chat/chat.dart';
 
 class StudyTopicGridView extends StatelessWidget {
   const StudyTopicGridView({

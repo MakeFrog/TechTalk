@@ -4,9 +4,9 @@ import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
 class RetrieveQnaListFromChatListUseCase extends BaseNoFutureUseCase<
-    List<ChatEntity>, Result<List<InterviewQnAEntity>>> {
+    List<MessageEntity>, Result<List<InterviewQnAEntity>>> {
   @override
-  Result<List<InterviewQnAEntity>> call(List<ChatEntity> chatList) {
+  Result<List<InterviewQnAEntity>> call(List<MessageEntity> chatList) {
     try {
       final questionList = getQuestionListFromChats(chatList);
       updateAnswerListFromChats(chatList, questionList);
@@ -19,15 +19,16 @@ class RetrieveQnaListFromChatListUseCase extends BaseNoFutureUseCase<
   ///
   /// 채팅 리스트로부터 [질문 리스트] 데이터 반환
   ///
-  List<InterviewQnAEntity> getQuestionListFromChats(List<ChatEntity> chatList) {
+  List<InterviewQnAEntity> getQuestionListFromChats(
+      List<MessageEntity> chatList) {
     List<InterviewQnAEntity> questions = [];
 
     for (int i = chatList.length - 1; i >= 0; i--) {
-      ChatEntity chat = chatList[i];
+      MessageEntity chat = chatList[i];
 
       // 현재 채팅이 질문 메시지인지 확인
       if (chat.type.isAskQuestionMessage) {
-        final questionChat = chat as QuestionChatEntity;
+        final questionChat = chat as QuestionMessageEntity;
 
         // InterviewQnAEntity를 만들어서 목록에 추가
         questions.add(
@@ -48,10 +49,10 @@ class RetrieveQnaListFromChatListUseCase extends BaseNoFutureUseCase<
   /// [답변 리스트] 업데이트
   ///
   void updateAnswerListFromChats(
-      List<ChatEntity> chatList, List<InterviewQnAEntity> questions) {
-    for (ChatEntity chat in chatList) {
+      List<MessageEntity> chatList, List<InterviewQnAEntity> questions) {
+    for (MessageEntity chat in chatList) {
       if (chat.type.isSentMessage) {
-        final sentChat = chat as SentChatEntity;
+        final sentChat = chat as SentMessageEntity;
         final selectedQnaItem = questions
             .firstWhereOrNull((question) => question.id == sentChat.questionId);
 

@@ -13,7 +13,7 @@ class SplashPage extends HookConsumerWidget with SplashEvent {
   Widget build(BuildContext context, WidgetRef ref) {
     useEffect(
       () {
-        Future.delayed(3.seconds).then((value) async {
+        Future.delayed(0.5.seconds).then((value) async {
           await initUserAuthAndData(ref);
         });
 

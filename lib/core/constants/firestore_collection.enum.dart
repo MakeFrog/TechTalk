@@ -5,4 +5,6 @@ enum FirestoreCollection {
   interviewTopics,
   study,
   reviewNotes,
+  chats,
+  messages,
 }

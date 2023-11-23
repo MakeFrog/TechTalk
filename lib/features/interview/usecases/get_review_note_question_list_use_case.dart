@@ -1,5 +1,5 @@
 import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/chat/entities/interview_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/interview_qna_entity.dart';
 import 'package:techtalk/features/interview/interview.dart';
 
 final class GetReviewNoteQuestionListUseCase {

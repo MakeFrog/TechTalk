@@ -1,4 +1,4 @@
-import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
+import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/interview/interview.dart';
 
 final class GetInterviewTopicListUseCase {

@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/core/models/custom_exception.dart';
-import 'package:techtalk/core/services/toast_service.dart';
-import 'package:techtalk/core/theme/extension/app_color.dart';
-import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
-import 'package:techtalk/presentation/pages/interview/topic_select/providers/topic_list_provider.dart';
+import 'package:techtalk/core/models/exception/custom_exception.dart';
+import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/review_note/providers/review_question_list_provider.dart';
 import 'package:techtalk/presentation/pages/review_note/providers/selected_review_note_topic_provider.dart';
-import 'package:techtalk/presentation/pages/review_note/review_note_detail_page.dart';
 import 'package:techtalk/presentation/pages/review_note/widgets/review_note_topic_chip.dart';
 import 'package:techtalk/presentation/pages/review_note/widgets/review_note_topic_list_view.dart';
 import 'package:techtalk/presentation/pages/review_note/widgets/review_question_list_view.dart';
 import 'package:techtalk/presentation/providers/app_user_data_provider.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class ReviewNotePage extends StatelessWidget {
   const ReviewNotePage({super.key});
