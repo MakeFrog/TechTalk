@@ -14,4 +14,14 @@ extension ListExtension<T> on List<T> {
     }
     return null;
   }
+
+  List<T> extractElementsBefore(T element) {
+    int index = indexOf(element);
+
+    if (index == -1 || index == 0) {
+      return [];
+    }
+
+    return sublist(0, index + 1);
+  }
 }
