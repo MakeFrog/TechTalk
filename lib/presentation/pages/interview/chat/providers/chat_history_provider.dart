@@ -2,27 +2,29 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/core/helper/list_extension.dart';
 import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/core/services/toast_service.dart';
-import 'package:techtalk/core/utils/route_argument.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/is_available_to_answer.dart';
+import 'package:techtalk/features/chat/use_cases/update_chat_info_use_case.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_page_route_argument_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/completed_qna_list_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/total_qna_list_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_provider.dart';
 import 'package:techtalk/presentation/widgets/common/toast/app_toast.dart';
 
-part 'chat_messages_provider.g.dart';
+part 'chat_history_provider.g.dart';
 
-@riverpod
-class ChatMessages extends _$ChatMessages {
+@Riverpod(dependencies: [chatPageRouteArg])
+class ChatHistory extends _$ChatHistory {
   @override
   FutureOr<List<MessageEntity>> build() async {
     ref.onDispose(() {
       ref.invalidate(totalQnaListProvider);
-      ref.invalidate(isAvailableToAnswerProvider);
     });
 
-    final routeArg = RouteArg.argument as ChatPageRouteArg;
+    final routeArg = ref.read(chatPageRouteArgProvider);
+
     final GetChatListParam param = (
       progressState: routeArg.progressState,
       userName: '지혜',
@@ -45,7 +47,6 @@ class ChatMessages extends _$ChatMessages {
         // 기존 진행중인 채팅방에 진입한 경우
         else {
           ref.read(totalQnaListProvider.notifier).updateQnaListByChat(chatList);
-          setChatAvailableState(isAvailable: true);
         }
 
         unawaited(addRandomQuestionToQnaList());
@@ -69,7 +70,7 @@ class ChatMessages extends _$ChatMessages {
   ///
   Future<void> addUserChatResponse({required String message}) async {
     final answeredQuestion =
-        state.requireValue.lastWhere((chat) => chat.type.isAskQuestionMessage)
+        state.requireValue.firstWhere((chat) => chat.type.isAskQuestionMessage)
             as QuestionMessageEntity;
 
     await update(
@@ -122,7 +123,7 @@ class ChatMessages extends _$ChatMessages {
 
     final streamedChatMessage = targetQuestion.question.convertToStreamText;
     streamedChatMessage.listen(null, onDone: () {
-      setChatAvailableState(isAvailable: true);
+      updateInitialChaInfo();
       streamedChatMessage.close();
     });
 
@@ -148,7 +149,7 @@ class ChatMessages extends _$ChatMessages {
         final nextQuestion = preparedQuestions.value.last;
         final streamedChatMessage = nextQuestion.question.convertToStreamText;
         streamedChatMessage.listen(null, onDone: () {
-          setChatAvailableState(isAvailable: true);
+          updateProgressChatInfo();
           streamedChatMessage.close();
         });
 
@@ -174,23 +175,102 @@ class ChatMessages extends _$ChatMessages {
   }
 
   ///
+  /// 추가된 채팅 목록을 서버로 업데이트
+  ///
+  Future<void> updateProgressChatInfo() async {
+    final answerState =
+        (state.requireValue.firstWhere((message) => message.type.isSentMessage)
+                as SentMessageEntity)
+            .answerState;
+
+    final UpdateChatInfoParam param = (
+      messages: state.requireValue
+          .extractElementsBefore(state.requireValue.firstWhere(
+        (message) => message.type.isSentMessage,
+      )),
+      answerState: answerState,
+      chatRoomId: ref.read(chatPageRouteArgProvider).roomId,
+      topic: ref.read(chatPageRouteArgProvider).topic,
+      qnaProgressInfo: null,
+    );
+    await updateChatInfoUseCase.call(param);
+    ref.read(chatListProvider.notifier).updateChatList();
+  }
+
+  ///
+  /// 면접이 종료될 때 나머지 채팅 목록을 서버로 업데이트
+  ///
+  Future<void> updateEndOfChatInfo() async {
+    final answerState =
+        (state.requireValue.firstWhere((message) => message.type.isSentMessage)
+                as SentMessageEntity)
+            .answerState;
+
+    final lastMessageIndex = state.requireValue
+        .firstIndexWhereOrNull((message) => message.type.isSentMessage);
+    final UpdateChatInfoParam param = (
+      messages: state.requireValue.sublist(0, lastMessageIndex),
+      answerState: answerState,
+      chatRoomId: ref.read(chatPageRouteArgProvider).roomId,
+      topic: ref.read(chatPageRouteArgProvider).topic,
+      qnaProgressInfo: null,
+    );
+    await updateChatInfoUseCase.call(param);
+    ref.read(chatListProvider.notifier).updateChatList();
+  }
+
+  ///
+  /// 최초 채팅 정보를 서버로 업데이트
+  ///
+  Future<void> updateInitialChaInfo() async {
+    final UpdateChatInfoParam param = (
+      messages: state.requireValue,
+      answerState: AnswerState.initial,
+      chatRoomId: ref.read(chatPageRouteArgProvider).roomId,
+      topic: ref.read(chatPageRouteArgProvider).topic,
+      qnaProgressInfo: ref.read(chatPageRouteArgProvider).qnaProgressInfo,
+    );
+    await updateChatInfoUseCase(param);
+    ref.read(chatListProvider.notifier).updateChatList();
+  }
+
+  ///
   /// 유저의 답변에 대한 피드백이 완료 되었을 때
   /// 실행되는 메소드
   ///
   void onFeedbackCompleted() {
-    final guideStreamedText = '다음 질문을 드리겠습니다'.convertToStreamText;
-    guideStreamedText.listen(null, onDone: () {
-      showNextQuestion();
-      guideStreamedText.close();
-    });
-    update(
-      (previous) => [
-        GuideMessageEntity.createStream(
-          guideStreamedText,
-        ),
-        ...previous,
-      ],
-    );
+    // 마지막 답변일 경우
+    if (ref.read(completedQnAListProvider).requireValue.length >=
+        ref.read(chatPageRouteArgProvider).qnaProgressInfo.totalQuestionCount) {
+      final interviewClosingText = '면접이 종료 되었습니다'.convertToStreamText;
+
+      update(
+        (previous) => [
+          GuideMessageEntity.createStream(
+            interviewClosingText,
+          ),
+          ...previous,
+        ],
+      );
+      interviewClosingText.listen(null, onDone: updateEndOfChatInfo);
+    } else {
+      final guideStreamedText = '다음 질문을 드리겠습니다'.convertToStreamText;
+      update(
+        (previous) => [
+          GuideMessageEntity.createStream(
+            guideStreamedText,
+          ),
+          ...previous,
+        ],
+      );
+      guideStreamedText.listen(
+        null,
+        onDone: () {
+          showNextQuestion();
+          guideStreamedText.close();
+        },
+      );
+    }
   }
 
   ///
@@ -235,15 +315,6 @@ class ChatMessages extends _$ChatMessages {
     await ref
         .read(totalQnaListProvider.notifier)
         .updateUserQnaResponse(userResponse);
-  }
-
-  ///
-  /// 채팅 가능 여부 state 변경
-  ///
-  void setChatAvailableState({required bool isAvailable}) {
-    ref
-        .read(isAvailableToAnswerProvider.notifier)
-        .change(isAvailable: isAvailable);
   }
 
   ///
