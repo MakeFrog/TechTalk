@@ -9,11 +9,13 @@ class QuestionMessageEntity extends MessageEntity {
       {required this.questionId,
       required this.idealAnswers,
       required BehaviorSubject<String> message,
+      required DateTime timestamp,
       required bool isStreamApplied})
       : super(
           type: ChatType.askQuestion,
           message: message,
           isStreamApplied: isStreamApplied,
+          timestamp: timestamp,
         );
 
   ///
@@ -23,11 +25,13 @@ class QuestionMessageEntity extends MessageEntity {
     required String questionId,
     required List<String> idealAnswers,
     required String message,
+    required DateTime timestamp,
   }) =>
       QuestionMessageEntity(
         questionId: questionId,
         idealAnswers: idealAnswers,
         message: BehaviorSubject.seeded(message)..close(),
+        timestamp: timestamp,
         isStreamApplied: false,
       );
 
@@ -43,6 +47,7 @@ class QuestionMessageEntity extends MessageEntity {
         questionId: questionId,
         idealAnswers: idealAnswers,
         message: streamedMessage,
+        timestamp: DateTime.now(),
         isStreamApplied: true,
       );
 }
