@@ -3,6 +3,7 @@ import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source_impl.dart';
+import 'package:techtalk/features/chat/use_cases/update_chat_info_use_case.dart';
 
 final class ChatDependencyInject extends FeatureDependencyInjection {
   @override
@@ -25,6 +26,7 @@ final class ChatDependencyInject extends FeatureDependencyInjection {
       ..registerFactory(() => GetQuestionIdealAnswersUseCase(chatRepository))
       ..registerFactory(() => GetAnswerFeedbackUseCase())
       ..registerFactory(() => GetRandomInterviewQuestionUseCase(chatRepository))
-      ..registerFactory(() => GetChatListUseCase(chatRepository));
+      ..registerFactory(() => GetChatRoomsUseCase(chatRepository))
+      ..registerFactory(() => UpdateChatInfoUseCase(chatRepository));
   }
 }

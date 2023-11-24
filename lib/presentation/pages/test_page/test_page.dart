@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/app/router/router.dart';
-import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 
 class TestPage extends BasePage {
@@ -35,11 +33,11 @@ class TestPage extends BasePage {
           children: <Widget>[
             ElevatedButton(
               onPressed: () {
-                const ChatPageRoute(
-                  progressState: InterviewProgressState.initial,
-                  roomId: 'RWNSK@32ASDF3',
-                  topic: InterviewTopic.swift,
-                ).go(ref.context);
+                // const ChatPageRoute(
+                //   progressState: InterviewProgressState.initial,
+                //   roomId: 'RWNSK@32ASDF3',
+                //   topic: InterviewTopic.swift,
+                // ).go(ref.context);
               },
               child: const Text(
                 '면접 입장',
@@ -50,11 +48,11 @@ class TestPage extends BasePage {
             ),
             ElevatedButton(
               onPressed: () {
-                const ChatPageRoute(
-                  progressState: InterviewProgressState.ongoing,
-                  roomId: 'RWNSK@32ASDF3',
-                  topic: InterviewTopic.swift,
-                ).push(ref.context);
+                // const ChatPageRoute(
+                //   progressState: InterviewProgressState.ongoing,
+                //   roomId: 'RWNSK@32ASDF3',
+                //   topic: InterviewTopic.swift,
+                // ).push(ref.context);
               },
               child: const Text(
                 '진행중인 면접 입장',

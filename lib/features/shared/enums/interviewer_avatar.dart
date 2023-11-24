@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:techtalk/core/constants/assets.dart';
 
 enum InterviewerAvatar {
@@ -17,5 +19,10 @@ enum InterviewerAvatar {
       (avatar) => avatar.id == id,
       orElse: () => throw Exception('Unexpected Topic Id Value'),
     );
+  }
+
+  static InterviewerAvatar getRandomInterviewer() {
+    final totalCount = InterviewerAvatar.values.length;
+    return InterviewerAvatar.values[Random().nextInt(totalCount)];
   }
 }
