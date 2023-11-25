@@ -15,6 +15,7 @@ enum ChatType {
   bool get isReceivedMessage => this != ChatType.userReply;
   bool get isAskQuestionMessage => this == ChatType.askQuestion;
   bool get isFeedbackMessage => this == ChatType.feedback;
+  bool get isGuideMessage => this == ChatType.guide;
 
   static ChatType getTypeById(String id) {
     return values.firstWhere(

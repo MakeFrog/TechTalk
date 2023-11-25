@@ -6,8 +6,10 @@ import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_focus_node_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_input_provider.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/chat_messages_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_page_route_argument_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_progress_state_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/bubble.dart';
 
@@ -22,7 +24,7 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
       children: [
         Consumer(
           builder: (context, ref, _) {
-            final chatListAsync = ref.watch(chatMessagesProvider);
+            final chatListAsync = ref.watch(chatHistoryProvider);
             return Expanded(
               child: GestureDetector(
                 onVerticalDragStart: (_) {
@@ -51,8 +53,10 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
                           return Bubble(
                             chat: item,
                             isLatestReceivedChatInEachSection: ref
-                                .read(chatMessagesProvider.notifier)
+                                .read(chatHistoryProvider.notifier)
                                 .isLastReceivedChatInEachQuestion(index: index),
+                            interviewer:
+                                ref.read(chatPageRouteArgProvider).interviewer,
                           );
                         },
                       ),
@@ -103,6 +107,7 @@ class _BottomInputField extends HookConsumerWidget with ChatEvent {
               maxLines: null,
               textAlignVertical: TextAlignVertical.top,
               decoration: InputDecoration(
+                enabled: ref.watch(chatProgressStateProvider).enableChat,
                 fillColor: AppColor.of.background1,
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.only(
@@ -110,7 +115,11 @@ class _BottomInputField extends HookConsumerWidget with ChatEvent {
                   left: 16,
                   top: 18,
                 ),
-                hintText: '답변을 입력해 주세요',
+                hintText: ref.watch(chatProgressStateProvider).fieldHintText,
+                disabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide.none,
                   borderRadius: BorderRadius.circular(16.0),
@@ -136,13 +145,16 @@ class _BottomInputField extends HookConsumerWidget with ChatEvent {
                         BlendMode.srcIn,
                       ),
                     ),
-                    onPressed: () {
-                      onChatFieldSubmitted(
-                        ref,
-                        message: textEditingController.text,
-                        textEditingController: textEditingController,
-                      );
-                    },
+                    onPressed:
+                        ref.watch(chatProgressStateProvider).isChatAvailable
+                            ? () {
+                                onChatFieldSubmitted(
+                                  ref,
+                                  message: textEditingController.text,
+                                  textEditingController: textEditingController,
+                                );
+                              }
+                            : null,
                   );
                 },
               ),

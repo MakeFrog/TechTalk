@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/core/utils/route_argument.dart';
+import 'package:techtalk/features/chat/repositories/entities/chat_qna_progress_info_entity.dart';
 import 'package:techtalk/features/chat/repositories/enums/interview_progress_state.enum.dart';
 import 'package:techtalk/features/chat/repositories/enums/interview_topic.enum.dart';
+import 'package:techtalk/features/shared/enums/interviewer_avatar.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_page_route_argument_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
@@ -13,7 +15,6 @@ import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/selected_study_topic_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_page.dart';
-import 'package:techtalk/presentation/pages/test_page/test_page.dart';
 
 part 'route_argument.dart';
 part 'router.g.dart';
@@ -95,9 +96,12 @@ class SignUpRoute extends GoRouteData {
       name: StudyRoute.name,
     ),
     TypedGoRoute<ChatListPageRoute>(
-      path: ChatListPageRoute.name,
-      name: ChatListPageRoute.name,
-    ),
+        path: ChatListPageRoute.name,
+        name: ChatListPageRoute.name,
+        routes: [
+          TypedGoRoute<ChatPageRoute>(
+              path: ChatPageRoute.name, name: ChatPageRoute.name)
+        ]),
   ],
 )
 class MainRoute extends GoRouteData {
@@ -147,41 +151,36 @@ class ChatListPageRoute extends GoRouteData {
   }
 }
 
-@TypedGoRoute<TestPageRoute>(
-  path: TestPageRoute.name,
-  name: TestPageRoute.name,
-  routes: [
-    TypedGoRoute<ChatPageRoute>(
-        path: ChatPageRoute.name, name: ChatPageRoute.name)
-  ],
-)
-class TestPageRoute extends GoRouteData {
-  const TestPageRoute();
-
-  static const String name = '/test';
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const TestPage();
-  }
-}
-
 class ChatPageRoute extends GoRouteData {
-  const ChatPageRoute(
-      {required this.progressState, required this.roomId, required this.topic});
+  ChatPageRoute({
+    required this.progressState,
+    required this.$extra,
+    required this.roomId,
+    required this.topic,
+    required this.interviewer,
+  });
 
   static const String name = 'chat';
 
   final InterviewProgressState progressState;
-  final String? roomId;
+  final ChatQnaProgressInfoEntity $extra;
+  final String roomId;
   final InterviewTopic topic;
+  final InterviewerAvatar interviewer;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final ChatPageRouteArg arg =
-        (progressState: progressState, roomId: roomId, topic: topic);
+    final ChatPageRouteArg arg = (
+      progressState: progressState,
+      qnaProgressInfo: $extra,
+      roomId: roomId,
+      topic: topic,
+      interviewer: interviewer,
+    );
 
-    RouteArg.update(arg);
-    return const ChatPage();
+    return ProviderScope(
+      overrides: [chatPageRouteArgProvider.overrideWithValue(arg)],
+      child: const ChatPage(),
+    );
   }
 }

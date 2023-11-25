@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
+import 'package:techtalk/core/constants/assets.dart';
+import 'package:techtalk/core/helper/string_generator.dart';
+import 'package:techtalk/core/theme/extension/app_color.dart';
+import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/repositories/entities/chat_qna_progress_info_entity.dart';
+import 'package:techtalk/features/shared/enums/interviewer_avatar.dart';
+import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/local_widgets/chat_list_item_view.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 
-class ChatListPage extends BasePage {
+class ChatListPage extends BasePage with ChatListEvent {
   const ChatListPage({Key? key}) : super(key: key);
 
   @override
@@ -36,10 +43,36 @@ class ChatListPage extends BasePage {
   }
 
   @override
+  Widget? buildFloatingActionButton(BuildContext context) {
+    return MaterialButton(
+      onPressed: () {
+        routeToChatPage(
+          context,
+          roomId: StringGenerator.generateRandomString(),
+          progressState: InterviewProgressState.initial,
+          qnaProgressInfo:
+              ChatQnaProgressInfoEntity.onInitial(totalQuestionCount: 10),
+          topic: InterviewTopic.swift,
+          interviewer: InterviewerAvatar.getRandomInterviewer(),
+        );
+      },
+      height: 56,
+      minWidth: 56,
+      padding: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(28),
+      ),
+      color: AppColor.of.brand2,
+      child: SvgPicture.asset(
+        Assets.iconsPlus,
+        color: Colors.white,
+      ),
+    );
+  }
+
+  @override
   PreferredSizeWidget? buildAppBar(BuildContext context) => BackButtonAppBar(
         title: 'Swift ',
-        onBackBtnTapped: () {
-          ChatRemoteDataSource.to.addChatInfo();
-        },
+        onBackBtnTapped: () {},
       );
 }

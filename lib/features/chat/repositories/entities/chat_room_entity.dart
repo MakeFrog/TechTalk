@@ -1,35 +1,33 @@
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data/models/chat_room_model.dart';
 import 'package:techtalk/features/chat/data/models/message_model.dart';
+import 'package:techtalk/features/chat/repositories/entities/chat_qna_progress_info_entity.dart';
 import 'package:techtalk/features/shared/enums/interviewer_avatar.dart';
 
-class ChatRoomListItemEntity {
+class ChatRoomEntity {
   final InterviewerAvatar interviewerInfo;
   final InterviewTopic topic;
+  final ChatQnaProgressInfoEntity qnaProgressInfo;
   late String lastChatMessage;
   late DateTime lastChatDate;
-  final int totalQuestionCount;
-  final int correctAnswerCount;
-  final int incorrectAnswerCount;
   final String chatRoomId;
 
-  ChatRoomListItemEntity({
+  ChatRoomEntity({
     required this.interviewerInfo,
     required this.topic,
     required this.chatRoomId,
     required this.lastChatDate,
     required this.lastChatMessage,
-    required this.totalQuestionCount,
-    required this.correctAnswerCount,
-    required this.incorrectAnswerCount,
+    required this.qnaProgressInfo,
   });
 
-  int get completedQuestionCount => correctAnswerCount + incorrectAnswerCount;
+  int get completedQuestionCount =>
+      qnaProgressInfo.correctAnswerCount + qnaProgressInfo.incorrectAnswerCount;
 
   InterviewProgressState get progressSate {
-    if (totalQuestionCount > completedQuestionCount) {
+    if (qnaProgressInfo.totalQuestionCount > completedQuestionCount) {
       return InterviewProgressState.ongoing;
-    } else if (totalQuestionCount == completedQuestionCount) {
+    } else if (qnaProgressInfo.totalQuestionCount == completedQuestionCount) {
       return InterviewProgressState.completed;
     } else {
       throw UnimplementedError('유효하지 않은 [progressState]값 입니다.');
@@ -37,10 +35,12 @@ class ChatRoomListItemEntity {
   }
 
   PassOrFail get passOrFail {
-    if (correctAnswerCount >= incorrectAnswerCount &&
+    if (qnaProgressInfo.correctAnswerCount >=
+            qnaProgressInfo.incorrectAnswerCount &&
         progressSate.isCompleted) {
       return PassOrFail.pass;
-    } else if (correctAnswerCount < incorrectAnswerCount &&
+    } else if (qnaProgressInfo.correctAnswerCount <
+            qnaProgressInfo.incorrectAnswerCount &&
         progressSate.isCompleted) {
       return PassOrFail.failed;
     } else {
@@ -48,17 +48,19 @@ class ChatRoomListItemEntity {
     }
   }
 
-  factory ChatRoomListItemEntity.fromFireStore(
+  factory ChatRoomEntity.fromFireStore(
       {required ChatRoomModel chatRoom, required MessageModel message}) {
-    return ChatRoomListItemEntity(
+    return ChatRoomEntity(
       interviewerInfo: InterviewerAvatar.getAvatarInfoById(
         chatRoom.interviewerId,
       ),
+      qnaProgressInfo: ChatQnaProgressInfoEntity(
+        totalQuestionCount: chatRoom.totalQuestionCount,
+        correctAnswerCount: chatRoom.correctAnswerCount,
+        incorrectAnswerCount: chatRoom.incorrectAnswerCount,
+      ),
       topic: InterviewTopic.getTopicById(chatRoom.topicId),
       chatRoomId: chatRoom.chatRoomId,
-      totalQuestionCount: chatRoom.totalQuestionCount,
-      correctAnswerCount: chatRoom.correctAnswerCount,
-      incorrectAnswerCount: chatRoom.incorrectAnswerCount,
       lastChatDate: message.timestamp,
       lastChatMessage: message.message,
     );

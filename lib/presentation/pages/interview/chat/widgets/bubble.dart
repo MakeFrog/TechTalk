@@ -5,6 +5,8 @@ import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/shared/enums/interviewer_avatar.dart';
+import 'package:techtalk/presentation/widgets/common/avatar/clip_oval_circle_avatar.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class Bubble extends StatelessWidget {
@@ -12,10 +14,14 @@ class Bubble extends StatelessWidget {
     Key? key,
     required this.chat,
     required this.isLatestReceivedChatInEachSection,
+    required this.interviewer,
   }) : super(key: key);
 
   /// 채팅 정보
   final MessageEntity chat;
+
+  /// 아바타
+  final InterviewerAvatar interviewer;
 
   /// '받은' 채팅중 가장 최신 상태 여부 (문제 섹션 단위)
   final bool isLatestReceivedChatInEachSection;
@@ -36,10 +42,9 @@ class Bubble extends StatelessWidget {
               width: 32,
               margin: const EdgeInsets.only(right: 8),
               child: isLatestReceivedChatInEachSection
-                  ? SvgPicture.asset(
-                      Assets.characterBluePlus,
-                      height: 32,
-                      width: 32,
+                  ? ClipOvalCircleAvatar.create(
+                      svgPath: interviewer.iconPath,
+                      size: 32,
                     )
                   : const EmptyBox(),
             ),
@@ -125,14 +130,36 @@ class Bubble extends StatelessWidget {
                 ),
               ),
             ),
+            const HeightBox(8),
             Builder(
               /// ANSWER STATE INDICATOR
               builder: (context) {
                 switch (item.answerState) {
                   case AnswerState.correct:
-                    return SvgPicture.asset(Assets.iconsRoundedCheckSmallBlue);
+                    return Wrap(
+                      children: [
+                        Text(
+                          '정답',
+                          style: AppTextStyle.alert1
+                              .copyWith(color: AppColor.of.blue2),
+                        ),
+                        const WidthBox(2),
+                        SvgPicture.asset(Assets.iconsRoundedCheckSmallBlue),
+                      ],
+                    );
                   case AnswerState.wrong:
-                    return SvgPicture.asset(Assets.iconsRoundedCloseSmallRed);
+                    return Wrap(
+                      children: [
+                        Text(
+                          '오답',
+                          style: AppTextStyle.alert1
+                              .copyWith(color: AppColor.of.red2),
+                        ),
+                        const WidthBox(2),
+                        SvgPicture.asset(Assets.iconsRoundedCloseSmallRed),
+                      ],
+                    );
+
                   case AnswerState.loading:
                     return SizedBox(
                       height: 16,

@@ -1,3 +1,4 @@
+import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/core/utils/base/base_use_case.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
@@ -15,8 +16,8 @@ class GetChatMessagesUseCase
           '반가워요! ${request.userName}님. ${request.topic.text} 면접 질문을 드리겠습니다';
 
       final initialChats = [
-        GuideMessageEntity.createStatic(
-          initialMessage,
+        GuideMessageEntity.createStream(
+          initialMessage.convertToStreamText,
         ),
       ];
 

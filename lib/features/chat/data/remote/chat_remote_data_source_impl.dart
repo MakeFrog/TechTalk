@@ -1,13 +1,73 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/constants/firestore_collection.enum.dart';
+import 'package:techtalk/core/helper/string_generator.dart';
 import 'package:techtalk/features/chat/data/models/chat_room_model.dart';
 import 'package:techtalk/features/chat/data/models/message_model.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
+import 'package:techtalk/features/chat/repositories/enums/answer_state.enum.dart';
 
 final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  @override
+  Future<void> updateChatRoomAnswerCount(
+      {required String chatRoomId, required AnswerState answerState}) async {
+    const userIdFromLocal = '2FXrROIad2RSKt37NA8tciQx7e53';
+    final chatRoomRef = _firestore
+        .collection(FirestoreCollection.users.name)
+        .doc(userIdFromLocal)
+        .collection(FirestoreCollection.chats.name)
+        .doc(chatRoomId);
+
+    final data = {
+      answerState.isCorrect ? 'correctAnswerCount' : 'incorrectAnswerCount':
+          FieldValue.increment(1)
+    };
+
+    await chatRoomRef.update(data);
+  }
+
+  @override
+  Future<void> setBasicChatRoomInfo(ChatRoomModel chatRoomInfo) async {
+    const userIdFromLocal = '2FXrROIad2RSKt37NA8tciQx7e53';
+    final chatRoomRef = _firestore
+        .collection(FirestoreCollection.users.name)
+        .doc(userIdFromLocal)
+        .collection(FirestoreCollection.chats.name);
+
+    await chatRoomRef.doc(chatRoomInfo.chatRoomId).set(chatRoomInfo.toJson());
+
+    print("아지랑이 32 : ${chatRoomInfo.chatRoomId}");
+  }
+
+  @override
+  Future<void> updateChatMessage(
+      {required String chatRoomId,
+      required List<MessageModel> messages}) async {
+    try {
+      const userIdFromLocal = '2FXrROIad2RSKt37NA8tciQx7e53';
+      final chatRoomRef = _firestore
+          .collection(FirestoreCollection.users.name)
+          .doc(userIdFromLocal)
+          .collection(FirestoreCollection.chats.name)
+          .doc(chatRoomId)
+          .collection(FirestoreCollection.messages.name)
+          .withConverter(
+            fromFirestore: MessageModel.fromFirestore,
+            toFirestore: (model, _) => model.toJson(),
+          );
+
+      print("아지랑이 32 : ${chatRoomId}");
+
+      for (var message in messages) {
+        await chatRoomRef.doc(message.id).set(message);
+        print('추가됨');
+      }
+      print('성공');
+    } catch (e) {
+      print('실패 이유: ${e}');
+    }
+  }
 
   @override
   Future<List<MessageModel>> getChatHistory(String chatRoomId) async {
@@ -85,32 +145,32 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
       "totalQuestionCount": 5,
       "correctAnswerCount": 3,
       "incorrectAnswerCount": 2,
-      "chatRoomId": generateRandomString(),
+      "chatRoomId": StringGenerator.generateRandomString(),
     };
 
     List<Map<String, dynamic>> messagesData = [
       {
-        "id": generateRandomString(),
+        "id": StringGenerator.generateRandomString(),
         "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 20)),
         "message": "수고하셨습니다. 면접을 종료합니다.",
         "type": "guide",
       },
       {
-        "id": generateRandomString(),
+        "id": StringGenerator.generateRandomString(),
         "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 19)),
         "message":
             "면접관이 피드백을 주는 메세지 내용입니다. 이 메세지에는 유저가 틀리게 답변한 내용을 다시 피드백하고 있습니다.",
         "type": "feedback"
       },
       {
-        "id": generateRandomString(),
+        "id": StringGenerator.generateRandomString(),
         "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 18)),
         "message": "유저가 면접 질문에 답변하는 메세지 내용입니다.",
         "type": "sent",
         "qna": {"questionId": "flutter-5", "state": "[c]"}
       },
       {
-        "id": generateRandomString(),
+        "id": StringGenerator.generateRandomString(),
         "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 17)),
         "message": "Array보다 Set을 사용하는게 더 좋을 때는 언제일까요?",
         "type": "question",
@@ -120,27 +180,27 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
         }
       },
       {
-        "id": generateRandomString(),
+        "id": StringGenerator.generateRandomString(),
         "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 16)),
         "message": "다음 질문입니다.",
         "type": "guide",
       },
       {
-        "id": generateRandomString(),
+        "id": StringGenerator.generateRandomString(),
         "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 15)),
         "message":
             "면접관이 피드백을 주는 메세지 내용입니다. 이 메세지에는 유저가 틀리게 답변한 내용을 다시 피드백하고 있습니다.",
         "type": "feedback"
       },
       {
-        "id": generateRandomString(),
+        "id": StringGenerator.generateRandomString(),
         "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 14)),
         "message": "유저가 면접 질문에 답변하는 메세지 내용입니다.",
         "type": "sent",
         "qna": {"questionId": "flutter-4", "state": "[c]"}
       },
       {
-        "id": generateRandomString(),
+        "id": StringGenerator.generateRandomString(),
         "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 13)),
         "message": "Array보다 Set을 사용하는게 더 좋을 때는 언제일까요?",
         "type": "question",
@@ -150,20 +210,20 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
         }
       },
       {
-        "id": generateRandomString(),
+        "id": StringGenerator.generateRandomString(),
         "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 12)),
         "message": "다음 질문입니다.",
         "type": "guide",
       },
       {
-        "id": generateRandomString(),
+        "id": StringGenerator.generateRandomString(),
         "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 11)),
         "message": "유저가 면접 질문에 답변하는 메세지 내용입니다.",
         "type": "sent",
         "qna": {"questionId": "flutter-3", "state": "[w]"}
       },
       {
-        "id": generateRandomString(),
+        "id": StringGenerator.generateRandomString(),
         "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 10)),
         "message": "Array보다 Set을 사용하는게 더 좋을 때는 언제일까요?",
         "type": "question",
@@ -173,27 +233,27 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
         }
       },
       {
-        "id": generateRandomString(),
+        "id": StringGenerator.generateRandomString(),
         "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 9)),
         "message": "다음 질문입니다.",
         "type": "guide",
       },
       {
-        "id": generateRandomString(),
+        "id": StringGenerator.generateRandomString(),
         "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 8)),
         "message":
             "면접관이 피드백을 주는 메세지 내용입니다. 이 메세지에는 유저가 틀리게 답변한 내용을 다시 피드백하고 있습니다.",
         "type": "feedback"
       },
       {
-        "id": generateRandomString(),
+        "id": StringGenerator.generateRandomString(),
         "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 7)),
         "message": "유저가 면접 질문에 답변하는 메세지 내용입니다.",
         "type": "sent",
         "qna": {"questionId": "flutter-2", "state": "[w]"}
       },
       {
-        "id": generateRandomString(),
+        "id": StringGenerator.generateRandomString(),
         "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 6)),
         "message": "Array보다 Set을 사용하는게 더 좋을 때는 언제일까요?",
         "type": "question",
@@ -203,27 +263,27 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
         }
       },
       {
-        "id": generateRandomString(),
+        "id": StringGenerator.generateRandomString(),
         "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 5)),
         "message": "다음 질문입니다.",
         "type": "guide",
       },
       {
-        "id": generateRandomString(),
+        "id": StringGenerator.generateRandomString(),
         "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 4)),
         "message":
             "면접관이 피드백을 주는 메세지 내용입니다. 이 메세지에는 유저가 올바르게 답변한 내용을 다시 피드백하고 있습니다.",
         "type": "feedback"
       },
       {
-        "id": generateRandomString(),
+        "id": StringGenerator.generateRandomString(),
         "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 3)),
         "message": "유저가 면접 질문에 답변하는 메세지 내용입니다.",
         "type": "sent",
         "qna": {"questionId": "flutter-1", "state": "[c]"}
       },
       {
-        "id": generateRandomString(),
+        "id": StringGenerator.generateRandomString(),
         "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 2)),
         "message": "Array보다 Set을 사용하는게 더 좋을 때는 언제일까요?",
         "type": "question",
@@ -233,7 +293,7 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
         }
       },
       {
-        "id": generateRandomString(),
+        "id": StringGenerator.generateRandomString(),
         "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 1)),
         "message": "반가워요! 지혜님. flutter면접 질문을 드리겠습니다",
         "type": "guide"
@@ -270,20 +330,5 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
     } catch (e) {
       print('문서 추가 중 오류 발생: $e');
     }
-  }
-
-  String generateRandomString() {
-    const String characters =
-        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-
-    Random random = Random();
-
-    StringBuffer buffer = StringBuffer();
-    for (int i = 0; i < 20; i++) {
-      int randomIndex = random.nextInt(characters.length);
-      buffer.write(characters[randomIndex]);
-    }
-
-    return buffer.toString();
   }
 }

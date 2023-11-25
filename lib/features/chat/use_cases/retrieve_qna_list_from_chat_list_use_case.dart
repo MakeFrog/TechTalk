@@ -9,7 +9,9 @@ class RetrieveQnaListFromChatListUseCase extends BaseNoFutureUseCase<
   Result<List<InterviewQnAEntity>> call(List<MessageEntity> chatList) {
     try {
       final questionList = getQuestionListFromChats(chatList);
+      print('질문 메세지 개수 : ${questionList.length}');
       updateAnswerListFromChats(chatList, questionList);
+      print('업데이트된 메세지 개수 : ${questionList.length}');
       return Result.success(questionList);
     } on Exception catch (e) {
       return Result.failure(e);

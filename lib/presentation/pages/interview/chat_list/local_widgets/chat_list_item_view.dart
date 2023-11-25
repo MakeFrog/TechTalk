@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/helper/date_time_extension.dart';
 import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/local_widgets/qna_count_indicator.dart';
 import 'package:techtalk/presentation/widgets/common/avatar/clip_oval_circle_avatar.dart';
 import 'package:techtalk/presentation/widgets/common/box/skeleton_box.dart';
 import 'package:techtalk/presentation/widgets/common/indicator/pass_fail_indicator.dart';
 
-class ChatListItemView extends StatelessWidget {
+class ChatListItemView extends StatelessWidget with ChatListEvent {
   const ChatListItemView({
     Key? key,
     required this.item,
     required this.isLoaded,
   }) : super(key: key);
 
-  factory ChatListItemView.create(ChatRoomListItemEntity item) =>
+  factory ChatListItemView.create(ChatRoomEntity item) =>
       ChatListItemView(item: item, isLoaded: true);
 
   factory ChatListItemView.createSkeleton() =>
       const ChatListItemView(item: null, isLoaded: false);
 
-  final ChatRoomListItemEntity? item;
+  final ChatRoomEntity? item;
   final bool isLoaded;
 
   @override
@@ -33,11 +33,14 @@ class ChatListItemView extends StatelessWidget {
         height: 112,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         onPressed: () {
-          ChatPageRoute(
-            progressState: item!.progressSate,
+          routeToChatPage(
+            context,
             roomId: item!.chatRoomId,
+            progressState: item!.progressSate,
+            qnaProgressInfo: item!.qnaProgressInfo,
             topic: item!.topic,
-          ).push(context);
+            interviewer: item!.interviewerInfo,
+          );
         },
         child: SizedBox(
           height: 64,
@@ -103,7 +106,8 @@ class ChatListItemView extends StatelessWidget {
                       switch (item!.progressSate) {
                         case InterviewProgressState.ongoing:
                           return QnaCountIndicator(
-                            totalQuestionCount: item!.totalQuestionCount,
+                            totalQuestionCount:
+                                item!.qnaProgressInfo.totalQuestionCount,
                             completedQuestionCount:
                                 item!.completedQuestionCount,
                           );
