@@ -34,6 +34,8 @@ abstract class BasePage extends HookConsumerWidget {
         case AppLifecycleState.detached:
           onDetached(ref);
           break;
+        case AppLifecycleState.hidden:
+        // TODO: Handle this case.
       }
     });
 
