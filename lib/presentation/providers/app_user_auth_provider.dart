@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/core.dart';
+import 'package:techtalk/core/services/toast_service.dart';
 import 'package:techtalk/features/auth/auth.dart';
+import 'package:techtalk/presentation/widgets/common/common.dart';
 
 part 'app_user_auth_provider.g.dart';
 
@@ -19,8 +21,18 @@ class AppUserAuth extends _$AppUserAuth {
 
   /// OAuth 인증을 통해 로그인한다.
   Future<void> signInOAuth(UserAccountProvider provider) async {
-    await signInOAuthUseCase(provider);
-    ref.invalidateSelf();
+    final result = await signInOAuthUseCase(provider);
+    result.fold(
+      onSuccess: (value) {
+        ref.invalidateSelf();
+      },
+      onFailure: (e) {
+        ToastService.show(
+          NormalToast(message: '$e'),
+        );
+        throw e;
+      },
+    );
   }
 
   /// 로그아웃을 시도한다.

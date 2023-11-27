@@ -1,14 +1,11 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/core.dart';
-import 'package:techtalk/core/services/toast_service.dart';
 import 'package:techtalk/presentation/providers/app_user_auth_provider.dart';
 import 'package:techtalk/presentation/providers/app_user_data_provider.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
 
 abstract interface class _SignInEvent {
   /// 구글 로그인을 진행한다.
@@ -23,52 +20,39 @@ mixin class SignInEvent implements _SignInEvent {
   Future<void> _routeByUserData(WidgetRef ref) async {
     await ref.read(appUserDataProvider.future).then(
       (userData) {
-        if (userData == null || !userData.isCompleteSignUp) {
-          const SignUpRoute().go(ref.context);
-        } else {
+        if (userData?.isCompleteSignUp ?? false) {
           const MainRoute().go(ref.context);
+        } else {
+          const SignUpRoute().go(ref.context);
         }
       },
     );
   }
 
+  Future<void> _signInOAuth(
+    WidgetRef ref, {
+    required UserAccountProvider provider,
+  }) async {
+    try {
+      await EasyLoading.show()
+          .then(
+            (_) => ref.read(appUserAuthProvider.notifier).signInOAuth(provider),
+          )
+          .then(
+            (_) => _routeByUserData(ref),
+          );
+    } finally {
+      await EasyLoading.dismiss();
+    }
+  }
+
   @override
   Future<void> onTapSignInWithGoogle(WidgetRef ref) async {
-    await EasyLoading.show()
-        .then(
-          (_) => ref
-              .read(appUserAuthProvider.notifier)
-              .signInOAuth(UserAccountProvider.google),
-        )
-        .then(
-          (_) => _routeByUserData(ref),
-        )
-        .catchError(
-          (e) => ToastService.show(
-            NormalToast(message: e.message ?? ''),
-          ),
-          test: (error) => error is FirebaseAuthException,
-        )
-        .whenComplete(EasyLoading.dismiss);
+    await _signInOAuth(ref, provider: UserAccountProvider.google);
   }
 
   @override
   Future<void> onTapSignInWithApple(WidgetRef ref) async {
-    await EasyLoading.show()
-        .then(
-          (_) => ref
-              .read(appUserAuthProvider.notifier)
-              .signInOAuth(UserAccountProvider.apple),
-        )
-        .then(
-          (_) => _routeByUserData(ref),
-        )
-        .catchError(
-          (e) => ToastService.show(
-            NormalToast(message: e.message ?? ''),
-          ),
-          test: (error) => error is FirebaseAuthException,
-        )
-        .whenComplete(EasyLoading.dismiss);
+    await _signInOAuth(ref, provider: UserAccountProvider.apple);
   }
 }
