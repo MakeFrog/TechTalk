@@ -4,12 +4,12 @@ import 'package:techtalk/presentation/providers/app_user_auth_provider.dart';
 import 'package:techtalk/presentation/providers/app_user_data_provider.dart';
 
 abstract interface class _SplashEvent {
-  Future<void> initUserAuthAndData(WidgetRef ref);
+  Future<void> routeByUserAuthAndData(WidgetRef ref);
 }
 
 mixin class SplashEvent implements _SplashEvent {
   @override
-  Future<void> initUserAuthAndData(WidgetRef ref) async {
+  Future<void> routeByUserAuthAndData(WidgetRef ref) async {
     final isLoggedIn = ref.read(isUserAuthorizedProvider);
 
     if (!isLoggedIn) {
@@ -23,7 +23,7 @@ mixin class SplashEvent implements _SplashEvent {
         if (hasUserData) {
           const MainRoute().go(ref.context);
         } else {
-          const SignUpRoute().go(ref.context);
+          const SignInRoute().go(ref.context);
         }
       });
     }

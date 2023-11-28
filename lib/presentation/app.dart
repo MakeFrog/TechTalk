@@ -58,7 +58,7 @@ class App extends ConsumerWidget {
       ..boxShadow = []
       ..indicatorColor = Colors.white
       // 로딩 인디케이터 호출 시 오베리어 컬러
-      ..maskType = EasyLoadingMaskType.clear
+      ..maskType = EasyLoadingMaskType.black
       ..maskColor = Colors.transparent
       ..textColor = Colors.white
       ..dismissOnTap = false;

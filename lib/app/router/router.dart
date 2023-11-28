@@ -24,8 +24,8 @@ final rootNavigatorKey = GlobalKey<NavigatorState>();
 GoRouter appRouter(WidgetRef ref) => GoRouter(
       debugLogDiagnostics: false,
       navigatorKey: rootNavigatorKey,
-      // initialLocation: SplashRoute.name,
-      initialLocation: SignInRoute.name,
+      initialLocation: SplashRoute.name,
+      // initialLocation: SignInRoute.name,
       routes: $appRoutes,
     );
 

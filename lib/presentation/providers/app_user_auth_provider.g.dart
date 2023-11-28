@@ -6,7 +6,7 @@ part of 'app_user_auth_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$isUserAuthorizedHash() => r'6a7e8bd2f3ffd5b038f78dc7eee46576e49d1ce7';
+String _$isUserAuthorizedHash() => r'6f3c62c6234d4b4f8e97451777f4db49357672a0';
 
 /// 현재 앱 사용자가 인증되었는지 여부
 ///
@@ -14,7 +14,7 @@ String _$isUserAuthorizedHash() => r'6a7e8bd2f3ffd5b038f78dc7eee46576e49d1ce7';
 ///
 /// Copied from [isUserAuthorized].
 @ProviderFor(isUserAuthorized)
-final isUserAuthorizedProvider = Provider<bool>.internal(
+final isUserAuthorizedProvider = AutoDisposeProvider<bool>.internal(
   isUserAuthorized,
   name: r'isUserAuthorizedProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -24,8 +24,8 @@ final isUserAuthorizedProvider = Provider<bool>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef IsUserAuthorizedRef = ProviderRef<bool>;
-String _$appUserAuthHash() => r'479c8cce39d05ebb22778b902a9d57ad26c8a61a';
+typedef IsUserAuthorizedRef = AutoDisposeProviderRef<bool>;
+String _$appUserAuthHash() => r'c3b1ffb008cf6a132fd35feeaae369c4ea143826';
 
 /// 앱 사용자 권한 프로바이더
 ///

@@ -1,3 +1,4 @@
+import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/user/data/remote/user_remote_data_source.dart';
 import 'package:techtalk/features/user/entities/user_data_entity.dart';
 import 'package:techtalk/features/user/repositories/user_repository.dart';
@@ -15,11 +16,12 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<UserDataEntity> getUserData(String uid) async {
+  Future<UserDataEntity?> getUserData(String uid) async {
     var userData = await _userRemoteDataSource.getUserData(uid);
     print(userData);
 
     if (userData == null) {
+      return null;
       await createUserData(
         UserDataEntity(uid: uid),
       );
@@ -31,7 +33,13 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<bool> isExistNickname(String nickname) {
-    return _userRemoteDataSource.isExistNickname(nickname);
+  Future<Result<bool>> isExistNickname(String nickname) async {
+    try {
+      final result = await _userRemoteDataSource.isExistNickname(nickname);
+
+      return Result.success(result);
+    } catch (e) {
+      return Result.failure(Exception(e));
+    }
   }
 }
