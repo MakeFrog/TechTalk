@@ -73,7 +73,14 @@ class ClearableTextField extends HookWidget {
 
   Widget _buildClearIcon(TextEditingController controller) {
     return IconButton(
-      onPressed: onClear ?? () => controller.clear(),
+      onPressed: onClear != null
+          ? () {
+              if (this.controller == null) {
+                controller.clear();
+              }
+              onClear!();
+            }
+          : () => controller.clear(),
       icon: SvgPicture.asset(
         Assets.iconsRoundedCloseThick,
         width: 22,

@@ -49,15 +49,20 @@ abstract class BasePage extends HookConsumerWidget {
       onWillPop: () async {
         return false;
       },
-      child: Container(
-        color: unSafeAreaColor,
-        child: wrapWithSafeArea
-            ? SafeArea(
-                top: setTopSafeArea,
-                bottom: setBottomSafeArea,
-                child: _buildScaffold(context, ref),
-              )
-            : _buildScaffold(context, ref),
+      child: GestureDetector(
+        onTap: !preventAutoUnfocus
+            ? () => FocusManager.instance.primaryFocus?.unfocus()
+            : null,
+        child: Container(
+          color: unSafeAreaColor,
+          child: wrapWithSafeArea
+              ? SafeArea(
+                  top: setTopSafeArea,
+                  bottom: setBottomSafeArea,
+                  child: _buildScaffold(context, ref),
+                )
+              : _buildScaffold(context, ref),
+        ),
       ),
     );
   }
@@ -126,6 +131,10 @@ abstract class BasePage extends HookConsumerWidget {
   /// 뷰의 안전 영역 위에 SafeArea를 적용할지 여부를 설정
   @protected
   bool get setTopSafeArea => true;
+
+  /// 화면 클릭 시 자동으로 포커스를 해제할지 여부를 설정
+  @protected
+  bool get preventAutoUnfocus => false;
 
   /// 앱이 활성화된 상태로 돌아올 때 호출
   @protected
