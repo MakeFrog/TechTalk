@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/features/job/entities/job_group_entity.dart';
-import 'package:techtalk/features/tech_skill/tech_skill.dart';
+import 'package:techtalk/features/skill/skill.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/searched_tech_skill_list_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_form_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_controller_provider.dart';
@@ -32,7 +32,6 @@ abstract class _SignUpEvent {
   /// [controller]에 입력된 텍스트와 닉네임 데이터를 초기화한다.
   void onClearNicknameField(
     WidgetRef ref, {
-    required TextEditingController controller,
     required ValueNotifier<bool> isRunningDebouncer,
   });
 
@@ -53,7 +52,7 @@ abstract class _SignUpEvent {
 
   void onTapSelectedTechSkill(
     WidgetRef ref, {
-    required TechSkillEntity skill,
+    required SkillEntity skill,
   });
 
   void onChangeTechSkillSearchField(
@@ -68,7 +67,8 @@ abstract class _SignUpEvent {
 
   void onTapTechSkillListTile(
     WidgetRef ref, {
-    required TechSkillEntity skill,
+    required SkillEntity skill,
+    required TextEditingController controller,
   });
 
   Future<void> onTapTechSkillStepNext(WidgetRef ref);
@@ -117,15 +117,12 @@ mixin class SignUpEvent implements _SignUpEvent {
   @override
   void onClearNicknameField(
     WidgetRef ref, {
-    required TextEditingController controller,
     required ValueNotifier<bool> isRunningDebouncer,
   }) {
     isRunningDebouncer.value = false;
     _nicknameValidateDebouncer.reset();
 
     ref.read(signUpFormProvider.notifier).updateNickname('');
-
-    controller.clear();
   }
 
   @override
@@ -133,6 +130,7 @@ mixin class SignUpEvent implements _SignUpEvent {
     //? 현재는 컨트롤러 값만 바뀌주고있음
     //? 단계 변경 전 닉네임 검사를 한번 더 할지, 닉네임 검사를 끝내면 임시로 닉네임을 점유할지 등 고민 필요
 
+    FocusManager.instance.primaryFocus?.unfocus();
     ref.read(signUpStepControllerProvider.notifier).next();
   }
 
@@ -171,7 +169,7 @@ mixin class SignUpEvent implements _SignUpEvent {
   @override
   void onTapSelectedTechSkill(
     WidgetRef ref, {
-    required TechSkillEntity skill,
+    required SkillEntity skill,
   }) {
     ref.read(signUpFormProvider.notifier).removeTechSkill(skill);
   }
@@ -196,7 +194,8 @@ mixin class SignUpEvent implements _SignUpEvent {
   @override
   void onTapTechSkillListTile(
     WidgetRef ref, {
-    required TechSkillEntity skill,
+    required TextEditingController controller,
+    required SkillEntity skill,
   }) {
     final techSkillList = ref.read(
       signUpFormProvider.select((v) => v.techSkillList),
@@ -205,6 +204,8 @@ mixin class SignUpEvent implements _SignUpEvent {
     if (!techSkillList.contains(skill)) {
       ref.read(signUpFormProvider.notifier).addTechSkill(skill);
     }
+    controller.clear();
+    ref.invalidate(techSkillSearchKeywordProvider);
   }
 
   @override

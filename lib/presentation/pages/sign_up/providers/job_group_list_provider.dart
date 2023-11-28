@@ -5,7 +5,7 @@ part 'job_group_list_provider.g.dart';
 
 @riverpod
 Future<JobGroupListEntity> jobGroupList(JobGroupListRef ref) async {
-  final result = await getJobGroupListUseCase();
+  final result = await getJobGroupsUseCase();
 
   return result.getOrThrow();
 }

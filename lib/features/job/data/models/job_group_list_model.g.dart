@@ -6,16 +6,16 @@ part of 'job_group_list_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$JobGroupListModelImpl _$$JobGroupListModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$JobGroupListModelImpl(
+JobGroupListModel _$JobGroupListModelFromJson(Map<String, dynamic> json) =>
+    JobGroupListModel(
+      totalCount: json['total_count'] as int,
       groups: (json['groups'] as List<dynamic>)
           .map((e) => JobGroupModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$$JobGroupListModelImplToJson(
-        _$JobGroupListModelImpl instance) =>
+Map<String, dynamic> _$JobGroupListModelToJson(JobGroupListModel instance) =>
     <String, dynamic>{
-      'groups': instance.groups,
+      'total_count': instance.totalCount,
+      'groups': instance.groups.map((e) => e.toJson()).toList(),
     };

@@ -13,12 +13,12 @@ final class JobRemoteDataSourceImpl implements JobRemoteDataSource {
       _firestore.collection(FirestoreCollection.jobGroups.name).withConverter(
             fromFirestore: (snapshot, _) =>
                 JobGroupModel.fromFirestore(snapshot),
-            toFirestore: (value, _) => value.toJson(),
+            toFirestore: (value, _) => value.toFirestore(),
           );
 
   @override
-  Future<JobGroupListModel> getJobGroupList() async {
-    final collection = await _jobGroupCollection.get();
+  Future<JobGroupListModel> getJobGroups() async {
+    final collection = await _jobGroupCollection.orderBy('name').get();
 
     final groups = collection.docs
         .map(
@@ -27,6 +27,7 @@ final class JobRemoteDataSourceImpl implements JobRemoteDataSource {
         .toList();
 
     return JobGroupListModel(
+      totalCount: collection.size,
       groups: groups,
     );
   }

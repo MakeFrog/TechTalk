@@ -10,30 +10,32 @@ import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/home/home_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/main/main_event.dart';
-import 'package:techtalk/presentation/pages/review_note/review_note_page.dart';
 import 'package:techtalk/presentation/pages/study/topic_select/study_topic_select_page.dart';
+import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_note_page.dart';
 import 'package:techtalk/presentation/providers/app_user_data_provider.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
+import 'package:techtalk/presentation/widgets/base/base_page.dart';
 
-class MainPage extends ConsumerWidget {
+class MainPage extends BasePage {
   const MainPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget buildPage(BuildContext context, WidgetRef ref) {
     // 회원가입을 완료하지 않고 메인으로 접속 시 회원가입 페이지로 이동하기 위한 listener
     ref.listen(appUserDataProvider, (_, next) {
       if (next.valueOrNull != null) {
         if (!next.requireValue!.isCompleteSignUp) {
-          const SignUpRoute().go(context);
+          const SignUpRoute().go(ref.context);
         }
       }
     });
 
-    return const Scaffold(
-      body: _Body(),
-      bottomNavigationBar: _BottomNavigationBar(),
-    );
+    return const _Body();
   }
+
+  @override
+  Widget buildBottomNavigationBar(BuildContext context) =>
+      const _BottomNavigationBar();
 }
 
 class _Body extends HookConsumerWidget {
@@ -46,7 +48,7 @@ class _Body extends HookConsumerWidget {
     StudyTopicSelectPage(
       key: ValueKey(MainNavigationTab.study),
     ),
-    ReviewNotePage(
+    WrongAnswerNotePage(
       key: ValueKey(MainNavigationTab.note),
     ),
     ChatListPage(

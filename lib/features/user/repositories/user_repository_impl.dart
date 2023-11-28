@@ -22,11 +22,6 @@ final class UserRepositoryImpl implements UserRepository {
 
     if (userData == null) {
       return null;
-      await createUserData(
-        UserDataEntity(uid: uid),
-      );
-
-      return getUserData(uid);
     }
 
     return UserDataEntity.fromModel(userData);

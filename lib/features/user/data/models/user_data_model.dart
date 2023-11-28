@@ -9,8 +9,8 @@ class UserDataModel with _$UserDataModel {
   const factory UserDataModel({
     required String uid,
     String? nickname,
-    List<String>? interestedJobGroupIdList,
-    List<String>? techSkillIdList,
+    List<String>? interestedJobGroupIds,
+    List<String>? skillIds,
   }) = _UserDataModel;
 
   const UserDataModel._();
@@ -18,17 +18,23 @@ class UserDataModel with _$UserDataModel {
   Map<String, dynamic> toFirestore() {
     return {
       'nickname': nickname,
-      'interestedJobGroupIdList': interestedJobGroupIdList,
-      'techSkillIdList': techSkillIdList,
+      'interested_job_group_ids': interestedJobGroupIds,
+      'skill_ids': skillIds,
     };
   }
 
   factory UserDataModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
   ) {
-    final json = snapshot.data()!..['uid'] = snapshot.id;
+    final json = snapshot.data()!;
 
-    return UserDataModel.fromJson(json);
+    return UserDataModel(
+      uid: snapshot.id,
+      nickname: json['nickname'] as String?,
+      interestedJobGroupIds:
+          (json['interested_job_group_ids'] as List?)?.cast<String>(),
+      skillIds: (json['skill_ids'] as List?)?.cast<String>(),
+    );
   }
 
   factory UserDataModel.fromJson(Map<String, dynamic> json) =>

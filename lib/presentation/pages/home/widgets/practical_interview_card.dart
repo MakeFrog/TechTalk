@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gap/gap.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class PracticalInterviewCard extends StatelessWidget {
   const PracticalInterviewCard({super.key});
@@ -10,8 +10,8 @@ class PracticalInterviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16),
-      padding: EdgeInsets.all(24),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: AppColor.of.brand1,
         borderRadius: BorderRadius.circular(16),
@@ -29,7 +29,7 @@ class PracticalInterviewCard extends StatelessWidget {
                   ),
                 ),
               ),
-              WidthBox(48),
+              const Gap(48),
               GestureDetector(
                 onTap: () {},
                 child: FaIcon(
@@ -40,7 +40,7 @@ class PracticalInterviewCard extends StatelessWidget {
               ),
             ],
           ),
-          HeightBox(12),
+          const Gap(12),
           Text(
             '여러 주제를 선택해 실전 연습을 해보세요!',
             style: AppTextStyle.body1.copyWith(

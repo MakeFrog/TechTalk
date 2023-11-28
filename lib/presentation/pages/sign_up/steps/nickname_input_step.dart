@@ -15,7 +15,7 @@ class NicknameInputStep extends HookWidget {
   Widget build(BuildContext context) {
     useAutomaticKeepAlive();
 
-    final isRunningDebouncer = useState<bool>(false);
+    final isRunningDebounce = useValueNotifier(false);
 
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -28,11 +28,11 @@ class NicknameInputStep extends HookWidget {
           ),
           const HeightBox(56),
           _NicknameInputSection(
-            isRunningDebouncer: isRunningDebouncer,
+            isRunningDebounce: isRunningDebounce,
           ),
           const Spacer(),
           _NextButton(
-            isRunningDebouncer: isRunningDebouncer,
+            isRunningDebounce: isRunningDebounce,
           ),
         ],
       ),
@@ -40,47 +40,47 @@ class NicknameInputStep extends HookWidget {
   }
 }
 
-class _NicknameInputSection extends HookConsumerWidget with SignUpEvent {
+class _NicknameInputSection extends StatelessWidget with SignUpEvent {
   const _NicknameInputSection({
     super.key,
-    required this.isRunningDebouncer,
+    required this.isRunningDebounce,
   });
 
-  final ValueNotifier<bool> isRunningDebouncer;
+  final ValueNotifier<bool> isRunningDebounce;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final controller = useTextEditingController();
-
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ClearableTextField(
-          controller: controller,
-          inputDecoration: const InputDecoration(
-            hintText: '닉네임을 입력해 주세요',
-          ),
-          onChanged: (value) => onChangeNicknameField(
-            ref,
-            nickname: value,
-            isRunningDebouncer: isRunningDebouncer,
-          ),
-          onClear: () => onClearNicknameField(
-            ref,
-            controller: controller,
-            isRunningDebouncer: isRunningDebouncer,
+        Consumer(
+          builder: (context, ref, child) => ClearableTextField(
+            inputDecoration: const InputDecoration(
+              hintText: '닉네임을 입력해 주세요',
+            ),
+            onChanged: (value) => onChangeNicknameField(
+              ref,
+              nickname: value,
+              isRunningDebouncer: isRunningDebounce,
+            ),
+            onClear: () => onClearNicknameField(
+              ref,
+              isRunningDebouncer: isRunningDebounce,
+            ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: isRunningDebouncer.value
-              ? const SizedBox.square(
-                  dimension: 12,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                  ),
-                )
-              : _buildValidationMessage(),
+          child: HookBuilder(
+            builder: (context) => useValueListenable(isRunningDebounce)
+                ? const SizedBox.square(
+                    dimension: 12,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
+                  )
+                : _buildValidationMessage(),
+          ),
         ),
       ],
     );
@@ -91,9 +91,9 @@ class _NicknameInputSection extends HookConsumerWidget with SignUpEvent {
       builder: (context, ref, child) {
         final signUpForm = ref.watch(signUpFormProvider);
 
-        if (signUpForm.nicknameValidation != null) {
+        if (signUpForm.nicknameValidation.isNotEmpty) {
           return Text(
-            signUpForm.nicknameValidation!,
+            signUpForm.nicknameValidation,
             style: AppTextStyle.alert2.copyWith(
               color: AppColor.of.red2,
             ),
@@ -113,22 +113,23 @@ class _NicknameInputSection extends HookConsumerWidget with SignUpEvent {
   }
 }
 
-class _NextButton extends ConsumerWidget with SignUpEvent {
+class _NextButton extends HookConsumerWidget with SignUpEvent {
   const _NextButton({
     super.key,
-    required this.isRunningDebouncer,
+    required this.isRunningDebounce,
   });
 
-  final ValueNotifier<bool> isRunningDebouncer;
+  final ValueNotifier<bool> isRunningDebounce;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isRunning = useValueListenable(isRunningDebounce);
     final isPassNickname = ref.watch(
       signUpFormProvider.select((v) => v.isPassNickname),
     );
 
     return FilledButton(
-      onPressed: !isRunningDebouncer.value && isPassNickname
+      onPressed: !isRunning && isPassNickname
           ? () => onTapNicknameStepNext(ref)
           : null,
       child: const Center(

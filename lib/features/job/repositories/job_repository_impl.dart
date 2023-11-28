@@ -10,14 +10,12 @@ final class JobRepositoryImpl implements JobRepository {
   final JobRemoteDataSource _jobRemoteDataSource;
 
   @override
-  Future<Result<JobGroupListEntity>> getJobGroupList() async {
+  Future<Result<JobGroupListEntity>> getJobGroups() async {
     try {
-      final jobGroupsModel = await _jobRemoteDataSource.getJobGroupList();
+      final jobGroupsModel = await _jobRemoteDataSource.getJobGroups();
 
       return Result.success(
-        JobGroupListEntity(
-          groups: jobGroupsModel.groups.map(JobGroupEntity.fromModel).toList(),
-        ),
+        JobGroupListEntity.fromModel(jobGroupsModel),
       );
     } catch (e) {
       return Result.failure(

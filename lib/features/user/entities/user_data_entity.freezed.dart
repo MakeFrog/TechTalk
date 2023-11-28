@@ -22,9 +22,8 @@ UserDataEntity _$UserDataEntityFromJson(Map<String, dynamic> json) {
 mixin _$UserDataEntity {
   String get uid => throw _privateConstructorUsedError;
   String? get nickname => throw _privateConstructorUsedError;
-  List<String> get interestedJobGroupIdList =>
-      throw _privateConstructorUsedError;
-  List<String> get techSkillIdList => throw _privateConstructorUsedError;
+  List<String> get interestedJobGroups => throw _privateConstructorUsedError;
+  List<String> get skills => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,8 +40,8 @@ abstract class $UserDataEntityCopyWith<$Res> {
   $Res call(
       {String uid,
       String? nickname,
-      List<String> interestedJobGroupIdList,
-      List<String> techSkillIdList});
+      List<String> interestedJobGroups,
+      List<String> skills});
 }
 
 /// @nodoc
@@ -60,8 +59,8 @@ class _$UserDataEntityCopyWithImpl<$Res, $Val extends UserDataEntity>
   $Res call({
     Object? uid = null,
     Object? nickname = freezed,
-    Object? interestedJobGroupIdList = null,
-    Object? techSkillIdList = null,
+    Object? interestedJobGroups = null,
+    Object? skills = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -72,13 +71,13 @@ class _$UserDataEntityCopyWithImpl<$Res, $Val extends UserDataEntity>
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
               as String?,
-      interestedJobGroupIdList: null == interestedJobGroupIdList
-          ? _value.interestedJobGroupIdList
-          : interestedJobGroupIdList // ignore: cast_nullable_to_non_nullable
+      interestedJobGroups: null == interestedJobGroups
+          ? _value.interestedJobGroups
+          : interestedJobGroups // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      techSkillIdList: null == techSkillIdList
-          ? _value.techSkillIdList
-          : techSkillIdList // ignore: cast_nullable_to_non_nullable
+      skills: null == skills
+          ? _value.skills
+          : skills // ignore: cast_nullable_to_non_nullable
               as List<String>,
     ) as $Val);
   }
@@ -95,8 +94,8 @@ abstract class _$$UserDataEntityImplCopyWith<$Res>
   $Res call(
       {String uid,
       String? nickname,
-      List<String> interestedJobGroupIdList,
-      List<String> techSkillIdList});
+      List<String> interestedJobGroups,
+      List<String> skills});
 }
 
 /// @nodoc
@@ -112,8 +111,8 @@ class __$$UserDataEntityImplCopyWithImpl<$Res>
   $Res call({
     Object? uid = null,
     Object? nickname = freezed,
-    Object? interestedJobGroupIdList = null,
-    Object? techSkillIdList = null,
+    Object? interestedJobGroups = null,
+    Object? skills = null,
   }) {
     return _then(_$UserDataEntityImpl(
       uid: null == uid
@@ -124,13 +123,13 @@ class __$$UserDataEntityImplCopyWithImpl<$Res>
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
               as String?,
-      interestedJobGroupIdList: null == interestedJobGroupIdList
-          ? _value._interestedJobGroupIdList
-          : interestedJobGroupIdList // ignore: cast_nullable_to_non_nullable
+      interestedJobGroups: null == interestedJobGroups
+          ? _value._interestedJobGroups
+          : interestedJobGroups // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      techSkillIdList: null == techSkillIdList
-          ? _value._techSkillIdList
-          : techSkillIdList // ignore: cast_nullable_to_non_nullable
+      skills: null == skills
+          ? _value._skills
+          : skills // ignore: cast_nullable_to_non_nullable
               as List<String>,
     ));
   }
@@ -142,10 +141,10 @@ class _$UserDataEntityImpl extends _UserDataEntity {
   const _$UserDataEntityImpl(
       {required this.uid,
       this.nickname,
-      final List<String> interestedJobGroupIdList = const [],
-      final List<String> techSkillIdList = const []})
-      : _interestedJobGroupIdList = interestedJobGroupIdList,
-        _techSkillIdList = techSkillIdList,
+      final List<String> interestedJobGroups = const [],
+      final List<String> skills = const []})
+      : _interestedJobGroups = interestedJobGroups,
+        _skills = skills,
         super._();
 
   factory _$UserDataEntityImpl.fromJson(Map<String, dynamic> json) =>
@@ -155,28 +154,28 @@ class _$UserDataEntityImpl extends _UserDataEntity {
   final String uid;
   @override
   final String? nickname;
-  final List<String> _interestedJobGroupIdList;
+  final List<String> _interestedJobGroups;
   @override
   @JsonKey()
-  List<String> get interestedJobGroupIdList {
-    if (_interestedJobGroupIdList is EqualUnmodifiableListView)
-      return _interestedJobGroupIdList;
+  List<String> get interestedJobGroups {
+    if (_interestedJobGroups is EqualUnmodifiableListView)
+      return _interestedJobGroups;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_interestedJobGroupIdList);
+    return EqualUnmodifiableListView(_interestedJobGroups);
   }
 
-  final List<String> _techSkillIdList;
+  final List<String> _skills;
   @override
   @JsonKey()
-  List<String> get techSkillIdList {
-    if (_techSkillIdList is EqualUnmodifiableListView) return _techSkillIdList;
+  List<String> get skills {
+    if (_skills is EqualUnmodifiableListView) return _skills;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_techSkillIdList);
+    return EqualUnmodifiableListView(_skills);
   }
 
   @override
   String toString() {
-    return 'UserDataEntity(uid: $uid, nickname: $nickname, interestedJobGroupIdList: $interestedJobGroupIdList, techSkillIdList: $techSkillIdList)';
+    return 'UserDataEntity(uid: $uid, nickname: $nickname, interestedJobGroups: $interestedJobGroups, skills: $skills)';
   }
 
   @override
@@ -187,10 +186,9 @@ class _$UserDataEntityImpl extends _UserDataEntity {
             (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.nickname, nickname) ||
                 other.nickname == nickname) &&
-            const DeepCollectionEquality().equals(
-                other._interestedJobGroupIdList, _interestedJobGroupIdList) &&
             const DeepCollectionEquality()
-                .equals(other._techSkillIdList, _techSkillIdList));
+                .equals(other._interestedJobGroups, _interestedJobGroups) &&
+            const DeepCollectionEquality().equals(other._skills, _skills));
   }
 
   @JsonKey(ignore: true)
@@ -199,8 +197,8 @@ class _$UserDataEntityImpl extends _UserDataEntity {
       runtimeType,
       uid,
       nickname,
-      const DeepCollectionEquality().hash(_interestedJobGroupIdList),
-      const DeepCollectionEquality().hash(_techSkillIdList));
+      const DeepCollectionEquality().hash(_interestedJobGroups),
+      const DeepCollectionEquality().hash(_skills));
 
   @JsonKey(ignore: true)
   @override
@@ -221,8 +219,8 @@ abstract class _UserDataEntity extends UserDataEntity {
   const factory _UserDataEntity(
       {required final String uid,
       final String? nickname,
-      final List<String> interestedJobGroupIdList,
-      final List<String> techSkillIdList}) = _$UserDataEntityImpl;
+      final List<String> interestedJobGroups,
+      final List<String> skills}) = _$UserDataEntityImpl;
   const _UserDataEntity._() : super._();
 
   factory _UserDataEntity.fromJson(Map<String, dynamic> json) =
@@ -233,9 +231,9 @@ abstract class _UserDataEntity extends UserDataEntity {
   @override
   String? get nickname;
   @override
-  List<String> get interestedJobGroupIdList;
+  List<String> get interestedJobGroups;
   @override
-  List<String> get techSkillIdList;
+  List<String> get skills;
   @override
   @JsonKey(ignore: true)
   _$$UserDataEntityImplCopyWith<_$UserDataEntityImpl> get copyWith =>

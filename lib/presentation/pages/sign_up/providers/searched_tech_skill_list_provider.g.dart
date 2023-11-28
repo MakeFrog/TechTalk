@@ -7,12 +7,12 @@ part of 'searched_tech_skill_list_provider.dart';
 // **************************************************************************
 
 String _$searchedTechSkillListHash() =>
-    r'a69d429f9f6992eec3a825f6b06cd381e3479652';
+    r'fe9200df4162df1a4855a18a8be55cd6cd4a91fa';
 
 /// See also [searchedTechSkillList].
 @ProviderFor(searchedTechSkillList)
 final searchedTechSkillListProvider =
-    AutoDisposeFutureProvider<List<TechSkillEntity>>.internal(
+    AutoDisposeFutureProvider<SkillListEntity>.internal(
   searchedTechSkillList,
   name: r'searchedTechSkillListProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -23,7 +23,7 @@ final searchedTechSkillListProvider =
 );
 
 typedef SearchedTechSkillListRef
-    = AutoDisposeFutureProviderRef<List<TechSkillEntity>>;
+    = AutoDisposeFutureProviderRef<SkillListEntity>;
 String _$techSkillSearchKeywordHash() =>
     r'f4313a35710899a053698db3b8b8acc8a6b45b49';
 

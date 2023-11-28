@@ -11,6 +11,12 @@ class JobGroupModel with _$JobGroupModel {
     required String name,
   }) = _JobGroupModel;
 
+  const JobGroupModel._();
+
+  Map<String, dynamic> toFirestore() {
+    return toJson()..remove('id');
+  }
+
   factory JobGroupModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
   ) {

@@ -1,11 +1,11 @@
 import 'package:techtalk/features/job/entities/job_group_entity.dart';
-import 'package:techtalk/features/tech_skill/tech_skill.dart';
+import 'package:techtalk/features/skill/skill.dart';
 
 class SignUpFormEntity {
   final String nickname;
   final String nicknameValidation;
   final List<JobGroupEntity> jobGroupList;
-  final List<TechSkillEntity> techSkillList;
+  final List<SkillEntity> techSkillList;
 
   bool get isPassNickname => nickname.isNotEmpty && nicknameValidation.isEmpty;
   bool get isSelectedAtLeastOneJobGroup => jobGroupList.isNotEmpty;
@@ -16,7 +16,7 @@ class SignUpFormEntity {
     this.nickname = '',
     this.nicknameValidation = '',
     List<JobGroupEntity>? jobGroupList,
-    List<TechSkillEntity>? techSkillList,
+    List<SkillEntity>? techSkillList,
   })  : jobGroupList = jobGroupList ?? [],
         techSkillList = techSkillList ?? [];
 
@@ -51,7 +51,7 @@ class SignUpFormEntity {
     String? nickname,
     String? nicknameValidation,
     List<JobGroupEntity>? jobGroupList,
-    List<TechSkillEntity>? techSkillList,
+    List<SkillEntity>? techSkillList,
   }) {
     return SignUpFormEntity(
       nickname: nickname ?? this.nickname,
@@ -75,7 +75,7 @@ class SignUpFormEntity {
       nickname: map['nickname'] as String,
       nicknameValidation: map['nicknameValidation'] as String,
       jobGroupList: map['jobGroupList'] as List<JobGroupEntity>,
-      techSkillList: map['techSkillList'] as List<TechSkillEntity>,
+      techSkillList: map['techSkillList'] as List<SkillEntity>,
     );
   }
 

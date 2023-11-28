@@ -9,8 +9,8 @@ class UserDataEntity with _$UserDataEntity {
   const factory UserDataEntity({
     required String uid,
     String? nickname,
-    @Default([]) List<String> interestedJobGroupIdList,
-    @Default([]) List<String> techSkillIdList,
+    @Default([]) List<String> interestedJobGroups,
+    @Default([]) List<String> skills,
   }) = _UserDataEntity;
 
   const UserDataEntity._();
@@ -20,14 +20,14 @@ class UserDataEntity with _$UserDataEntity {
   UserDataModel toModel() => UserDataModel(
         uid: uid,
         nickname: nickname,
-        interestedJobGroupIdList: interestedJobGroupIdList,
-        techSkillIdList: techSkillIdList,
+        interestedJobGroupIds: interestedJobGroups,
+        skillIds: skills,
       );
   factory UserDataEntity.fromModel(UserDataModel model) => UserDataEntity(
         uid: model.uid,
         nickname: model.nickname,
-        interestedJobGroupIdList: model.interestedJobGroupIdList ?? [],
-        techSkillIdList: model.techSkillIdList ?? [],
+        interestedJobGroups: model.interestedJobGroupIds ?? [],
+        skills: model.skillIds ?? [],
       );
   factory UserDataEntity.fromJson(Map<String, dynamic> json) =>
       _$UserDataEntityFromJson(json);

@@ -107,8 +107,8 @@ class __$$JobGroupModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$JobGroupModelImpl implements _JobGroupModel {
-  const _$JobGroupModelImpl({required this.id, required this.name});
+class _$JobGroupModelImpl extends _JobGroupModel {
+  const _$JobGroupModelImpl({required this.id, required this.name}) : super._();
 
   factory _$JobGroupModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$JobGroupModelImplFromJson(json);
@@ -150,10 +150,11 @@ class _$JobGroupModelImpl implements _JobGroupModel {
   }
 }
 
-abstract class _JobGroupModel implements JobGroupModel {
+abstract class _JobGroupModel extends JobGroupModel {
   const factory _JobGroupModel(
       {required final String id,
       required final String name}) = _$JobGroupModelImpl;
+  const _JobGroupModel._() : super._();
 
   factory _JobGroupModel.fromJson(Map<String, dynamic> json) =
       _$JobGroupModelImpl.fromJson;
