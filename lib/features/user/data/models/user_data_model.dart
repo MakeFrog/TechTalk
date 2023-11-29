@@ -9,8 +9,8 @@ class UserDataModel with _$UserDataModel {
   const factory UserDataModel({
     required String uid,
     String? nickname,
-    List<String>? interestedJobGroupIdList,
-    List<String>? techSkillIdList,
+    List<String>? jobGroupIds,
+    List<String>? topicIds,
   }) = _UserDataModel;
 
   const UserDataModel._();
@@ -18,8 +18,8 @@ class UserDataModel with _$UserDataModel {
   Map<String, dynamic> toFirestore() {
     return {
       'nickname': nickname,
-      'interestedJobGroupIdList': interestedJobGroupIdList,
-      'techSkillIdList': techSkillIdList,
+      'jobGroupIds': jobGroupIds,
+      'topicIds': topicIds,
     };
   }
 

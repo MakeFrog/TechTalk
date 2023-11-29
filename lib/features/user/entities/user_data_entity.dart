@@ -20,14 +20,14 @@ class UserDataEntity with _$UserDataEntity {
   UserDataModel toModel() => UserDataModel(
         uid: uid,
         nickname: nickname,
-        interestedJobGroupIdList: interestedJobGroupIdList,
-        techSkillIdList: techSkillIdList,
+        jobGroupIds: interestedJobGroupIdList,
+        topicIds: techSkillIdList,
       );
   factory UserDataEntity.fromModel(UserDataModel model) => UserDataEntity(
         uid: model.uid,
         nickname: model.nickname,
-        interestedJobGroupIdList: model.interestedJobGroupIdList ?? [],
-        techSkillIdList: model.techSkillIdList ?? [],
+        interestedJobGroupIdList: model.jobGroupIds ?? [],
+        techSkillIdList: model.topicIds ?? [],
       );
   factory UserDataEntity.fromJson(Map<String, dynamic> json) =>
       _$UserDataEntityFromJson(json);
