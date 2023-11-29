@@ -6,9 +6,9 @@ import 'package:techtalk/features/interview/usecases/get_interview_topic_list_us
 import 'package:techtalk/features/interview/usecases/get_review_note_question_list_use_case.dart';
 
 export 'data/local/interview_local_data_source.dart';
+export 'data/remote/interview_remote_data_source.dart';
 export 'repositories/interview_repository.dart';
 export 'usecases/get_interview_topic_list_use_case.dart';
-export 'data/remote/interview_remote_data_source.dart';
 
 final interviewRemoteDataSource = locator<InterviewRemoteDataSource>();
 final interviewLocalDataSource = locator<InterviewLocalDataSource>();

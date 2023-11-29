@@ -8,6 +8,8 @@ import 'package:techtalk/features/shared/enums/interviewer_avatar.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_page_route_argument_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
+import 'package:techtalk/presentation/pages/interview/questino_count_select/provider/question_count_select_page_route_arg_provider.dart';
+import 'package:techtalk/presentation/pages/interview/questino_count_select/question_count_select_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
@@ -17,6 +19,7 @@ import 'package:techtalk/presentation/pages/study/learning/providers/selected_st
 import 'package:techtalk/presentation/pages/study/learning/study_learning_page.dart';
 
 part 'route_argument.dart';
+
 part 'router.g.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -90,18 +93,27 @@ class SignUpRoute extends GoRouteData {
     TypedGoRoute<HomeTopicSelectRoute>(
       path: HomeTopicSelectRoute.name,
       name: HomeTopicSelectRoute.name,
+      routes: [
+        TypedGoRoute<QuestionCountSelectPageRoute>(
+          path: QuestionCountSelectPageRoute.name,
+          name: QuestionCountSelectPageRoute.name,
+        ),
+      ],
     ),
     TypedGoRoute<StudyRoute>(
       path: StudyRoute.name,
       name: StudyRoute.name,
     ),
     TypedGoRoute<ChatListPageRoute>(
-        path: ChatListPageRoute.name,
-        name: ChatListPageRoute.name,
-        routes: [
-          TypedGoRoute<ChatPageRoute>(
-              path: ChatPageRoute.name, name: ChatPageRoute.name)
-        ]),
+      path: ChatListPageRoute.name,
+      name: ChatListPageRoute.name,
+      routes: [
+        TypedGoRoute<ChatPageRoute>(
+          path: ChatPageRoute.name,
+          name: ChatPageRoute.name,
+        )
+      ],
+    ),
   ],
 )
 class MainRoute extends GoRouteData {
@@ -112,6 +124,20 @@ class MainRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return MainPage();
+  }
+}
+
+class StudyRoute extends GoRouteData {
+  const StudyRoute(this.topicName);
+
+  final String topicName;
+  static const String name = 'study';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    SelectedStudyTopic.topicName = topicName;
+
+    return const StudyLearningPage();
   }
 }
 
@@ -126,17 +152,21 @@ class HomeTopicSelectRoute extends GoRouteData {
   }
 }
 
-class StudyRoute extends GoRouteData {
-  const StudyRoute(this.topicName);
+class QuestionCountSelectPageRoute extends GoRouteData {
+  const QuestionCountSelectPageRoute({required this.selectedTopic});
 
-  final String topicName;
-  static const String name = 'study';
+  final InterviewTopic selectedTopic;
+
+  static const String name = 'question-count-select';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    SelectedStudyTopic.topicName = topicName;
-
-    return StudyLearningPage();
+    return ProviderScope(
+      overrides: [
+        questionCountSelectRouteArgProvider.overrideWithValue(selectedTopic),
+      ],
+      child: QuestionCountSelectPage(),
+    );
   }
 }
 

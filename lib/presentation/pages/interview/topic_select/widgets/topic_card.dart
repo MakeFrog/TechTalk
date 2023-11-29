@@ -9,12 +9,19 @@ class TopicCard extends StatelessWidget {
     super.key,
     required this.topic,
     this.isSelected = false,
+    this.isLoaded = true,
     this.onTap,
   });
 
-  final InterviewTopic topic;
+  final InterviewTopic? topic;
   final bool isSelected;
   final VoidCallback? onTap;
+  final bool isLoaded;
+
+  factory TopicCard.createSkeleton() => const TopicCard(
+        topic: null,
+        isLoaded: false,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -31,34 +38,37 @@ class TopicCard extends StatelessWidget {
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
-        onTap: onTap,
+        onTap: isLoaded ? onTap : null,
         child: Padding(
-          padding: EdgeInsets.all(28),
-          child: Column(
-            children: [
-              Expanded(
-                child: Image.asset(
-                  topic.imageUrl!,
-                  color:
-                      isSelected ? AppColor.of.brand2.withOpacity(0.07) : null,
-                  colorBlendMode: BlendMode.srcATop,
-                  errorBuilder: (_, __, ___) => Center(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
+          padding: const EdgeInsets.all(28),
+          child: isLoaded
+              ? Column(
+                  children: [
+                    Expanded(
+                      child: Image.asset(
+                        topic!.imageUrl!,
+                        color: isSelected
+                            ? AppColor.of.brand2.withOpacity(0.07)
+                            : null,
+                        colorBlendMode: BlendMode.srcATop,
+                        errorBuilder: (_, __, ___) => Center(
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
-              HeightBox(16),
-              Text(
-                topic.name,
-                style: AppTextStyle.headline3,
-              ),
-            ],
-          ),
+                    const HeightBox(16),
+                    Text(
+                      topic!.name,
+                      style: AppTextStyle.headline3,
+                    ),
+                  ],
+                )
+              : const EmptyBox(),
         ),
       ),
     );

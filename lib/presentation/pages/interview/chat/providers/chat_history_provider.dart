@@ -188,6 +188,7 @@ class ChatHistory extends _$ChatHistory {
           .extractElementsBefore(state.requireValue.firstWhere(
         (message) => message.type.isSentMessage,
       )),
+      interviewer: null,
       answerState: answerState,
       chatRoomId: ref.read(chatPageRouteArgProvider).roomId,
       topic: ref.read(chatPageRouteArgProvider).topic,
@@ -213,6 +214,7 @@ class ChatHistory extends _$ChatHistory {
       answerState: answerState,
       chatRoomId: ref.read(chatPageRouteArgProvider).roomId,
       topic: ref.read(chatPageRouteArgProvider).topic,
+      interviewer: null,
       qnaProgressInfo: null,
     );
     await updateChatInfoUseCase.call(param);
@@ -228,6 +230,7 @@ class ChatHistory extends _$ChatHistory {
       answerState: AnswerState.initial,
       chatRoomId: ref.read(chatPageRouteArgProvider).roomId,
       topic: ref.read(chatPageRouteArgProvider).topic,
+      interviewer: ref.read(chatPageRouteArgProvider).interviewer,
       qnaProgressInfo: ref.read(chatPageRouteArgProvider).qnaProgressInfo,
     );
     await updateChatInfoUseCase(param);
