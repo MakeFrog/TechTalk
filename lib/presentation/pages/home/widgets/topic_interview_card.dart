@@ -10,44 +10,49 @@ class TopicInterviewCard extends StatelessWidget with HomeEvent {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16),
-      padding: EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  '주제별 면접',
-                  style: AppTextStyle.headline2,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: MaterialButton(
+        color: AppColor.of.white,
+        elevation: 0,
+        padding: const EdgeInsets.all(24),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        minWidth: 0,
+        onPressed: onTapNewTopicInterview,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    '주제별 면접',
+                    style: AppTextStyle.headline2,
+                  ),
                 ),
-              ),
-              WidthBox(48),
-              GestureDetector(
-                onTap: () => onTapNewTopicInterview(context),
-                child: FaIcon(
-                  FontAwesomeIcons.circlePlus,
-                  color: AppColor.of.brand2,
-                  size: 24,
+                WidthBox(48),
+                GestureDetector(
+                  onTap: onTapNewTopicInterview,
+                  child: FaIcon(
+                    FontAwesomeIcons.circlePlus,
+                    color: AppColor.of.brand2,
+                    size: 24,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          HeightBox(12),
-          // TODO : 면접을 하나라도 진행하면 텍스트 대신 해당 면접 표시
-          Text(
-            '하나의 주제를 선택해 집중 공략해 보세요!',
-            style: AppTextStyle.body1.copyWith(
-              color: AppColor.of.gray3,
+              ],
             ),
-          ),
-        ],
+            HeightBox(12),
+            // TODO : 면접을 하나라도 진행하면 텍스트 대신 해당 면접 표시
+            Text(
+              '하나의 주제를 선택해 집중 공략해 보세요!',
+              style: AppTextStyle.body1.copyWith(
+                color: AppColor.of.gray3,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
