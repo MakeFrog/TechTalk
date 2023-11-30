@@ -22,9 +22,8 @@ class UpdateChatInfoUseCase extends BaseUseCase<UpdateChatInfoParam, void> {
   @override
   Future<void> call(UpdateChatInfoParam request) {
     if (request.answerState.isInitial) {
-      print('에임 1');
       final initialRoomInfo = ChatRoomEntity(
-        interviewerInfo: InterviewerAvatar.getRandomInterviewer(),
+        interviewerInfo: request.interviewer!,
         topic: request.topic,
         chatRoomId: request.chatRoomId,
         lastChatDate: DateTime.now(),
@@ -60,4 +59,5 @@ typedef UpdateChatInfoParam = ({
   AnswerState answerState,
   InterviewTopic topic,
   ChatQnaProgressInfoEntity? qnaProgressInfo,
+  InterviewerAvatar? interviewer,
 });

@@ -36,8 +36,6 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
         .collection(FirestoreCollection.chats.name);
 
     await chatRoomRef.doc(chatRoomInfo.chatRoomId).set(chatRoomInfo.toJson());
-
-    print("아지랑이 32 : ${chatRoomInfo.chatRoomId}");
   }
 
   @override
@@ -57,16 +55,10 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
             toFirestore: (model, _) => model.toJson(),
           );
 
-      print("아지랑이 32 : ${chatRoomId}");
-
       for (var message in messages) {
         await chatRoomRef.doc(message.id).set(message);
-        print('추가됨');
       }
-      print('성공');
-    } catch (e) {
-      print('실패 이유: ${e}');
-    }
+    } catch (e) {}
   }
 
   @override
