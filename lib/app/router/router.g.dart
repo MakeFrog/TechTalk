@@ -91,6 +91,13 @@ RouteBase get $mainRoute => GoRouteData.$route(
           path: 'topic-select',
           name: 'topic-select',
           factory: $HomeTopicSelectRouteExtension._fromState,
+          routes: [
+            GoRouteData.$route(
+              path: 'question-count-select',
+              name: 'question-count-select',
+              factory: $QuestionCountSelectPageRouteExtension._fromState,
+            ),
+          ],
         ),
         GoRouteData.$route(
           path: 'study',
@@ -146,6 +153,42 @@ extension $HomeTopicSelectRouteExtension on HomeTopicSelectRoute {
 
   void replace(BuildContext context) => context.replace(location);
 }
+
+extension $QuestionCountSelectPageRouteExtension
+    on QuestionCountSelectPageRoute {
+  static QuestionCountSelectPageRoute _fromState(GoRouterState state) =>
+      QuestionCountSelectPageRoute(
+        selectedTopic: _$InterviewTopicEnumMap
+            ._$fromName(state.uri.queryParameters['selected-topic']!),
+      );
+
+  String get location => GoRouteData.$location(
+        '/topic-select/question-count-select',
+        queryParams: {
+          'selected-topic': _$InterviewTopicEnumMap[selectedTopic],
+        },
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+const _$InterviewTopicEnumMap = {
+  InterviewTopic.java: 'java',
+  InterviewTopic.spring: 'spring',
+  InterviewTopic.react: 'react',
+  InterviewTopic.swift: 'swift',
+  InterviewTopic.flutter: 'flutter',
+  InterviewTopic.android: 'android',
+  InterviewTopic.dataStructure: 'data-structure',
+  InterviewTopic.operatingSystem: 'operating-system',
+};
 
 extension $StudyRouteExtension on StudyRoute {
   static StudyRoute _fromState(GoRouterState state) => StudyRoute(
@@ -225,17 +268,6 @@ const _$InterviewProgressStateEnumMap = {
   InterviewProgressState.initial: 'initial',
   InterviewProgressState.ongoing: 'ongoing',
   InterviewProgressState.completed: 'completed',
-};
-
-const _$InterviewTopicEnumMap = {
-  InterviewTopic.java: 'java',
-  InterviewTopic.spring: 'spring',
-  InterviewTopic.react: 'react',
-  InterviewTopic.swift: 'swift',
-  InterviewTopic.flutter: 'flutter',
-  InterviewTopic.android: 'android',
-  InterviewTopic.dataStructure: 'data-structure',
-  InterviewTopic.operatingSystem: 'operating-system',
 };
 
 const _$InterviewerAvatarEnumMap = {

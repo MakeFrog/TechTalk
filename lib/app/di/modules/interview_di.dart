@@ -5,6 +5,7 @@ import 'package:techtalk/features/interview/data/remote/interview_remote_data_so
 import 'package:techtalk/features/interview/interview.dart';
 import 'package:techtalk/features/interview/repositories/interview_repository_impl.dart';
 import 'package:techtalk/features/interview/usecases/get_review_note_question_list_use_case.dart';
+import 'package:techtalk/features/user/user.dart';
 
 final class InterviewDependencyInjection extends FeatureDependencyInjection {
   @override
@@ -31,9 +32,10 @@ final class InterviewDependencyInjection extends FeatureDependencyInjection {
   @override
   void useCases() {
     GetIt.I
-      ..registerFactory<GetInterviewTopicsUseCase>(
-        () => GetInterviewTopicsUseCase(
-          interviewRepository,
+      ..registerFactory<GetInterviewTopicListUseCase>(
+        () => GetInterviewTopicListUseCase(
+          interviewRepository: interviewRepository,
+          userRepository: userRepository,
         ),
       )
       ..registerFactory<GetReviewNoteQuestionListUseCase>(

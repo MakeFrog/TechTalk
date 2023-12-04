@@ -36,4 +36,20 @@ final class UserRepositoryImpl implements UserRepository {
       return Result.failure(Exception(e));
     }
   }
+
+  @override
+  Future<Result<List<InterviewTopic>>> getUserTopicList() async {
+    try {
+      const userLocalId = '2FXrROIad2RSKt37NA8tciQx7e53'; // TEMP
+      final response = await _userRemoteDataSource.getUserData(userLocalId);
+
+      final topicIds = response?.topicIds ?? [];
+
+      final result = topicIds.map(InterviewTopic.getTopicById).toList();
+
+      return Result.success(result);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
 }
