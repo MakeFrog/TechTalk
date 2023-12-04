@@ -2,14 +2,14 @@ import 'package:techtalk/features/job/entities/job_group_entity.dart';
 import 'package:techtalk/features/skill/skill.dart';
 
 class SignUpFormEntity {
-  final String nickname;
-  final String nicknameValidation;
+  final String? nickname;
+  final String? nicknameValidation;
   final List<JobGroupEntity> jobGroupList;
   final List<SkillEntity> techSkillList;
 
-  bool get isPassNickname => nickname.isNotEmpty && nicknameValidation.isEmpty;
+  bool get isPassNickname =>
+      nickname != null && nickname!.isNotEmpty && nicknameValidation == null;
   bool get isSelectedAtLeastOneJobGroup => jobGroupList.isNotEmpty;
-  bool get isSelectedAtLeastOneTechSkill => techSkillList.isNotEmpty;
 
 //<editor-fold desc="Data Methods">
   SignUpFormEntity({

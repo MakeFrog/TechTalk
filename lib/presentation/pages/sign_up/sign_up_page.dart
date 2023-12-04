@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
@@ -43,9 +44,15 @@ class _AppBar extends StatelessWidget
   }
 
   Widget _buildBackButton() {
-    return Consumer(
+    return HookConsumer(
       builder: (_, ref, __) {
-        final canBack = ref.watch(canBackToPreviousStepProvider);
+        final pageController = ref.watch(signUpStepControllerProvider);
+        final canBack = useListenableSelector(
+          pageController,
+          () =>
+              pageController.hasClients &&
+              (pageController.page?.round() ?? 0) >= 1,
+        );
 
         return canBack
             ? BackButton(

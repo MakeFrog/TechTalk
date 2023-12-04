@@ -1,8 +1,8 @@
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/interview/interview.dart';
 
-final class GetInterviewTopicListUseCase {
-  const GetInterviewTopicListUseCase(
+final class GetInterviewTopicsUseCase {
+  const GetInterviewTopicsUseCase(
     this._interviewRepository,
   );
 

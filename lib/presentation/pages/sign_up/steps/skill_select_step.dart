@@ -49,7 +49,7 @@ class _SelectedSkillListView extends ConsumerWidget with SignUpEvent {
 
     return SelectResultChipListView(
       itemList: selectedSkills.map((e) => e.name).toList(),
-      onTapItem: (index) => onTapSelectedTechSkill(
+      onTapItem: (index) => onTapSelectedSkill(
         ref,
         skill: selectedSkills[index],
       ),
@@ -76,11 +76,11 @@ class _SkillListView extends HookConsumerWidget with SignUpEvent {
               inputDecoration: const InputDecoration(
                 hintText: '관심 기술을 검색해 주세요',
               ),
-              onChanged: (value) => onChangeTechSkillSearchField(
+              onChanged: (value) => onChangeSkillSearchField(
                 ref,
                 keyword: value,
               ),
-              onClear: () => onClearTechSkillSearchField(
+              onClear: () => onClearSkillSearchField(
                 ref,
                 controller: controller,
               ),
@@ -89,10 +89,10 @@ class _SkillListView extends HookConsumerWidget with SignUpEvent {
               child: Consumer(
                 builder: (context, ref, child) {
                   final keyword = ref.watch(techSkillSearchKeywordProvider);
-                  final searchedTechSkillListAsync =
+                  final searchedSkillsAsync =
                       ref.watch(searchedTechSkillListProvider);
 
-                  return searchedTechSkillListAsync.when(
+                  return searchedSkillsAsync.when(
                     loading: SizedBox.new,
                     error: (error, stackTrace) => Center(
                       child: Text('$error'),

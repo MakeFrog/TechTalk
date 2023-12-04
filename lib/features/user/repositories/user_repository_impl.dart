@@ -18,7 +18,6 @@ final class UserRepositoryImpl implements UserRepository {
   @override
   Future<UserDataEntity?> getUserData(String uid) async {
     var userData = await _userRemoteDataSource.getUserData(uid);
-    print(userData);
 
     if (userData == null) {
       return null;

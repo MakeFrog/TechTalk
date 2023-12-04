@@ -6,7 +6,7 @@ import 'package:techtalk/presentation/pages/wrong_answer_note/providers/selected
 import 'package:techtalk/presentation/pages/wrong_answer_note/widgets/review_note_topic_chip.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/widgets/review_note_topic_list_view.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/widgets/review_question_list_view.dart';
-import 'package:techtalk/presentation/providers/app_user_data_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_statless_page.dart';
 
 class WrongAnswerNotePage extends BaseStatelessWidget {
@@ -44,7 +44,7 @@ class _Body extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final topicsAsync = ref.watch(appUserDataProvider);
+    final topicsAsync = ref.watch(userDataProvider);
 
     return topicsAsync.when(
       loading: () => const Center(

@@ -1,33 +1,19 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+enum JobGroupModel {
+  frondEndDev(id: 'frontend-developer', name: '프론트앤드 개발자'),
+  backEndDev(id: 'backend-developer', name: '백앤드 개발자'),
+  serverDev(id: 'server-developer', name: '서버 개발자'),
+  fullStackDev(id: 'full-stack-developer', name: '풀스택 개발자'),
+  androidDev(id: 'android-developer', name: '안드로이드 개발자'),
+  iosDev(id: 'ios-developer', name: 'iOS 개발자'),
+  crossPlatformDev(id: 'cross-platform-developer', name: '크로스플랫폼 개발자'),
+  gameClientDev(id: 'game-client-developer', name: '게임 클라이언트 개발자'),
+  gameServerDev(id: 'game-server-developer', name: '게임 서버 개발자');
 
-part 'job_group_model.freezed.dart';
-part 'job_group_model.g.dart';
+  final String id;
+  final String name;
 
-@freezed
-class JobGroupModel with _$JobGroupModel {
-  const factory JobGroupModel({
-    required String id,
-    required String name,
-  }) = _JobGroupModel;
-
-  const JobGroupModel._();
-
-  Map<String, dynamic> toFirestore() {
-    return toJson()..remove('id');
-  }
-
-  factory JobGroupModel.fromFirestore(
-    DocumentSnapshot<Map<String, dynamic>> snapshot,
-  ) {
-    final data = snapshot.data()!;
-
-    return JobGroupModel(
-      id: snapshot.id,
-      name: data['name'],
-    );
-  }
-
-  factory JobGroupModel.fromJson(Map<String, dynamic> json) =>
-      _$JobGroupModelFromJson(json);
+  const JobGroupModel({
+    required this.id,
+    required this.name,
+  });
 }

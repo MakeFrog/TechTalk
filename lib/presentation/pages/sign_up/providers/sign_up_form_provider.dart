@@ -5,7 +5,7 @@ import 'package:techtalk/features/skill/entities/skill_entity.dart';
 import 'package:techtalk/features/user/entities/sign_up_form_entity.dart';
 import 'package:techtalk/features/user/entities/user_data_entity.dart';
 import 'package:techtalk/features/user/user.dart';
-import 'package:techtalk/presentation/providers/app_user_auth_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_auth_provider.dart';
 
 part 'sign_up_form_provider.g.dart';
 
@@ -32,10 +32,7 @@ class SignUpForm extends _$SignUpForm {
 
   Future<void> updateNickname(String nickname) async {
     if (nickname.isEmpty) {
-      state = state.copyWith(
-        nickname: '',
-        nicknameValidation: '',
-      );
+      clearNickname();
       return;
     }
 
@@ -50,15 +47,19 @@ class SignUpForm extends _$SignUpForm {
     }
 
     final result = await isExistNicknameUseCase(nickname);
-    state = result.getOrThrow()
-        ? state.copyWith(
-            nickname: '',
-            nicknameValidation: '중복된 닉네임입니다.',
-          )
-        : state.copyWith(
-            nickname: nickname,
-            nicknameValidation: '',
-          );
+    state = SignUpFormEntity(
+      nickname: nickname,
+      nicknameValidation: result.getOrThrow() ? '중복된 닉네임입니다.' : null,
+      jobGroupList: state.jobGroupList,
+      techSkillList: state.techSkillList,
+    );
+  }
+
+  void clearNickname() {
+    state = state.copyWith(
+      nickname: '',
+      nicknameValidation: '',
+    );
   }
 
   void addJobGroup(JobGroupEntity group) {
@@ -86,7 +87,7 @@ class SignUpForm extends _$SignUpForm {
     }
   }
 
-  void addTechSkill(SkillEntity skill) {
+  void addSkill(SkillEntity skill) {
     final isExist = state.techSkillList.contains(skill);
 
     if (!isExist) {
@@ -99,7 +100,7 @@ class SignUpForm extends _$SignUpForm {
     }
   }
 
-  void removeTechSkill(SkillEntity skill) {
+  void removeSkill(SkillEntity skill) {
     final isExist = state.techSkillList.contains(skill);
 
     if (isExist) {
@@ -112,7 +113,7 @@ class SignUpForm extends _$SignUpForm {
   }
 
   Future<void> submit() async {
-    final userUid = ref.read(appUserAuthProvider)!.uid;
+    final userUid = ref.read(userAuthProvider)!.uid;
 
     final userData = UserDataEntity(
       uid: userUid,

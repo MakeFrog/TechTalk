@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/job/job.dart';
-import 'package:techtalk/presentation/pages/sign_up/providers/job_group_list_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_form_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_event.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/select_result_chip_list_view.dart';
@@ -113,23 +112,24 @@ class _JobGroupListView extends HookConsumerWidget with SignUpEvent {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final jobGroupsAsync = ref.watch(jobGroupListProvider);
+    final getJobGroups = useMemoized(getJobGroupsUseCase);
+    final getJobGroupsAsync = useFuture(getJobGroups);
 
-    if (jobGroupsAsync.isLoading) {
+    if (getJobGroupsAsync.connectionState == ConnectionState.waiting) {
       return const SliverFillRemaining(
         child: Center(
           child: CircularProgressIndicator(),
         ),
       );
-    } else if (jobGroupsAsync.hasError) {
+    } else if (getJobGroupsAsync.hasError) {
       return SliverFillRemaining(
         child: Center(
-          child: Text('${jobGroupsAsync.error}'),
+          child: Text('${getJobGroupsAsync.error}'),
         ),
       );
     }
 
-    final jobGroups = jobGroupsAsync.requireValue.groups;
+    final jobGroups = getJobGroupsAsync.requireData.getOrThrow().groups;
     final selectedGroupList = ref.watch(
       signUpFormProvider.select((v) => v.jobGroupList),
     );
@@ -145,7 +145,7 @@ class _JobGroupListView extends HookConsumerWidget with SignUpEvent {
           selectedColor: AppColor.of.black,
           selectedTileColor: AppColor.of.background1,
           minVerticalPadding: 0,
-          contentPadding: EdgeInsets.symmetric(horizontal: 16),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
           title: Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -180,7 +180,7 @@ class _NextButton extends ConsumerWidget with SignUpEvent {
     );
 
     return Padding(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: FilledButton(
         onPressed:
             isSelectedAtLeastOne ? () => onTapJobGroupStepNext(ref) : null,

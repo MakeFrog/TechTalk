@@ -22,6 +22,7 @@ enum InterviewTopic {
     text: 'React',
     imageUrl: Assets.imagesTopicReact,
     category: InterviewTopicCategory.technologyFrameworks,
+    isAvailable: true,
   ),
   swift(
     id: 'swift',
@@ -34,6 +35,7 @@ enum InterviewTopic {
     text: 'Flutter/Dart',
     imageUrl: Assets.imagesTopicFlutter,
     category: InterviewTopicCategory.technologyFrameworks,
+    isAvailable: true,
   ),
   android(
     id: 'android',
@@ -58,6 +60,7 @@ enum InterviewTopic {
   final String text;
   final String? imageUrl;
   final InterviewTopicCategory category;
+  final bool isAvailable;
 
   static InterviewTopic getTopicById(String id) {
     return values.firstWhere(
@@ -71,5 +74,6 @@ enum InterviewTopic {
     required this.text,
     this.imageUrl,
     required this.category,
+    this.isAvailable = false,
   });
 }

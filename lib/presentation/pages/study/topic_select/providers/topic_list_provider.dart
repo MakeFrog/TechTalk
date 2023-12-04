@@ -9,7 +9,7 @@ part 'topic_list_provider.g.dart';
 Future<Map<String, List<InterviewTopic>>> studyTopicList(
   StudyTopicListRef ref,
 ) async {
-  final getInterviewTopicListUseCase = locator<GetInterviewTopicListUseCase>();
+  final getInterviewTopicListUseCase = locator<GetInterviewTopicsUseCase>();
 
   final topicList = List.of(await getInterviewTopicListUseCase());
   topicList.sort(

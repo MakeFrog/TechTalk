@@ -7,13 +7,13 @@ import 'package:techtalk/core/services/toast_service.dart';
 import 'package:techtalk/features/auth/auth.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-part 'app_user_auth_provider.g.dart';
+part 'user_auth_provider.g.dart';
 
 /// 앱 사용자 권한 프로바이더
 ///
 /// 인증, 로그인, 로그아웃 등의 기능을 담당한다.
 @Riverpod(keepAlive: true)
-class AppUserAuth extends _$AppUserAuth {
+class UserAuth extends _$UserAuth {
   @override
   User? build() {
     return FirebaseAuth.instance.currentUser;
@@ -47,4 +47,4 @@ class AppUserAuth extends _$AppUserAuth {
 /// * 현재는 단순 유저 인증 정보가 있나 없나로 판단. 테스트 후 다른 조건이 필요한지 찾아볼 것
 @riverpod
 bool isUserAuthorized(IsUserAuthorizedRef ref) =>
-    ref.watch(appUserAuthProvider) != null;
+    ref.watch(userAuthProvider) != null;

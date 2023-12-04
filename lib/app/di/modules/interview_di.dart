@@ -31,8 +31,8 @@ final class InterviewDependencyInjection extends FeatureDependencyInjection {
   @override
   void useCases() {
     GetIt.I
-      ..registerFactory<GetInterviewTopicListUseCase>(
-        () => GetInterviewTopicListUseCase(
+      ..registerFactory<GetInterviewTopicsUseCase>(
+        () => GetInterviewTopicsUseCase(
           interviewRepository,
         ),
       )

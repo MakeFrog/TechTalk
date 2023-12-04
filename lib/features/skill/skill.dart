@@ -1,4 +1,5 @@
 import 'package:techtalk/app/di/locator.dart';
+import 'package:techtalk/features/skill/data/local/skill_local_data_source.dart';
 import 'package:techtalk/features/skill/data/remote/skill_remote_data_source.dart';
 import 'package:techtalk/features/skill/repositories/skill_repository.dart';
 import 'package:techtalk/features/skill/usecases/search_skills_use_case.dart';
@@ -9,5 +10,7 @@ export 'repositories/skill_repository.dart';
 export 'usecases/search_skills_use_case.dart';
 
 final skillRemoteDataSource = locator<SkillRemoteDataSource>();
+final skillLocalDataSource = locator<SkillLocalDataSource>();
+
 final skillRepository = locator<SkillRepository>();
 final searchSkillsUseCase = locator<SearchSkillsUseCase>();

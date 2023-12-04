@@ -1,27 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'sign_up_step_controller_provider.dart';
+part of 'user_interview_topics_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$signUpStepControllerHash() =>
-    r'69ff24a47279ada4220803a9342b9e4df22a513e';
+String _$userInterviewTopicsHash() =>
+    r'29b5aa81d5040724b4376c018a122e51d065f014';
 
-/// See also [SignUpStepController].
-@ProviderFor(SignUpStepController)
-final signUpStepControllerProvider =
-    AutoDisposeNotifierProvider<SignUpStepController, PageController>.internal(
-  SignUpStepController.new,
-  name: r'signUpStepControllerProvider',
+/// See also [UserInterviewTopics].
+@ProviderFor(UserInterviewTopics)
+final userInterviewTopicsProvider =
+    AsyncNotifierProvider<UserInterviewTopics, List<InterviewTopic>>.internal(
+  UserInterviewTopics.new,
+  name: r'userInterviewTopicsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$signUpStepControllerHash,
+      : _$userInterviewTopicsHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$SignUpStepController = AutoDisposeNotifier<PageController>;
+typedef _$UserInterviewTopics = AsyncNotifier<List<InterviewTopic>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

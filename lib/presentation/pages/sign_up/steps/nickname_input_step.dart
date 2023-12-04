@@ -15,123 +15,103 @@ class NicknameInputStep extends HookWidget {
   Widget build(BuildContext context) {
     useAutomaticKeepAlive();
 
-    final isRunningDebounce = useValueNotifier(false);
-
-    return Padding(
-      padding: const EdgeInsets.all(16),
+    return const Padding(
+      padding: EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SignUpStepIntroMessage(
+          SignUpStepIntroMessage(
             title: '안녕하세요. 테크톡으로\n면접을 준비해볼까요?',
             subTitle: '먼저 사용할 닉네임이 필요해요.',
           ),
-          const HeightBox(56),
-          _NicknameInputSection(
-            isRunningDebounce: isRunningDebounce,
-          ),
-          const Spacer(),
-          _NextButton(
-            isRunningDebounce: isRunningDebounce,
-          ),
+          HeightBox(56),
+          _NicknameInputSection(),
+          Spacer(),
+          _NextButton(),
         ],
       ),
     );
   }
 }
 
-class _NicknameInputSection extends StatelessWidget with SignUpEvent {
+class _NicknameInputSection extends HookConsumerWidget with SignUpEvent {
   const _NicknameInputSection({
     super.key,
-    required this.isRunningDebounce,
   });
 
-  final ValueNotifier<bool> isRunningDebounce;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isRunningDebounce = useValueNotifier(false);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Consumer(
-          builder: (context, ref, child) => ClearableTextField(
-            inputDecoration: const InputDecoration(
-              hintText: '닉네임을 입력해 주세요',
-            ),
-            onChanged: (value) => onChangeNicknameField(
-              ref,
-              nickname: value,
-              isRunningDebouncer: isRunningDebounce,
-            ),
-            onClear: () => onClearNicknameField(
-              ref,
-              isRunningDebouncer: isRunningDebounce,
-            ),
+        ClearableTextField(
+          inputDecoration: const InputDecoration(
+            hintText: '닉네임을 입력해 주세요',
+          ),
+          onChanged: (value) => onChangeNicknameField(
+            ref,
+            nickname: value,
+            isRunningDebouncer: isRunningDebounce,
+          ),
+          onClear: () => onClearNicknameField(
+            ref,
+            isRunningDebouncer: isRunningDebounce,
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: HookBuilder(
-            builder: (context) => useValueListenable(isRunningDebounce)
-                ? const SizedBox.square(
-                    dimension: 12,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                    ),
-                  )
-                : _buildValidationMessage(),
+          child: HookConsumer(
+            builder: (context, ref, child) {
+              final isChecking = useValueListenable(isRunningDebounce);
+
+              if (isChecking) {
+                return const SizedBox.square(
+                  dimension: 12,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                  ),
+                );
+              }
+              final signUpForm = ref.watch(signUpFormProvider);
+
+              if (signUpForm.nicknameValidation != null) {
+                return Text(
+                  signUpForm.nicknameValidation!,
+                  style: AppTextStyle.alert2.copyWith(
+                    color: AppColor.of.red2,
+                  ),
+                );
+              } else {
+                return Text(
+                  '사용가능한 닉네임입니다.',
+                  style: AppTextStyle.alert2.copyWith(
+                    color: AppColor.of.brand3,
+                  ),
+                );
+              }
+            },
           ),
         ),
       ],
     );
   }
-
-  Widget _buildValidationMessage() {
-    return Consumer(
-      builder: (context, ref, child) {
-        final signUpForm = ref.watch(signUpFormProvider);
-
-        if (signUpForm.nicknameValidation.isNotEmpty) {
-          return Text(
-            signUpForm.nicknameValidation,
-            style: AppTextStyle.alert2.copyWith(
-              color: AppColor.of.red2,
-            ),
-          );
-        } else if (signUpForm.isPassNickname) {
-          return Text(
-            '사용가능한 닉네임입니다.',
-            style: AppTextStyle.alert2.copyWith(
-              color: AppColor.of.brand3,
-            ),
-          );
-        } else {
-          return const SizedBox();
-        }
-      },
-    );
-  }
 }
 
-class _NextButton extends HookConsumerWidget with SignUpEvent {
+class _NextButton extends ConsumerWidget with SignUpEvent {
   const _NextButton({
     super.key,
-    required this.isRunningDebounce,
   });
-
-  final ValueNotifier<bool> isRunningDebounce;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isRunning = useValueListenable(isRunningDebounce);
     final isPassNickname = ref.watch(
       signUpFormProvider.select((v) => v.isPassNickname),
     );
 
     return FilledButton(
-      onPressed: !isRunning && isPassNickname
-          ? () => onTapNicknameStepNext(ref)
-          : null,
+      onPressed: isPassNickname ? () => onTapNicknameStepNext(ref) : null,
       child: const Center(
         child: Text('다음'),
       ),
