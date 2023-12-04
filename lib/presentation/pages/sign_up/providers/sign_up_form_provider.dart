@@ -118,8 +118,8 @@ class SignUpForm extends _$SignUpForm {
     final userData = UserDataEntity(
       uid: userUid,
       nickname: state.nickname,
-      interestedJobGroups: state.jobGroupList.map((e) => e.id).toList(),
-      skills: state.techSkillList.map((e) => e.id).toList(),
+      interestedJobGroupIdList: state.jobGroupList.map((e) => e.id).toList(),
+      techSkillIdList: state.techSkillList.map((e) => e.id).toList(),
     );
 
     await createUserDataUseCase(userData);

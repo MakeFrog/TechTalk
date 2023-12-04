@@ -13,7 +13,7 @@ class UserData extends _$UserData {
 
     if (userAuth == null) throw Exception('로그인 필요');
 
-    final userData = await getUserDataUseCase(userAuth.uid);
+    final userData = await getUserDataUseCase();
 
     return userData;
   }

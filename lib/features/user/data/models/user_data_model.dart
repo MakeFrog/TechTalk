@@ -1,36 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'user_data_model.freezed.dart';
 part 'user_data_model.g.dart';
 
-@freezed
-class UserDataModel with _$UserDataModel {
-  const factory UserDataModel({
-    required String uid,
-    String? nickname,
-    List<String>? jobGroupIds,
-    List<String>? topicIds,
-  }) = _UserDataModel;
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+class UserDataModel {
+  UserDataModel({
+    required this.uid,
+    this.nickname,
+    this.jobGroupIds,
+    this.topicIds,
+  });
 
-  const UserDataModel._();
+  final String uid;
+  final String? nickname;
+  final List<String>? jobGroupIds;
+  final List<String>? topicIds;
 
-  Map<String, dynamic> toFirestore() {
-    return {
-      'nickname': nickname,
-      'jobGroupIds': jobGroupIds,
-      'topicIds': topicIds,
-    };
-  }
+  Map<String, dynamic> toFirestore() => toJson();
 
   factory UserDataModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
-  ) {
-    final json = snapshot.data()!..['uid'] = snapshot.id;
+  ) =>
+      UserDataModel.fromJson(snapshot.data()!);
 
-    return UserDataModel.fromJson(json);
+  factory UserDataModel.fromJson(Map<String, dynamic> json) {
+    return _$UserDataModelFromJson(json);
   }
 
-  factory UserDataModel.fromJson(Map<String, dynamic> json) =>
-      _$UserDataModelFromJson(json);
+  Map<String, dynamic> toJson() => _$UserDataModelToJson(this);
 }

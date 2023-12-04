@@ -114,10 +114,7 @@ class _InterviewTopicColum extends ConsumerWidget with HomeEvent {
                         backgroundColor: AppColor.of.background1,
                         foregroundColor: AppColor.of.gray4,
                       ),
-                      onPressed: () => onTapGoToInterviewRoomPage(
-                        context,
-                        topic: e,
-                      ),
+                      onPressed: () => onTapGoToInterviewRoomPage(e),
                       child: const Text('면접 보기'),
                     ),
                   ],

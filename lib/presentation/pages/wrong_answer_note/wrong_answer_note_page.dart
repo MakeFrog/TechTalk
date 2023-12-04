@@ -54,7 +54,8 @@ class _Body extends ConsumerWidget {
         child: Text('$error'),
       ),
       data: (data) {
-        final topics = data!.skills.map(InterviewTopic.getTopicById).toList();
+        final topics =
+            data!.techSkillIdList.map(InterviewTopic.getTopicById).toList();
         final selectedTopic =
             ref.watch(selectedReviewNoteTopicProvider).valueOrNull;
         final questionsAsync = ref.watch(reviewQuestionListProvider);

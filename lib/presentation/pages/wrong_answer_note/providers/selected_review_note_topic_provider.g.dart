@@ -7,7 +7,7 @@ part of 'selected_review_note_topic_provider.dart';
 // **************************************************************************
 
 String _$selectedReviewNoteTopicHash() =>
-    r'98a81a56bab2247747381b69d16460633a66cb2e';
+    r'35584be76b811e415c140780d89d5621960c03df';
 
 /// See also [SelectedReviewNoteTopic].
 @ProviderFor(SelectedReviewNoteTopic)
