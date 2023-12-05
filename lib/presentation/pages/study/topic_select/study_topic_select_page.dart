@@ -3,10 +3,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/pages/study/topic_select/providers/topic_list_provider.dart';
 import 'package:techtalk/presentation/pages/study/topic_select/study_topic_select_event.dart';
 import 'package:techtalk/presentation/pages/study/topic_select/widgets/study_topic_card.dart';
 import 'package:techtalk/presentation/pages/study/topic_select/widgets/study_topic_grid_view.dart';
+import 'package:techtalk/presentation/providers/study/study_topic_list_provider.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class StudyTopicSelectPage extends HookWidget {
@@ -16,10 +16,14 @@ class StudyTopicSelectPage extends HookWidget {
   Widget build(BuildContext context) {
     useAutomaticKeepAlive();
 
-    return const Scaffold(
-      backgroundColor: Colors.white,
-      appBar: _AppBar(),
-      body: _Body(),
+    return const ColoredBox(
+      color: Colors.white,
+      child: Column(
+        children: [
+          _AppBar(),
+          _Body(),
+        ],
+      ),
     );
   }
 }
@@ -44,12 +48,12 @@ class _Body extends ConsumerWidget with StudyTopicSelectEvent {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final topicListAsync = ref.watch(studyTopicListProvider);
+    final studyTopicsAsync = ref.watch(studyTopicListProvider);
 
-    return SafeArea(
+    return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: topicListAsync.when(
+        child: studyTopicsAsync.when(
           loading: SizedBox.new,
           error: (error, stackTrace) => Center(
             child: Text('$error'),
@@ -74,10 +78,7 @@ class _Body extends ConsumerWidget with StudyTopicSelectEvent {
 
                         return StudyTopicCard(
                           topic: topic,
-                          onTap: () => onTapCard(
-                            ref,
-                            topic: topic,
-                          ),
+                          onTap: () => onTapCard(topic),
                         );
                       },
                     ),

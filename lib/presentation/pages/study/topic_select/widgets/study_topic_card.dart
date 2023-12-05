@@ -15,44 +15,44 @@ class StudyTopicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return Material(
+      clipBehavior: Clip.antiAlias,
+      color: AppColor.of.background1,
       borderRadius: BorderRadius.circular(16),
-      onTap: onTap,
-      child: Ink(
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppColor.of.background1,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Text(
-                topic.name,
-                style: AppTextStyle.headline3,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(
+                  topic.name,
+                  style: AppTextStyle.headline3,
+                ),
               ),
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(72),
-                child: Image.asset(
-                  topic.imageUrl!,
-                  width: 72,
-                  height: 72,
-                  errorBuilder: (context, error, stackTrace) => Container(
+              Align(
+                alignment: Alignment.centerRight,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(72),
+                  child: Image.asset(
+                    topic.imageUrl!,
                     width: 72,
                     height: 72,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      width: 72,
+                      height: 72,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

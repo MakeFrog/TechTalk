@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/presentation/pages/study/topic_select/providers/topic_list_provider.dart';
+import 'package:techtalk/presentation/providers/study/study_topic_list_provider.dart';
 
 part 'selected_study_topic_provider.g.dart';
 

@@ -1,20 +1,17 @@
 import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/core/services/toast_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/interview/usecases/get_interview_topics_use_case.dart';
+import 'package:techtalk/features/interview/interview.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-part 'topic_list_provider.g.dart';
+part 'study_topic_list_provider.g.dart';
 
 @riverpod
 Future<Map<String, List<InterviewTopic>>> studyTopicList(
   StudyTopicListRef ref,
 ) async {
-  final getInterviewTopicListUseCase = locator<GetInterviewTopicListUseCase>();
-
   final response = await getInterviewTopicListUseCase();
 
   return response.fold(

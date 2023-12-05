@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'topic_list_provider.dart';
+part of 'study_topic_list_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$studyTopicListHash() => r'6d08f8a91a1c76ab7501fdc3722f83ec1ec96dbd';
+String _$studyTopicListHash() => r'469ae574fddc41d8a2bba2d5453bf0755625983d';
 
 /// See also [studyTopicList].
 @ProviderFor(studyTopicList)
