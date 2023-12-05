@@ -7,7 +7,7 @@ part of 'user_interview_topics_provider.dart';
 // **************************************************************************
 
 String _$userInterviewTopicsHash() =>
-    r'e931e43e2193b8802c4e7b92f89bfd800527951a';
+    r'682373bed4da7c7ed41f35417537c9e2e3d23190';
 
 /// See also [UserInterviewTopics].
 @ProviderFor(UserInterviewTopics)

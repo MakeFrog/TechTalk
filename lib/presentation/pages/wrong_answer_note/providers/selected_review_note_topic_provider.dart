@@ -10,7 +10,7 @@ class SelectedReviewNoteTopic extends _$SelectedReviewNoteTopic {
   FutureOr<InterviewTopic> build() async {
     final topics = await ref.watch(userDataProvider.future);
 
-    return topics!.techSkillIdList.map(InterviewTopic.getTopicById).first;
+    return topics!.skillIdList.map(InterviewTopic.getTopicById).first;
   }
 
   set topic(InterviewTopic value) => state = AsyncData(value);

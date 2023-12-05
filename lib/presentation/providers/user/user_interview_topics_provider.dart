@@ -12,7 +12,7 @@ class UserInterviewTopics extends _$UserInterviewTopics {
     final userData = await ref.watch(userDataProvider.future);
     if (userData == null) throw Exception('유저 데이터가 존재하지 않음');
 
-    final topicIds = userData.techSkillIdList;
+    final topicIds = userData.skillIdList;
     final topics = (await getInterviewTopicListUseCase()).getOrThrow();
 
     final userTopics = topics

@@ -205,24 +205,18 @@ mixin class SignUpEvent implements _SignUpEvent {
   @override
   Future<void> onTapTechSkillStepNext(WidgetRef ref) async {
     try {
+      final form = ref.read(signUpFormProvider);
       await EasyLoading.show()
           .then(
-            (_) => ref.read(signUpFormProvider.notifier).submit(),
-          )
+        (_) => ref.read(userDataProvider.notifier).createUserData(form),
+      )
           .then(
-            (_) => ref.refresh(userDataProvider.future),
-          )
-          .then(
-        (value) {
-          if (value == null || !value.isCompleteSignUp) {
-            throw Exception('회원가입 실패');
-          }
-
+        (_) {
           const MainRoute().go(ref.context);
         },
       ).whenComplete(
         EasyLoading.dismiss,
       );
-    } on Exception catch (e) {}
+    } catch (e) {}
   }
 }

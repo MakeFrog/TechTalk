@@ -3,9 +3,7 @@ import 'package:techtalk/core/helper/validation_extension.dart';
 import 'package:techtalk/features/job/entities/job_group_entity.dart';
 import 'package:techtalk/features/skill/entities/skill_entity.dart';
 import 'package:techtalk/features/user/entities/sign_up_form_entity.dart';
-import 'package:techtalk/features/user/entities/user_data_entity.dart';
 import 'package:techtalk/features/user/user.dart';
-import 'package:techtalk/presentation/providers/user/user_auth_provider.dart';
 
 part 'sign_up_form_provider.g.dart';
 
@@ -110,18 +108,5 @@ class SignUpForm extends _$SignUpForm {
         techSkillList: selectedTechSkillList,
       );
     }
-  }
-
-  Future<void> submit() async {
-    final userUid = ref.read(userAuthProvider)!.uid;
-
-    final userData = UserDataEntity(
-      uid: userUid,
-      nickname: state.nickname,
-      interestedJobGroupIdList: state.jobGroupList.map((e) => e.id).toList(),
-      techSkillIdList: state.techSkillList.map((e) => e.id).toList(),
-    );
-
-    await createUserDataUseCase(userData);
   }
 }

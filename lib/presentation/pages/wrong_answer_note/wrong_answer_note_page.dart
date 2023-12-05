@@ -55,7 +55,7 @@ class _Body extends ConsumerWidget {
       ),
       data: (data) {
         final topics =
-            data!.techSkillIdList.map(InterviewTopic.getTopicById).toList();
+            data!.skillIdList.map(InterviewTopic.getTopicById).toList();
         final selectedTopic =
             ref.watch(selectedReviewNoteTopicProvider).valueOrNull;
         final questionsAsync = ref.watch(reviewQuestionListProvider);

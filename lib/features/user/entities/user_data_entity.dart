@@ -3,16 +3,16 @@ import 'package:techtalk/features/user/data/models/user_data_model.dart';
 class UserDataEntity {
   final String uid;
   final String? nickname;
-  final List<String> interestedJobGroupIdList;
-  final List<String> techSkillIdList;
+  final List<String> jobGroupIdList;
+  final List<String> skillIdList;
 
   bool get isCompleteSignUp => nickname != null;
 
   UserDataModel toModel() => UserDataModel(
         uid: uid,
         nickname: nickname,
-        jobGroupIds: interestedJobGroupIdList,
-        topicIds: techSkillIdList,
+        jobGroupIds: jobGroupIdList,
+        topicIds: skillIdList,
       );
   factory UserDataEntity.fromModel(UserDataModel model) => UserDataEntity(
         uid: model.uid,
@@ -27,8 +27,8 @@ class UserDataEntity {
     this.nickname,
     List<String>? interestedJobGroupIdList,
     List<String>? techSkillIdList,
-  })  : interestedJobGroupIdList = interestedJobGroupIdList ?? const [],
-        techSkillIdList = techSkillIdList ?? const [];
+  })  : jobGroupIdList = interestedJobGroupIdList ?? const [],
+        skillIdList = techSkillIdList ?? const [];
 
   @override
   bool operator ==(Object other) =>
@@ -37,23 +37,23 @@ class UserDataEntity {
           runtimeType == other.runtimeType &&
           uid == other.uid &&
           nickname == other.nickname &&
-          interestedJobGroupIdList == other.interestedJobGroupIdList &&
-          techSkillIdList == other.techSkillIdList);
+          jobGroupIdList == other.jobGroupIdList &&
+          skillIdList == other.skillIdList);
 
   @override
   int get hashCode =>
       uid.hashCode ^
       nickname.hashCode ^
-      interestedJobGroupIdList.hashCode ^
-      techSkillIdList.hashCode;
+      jobGroupIdList.hashCode ^
+      skillIdList.hashCode;
 
   @override
   String toString() {
     return 'UserDataEntity{' +
         ' uid: $uid,' +
         ' nickname: $nickname,' +
-        ' interestedJobGroupIdList: $interestedJobGroupIdList,' +
-        ' techSkillIdList: $techSkillIdList,' +
+        ' interestedJobGroupIdList: $jobGroupIdList,' +
+        ' techSkillIdList: $skillIdList,' +
         '}';
   }
 
@@ -66,9 +66,8 @@ class UserDataEntity {
     return UserDataEntity(
       uid: uid ?? this.uid,
       nickname: nickname ?? this.nickname,
-      interestedJobGroupIdList:
-          interestedJobGroupIdList ?? this.interestedJobGroupIdList,
-      techSkillIdList: techSkillIdList ?? this.techSkillIdList,
+      interestedJobGroupIdList: interestedJobGroupIdList ?? this.jobGroupIdList,
+      techSkillIdList: techSkillIdList ?? this.skillIdList,
     );
   }
 
@@ -76,8 +75,8 @@ class UserDataEntity {
     return {
       'uid': this.uid,
       'nickname': this.nickname,
-      'interestedJobGroupIdList': this.interestedJobGroupIdList,
-      'techSkillIdList': this.techSkillIdList,
+      'interestedJobGroupIdList': this.jobGroupIdList,
+      'techSkillIdList': this.skillIdList,
     };
   }
 
