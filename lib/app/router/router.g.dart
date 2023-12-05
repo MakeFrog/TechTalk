@@ -192,13 +192,13 @@ const _$InterviewTopicEnumMap = {
 
 extension $StudyRouteExtension on StudyRoute {
   static StudyRoute _fromState(GoRouterState state) => StudyRoute(
-        state.uri.queryParameters['topic-name']!,
+        state.uri.queryParameters['topic-id']!,
       );
 
   String get location => GoRouteData.$location(
         '/study',
         queryParams: {
-          'topic-name': topicName,
+          'topic-id': topicId,
         },
       );
 

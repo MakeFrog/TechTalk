@@ -8,6 +8,6 @@ abstract interface class _StudyTopicSelectEvent {
 mixin class StudyTopicSelectEvent implements _StudyTopicSelectEvent {
   @override
   void onTapCard(InterviewTopic topic) {
-    StudyRoute(topic.name).push(rootNavigatorKey.currentContext!);
+    StudyRoute(topic.id).push(rootNavigatorKey.currentContext!);
   }
 }

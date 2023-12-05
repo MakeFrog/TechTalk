@@ -1,21 +1,30 @@
 import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/presentation/providers/study/study_topic_list_provider.dart';
+import 'package:techtalk/presentation/providers/study/categorized_study_topics_provider.dart';
 
 part 'selected_study_topic_provider.g.dart';
 
 @riverpod
-class SelectedStudyTopic extends _$SelectedStudyTopic {
-  static String? topicName;
+String selectedStudyTopicId(SelectedStudyTopicIdRef ref) {
+  throw UnimplementedError();
+}
 
+@Riverpod(
+  dependencies: [
+    selectedStudyTopicId,
+  ],
+)
+class SelectedStudyTopic extends _$SelectedStudyTopic {
   @override
   InterviewTopic build() {
-    final topicList = ref.read(studyTopicListProvider).requireValue.values;
+    final topicId = ref.watch(selectedStudyTopicIdProvider);
+    final topicList =
+        ref.read(categorizedStudyTopicsProvider).requireValue.values;
     InterviewTopic? topic;
     for (final topics in topicList) {
       final findTopic = topics.firstWhereOrNull(
-        (element) => element.name == topicName,
+        (element) => element.id == topicId,
       );
 
       if (findTopic != null) {
