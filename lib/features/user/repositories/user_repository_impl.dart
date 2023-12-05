@@ -44,8 +44,8 @@ final class UserRepositoryImpl implements UserRepository {
   @override
   Future<Result<List<InterviewTopic>>> getUserTopicList() async {
     try {
-      const userLocalId = '2FXrROIad2RSKt37NA8tciQx7e53'; // TEMP
-      final response = await _userRemoteDataSource.getUserData(userLocalId);
+      final uid = FirebaseAuth.instance.currentUser!.uid;
+      final response = await _userRemoteDataSource.getUserData(uid);
 
       final topicIds = response?.topicIds ?? [];
 

@@ -26,19 +26,13 @@ final class GetInterviewTopicListUseCase
     final topics = _interviewRepository.getTopics().getOrThrow().toList();
 
     if (sort) {
-      final userData = await _userRepository.getUserData();
+      final userTopicIdsRes = await _userRepository.getUserTopicList();
+      final userTopics = userTopicIdsRes.getOrThrow();
 
-      if (userData != null) {
-        final userTopicIds = userData.skillIdList;
-
-        final userTopics =
-            userTopicIds.map(InterviewTopic.getTopicById).toList();
-
-        for (InterviewTopic topic in userTopics) {
-          if (topics.contains(topic)) {
-            topics.remove(topic);
-            topics.insert(0, topic);
-          }
+      for (InterviewTopic topic in userTopics) {
+        if (topics.contains(topic)) {
+          topics.remove(topic);
+          topics.insert(0, topic);
         }
       }
     }
