@@ -9,6 +9,8 @@ import 'package:techtalk/features/chat/use_cases/get_random_interview_question_u
 import 'package:techtalk/features/chat/use_cases/retrieve_qna_list_from_chat_list_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/update_chat_info_use_case.dart';
 
+export '../interview/entities/interview_topic.enum.dart';
+export '../interview/entities/interview_topic_category.enum.dart';
 export 'chat.dart';
 export 'repositories/chat_repository.dart';
 export 'repositories/chat_repository_impl.dart';
@@ -24,8 +26,6 @@ export 'repositories/entities/user_interview_response.dart';
 export 'repositories/enums/answer_state.enum.dart';
 export 'repositories/enums/chat_type.enum.dart';
 export 'repositories/enums/interview_progress_state.enum.dart';
-export 'repositories/enums/interview_topic.enum.dart';
-export 'repositories/enums/interview_topic_category.dart';
 export 'repositories/enums/pass_or_fail.enum.dart';
 export 'repositories/enums/reply_state.enum.dart';
 export 'use_cases/get_answer_feedback_use_case.dart';

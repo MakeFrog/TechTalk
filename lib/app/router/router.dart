@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_qna_progress_info_entity.dart';
 import 'package:techtalk/features/chat/repositories/enums/interview_progress_state.enum.dart';
-import 'package:techtalk/features/chat/repositories/enums/interview_topic.enum.dart';
+import 'package:techtalk/features/interview/entities/interview_topic.enum.dart';
 import 'package:techtalk/features/shared/enums/interviewer_avatar.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_page_route_argument_provider.dart';
@@ -19,7 +19,6 @@ import 'package:techtalk/presentation/pages/study/learning/providers/selected_st
 import 'package:techtalk/presentation/pages/study/learning/study_learning_page.dart';
 
 part 'route_argument.dart';
-
 part 'router.g.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();

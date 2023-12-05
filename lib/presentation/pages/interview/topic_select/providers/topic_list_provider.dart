@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/services/toast_service.dart';
-import 'package:techtalk/features/chat/repositories/enums/interview_topic.enum.dart';
+import 'package:techtalk/features/interview/entities/interview_topic.enum.dart';
 import 'package:techtalk/features/interview/interview.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 

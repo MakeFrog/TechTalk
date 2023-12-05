@@ -20,16 +20,26 @@ final class GetInterviewTopicListUseCase
   final UserRepository _userRepository;
 
   @override
-  Future<Result<List<InterviewTopic>>> call() async {
-    final userTopicIdsRes = await _userRepository.getUserTopicList();
-    final userTopicIds = userTopicIdsRes.getOrThrow();
-
+  Future<Result<List<InterviewTopic>>> call({
+    bool sort = false,
+  }) async {
     final topics = _interviewRepository.getTopics().getOrThrow().toList();
 
-    for (InterviewTopic topic in userTopicIds) {
-      if (topics.contains(topic)) {
-        topics.remove(topic);
-        topics.insert(0, topic);
+    if (sort) {
+      final userData = await _userRepository.getUserData();
+
+      if (userData != null) {
+        final userTopicIds = userData.skillIdList;
+
+        final userTopics =
+            userTopicIds.map(InterviewTopic.getTopicById).toList();
+
+        for (InterviewTopic topic in userTopics) {
+          if (topics.contains(topic)) {
+            topics.remove(topic);
+            topics.insert(0, topic);
+          }
+        }
       }
     }
 
