@@ -3,24 +3,36 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
-import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_controller_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_event.dart';
 import 'package:techtalk/presentation/pages/sign_up/steps/job_group_select_step.dart';
 import 'package:techtalk/presentation/pages/sign_up/steps/nickname_input_step.dart';
 import 'package:techtalk/presentation/pages/sign_up/steps/skill_select_step.dart';
-import 'package:techtalk/presentation/widgets/base/base_statless_page.dart';
+import 'package:techtalk/presentation/providers/sign_up/sign_up_form_provider.dart';
+import 'package:techtalk/presentation/providers/sign_up/sign_up_step_controller.dart';
+import 'package:techtalk/presentation/widgets/base/base_page.dart';
+import 'package:techtalk/presentation/widgets/common/button/app_back_button.dart';
 
-class SignUpPage extends BaseStatelessWidget {
+class SignUpPage extends BasePage {
   const SignUpPage({super.key});
 
   @override
   Color get screenBackgroundColor => Colors.white;
 
   @override
+  void onInit(WidgetRef ref) {
+    ref.read(signUpFormProvider);
+  }
+
+  @override
+  void onDispose(WidgetRef ref) {
+    ref.invalidate(signUpFormProvider);
+  }
+
+  @override
   PreferredSizeWidget buildAppBar(BuildContext context) => const _AppBar();
 
   @override
-  Widget buildPage(BuildContext context) => const _Body();
+  Widget buildPage(BuildContext context, WidgetRef ref) => const _Body();
 }
 
 class _AppBar extends StatelessWidget
@@ -55,8 +67,8 @@ class _AppBar extends StatelessWidget
         );
 
         return canBack
-            ? BackButton(
-                onPressed: () => onTapBackButton(ref),
+            ? AppBackButton(
+                onBackBtnTapped: () => onTapBackButton(ref),
               )
             : const SizedBox();
       },

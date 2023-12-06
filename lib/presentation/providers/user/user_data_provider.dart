@@ -1,5 +1,4 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/features/user/entities/sign_up_form_entity.dart';
 import 'package:techtalk/features/user/entities/user_data_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/providers/user/user_auth_provider.dart';
@@ -19,18 +18,8 @@ class UserData extends _$UserData {
     return userData;
   }
 
-  Future<void> createUserData(SignUpFormEntity signUpForm) async {
-    final userUid = ref.read(userAuthProvider)!.uid;
-
-    final userData = UserDataEntity(
-      uid: userUid,
-      nickname: signUpForm.nickname,
-      interestedJobGroupIdList:
-          signUpForm.jobGroupList.map((e) => e.id).toList(),
-      techSkillIdList: signUpForm.techSkillList.map((e) => e.id).toList(),
-    );
-
-    await createUserDataUseCase(userData);
+  Future<void> createUserData(UserDataEntity data) async {
+    await createUserDataUseCase(data);
 
     ref.invalidateSelf();
 

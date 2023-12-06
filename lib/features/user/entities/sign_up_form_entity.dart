@@ -4,12 +4,12 @@ import 'package:techtalk/features/skill/skill.dart';
 class SignUpFormEntity {
   final String? nickname;
   final String? nicknameValidation;
-  final List<JobGroupEntity> jobGroupList;
-  final List<SkillEntity> techSkillList;
+  final List<JobGroupEntity> jobGroups;
+  final List<SkillEntity> skills;
 
   bool get isPassNickname =>
       nickname != null && nickname!.isNotEmpty && nicknameValidation == null;
-  bool get isSelectedAtLeastOneJobGroup => jobGroupList.isNotEmpty;
+  bool get isSelectedAtLeastOneJobGroup => jobGroups.isNotEmpty;
 
 //<editor-fold desc="Data Methods">
   SignUpFormEntity({
@@ -17,8 +17,8 @@ class SignUpFormEntity {
     this.nicknameValidation = '',
     List<JobGroupEntity>? jobGroupList,
     List<SkillEntity>? techSkillList,
-  })  : jobGroupList = jobGroupList ?? [],
-        techSkillList = techSkillList ?? [];
+  })  : jobGroups = jobGroupList ?? [],
+        skills = techSkillList ?? [];
 
   @override
   bool operator ==(Object other) =>
@@ -27,23 +27,23 @@ class SignUpFormEntity {
           runtimeType == other.runtimeType &&
           nickname == other.nickname &&
           nicknameValidation == other.nicknameValidation &&
-          jobGroupList == other.jobGroupList &&
-          techSkillList == other.techSkillList);
+          jobGroups == other.jobGroups &&
+          skills == other.skills);
 
   @override
   int get hashCode =>
       nickname.hashCode ^
       nicknameValidation.hashCode ^
-      jobGroupList.hashCode ^
-      techSkillList.hashCode;
+      jobGroups.hashCode ^
+      skills.hashCode;
 
   @override
   String toString() {
     return 'SignUpFormEntity{' +
         ' nickname: $nickname,' +
         ' nicknameValidation: $nicknameValidation,' +
-        ' jobGroupList: $jobGroupList,' +
-        ' techSkillList: $techSkillList,' +
+        ' jobGroupList: $jobGroups,' +
+        ' techSkillList: $skills,' +
         '}';
   }
 
@@ -56,8 +56,8 @@ class SignUpFormEntity {
     return SignUpFormEntity(
       nickname: nickname ?? this.nickname,
       nicknameValidation: nicknameValidation ?? this.nicknameValidation,
-      jobGroupList: jobGroupList ?? this.jobGroupList,
-      techSkillList: techSkillList ?? this.techSkillList,
+      jobGroupList: jobGroupList ?? this.jobGroups,
+      techSkillList: techSkillList ?? this.skills,
     );
   }
 
@@ -65,8 +65,8 @@ class SignUpFormEntity {
     return {
       'nickname': this.nickname,
       'nicknameValidation': this.nicknameValidation,
-      'jobGroupList': this.jobGroupList,
-      'techSkillList': this.techSkillList,
+      'jobGroupList': this.jobGroups,
+      'techSkillList': this.skills,
     };
   }
 

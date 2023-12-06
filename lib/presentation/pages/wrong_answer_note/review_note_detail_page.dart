@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
@@ -65,7 +66,7 @@ class _AppBar extends StatelessWidget
             color: AppColor.of.gray3,
           ),
         ),
-        const WidthBox(8),
+        const Gap(8),
         Consumer(
           builder: (context, ref, child) {
             final isBlurAnswer = ref.watch(questionAnswerBlurProvider);
@@ -76,7 +77,7 @@ class _AppBar extends StatelessWidget
             );
           },
         ),
-        const WidthBox(16),
+        const Gap(16),
       ],
     );
   }
@@ -103,7 +104,7 @@ class _Body extends ConsumerWidget with ReviewNoteDetailEvent {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const HeightBox(24),
+          const Gap(24),
           Expanded(
             child: PageView.builder(
               controller: pageController,
@@ -169,7 +170,7 @@ class _StudyQna extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildQuestion(),
-        const HeightBox(8),
+        const Gap(8),
         _buildAnswers(),
       ],
     );
@@ -260,7 +261,7 @@ class _ControllerButton extends StatelessWidget {
                     BlendMode.srcATop,
                   ),
           ),
-          HeightBox(12),
+          Gap(12),
           Text(
             label,
             style: AppTextStyle.alert1.copyWith(

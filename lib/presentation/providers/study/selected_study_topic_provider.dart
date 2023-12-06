@@ -40,3 +40,11 @@ class SelectedStudyTopic extends _$SelectedStudyTopic {
     return topic;
   }
 }
+
+@riverpod
+String test(
+  TestRef ref, {
+  required String value,
+}) {
+  return value;
+}

@@ -31,17 +31,17 @@ class MainPage extends BasePage {
 class _Body extends ConsumerWidget {
   const _Body({super.key});
 
-  static const _screens = <Widget>[
-    HomePage(
+  static final _screens = [
+    const HomePage(
       key: ValueKey(MainNavigationTab.home),
     ),
-    StudyTopicSelectPage(
+    const StudyTopicSelectPage(
       key: ValueKey(MainNavigationTab.study),
     ),
-    WrongAnswerNotePage(
+    const WrongAnswerNotePage(
       key: ValueKey(MainNavigationTab.note),
     ),
-    ChatListPage(
+    const ChatListPage(
       key: ValueKey(MainNavigationTab.myInfo),
     ),
     // TestPage(
@@ -51,10 +51,7 @@ class _Body extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return IndexedStack(
-      index: ref.watch(mainBottomNavigationProvider).index,
-      children: _screens,
-    );
+    return _screens[ref.watch(mainBottomNavigationProvider).index];
   }
 }
 

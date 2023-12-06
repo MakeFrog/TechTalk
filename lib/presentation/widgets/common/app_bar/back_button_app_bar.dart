@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/presentation/widgets/common/button/app_back_button.dart';
 
 class BackButtonAppBar extends StatelessWidget implements PreferredSizeWidget {
   const BackButtonAppBar({
@@ -29,11 +28,8 @@ class BackButtonAppBar extends StatelessWidget implements PreferredSizeWidget {
         title ?? '',
         style: AppTextStyle.headline2,
       ),
-      leading: SizedBox(
-        child: IconButton(
-          onPressed: onBackBtnTapped ?? context.pop,
-          icon: SvgPicture.asset(Assets.iconsArrowLeft),
-        ),
+      leading: AppBackButton(
+        onBackBtnTapped: onBackBtnTapped ?? context.pop,
       ),
     );
   }

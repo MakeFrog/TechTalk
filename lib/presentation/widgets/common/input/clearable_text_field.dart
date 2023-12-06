@@ -14,11 +14,13 @@ class ClearableTextField extends HookWidget {
     InputDecoration? inputDecoration,
     this.onClear,
     this.onChanged,
+    this.onEditingComplete,
     this.obscureText = false,
     this.enabled = true,
     this.activeSuffixIcon = true,
     this.autoFocus = false,
     this.inputFormatters,
+    this.textInputAction,
     this.keyboardType,
   }) : inputDecoration = inputDecoration ?? const InputDecoration();
 
@@ -28,11 +30,13 @@ class ClearableTextField extends HookWidget {
   final TextStyle? style;
   final InputDecoration inputDecoration;
   final ValueChanged<String>? onChanged;
+  final void Function()? onEditingComplete;
   final bool obscureText;
   final bool enabled;
   final bool autoFocus;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
 
   /// 우측 아이콘을 활성화할지 여부
   final bool activeSuffixIcon;
@@ -65,9 +69,11 @@ class ClearableTextField extends HookWidget {
       obscureText: obscureText,
       style: style,
       inputFormatters: inputFormatters,
+      textInputAction: textInputAction,
       keyboardType: keyboardType,
       decoration: inputDecoration,
       onChanged: onChanged,
+      onEditingComplete: onEditingComplete,
     );
   }
 

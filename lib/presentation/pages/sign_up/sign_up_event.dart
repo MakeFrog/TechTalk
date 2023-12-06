@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
-import 'package:techtalk/core/core.dart';
 import 'package:techtalk/features/job/entities/job_group_entity.dart';
 import 'package:techtalk/features/skill/skill.dart';
-import 'package:techtalk/presentation/pages/sign_up/providers/searched_tech_skill_list_provider.dart';
-import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_form_provider.dart';
-import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_controller_provider.dart';
-import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
+import 'package:techtalk/presentation/providers/sign_up/sign_up_form_provider.dart';
+import 'package:techtalk/presentation/providers/sign_up/sign_up_step_controller.dart';
 
 abstract class _SignUpEvent {
   /// 앱바의 [BackButton]을 눌렀을 때 실행할 콜백
@@ -17,33 +13,18 @@ abstract class _SignUpEvent {
   /// 이전 회원가입 단계로 넘어간다. 이전 단계로 넘어갈 시 현재 단계에 작성한 데이터는 삭제한다.
   void onTapBackButton(WidgetRef ref);
 
-  /// 닉네임 필드가 변경될 떄마다 실행할 콜백
-  ///
-  /// 로딩 인디케이터 표시를 위해 [isRunningDebouncer]를 콜백 시작과 끝에 변경한다.
-  /// [debouncer]를 통헤 여러번 입력하더라도 마지막 입력만 검사하도록 제한한다.
-  Future<void> onChangeNicknameField(
+  /// 닉네임 입력 스크린의 다음단계 버튼을 눌렀을 때 실행할 콜백
+  Future<void> onTapNicknameStepNext(
     WidgetRef ref, {
     required String nickname,
-    required ValueNotifier<bool> isRunningDebouncer,
   });
-
-  /// 닉네임 필드의 클리어 아이콘을 눌렀을 때 실행할 콜백
-  ///
-  /// [controller]에 입력된 텍스트와 닉네임 데이터를 초기화한다.
-  void onClearNicknameField(
-    WidgetRef ref, {
-    required ValueNotifier<bool> isRunningDebouncer,
-  });
-
-  /// 닉네임 입력 스크린의 다음단계 버튼을 눌렀을 때 실행할 콜백
-  Future<void> onTapNicknameStepNext(WidgetRef ref);
 
   void onTapSelectedJobGroup(
     WidgetRef ref, {
     required JobGroupEntity group,
   });
 
-  void onTapJobGroupListTile(
+  void onTapJobGroup(
     WidgetRef ref, {
     required JobGroupEntity group,
   });
@@ -55,86 +36,41 @@ abstract class _SignUpEvent {
     required SkillEntity skill,
   });
 
-  void onChangeSkillSearchField(
-    WidgetRef ref, {
-    required String keyword,
-  });
-
-  void onClearSkillSearchField(
-    WidgetRef ref, {
-    required TextEditingController controller,
-  });
-
-  void onTapTechSkillListTile(
+  void onTapSkill(
     WidgetRef ref, {
     required SkillEntity skill,
     required TextEditingController controller,
   });
 
-  Future<void> onTapTechSkillStepNext(WidgetRef ref);
+  Future<void> onTapSignUp(WidgetRef ref);
 }
 
 mixin class SignUpEvent implements _SignUpEvent {
-  static final _nicknameValidateDebouncer = Debouncer(1.seconds);
-
   @override
   void onTapBackButton(WidgetRef ref) {
     ref.read(signUpStepControllerProvider.notifier).prev();
   }
 
   @override
-  Future<void> onChangeNicknameField(
+  Future<void> onTapNicknameStepNext(
     WidgetRef ref, {
     required String nickname,
-    required ValueNotifier<bool> isRunningDebouncer,
   }) async {
-    ref.read(signUpFormProvider.notifier).clearNickname();
-
-    // 입력받은 nickname이 비어있다면 콜백을 중단하고 닉네임 데이터를 초기화한다.
-    if (nickname.isEmpty) {
-      isRunningDebouncer.value = false;
-      _nicknameValidateDebouncer.reset();
-    } else {
-      isRunningDebouncer.value = true;
-
-      _nicknameValidateDebouncer.call(
-        () async {
-          await ref.read(signUpFormProvider.notifier).updateNickname(nickname);
-
-          isRunningDebouncer.value = false;
-        },
-      );
-    }
-  }
-
-  @override
-  void onClearNicknameField(
-    WidgetRef ref, {
-    required ValueNotifier<bool> isRunningDebouncer,
-  }) {
-    onChangeNicknameField(
-      ref,
-      nickname: '',
-      isRunningDebouncer: isRunningDebouncer,
-    );
-  }
-
-  @override
-  Future<void> onTapNicknameStepNext(WidgetRef ref) async {
     //? 현재는 컨트롤러 값만 바뀌주고있음
     //? 단계 변경 전 닉네임 검사를 한번 더 할지, 닉네임 검사를 끝내면 임시로 닉네임을 점유할지 등 고민 필요
 
     FocusManager.instance.primaryFocus?.unfocus();
+    ref.read(signUpFormProvider.notifier).updateNickname(nickname);
     ref.read(signUpStepControllerProvider.notifier).next();
   }
 
   @override
-  void onTapJobGroupListTile(
+  void onTapJobGroup(
     WidgetRef ref, {
     required JobGroupEntity group,
   }) {
     final jobGroupList = ref.read(
-      signUpFormProvider.select((v) => v.jobGroupList ?? []),
+      signUpFormProvider.select((v) => v.jobGroups ?? []),
     );
 
     if (jobGroupList.contains(group)) {
@@ -169,46 +105,27 @@ mixin class SignUpEvent implements _SignUpEvent {
   }
 
   @override
-  void onChangeSkillSearchField(
-    WidgetRef ref, {
-    required String keyword,
-  }) {
-    ref.read(techSkillSearchKeywordProvider.notifier).keyword = keyword;
-  }
-
-  @override
-  void onClearSkillSearchField(
-    WidgetRef ref, {
-    required TextEditingController controller,
-  }) {
-    ref.invalidate(techSkillSearchKeywordProvider);
-    controller.clear();
-  }
-
-  @override
-  void onTapTechSkillListTile(
+  void onTapSkill(
     WidgetRef ref, {
     required TextEditingController controller,
     required SkillEntity skill,
   }) {
-    final techSkillList = ref.read(
-      signUpFormProvider.select((v) => v.techSkillList ?? []),
+    final selectedSkills = ref.read(
+      signUpFormProvider.select((v) => v.skills ?? []),
     );
 
-    if (!techSkillList.contains(skill)) {
+    if (!selectedSkills.contains(skill)) {
       ref.read(signUpFormProvider.notifier).addSkill(skill);
     }
     controller.clear();
-    ref.invalidate(techSkillSearchKeywordProvider);
   }
 
   @override
-  Future<void> onTapTechSkillStepNext(WidgetRef ref) async {
+  Future<void> onTapSignUp(WidgetRef ref) async {
     try {
-      final form = ref.read(signUpFormProvider);
       await EasyLoading.show()
           .then(
-        (_) => ref.read(userDataProvider.notifier).createUserData(form),
+        (_) => ref.read(signUpFormProvider.notifier).submit(),
       )
           .then(
         (_) {

@@ -9,7 +9,13 @@ final class SearchSkillsUseCase {
 
   final SkillRepository _skillRepository;
 
-  Future<Result<SkillListEntity>> call(String keyword) async {
-    return _skillRepository.getSkillsByKeyword(keyword);
+  Future<SkillListEntity> call(String keyword) async {
+    final result = await _skillRepository.getSkillsByKeyword(keyword);
+    return result.fold(
+      onSuccess: (value) => value,
+      onFailure: (e) {
+        throw e;
+      },
+    );
   }
 }

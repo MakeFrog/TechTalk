@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/features/interview/entities/interview_topic.enum.dart';
 import 'package:techtalk/presentation/pages/study/topic_select/study_topic_select_event.dart';
 import 'package:techtalk/presentation/providers/study/categorized_study_topics_provider.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/study_topic_card.dart';
 
 class StudyTopicSelectPage extends HookWidget {
@@ -64,52 +65,17 @@ class _Body extends ConsumerWidget with StudyTopicSelectEvent {
             final MapEntry(key: category, value: topics) =
                 topicAndCategories.entries.elementAt(index);
 
-            final categoryLabel = Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColor.of.brand1,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  category.text,
-                  style: AppTextStyle.body1.copyWith(
-                    color: AppColor.of.brand3,
-                  ),
-                ),
-              ),
-            );
-
-            final topicGrid = GridView.builder(
-              shrinkWrap: true,
-              primary: false,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 11,
-                mainAxisSpacing: 12,
-              ),
-              itemCount: topics.length,
-              itemBuilder: (context, index) {
-                final topic = topics[index];
-
-                return StudyTopicCard(
-                  topic: topic,
-                  onTap: () => onTapCard(topic),
-                );
-              },
-            );
-
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                categoryLabel,
-                const HeightBox(16),
-                topicGrid,
-                const HeightBox(36),
+                _CategoryLabel(
+                  label: category.text,
+                ),
+                const Gap(16),
+                _TopicGrid(
+                  topics: topics,
+                ),
+                const Gap(36),
               ],
             );
           },
@@ -122,6 +88,69 @@ class _Body extends ConsumerWidget with StudyTopicSelectEvent {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: child,
       ),
+    );
+  }
+}
+
+class _CategoryLabel extends StatelessWidget {
+  const _CategoryLabel({
+    super.key,
+    required this.label,
+  });
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 8,
+        ),
+        decoration: BoxDecoration(
+          color: AppColor.of.brand1,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Text(
+          label,
+          style: AppTextStyle.body1.copyWith(
+            color: AppColor.of.brand3,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TopicGrid extends StatelessWidget with StudyTopicSelectEvent {
+  const _TopicGrid({
+    super.key,
+    required this.topics,
+  });
+
+  final List<InterviewTopic> topics;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      shrinkWrap: true,
+      primary: false,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 11,
+        mainAxisSpacing: 12,
+      ),
+      itemCount: topics.length,
+      itemBuilder: (context, index) {
+        final topic = topics[index];
+
+        return StudyTopicCard(
+          topic: topic,
+          onTap: () => onTapCard(topic),
+        );
+      },
     );
   }
 }

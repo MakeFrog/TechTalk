@@ -51,14 +51,14 @@ class _AppBar extends StatelessWidget
             color: AppColor.of.gray3,
           ),
         ),
-        const WidthBox(8),
+        const Gap(8),
         Consumer(
           builder: (context, ref, child) => FlatSwitch(
             value: ref.watch(studyAnswerBlurProvider),
             onTap: (_) => onToggleAnswerBlur(ref),
           ),
         ),
-        const WidthBox(16),
+        const Gap(16),
       ],
     );
   }

@@ -20,6 +20,7 @@ class Debouncer {
 
   void _callAction() {
     _action?.call(); // If we have an action queued up, complete it.
+    _timer?.cancel();
     _timer = null;
   }
 

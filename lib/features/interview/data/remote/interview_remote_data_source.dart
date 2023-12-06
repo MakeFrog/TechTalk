@@ -6,7 +6,6 @@ abstract interface class InterviewRemoteDataSource {
     required String userUid,
     required String topicId,
   });
-
   Future<DateTime> getInterviewQuestionsUpdateDate(String topicId);
   Future<List<InterviewQuestionModel>> getInterviewQuestions(String topicId);
 }

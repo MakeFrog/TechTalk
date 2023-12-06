@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/interview/entities/interview_topic.enum.dart';
@@ -61,7 +62,7 @@ class TopicCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const HeightBox(16),
+                    const Gap(16),
                     Text(
                       topic!.name,
                       style: AppTextStyle.headline3,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
 
 /// 회원가입 단계를 설명하는 제목과 부제목 위젯
 class SignUpStepIntroMessage extends StatelessWidget {
@@ -23,7 +23,7 @@ class SignUpStepIntroMessage extends StatelessWidget {
           title,
           style: AppTextStyle.headline1,
         ),
-        HeightBox(12),
+        Gap(12),
         Text(
           subTitle,
           style: AppTextStyle.body1.copyWith(
