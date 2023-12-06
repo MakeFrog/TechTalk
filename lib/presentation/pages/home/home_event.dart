@@ -2,6 +2,7 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
 abstract interface class _HomeEvent {
+  void onTapPracticalInterview();
   void onTapNewTopicInterview();
 
   void onTapGoToInterviewRoomPage(
@@ -10,6 +11,11 @@ abstract interface class _HomeEvent {
 }
 
 mixin class HomeEvent implements _HomeEvent {
+  @override
+  void onTapPracticalInterview() {
+    // TODO: implement onTapPracticalInterview
+  }
+
   @override
   void onTapNewTopicInterview() {
     const HomeTopicSelectRoute().push(rootNavigatorKey.currentContext!);
