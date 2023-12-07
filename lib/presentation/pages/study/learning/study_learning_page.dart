@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_event.dart';
-import 'package:techtalk/presentation/pages/study/learning/widgets/study_controller_bar.dart';
-import 'package:techtalk/presentation/pages/study/learning/widgets/study_progress_indicator.dart';
-import 'package:techtalk/presentation/pages/study/learning/widgets/study_qna_view.dart';
+import 'package:techtalk/presentation/pages/study/learning/widgets/study_qna.dart';
+import 'package:techtalk/presentation/providers/study/current_question_index_provider.dart';
 import 'package:techtalk/presentation/providers/study/selected_study_topic_provider.dart';
 import 'package:techtalk/presentation/providers/study/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/providers/study/study_questions_provider.dart';
@@ -64,14 +66,23 @@ class _AppBar extends StatelessWidget
   }
 }
 
-class _Body extends ConsumerWidget {
+class _Body extends HookConsumerWidget with StudyLearningEvent {
   const _Body({
     super.key,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final questionsAsync = ref.watch(studyQuestionsProvider);
+    final pageController = usePageController();
+    ref.listen(currentQuestionIndexProvider, (previous, next) {
+      pageController.animateToPage(
+        next,
+        duration: 400.ms,
+        curve: Curves.easeOutQuint,
+      );
+    });
+    final topicId = ref.watch(selectedStudyTopicProvider).id;
+    final questionsAsync = ref.watch(studyQuestionsProvider(topicId));
 
     return questionsAsync.when(
       loading: () => const Center(
@@ -81,14 +92,73 @@ class _Body extends ConsumerWidget {
         child: Text('$error'),
       ),
       data: (questions) {
-        return const Column(
+        final currentPage = ref.watch(currentQuestionIndexProvider);
+
+        return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Gap(24),
-            StudyProgressIndicator(),
-            Gap(5),
-            StudyQnaView(),
-            StudyControllerBar(),
+            const Gap(24),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '${currentPage + 1}',
+                    style: AppTextStyle.body3.copyWith(
+                      color: AppColor.of.brand3,
+                    ),
+                  ),
+                  Text(
+                    ' / ${questions.length} 문항',
+                    style: AppTextStyle.body3.copyWith(
+                      color: AppColor.of.gray3,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Gap(5),
+            Expanded(
+              child: PageView.builder(
+                controller: pageController,
+                itemCount: questions.length,
+                itemBuilder: (context, index) => StudyQna(
+                  question: questions[index],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 16,
+                horizontal: 18,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  UnderLabelIconButton(
+                    isActive: currentPage != 0,
+                    label: '이전 문항',
+                    icon: Assets.iconsArrowLeft,
+                    onTap: () => onTapPrevQuestion(ref),
+                  ),
+                  UnderLabelIconButton(
+                    isActive: true,
+                    label: '전체 문항',
+                    icon: Assets.iconsMenu,
+                    onTap: () => onTapEntireQuestion(ref),
+                  ),
+                  UnderLabelIconButton(
+                    isActive: currentPage + 1 != questions.length,
+                    label: '다음 문항',
+                    icon: Assets.iconsArrowRight,
+                    onTap: () => onTapNextQuestion(ref),
+                  ),
+                ],
+              ),
+            ),
           ],
         );
       },

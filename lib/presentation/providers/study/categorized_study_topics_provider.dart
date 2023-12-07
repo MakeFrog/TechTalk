@@ -5,13 +5,10 @@ import 'package:techtalk/features/interview/interview.dart';
 
 part 'categorized_study_topics_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<Map<InterviewTopicCategory, List<InterviewTopic>>>
-    categorizedStudyTopics(
-  CategorizedStudyTopicsRef ref,
-) async {
-  final topics = interviewRepository.getTopics().getOrThrow().toList()
-    ..sort(
+    categorizedStudyTopics(CategorizedStudyTopicsRef ref) async {
+  final topics = [...(await getInterviewTopicListUseCase()).getOrThrow()]..sort(
       (a, b) => a.category.text.compareTo(b.category.text),
     );
 

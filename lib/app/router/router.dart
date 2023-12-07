@@ -16,6 +16,7 @@ import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_page.dart';
+import 'package:techtalk/presentation/providers/study/categorized_study_topics_provider.dart';
 import 'package:techtalk/presentation/providers/study/selected_study_topic_provider.dart';
 
 part 'route_argument.dart';
@@ -123,7 +124,7 @@ class MainRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return MainPage();
+    return const MainPage();
   }
 }
 
@@ -137,7 +138,20 @@ class StudyRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return ProviderScope(
       overrides: [
-        selectedStudyTopicIdProvider.overrideWithValue(topicId),
+        selectedStudyTopicProvider.overrideWith(
+          (ref) {
+            final categorizedStudyTopics =
+                ref.watch(categorizedStudyTopicsProvider).requireValue.values;
+            final topics = categorizedStudyTopics.fold(
+              <InterviewTopic>[],
+              (previousValue, element) => [...previousValue, ...element],
+            );
+
+            return topics.firstWhere(
+              (element) => element.id == topicId,
+            );
+          },
+        ),
       ],
       child: const StudyLearningPage(),
     );
@@ -151,7 +165,7 @@ class HomeTopicSelectRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return InterviewTopicSelectPage();
+    return const InterviewTopicSelectPage();
   }
 }
 
@@ -168,7 +182,7 @@ class QuestionCountSelectPageRoute extends GoRouteData {
       overrides: [
         questionCountSelectRouteArgProvider.overrideWithValue(selectedTopic),
       ],
-      child: QuestionCountSelectPage(),
+      child: const QuestionCountSelectPage(),
     );
   }
 }
@@ -180,7 +194,7 @@ class ChatListPageRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ChatListPage();
+    return const ChatListPage();
   }
 }
 

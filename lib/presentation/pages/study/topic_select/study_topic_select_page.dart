@@ -8,7 +8,7 @@ import 'package:techtalk/features/interview/entities/interview_topic.enum.dart';
 import 'package:techtalk/features/interview/entities/interview_topic_category.enum.dart';
 import 'package:techtalk/presentation/pages/study/topic_select/study_topic_select_event.dart';
 import 'package:techtalk/presentation/providers/study/categorized_study_topics_provider.dart';
-import 'package:techtalk/presentation/widgets/study_topic_card.dart';
+import 'package:techtalk/presentation/widgets/interview_topic_card.dart';
 
 class StudyTopicSelectPage extends HookWidget {
   const StudyTopicSelectPage({super.key});
@@ -17,9 +17,9 @@ class StudyTopicSelectPage extends HookWidget {
   Widget build(BuildContext context) {
     useAutomaticKeepAlive();
 
-    return const ColoredBox(
-      color: Colors.white,
-      child: Column(
+    return ColoredBox(
+      color: AppColor.of.white,
+      child: const Column(
         children: [
           _AppBar(),
           _Body(),
@@ -38,20 +38,36 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColor.of.white,
       title: const Text('학습'),
     );
   }
 }
 
-class _Body extends ConsumerWidget with StudyTopicSelectEvent {
+class _Body extends StatelessWidget {
   const _Body({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Expanded(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: _CategorizedTopicGrid(),
+      ),
+    );
+  }
+}
+
+class _CategorizedTopicGrid extends ConsumerWidget with StudyTopicSelectEvent {
+  const _CategorizedTopicGrid({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categorizedTopicsAsync = ref.watch(categorizedStudyTopicsProvider);
 
-    final child = categorizedTopicsAsync.when(
+    return categorizedTopicsAsync.when(
       loading: () => const Center(
         child: CircularProgressIndicator(),
       ),
@@ -59,85 +75,68 @@ class _Body extends ConsumerWidget with StudyTopicSelectEvent {
         child: Text('$error'),
       ),
       data: (topicAndCategories) {
-        return ListView.builder(
+        return ListView.separated(
           padding: const EdgeInsets.symmetric(vertical: 8),
           itemCount: topicAndCategories.length,
+          separatorBuilder: (context, index) => const Gap(36),
           itemBuilder: (context, index) {
             final MapEntry(key: category, value: topics) =
                 topicAndCategories.entries.elementAt(index);
 
-            return _CategorizedTopicGrid(
-              category: category,
-              topics: topics,
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildCategory(category),
+                const Gap(16),
+                _buildTopicGrid(topics),
+              ],
             );
           },
         );
       },
     );
+  }
 
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: child,
+  Widget _buildCategory(InterviewTopicCategory category) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 8,
+        ),
+        decoration: BoxDecoration(
+          color: AppColor.of.brand1,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Text(
+          category.text,
+          style: AppTextStyle.body1.copyWith(
+            color: AppColor.of.brand3,
+          ),
+        ),
       ),
     );
   }
-}
 
-class _CategorizedTopicGrid extends StatelessWidget with StudyTopicSelectEvent {
-  const _CategorizedTopicGrid({
-    super.key,
-    required this.category,
-    required this.topics,
-  });
+  Widget _buildTopicGrid(List<InterviewTopic> topics) {
+    return GridView.builder(
+      shrinkWrap: true,
+      primary: false,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 11,
+        mainAxisSpacing: 12,
+      ),
+      itemCount: topics.length,
+      itemBuilder: (context, index) {
+        final topic = topics[index];
 
-  final InterviewTopicCategory category;
-  final List<InterviewTopic> topics;
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 8,
-            ),
-            decoration: BoxDecoration(
-              color: AppColor.of.brand1,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              category.text,
-              style: AppTextStyle.body1.copyWith(
-                color: AppColor.of.brand3,
-              ),
-            ),
-          ),
-        ),
-        const Gap(16),
-        GridView.builder(
-          shrinkWrap: true,
-          primary: false,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 11,
-            mainAxisSpacing: 12,
-          ),
-          itemCount: topics.length,
-          itemBuilder: (context, index) {
-            final topic = topics[index];
-
-            return StudyTopicCard(
-              topic: topic,
-              onTap: () => onTapCard(topic),
-            );
-          },
-        ),
-        const Gap(36),
-      ],
+        return InterviewTopicCard(
+          topic: topic,
+          onTap: () => onTapCard(topic),
+        );
+      },
     );
   }
 }

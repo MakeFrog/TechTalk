@@ -16,12 +16,7 @@ class InterviewRepositoryImpl implements InterviewRepository {
 
   @override
   Result<List<InterviewTopic>> getTopics() {
-    try {
-      final response = _interviewLocalDataSource.getTopics();
-      return Result.success(response);
-    } on Exception catch (e) {
-      return Result.failure(e);
-    }
+    return Result.success(InterviewTopic.values);
   }
 
   @override

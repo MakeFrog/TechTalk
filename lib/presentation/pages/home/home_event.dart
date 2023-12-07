@@ -4,7 +4,6 @@ import 'package:techtalk/features/chat/chat.dart';
 abstract interface class _HomeEvent {
   void onTapPracticalInterview();
   void onTapNewTopicInterview();
-
   void onTapGoToInterviewRoomPage(
     InterviewTopic topic,
   );
