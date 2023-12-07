@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/constants/firestore_collection.enum.dart';
-import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/features/interview/data/models/interview_qna_model.dart';
 import 'package:techtalk/features/interview/data/models/interview_question_model.dart';
 import 'package:techtalk/features/interview/interview.dart';
@@ -19,9 +18,9 @@ final class InterviewRemoteDataSourceImpl implements InterviewRemoteDataSource {
 
     print(reviewNoteCollection.doc(userUid));
 
-    if (!docSnapshot.exists) {
-      throw CustomException(code: 'code', message: '오답노트 데이터 없음');
-    }
+    // if (!docSnapshot.exists) {
+    //   throw CustomException(code: 'code', message: '오답노트 데이터 없음');
+    // }
     final data = docSnapshot.get(topicId) as List;
 
     final questions = data
@@ -49,10 +48,10 @@ final class InterviewRemoteDataSourceImpl implements InterviewRemoteDataSource {
         .get();
 
     if (snapshot.docs.isEmpty) {
-      throw CustomException(
-        code: 'code',
-        message: '학습 질문 없음',
-      );
+      // throw CustomException(
+      //   code: 'code',
+      //   message: '학습 질문 없음',
+      // );
     }
 
     final questions =

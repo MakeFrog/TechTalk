@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_auth_provider.dart';
+part of 'is_user_authorized_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -25,23 +25,5 @@ final isUserAuthorizedProvider = AutoDisposeProvider<bool>.internal(
 );
 
 typedef IsUserAuthorizedRef = AutoDisposeProviderRef<bool>;
-String _$userAuthHash() => r'e5a3ae2d3b64b433dd488cd7bfc60a439cbcc401';
-
-/// 앱 사용자 권한 프로바이더
-///
-/// 인증, 로그인, 로그아웃 등의 기능을 담당한다.
-///
-/// Copied from [UserAuth].
-@ProviderFor(UserAuth)
-final userAuthProvider = NotifierProvider<UserAuth, User?>.internal(
-  UserAuth.new,
-  name: r'userAuthProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$userAuthHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$UserAuth = Notifier<User?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

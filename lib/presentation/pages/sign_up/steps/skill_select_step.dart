@@ -18,143 +18,151 @@ class SkillSelectStep extends HookWidget with SignUpEvent {
   Widget build(BuildContext context) {
     useAutomaticKeepAlive();
 
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
+        Padding(
           padding: EdgeInsets.all(16),
           child: SignUpStepIntroMessage(
             title: '준비하고 있는 기술면접\n주제를 알려주세요!',
             subTitle: '나중에 선택할 수 있어요.',
           ),
         ),
-        _buildSelectedSkills(),
-        const Gap(16),
-        _buildSearchedSkills(),
-        _buildSignUpButton(),
+        _SelectedSkillListView(),
+        Gap(16),
+        _SearchedSkillListView(),
+        _SignUpButton(),
       ],
     );
   }
+}
 
-  Widget _buildSelectedSkills() {
+class _SelectedSkillListView extends ConsumerWidget with SignUpEvent {
+  const _SelectedSkillListView({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedSkills = ref.watch(
+      signUpFormProvider.select((v) => v.skills),
+    );
+
+    return SelectResultChipListView(
+      itemList: [...selectedSkills.map((e) => e.name)],
+      onTapItem: (index) => onTapSelectedSkill(
+        ref,
+        skill: selectedSkills[index],
+      ),
+    );
+  }
+}
+
+class _SearchedSkillListView extends HookConsumerWidget with SignUpEvent {
+  const _SearchedSkillListView({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = useTextEditingController();
+
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+        ),
+        child: Column(
+          children: [
+            ClearableTextField(
+              controller: controller,
+              inputDecoration: const InputDecoration(
+                hintText: '관심 기술을 검색해 주세요',
+              ),
+            ),
+            Expanded(
+              child: _buildListView(controller),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildListView(TextEditingController controller) {
     return HookConsumer(
       builder: (context, ref, child) {
-        final selectedSkills = ref.watch(
-          signUpFormProvider.select((v) => v.skills),
+        final keyword = useListenableSelector(
+          controller,
+          () => controller.text,
+        );
+        final searchedSkillsAsync = ref.watch(
+          searchedSkillsProvider(
+            keyword: keyword,
+          ),
         );
 
-        return SelectResultChipListView(
-          itemList: selectedSkills.map((e) => e.name).toList(),
-          onTapItem: (index) => onTapSelectedSkill(
-            ref,
-            skill: selectedSkills[index],
+        return searchedSkillsAsync.when(
+          loading: () => const Center(
+            child: CircularProgressIndicator(),
           ),
+          error: (error, stackTrace) => Center(
+            child: Text('$error'),
+          ),
+          data: (skills) {
+            return ListView.builder(
+              itemCount: skills.length,
+              itemExtent: 52,
+              itemBuilder: (context, index) {
+                final skill = skills[index];
+
+                final dimmedText = skill.name.replaceAll(keyword, '');
+
+                return ListTile(
+                  minVerticalPadding: 0,
+                  title: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: keyword,
+                          ),
+                          TextSpan(
+                            text: dimmedText,
+                            style: TextStyle(
+                              color: AppColor.of.gray4,
+                            ),
+                          ),
+                        ],
+                      ),
+                      style: AppTextStyle.body2,
+                    ),
+                  ),
+                  onTap: () => onTapSkill(
+                    ref,
+                    skill: skill,
+                    controller: controller,
+                  ),
+                );
+              },
+            );
+          },
         );
       },
     );
   }
+}
 
-  Widget _buildSearchedSkills() {
-    return HookBuilder(
-      builder: (context) {
-        final controller = useTextEditingController();
+class _SignUpButton extends ConsumerWidget with SignUpEvent {
+  const _SignUpButton({super.key});
 
-        return Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
-            child: Column(
-              children: [
-                ClearableTextField(
-                  controller: controller,
-                  inputDecoration: const InputDecoration(
-                    hintText: '관심 기술을 검색해 주세요',
-                  ),
-                ),
-                Expanded(
-                  child: HookConsumer(
-                    builder: (context, ref, child) {
-                      final keyword = useListenableSelector(
-                        controller,
-                        () => controller.text,
-                      );
-                      final searchedSkillsAsync = ref.watch(
-                        searchedTechSkillListProvider(
-                          keyword: keyword,
-                        ),
-                      );
-
-                      return searchedSkillsAsync.when(
-                        loading: SizedBox.new,
-                        error: (error, stackTrace) => Center(
-                          child: Text('$error'),
-                        ),
-                        data: (skills) {
-                          return ListView.builder(
-                            itemCount: skills.length,
-                            itemExtent: 52,
-                            itemBuilder: (context, index) {
-                              final skill = skills[index];
-
-                              final dimmedText =
-                                  skill.name.replaceAll(keyword, '');
-
-                              return ListTile(
-                                minVerticalPadding: 0,
-                                title: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text.rich(
-                                    TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text: keyword,
-                                        ),
-                                        TextSpan(
-                                          text: dimmedText,
-                                          style: TextStyle(
-                                            color: AppColor.of.gray4,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    style: AppTextStyle.body2,
-                                  ),
-                                ),
-                                onTap: () => onTapSkill(
-                                  ref,
-                                  skill: skill,
-                                  controller: controller,
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildSignUpButton() {
-    return Consumer(
-      builder: (context, ref, child) {
-        return Padding(
-          padding: const EdgeInsets.all(16),
-          child: FilledButton(
-            onPressed: () => onTapSignUp(ref),
-            child: const Center(
-              child: Text('회원가입'),
-            ),
-          ),
-        );
-      },
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: FilledButton(
+        onPressed: () => onTapSignUp(ref),
+        child: const Center(
+          child: Text('회원가입'),
+        ),
+      ),
     );
   }
 }

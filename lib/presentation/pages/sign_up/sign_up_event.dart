@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/features/job/entities/job_group_entity.dart';
 import 'package:techtalk/features/skill/skill.dart';
+import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/providers/sign_up/sign_up_form_provider.dart';
 import 'package:techtalk/presentation/providers/sign_up/sign_up_step_controller.dart';
 
@@ -14,10 +15,7 @@ abstract class _SignUpEvent {
   void onTapBackButton(WidgetRef ref);
 
   /// 닉네임 입력 스크린의 다음단계 버튼을 눌렀을 때 실행할 콜백
-  Future<void> onTapNicknameStepNext(
-    WidgetRef ref, {
-    required String nickname,
-  });
+  Future<void> onTapNicknameStepNext(WidgetRef ref);
 
   void onTapSelectedJobGroup(
     WidgetRef ref, {
@@ -52,16 +50,26 @@ mixin class SignUpEvent implements _SignUpEvent {
   }
 
   @override
-  Future<void> onTapNicknameStepNext(
-    WidgetRef ref, {
-    required String nickname,
-  }) async {
-    //? 현재는 컨트롤러 값만 바뀌주고있음
-    //? 단계 변경 전 닉네임 검사를 한번 더 할지, 닉네임 검사를 끝내면 임시로 닉네임을 점유할지 등 고민 필요
+  Future<void> onTapNicknameStepNext(WidgetRef ref) async {
+    try {
+      FocusManager.instance.primaryFocus?.unfocus();
 
-    FocusManager.instance.primaryFocus?.unfocus();
-    ref.read(signUpFormProvider.notifier).updateNickname(nickname);
-    ref.read(signUpStepControllerProvider.notifier).next();
+      await EasyLoading.show();
+      final nickname = ref.read(signUpFormProvider).nickname!;
+      final isDuplicated =
+          (await isExistNicknameUseCase(nickname)).getOrThrow();
+      if (isDuplicated) {
+        ref
+            .read(signUpFormProvider.notifier)
+            .updateNicknameValidation('중복된 닉네임입니다.');
+        return;
+      }
+
+      // TODO : 닉네임 저장 API 호출. sign up page를 완료하지 않고 벗어날 때 저장해둔 닉네임을 삭제한다.
+      ref.read(signUpStepControllerProvider.notifier).next();
+    } finally {
+      await EasyLoading.dismiss();
+    }
   }
 
   @override
@@ -69,11 +77,9 @@ mixin class SignUpEvent implements _SignUpEvent {
     WidgetRef ref, {
     required JobGroupEntity group,
   }) {
-    final jobGroupList = ref.read(
-      signUpFormProvider.select((v) => v.jobGroups ?? []),
-    );
+    final jobGroups = ref.read(signUpFormProvider).jobGroups;
 
-    if (jobGroupList.contains(group)) {
+    if (jobGroups.contains(group)) {
       ref.read(signUpFormProvider.notifier).removeJobGroup(group);
     } else {
       ref.read(signUpFormProvider.notifier).addJobGroup(group);
@@ -90,9 +96,6 @@ mixin class SignUpEvent implements _SignUpEvent {
 
   @override
   void onTapJobGroupStepNext(WidgetRef ref) {
-    //? 현재는 컨트롤러 값만 바뀌주고있음
-    //? 단계 변경 전 닉네임 검사를 한번 더 할지, 닉네임 검사를 끝내면 임시로 닉네임을 점유할지 등 고민 필요
-
     ref.read(signUpStepControllerProvider.notifier).next();
   }
 
@@ -110,11 +113,9 @@ mixin class SignUpEvent implements _SignUpEvent {
     required TextEditingController controller,
     required SkillEntity skill,
   }) {
-    final selectedSkills = ref.read(
-      signUpFormProvider.select((v) => v.skills ?? []),
-    );
+    final skills = ref.read(signUpFormProvider).skills;
 
-    if (!selectedSkills.contains(skill)) {
+    if (!skills.contains(skill)) {
       ref.read(signUpFormProvider.notifier).addSkill(skill);
     }
     controller.clear();
@@ -123,17 +124,14 @@ mixin class SignUpEvent implements _SignUpEvent {
   @override
   Future<void> onTapSignUp(WidgetRef ref) async {
     try {
-      await EasyLoading.show()
-          .then(
-        (_) => ref.read(signUpFormProvider.notifier).submit(),
-      )
-          .then(
+      await EasyLoading.show();
+      await ref.read(signUpFormProvider.notifier).submit().then(
         (_) {
           const MainRoute().go(ref.context);
         },
-      ).whenComplete(
-        EasyLoading.dismiss,
       );
-    } catch (e) {}
+    } finally {
+      await EasyLoading.dismiss();
+    }
   }
 }

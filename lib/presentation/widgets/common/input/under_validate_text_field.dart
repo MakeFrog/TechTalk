@@ -16,7 +16,7 @@ class UnderValidateTextField extends HookWidget {
 
   final TextEditingController? controller;
   final Widget Function(TextEditingController controller) field;
-  final FutureOr<String?> validate;
+  final FutureOr<String?> Function(String value)? validate;
   final String? successText;
 
   @override

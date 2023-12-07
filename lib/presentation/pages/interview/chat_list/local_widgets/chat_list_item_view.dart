@@ -95,7 +95,7 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
                 children: <Widget>[
                   // LAST CHAT DATE
                   Text(
-                    item!.lastChatDate.formatToyyMMdd,
+                    item!.lastChatDate.formatyyMMdd,
                     style: AppTextStyle.alert2.copyWith(
                       color: AppColor.of.gray3,
                     ),

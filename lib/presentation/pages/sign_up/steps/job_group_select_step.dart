@@ -10,19 +10,19 @@ import 'package:techtalk/presentation/pages/sign_up/widgets/select_result_chip_l
 import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_intro_message.dart';
 import 'package:techtalk/presentation/providers/sign_up/sign_up_form_provider.dart';
 
-class JobGroupSelectStep extends HookWidget with SignUpEvent {
+class JobGroupSelectStep extends HookWidget {
   const JobGroupSelectStep({super.key});
 
   @override
   Widget build(BuildContext context) {
     useAutomaticKeepAlive();
 
-    return Column(
+    return const Column(
       children: [
         Expanded(
           child: CustomScrollView(
             slivers: [
-              const SliverToBoxAdapter(
+              SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(16, 16, 16, 4),
                   child: SignUpStepIntroMessage(
@@ -31,130 +31,44 @@ class JobGroupSelectStep extends HookWidget with SignUpEvent {
                   ),
                 ),
               ),
-              _buildSelectedJobGroups(),
-              _buildJobGroups(),
+              _SelectedJobGroupListView(),
+              _JobGroupListView(),
             ],
           ),
         ),
-        _buildNextButton(),
+        _NextButton(),
       ],
-    );
-  }
-
-  Widget _buildSelectedJobGroups() {
-    return Consumer(
-      builder: (context, ref, child) {
-        final selectedJobGroups = ref.watch(
-          signUpFormProvider.select(
-            (value) => value.jobGroups,
-          ),
-        );
-
-        return SliverPersistentHeader(
-          floating: true,
-          pinned: true,
-          delegate: _SelectedJobGroupListDelegate(
-            jobGroups: selectedJobGroups,
-            onTapItem: (index) => onTapSelectedJobGroup(
-              ref,
-              group: selectedJobGroups[index],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildJobGroups() {
-    return HookConsumer(
-      builder: (context, ref, child) {
-        final getJobGroups = useMemoized(getJobGroupsUseCase);
-        final getJobGroupsAsync = useFuture(getJobGroups);
-
-        if (getJobGroupsAsync.connectionState == ConnectionState.waiting) {
-          return const SliverFillRemaining(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        } else if (getJobGroupsAsync.hasError) {
-          return SliverFillRemaining(
-            child: Center(
-              child: Text('${getJobGroupsAsync.error}'),
-            ),
-          );
-        }
-
-        final selectedJobGroups = ref.watch(
-          signUpFormProvider.select(
-            (value) => value.jobGroups,
-          ),
-        );
-        final jobGroups = getJobGroupsAsync.requireData.getOrThrow().groups;
-
-        return SliverList.builder(
-          itemCount: jobGroups.length,
-          itemBuilder: (context, index) {
-            final group = jobGroups[index];
-            final isSelected = selectedJobGroups.contains(group);
-
-            return ListTile(
-              selected: isSelected,
-              selectedColor: AppColor.of.black,
-              selectedTileColor: AppColor.of.background1,
-              minVerticalPadding: 0,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-              title: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  group.name,
-                  style: AppTextStyle.body2,
-                ),
-              ),
-              trailing: isSelected
-                  ? FaIcon(
-                      FontAwesomeIcons.solidCircleCheck,
-                      color: AppColor.of.brand2,
-                      size: 20,
-                    )
-                  : null,
-              onTap: () => onTapJobGroup(
-                ref,
-                group: group,
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildNextButton() {
-    return Consumer(
-      builder: (context, ref, child) {
-        final isSelectedAtLeastOne = ref.watch(
-          signUpFormProvider.select(
-            (value) => value.isSelectedAtLeastOneJobGroup,
-          ),
-        );
-
-        return Padding(
-          padding: const EdgeInsets.all(16),
-          child: FilledButton(
-            onPressed:
-                isSelectedAtLeastOne ? () => onTapJobGroupStepNext(ref) : null,
-            child: const Center(
-              child: Text('다음'),
-            ),
-          ),
-        );
-      },
     );
   }
 }
 
-class _SelectedJobGroupListDelegate extends SliverPersistentHeaderDelegate {
-  const _SelectedJobGroupListDelegate({
+class _SelectedJobGroupListView extends ConsumerWidget with SignUpEvent {
+  const _SelectedJobGroupListView({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedJobGroups = ref.watch(
+      signUpFormProvider.select(
+        (value) => value.jobGroups,
+      ),
+    );
+
+    return SliverPersistentHeader(
+      floating: true,
+      pinned: true,
+      delegate: _SelectedJobGroupListViewDelegate(
+        jobGroups: selectedJobGroups,
+        onTapItem: (index) => onTapSelectedJobGroup(
+          ref,
+          group: selectedJobGroups[index],
+        ),
+      ),
+    );
+  }
+}
+
+class _SelectedJobGroupListViewDelegate extends SliverPersistentHeaderDelegate {
+  const _SelectedJobGroupListViewDelegate({
     required this.jobGroups,
     required this.onTapItem,
   });
@@ -186,7 +100,96 @@ class _SelectedJobGroupListDelegate extends SliverPersistentHeaderDelegate {
   double get minExtent => 68;
 
   @override
-  bool shouldRebuild(covariant _SelectedJobGroupListDelegate oldDelegate) {
+  bool shouldRebuild(covariant _SelectedJobGroupListViewDelegate oldDelegate) {
     return oldDelegate.jobGroups != jobGroups;
+  }
+}
+
+class _JobGroupListView extends HookConsumerWidget with SignUpEvent {
+  const _JobGroupListView({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final getJobGroups = useMemoized(getJobGroupsUseCase);
+    final getJobGroupsAsync = useFuture(getJobGroups);
+
+    if (getJobGroupsAsync.connectionState == ConnectionState.waiting) {
+      return const SliverFillRemaining(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    } else if (getJobGroupsAsync.hasError) {
+      return SliverFillRemaining(
+        child: Center(
+          child: Text('${getJobGroupsAsync.error}'),
+        ),
+      );
+    }
+
+    final selectedJobGroups = ref.watch(
+      signUpFormProvider.select(
+        (value) => value.jobGroups,
+      ),
+    );
+    final jobGroups = getJobGroupsAsync.requireData.getOrThrow().groups;
+
+    return SliverList.builder(
+      itemCount: jobGroups.length,
+      itemBuilder: (context, index) {
+        final group = jobGroups[index];
+        final isSelected = selectedJobGroups.contains(group);
+
+        return ListTile(
+          selected: isSelected,
+          selectedColor: AppColor.of.black,
+          selectedTileColor: AppColor.of.background1,
+          minVerticalPadding: 0,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+          title: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              group.name,
+              style: AppTextStyle.body2,
+            ),
+          ),
+          trailing: isSelected
+              ? FaIcon(
+                  FontAwesomeIcons.solidCircleCheck,
+                  color: AppColor.of.brand2,
+                  size: 20,
+                )
+              : null,
+          onTap: () => onTapJobGroup(
+            ref,
+            group: group,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _NextButton extends ConsumerWidget with SignUpEvent {
+  const _NextButton({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isSelectedAtLeastOne = ref.watch(
+      signUpFormProvider.select(
+        (value) => value.isSelectedAtLeastOneJobGroup,
+      ),
+    );
+
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: FilledButton(
+        onPressed:
+            isSelectedAtLeastOne ? () => onTapJobGroupStepNext(ref) : null,
+        child: const Center(
+          child: Text('다음'),
+        ),
+      ),
+    );
   }
 }

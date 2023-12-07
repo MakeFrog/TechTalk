@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/job/data/local/job_local_data_source.dart';
 import 'package:techtalk/features/job/job.dart';
@@ -29,9 +28,9 @@ final class JobRepositoryImpl implements JobRepository {
         JobGroupListEntity.fromModel(jobGroupsModel),
       );
     } catch (e) {
-      return Result.failure(
-        CustomException(code: 'code', message: '$e'),
-      );
+      return Result.failure(Exception()
+          // CustomException(code: 'code', message: '$e'),
+          );
     }
   }
 }

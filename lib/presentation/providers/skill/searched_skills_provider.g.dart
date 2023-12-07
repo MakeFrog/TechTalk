@@ -6,8 +6,7 @@ part of 'searched_skills_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$searchedTechSkillListHash() =>
-    r'eceb80011194f2e243e1d03848f2ce35d12df88d';
+String _$searchedSkillsHash() => r'aafda33475adab7200910b820547a8c41d1a2ca6';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,28 +29,27 @@ class _SystemHash {
   }
 }
 
-/// See also [searchedTechSkillList].
-@ProviderFor(searchedTechSkillList)
-const searchedTechSkillListProvider = SearchedTechSkillListFamily();
+/// See also [searchedSkills].
+@ProviderFor(searchedSkills)
+const searchedSkillsProvider = SearchedSkillsFamily();
 
-/// See also [searchedTechSkillList].
-class SearchedTechSkillListFamily
-    extends Family<AsyncValue<List<SkillEntity>>> {
-  /// See also [searchedTechSkillList].
-  const SearchedTechSkillListFamily();
+/// See also [searchedSkills].
+class SearchedSkillsFamily extends Family<AsyncValue<List<SkillEntity>>> {
+  /// See also [searchedSkills].
+  const SearchedSkillsFamily();
 
-  /// See also [searchedTechSkillList].
-  SearchedTechSkillListProvider call({
+  /// See also [searchedSkills].
+  SearchedSkillsProvider call({
     String? keyword,
   }) {
-    return SearchedTechSkillListProvider(
+    return SearchedSkillsProvider(
       keyword: keyword,
     );
   }
 
   @override
-  SearchedTechSkillListProvider getProviderOverride(
-    covariant SearchedTechSkillListProvider provider,
+  SearchedSkillsProvider getProviderOverride(
+    covariant SearchedSkillsProvider provider,
   ) {
     return call(
       keyword: provider.keyword,
@@ -70,33 +68,33 @@ class SearchedTechSkillListFamily
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'searchedTechSkillListProvider';
+  String? get name => r'searchedSkillsProvider';
 }
 
-/// See also [searchedTechSkillList].
-class SearchedTechSkillListProvider
+/// See also [searchedSkills].
+class SearchedSkillsProvider
     extends AutoDisposeFutureProvider<List<SkillEntity>> {
-  /// See also [searchedTechSkillList].
-  SearchedTechSkillListProvider({
+  /// See also [searchedSkills].
+  SearchedSkillsProvider({
     String? keyword,
   }) : this._internal(
-          (ref) => searchedTechSkillList(
-            ref as SearchedTechSkillListRef,
+          (ref) => searchedSkills(
+            ref as SearchedSkillsRef,
             keyword: keyword,
           ),
-          from: searchedTechSkillListProvider,
-          name: r'searchedTechSkillListProvider',
+          from: searchedSkillsProvider,
+          name: r'searchedSkillsProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$searchedTechSkillListHash,
-          dependencies: SearchedTechSkillListFamily._dependencies,
+                  : _$searchedSkillsHash,
+          dependencies: SearchedSkillsFamily._dependencies,
           allTransitiveDependencies:
-              SearchedTechSkillListFamily._allTransitiveDependencies,
+              SearchedSkillsFamily._allTransitiveDependencies,
           keyword: keyword,
         );
 
-  SearchedTechSkillListProvider._internal(
+  SearchedSkillsProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -110,13 +108,12 @@ class SearchedTechSkillListProvider
 
   @override
   Override overrideWith(
-    FutureOr<List<SkillEntity>> Function(SearchedTechSkillListRef provider)
-        create,
+    FutureOr<List<SkillEntity>> Function(SearchedSkillsRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: SearchedTechSkillListProvider._internal(
-        (ref) => create(ref as SearchedTechSkillListRef),
+      override: SearchedSkillsProvider._internal(
+        (ref) => create(ref as SearchedSkillsRef),
         from: from,
         name: null,
         dependencies: null,
@@ -129,12 +126,12 @@ class SearchedTechSkillListProvider
 
   @override
   AutoDisposeFutureProviderElement<List<SkillEntity>> createElement() {
-    return _SearchedTechSkillListProviderElement(this);
+    return _SearchedSkillsProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is SearchedTechSkillListProvider && other.keyword == keyword;
+    return other is SearchedSkillsProvider && other.keyword == keyword;
   }
 
   @override
@@ -146,19 +143,18 @@ class SearchedTechSkillListProvider
   }
 }
 
-mixin SearchedTechSkillListRef
-    on AutoDisposeFutureProviderRef<List<SkillEntity>> {
+mixin SearchedSkillsRef on AutoDisposeFutureProviderRef<List<SkillEntity>> {
   /// The parameter `keyword` of this provider.
   String? get keyword;
 }
 
-class _SearchedTechSkillListProviderElement
+class _SearchedSkillsProviderElement
     extends AutoDisposeFutureProviderElement<List<SkillEntity>>
-    with SearchedTechSkillListRef {
-  _SearchedTechSkillListProviderElement(super.provider);
+    with SearchedSkillsRef {
+  _SearchedSkillsProviderElement(super.provider);
 
   @override
-  String? get keyword => (origin as SearchedTechSkillListProvider).keyword;
+  String? get keyword => (origin as SearchedSkillsProvider).keyword;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -19,6 +19,7 @@ class ClearableTextField extends HookWidget {
     this.enabled = true,
     this.activeSuffixIcon = true,
     this.autoFocus = false,
+    this.validator,
     this.inputFormatters,
     this.textInputAction,
     this.keyboardType,
@@ -37,6 +38,7 @@ class ClearableTextField extends HookWidget {
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
+  final String? Function(String? value)? validator;
 
   /// 우측 아이콘을 활성화할지 여부
   final bool activeSuffixIcon;
@@ -61,20 +63,38 @@ class ClearableTextField extends HookWidget {
               : null,
         );
 
-    return TextField(
-      focusNode: focusNode,
-      controller: controller,
-      autofocus: autoFocus,
-      enabled: enabled,
-      obscureText: obscureText,
-      style: style,
-      inputFormatters: inputFormatters,
-      textInputAction: textInputAction,
-      keyboardType: keyboardType,
-      decoration: inputDecoration,
-      onChanged: onChanged,
-      onEditingComplete: onEditingComplete,
-    );
+    if (validator != null) {
+      return TextFormField(
+        focusNode: focusNode,
+        controller: controller,
+        validator: validator,
+        autofocus: autoFocus,
+        enabled: enabled,
+        obscureText: obscureText,
+        style: style,
+        inputFormatters: inputFormatters,
+        textInputAction: textInputAction,
+        keyboardType: keyboardType,
+        decoration: inputDecoration,
+        onChanged: onChanged,
+        onEditingComplete: onEditingComplete,
+      );
+    } else {
+      return TextField(
+        focusNode: focusNode,
+        controller: controller,
+        autofocus: autoFocus,
+        enabled: enabled,
+        obscureText: obscureText,
+        style: style,
+        inputFormatters: inputFormatters,
+        textInputAction: textInputAction,
+        keyboardType: keyboardType,
+        decoration: inputDecoration,
+        onChanged: onChanged,
+        onEditingComplete: onEditingComplete,
+      );
+    }
   }
 
   Widget _buildClearIcon(TextEditingController controller) {

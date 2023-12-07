@@ -9,6 +9,12 @@ final class CreateUserDataUseCase {
   final UserRepository _userRepository;
 
   Future<void> call(UserDataEntity data) async {
-    await _userRepository.createUserData(data);
+    final result = await _userRepository.createUserData(data);
+    return result.fold(
+      onSuccess: (value) => value,
+      onFailure: (e) {
+        throw e;
+      },
+    );
   }
 }

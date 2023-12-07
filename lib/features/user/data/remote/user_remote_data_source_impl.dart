@@ -25,10 +25,7 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   @override
   Future<void> createUserData(UserDataModel data) async {
     if (await _isExistUserData(data.uid)) {
-      throw CustomException(
-        code: 'code',
-        message: '이미 유저 데이터가 존재합니다.',
-      );
+      throw const AlreadyExistUserDataException();
     }
 
     await _userDoc(data.uid).set(data);
@@ -45,6 +42,7 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     return null;
   }
 
+  // TODO(suneog) : 유저 데이터 업데이트 시 확인하는 걸로 변경 예정
   @override
   Future<bool> isExistNickname(String nickname) async {
     return _userRef
