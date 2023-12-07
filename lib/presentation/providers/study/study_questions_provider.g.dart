@@ -6,7 +6,7 @@ part of 'study_questions_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$studyQuestionsHash() => r'b9cf67fb25b89a3f9a321a78ae18211fcde40575';
+String _$studyQuestionsHash() => r'e2dd2bacb9bf671859ba3480edf42b38c373a547';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -16,7 +16,7 @@ class MainPage extends BasePage {
   const MainPage({super.key});
 
   @override
-  bool get setBottomSafeArea => false;
+  bool get wrapWithSafeArea => false;
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {

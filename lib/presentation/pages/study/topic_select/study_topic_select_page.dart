@@ -121,8 +121,9 @@ class _CategorizedTopicGrid extends ConsumerWidget with StudyTopicSelectEvent {
 
   Widget _buildTopicGrid(List<InterviewTopic> topics) {
     return GridView.builder(
+      padding: EdgeInsets.zero,
       shrinkWrap: true,
-      primary: false,
+      physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 11,
