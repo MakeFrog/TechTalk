@@ -24,10 +24,11 @@ class InterviewLocalDataSourceImpl implements InterviewLocalDataSource {
         return null;
       }
 
-      final questions =
-          snapshot.docs.map(InterviewQuestionModel.fromFirestore).toList();
-
-      return questions;
+      return [
+        ...snapshot.docs.map(
+          InterviewQuestionModel.fromFirestore,
+        ),
+      ];
     } catch (e) {
       return null;
     }
@@ -38,11 +39,11 @@ class InterviewLocalDataSourceImpl implements InterviewLocalDataSource {
     String topicId,
   ) async {
     try {
-      final topicSnapshot = await _firestore
+      final snapshot = await _firestore
           .collection('interview')
           .doc(topicId)
           .get(const GetOptions(source: Source.cache));
-      final updateDate = topicSnapshot.get('update_date') as Timestamp?;
+      final updateDate = snapshot.get('update_date') as Timestamp?;
 
       return updateDate?.toDate();
     } catch (e) {

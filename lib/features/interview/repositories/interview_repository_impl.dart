@@ -53,28 +53,34 @@ class InterviewRepositoryImpl implements InterviewRepository {
   Future<Result<List<interview.InterviewQuestionEntity>>> getInterviewQuestions(
     String topicId,
   ) async {
-    List<InterviewQuestionModel> questionsModel;
+    try {
+      List<InterviewQuestionModel> questionsModel;
 
-    final cacheUpdateDate = await _interviewLocalDataSource
-        .getCachedInterviewQuestionsUpdateDate(topicId);
+      final cacheUpdateDate = await _interviewLocalDataSource
+          .getCachedInterviewQuestionsUpdateDate(topicId);
 
-    if (cacheUpdateDate != null) {
-      final lastUpdateDate = await _interviewRemoteDataSource
-          .getInterviewQuestionsUpdateDate(topicId);
-      if (lastUpdateDate.compareTo(cacheUpdateDate) == 0) {
-        questionsModel = (await _interviewLocalDataSource
-            .getCachedInterviewQuestions(topicId))!;
+      if (cacheUpdateDate != null) {
+        final lastUpdateDate = await _interviewRemoteDataSource
+            .getInterviewQuestionsUpdateDate(topicId);
+        if (lastUpdateDate.compareTo(cacheUpdateDate) == 0) {
+          questionsModel = (await _interviewLocalDataSource
+              .getCachedInterviewQuestions(topicId))!;
+        } else {
+          questionsModel =
+              await _interviewRemoteDataSource.getInterviewQuestions(topicId);
+        }
       } else {
         questionsModel =
             await _interviewRemoteDataSource.getInterviewQuestions(topicId);
       }
-    } else {
-      questionsModel =
-          await _interviewRemoteDataSource.getInterviewQuestions(topicId);
-    }
 
-    return Result.success(
-      questionsModel.map(interview.InterviewQuestionEntity.fromModel).toList(),
-    );
+      return Result.success(
+        questionsModel
+            .map(interview.InterviewQuestionEntity.fromModel)
+            .toList(),
+      );
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
   }
 }

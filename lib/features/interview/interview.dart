@@ -16,4 +16,4 @@ final interviewRepository = locator<InterviewRepository>();
 final getInterviewTopicListUseCase = locator<GetInterviewTopicListUseCase>();
 final getReviewNoteQuestionListUseCase =
     locator<GetReviewNoteQuestionListUseCase>();
-final getStudyQuestionListUseCase = locator<GetInterviewQuestionsUseCase>();
+final getInterviewQuestionsUseCase = locator<GetInterviewQuestionsUseCase>();
