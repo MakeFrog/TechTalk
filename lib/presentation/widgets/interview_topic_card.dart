@@ -3,8 +3,8 @@ import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
-class StudyTopicCard extends StatelessWidget {
-  const StudyTopicCard({
+class InterviewTopicCard extends StatelessWidget {
+  const InterviewTopicCard({
     super.key,
     required this.topic,
     this.onTap,
@@ -28,7 +28,7 @@ class StudyTopicCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  topic.name,
+                  topic.text,
                   style: AppTextStyle.headline3,
                 ),
               ),
