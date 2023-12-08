@@ -105,6 +105,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $StudyRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: 'wrong-answer',
+          name: 'wrong-answer',
+          factory: $WrongAnswerRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'chat-list',
           name: 'chat-list',
           factory: $ChatListPageRouteExtension._fromState,
@@ -210,6 +215,27 @@ extension $StudyRouteExtension on StudyRoute {
       context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
+}
+
+extension $WrongAnswerRouteExtension on WrongAnswerRoute {
+  static WrongAnswerRoute _fromState(GoRouterState state) => WrongAnswerRoute(
+        $extra: state.extra as int?,
+      );
+
+  String get location => GoRouteData.$location(
+        '/wrong-answer',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
 }
 
 extension $ChatListPageRouteExtension on ChatListPageRoute {

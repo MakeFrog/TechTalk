@@ -1,28 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'review_question_list_provider.dart';
+part of 'wrong_answer_questions_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$reviewQuestionListHash() =>
-    r'38aebc8304c7ba885e208619dd3f478759014a33';
+String _$wrongAnswerQuestionsHash() =>
+    r'58e4cab4f25df9267b0518ce385ffa7c10ca36a1';
 
-/// See also [ReviewQuestionList].
-@ProviderFor(ReviewQuestionList)
-final reviewQuestionListProvider = AutoDisposeAsyncNotifierProvider<
-    ReviewQuestionList, List<InterviewQnAEntity>>.internal(
-  ReviewQuestionList.new,
-  name: r'reviewQuestionListProvider',
+/// See also [WrongAnswerQuestions].
+@ProviderFor(WrongAnswerQuestions)
+final wrongAnswerQuestionsProvider = AutoDisposeAsyncNotifierProvider<
+    WrongAnswerQuestions, List<InterviewQnAEntity>>.internal(
+  WrongAnswerQuestions.new,
+  name: r'wrongAnswerQuestionsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$reviewQuestionListHash,
+      : _$wrongAnswerQuestionsHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$ReviewQuestionList
+typedef _$WrongAnswerQuestions
     = AutoDisposeAsyncNotifier<List<InterviewQnAEntity>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

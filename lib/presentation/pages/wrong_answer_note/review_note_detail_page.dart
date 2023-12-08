@@ -10,10 +10,8 @@ import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/chat/repositories/entities/interview_qna_entity.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/detail_page_controller_provider.dart';
-import 'package:techtalk/presentation/pages/wrong_answer_note/providers/question_answer_blur_provider.dart';
-import 'package:techtalk/presentation/pages/wrong_answer_note/providers/review_question_list_provider.dart';
-import 'package:techtalk/presentation/pages/wrong_answer_note/providers/selected_review_note_topic_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/review_note_detail_event.dart';
+import 'package:techtalk/presentation/providers/wrong_answer/question_answer_blur_provider.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class ReviewNoteDetailPage extends StatelessWidget {
@@ -94,7 +92,7 @@ class _Body extends ConsumerWidget with ReviewNoteDetailEvent {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pageController = ref.watch(detailPageControllerProvider);
-    final questions = ref.watch(reviewQuestionListProvider).requireValue;
+    // final questions = ref.watch(reviewQuestionListProvider).requireValue;
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(detailPageControllerProvider.notifier).initPage = page;
@@ -105,15 +103,15 @@ class _Body extends ConsumerWidget with ReviewNoteDetailEvent {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Gap(24),
-          Expanded(
-            child: PageView.builder(
-              controller: pageController,
-              itemCount: questions.length,
-              itemBuilder: (context, index) => _StudyQna(
-                question: questions[index],
-              ),
-            ),
-          ),
+          // Expanded(
+          //   child: PageView.builder(
+          //     controller: pageController,
+          //     itemCount: questions.length,
+          //     itemBuilder: (context, index) => _StudyQna(
+          //       question: questions[index],
+          //     ),
+          //   ),
+          // ),
           HookBuilder(
             builder: (context) {
               final currentPage = useListenableSelector(pageController, () {
@@ -139,12 +137,12 @@ class _Body extends ConsumerWidget with ReviewNoteDetailEvent {
                       onTap: () => onTapPrevQuestion(ref),
                     ),
                     Spacer(),
-                    _ControllerButton(
-                      isActive: currentPage + 1 != questions.length,
-                      label: '다음 문항',
-                      icon: Assets.iconsArrowRight,
-                      onTap: () => onTapNextQuestion(ref),
-                    ),
+                    // _ControllerButton(
+                    //   isActive: currentPage + 1 != questions.length,
+                    //   label: '다음 문항',
+                    //   icon: Assets.iconsArrowRight,
+                    //   onTap: () => onTapNextQuestion(ref),
+                    // ),
                   ],
                 ),
               );

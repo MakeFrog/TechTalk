@@ -16,6 +16,7 @@ import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_page.dart';
+import 'package:techtalk/presentation/pages/wrong_answer_note/review_note_detail_page.dart';
 import 'package:techtalk/presentation/providers/study/categorized_study_topics_provider.dart';
 import 'package:techtalk/presentation/providers/study/selected_study_topic_provider.dart';
 
@@ -105,6 +106,10 @@ class SignUpRoute extends GoRouteData {
       path: StudyRoute.name,
       name: StudyRoute.name,
     ),
+    TypedGoRoute<WrongAnswerRoute>(
+      path: WrongAnswerRoute.name,
+      name: WrongAnswerRoute.name,
+    ),
     TypedGoRoute<ChatListPageRoute>(
       path: ChatListPageRoute.name,
       name: ChatListPageRoute.name,
@@ -112,7 +117,7 @@ class SignUpRoute extends GoRouteData {
         TypedGoRoute<ChatPageRoute>(
           path: ChatPageRoute.name,
           name: ChatPageRoute.name,
-        )
+        ),
       ],
     ),
   ],
@@ -155,6 +160,18 @@ class StudyRoute extends GoRouteData {
       ],
       child: const StudyLearningPage(),
     );
+  }
+}
+
+class WrongAnswerRoute extends GoRouteData {
+  const WrongAnswerRoute({this.$extra});
+
+  final int? $extra;
+  static const String name = 'wrong-answer';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ReviewNoteDetailPage(page: $extra ?? 0);
   }
 }
 
