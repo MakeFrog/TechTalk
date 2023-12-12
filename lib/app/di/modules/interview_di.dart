@@ -4,6 +4,7 @@ import 'package:techtalk/features/interview/data/local/interview_local_data_sour
 import 'package:techtalk/features/interview/data/remote/interview_remote_data_source_impl.dart';
 import 'package:techtalk/features/interview/interview.dart';
 import 'package:techtalk/features/interview/repositories/interview_repository_impl.dart';
+import 'package:techtalk/features/interview/usecases/get_interview_topics_use_case.dart';
 import 'package:techtalk/features/interview/usecases/get_review_note_question_list_use_case.dart';
 import 'package:techtalk/features/user/user.dart';
 

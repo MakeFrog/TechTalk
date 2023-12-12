@@ -34,3 +34,12 @@ class QuestionPageController extends _$QuestionPageController {
     );
   }
 }
+
+@riverpod
+int currentQuestionPage(CurrentQuestionPageRef ref) {
+  try {
+    return ref.watch(questionPageControllerProvider).page?.round() ?? 0;
+  } catch (e) {
+    return 0;
+  }
+}

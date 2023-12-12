@@ -1,42 +1,34 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/app/router/router.dart';
-import 'package:techtalk/core/constants/main_navigation_tab.enum.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/home/home_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/main/main_event.dart';
-import 'package:techtalk/presentation/pages/review_note/review_note_page.dart';
 import 'package:techtalk/presentation/pages/study/topic_select/study_topic_select_page.dart';
-import 'package:techtalk/presentation/providers/app_user_data_provider.dart';
+import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_note_page.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
+import 'package:techtalk/presentation/widgets/base/base_page.dart';
 
-class MainPage extends ConsumerWidget {
+class MainPage extends BasePage {
   const MainPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // 회원가입을 완료하지 않고 메인으로 접속 시 회원가입 페이지로 이동하기 위한 listener
-    ref.listen(appUserDataProvider, (_, next) {
-      if (next.valueOrNull != null) {
-        if (!next.requireValue!.isCompleteSignUp) {
-          const SignUpRoute().go(context);
-        }
-      }
-    });
+  bool get setBottomSafeArea => false;
 
-    return const Scaffold(
-      body: _Body(),
-      bottomNavigationBar: _BottomNavigationBar(),
-    );
+  @override
+  Widget buildPage(BuildContext context, WidgetRef ref) {
+    return const _Body();
   }
+
+  @override
+  Widget buildBottomNavigationBar(BuildContext context) =>
+      const _BottomNavigationBar();
 }
 
-class _Body extends HookConsumerWidget {
+class _Body extends ConsumerWidget {
   const _Body({super.key});
 
   static const _screens = <Widget>[
@@ -46,7 +38,7 @@ class _Body extends HookConsumerWidget {
     StudyTopicSelectPage(
       key: ValueKey(MainNavigationTab.study),
     ),
-    ReviewNotePage(
+    WrongAnswerNotePage(
       key: ValueKey(MainNavigationTab.note),
     ),
     ChatListPage(
@@ -59,15 +51,8 @@ class _Body extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pageController = usePageController();
-
-    ref.listen(mainBottomNavigationProvider, (_, next) {
-      pageController.jumpToPage(next.index);
-    });
-
-    return PageView(
-      controller: pageController,
-      physics: const NeverScrollableScrollPhysics(),
+    return IndexedStack(
+      index: ref.watch(mainBottomNavigationProvider).index,
       children: _screens,
     );
   }

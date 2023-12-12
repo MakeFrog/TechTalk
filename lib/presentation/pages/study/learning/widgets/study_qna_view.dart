@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/study/study.dart';
-import 'package:techtalk/presentation/pages/study/learning/providers/question_answer_blur_provider.dart';
+import 'package:techtalk/features/interview/entities/interview_question_entity.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/question_page_controller.dart';
-import 'package:techtalk/presentation/pages/study/learning/providers/study_question_list_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_event.dart';
+import 'package:techtalk/presentation/providers/study/study_answer_blur_provider.dart';
+import 'package:techtalk/presentation/providers/study/study_questions_provider.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class StudyQnaView extends ConsumerWidget with StudyLearningEvent {
@@ -19,16 +19,15 @@ class StudyQnaView extends ConsumerWidget with StudyLearningEvent {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(questionPageControllerProvider);
-    final questionList =
-        ref.watch(studyQuestionListProvider).requireValue.questions;
+    final questions = ref.watch(studyQuestionsProvider).requireValue;
 
     return Expanded(
       child: PageView.builder(
         controller: controller,
         onPageChanged: (value) => onQuestionPageChanged(ref),
-        itemCount: questionList.length,
+        itemCount: questions.length,
         itemBuilder: (context, index) => _StudyQna(
-          question: questionList[index],
+          question: questions[index],
         ),
       ),
     );
@@ -41,7 +40,7 @@ class _StudyQna extends StatelessWidget {
     required this.question,
   });
 
-  final StudyQuestionEntity question;
+  final InterviewQuestionEntity question;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +86,7 @@ class _StudyQna extends StatelessWidget {
             ),
             child: Consumer(
               builder: (context, ref, child) {
-                final isBlur = ref.watch(questionAnswerBlurProvider);
+                final isBlur = ref.watch(studyAnswerBlurProvider);
 
                 return ImageFiltered(
                   imageFilter: ImageFilter.blur(

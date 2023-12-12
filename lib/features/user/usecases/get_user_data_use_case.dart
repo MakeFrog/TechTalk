@@ -8,7 +8,7 @@ final class GetUserDataUseCase {
 
   final UserRepository _userRepository;
 
-  Future<UserDataEntity?> call(String uid) async {
-    return _userRepository.getUserData(uid);
+  Future<UserDataEntity?> call() async {
+    return _userRepository.getUserData();
   }
 }

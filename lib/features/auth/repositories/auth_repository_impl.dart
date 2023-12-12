@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:techtalk/core/core.dart';
-import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/auth/data/remote/auth_remote_data_source.dart';
 import 'package:techtalk/features/auth/repositories/auth_repository.dart';
@@ -23,13 +22,6 @@ final class AuthRepositoryImpl implements AuthRepository {
       };
 
       return Result.success(userCredential);
-    } on FirebaseAuthException catch (e) {
-      return Result.failure(
-        CustomException(
-          code: e.code,
-          message: e.message ?? e.code,
-        ),
-      );
     } catch (e) {
       return Result.failure(
         Exception(e),

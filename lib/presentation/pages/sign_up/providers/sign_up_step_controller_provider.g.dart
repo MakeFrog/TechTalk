@@ -23,22 +23,5 @@ final signUpStepControllerProvider =
 );
 
 typedef _$SignUpStepController = AutoDisposeNotifier<PageController>;
-String _$canBackToPreviousStepHash() =>
-    r'82f98912f8f6bb3aceaf0fe62ee52ac37ad942bc';
-
-/// See also [CanBackToPreviousStep].
-@ProviderFor(CanBackToPreviousStep)
-final canBackToPreviousStepProvider =
-    AutoDisposeNotifierProvider<CanBackToPreviousStep, bool>.internal(
-  CanBackToPreviousStep.new,
-  name: r'canBackToPreviousStepProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$canBackToPreviousStepHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$CanBackToPreviousStep = AutoDisposeNotifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

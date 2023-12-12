@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/providers/app_user_data_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 
 class CheerUpMessageCard extends HookWidget {
   const CheerUpMessageCard({super.key});
@@ -105,7 +105,7 @@ class CheerUpMessageCard extends HookWidget {
             child: Consumer(
               builder: (context, ref, child) {
                 final userName =
-                    ref.watch(appUserDataProvider).valueOrNull?.nickname;
+                    ref.watch(userDataProvider).valueOrNull?.nickname;
 
                 return Text(
                   '${userName ?? ''}님!\n테크톡이 항상 응원해요!',

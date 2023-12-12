@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_qna_progress_info_entity.dart';
 import 'package:techtalk/features/chat/repositories/enums/interview_progress_state.enum.dart';
-import 'package:techtalk/features/chat/repositories/enums/interview_topic.enum.dart';
+import 'package:techtalk/features/interview/entities/interview_topic.enum.dart';
 import 'package:techtalk/features/shared/enums/interviewer_avatar.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_page_route_argument_provider.dart';
@@ -15,11 +15,10 @@ import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
-import 'package:techtalk/presentation/pages/study/learning/providers/selected_study_topic_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_page.dart';
+import 'package:techtalk/presentation/providers/study/selected_study_topic_provider.dart';
 
 part 'route_argument.dart';
-
 part 'router.g.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -28,6 +27,7 @@ GoRouter appRouter(WidgetRef ref) => GoRouter(
       debugLogDiagnostics: false,
       navigatorKey: rootNavigatorKey,
       initialLocation: SplashRoute.name,
+      // initialLocation: SignInRoute.name,
       routes: $appRoutes,
     );
 
@@ -128,16 +128,19 @@ class MainRoute extends GoRouteData {
 }
 
 class StudyRoute extends GoRouteData {
-  const StudyRoute(this.topicName);
+  const StudyRoute(this.topicId);
 
-  final String topicName;
+  final String topicId;
   static const String name = 'study';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    SelectedStudyTopic.topicName = topicName;
-
-    return const StudyLearningPage();
+    return ProviderScope(
+      overrides: [
+        selectedStudyTopicIdProvider.overrideWithValue(topicId),
+      ],
+      child: const StudyLearningPage(),
+    );
   }
 }
 

@@ -1,5 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/chat/repositories/enums/interview_topic.enum.dart';
+import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/user/data/remote/user_remote_data_source.dart';
 import 'package:techtalk/features/user/entities/user_data_entity.dart';
 import 'package:techtalk/features/user/repositories/user_repository.dart';
@@ -17,31 +18,34 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<UserDataEntity> getUserData(String uid) async {
+  Future<UserDataEntity?> getUserData() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
     var userData = await _userRemoteDataSource.getUserData(uid);
-    print(userData);
 
     if (userData == null) {
-      await createUserData(
-        UserDataEntity(uid: uid),
-      );
-
-      return getUserData(uid);
+      return null;
     }
 
     return UserDataEntity.fromModel(userData);
   }
 
   @override
-  Future<bool> isExistNickname(String nickname) {
-    return _userRemoteDataSource.isExistNickname(nickname);
+  Future<Result<bool>> isExistNickname(String nickname) async {
+    try {
+      final result = await _userRemoteDataSource.isExistNickname(nickname);
+
+      return Result.success(result);
+    } catch (e) {
+      return Result.failure(Exception(e));
+    }
   }
 
   @override
   Future<Result<List<InterviewTopic>>> getUserTopicList() async {
     try {
-      const userLocalId = '2FXrROIad2RSKt37NA8tciQx7e53'; // TEMP
-      final response = await _userRemoteDataSource.getUserData(userLocalId);
+      final uid = FirebaseAuth.instance.currentUser!.uid;
+      final response = await _userRemoteDataSource.getUserData(uid);
 
       final topicIds = response?.topicIds ?? [];
 

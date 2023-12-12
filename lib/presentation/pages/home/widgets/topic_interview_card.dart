@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/home/home_event.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
+import 'package:techtalk/presentation/providers/user/user_interview_topics_provider.dart';
 
 class TopicInterviewCard extends StatelessWidget with HomeEvent {
   const TopicInterviewCard({super.key});
@@ -32,7 +34,7 @@ class TopicInterviewCard extends StatelessWidget with HomeEvent {
                     style: AppTextStyle.headline2,
                   ),
                 ),
-                WidthBox(48),
+                Gap(48),
                 GestureDetector(
                   onTap: onTapNewTopicInterview,
                   child: FaIcon(
@@ -43,7 +45,7 @@ class TopicInterviewCard extends StatelessWidget with HomeEvent {
                 ),
               ],
             ),
-            HeightBox(12),
+            Gap(12),
             // TODO : 면접을 하나라도 진행하면 텍스트 대신 해당 면접 표시
             Text(
               '하나의 주제를 선택해 집중 공략해 보세요!',
@@ -51,9 +53,77 @@ class TopicInterviewCard extends StatelessWidget with HomeEvent {
                 color: AppColor.of.gray3,
               ),
             ),
+            const Gap(12),
+            const _InterviewTopicColum(),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _InterviewTopicColum extends ConsumerWidget with HomeEvent {
+  const _InterviewTopicColum({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userTopicsAsync = ref.watch(userInterviewTopicsProvider);
+
+    return userTopicsAsync.when(
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
+      ),
+      error: (error, stackTrace) => Center(
+        child: Text('$error'),
+      ),
+      data: (data) {
+        return Column(
+          children: [
+            ...data.map(
+              (e) => SizedBox(
+                height: 64,
+                child: Row(
+                  children: [
+                    Image.asset(
+                      e.imageUrl!,
+                      width: 40,
+                      height: 40,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const SizedBox(
+                        width: 40,
+                        height: 40,
+                      ),
+                    ),
+                    const Gap(16),
+                    Text(
+                      e.text,
+                      style: AppTextStyle.title1,
+                    ),
+                    const Spacer(),
+                    FilledButton(
+                      style: FilledButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        backgroundColor: AppColor.of.background1,
+                        foregroundColor: AppColor.of.gray4,
+                      ),
+                      onPressed: () => onTapGoToInterviewRoomPage(e),
+                      child: const Text('면접 보기'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

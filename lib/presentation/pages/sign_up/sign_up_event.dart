@@ -5,11 +5,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/features/job/entities/job_group_entity.dart';
-import 'package:techtalk/features/tech_skill/tech_skill.dart';
+import 'package:techtalk/features/skill/skill.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/searched_tech_skill_list_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_form_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_controller_provider.dart';
-import 'package:techtalk/presentation/providers/app_user_data_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 
 abstract class _SignUpEvent {
   /// 앱바의 [BackButton]을 눌렀을 때 실행할 콜백
@@ -32,7 +32,6 @@ abstract class _SignUpEvent {
   /// [controller]에 입력된 텍스트와 닉네임 데이터를 초기화한다.
   void onClearNicknameField(
     WidgetRef ref, {
-    required TextEditingController controller,
     required ValueNotifier<bool> isRunningDebouncer,
   });
 
@@ -51,24 +50,25 @@ abstract class _SignUpEvent {
 
   void onTapJobGroupStepNext(WidgetRef ref);
 
-  void onTapSelectedTechSkill(
+  void onTapSelectedSkill(
     WidgetRef ref, {
-    required TechSkillEntity skill,
+    required SkillEntity skill,
   });
 
-  void onChangeTechSkillSearchField(
+  void onChangeSkillSearchField(
     WidgetRef ref, {
     required String keyword,
   });
 
-  void onClearTechSkillSearchField(
+  void onClearSkillSearchField(
     WidgetRef ref, {
     required TextEditingController controller,
   });
 
   void onTapTechSkillListTile(
     WidgetRef ref, {
-    required TechSkillEntity skill,
+    required SkillEntity skill,
+    required TextEditingController controller,
   });
 
   Future<void> onTapTechSkillStepNext(WidgetRef ref);
@@ -80,14 +80,6 @@ mixin class SignUpEvent implements _SignUpEvent {
   @override
   void onTapBackButton(WidgetRef ref) {
     ref.read(signUpStepControllerProvider.notifier).prev();
-    // TODO : 단계별 데이터 삭제 로직
-    final stepController = ref.read(signUpStepControllerProvider);
-    switch (stepController.page!.toInt()) {
-      case 1:
-        {}
-      case 2:
-        {}
-    }
   }
 
   @override
@@ -96,11 +88,12 @@ mixin class SignUpEvent implements _SignUpEvent {
     required String nickname,
     required ValueNotifier<bool> isRunningDebouncer,
   }) async {
+    ref.read(signUpFormProvider.notifier).clearNickname();
+
     // 입력받은 nickname이 비어있다면 콜백을 중단하고 닉네임 데이터를 초기화한다.
     if (nickname.isEmpty) {
       isRunningDebouncer.value = false;
       _nicknameValidateDebouncer.reset();
-      await ref.read(signUpFormProvider.notifier).updateNickname(nickname);
     } else {
       isRunningDebouncer.value = true;
 
@@ -117,15 +110,13 @@ mixin class SignUpEvent implements _SignUpEvent {
   @override
   void onClearNicknameField(
     WidgetRef ref, {
-    required TextEditingController controller,
     required ValueNotifier<bool> isRunningDebouncer,
   }) {
-    isRunningDebouncer.value = false;
-    _nicknameValidateDebouncer.reset();
-
-    ref.read(signUpFormProvider.notifier).updateNickname('');
-
-    controller.clear();
+    onChangeNicknameField(
+      ref,
+      nickname: '',
+      isRunningDebouncer: isRunningDebouncer,
+    );
   }
 
   @override
@@ -133,6 +124,7 @@ mixin class SignUpEvent implements _SignUpEvent {
     //? 현재는 컨트롤러 값만 바뀌주고있음
     //? 단계 변경 전 닉네임 검사를 한번 더 할지, 닉네임 검사를 끝내면 임시로 닉네임을 점유할지 등 고민 필요
 
+    FocusManager.instance.primaryFocus?.unfocus();
     ref.read(signUpStepControllerProvider.notifier).next();
   }
 
@@ -142,7 +134,7 @@ mixin class SignUpEvent implements _SignUpEvent {
     required JobGroupEntity group,
   }) {
     final jobGroupList = ref.read(
-      signUpFormProvider.select((v) => v.jobGroupList),
+      signUpFormProvider.select((v) => v.jobGroupList ?? []),
     );
 
     if (jobGroupList.contains(group)) {
@@ -169,15 +161,15 @@ mixin class SignUpEvent implements _SignUpEvent {
   }
 
   @override
-  void onTapSelectedTechSkill(
+  void onTapSelectedSkill(
     WidgetRef ref, {
-    required TechSkillEntity skill,
+    required SkillEntity skill,
   }) {
-    ref.read(signUpFormProvider.notifier).removeTechSkill(skill);
+    ref.read(signUpFormProvider.notifier).removeSkill(skill);
   }
 
   @override
-  void onChangeTechSkillSearchField(
+  void onChangeSkillSearchField(
     WidgetRef ref, {
     required String keyword,
   }) {
@@ -185,7 +177,7 @@ mixin class SignUpEvent implements _SignUpEvent {
   }
 
   @override
-  void onClearTechSkillSearchField(
+  void onClearSkillSearchField(
     WidgetRef ref, {
     required TextEditingController controller,
   }) {
@@ -196,38 +188,35 @@ mixin class SignUpEvent implements _SignUpEvent {
   @override
   void onTapTechSkillListTile(
     WidgetRef ref, {
-    required TechSkillEntity skill,
+    required TextEditingController controller,
+    required SkillEntity skill,
   }) {
     final techSkillList = ref.read(
-      signUpFormProvider.select((v) => v.techSkillList),
+      signUpFormProvider.select((v) => v.techSkillList ?? []),
     );
 
     if (!techSkillList.contains(skill)) {
-      ref.read(signUpFormProvider.notifier).addTechSkill(skill);
+      ref.read(signUpFormProvider.notifier).addSkill(skill);
     }
+    controller.clear();
+    ref.invalidate(techSkillSearchKeywordProvider);
   }
 
   @override
   Future<void> onTapTechSkillStepNext(WidgetRef ref) async {
     try {
+      final form = ref.read(signUpFormProvider);
       await EasyLoading.show()
           .then(
-            (_) => ref.read(signUpFormProvider.notifier).submit(),
-          )
+        (_) => ref.read(userDataProvider.notifier).createUserData(form),
+      )
           .then(
-            (_) => ref.refresh(appUserDataProvider.future),
-          )
-          .then(
-        (value) {
-          if (value == null || !value.isCompleteSignUp) {
-            throw Exception('회원가입 실패');
-          }
-
+        (_) {
           const MainRoute().go(ref.context);
         },
       ).whenComplete(
         EasyLoading.dismiss,
       );
-    } on Exception catch (e) {}
+    } catch (e) {}
   }
 }

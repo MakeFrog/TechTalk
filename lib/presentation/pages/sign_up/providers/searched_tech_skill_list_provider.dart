@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/features/tech_skill/tech_skill.dart';
+import 'package:techtalk/features/skill/entities/skill_list_entity.dart';
+import 'package:techtalk/features/skill/skill.dart';
 
 part 'searched_tech_skill_list_provider.g.dart';
 
@@ -14,16 +15,39 @@ class TechSkillSearchKeyword extends _$TechSkillSearchKeyword {
 }
 
 @riverpod
-Future<List<TechSkillEntity>> searchedTechSkillList(
+Future<SkillListEntity> searchedTechSkillList(
   SearchedTechSkillListRef ref,
 ) async {
   final keyword = ref.watch(techSkillSearchKeywordProvider);
 
   if (keyword.isEmpty) {
-    return [];
+    return SkillListEntity();
   }
 
-  final techSkillList = await searchTechSkillListUseCase(keyword);
+  final skillList = await searchSkillsUseCase(keyword);
 
-  return techSkillList;
+  return skillList.fold(
+    onSuccess: (value) {
+      final skills = value.skills;
+
+      // if (!skills
+      //     .map((e) => e.name.toLowerCase())
+      //     .contains(keyword.toLowerCase())) {
+      //   skills.insert(
+      //     0,
+      //     SkillEntity(
+      //       id: '',
+      //       name: keyword,
+      //     ),
+      //   );
+      // }
+
+      return value.copyWith(
+        skills: skills,
+      );
+    },
+    onFailure: (e) {
+      throw e;
+    },
+  );
 }

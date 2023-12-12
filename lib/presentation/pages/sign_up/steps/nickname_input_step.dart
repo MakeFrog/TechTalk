@@ -15,25 +15,19 @@ class NicknameInputStep extends HookWidget {
   Widget build(BuildContext context) {
     useAutomaticKeepAlive();
 
-    final isRunningDebouncer = useState<bool>(false);
-
-    return Padding(
-      padding: const EdgeInsets.all(16),
+    return const Padding(
+      padding: EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SignUpStepIntroMessage(
+          SignUpStepIntroMessage(
             title: '안녕하세요. 테크톡으로\n면접을 준비해볼까요?',
             subTitle: '먼저 사용할 닉네임이 필요해요.',
           ),
-          const HeightBox(56),
-          _NicknameInputSection(
-            isRunningDebouncer: isRunningDebouncer,
-          ),
-          const Spacer(),
-          _NextButton(
-            isRunningDebouncer: isRunningDebouncer,
-          ),
+          HeightBox(56),
+          _NicknameInputSection(),
+          Spacer(),
+          _NextButton(),
         ],
       ),
     );
@@ -43,72 +37,64 @@ class NicknameInputStep extends HookWidget {
 class _NicknameInputSection extends HookConsumerWidget with SignUpEvent {
   const _NicknameInputSection({
     super.key,
-    required this.isRunningDebouncer,
   });
-
-  final ValueNotifier<bool> isRunningDebouncer;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = useTextEditingController();
+    final isRunningDebounce = useValueNotifier(false);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ClearableTextField(
-          controller: controller,
           inputDecoration: const InputDecoration(
             hintText: '닉네임을 입력해 주세요',
           ),
           onChanged: (value) => onChangeNicknameField(
             ref,
             nickname: value,
-            isRunningDebouncer: isRunningDebouncer,
+            isRunningDebouncer: isRunningDebounce,
           ),
           onClear: () => onClearNicknameField(
             ref,
-            controller: controller,
-            isRunningDebouncer: isRunningDebouncer,
+            isRunningDebouncer: isRunningDebounce,
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: isRunningDebouncer.value
-              ? const SizedBox.square(
+          child: HookConsumer(
+            builder: (context, ref, child) {
+              final isChecking = useValueListenable(isRunningDebounce);
+
+              if (isChecking) {
+                return const SizedBox.square(
                   dimension: 12,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
                   ),
-                )
-              : _buildValidationMessage(),
+                );
+              }
+              final signUpForm = ref.watch(signUpFormProvider);
+
+              if (signUpForm.nicknameValidation != null) {
+                return Text(
+                  signUpForm.nicknameValidation!,
+                  style: AppTextStyle.alert2.copyWith(
+                    color: AppColor.of.red2,
+                  ),
+                );
+              } else {
+                return Text(
+                  '사용가능한 닉네임입니다.',
+                  style: AppTextStyle.alert2.copyWith(
+                    color: AppColor.of.brand3,
+                  ),
+                );
+              }
+            },
+          ),
         ),
       ],
-    );
-  }
-
-  Widget _buildValidationMessage() {
-    return Consumer(
-      builder: (context, ref, child) {
-        final signUpForm = ref.watch(signUpFormProvider);
-
-        if (signUpForm.nicknameValidation != null) {
-          return Text(
-            signUpForm.nicknameValidation!,
-            style: AppTextStyle.alert2.copyWith(
-              color: AppColor.of.red2,
-            ),
-          );
-        } else if (signUpForm.isPassNickname) {
-          return Text(
-            '사용가능한 닉네임입니다.',
-            style: AppTextStyle.alert2.copyWith(
-              color: AppColor.of.brand3,
-            ),
-          );
-        } else {
-          return const SizedBox();
-        }
-      },
     );
   }
 }
@@ -116,10 +102,7 @@ class _NicknameInputSection extends HookConsumerWidget with SignUpEvent {
 class _NextButton extends ConsumerWidget with SignUpEvent {
   const _NextButton({
     super.key,
-    required this.isRunningDebouncer,
   });
-
-  final ValueNotifier<bool> isRunningDebouncer;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -128,9 +111,7 @@ class _NextButton extends ConsumerWidget with SignUpEvent {
     );
 
     return FilledButton(
-      onPressed: !isRunningDebouncer.value && isPassNickname
-          ? () => onTapNicknameStepNext(ref)
-          : null,
+      onPressed: isPassNickname ? () => onTapNicknameStepNext(ref) : null,
       child: const Center(
         child: Text('다음'),
       ),

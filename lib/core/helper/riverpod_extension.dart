@@ -21,6 +21,23 @@ extension RiverpodRefExt on Ref {
 
     return token;
   }
+
+  Future<void> execDebounce([Duration? duration]) async {
+    // First, we handle debouncing.
+    bool didDispose = false;
+
+    onDispose(() => didDispose = true);
+
+    // We delay the request by 500ms, to wait for the user to stop refreshing.
+    await Future<void>.delayed(duration ?? const Duration(milliseconds: 500));
+
+    // If the provider was disposed during the delay, it means that the user
+    // refreshed again. We throw an exception to cancel the request.
+    // It is safe to use an exception here, as it will be caught by Riverpod.
+    if (didDispose) {
+      throw Exception('Cancelled');
+    }
+  }
 }
 
 extension RiverpodRefCacheExt on AutoDisposeRef {

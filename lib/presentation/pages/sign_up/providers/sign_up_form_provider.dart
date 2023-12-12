@@ -1,11 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/helper/validation_extension.dart';
 import 'package:techtalk/features/job/entities/job_group_entity.dart';
-import 'package:techtalk/features/sign_up/entities/sign_up_form_entity.dart';
-import 'package:techtalk/features/sign_up/sign_up.dart';
-import 'package:techtalk/features/tech_skill/tech_skill.dart';
+import 'package:techtalk/features/skill/entities/skill_entity.dart';
+import 'package:techtalk/features/user/entities/sign_up_form_entity.dart';
 import 'package:techtalk/features/user/user.dart';
-import 'package:techtalk/presentation/providers/app_user_data_provider.dart';
 
 part 'sign_up_form_provider.g.dart';
 
@@ -32,33 +30,34 @@ class SignUpForm extends _$SignUpForm {
 
   Future<void> updateNickname(String nickname) async {
     if (nickname.isEmpty) {
-      state = state.copyWith(
-        nickname: null,
-        nicknameValidation: null,
-      );
+      clearNickname();
       return;
     }
 
     final validationMessage = _validateNickname(nickname);
     if (validationMessage != null) {
       state = state.copyWith(
-        nickname: null,
+        nickname: '',
         nicknameValidation: validationMessage,
       );
 
       return;
     }
 
-    final result = await isNicknameDuplicatedUseCase(nickname);
-    state = result.getOrThrow()
-        ? state.copyWith(
-            nickname: null,
-            nicknameValidation: '중복된 닉네임입니다.',
-          )
-        : state.copyWith(
-            nickname: nickname,
-            nicknameValidation: null,
-          );
+    final result = await isExistNicknameUseCase(nickname);
+    state = SignUpFormEntity(
+      nickname: nickname,
+      nicknameValidation: result.getOrThrow() ? '중복된 닉네임입니다.' : null,
+      jobGroupList: state.jobGroupList,
+      techSkillList: state.techSkillList,
+    );
+  }
+
+  void clearNickname() {
+    state = state.copyWith(
+      nickname: '',
+      nicknameValidation: '',
+    );
   }
 
   void addJobGroup(JobGroupEntity group) {
@@ -86,7 +85,7 @@ class SignUpForm extends _$SignUpForm {
     }
   }
 
-  void addTechSkill(TechSkillEntity skill) {
+  void addSkill(SkillEntity skill) {
     final isExist = state.techSkillList.contains(skill);
 
     if (!isExist) {
@@ -99,7 +98,7 @@ class SignUpForm extends _$SignUpForm {
     }
   }
 
-  void removeTechSkill(TechSkillEntity skill) {
+  void removeSkill(SkillEntity skill) {
     final isExist = state.techSkillList.contains(skill);
 
     if (isExist) {
@@ -109,16 +108,5 @@ class SignUpForm extends _$SignUpForm {
         techSkillList: selectedTechSkillList,
       );
     }
-  }
-
-  Future<void> submit() async {
-    final userData = ref.read(appUserDataProvider).requireValue!.copyWith(
-          nickname: state.nickname,
-          interestedJobGroupIdList:
-              state.jobGroupList.map((e) => e.id).toList(),
-          techSkillIdList: state.techSkillList.map((e) => e.id).toList(),
-        );
-
-    await createUserDataUseCase(userData);
   }
 }
