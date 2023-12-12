@@ -3,6 +3,12 @@ import 'package:techtalk/features/job/data/models/job_group_model.dart';
 class JobGroupEntity {
   final String id;
   final String name;
+  factory JobGroupEntity.fromModel(JobGroupModel model) {
+    return JobGroupEntity(
+      id: model.id,
+      name: model.name,
+    );
+  }
 
 //<editor-fold desc="Data Methods">
   const JobGroupEntity({
@@ -33,13 +39,6 @@ class JobGroupEntity {
     return JobGroupEntity(
       id: id ?? this.id,
       name: name ?? this.name,
-    );
-  }
-
-  factory JobGroupEntity.fromModel(JobGroupModel model) {
-    return JobGroupEntity(
-      id: model.id,
-      name: model.name,
     );
   }
 

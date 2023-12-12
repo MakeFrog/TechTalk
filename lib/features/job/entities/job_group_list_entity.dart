@@ -4,19 +4,18 @@ import 'package:techtalk/features/job/job.dart';
 class JobGroupListEntity {
   final int totalCount;
   final List<JobGroupEntity> groups;
-
-//<editor-fold desc="Data Methods">
-  const JobGroupListEntity({
-    required this.totalCount,
-    required this.groups,
-  });
-
   factory JobGroupListEntity.fromModel(JobGroupListModel model) {
     return JobGroupListEntity(
       totalCount: model.totalCount,
       groups: model.groups.map(JobGroupEntity.fromModel).toList(),
     );
   }
+
+//<editor-fold desc="Data Methods">
+  const JobGroupListEntity({
+    required this.totalCount,
+    required this.groups,
+  });
 
   @override
   bool operator ==(Object other) =>
