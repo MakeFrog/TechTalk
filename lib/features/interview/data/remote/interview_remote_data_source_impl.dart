@@ -15,7 +15,7 @@ final class InterviewRemoteDataSourceImpl implements InterviewRemoteDataSource {
     required String topicId,
   }) async {
     final reviewNoteCollection =
-        _firestore.collection(FirestoreCollection.reviewNotes.name);
+        _firestore.collection(FirestoreCollection.usersWrongAnswerNote.name);
     final docSnapshot = await reviewNoteCollection.doc(userUid).get();
 
     print(reviewNoteCollection.doc(userUid));

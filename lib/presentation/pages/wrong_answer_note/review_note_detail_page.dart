@@ -12,6 +12,7 @@ import 'package:techtalk/features/chat/repositories/entities/interview_qna_entit
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/detail_page_controller_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/review_note_detail_event.dart';
 import 'package:techtalk/presentation/providers/wrong_answer/question_answer_blur_provider.dart';
+import 'package:techtalk/presentation/providers/wrong_answer/selected_wrong_answer_topic_provider.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class ReviewNoteDetailPage extends StatelessWidget {
@@ -51,8 +52,7 @@ class _AppBar extends StatelessWidget
       titleSpacing: 0,
       title: Consumer(
         builder: (_, ref, __) {
-          final topicName =
-              ref.watch(selectedReviewNoteTopicProvider).requireValue.text;
+          final topicName = ref.watch(selectedWrongAnswerTopicProvider).text;
 
           return Text(topicName);
         },
