@@ -44,7 +44,7 @@ class SignUpForm extends _$SignUpForm {
       return;
     }
 
-    final result = await isExistNicknameUseCase(nickname);
+    // final result = await isExistNicknameUseCase(nickname);
     state = SignUpFormEntity(
       nickname: nickname,
       nicknameValidation: result.getOrThrow() ? '중복된 닉네임입니다.' : null,

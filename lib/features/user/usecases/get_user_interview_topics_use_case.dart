@@ -9,11 +9,14 @@ final class GetUserInterviewTopicsUseCase {
   final UserRepository _userRepository;
 
   Future<List<InterviewTopic>> call() async {
-    final topics = await _userRepository.getUserTopicList();
+    final topics = await _userRepository.getUserTopicIds();
 
     return topics.fold(
       onSuccess: (value) {
-        return value;
+        return [
+          ...InterviewTopic.values
+              .where((element) => value.contains(element.id)),
+        ];
       },
       onFailure: (e) {
         throw e;

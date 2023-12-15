@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_event.dart';
@@ -8,7 +9,6 @@ import 'package:techtalk/presentation/pages/interview/topic_select/widgets/topic
 import 'package:techtalk/presentation/pages/interview/topic_select/widgets/topic_grid_view_builder.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
-import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 
 class InterviewTopicSelectPage extends BasePage with InterviewTopicSelectEvent {
   const InterviewTopicSelectPage({super.key});
@@ -20,7 +20,7 @@ class InterviewTopicSelectPage extends BasePage with InterviewTopicSelectEvent {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const HeightBox(20),
+          const Gap(20),
           _buildInfoMessage(),
           const _TopicListView(),
           const _NextButton(),
@@ -30,7 +30,7 @@ class InterviewTopicSelectPage extends BasePage with InterviewTopicSelectEvent {
   }
 
   @override
-  PreferredSizeWidget? buildAppBar(BuildContext context) =>
+  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
       const BackButtonAppBar();
 
   Widget _buildInfoMessage() {

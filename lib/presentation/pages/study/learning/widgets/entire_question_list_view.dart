@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/interview/entities/interview_question_entity.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class EntireQuestionListView extends ConsumerWidget {
   const EntireQuestionListView({
@@ -64,7 +64,7 @@ class EntireQuestionListView extends ConsumerWidget {
                 color: AppColor.of.gray3,
               ),
             ),
-            WidthBox(16),
+            Gap(16),
             Text(
               question.question,
               style: AppTextStyle.body1,

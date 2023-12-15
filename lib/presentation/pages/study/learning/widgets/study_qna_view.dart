@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
@@ -9,7 +10,6 @@ import 'package:techtalk/presentation/pages/study/learning/providers/question_pa
 import 'package:techtalk/presentation/pages/study/learning/study_learning_event.dart';
 import 'package:techtalk/presentation/providers/study/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/providers/study/study_questions_provider.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class StudyQnaView extends ConsumerWidget with StudyLearningEvent {
   const StudyQnaView({
@@ -48,7 +48,7 @@ class _StudyQna extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildQuestion(),
-        const HeightBox(8),
+        const Gap(8),
         _buildAnswers(),
       ],
     );

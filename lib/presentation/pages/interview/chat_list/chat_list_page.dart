@@ -71,7 +71,8 @@ class ChatListPage extends BasePage with ChatListEvent {
   }
 
   @override
-  PreferredSizeWidget? buildAppBar(BuildContext context) => BackButtonAppBar(
+  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
+      BackButtonAppBar(
         title: 'Swift ',
         onBackBtnTapped: () {},
       );

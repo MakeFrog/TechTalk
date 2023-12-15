@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class MyInfoPage extends BasePage {
   const MyInfoPage({super.key});
@@ -15,7 +15,7 @@ class MyInfoPage extends BasePage {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        HeightBox(32),
+        Gap(32),
 
         /// 프로필 수정
         Row(
@@ -49,7 +49,7 @@ class MyInfoPage extends BasePage {
             ),
           ],
         ),
-        HeightBox(6),
+        Gap(6),
         Padding(
           padding: const EdgeInsets.only(left: 2),
           child: GestureDetector(
@@ -61,7 +61,7 @@ class MyInfoPage extends BasePage {
             ),
           ),
         ),
-        HeightBox(40),
+        Gap(40),
 
         /// 내 정보 수정
         Row(
@@ -79,7 +79,7 @@ class MyInfoPage extends BasePage {
             ),
           ],
         ),
-        HeightBox(8),
+        Gap(8),
         Container(
           padding: const EdgeInsets.symmetric(
             horizontal: 16,
@@ -96,7 +96,7 @@ class MyInfoPage extends BasePage {
                 '관심 직군',
                 style: AppTextStyle.body3,
               ),
-              HeightBox(8),
+              Gap(8),
               SizedBox(
                 height: 36,
                 child: Row(
@@ -124,12 +124,12 @@ class MyInfoPage extends BasePage {
                   ],
                 ),
               ),
-              HeightBox(16),
+              Gap(16),
               Text(
                 '관심 주제',
                 style: AppTextStyle.body3,
               ),
-              HeightBox(8),
+              Gap(8),
               SizedBox(
                 height: 36,
                 child: Row(
@@ -160,14 +160,14 @@ class MyInfoPage extends BasePage {
             ],
           ),
         ),
-        HeightBox(24),
+        Gap(24),
 
         /// 설정
         Text(
           '설정',
           style: AppTextStyle.title1,
         ),
-        HeightBox(8),
+        Gap(8),
         Container(
           padding: const EdgeInsets.symmetric(
             horizontal: 16,
@@ -186,14 +186,14 @@ class MyInfoPage extends BasePage {
                   color: AppColor.of.gray2,
                 ),
               ),
-              HeightBox(24),
+              Gap(24),
               Text(
                 '피드백 및 문의사항',
                 style: AppTextStyle.body2.copyWith(
                   color: AppColor.of.gray2,
                 ),
               ),
-              HeightBox(24),
+              Gap(24),
               Text(
                 '개인정보 및 약관',
                 style: AppTextStyle.body2.copyWith(
@@ -203,14 +203,14 @@ class MyInfoPage extends BasePage {
             ],
           ),
         ),
-        HeightBox(24),
+        Gap(24),
 
         /// 기타
         Text(
           '기타',
           style: AppTextStyle.title1,
         ),
-        HeightBox(8),
+        Gap(8),
         Container(
           padding: const EdgeInsets.symmetric(
             horizontal: 16,
@@ -229,7 +229,7 @@ class MyInfoPage extends BasePage {
                   color: AppColor.of.gray2,
                 ),
               ),
-              HeightBox(24),
+              Gap(24),
               Text(
                 '회원탈퇴',
                 style: AppTextStyle.body2.copyWith(

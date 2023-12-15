@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/constants/firestore_collection.enum.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/features/user/data/models/user_data_model.dart';
-import 'package:techtalk/features/user/data/remote/user_remote_data_source.dart';
+import 'package:techtalk/features/user/user.dart';
 
 final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   /// firestore에 저장된 users 컬렉션을 조회한다
-  CollectionReference<UserDataModel> get _userRef => _firestore
+  CollectionReference<UserDataModel> get _usersCollection => _firestore
       .collection(FirestoreCollection.users.name)
       .withConverter<UserDataModel>(
         fromFirestore: (snapshot, _) => UserDataModel.fromFirestore(snapshot),
@@ -16,38 +16,21 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       );
 
   /// [data.uid]를 키로 가지는 도큐먼트를 조회한다
-  DocumentReference<UserDataModel> _userDoc(String uid) => _userRef.doc(uid);
+  DocumentReference<UserDataModel> _userDoc(String uid) =>
+      _usersCollection.doc(uid);
 
   /// [uid]를 키로 가지는 데이터가 있는지 여부
   Future<bool> _isExistUserData(String uid) async =>
       (await _userDoc(uid).get()).exists;
 
-  @override
-  Future<void> createUserData(UserDataModel data) async {
-    if (await _isExistUserData(data.uid)) {
-      throw CustomException(
-        code: 'code',
-        message: '이미 유저 데이터가 존재합니다.',
-      );
-    }
+  Future<bool> _isExistNickname(
+    String uid,
+    String nickname,
+  ) async {
+    final userSnapshot = await _userDoc(uid).get();
+    final userNickname = userSnapshot.get('nickname');
 
-    await _userDoc(data.uid).set(data);
-  }
-
-  @override
-  Future<UserDataModel?> getUserData(String uid) async {
-    if (await _isExistUserData(uid)) {
-      final snapshot = await _userDoc(uid).get();
-
-      return snapshot.data();
-    }
-
-    return null;
-  }
-
-  @override
-  Future<bool> isExistNickname(String nickname) async {
-    return _userRef
+    final isNicknameExist = await _usersCollection
         .where(
           'nickname',
           isEqualTo: nickname,
@@ -57,5 +40,50 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         .then(
           (value) => value.count > 0,
         );
+
+    return isNicknameExist && userNickname != nickname;
+  }
+
+  @override
+  Future<void> createUserData(String uid) async {
+    if (await _isExistUserData(uid)) {
+      throw const AlreadyExistUserDataException();
+    }
+
+    await _userDoc(uid).set(
+      UserDataModel(uid: uid),
+    );
+  }
+
+  @override
+  Future<void> updateUserData(UserDataEntity data) async {
+    if (!await _isExistUserData(data.uid)) {
+      throw const NoUserDataException();
+    }
+
+    if (data.nickname != null &&
+        await _isExistNickname(data.uid, data.nickname!)) {
+      throw AlreadyExistNicknameException();
+    }
+
+    await _userDoc(data.uid).update(
+      UserDataModel.fromEntity(data).toFirestore(),
+    );
+  }
+
+  @override
+  Future<UserDataModel?> getUserData(String uid) async {
+    if (!await _isExistUserData(uid)) {
+      return null;
+    }
+
+    final snapshot = await _userDoc(uid).get();
+
+    return snapshot.data();
+  }
+
+  @override
+  Future<void> deleteUserData(String uid) async {
+    await _userDoc(uid).delete();
   }
 }

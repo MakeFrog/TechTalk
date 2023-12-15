@@ -95,8 +95,8 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/logo/
-    - lib/core/constants/assets.dart
     - assets/character/
+    - assets/json/
 
   fonts:
     - family: pretendard
