@@ -1,21 +1,18 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/features/interview/entities/interview_topic.enum.dart';
-import 'package:techtalk/features/interview/entities/interview_topic_category.enum.dart';
-import 'package:techtalk/features/interview/interview.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 part 'categorized_study_topics_provider.g.dart';
 
 @riverpod
-Future<Map<InterviewTopicCategory, List<InterviewTopic>>>
-    categorizedStudyTopics(
+Future<Map<TopicCategory, List<Topic>>> categorizedStudyTopics(
   CategorizedStudyTopicsRef ref,
 ) async {
-  final topics = interviewRepository.getTopics().getOrThrow().toList()
+  final topics = (await getTopicsUseCase()).getOrThrow()
     ..sort(
       (a, b) => a.category.text.compareTo(b.category.text),
     );
 
-  final resolvedTopics = <InterviewTopicCategory, List<InterviewTopic>>{};
+  final resolvedTopics = <TopicCategory, List<Topic>>{};
 
   for (final topic in topics) {
     if (resolvedTopics.containsKey(topic.category)) {

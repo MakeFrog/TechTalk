@@ -2,6 +2,7 @@ import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/core/utils/base/base_use_case.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 class GetChatMessagesUseCase
     extends BaseUseCase<GetChatListParam, Result<List<MessageEntity>>> {
@@ -32,5 +33,5 @@ typedef GetChatListParam = ({
   InterviewProgressState progressState,
   String? userName,
   String? roomId,
-  InterviewTopic topic
+  Topic topic
 });

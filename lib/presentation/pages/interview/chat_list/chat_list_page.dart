@@ -7,6 +7,7 @@ import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_qna_progress_info_entity.dart';
 import 'package:techtalk/features/shared/enums/interviewer_avatar.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/local_widgets/chat_list_item_view.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_provider.dart';
@@ -52,7 +53,7 @@ class ChatListPage extends BasePage with ChatListEvent {
           progressState: InterviewProgressState.initial,
           qnaProgressInfo:
               ChatQnaProgressInfoEntity.onInitial(totalQuestionCount: 10),
-          topic: InterviewTopic.swift,
+          topic: Topic.swift,
           interviewer: InterviewerAvatar.getRandomInterviewer(),
         );
       },

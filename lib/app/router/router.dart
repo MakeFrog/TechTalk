@@ -3,8 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_qna_progress_info_entity.dart';
 import 'package:techtalk/features/chat/repositories/enums/interview_progress_state.enum.dart';
-import 'package:techtalk/features/interview/entities/interview_topic.enum.dart';
 import 'package:techtalk/features/shared/enums/interviewer_avatar.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_page_route_argument_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
@@ -16,6 +16,7 @@ import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_page.dart';
+import 'package:techtalk/presentation/pages/wrong_answer_note/review_note_detail_page.dart';
 import 'package:techtalk/presentation/providers/study/selected_study_topic_provider.dart';
 
 part 'route_argument.dart';
@@ -104,6 +105,10 @@ class SignUpRoute extends GoRouteData {
       path: StudyRoute.name,
       name: StudyRoute.name,
     ),
+    TypedGoRoute<WrongAnswerRoute>(
+      path: WrongAnswerRoute.name,
+      name: WrongAnswerRoute.name,
+    ),
     TypedGoRoute<ChatListPageRoute>(
       path: ChatListPageRoute.name,
       name: ChatListPageRoute.name,
@@ -111,7 +116,7 @@ class SignUpRoute extends GoRouteData {
         TypedGoRoute<ChatPageRoute>(
           path: ChatPageRoute.name,
           name: ChatPageRoute.name,
-        )
+        ),
       ],
     ),
   ],
@@ -123,7 +128,7 @@ class MainRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return MainPage();
+    return const MainPage();
   }
 }
 
@@ -144,6 +149,18 @@ class StudyRoute extends GoRouteData {
   }
 }
 
+class WrongAnswerRoute extends GoRouteData {
+  const WrongAnswerRoute({this.$extra});
+
+  final int? $extra;
+  static const String name = 'wrong-answer';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ReviewNoteDetailPage(page: $extra ?? 0);
+  }
+}
+
 class HomeTopicSelectRoute extends GoRouteData {
   const HomeTopicSelectRoute();
 
@@ -151,14 +168,14 @@ class HomeTopicSelectRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return InterviewTopicSelectPage();
+    return const InterviewTopicSelectPage();
   }
 }
 
 class QuestionCountSelectPageRoute extends GoRouteData {
   const QuestionCountSelectPageRoute({required this.selectedTopic});
 
-  final InterviewTopic selectedTopic;
+  final Topic selectedTopic;
 
   static const String name = 'question-count-select';
 
@@ -180,7 +197,7 @@ class ChatListPageRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ChatListPage();
+    return const ChatListPage();
   }
 }
 
@@ -198,7 +215,7 @@ class ChatPageRoute extends GoRouteData {
   final InterviewProgressState progressState;
   final ChatQnaProgressInfoEntity $extra;
   final String roomId;
-  final InterviewTopic topic;
+  final Topic topic;
   final InterviewerAvatar interviewer;
 
   @override

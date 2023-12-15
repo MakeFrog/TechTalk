@@ -7,12 +7,12 @@ part of 'user_interview_topics_provider.dart';
 // **************************************************************************
 
 String _$availableUserInterviewTopicsHash() =>
-    r'4fe94f9c33f6ddf59f8b242c2aaadae6e44e3d5c';
+    r'dc70d25eeb1ce997db93c594c81194fbcb38e3a5';
 
 /// See also [availableUserInterviewTopics].
 @ProviderFor(availableUserInterviewTopics)
 final availableUserInterviewTopicsProvider =
-    AutoDisposeFutureProvider<List<InterviewTopic>>.internal(
+    AutoDisposeFutureProvider<List<Topic>>.internal(
   availableUserInterviewTopics,
   name: r'availableUserInterviewTopicsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -23,9 +23,9 @@ final availableUserInterviewTopicsProvider =
 );
 
 typedef AvailableUserInterviewTopicsRef
-    = AutoDisposeFutureProviderRef<List<InterviewTopic>>;
+    = AutoDisposeFutureProviderRef<List<Topic>>;
 String _$userInterviewTopicsHash() =>
-    r'308771032cf461fad1a599033fa6d03d4f4e0891';
+    r'1b1279d0516a67108cb1ef5f20abe21f2b61575a';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -49,10 +49,10 @@ class _SystemHash {
 }
 
 abstract class _$UserInterviewTopics
-    extends BuildlessAsyncNotifier<List<InterviewTopic>> {
+    extends BuildlessAsyncNotifier<List<Topic>> {
   late final bool onlyAvailable;
 
-  FutureOr<List<InterviewTopic>> build({
+  FutureOr<List<Topic>> build({
     bool onlyAvailable = false,
   });
 }
@@ -62,8 +62,7 @@ abstract class _$UserInterviewTopics
 const userInterviewTopicsProvider = UserInterviewTopicsFamily();
 
 /// See also [UserInterviewTopics].
-class UserInterviewTopicsFamily
-    extends Family<AsyncValue<List<InterviewTopic>>> {
+class UserInterviewTopicsFamily extends Family<AsyncValue<List<Topic>>> {
   /// See also [UserInterviewTopics].
   const UserInterviewTopicsFamily();
 
@@ -101,8 +100,8 @@ class UserInterviewTopicsFamily
 }
 
 /// See also [UserInterviewTopics].
-class UserInterviewTopicsProvider extends AsyncNotifierProviderImpl<
-    UserInterviewTopics, List<InterviewTopic>> {
+class UserInterviewTopicsProvider
+    extends AsyncNotifierProviderImpl<UserInterviewTopics, List<Topic>> {
   /// See also [UserInterviewTopics].
   UserInterviewTopicsProvider({
     bool onlyAvailable = false,
@@ -133,7 +132,7 @@ class UserInterviewTopicsProvider extends AsyncNotifierProviderImpl<
   final bool onlyAvailable;
 
   @override
-  FutureOr<List<InterviewTopic>> runNotifierBuild(
+  FutureOr<List<Topic>> runNotifierBuild(
     covariant UserInterviewTopics notifier,
   ) {
     return notifier.build(
@@ -158,7 +157,7 @@ class UserInterviewTopicsProvider extends AsyncNotifierProviderImpl<
   }
 
   @override
-  AsyncNotifierProviderElement<UserInterviewTopics, List<InterviewTopic>>
+  AsyncNotifierProviderElement<UserInterviewTopics, List<Topic>>
       createElement() {
     return _UserInterviewTopicsProviderElement(this);
   }
@@ -178,13 +177,14 @@ class UserInterviewTopicsProvider extends AsyncNotifierProviderImpl<
   }
 }
 
-mixin UserInterviewTopicsRef on AsyncNotifierProviderRef<List<InterviewTopic>> {
+mixin UserInterviewTopicsRef on AsyncNotifierProviderRef<List<Topic>> {
   /// The parameter `onlyAvailable` of this provider.
   bool get onlyAvailable;
 }
 
-class _UserInterviewTopicsProviderElement extends AsyncNotifierProviderElement<
-    UserInterviewTopics, List<InterviewTopic>> with UserInterviewTopicsRef {
+class _UserInterviewTopicsProviderElement
+    extends AsyncNotifierProviderElement<UserInterviewTopics, List<Topic>>
+    with UserInterviewTopicsRef {
   _UserInterviewTopicsProviderElement(super.provider);
 
   @override

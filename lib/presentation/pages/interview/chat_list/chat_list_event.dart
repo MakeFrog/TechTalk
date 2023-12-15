@@ -3,6 +3,7 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_qna_progress_info_entity.dart';
 import 'package:techtalk/features/shared/enums/interviewer_avatar.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 abstract class _ChatListEvent {
   /// 채팅 페이지로 이동
@@ -10,7 +11,7 @@ abstract class _ChatListEvent {
       {required InterviewProgressState progressState,
       required ChatQnaProgressInfoEntity qnaProgressInfo,
       required String roomId,
-      required InterviewTopic topic,
+      required Topic topic,
       required InterviewerAvatar interviewer});
 }
 
@@ -20,7 +21,7 @@ mixin class ChatListEvent implements _ChatListEvent {
       {required String roomId,
       required InterviewProgressState progressState,
       required ChatQnaProgressInfoEntity qnaProgressInfo,
-      required InterviewTopic topic,
+      required Topic topic,
       required InterviewerAvatar interviewer}) {
     ChatPageRoute(
       progressState: progressState,

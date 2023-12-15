@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 part 'chat_list_provider.g.dart';
 
@@ -9,7 +10,7 @@ part 'chat_list_provider.g.dart';
 class ChatList extends _$ChatList {
   @override
   FutureOr<List<ChatRoomEntity>> build() async {
-    final response = await getChatListUseCase(InterviewTopic.swift);
+    final response = await getChatListUseCase(Topic.swift);
     return response.fold(
       onSuccess: (chatList) {
         return chatList;
@@ -22,7 +23,7 @@ class ChatList extends _$ChatList {
   }
 
   Future<void> updateChatList() async {
-    final response = await getChatListUseCase(InterviewTopic.swift);
+    final response = await getChatListUseCase(Topic.swift);
     return response.fold(
       onSuccess: (chatList) {
         update((_) => chatList);

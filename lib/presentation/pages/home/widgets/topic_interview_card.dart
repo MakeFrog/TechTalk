@@ -4,7 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/home/home_event.dart';
 import 'package:techtalk/presentation/providers/user/user_interview_topics_provider.dart';
 
@@ -88,7 +88,7 @@ class TopicInterviewCard extends StatelessWidget with HomeEvent {
     );
   }
 
-  Widget _buildTopic(InterviewTopic topic) {
+  Widget _buildTopic(Topic topic) {
     return SizedBox(
       height: 64,
       child: Row(

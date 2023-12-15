@@ -1,14 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/interview/data/models/interview_question_model.dart';
 import 'package:techtalk/features/interview/interview.dart';
 
 class InterviewLocalDataSourceImpl implements InterviewLocalDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  @override
-  List<InterviewTopic> getTopics() {
-    return InterviewTopic.values;
-  }
 
   @override
   Future<List<InterviewQuestionModel>?> getCachedInterviewQuestions(

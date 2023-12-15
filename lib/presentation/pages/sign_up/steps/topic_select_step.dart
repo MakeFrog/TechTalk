@@ -4,7 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_event.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/select_result_chip_list_view.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_intro_message.dart';
@@ -16,7 +16,7 @@ class TopicSelectStep extends HookConsumerWidget with SignUpEvent {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
-    final selectedTopics = useState<List<InterviewTopic>>([]);
+    final selectedTopics = useState<List<Topic>>([]);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +50,7 @@ class _SearchedSkillListView extends HookConsumerWidget with SignUpEvent {
     required this.selectedTopicsNotifier,
   });
 
-  final ValueNotifier<List<InterviewTopic>> selectedTopicsNotifier;
+  final ValueNotifier<List<Topic>> selectedTopicsNotifier;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = useTextEditingController();
@@ -59,7 +59,7 @@ class _SearchedSkillListView extends HookConsumerWidget with SignUpEvent {
       () => controller.text,
     );
     final searchTopicsFuture = useMemoized(
-      () async => <InterviewTopic>[],
+      () async => <Topic>[],
       // () => searchInterviewTopicsUseCase(keyword),
     );
     final searchTopicAsync = useFuture(searchTopicsFuture);
@@ -146,7 +146,7 @@ class _SignUpButton extends ConsumerWidget with SignUpEvent {
     super.key,
     required this.selectedTopicsNotifier,
   });
-  final ValueNotifier<List<InterviewTopic>> selectedTopicsNotifier;
+  final ValueNotifier<List<Topic>> selectedTopicsNotifier;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

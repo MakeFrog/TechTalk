@@ -7,7 +7,7 @@ part of 'user_interview_rooms_provider.dart';
 // **************************************************************************
 
 String _$userInterviewRoomsHash() =>
-    r'43165968bccf22b562e3cef9c6a8bf31e08c467e';
+    r'799602651ed4c1814241f74033d706c45b304434';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -32,10 +32,10 @@ class _SystemHash {
 
 abstract class _$UserInterviewRooms
     extends BuildlessAsyncNotifier<List<ChatRoomEntity>> {
-  late final InterviewTopic topic;
+  late final Topic topic;
 
   FutureOr<List<ChatRoomEntity>> build(
-    InterviewTopic topic,
+    Topic topic,
   );
 }
 
@@ -51,7 +51,7 @@ class UserInterviewRoomsFamily
 
   /// See also [UserInterviewRooms].
   UserInterviewRoomsProvider call(
-    InterviewTopic topic,
+    Topic topic,
   ) {
     return UserInterviewRoomsProvider(
       topic,
@@ -87,7 +87,7 @@ class UserInterviewRoomsProvider extends AsyncNotifierProviderImpl<
     UserInterviewRooms, List<ChatRoomEntity>> {
   /// See also [UserInterviewRooms].
   UserInterviewRoomsProvider(
-    InterviewTopic topic,
+    Topic topic,
   ) : this._internal(
           () => UserInterviewRooms()..topic = topic,
           from: userInterviewRoomsProvider,
@@ -112,7 +112,7 @@ class UserInterviewRoomsProvider extends AsyncNotifierProviderImpl<
     required this.topic,
   }) : super.internal();
 
-  final InterviewTopic topic;
+  final Topic topic;
 
   @override
   FutureOr<List<ChatRoomEntity>> runNotifierBuild(
@@ -161,7 +161,7 @@ class UserInterviewRoomsProvider extends AsyncNotifierProviderImpl<
 
 mixin UserInterviewRoomsRef on AsyncNotifierProviderRef<List<ChatRoomEntity>> {
   /// The parameter `topic` of this provider.
-  InterviewTopic get topic;
+  Topic get topic;
 }
 
 class _UserInterviewRoomsProviderElement extends AsyncNotifierProviderElement<
@@ -169,7 +169,7 @@ class _UserInterviewRoomsProviderElement extends AsyncNotifierProviderElement<
   _UserInterviewRoomsProviderElement(super.provider);
 
   @override
-  InterviewTopic get topic => (origin as UserInterviewRoomsProvider).topic;
+  Topic get topic => (origin as UserInterviewRoomsProvider).topic;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

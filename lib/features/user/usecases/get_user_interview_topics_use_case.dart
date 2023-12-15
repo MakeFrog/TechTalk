@@ -1,4 +1,4 @@
-import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/user/user.dart';
 
 final class GetUserInterviewTopicsUseCase {
@@ -8,14 +8,13 @@ final class GetUserInterviewTopicsUseCase {
 
   final UserRepository _userRepository;
 
-  Future<List<InterviewTopic>> call() async {
+  Future<List<Topic>> call() async {
     final topics = await _userRepository.getUserTopicIds();
 
     return topics.fold(
       onSuccess: (value) {
         return [
-          ...InterviewTopic.values
-              .where((element) => value.contains(element.id)),
+          ...Topic.values.where((element) => value.contains(element.id)),
         ];
       },
       onFailure: (e) {

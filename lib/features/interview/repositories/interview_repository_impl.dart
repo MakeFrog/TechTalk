@@ -15,16 +15,6 @@ class InterviewRepositoryImpl implements InterviewRepository {
   final InterviewRemoteDataSource _interviewRemoteDataSource;
 
   @override
-  Result<List<InterviewTopic>> getTopics() {
-    try {
-      final response = _interviewLocalDataSource.getTopics();
-      return Result.success(response);
-    } on Exception catch (e) {
-      return Result.failure(e);
-    }
-  }
-
-  @override
   Future<Result<List<InterviewQnAEntity>>> getReviewNoteQuestions({
     required String userUid,
     required String topicId,
@@ -79,7 +69,7 @@ class InterviewRepositoryImpl implements InterviewRepository {
     }
 
     return Result.success(
-      questionsModel.map(interview.InterviewQuestionEntity.fromModel).toList(),
+      questionsModel.map((e) => e.toEntity()).toList(),
     );
   }
 }

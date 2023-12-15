@@ -7,6 +7,7 @@ import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/core/services/toast_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/use_cases/update_chat_info_use_case.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_page_route_argument_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/completed_qna_list_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/total_qna_list_provider.dart';
@@ -280,8 +281,7 @@ class ChatHistory extends _$ChatHistory {
   /// QnA 리스트 : 새로운 질문 추가
   ///
   Future<void> addRandomQuestionToQnaList() async {
-    final response =
-        await getRandomInterviewQuestionUseCase.call(InterviewTopic.swift);
+    final response = await getRandomInterviewQuestionUseCase.call(Topic.swift);
     final newQuestion = response.getOrThrow();
 
     await ref.read(totalQnaListProvider.notifier).addQnaList(newQuestion);

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:techtalk/features/interview/entities/interview_question_entity.dart';
 
 part 'interview_question_model.g.dart';
 
@@ -9,23 +10,29 @@ class InterviewQuestionModel {
     required this.id,
     required this.question,
     required this.answers,
-    required this.updateDate,
   });
 
   final String id;
   final String question;
   final List<String> answers;
-  final DateTime updateDate;
+
+  InterviewQuestionEntity toEntity() {
+    return InterviewQuestionEntity(
+      id: id,
+      question: question,
+      answers: answers,
+    );
+  }
 
   factory InterviewQuestionModel.fromFirestore(
-      DocumentSnapshot<Map<String, dynamic>> snapshot) {
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+  ) {
     final data = snapshot.data()!;
 
     return InterviewQuestionModel(
       id: data['id'] as String,
       question: data['question'] as String,
       answers: (data['answers'] as List).cast<String>(),
-      updateDate: (data['update_date'] as Timestamp).toDate(),
     );
   }
 

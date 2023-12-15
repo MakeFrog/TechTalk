@@ -23,12 +23,12 @@ final selectedStudyTopicIdProvider = AutoDisposeProvider<String>.internal(
 
 typedef SelectedStudyTopicIdRef = AutoDisposeProviderRef<String>;
 String _$selectedStudyTopicHash() =>
-    r'01bcb33982e750456c81912e04d8b8f9212707ba';
+    r'968d1ff6e825bc926c5bfcd701c0efd867736c06';
 
 /// See also [SelectedStudyTopic].
 @ProviderFor(SelectedStudyTopic)
 final selectedStudyTopicProvider =
-    AutoDisposeNotifierProvider<SelectedStudyTopic, InterviewTopic>.internal(
+    AutoDisposeNotifierProvider<SelectedStudyTopic, Topic>.internal(
   SelectedStudyTopic.new,
   name: r'selectedStudyTopicProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -41,6 +41,6 @@ final selectedStudyTopicProvider =
   },
 );
 
-typedef _$SelectedStudyTopic = AutoDisposeNotifier<InterviewTopic>;
+typedef _$SelectedStudyTopic = AutoDisposeNotifier<Topic>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

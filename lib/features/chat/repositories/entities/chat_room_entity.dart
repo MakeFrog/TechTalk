@@ -3,10 +3,11 @@ import 'package:techtalk/features/chat/data/models/chat_room_model.dart';
 import 'package:techtalk/features/chat/data/models/message_model.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_qna_progress_info_entity.dart';
 import 'package:techtalk/features/shared/enums/interviewer_avatar.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 class ChatRoomEntity {
   final InterviewerAvatar interviewerInfo;
-  final InterviewTopic topic;
+  final Topic topic;
   final ChatQnaProgressInfoEntity qnaProgressInfo;
   late String lastChatMessage;
   late DateTime lastChatDate;
@@ -59,7 +60,7 @@ class ChatRoomEntity {
         correctAnswerCount: chatRoom.correctAnswerCount,
         incorrectAnswerCount: chatRoom.incorrectAnswerCount,
       ),
-      topic: InterviewTopic.getTopicById(chatRoom.topicId),
+      topic: Topic.getTopicById(chatRoom.topicId),
       chatRoomId: chatRoom.chatRoomId,
       lastChatDate: message.timestamp,
       lastChatMessage: message.message,

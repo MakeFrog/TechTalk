@@ -9,8 +9,6 @@ import 'package:techtalk/features/chat/use_cases/get_random_interview_question_u
 import 'package:techtalk/features/chat/use_cases/retrieve_qna_list_from_chat_list_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/update_chat_info_use_case.dart';
 
-export '../interview/entities/interview_topic.enum.dart';
-export '../interview/entities/interview_topic_category.enum.dart';
 export 'chat.dart';
 export 'repositories/chat_repository.dart';
 export 'repositories/chat_repository_impl.dart';

@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 
@@ -8,7 +8,7 @@ part 'user_interview_topics_provider.g.dart';
 @Riverpod(keepAlive: true)
 class UserInterviewTopics extends _$UserInterviewTopics {
   @override
-  FutureOr<List<InterviewTopic>> build({
+  FutureOr<List<Topic>> build({
     bool onlyAvailable = false,
   }) async {
     final userData = await ref.watch(userDataProvider.future);
@@ -19,7 +19,7 @@ class UserInterviewTopics extends _$UserInterviewTopics {
 }
 
 @riverpod
-FutureOr<List<InterviewTopic>> availableUserInterviewTopics(
+FutureOr<List<Topic>> availableUserInterviewTopics(
   AvailableUserInterviewTopicsRef ref,
 ) async {
   final topics =

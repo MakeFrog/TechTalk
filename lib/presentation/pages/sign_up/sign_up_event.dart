@@ -5,8 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
-import 'package:techtalk/features/interview/entities/interview_topic.enum.dart';
 import 'package:techtalk/features/job/job.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/providers/sign_up/sign_up_step_controller.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
@@ -31,7 +31,7 @@ abstract class _SignUpEvent {
 
   Future<void> onTapSignUp(
     WidgetRef ref, {
-    required List<InterviewTopic> topics,
+    required List<Topic> topics,
   });
 }
 
@@ -109,7 +109,7 @@ mixin class SignUpEvent implements _SignUpEvent {
   @override
   Future<void> onTapSignUp(
     WidgetRef ref, {
-    required List<InterviewTopic> topics,
+    required List<Topic> topics,
   }) async {
     try {
       await EasyLoading.show();

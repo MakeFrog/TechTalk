@@ -105,6 +105,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $StudyRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: 'wrong-answer',
+          name: 'wrong-answer',
+          factory: $WrongAnswerRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'chat-list',
           name: 'chat-list',
           factory: $ChatListPageRouteExtension._fromState,
@@ -158,14 +163,14 @@ extension $QuestionCountSelectPageRouteExtension
     on QuestionCountSelectPageRoute {
   static QuestionCountSelectPageRoute _fromState(GoRouterState state) =>
       QuestionCountSelectPageRoute(
-        selectedTopic: _$InterviewTopicEnumMap
+        selectedTopic: _$TopicEnumMap
             ._$fromName(state.uri.queryParameters['selected-topic']!),
       );
 
   String get location => GoRouteData.$location(
         '/topic-select/question-count-select',
         queryParams: {
-          'selected-topic': _$InterviewTopicEnumMap[selectedTopic],
+          'selected-topic': _$TopicEnumMap[selectedTopic],
         },
       );
 
@@ -179,15 +184,15 @@ extension $QuestionCountSelectPageRouteExtension
   void replace(BuildContext context) => context.replace(location);
 }
 
-const _$InterviewTopicEnumMap = {
-  InterviewTopic.java: 'java',
-  InterviewTopic.spring: 'spring',
-  InterviewTopic.react: 'react',
-  InterviewTopic.swift: 'swift',
-  InterviewTopic.flutter: 'flutter',
-  InterviewTopic.android: 'android',
-  InterviewTopic.dataStructure: 'data-structure',
-  InterviewTopic.operatingSystem: 'operating-system',
+const _$TopicEnumMap = {
+  Topic.java: 'java',
+  Topic.spring: 'spring',
+  Topic.react: 'react',
+  Topic.swift: 'swift',
+  Topic.flutter: 'flutter',
+  Topic.android: 'android',
+  Topic.dataStructure: 'data-structure',
+  Topic.operatingSystem: 'operating-system',
 };
 
 extension $StudyRouteExtension on StudyRoute {
@@ -210,6 +215,27 @@ extension $StudyRouteExtension on StudyRoute {
       context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
+}
+
+extension $WrongAnswerRouteExtension on WrongAnswerRoute {
+  static WrongAnswerRoute _fromState(GoRouterState state) => WrongAnswerRoute(
+        $extra: state.extra as int?,
+      );
+
+  String get location => GoRouteData.$location(
+        '/wrong-answer',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
 }
 
 extension $ChatListPageRouteExtension on ChatListPageRoute {
@@ -235,8 +261,7 @@ extension $ChatPageRouteExtension on ChatPageRoute {
         progressState: _$InterviewProgressStateEnumMap
             ._$fromName(state.uri.queryParameters['progress-state']!),
         roomId: state.uri.queryParameters['room-id']!,
-        topic: _$InterviewTopicEnumMap
-            ._$fromName(state.uri.queryParameters['topic']!),
+        topic: _$TopicEnumMap._$fromName(state.uri.queryParameters['topic']!),
         interviewer: _$InterviewerAvatarEnumMap
             ._$fromName(state.uri.queryParameters['interviewer']!),
         $extra: state.extra as ChatQnaProgressInfoEntity,
@@ -247,7 +272,7 @@ extension $ChatPageRouteExtension on ChatPageRoute {
         queryParams: {
           'progress-state': _$InterviewProgressStateEnumMap[progressState],
           'room-id': roomId,
-          'topic': _$InterviewTopicEnumMap[topic],
+          'topic': _$TopicEnumMap[topic],
           'interviewer': _$InterviewerAvatarEnumMap[interviewer],
         },
       );
