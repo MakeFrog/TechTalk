@@ -1,15 +1,21 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:techtalk/features/job/data/models/job_group_model.dart';
 
-part 'job_group_list_model.freezed.dart';
 part 'job_group_list_model.g.dart';
 
-@freezed
-class JobGroupListModel with _$JobGroupListModel {
-  const factory JobGroupListModel({
-    required List<JobGroupModel> groups,
-  }) = _JobGroupListModel;
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+class JobGroupListModel {
+  JobGroupListModel({
+    required this.totalCount,
+    required this.groups,
+  });
 
-  factory JobGroupListModel.fromJson(Map<String, dynamic> json) =>
-      _$JobGroupListModelFromJson(json);
+  final int totalCount;
+  final List<JobGroupModel> groups;
+
+  factory JobGroupListModel.fromJson(Map<String, dynamic> json) {
+    return _$JobGroupListModelFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() => _$JobGroupListModelToJson(this);
 }

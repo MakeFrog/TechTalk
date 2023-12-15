@@ -14,11 +14,14 @@ class ClearableTextField extends HookWidget {
     InputDecoration? inputDecoration,
     this.onClear,
     this.onChanged,
+    this.onEditingComplete,
     this.obscureText = false,
     this.enabled = true,
     this.activeSuffixIcon = true,
     this.autoFocus = false,
+    this.validator,
     this.inputFormatters,
+    this.textInputAction,
     this.keyboardType,
   }) : inputDecoration = inputDecoration ?? const InputDecoration();
 
@@ -28,11 +31,14 @@ class ClearableTextField extends HookWidget {
   final TextStyle? style;
   final InputDecoration inputDecoration;
   final ValueChanged<String>? onChanged;
+  final void Function()? onEditingComplete;
   final bool obscureText;
   final bool enabled;
   final bool autoFocus;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final String? Function(String? value)? validator;
 
   /// 우측 아이콘을 활성화할지 여부
   final bool activeSuffixIcon;
@@ -57,23 +63,50 @@ class ClearableTextField extends HookWidget {
               : null,
         );
 
-    return TextField(
-      focusNode: focusNode,
-      controller: controller,
-      autofocus: autoFocus,
-      enabled: enabled,
-      obscureText: obscureText,
-      style: style,
-      inputFormatters: inputFormatters,
-      keyboardType: keyboardType,
-      decoration: inputDecoration,
-      onChanged: onChanged,
-    );
+    if (validator != null) {
+      return TextFormField(
+        focusNode: focusNode,
+        controller: controller,
+        validator: validator,
+        autofocus: autoFocus,
+        enabled: enabled,
+        obscureText: obscureText,
+        style: style,
+        inputFormatters: inputFormatters,
+        textInputAction: textInputAction,
+        keyboardType: keyboardType,
+        decoration: inputDecoration,
+        onChanged: onChanged,
+        onEditingComplete: onEditingComplete,
+      );
+    } else {
+      return TextField(
+        focusNode: focusNode,
+        controller: controller,
+        autofocus: autoFocus,
+        enabled: enabled,
+        obscureText: obscureText,
+        style: style,
+        inputFormatters: inputFormatters,
+        textInputAction: textInputAction,
+        keyboardType: keyboardType,
+        decoration: inputDecoration,
+        onChanged: onChanged,
+        onEditingComplete: onEditingComplete,
+      );
+    }
   }
 
   Widget _buildClearIcon(TextEditingController controller) {
     return IconButton(
-      onPressed: onClear ?? () => controller.clear(),
+      onPressed: onClear != null
+          ? () {
+              if (this.controller == null) {
+                controller.clear();
+              }
+              onClear!();
+            }
+          : () => controller.clear(),
       icon: SvgPicture.asset(
         Assets.iconsRoundedCloseThick,
         width: 22,

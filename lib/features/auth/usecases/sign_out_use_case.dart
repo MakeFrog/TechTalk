@@ -1,3 +1,4 @@
+import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/auth/auth.dart';
 
 final class SignOutUseCase {
@@ -7,7 +8,7 @@ final class SignOutUseCase {
 
   final AuthRepository _authRepository;
 
-  Future<void> call() async {
+  Future<Result<void>> call() async {
     return _authRepository.signOut();
   }
 }

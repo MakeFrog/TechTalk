@@ -1,8 +1,8 @@
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/entities/interview_qna_entity.dart';
-import 'package:techtalk/features/chat/entities/user_interview_response.dart';
-import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
+import 'package:techtalk/features/interview/data/models/interview_question_model.dart';
+import 'package:techtalk/features/interview/entities/interview_question_entity.dart'
+    as interview;
 import 'package:techtalk/features/interview/interview.dart';
 
 class InterviewRepositoryImpl implements InterviewRepository {
@@ -15,8 +15,13 @@ class InterviewRepositoryImpl implements InterviewRepository {
   final InterviewRemoteDataSource _interviewRemoteDataSource;
 
   @override
-  List<InterviewTopic> getTopics() {
-    return _interviewLocalDataSource.getTopics();
+  Result<List<InterviewTopic>> getTopics() {
+    try {
+      final response = _interviewLocalDataSource.getTopics();
+      return Result.success(response);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
   }
 
   @override
@@ -47,5 +52,34 @@ class InterviewRepositoryImpl implements InterviewRepository {
     } on Exception catch (e) {
       return Result.failure(e);
     }
+  }
+
+  @override
+  Future<Result<List<interview.InterviewQuestionEntity>>> getInterviewQuestions(
+    String topicId,
+  ) async {
+    List<InterviewQuestionModel> questionsModel;
+
+    final cacheUpdateDate = await _interviewLocalDataSource
+        .getCachedInterviewQuestionsUpdateDate(topicId);
+
+    if (cacheUpdateDate != null) {
+      final lastUpdateDate = await _interviewRemoteDataSource
+          .getInterviewQuestionsUpdateDate(topicId);
+      if (lastUpdateDate.compareTo(cacheUpdateDate) == 0) {
+        questionsModel = (await _interviewLocalDataSource
+            .getCachedInterviewQuestions(topicId))!;
+      } else {
+        questionsModel =
+            await _interviewRemoteDataSource.getInterviewQuestions(topicId);
+      }
+    } else {
+      questionsModel =
+          await _interviewRemoteDataSource.getInterviewQuestions(topicId);
+    }
+
+    return Result.success(
+      questionsModel.map(interview.InterviewQuestionEntity.fromModel).toList(),
+    );
   }
 }

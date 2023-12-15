@@ -23,4 +23,20 @@ extension StringValidationExt on String {
   bool get hasContainOperationWord {
     return RegExp('운영자|관리자|테크톡|TechTalk|techtalk').hasMatch(trim());
   }
+
+  String? validateNickname() {
+    String? validationMessage;
+
+    if (hasSpace) {
+      validationMessage = '닉네임에 공백이 포함되어 있습니다.';
+    } else if (!hasProperCharacter) {
+      validationMessage = '닉네임은 한글, 알파벳, 숫자, 언더스코어(_), 하이픈(-)만 사용할 수 있습니다.';
+    } else if (hasContainFWord) {
+      validationMessage = '닉네임에 비속어가 포함되어 있습니다.';
+    } else if (hasContainOperationWord) {
+      validationMessage = '허용되지 않는 단어가 포함되어 있습니다.';
+    }
+
+    return validationMessage;
+  }
 }

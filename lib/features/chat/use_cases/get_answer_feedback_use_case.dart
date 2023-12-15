@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:techtalk/core/utils/base/base_no_future_use_case.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/enums/reply_state.enum.dart';
 
 class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
     GetQuestionFeedbackParam, BehaviorSubject<String>> {

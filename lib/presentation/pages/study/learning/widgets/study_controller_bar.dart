@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/pages/study/learning/providers/current_question_page.dart';
-import 'package:techtalk/presentation/pages/study/learning/providers/study_question_list_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/question_page_controller.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_event.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
+import 'package:techtalk/presentation/providers/study/study_questions_provider.dart';
 
 class StudyControllerBar extends ConsumerWidget with StudyLearningEvent {
   const StudyControllerBar({
     super.key,
   });
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentPage = ref.watch(currentQuestionPageProvider);
-    final questionCount =
-        ref.watch(studyQuestionListProvider).requireValue.questions.length;
+    final questions = ref.watch(studyQuestionsProvider).requireValue;
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -38,10 +36,13 @@ class StudyControllerBar extends ConsumerWidget with StudyLearningEvent {
             isActive: true,
             label: '전체 문항',
             icon: Assets.iconsMenu,
-            onTap: () => onTapEntireQuestion(ref),
+            onTap: () => onTapEntireQuestion(
+              ref,
+              questions: questions,
+            ),
           ),
           _ControllerButton(
-            isActive: currentPage + 1 != questionCount,
+            isActive: currentPage + 1 != questions.length,
             label: '다음 문항',
             icon: Assets.iconsArrowRight,
             onTap: () => onTapNextQuestion(ref),
@@ -84,7 +85,7 @@ class _ControllerButton extends StatelessWidget {
                     BlendMode.srcATop,
                   ),
           ),
-          HeightBox(12),
+          Gap(12),
           Text(
             label,
             style: AppTextStyle.alert1.copyWith(

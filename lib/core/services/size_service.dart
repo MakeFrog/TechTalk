@@ -9,6 +9,10 @@ class AppSize {
   late double screenHeight; // 디바이스 높이
   late double responsiveBottomInset; // 반응형 하단 Safe Area 하단 Inset
 
+  // 비율로 처리했을 때 높이 넓이. (375 * 812) 기준
+  double ratioHeight(double givenHeight) => (givenHeight / 375) * 375;
+  double rationWidth(double givenWidth) => (givenWidth / 812) * 812;
+
   // 초기화 구문
   void init(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);

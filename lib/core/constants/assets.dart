@@ -96,6 +96,8 @@ class Assets {
   static const String imagesTopicSwift = 'assets/images/topic_swift.png';
   static const String imagesWelcomeTechtalk =
       'assets/images/welcome_techtalk.svg';
+  static const String jsonChatCollection = 'assets/json/chat_collection.json';
+  static const String jsonSkill = 'assets/json/skill.json';
   static const String logoTechTalkLogo = 'assets/logo/tech_talk_logo.svg';
   static const String pretendardPretendardBold =
       'assets/fonts/pretendard/Pretendard-Bold.otf';

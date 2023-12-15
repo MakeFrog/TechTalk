@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/constants/firestore_collection.enum.dart';
-import 'package:techtalk/core/models/custom_exception.dart';
+import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/features/interview/data/models/interview_qna_model.dart';
+import 'package:techtalk/features/interview/data/models/interview_question_model.dart';
 import 'package:techtalk/features/interview/interview.dart';
 
 final class InterviewRemoteDataSourceImpl implements InterviewRemoteDataSource {
@@ -19,7 +20,7 @@ final class InterviewRemoteDataSourceImpl implements InterviewRemoteDataSource {
     print(reviewNoteCollection.doc(userUid));
 
     if (!docSnapshot.exists) {
-      throw CustomException(code: 'code', message: '오답노트 데이터 없음');
+      throw NoQnAsException('topicId');
     }
     final data = docSnapshot.get(topicId) as List;
 
@@ -35,5 +36,34 @@ final class InterviewRemoteDataSourceImpl implements InterviewRemoteDataSource {
         .toList();
 
     return questions;
+  }
+
+  @override
+  Future<List<InterviewQuestionModel>> getInterviewQuestions(
+    String topicId,
+  ) async {
+    final snapshot = await _firestore
+        .collection('interview')
+        .doc(topicId)
+        .collection('questions')
+        .get();
+
+    if (snapshot.docs.isEmpty) {
+      throw NoInterviewQuestionException('topicId');
+    }
+
+    final questions =
+        snapshot.docs.map(InterviewQuestionModel.fromFirestore).toList();
+
+    return questions;
+  }
+
+  @override
+  Future<DateTime> getInterviewQuestionsUpdateDate(String topicId) async {
+    final topicSnapshot =
+        await _firestore.collection('interview').doc(topicId).get();
+    final updateDate = topicSnapshot.get('update_date') as Timestamp;
+
+    return updateDate.toDate();
   }
 }

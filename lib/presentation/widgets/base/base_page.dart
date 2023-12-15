@@ -8,15 +8,14 @@ import 'package:techtalk/core/theme/extension/app_color.dart';
 /// 앱의 화면 페이지를 생성하는 유틸리티 클래스
 /// [HookConsumerWidget]을 상속하여 hook과 WidetRef로직에 접근할 수 있음
 ///
-abstract class BaseRefHookPage extends HookConsumerWidget {
-  const BaseRefHookPage({Key? key}) : super(key: key);
+abstract class BasePage extends HookConsumerWidget {
+  const BasePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     /// 페이지의 초기화 및 해제를 처리
     useEffect(() {
       onInit(ref);
-
       return () => onDispose(ref);
     });
 
@@ -35,6 +34,8 @@ abstract class BaseRefHookPage extends HookConsumerWidget {
         case AppLifecycleState.detached:
           onDetached(ref);
           break;
+        case AppLifecycleState.hidden:
+        // TODO: Handle this case.
       }
     });
 
@@ -48,15 +49,20 @@ abstract class BaseRefHookPage extends HookConsumerWidget {
       onWillPop: () async {
         return false;
       },
-      child: Container(
-        color: unSafeAreaColor,
-        child: wrapWithSafeArea
-            ? SafeArea(
-                top: setTopSafeArea,
-                bottom: setBottomSafeArea,
-                child: _buildScaffold(context, ref),
-              )
-            : _buildScaffold(context, ref),
+      child: GestureDetector(
+        onTap: !preventAutoUnfocus
+            ? () => FocusManager.instance.primaryFocus?.unfocus()
+            : null,
+        child: Container(
+          color: unSafeAreaColor,
+          child: wrapWithSafeArea
+              ? SafeArea(
+                  top: setTopSafeArea,
+                  bottom: setBottomSafeArea,
+                  child: _buildScaffold(context, ref),
+                )
+              : _buildScaffold(context, ref),
+        ),
       ),
     );
   }
@@ -65,7 +71,7 @@ abstract class BaseRefHookPage extends HookConsumerWidget {
     return Scaffold(
       extendBody: extendBodyBehindAppBar,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-      appBar: buildAppBar(context),
+      appBar: buildAppBar(context, ref),
       body: buildPage(context, ref),
       backgroundColor: screenBackgroundColor,
       bottomNavigationBar: buildBottomNavigationBar(context),
@@ -84,7 +90,7 @@ abstract class BaseRefHookPage extends HookConsumerWidget {
 
   /// 화면 상단에 표시될 앱 바를 구성하는 위젯을 반환
   @protected
-  PreferredSizeWidget? buildAppBar(BuildContext context) => null;
+  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) => null;
 
   /// 화면에 표시될 플로팅 액션 버튼을 구성하는 위젯을 반환
   @protected
@@ -126,27 +132,31 @@ abstract class BaseRefHookPage extends HookConsumerWidget {
   @protected
   bool get setTopSafeArea => true;
 
+  /// 화면 클릭 시 자동으로 포커스를 해제할지 여부를 설정
+  @protected
+  bool get preventAutoUnfocus => false;
+
   /// 앱이 활성화된 상태로 돌아올 때 호출
   @protected
-  void onResumed(WidgetRef? ref) {}
+  void onResumed(WidgetRef ref) {}
 
   /// 앱이 일시 정지될 때 호출
   @protected
-  void onPaused(WidgetRef? ref) {}
+  void onPaused(WidgetRef ref) {}
 
   /// 앱이 비활성 상태로 전환될 때 호출
   @protected
-  void onInactive(WidgetRef? ref) {}
+  void onInactive(WidgetRef ref) {}
 
   /// 앱이 분리되었을 때 호출
   @protected
-  void onDetached(WidgetRef? ref) {}
+  void onDetached(WidgetRef ref) {}
 
   /// 페이지 초기화 시 호출
   @protected
-  void onInit(WidgetRef? ref) {}
+  void onInit(WidgetRef ref) {}
 
   /// 페이지 해제 시 호출
   @protected
-  void onDispose(WidgetRef? ref) {}
+  void onDispose(WidgetRef ref) {}
 }

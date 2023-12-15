@@ -1,4 +1,3 @@
-import 'package:techtalk/features/user/entities/user_data_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 
 final class CreateUserDataUseCase {
@@ -8,7 +7,13 @@ final class CreateUserDataUseCase {
 
   final UserRepository _userRepository;
 
-  Future<void> call(UserDataEntity data) async {
-    await _userRepository.createUserData(data);
+  Future<void> call() async {
+    final result = await _userRepository.createUserData();
+    return result.fold(
+      onSuccess: (value) => value,
+      onFailure: (e) {
+        throw e;
+      },
+    );
   }
 }

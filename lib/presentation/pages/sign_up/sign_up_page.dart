@@ -2,23 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
-import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_controller_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_event.dart';
-import 'package:techtalk/presentation/pages/sign_up/steps/job_group_select_screen.dart';
+import 'package:techtalk/presentation/pages/sign_up/steps/job_group_select_step.dart';
 import 'package:techtalk/presentation/pages/sign_up/steps/nickname_input_step.dart';
-import 'package:techtalk/presentation/pages/sign_up/steps/tech_skill_select_screen.dart';
+import 'package:techtalk/presentation/pages/sign_up/steps/topic_select_step.dart';
+import 'package:techtalk/presentation/providers/sign_up/sign_up_step_controller.dart';
+import 'package:techtalk/presentation/widgets/base/base_page.dart';
+import 'package:techtalk/presentation/widgets/common/button/app_back_button.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends BasePage {
   const SignUpPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Colors.white,
-      appBar: _AppBar(),
-      body: _Body(),
-    );
-  }
+  bool get preventSwipeBack => true;
+
+  @override
+  Color get screenBackgroundColor => Colors.white;
+
+  @override
+  PreferredSizeWidget buildAppBar(BuildContext context, WidgetRef ref) =>
+      const _AppBar();
+
+  @override
+  Widget buildPage(BuildContext context, WidgetRef ref) => const _Body();
 }
 
 class _AppBar extends StatelessWidget
@@ -43,21 +49,17 @@ class _AppBar extends StatelessWidget
 
   Widget _buildBackButton() {
     return Consumer(
-      builder: (_, ref, __) {
-        final canBack = ref.watch(canBackToPreviousStepProvider);
-
-        return canBack
-            ? BackButton(
-                onPressed: () => onTapBackButton(ref),
-              )
-            : const SizedBox();
+      builder: (context, ref, child) {
+        return AppBackButton(
+          onBackBtnTapped: () => onTapBackButton(ref),
+        );
       },
     );
   }
 
   Widget _buildStepIndicator() {
     return Padding(
-      padding: EdgeInsets.only(right: 16),
+      padding: const EdgeInsets.only(right: 16),
       child: Consumer(
         builder: (_, ref, __) {
           final pageController = ref.watch(signUpStepControllerProvider);
@@ -86,16 +88,14 @@ class _Body extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final pageController = ref.watch(signUpStepControllerProvider);
 
-    return SafeArea(
-      child: PageView(
-        controller: pageController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: const [
-          NicknameInputStep(),
-          JobGroupSelectScreen(),
-          TechSkillSelectScreen(),
-        ],
-      ),
+    return PageView(
+      controller: pageController,
+      physics: const NeverScrollableScrollPhysics(),
+      children: const [
+        NicknameInputStep(),
+        JobGroupSelectStep(),
+        TopicSelectStep(),
+      ],
     );
   }
 }

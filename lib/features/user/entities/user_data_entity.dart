@@ -1,34 +1,79 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:techtalk/features/user/data/models/user_data_model.dart';
-
-part 'user_data_entity.freezed.dart';
-part 'user_data_entity.g.dart';
-
-@freezed
-class UserDataEntity with _$UserDataEntity {
-  const factory UserDataEntity({
-    required String uid,
-    String? nickname,
-    @Default([]) List<String> interestedJobGroupIdList,
-    @Default([]) List<String> techSkillIdList,
-  }) = _UserDataEntity;
-
-  const UserDataEntity._();
+class UserDataEntity {
+  final String uid;
+  final String? nickname;
+  final List<String> jobGroupIds;
+  final List<String> topicIds;
 
   bool get isCompleteSignUp => nickname != null;
 
-  UserDataModel toModel() => UserDataModel(
-        uid: uid,
-        nickname: nickname,
-        interestedJobGroupIdList: interestedJobGroupIdList,
-        techSkillIdList: techSkillIdList,
-      );
-  factory UserDataEntity.fromModel(UserDataModel model) => UserDataEntity(
-        uid: model.uid,
-        nickname: model.nickname,
-        interestedJobGroupIdList: model.interestedJobGroupIdList ?? [],
-        techSkillIdList: model.techSkillIdList ?? [],
-      );
-  factory UserDataEntity.fromJson(Map<String, dynamic> json) =>
-      _$UserDataEntityFromJson(json);
+//<editor-fold desc="Data Methods">
+
+  const UserDataEntity({
+    required this.uid,
+    this.nickname,
+    List<String>? jobGroupIds,
+    List<String>? topicIds,
+  })  : jobGroupIds = jobGroupIds ?? const [],
+        topicIds = topicIds ?? const [];
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UserDataEntity &&
+          runtimeType == other.runtimeType &&
+          uid == other.uid &&
+          nickname == other.nickname &&
+          jobGroupIds == other.jobGroupIds &&
+          topicIds == other.topicIds);
+
+  @override
+  int get hashCode =>
+      uid.hashCode ^
+      nickname.hashCode ^
+      jobGroupIds.hashCode ^
+      topicIds.hashCode;
+
+  @override
+  String toString() {
+    return 'UserDataEntity{' +
+        ' uid: $uid,' +
+        ' nickname: $nickname,' +
+        ' jobGroupIds: $jobGroupIds,' +
+        ' topicIds: $topicIds,' +
+        '}';
+  }
+
+  UserDataEntity copyWith({
+    String? uid,
+    String? nickname,
+    List<String>? jobGroupIds,
+    List<String>? topicIds,
+  }) {
+    return UserDataEntity(
+      uid: uid ?? this.uid,
+      nickname: nickname ?? this.nickname,
+      jobGroupIds: jobGroupIds ?? this.jobGroupIds,
+      topicIds: topicIds ?? this.topicIds,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': this.uid,
+      'nickname': this.nickname,
+      'jobGroupIds': this.jobGroupIds,
+      'topicIds': this.topicIds,
+    };
+  }
+
+  factory UserDataEntity.fromMap(Map<String, dynamic> map) {
+    return UserDataEntity(
+      uid: map['uid'] as String,
+      nickname: map['nickname'] as String,
+      jobGroupIds: map['jobGroupIds'] as List<String>,
+      topicIds: map['topicIds'] as List<String>,
+    );
+  }
+
+//</editor-fold>
 }

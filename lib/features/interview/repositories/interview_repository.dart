@@ -1,13 +1,17 @@
 import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/chat/entities/interview_qna_entity.dart';
-import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
-import 'package:techtalk/features/interview/data/models/interview_qna_model.dart';
+import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/interview/entities/interview_question_entity.dart'
+    as interview;
 
 abstract interface class InterviewRepository {
-  List<InterviewTopic> getTopics();
+  Result<List<InterviewTopic>> getTopics();
 
   Future<Result<List<InterviewQnAEntity>>> getReviewNoteQuestions({
     required String userUid,
     required String topicId,
   });
+
+  Future<Result<List<interview.InterviewQuestionEntity>>> getInterviewQuestions(
+    String topicId,
+  );
 }

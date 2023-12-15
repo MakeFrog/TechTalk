@@ -8,7 +8,15 @@ final class GetUserDataUseCase {
 
   final UserRepository _userRepository;
 
-  Future<UserDataEntity?> call(String uid) async {
-    return _userRepository.getUserData(uid);
+  Future<UserDataEntity?> call() async {
+    final result = await _userRepository.getUserData();
+    return result.fold(
+      onSuccess: (value) {
+        return value;
+      },
+      onFailure: (e) {
+        throw e;
+      },
+    );
   }
 }

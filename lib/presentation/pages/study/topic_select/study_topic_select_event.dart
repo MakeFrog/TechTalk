@@ -1,17 +1,13 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
-import 'package:techtalk/features/chat/enums/interview_topic.enum.dart';
+import 'package:techtalk/features/chat/chat.dart';
 
 abstract interface class _StudyTopicSelectEvent {
-  void onTapCard(
-    WidgetRef ref, {
-    required InterviewTopic topic,
-  });
+  void onTapCard(InterviewTopic topic);
 }
 
 mixin class StudyTopicSelectEvent implements _StudyTopicSelectEvent {
   @override
-  void onTapCard(WidgetRef ref, {required InterviewTopic topic}) {
-    StudyRoute(topic.name).push(ref.context);
+  void onTapCard(InterviewTopic topic) {
+    StudyRoute(topic.id).push(rootNavigatorKey.currentContext!);
   }
 }
