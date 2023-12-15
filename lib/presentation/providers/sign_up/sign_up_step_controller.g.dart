@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'sign_up_step_controller_provider.dart';
+part of 'sign_up_step_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator
