@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/interview/entities/topic_entity.dart';
 
 class ReviewNoteTopicChip extends StatelessWidget {
   const ReviewNoteTopicChip({
@@ -11,7 +11,7 @@ class ReviewNoteTopicChip extends StatelessWidget {
     required this.onTap,
   });
 
-  final InterviewTopic topic;
+  final TopicEntity topic;
   final bool isSelected;
   final VoidCallback onTap;
 
@@ -33,7 +33,7 @@ class ReviewNoteTopicChip extends StatelessWidget {
       ),
       side: BorderSide.none,
       onSelected: (value) => onTap(),
-      label: Text(topic.text),
+      label: Text(topic.name),
     );
   }
 }

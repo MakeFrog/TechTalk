@@ -16,8 +16,11 @@ class ChatProgressState extends _$ChatProgressState {
   ChatProgress build() {
     final completedQnaListener =
         ref.listen(completedQnAListProvider, (_, next) {
-      final totalQuestionCount =
-          ref.read(chatPageRouteArgProvider).qnaProgressInfo.totalQuestionCount;
+      final totalQuestionCount = ref
+          .read(chatPageRouteArgProvider)
+          .qnaAndTopic
+          .qnaProgressInfo
+          .totalQuestionCount;
       if (next.requireValue.length >= totalQuestionCount) {
         state = ChatProgress.done;
       }

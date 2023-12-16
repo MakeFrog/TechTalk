@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/interview/entities/topic_entity.dart';
 import 'package:techtalk/presentation/providers/study/categorized_study_topics_provider.dart';
 
 part 'selected_study_topic_provider.g.dart';
@@ -17,11 +18,11 @@ String selectedStudyTopicId(SelectedStudyTopicIdRef ref) {
 )
 class SelectedStudyTopic extends _$SelectedStudyTopic {
   @override
-  InterviewTopic build() {
+  TopicEntity build() {
     final topicId = ref.watch(selectedStudyTopicIdProvider);
     final topicList =
         ref.read(categorizedStudyTopicsProvider).requireValue.values;
-    InterviewTopic? topic;
+    TopicEntity? topic;
     for (final topics in topicList) {
       final findTopic = topics.firstWhereOrNull(
         (element) => element.id == topicId,

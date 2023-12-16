@@ -2,11 +2,12 @@ import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data/models/chat_room_model.dart';
 import 'package:techtalk/features/chat/data/models/message_model.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_qna_progress_info_entity.dart';
+import 'package:techtalk/features/interview/entities/topic_entity.dart';
 import 'package:techtalk/features/shared/enums/interviewer_avatar.dart';
 
 class ChatRoomEntity {
   final InterviewerAvatar interviewerInfo;
-  final InterviewTopic topic;
+  final TopicEntity topic;
   final ChatQnaProgressInfoEntity qnaProgressInfo;
   late String lastChatMessage;
   late DateTime lastChatDate;
@@ -49,7 +50,9 @@ class ChatRoomEntity {
   }
 
   factory ChatRoomEntity.fromFireStore(
-      {required ChatRoomModel chatRoom, required MessageModel message}) {
+      {required ChatRoomModel chatRoom,
+      required MessageModel message,
+      required TopicEntity topic}) {
     return ChatRoomEntity(
       interviewerInfo: InterviewerAvatar.getAvatarInfoById(
         chatRoom.interviewerId,
@@ -59,7 +62,7 @@ class ChatRoomEntity {
         correctAnswerCount: chatRoom.correctAnswerCount,
         incorrectAnswerCount: chatRoom.incorrectAnswerCount,
       ),
-      topic: InterviewTopic.getTopicById(chatRoom.topicId),
+      topic: topic,
       chatRoomId: chatRoom.chatRoomId,
       lastChatDate: message.timestamp,
       lastChatMessage: message.message,

@@ -14,19 +14,19 @@ abstract class _QuestionCountSelectEvent {
 mixin class QuestionCountSelectedEvent implements _QuestionCountSelectEvent {
   @override
   void routeToChatPage(WidgetRef ref) {
-    final aim =  InterviewerAvatar.getRandomInterviewer();
+    final aim = InterviewerAvatar.getRandomInterviewer();
     ChatPageRoute(
       progressState: InterviewProgressState.initial,
       roomId: StringGenerator.generateRandomString(),
-      topic: ref.read(questionCountSelectRouteArgProvider),
-      $extra: ChatQnaProgressInfoEntity.onInitial(
-        totalQuestionCount: ref.watch(selectedQuestionCountProvider),
+      $extra: (
+        qnaProgressInfo: ChatQnaProgressInfoEntity.onInitial(
+          totalQuestionCount: ref.watch(selectedQuestionCountProvider),
+        ),
+        topic: ref.read(questionCountSelectRouteArgProvider),
       ),
       interviewer: aim,
     ).go(rootNavigatorKey.currentContext!);
 
     print('선택된 캐릭터 : ${aim.id}');
   }
-
-
 }

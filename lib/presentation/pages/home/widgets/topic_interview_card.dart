@@ -98,7 +98,7 @@ class _InterviewTopicColum extends ConsumerWidget with HomeEvent {
                     ),
                     const Gap(16),
                     Text(
-                      e.text,
+                      e.name,
                       style: AppTextStyle.title1,
                     ),
                     const Spacer(),

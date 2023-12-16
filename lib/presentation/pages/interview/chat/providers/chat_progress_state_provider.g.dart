@@ -6,7 +6,7 @@ part of 'chat_progress_state_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chatProgressStateHash() => r'0d8e03a6ca8f8b67cd5a2fee75de73a9611b0a44';
+String _$chatProgressStateHash() => r'bfc605d14e3c69b3a86df80fe2be527f81362858';
 
 /// See also [ChatProgressState].
 @ProviderFor(ChatProgressState)

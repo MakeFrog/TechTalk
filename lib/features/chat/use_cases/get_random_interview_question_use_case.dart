@@ -3,13 +3,13 @@ import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
 class GetRandomInterviewQuestionUseCase
-    extends BaseUseCase<InterviewTopic, Result<InterviewQuestionEntity>> {
+    extends BaseUseCase<String, Result<InterviewQuestionEntity>> {
   GetRandomInterviewQuestionUseCase(this._repository);
 
   final ChatRepository _repository;
 
   @override
-  Future<Result<InterviewQuestionEntity>> call(InterviewTopic request) async {
-    return _repository.getRandomQuestion(request.id);
+  Future<Result<InterviewQuestionEntity>> call(String request) async {
+    return _repository.getRandomQuestion(request);
   }
 }

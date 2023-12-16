@@ -7,4 +7,5 @@ enum FirestoreCollection {
   reviewNotes,
   chats,
   messages,
+  topics,
 }

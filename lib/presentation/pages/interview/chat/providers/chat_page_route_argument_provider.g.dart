@@ -14,9 +14,11 @@ final chatPageRouteArgProvider = AutoDisposeProvider<
     ({
       InterviewerAvatar interviewer,
       InterviewProgressState progressState,
-      ChatQnaProgressInfoEntity qnaProgressInfo,
-      String roomId,
-      InterviewTopic topic
+      ({
+        ChatQnaProgressInfoEntity qnaProgressInfo,
+        TopicEntity topic
+      }) qnaAndTopic,
+      String roomId
     })>.internal(
   chatPageRouteArg,
   name: r'chatPageRouteArgProvider',
@@ -31,9 +33,11 @@ typedef ChatPageRouteArgRef = AutoDisposeProviderRef<
     ({
       InterviewerAvatar interviewer,
       InterviewProgressState progressState,
-      ChatQnaProgressInfoEntity qnaProgressInfo,
-      String roomId,
-      InterviewTopic topic
+      ({
+        ChatQnaProgressInfoEntity qnaProgressInfo,
+        TopicEntity topic
+      }) qnaAndTopic,
+      String roomId
     })>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

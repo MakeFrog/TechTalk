@@ -13,7 +13,7 @@ mixin class InterviewTopicSelectEvent implements _InterviewTopicSelectEvent {
   @override
   void routeToQuestionCountSelect(WidgetRef ref) {
     final selectedTopic = ref.watch(selectedTopicProvider);
-    QuestionCountSelectPageRoute(selectedTopic: selectedTopic!)
+    QuestionCountSelectPageRoute($extra: selectedTopic!)
         .go(rootNavigatorKey.currentContext!);
   }
 }

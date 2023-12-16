@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/interview/entities/interview_topic.enum.dart';
+import 'package:techtalk/features/interview/entities/topic_entity.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class TopicCard extends StatelessWidget {
@@ -13,7 +13,7 @@ class TopicCard extends StatelessWidget {
     this.onTap,
   });
 
-  final InterviewTopic? topic;
+  final TopicEntity? topic;
   final bool isSelected;
   final VoidCallback? onTap;
   final bool isLoaded;

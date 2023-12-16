@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
+import 'package:techtalk/core/constants/stored_topics.dart';
 import 'package:techtalk/core/helper/string_generator.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/features/chat/chat.dart';
@@ -52,7 +53,7 @@ class ChatListPage extends BasePage with ChatListEvent {
           progressState: InterviewProgressState.initial,
           qnaProgressInfo:
               ChatQnaProgressInfoEntity.onInitial(totalQuestionCount: 10),
-          topic: InterviewTopic.swift,
+          topic: StoredTopics.selectedTopic,
           interviewer: InterviewerAvatar.getRandomInterviewer(),
         );
       },

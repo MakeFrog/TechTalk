@@ -29,7 +29,7 @@ class ChatHistory extends _$ChatHistory {
       progressState: routeArg.progressState,
       userName: '지혜',
       roomId: routeArg.roomId,
-      topic: routeArg.topic
+      topic: routeArg.qnaAndTopic.topic
     );
 
     final response = await getChatMessagesUseCase(param);
@@ -191,7 +191,7 @@ class ChatHistory extends _$ChatHistory {
       interviewer: null,
       answerState: answerState,
       chatRoomId: ref.read(chatPageRouteArgProvider).roomId,
-      topic: ref.read(chatPageRouteArgProvider).topic,
+      topic: ref.read(chatPageRouteArgProvider).qnaAndTopic.topic,
       qnaProgressInfo: null,
     );
     await updateChatInfoUseCase.call(param);
@@ -213,7 +213,7 @@ class ChatHistory extends _$ChatHistory {
       messages: state.requireValue.sublist(0, lastMessageIndex),
       answerState: answerState,
       chatRoomId: ref.read(chatPageRouteArgProvider).roomId,
-      topic: ref.read(chatPageRouteArgProvider).topic,
+      topic: ref.read(chatPageRouteArgProvider).qnaAndTopic.topic,
       interviewer: null,
       qnaProgressInfo: null,
     );
@@ -229,9 +229,10 @@ class ChatHistory extends _$ChatHistory {
       messages: state.requireValue,
       answerState: AnswerState.initial,
       chatRoomId: ref.read(chatPageRouteArgProvider).roomId,
-      topic: ref.read(chatPageRouteArgProvider).topic,
+      topic: ref.read(chatPageRouteArgProvider).qnaAndTopic.topic,
       interviewer: ref.read(chatPageRouteArgProvider).interviewer,
-      qnaProgressInfo: ref.read(chatPageRouteArgProvider).qnaProgressInfo,
+      qnaProgressInfo:
+          ref.read(chatPageRouteArgProvider).qnaAndTopic.qnaProgressInfo,
     );
     await updateChatInfoUseCase(param);
     ref.read(chatListProvider.notifier).updateChatList();
@@ -244,7 +245,11 @@ class ChatHistory extends _$ChatHistory {
   void onFeedbackCompleted() {
     // 마지막 답변일 경우
     if (ref.read(completedQnAListProvider).requireValue.length >=
-        ref.read(chatPageRouteArgProvider).qnaProgressInfo.totalQuestionCount) {
+        ref
+            .read(chatPageRouteArgProvider)
+            .qnaAndTopic
+            .qnaProgressInfo
+            .totalQuestionCount) {
       final interviewClosingText = '면접이 종료 되었습니다'.convertToStreamText;
 
       update(
@@ -280,8 +285,7 @@ class ChatHistory extends _$ChatHistory {
   /// QnA 리스트 : 새로운 질문 추가
   ///
   Future<void> addRandomQuestionToQnaList() async {
-    final response =
-        await getRandomInterviewQuestionUseCase.call(InterviewTopic.swift);
+    final response = await getRandomInterviewQuestionUseCase.call('swift');
     final newQuestion = response.getOrThrow();
 
     await ref.read(totalQnaListProvider.notifier).addQnaList(newQuestion);

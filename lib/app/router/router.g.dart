@@ -158,37 +158,24 @@ extension $QuestionCountSelectPageRouteExtension
     on QuestionCountSelectPageRoute {
   static QuestionCountSelectPageRoute _fromState(GoRouterState state) =>
       QuestionCountSelectPageRoute(
-        selectedTopic: _$InterviewTopicEnumMap
-            ._$fromName(state.uri.queryParameters['selected-topic']!),
+        $extra: state.extra as TopicEntity,
       );
 
   String get location => GoRouteData.$location(
         '/topic-select/question-count-select',
-        queryParams: {
-          'selected-topic': _$InterviewTopicEnumMap[selectedTopic],
-        },
       );
 
-  void go(BuildContext context) => context.go(location);
+  void go(BuildContext context) => context.go(location, extra: $extra);
 
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
 
   void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
+      context.pushReplacement(location, extra: $extra);
 
-  void replace(BuildContext context) => context.replace(location);
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
 }
-
-const _$InterviewTopicEnumMap = {
-  InterviewTopic.java: 'java',
-  InterviewTopic.spring: 'spring',
-  InterviewTopic.react: 'react',
-  InterviewTopic.swift: 'swift',
-  InterviewTopic.flutter: 'flutter',
-  InterviewTopic.android: 'android',
-  InterviewTopic.dataStructure: 'data-structure',
-  InterviewTopic.operatingSystem: 'operating-system',
-};
 
 extension $StudyRouteExtension on StudyRoute {
   static StudyRoute _fromState(GoRouterState state) => StudyRoute(
@@ -235,11 +222,12 @@ extension $ChatPageRouteExtension on ChatPageRoute {
         progressState: _$InterviewProgressStateEnumMap
             ._$fromName(state.uri.queryParameters['progress-state']!),
         roomId: state.uri.queryParameters['room-id']!,
-        topic: _$InterviewTopicEnumMap
-            ._$fromName(state.uri.queryParameters['topic']!),
         interviewer: _$InterviewerAvatarEnumMap
             ._$fromName(state.uri.queryParameters['interviewer']!),
-        $extra: state.extra as ChatQnaProgressInfoEntity,
+        $extra: state.extra as ({
+          ChatQnaProgressInfoEntity qnaProgressInfo,
+          TopicEntity topic
+        }),
       );
 
   String get location => GoRouteData.$location(
@@ -247,7 +235,6 @@ extension $ChatPageRouteExtension on ChatPageRoute {
         queryParams: {
           'progress-state': _$InterviewProgressStateEnumMap[progressState],
           'room-id': roomId,
-          'topic': _$InterviewTopicEnumMap[topic],
           'interviewer': _$InterviewerAvatarEnumMap[interviewer],
         },
       );

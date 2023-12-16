@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:lorem_ipsum_generator/lorem_ipsum_generator.dart';
+import 'package:techtalk/core/constants/stored_topics.dart';
 import 'package:techtalk/core/helper/string_generator.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
@@ -21,9 +22,9 @@ final class ChatRepositoryImpl implements ChatRepository {
         final messageResponse =
             await _remoteDataSource.getLastedChatMessage(e.chatRoomId);
         return ChatRoomEntity.fromFireStore(
-          chatRoom: e,
-          message: messageResponse,
-        );
+            chatRoom: e,
+            message: messageResponse,
+            topic: StoredTopics.getById(e.topicId));
       }).toList();
       final result = await Future.wait(asyncResult);
 

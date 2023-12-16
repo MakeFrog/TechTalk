@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_qna_progress_info_entity.dart';
 import 'package:techtalk/features/chat/repositories/enums/interview_progress_state.enum.dart';
-import 'package:techtalk/features/interview/entities/interview_topic.enum.dart';
+import 'package:techtalk/features/interview/entities/topic_entity.dart';
 import 'package:techtalk/features/shared/enums/interviewer_avatar.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_page_route_argument_provider.dart';
@@ -156,9 +156,9 @@ class HomeTopicSelectRoute extends GoRouteData {
 }
 
 class QuestionCountSelectPageRoute extends GoRouteData {
-  const QuestionCountSelectPageRoute({required this.selectedTopic});
+  const QuestionCountSelectPageRoute({required this.$extra});
 
-  final InterviewTopic selectedTopic;
+  final TopicEntity $extra;
 
   static const String name = 'question-count-select';
 
@@ -166,9 +166,9 @@ class QuestionCountSelectPageRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return ProviderScope(
       overrides: [
-        questionCountSelectRouteArgProvider.overrideWithValue(selectedTopic),
+        questionCountSelectRouteArgProvider.overrideWithValue($extra),
       ],
-      child: QuestionCountSelectPage(),
+      child: const QuestionCountSelectPage(),
     );
   }
 }
@@ -189,25 +189,22 @@ class ChatPageRoute extends GoRouteData {
     required this.progressState,
     required this.$extra,
     required this.roomId,
-    required this.topic,
     required this.interviewer,
   });
 
   static const String name = 'chat';
 
   final InterviewProgressState progressState;
-  final ChatQnaProgressInfoEntity $extra;
+  final ({ChatQnaProgressInfoEntity qnaProgressInfo, TopicEntity topic}) $extra;
   final String roomId;
-  final InterviewTopic topic;
   final InterviewerAvatar interviewer;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
     final ChatPageRouteArg arg = (
       progressState: progressState,
-      qnaProgressInfo: $extra,
+      qnaAndTopic: $extra,
       roomId: roomId,
-      topic: topic,
       interviewer: interviewer,
     );
 

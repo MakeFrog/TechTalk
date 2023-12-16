@@ -1,4 +1,4 @@
-import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/interview/entities/topic_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 
 final class GetUserInterviewTopicsUseCase {
@@ -8,7 +8,7 @@ final class GetUserInterviewTopicsUseCase {
 
   final UserRepository _userRepository;
 
-  Future<List<InterviewTopic>> call() async {
+  Future<List<TopicEntity>> call() async {
     final topics = await _userRepository.getUserTopicList();
 
     return topics.fold(

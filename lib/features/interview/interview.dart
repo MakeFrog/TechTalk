@@ -5,6 +5,7 @@ import 'package:techtalk/features/interview/repositories/interview_repository.da
 import 'package:techtalk/features/interview/usecases/get_interview_questions_use_case.dart';
 import 'package:techtalk/features/interview/usecases/get_interview_topics_use_case.dart';
 import 'package:techtalk/features/interview/usecases/get_review_note_question_list_use_case.dart';
+import 'package:techtalk/features/interview/usecases/get_total_topic_list_use_case.dart';
 
 export 'data/local/interview_local_data_source.dart';
 export 'data/remote/interview_remote_data_source.dart';
@@ -16,4 +17,5 @@ final interviewRepository = locator<InterviewRepository>();
 final getInterviewTopicListUseCase = locator<GetInterviewTopicListUseCase>();
 final getReviewNoteQuestionListUseCase =
     locator<GetReviewNoteQuestionListUseCase>();
+final getTotalTopicsUseCase = locator<GetTotalTopicListUseCase>();
 final getStudyQuestionListUseCase = locator<GetInterviewQuestionsUseCase>();

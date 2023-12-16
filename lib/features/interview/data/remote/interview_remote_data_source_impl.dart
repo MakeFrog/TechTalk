@@ -3,6 +3,7 @@ import 'package:techtalk/core/constants/firestore_collection.enum.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/features/interview/data/models/interview_qna_model.dart';
 import 'package:techtalk/features/interview/data/models/interview_question_model.dart';
+import 'package:techtalk/features/interview/data/models/topic_model.dart';
 import 'package:techtalk/features/interview/interview.dart';
 
 final class InterviewRemoteDataSourceImpl implements InterviewRemoteDataSource {
@@ -68,5 +69,34 @@ final class InterviewRemoteDataSourceImpl implements InterviewRemoteDataSource {
     final updateDate = topicSnapshot.get('update_date') as Timestamp;
 
     return updateDate.toDate();
+  }
+
+  @override
+  Future<List<TopicModel>> getTopics() async {
+    final topicsSnapshot = await _firestore
+        .collection(FirestoreCollection.topics.name)
+        .withConverter(
+            fromFirestore: TopicModel.fromFirestore,
+            toFirestore: (model, _) => model.toJson())
+        .get();
+
+    final response = topicsSnapshot.docs.map((e) => e.data()).toList();
+
+    return response;
+  }
+
+  @override
+  Future<TopicModel?> getTopicById(String id) async {
+    final topicSnapshot = await _firestore
+        .collection(FirestoreCollection.topics.name)
+        .withConverter(
+            fromFirestore: TopicModel.fromFirestore,
+            toFirestore: (model, _) => model.toJson())
+        .doc(id)
+        .get();
+
+    final response = topicSnapshot.data();
+
+    return response;
   }
 }

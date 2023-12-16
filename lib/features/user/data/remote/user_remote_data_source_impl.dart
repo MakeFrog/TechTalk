@@ -24,14 +24,14 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
   @override
   Future<void> createUserData(UserDataModel data) async {
-    if (await _isExistUserData(data.uid)) {
+    if (await _isExistUserData(data.uid!)) {
       throw CustomException(
         code: 'code',
         message: '이미 유저 데이터가 존재합니다.',
       );
     }
 
-    await _userDoc(data.uid).set(data);
+    await _userDoc(data.uid!).set(data);
   }
 
   @override

@@ -2,9 +2,10 @@ import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/interview/entities/interview_question_entity.dart'
     as interview;
+import 'package:techtalk/features/interview/entities/topic_entity.dart';
 
 abstract interface class InterviewRepository {
-  Result<List<InterviewTopic>> getTopics();
+  Future<Result<List<TopicEntity>>> getTopics();
 
   Future<Result<List<InterviewQnAEntity>>> getReviewNoteQuestions({
     required String userUid,

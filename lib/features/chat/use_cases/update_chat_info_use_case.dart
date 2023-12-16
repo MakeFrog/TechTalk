@@ -1,6 +1,7 @@
 import 'package:techtalk/core/utils/base/base_use_case.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_qna_progress_info_entity.dart';
+import 'package:techtalk/features/interview/entities/topic_entity.dart';
 import 'package:techtalk/features/shared/enums/interviewer_avatar.dart';
 
 ///
@@ -57,7 +58,7 @@ typedef UpdateChatInfoParam = ({
   List<MessageEntity> messages,
   String chatRoomId,
   AnswerState answerState,
-  InterviewTopic topic,
+  TopicEntity topic,
   ChatQnaProgressInfoEntity? qnaProgressInfo,
   InterviewerAvatar? interviewer,
 });

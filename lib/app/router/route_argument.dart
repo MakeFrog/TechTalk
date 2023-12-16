@@ -2,8 +2,7 @@ part of 'router.dart';
 
 typedef ChatPageRouteArg = ({
   InterviewProgressState progressState,
-  ChatQnaProgressInfoEntity qnaProgressInfo,
-  InterviewTopic topic,
+  ({ChatQnaProgressInfoEntity qnaProgressInfo, TopicEntity topic}) qnaAndTopic,
   String roomId,
   InterviewerAvatar interviewer,
 });

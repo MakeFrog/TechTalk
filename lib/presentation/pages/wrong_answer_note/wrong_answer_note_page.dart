@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/core/constants/stored_topics.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/review_question_list_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/selected_review_note_topic_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/widgets/review_note_topic_chip.dart';
@@ -54,8 +54,7 @@ class _Body extends ConsumerWidget {
         child: Text('$error'),
       ),
       data: (data) {
-        final topics =
-            data!.skillIdList.map(InterviewTopic.getTopicById).toList();
+        final topics = data!.skillIdList.map(StoredTopics.getById).toList();
         final selectedTopic =
             ref.watch(selectedReviewNoteTopicProvider).valueOrNull;
         final questionsAsync = ref.watch(reviewQuestionListProvider);

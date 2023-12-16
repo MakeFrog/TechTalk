@@ -12,7 +12,7 @@ class UserDataModel {
     this.topicIds,
   });
 
-  final String uid;
+  final String? uid;
   final String? nickname;
   final List<String>? jobGroupIds;
   final List<String>? topicIds;

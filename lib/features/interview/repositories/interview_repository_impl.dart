@@ -3,6 +3,7 @@ import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/interview/data/models/interview_question_model.dart';
 import 'package:techtalk/features/interview/entities/interview_question_entity.dart'
     as interview;
+import 'package:techtalk/features/interview/entities/topic_entity.dart';
 import 'package:techtalk/features/interview/interview.dart';
 
 class InterviewRepositoryImpl implements InterviewRepository {
@@ -15,11 +16,14 @@ class InterviewRepositoryImpl implements InterviewRepository {
   final InterviewRemoteDataSource _interviewRemoteDataSource;
 
   @override
-  Result<List<InterviewTopic>> getTopics() {
+  Future<Result<List<TopicEntity>>> getTopics() async {
     try {
-      final response = _interviewLocalDataSource.getTopics();
-      return Result.success(response);
+      final remoteRes = await _interviewRemoteDataSource.getTopics();
+      final result = remoteRes.map(TopicEntity.fromModel).toList();
+
+      return Result.success(result);
     } on Exception catch (e) {
+      print('우시미 : ${e}');
       return Result.failure(e);
     }
   }

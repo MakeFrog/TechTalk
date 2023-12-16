@@ -15,7 +15,7 @@ class UserDataEntity {
         topicIds: skillIdList,
       );
   factory UserDataEntity.fromModel(UserDataModel model) => UserDataEntity(
-        uid: model.uid,
+        uid: model.uid ?? '',
         nickname: model.nickname,
         interestedJobGroupIdList: model.jobGroupIds ?? [],
         techSkillIdList: model.topicIds ?? [],

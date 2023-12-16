@@ -53,7 +53,7 @@ class _AppBar extends StatelessWidget
       title: Consumer(
         builder: (_, ref, __) {
           final topicName =
-              ref.watch(selectedReviewNoteTopicProvider).requireValue.text;
+              ref.watch(selectedReviewNoteTopicProvider).requireValue.name;
 
           return Text(topicName);
         },
