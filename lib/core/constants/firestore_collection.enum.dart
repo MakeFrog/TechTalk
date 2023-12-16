@@ -1,10 +1,6 @@
 enum FirestoreCollection {
   users,
-  jobGroups,
-  skills,
-  interviewTopics,
-  study,
-  reviewNotes,
+  wrongAnswers,
   chats,
   messages,
 }

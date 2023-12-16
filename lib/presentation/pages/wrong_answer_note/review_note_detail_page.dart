@@ -1,21 +1,23 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/presentation/pages/wrong_answer_note/providers/detail_page_controller_provider.dart';
+import 'package:techtalk/features/topic/entities/topic_question_entity.dart';
+import 'package:techtalk/features/wrong_answer_note/wrong_answer_note.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/review_note_detail_event.dart';
 import 'package:techtalk/presentation/providers/wrong_answer/question_answer_blur_provider.dart';
 import 'package:techtalk/presentation/providers/wrong_answer/selected_wrong_answer_topic_provider.dart';
+import 'package:techtalk/presentation/providers/wrong_answer/wrong_answer_questions_provider.dart';
+import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-class ReviewNoteDetailPage extends StatelessWidget {
+class ReviewNoteDetailPage extends BasePage {
   const ReviewNoteDetailPage({
     super.key,
     required this.page,
@@ -24,15 +26,16 @@ class ReviewNoteDetailPage extends StatelessWidget {
   final int page;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: const _AppBar(),
-      body: _Body(
+  Color get screenBackgroundColor => AppColor.of.white;
+
+  @override
+  PreferredSizeWidget buildAppBar(BuildContext context, WidgetRef ref) =>
+      const _AppBar();
+
+  @override
+  Widget buildPage(BuildContext context, WidgetRef ref) => _Body(
         page: page,
-      ),
-    );
-  }
+      );
 }
 
 class _AppBar extends StatelessWidget
@@ -81,7 +84,7 @@ class _AppBar extends StatelessWidget
   }
 }
 
-class _Body extends ConsumerWidget with ReviewNoteDetailEvent {
+class _Body extends HookConsumerWidget with ReviewNoteDetailEvent {
   const _Body({
     super.key,
     this.page = 0,
@@ -91,34 +94,43 @@ class _Body extends ConsumerWidget with ReviewNoteDetailEvent {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pageController = ref.watch(detailPageControllerProvider);
-    // final questions = ref.watch(reviewQuestionListProvider).requireValue;
-
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(detailPageControllerProvider.notifier).initPage = page;
-    });
+    final pageController = usePageController(initialPage: page);
+    final questions = ref.watch(wrongAnswerQuestionsProvider).requireValue;
 
     return SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Gap(24),
-          // Expanded(
-          //   child: PageView.builder(
-          //     controller: pageController,
-          //     itemCount: questions.length,
-          //     itemBuilder: (context, index) => _StudyQna(
-          //       question: questions[index],
-          //     ),
-          //   ),
-          // ),
+          Expanded(
+            child: PageView.builder(
+              controller: pageController,
+              itemCount: questions.length,
+              itemBuilder: (context, index) {
+                return _StudyQna(
+                  qna: WrongAnswerQnAEntity(
+                    id: 'id',
+                    chatRoomId: 'chatRoomId',
+                    question: TopicQuestionEntity(
+                      id: '',
+                      question: questions[index].question,
+                      answers: [
+                        'test',
+                      ],
+                    ),
+                    answers: [],
+                  ),
+                );
+              },
+            ),
+          ),
           HookBuilder(
             builder: (context) {
               final currentPage = useListenableSelector(pageController, () {
                 try {
                   return pageController.page!.round();
                 } catch (e) {
-                  return 0;
+                  return page;
                 }
               });
 
@@ -130,19 +142,25 @@ class _Body extends ConsumerWidget with ReviewNoteDetailEvent {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _ControllerButton(
+                    UnderLabelIconButton(
                       isActive: currentPage != 0,
                       label: '이전 문항',
                       icon: Assets.iconsArrowLeft,
-                      onTap: () => onTapPrevQuestion(ref),
+                      onTap: () => pageController.previousPage(
+                        duration: 400.ms,
+                        curve: Curves.easeOutQuint,
+                      ),
                     ),
                     Spacer(),
-                    // _ControllerButton(
-                    //   isActive: currentPage + 1 != questions.length,
-                    //   label: '다음 문항',
-                    //   icon: Assets.iconsArrowRight,
-                    //   onTap: () => onTapNextQuestion(ref),
-                    // ),
+                    UnderLabelIconButton(
+                      isActive: currentPage + 1 != questions.length,
+                      label: '다음 문항',
+                      icon: Assets.iconsArrowRight,
+                      onTap: () => pageController.nextPage(
+                        duration: 400.ms,
+                        curve: Curves.easeOutQuint,
+                      ),
+                    ),
                   ],
                 ),
               );
@@ -154,16 +172,18 @@ class _Body extends ConsumerWidget with ReviewNoteDetailEvent {
   }
 }
 
-class _StudyQna extends StatelessWidget {
+class _StudyQna extends HookWidget {
   const _StudyQna({
     super.key,
-    required this.question,
+    required this.qna,
   });
 
-  final InterviewQnAEntity question;
+  final WrongAnswerQnAEntity qna;
 
   @override
   Widget build(BuildContext context) {
+    useAutomaticKeepAlive();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -180,14 +200,14 @@ class _StudyQna extends StatelessWidget {
         horizontal: 16,
       ),
       child: Text(
-        question.question,
+        qna.question.question,
         style: AppTextStyle.title1,
       ),
     );
   }
 
   Widget _buildAnswers() {
-    final answers = question.idealAnswer;
+    final answers = qna.question.answers;
     return Expanded(
       child: ListView.builder(
         physics: const ScrollPhysics(),
@@ -222,51 +242,6 @@ class _StudyQna extends StatelessWidget {
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-class _ControllerButton extends StatelessWidget {
-  const _ControllerButton({
-    super.key,
-    required this.onTap,
-    required this.isActive,
-    required this.icon,
-    required this.label,
-  });
-
-  final VoidCallback onTap;
-  final bool isActive;
-  final String icon;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: isActive ? onTap : null,
-      child: Column(
-        children: [
-          SvgPicture.asset(
-            icon,
-            width: 24,
-            height: 24,
-            colorFilter: isActive
-                ? null
-                : ColorFilter.mode(
-                    AppColor.of.gray2,
-                    BlendMode.srcATop,
-                  ),
-          ),
-          Gap(12),
-          Text(
-            label,
-            style: AppTextStyle.alert1.copyWith(
-              color: isActive ? AppColor.of.gray4 : AppColor.of.gray2,
-            ),
-          ),
-        ],
       ),
     );
   }

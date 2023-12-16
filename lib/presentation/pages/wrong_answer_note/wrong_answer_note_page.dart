@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_note_event.dart';
-import 'package:techtalk/presentation/providers/user/user_interview_topics_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_topics_provider.dart';
 import 'package:techtalk/presentation/providers/wrong_answer/selected_wrong_answer_topic_provider.dart';
 import 'package:techtalk/presentation/providers/wrong_answer/wrong_answer_questions_provider.dart';
 
@@ -50,7 +50,7 @@ class _Body extends HookConsumerWidget with WrongAnswerNoteEvent {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final topicsAsync = ref.watch(availableUserInterviewTopicsProvider);
+    final topicsAsync = ref.watch(userTopicsProvider);
 
     return Expanded(
       child: topicsAsync.when(
@@ -60,7 +60,8 @@ class _Body extends HookConsumerWidget with WrongAnswerNoteEvent {
         error: (error, stackTrace) => Center(
           child: Text('$error'),
         ),
-        data: (topics) {
+        data: (data) {
+          final topics = [...data.where((element) => element.isAvailable)];
           final selectedTopic = ref.watch(selectedWrongAnswerTopicProvider);
           final questionsAsync = ref.watch(wrongAnswerQuestionsProvider);
 
@@ -117,6 +118,7 @@ class _Body extends HookConsumerWidget with WrongAnswerNoteEvent {
                   ),
                   data: (questions) {
                     return ListView.separated(
+                      padding: EdgeInsets.zero,
                       itemCount: questions.length,
                       separatorBuilder: (context, index) => const Divider(
                         height: 1,

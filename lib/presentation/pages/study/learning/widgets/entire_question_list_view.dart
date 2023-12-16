@@ -65,9 +65,11 @@ class EntireQuestionListView extends ConsumerWidget {
               ),
             ),
             const Gap(16),
-            Text(
-              question.question,
-              style: AppTextStyle.body1,
+            Expanded(
+              child: Text(
+                question.question,
+                style: AppTextStyle.body1,
+              ),
             ),
           ],
         ),

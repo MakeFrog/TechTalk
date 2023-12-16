@@ -9,6 +9,7 @@ part of 'wrong_answer_qna_model.dart';
 WrongAnswerQnAModel _$WrongAnswerQnAModelFromJson(Map<String, dynamic> json) =>
     WrongAnswerQnAModel(
       id: json['id'] as String,
+      questionId: json['question_id'] as String,
       chatRoomId: json['chat_room_id'] as String,
       qnaId: json['qna_id'] as String,
     );
@@ -17,6 +18,7 @@ Map<String, dynamic> _$WrongAnswerQnAModelToJson(
         WrongAnswerQnAModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'question_id': instance.questionId,
       'chat_room_id': instance.chatRoomId,
       'qna_id': instance.qnaId,
     };

@@ -3,29 +3,15 @@ import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 
-part 'user_interview_topics_provider.g.dart';
+part 'user_topics_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-class UserInterviewTopics extends _$UserInterviewTopics {
+class UserTopics extends _$UserTopics {
   @override
-  FutureOr<List<Topic>> build({
-    bool onlyAvailable = false,
-  }) async {
+  FutureOr<List<Topic>> build() async {
     final userData = await ref.watch(userDataProvider.future);
     if (userData == null) throw Exception('유저 데이터가 존재하지 않음');
 
     return getUserInterviewTopicsUseCase();
   }
-}
-
-@riverpod
-FutureOr<List<Topic>> availableUserInterviewTopics(
-  AvailableUserInterviewTopicsRef ref,
-) async {
-  final topics =
-      await ref.watch(userInterviewTopicsProvider(onlyAvailable: true).future);
-
-  return [
-    ...topics.where((element) => element.isAvailable),
-  ];
 }

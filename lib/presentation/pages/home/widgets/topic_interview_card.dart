@@ -6,7 +6,7 @@ import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/home/home_event.dart';
-import 'package:techtalk/presentation/providers/user/user_interview_topics_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_topics_provider.dart';
 
 class TopicInterviewCard extends StatelessWidget with HomeEvent {
   const TopicInterviewCard({super.key});
@@ -65,7 +65,7 @@ class TopicInterviewCard extends StatelessWidget with HomeEvent {
   Widget _buildTopics() {
     return Consumer(
       builder: (context, ref, child) {
-        final userTopicsAsync = ref.watch(availableUserInterviewTopicsProvider);
+        final userTopicsAsync = ref.watch(userTopicsProvider);
 
         return userTopicsAsync.when(
           loading: () => const Center(
@@ -77,9 +77,9 @@ class TopicInterviewCard extends StatelessWidget with HomeEvent {
           data: (data) {
             return Column(
               children: [
-                ...data.map(
-                  _buildTopic,
-                ),
+                ...data.where((element) => element.isAvailable).map(
+                      _buildTopic,
+                    ),
               ],
             );
           },
