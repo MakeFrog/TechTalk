@@ -7,7 +7,7 @@ part of 'user_interview_rooms_provider.dart';
 // **************************************************************************
 
 String _$userInterviewRoomsHash() =>
-    r'b6235840c48fefc8378feb173aa4d48afc2a061d';
+    r'43165968bccf22b562e3cef9c6a8bf31e08c467e';
 
 /// Copied from Dart SDK
 class _SystemHash {

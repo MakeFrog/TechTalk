@@ -2,7 +2,6 @@ import 'package:techtalk/app/di/modules/auth_di.dart';
 import 'package:techtalk/app/di/modules/chat_di.dart';
 import 'package:techtalk/app/di/modules/interview_di.dart';
 import 'package:techtalk/app/di/modules/job_di.dart';
-import 'package:techtalk/app/di/modules/skill_di.dart';
 import 'package:techtalk/app/di/modules/user_di.dart';
 
 final class AppBinder {
@@ -20,7 +19,6 @@ final class AppBinder {
       UserDependencyInjection(),
       JobDependencyInjection(),
       ChatDependencyInject(),
-      TechSkillDependencyInjection(),
       InterviewDependencyInjection(),
     ]) {
       di.init();

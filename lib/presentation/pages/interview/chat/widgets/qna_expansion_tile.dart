@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:techtalk/core/constants/constants.dart';
+import 'package:gap/gap.dart';
+import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/chat/repositories/entities/interview_qna_entity.dart';
-import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 import 'package:techtalk/presentation/widgets/common/text/bullet_text.dart';
 import 'package:techtalk/presentation/widgets/common/tile/flexible_expansion_tile.dart';
 
@@ -44,7 +44,7 @@ class QnAExpansionTile extends HookWidget {
               ),
             ],
           ),
-          const HeightBox(12),
+          const Gap(12),
 
           /// QUESTION
           Text(
@@ -52,7 +52,7 @@ class QnAExpansionTile extends HookWidget {
             textAlign: TextAlign.start,
             style: AppTextStyle.title1,
           ),
-          const HeightBox(8),
+          const Gap(8),
         ],
       ),
       content: SizedBox(
@@ -64,19 +64,19 @@ class QnAExpansionTile extends HookWidget {
               '내 답변',
               style: AppTextStyle.alert1.copyWith(color: AppColor.of.black),
             ),
-            const HeightBox(6),
+            const Gap(6),
 
             /// USER ANSWER RESPONSE
             BulletText(
               item.response!.text,
               style: AppTextStyle.alert2,
             ),
-            const HeightBox(18),
+            const Gap(18),
             Text(
               '모범 답변',
               style: AppTextStyle.alert1.copyWith(color: AppColor.of.black),
             ),
-            const HeightBox(6),
+            const Gap(6),
 
             /// LIST OF IDEAL ANSWER
             ...List.generate(

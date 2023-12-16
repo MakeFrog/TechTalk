@@ -8,12 +8,24 @@ part 'user_interview_topics_provider.g.dart';
 @Riverpod(keepAlive: true)
 class UserInterviewTopics extends _$UserInterviewTopics {
   @override
-  FutureOr<List<InterviewTopic>> build() async {
+  FutureOr<List<InterviewTopic>> build({
+    bool onlyAvailable = false,
+  }) async {
     final userData = await ref.watch(userDataProvider.future);
     if (userData == null) throw Exception('유저 데이터가 존재하지 않음');
 
-    final topics = await getUserInterviewTopicsUseCase();
-
-    return topics;
+    return getUserInterviewTopicsUseCase();
   }
+}
+
+@riverpod
+FutureOr<List<InterviewTopic>> availableUserInterviewTopics(
+  AvailableUserInterviewTopicsRef ref,
+) async {
+  final topics =
+      await ref.watch(userInterviewTopicsProvider(onlyAvailable: true).future);
+
+  return [
+    ...topics.where((element) => element.isAvailable),
+  ];
 }

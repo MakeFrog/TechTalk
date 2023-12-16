@@ -1,5 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
@@ -16,7 +18,7 @@ class MainPage extends BasePage {
   const MainPage({super.key});
 
   @override
-  bool get setBottomSafeArea => false;
+  bool get wrapWithSafeArea => false;
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
@@ -28,10 +30,10 @@ class MainPage extends BasePage {
       const _BottomNavigationBar();
 }
 
-class _Body extends ConsumerWidget {
+class _Body extends HookConsumerWidget {
   const _Body({super.key});
 
-  static const _screens = <Widget>[
+  static const _screens = [
     HomePage(
       key: ValueKey(MainNavigationTab.home),
     ),
@@ -51,9 +53,24 @@ class _Body extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return IndexedStack(
-      index: ref.watch(mainBottomNavigationProvider).index,
-      children: _screens,
+    final mainTabController = usePageController();
+    ref.listen(mainBottomNavigationProvider, (_, next) {
+      mainTabController.jumpToPage(next.index);
+    });
+    final currentTab = ref.watch(mainBottomNavigationProvider).index;
+
+    return PageView(
+      controller: mainTabController,
+      physics: const NeverScrollableScrollPhysics(),
+      children: [
+        ..._screens.mapIndexed(
+          (index, e) => e
+              .animate(
+                target: currentTab == index ? 1 : 0,
+              )
+              .fade(duration: 200.ms),
+        ),
+      ],
     );
   }
 }

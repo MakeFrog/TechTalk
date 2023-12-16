@@ -4,5 +4,5 @@ import 'package:techtalk/core/utils/result.dart';
 
 abstract interface class AuthRepository {
   Future<Result<UserCredential>> signInOAuth(UserAccountProvider provider);
-  Future<void> signOut();
+  Future<Result<void>> signOut();
 }

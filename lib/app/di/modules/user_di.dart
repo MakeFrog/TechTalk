@@ -1,22 +1,20 @@
-import 'package:get_it/get_it.dart';
 import 'package:techtalk/app/di/feature_di_interface.dart';
+import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/features/user/data/remote/user_remote_data_source_impl.dart';
 import 'package:techtalk/features/user/repositories/user_repository_impl.dart';
-import 'package:techtalk/features/user/usecases/get_user_interview_topics_use_case.dart';
-import 'package:techtalk/features/user/usecases/get_user_interview_topics_use_case.dart';
 import 'package:techtalk/features/user/user.dart';
 
 final class UserDependencyInjection extends FeatureDependencyInjection {
   @override
   void dataSources() {
-    GetIt.I.registerLazySingleton<UserRemoteDataSource>(
+    locator.registerLazySingleton<UserRemoteDataSource>(
       UserRemoteDataSourceImpl.new,
     );
   }
 
   @override
   void repositories() {
-    GetIt.I.registerLazySingleton<UserRepository>(
+    locator.registerLazySingleton<UserRepository>(
       () => UserRepositoryImpl(
         userRemoteDataSource,
       ),
@@ -25,26 +23,37 @@ final class UserDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void useCases() {
-    GetIt.I
-      ..registerFactory<CreateUserDataUseCase>(
+    locator
+      ..registerFactory(
         () => CreateUserDataUseCase(
           userRepository,
         ),
       )
-      ..registerFactory<GetUserDataUseCase>(
+      ..registerFactory(
         () => GetUserDataUseCase(
           userRepository,
         ),
       )
-      ..registerFactory<IsExistNicknameUseCase>(
-        () => IsExistNicknameUseCase(
+      ..registerFactory(
+        () => UpdateUserDataUseCase(
           userRepository,
         ),
       )
-      ..registerFactory<GetUserInterviewTopicsUseCase>(
+      ..registerFactory(
+        () => DeleteUserDataUseCase(
+          userRepository,
+        ),
+      )
+      ..registerFactory(
         () => GetUserInterviewTopicsUseCase(
           userRepository,
         ),
       );
+    // ..registerFactory(
+    //   () => GetUserInterviewTopicsUseCase(
+    //     userRepository: userRepository,
+    //     topicRepository: interviewTopicRepository,
+    //   ),
+    // );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
@@ -130,7 +131,7 @@ class Bubble extends StatelessWidget {
                 ),
               ),
             ),
-            const HeightBox(8),
+            const Gap(8),
             Builder(
               /// ANSWER STATE INDICATOR
               builder: (context) {
@@ -143,7 +144,7 @@ class Bubble extends StatelessWidget {
                           style: AppTextStyle.alert1
                               .copyWith(color: AppColor.of.blue2),
                         ),
-                        const WidthBox(2),
+                        const Gap(2),
                         SvgPicture.asset(Assets.iconsRoundedCheckSmallBlue),
                       ],
                     );
@@ -155,7 +156,7 @@ class Bubble extends StatelessWidget {
                           style: AppTextStyle.alert1
                               .copyWith(color: AppColor.of.red2),
                         ),
-                        const WidthBox(2),
+                        const Gap(2),
                         SvgPicture.asset(Assets.iconsRoundedCloseSmallRed),
                       ],
                     );

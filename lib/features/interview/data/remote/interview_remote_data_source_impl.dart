@@ -20,7 +20,7 @@ final class InterviewRemoteDataSourceImpl implements InterviewRemoteDataSource {
     print(reviewNoteCollection.doc(userUid));
 
     if (!docSnapshot.exists) {
-      throw CustomException(code: 'code', message: '오답노트 데이터 없음');
+      throw NoQnAsException('topicId');
     }
     final data = docSnapshot.get(topicId) as List;
 
@@ -49,10 +49,7 @@ final class InterviewRemoteDataSourceImpl implements InterviewRemoteDataSource {
         .get();
 
     if (snapshot.docs.isEmpty) {
-      throw CustomException(
-        code: 'code',
-        message: '학습 질문 없음',
-      );
+      throw NoInterviewQuestionException('topicId');
     }
 
     final questions =

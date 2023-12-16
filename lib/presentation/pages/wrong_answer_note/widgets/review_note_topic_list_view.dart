@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
+import 'package:gap/gap.dart';
 
 class ReviewNoteTopicListView extends StatelessWidget {
   const ReviewNoteTopicListView({
@@ -24,7 +24,7 @@ class ReviewNoteTopicListView extends StatelessWidget {
           horizontal: 16,
         ),
         itemCount: itemCount,
-        separatorBuilder: (context, index) => const WidthBox(8),
+        separatorBuilder: (context, index) => const Gap(8),
         itemBuilder: itemBuilder,
       ),
     );

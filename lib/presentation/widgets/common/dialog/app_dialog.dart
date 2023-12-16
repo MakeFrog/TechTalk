@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 
 class AppDialog extends Dialog {
   const AppDialog({
@@ -105,7 +105,7 @@ class AppDialog extends Dialog {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const HeightBox(14),
+                    const Gap(14),
                   ],
                   if (description != null) ...[
                     Center(

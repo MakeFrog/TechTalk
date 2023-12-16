@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
@@ -7,7 +8,6 @@ import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/question_page_controller.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_event.dart';
 import 'package:techtalk/presentation/providers/study/study_questions_provider.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class StudyControllerBar extends ConsumerWidget with StudyLearningEvent {
   const StudyControllerBar({
@@ -85,7 +85,7 @@ class _ControllerButton extends StatelessWidget {
                     BlendMode.srcATop,
                   ),
           ),
-          HeightBox(12),
+          Gap(12),
           Text(
             label,
             style: AppTextStyle.alert1.copyWith(

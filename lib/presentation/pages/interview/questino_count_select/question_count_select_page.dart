@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/src/consumer.dart';
+import 'package:gap/gap.dart';
 import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/interview/questino_count_select/provider/selected_question_count_provider.dart';
 import 'package:techtalk/presentation/pages/interview/questino_count_select/question_count_select_event.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
-import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 
 class QuestionCountSelectPage extends BasePage {
   const QuestionCountSelectPage({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class QuestionCountSelectPage extends BasePage {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const HeightBox(20),
+          const Gap(20),
           _buildLeadingMessage(),
           Expanded(
             child: Center(
@@ -62,7 +62,7 @@ class QuestionCountSelectPage extends BasePage {
   }
 
   @override
-  PreferredSizeWidget? buildAppBar(BuildContext context) =>
+  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
       const BackButtonAppBar();
 
   Widget _buildLeadingMessage() {

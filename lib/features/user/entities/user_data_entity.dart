@@ -1,34 +1,20 @@
-import 'package:techtalk/features/user/data/models/user_data_model.dart';
-
 class UserDataEntity {
   final String uid;
   final String? nickname;
-  final List<String> jobGroupIdList;
-  final List<String> skillIdList;
+  final List<String> jobGroupIds;
+  final List<String> topicIds;
 
   bool get isCompleteSignUp => nickname != null;
 
-  UserDataModel toModel() => UserDataModel(
-        uid: uid,
-        nickname: nickname,
-        jobGroupIds: jobGroupIdList,
-        topicIds: skillIdList,
-      );
-  factory UserDataEntity.fromModel(UserDataModel model) => UserDataEntity(
-        uid: model.uid,
-        nickname: model.nickname,
-        interestedJobGroupIdList: model.jobGroupIds ?? [],
-        techSkillIdList: model.topicIds ?? [],
-      );
-
 //<editor-fold desc="Data Methods">
+
   const UserDataEntity({
     required this.uid,
     this.nickname,
-    List<String>? interestedJobGroupIdList,
-    List<String>? techSkillIdList,
-  })  : jobGroupIdList = interestedJobGroupIdList ?? const [],
-        skillIdList = techSkillIdList ?? const [];
+    List<String>? jobGroupIds,
+    List<String>? topicIds,
+  })  : jobGroupIds = jobGroupIds ?? const [],
+        topicIds = topicIds ?? const [];
 
   @override
   bool operator ==(Object other) =>
@@ -37,37 +23,37 @@ class UserDataEntity {
           runtimeType == other.runtimeType &&
           uid == other.uid &&
           nickname == other.nickname &&
-          jobGroupIdList == other.jobGroupIdList &&
-          skillIdList == other.skillIdList);
+          jobGroupIds == other.jobGroupIds &&
+          topicIds == other.topicIds);
 
   @override
   int get hashCode =>
       uid.hashCode ^
       nickname.hashCode ^
-      jobGroupIdList.hashCode ^
-      skillIdList.hashCode;
+      jobGroupIds.hashCode ^
+      topicIds.hashCode;
 
   @override
   String toString() {
     return 'UserDataEntity{' +
         ' uid: $uid,' +
         ' nickname: $nickname,' +
-        ' interestedJobGroupIdList: $jobGroupIdList,' +
-        ' techSkillIdList: $skillIdList,' +
+        ' jobGroupIds: $jobGroupIds,' +
+        ' topicIds: $topicIds,' +
         '}';
   }
 
   UserDataEntity copyWith({
     String? uid,
     String? nickname,
-    List<String>? interestedJobGroupIdList,
-    List<String>? techSkillIdList,
+    List<String>? jobGroupIds,
+    List<String>? topicIds,
   }) {
     return UserDataEntity(
       uid: uid ?? this.uid,
       nickname: nickname ?? this.nickname,
-      interestedJobGroupIdList: interestedJobGroupIdList ?? this.jobGroupIdList,
-      techSkillIdList: techSkillIdList ?? this.skillIdList,
+      jobGroupIds: jobGroupIds ?? this.jobGroupIds,
+      topicIds: topicIds ?? this.topicIds,
     );
   }
 
@@ -75,8 +61,8 @@ class UserDataEntity {
     return {
       'uid': this.uid,
       'nickname': this.nickname,
-      'interestedJobGroupIdList': this.jobGroupIdList,
-      'techSkillIdList': this.skillIdList,
+      'jobGroupIds': this.jobGroupIds,
+      'topicIds': this.topicIds,
     };
   }
 
@@ -84,8 +70,8 @@ class UserDataEntity {
     return UserDataEntity(
       uid: map['uid'] as String,
       nickname: map['nickname'] as String,
-      interestedJobGroupIdList: map['interestedJobGroupIdList'] as List<String>,
-      techSkillIdList: map['techSkillIdList'] as List<String>,
+      jobGroupIds: map['jobGroupIds'] as List<String>,
+      topicIds: map['topicIds'] as List<String>,
     );
   }
 

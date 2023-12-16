@@ -1,19 +1,17 @@
+import 'dart:async';
+
 import 'package:techtalk/features/user/entities/user_data_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 
-final class GetUserDataUseCase {
-  const GetUserDataUseCase(
-    this._userRepository,
-  );
+final class UpdateUserDataUseCase {
+  UpdateUserDataUseCase(this._userRepository);
 
   final UserRepository _userRepository;
 
-  Future<UserDataEntity?> call() async {
-    final result = await _userRepository.getUserData();
+  Future<void> call(UserDataEntity data) async {
+    final result = await _userRepository.updateUserData(data);
     return result.fold(
-      onSuccess: (value) {
-        return value;
-      },
+      onSuccess: (value) => value,
       onFailure: (e) {
         throw e;
       },

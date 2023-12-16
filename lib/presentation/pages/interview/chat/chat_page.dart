@@ -30,7 +30,8 @@ class ChatPage extends BasePage with ChatEvent {
   bool get preventSwipeBack => true;
 
   @override
-  PreferredSizeWidget? buildAppBar(BuildContext context) => BackButtonAppBar(
+  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
+      BackButtonAppBar(
         title: 'Swift',
         onBackBtnTapped: () {
           onAppbarBackBtnTapped(context);

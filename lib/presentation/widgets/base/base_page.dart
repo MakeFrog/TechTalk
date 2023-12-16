@@ -71,7 +71,7 @@ abstract class BasePage extends HookConsumerWidget {
     return Scaffold(
       extendBody: extendBodyBehindAppBar,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-      appBar: buildAppBar(context),
+      appBar: buildAppBar(context, ref),
       body: buildPage(context, ref),
       backgroundColor: screenBackgroundColor,
       bottomNavigationBar: buildBottomNavigationBar(context),
@@ -90,7 +90,7 @@ abstract class BasePage extends HookConsumerWidget {
 
   /// 화면 상단에 표시될 앱 바를 구성하는 위젯을 반환
   @protected
-  PreferredSizeWidget? buildAppBar(BuildContext context) => null;
+  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) => null;
 
   /// 화면에 표시될 플로팅 액션 버튼을 구성하는 위젯을 반환
   @protected

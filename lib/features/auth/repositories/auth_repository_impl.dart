@@ -22,15 +22,19 @@ final class AuthRepositoryImpl implements AuthRepository {
       };
 
       return Result.success(userCredential);
-    } catch (e) {
-      return Result.failure(
-        Exception(e),
-      );
+    } on Exception catch (e) {
+      return Result.failure(e);
     }
   }
 
   @override
-  Future<void> signOut() async {
-    return _authRemoteDataSource.signOut();
+  Future<Result<void>> signOut() async {
+    try {
+      return Result.success(
+        await _authRemoteDataSource.signOut(),
+      );
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
   }
 }

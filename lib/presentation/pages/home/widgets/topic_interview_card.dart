@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/home/home_event.dart';
 import 'package:techtalk/presentation/providers/user/user_interview_topics_provider.dart';
 
@@ -54,76 +55,76 @@ class TopicInterviewCard extends StatelessWidget with HomeEvent {
               ),
             ),
             const Gap(12),
-            const _InterviewTopicColum(),
+            _buildTopics(),
           ],
         ),
       ),
     );
   }
-}
 
-class _InterviewTopicColum extends ConsumerWidget with HomeEvent {
-  const _InterviewTopicColum({
-    super.key,
-  });
+  Widget _buildTopics() {
+    return Consumer(
+      builder: (context, ref, child) {
+        final userTopicsAsync = ref.watch(availableUserInterviewTopicsProvider);
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final userTopicsAsync = ref.watch(userInterviewTopicsProvider);
-
-    return userTopicsAsync.when(
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
-      ),
-      error: (error, stackTrace) => Center(
-        child: Text('$error'),
-      ),
-      data: (data) {
-        return Column(
-          children: [
-            ...data.map(
-              (e) => SizedBox(
-                height: 64,
-                child: Row(
-                  children: [
-                    Image.asset(
-                      e.imageUrl!,
-                      width: 40,
-                      height: 40,
-                      errorBuilder: (context, error, stackTrace) =>
-                          const SizedBox(
-                        width: 40,
-                        height: 40,
-                      ),
-                    ),
-                    const Gap(16),
-                    Text(
-                      e.text,
-                      style: AppTextStyle.title1,
-                    ),
-                    const Spacer(),
-                    FilledButton(
-                      style: FilledButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        backgroundColor: AppColor.of.background1,
-                        foregroundColor: AppColor.of.gray4,
-                      ),
-                      onPressed: () => onTapGoToInterviewRoomPage(e),
-                      child: const Text('면접 보기'),
-                    ),
-                  ],
+        return userTopicsAsync.when(
+          loading: () => const Center(
+            child: CircularProgressIndicator(),
+          ),
+          error: (error, stackTrace) => Center(
+            child: Text('$error'),
+          ),
+          data: (data) {
+            return Column(
+              children: [
+                ...data.map(
+                  _buildTopic,
                 ),
-              ),
-            ),
-          ],
+              ],
+            );
+          },
         );
       },
+    );
+  }
+
+  Widget _buildTopic(InterviewTopic topic) {
+    return SizedBox(
+      height: 64,
+      child: Row(
+        children: [
+          Image.asset(
+            topic.imageUrl!,
+            width: 40,
+            height: 40,
+            errorBuilder: (_, __, ___) => const SizedBox(
+              width: 40,
+              height: 40,
+            ),
+          ),
+          const Gap(16),
+          Text(
+            topic.name,
+            style: AppTextStyle.title1,
+          ),
+          const Spacer(),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 6,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              backgroundColor: AppColor.of.background1,
+              foregroundColor: AppColor.of.gray4,
+            ),
+            onPressed: () => onTapGoToInterviewRoomPage(topic),
+            child: const Text('면접 보기'),
+          ),
+        ],
+      ),
     );
   }
 }

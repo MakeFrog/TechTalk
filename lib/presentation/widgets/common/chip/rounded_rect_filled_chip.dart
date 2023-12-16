@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class RoundedRectFilledChip extends StatelessWidget {
   const RoundedRectFilledChip({
@@ -36,7 +36,7 @@ class RoundedRectFilledChip extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              WidthBox(2),
+              Gap(2),
               SvgPicture.asset(
                 Assets.iconsRoundedCloseThick,
                 width: 16,

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
@@ -16,16 +14,17 @@ class UserInterviewRooms extends _$UserInterviewRooms {
       throw Exception('유저 데이터가 존재하지 않음');
     }
 
-    final response = await getChatListUseCase(topic);
-
-    return response.fold(
-      onSuccess: (chatList) {
-        return chatList;
-      },
-      onFailure: (e) {
-        log(e.toString());
-        throw e;
-      },
-    );
+    return [];
+    // final response = await getInterviewRoomsUseCase(topic);
+    //
+    // return response.fold(
+    //   onSuccess: (chatList) {
+    //     return chatList;
+    //   },
+    //   onFailure: (e) {
+    //     log(e.toString());
+    //     throw e;
+    //   },
+    // );
   }
 }

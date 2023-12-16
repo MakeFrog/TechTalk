@@ -1,8 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/features/user/entities/sign_up_form_entity.dart';
-import 'package:techtalk/features/user/entities/user_data_entity.dart';
+import 'package:techtalk/core/models/exception/custom_exception.dart';
+import 'package:techtalk/core/services/toast_service.dart';
 import 'package:techtalk/features/user/user.dart';
-import 'package:techtalk/presentation/providers/user/user_auth_provider.dart';
+import 'package:techtalk/presentation/providers/user/auth/user_auth_provider.dart';
+import 'package:techtalk/presentation/widgets/common/common.dart';
 
 part 'user_data_provider.g.dart';
 
@@ -10,32 +11,51 @@ part 'user_data_provider.g.dart';
 class UserData extends _$UserData {
   @override
   FutureOr<UserDataEntity?> build() async {
-    final userAuth = ref.watch(userAuthProvider);
+    try {
+      final userAuth = ref.watch(userAuthProvider);
 
-    if (userAuth == null) throw Exception('로그인 필요');
+      if (userAuth == null) throw const UnAuthorizedException();
 
-    final userData = await getUserDataUseCase();
+      final userData = await getUserDataUseCase();
 
-    return userData;
+      return userData;
+    } on UnAuthorizedException catch (e) {
+      ToastService.show(
+        NormalToast(message: '$e'),
+      );
+
+      rethrow;
+    }
   }
 
-  Future<void> createUserData(SignUpFormEntity signUpForm) async {
-    final userUid = ref.read(userAuthProvider)!.uid;
+  Future<void> createUserData() async {
+    try {
+      await createUserDataUseCase();
 
-    final userData = UserDataEntity(
-      uid: userUid,
-      nickname: signUpForm.nickname,
-      interestedJobGroupIdList:
-          signUpForm.jobGroupList.map((e) => e.id).toList(),
-      techSkillIdList: signUpForm.techSkillList.map((e) => e.id).toList(),
-    );
+      ref.invalidateSelf();
 
-    await createUserDataUseCase(userData);
+      await future;
+    } on AlreadyExistUserDataException catch (e) {
+      ToastService.show(
+        NormalToast(message: '$e'),
+      );
 
+      rethrow;
+    }
+  }
+
+  Future<void> updateUserData(UserDataEntity data) async {
+    try {
+      await updateUserDataUseCase(data);
+
+      state = AsyncData(data);
+    } on AlreadyExistNicknameException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> deleteUserData() async {
+    await deleteUserDataUseCase();
     ref.invalidateSelf();
-
-    await future;
   }
-
-  void updateUserData() {}
 }
