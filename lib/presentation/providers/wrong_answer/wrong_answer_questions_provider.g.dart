@@ -7,12 +7,12 @@ part of 'wrong_answer_questions_provider.dart';
 // **************************************************************************
 
 String _$wrongAnswerQuestionsHash() =>
-    r'2449fabf9e01e4607ff0f70a81b1205ae93c27f3';
+    r'55f48aed517884f48a79679a94874f7c5316e9e1';
 
 /// See also [WrongAnswerQuestions].
 @ProviderFor(WrongAnswerQuestions)
 final wrongAnswerQuestionsProvider = AutoDisposeAsyncNotifierProvider<
-    WrongAnswerQuestions, List<InterviewQnAEntity>>.internal(
+    WrongAnswerQuestions, List<WrongAnswerQuestionEntity>>.internal(
   WrongAnswerQuestions.new,
   name: r'wrongAnswerQuestionsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -23,6 +23,6 @@ final wrongAnswerQuestionsProvider = AutoDisposeAsyncNotifierProvider<
 );
 
 typedef _$WrongAnswerQuestions
-    = AutoDisposeAsyncNotifier<List<InterviewQnAEntity>>;
+    = AutoDisposeAsyncNotifier<List<WrongAnswerQuestionEntity>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

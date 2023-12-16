@@ -20,7 +20,7 @@ final class AppBinder {
       UserDependencyInjection(),
       JobDependencyInjection(),
       ChatDependencyInject(),
-      InterviewDependencyInjection(),
+      WrongAnswerNoteDependencyInjection(),
       TopicDependencyInjection(),
     ]) {
       di.init();

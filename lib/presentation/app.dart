@@ -34,6 +34,25 @@ class ProviderLogger extends ProviderObserver {
 Future<void> runFlavoredApp() async {
   await Flavor.instance.setup();
 
+  // await FirebaseFirestore.instance.runTransaction((transaction) async {
+  //   final collection = FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc('o7KhNhHBJ2Yi7ku2MCTZmPJe9x03')
+  //       .collection('wrongAnswers')
+  //       .doc('flutter')
+  //       .collection('qna');
+  //   final questionJsonData =
+  //       await rootBundle.loadString('assets/json/WRONG_DATA.json');
+  //   final questionJson = jsonDecode(questionJsonData) as List;
+  //
+  //   for (int i = 0; i < questionJson.length; i++) {
+  //     transaction.set(
+  //       collection.doc(questionJson[i]['id']),
+  //       questionJson[i],
+  //     );
+  //   }
+  // });
+
   return runApp(
     ProviderScope(
       observers: [

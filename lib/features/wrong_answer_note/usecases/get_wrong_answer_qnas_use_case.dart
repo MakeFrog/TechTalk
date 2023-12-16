@@ -1,19 +1,19 @@
 import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/chat/repositories/entities/interview_qna_entity.dart';
 import 'package:techtalk/features/wrong_answer_note/wrong_answer_note.dart';
 
-final class GetReviewNoteQuestionListUseCase {
-  const GetReviewNoteQuestionListUseCase(this._interviewRepository);
+final class GetWrongAnswerQnAUseCase {
+  const GetWrongAnswerQnAUseCase(this._wrongAnswerNoteRepository);
 
-  final WrongAnswerNoteRepository _interviewRepository;
+  final WrongAnswerNoteRepository _wrongAnswerNoteRepository;
 
-  Future<Result<List<InterviewQnAEntity>>> call({
+  Future<Result<List<WrongAnswerQnAEntity>>> call({
     required String userUid,
     required String topicId,
   }) async {
-    return _interviewRepository.getReviewNoteQuestions(
-      userUid: userUid,
-      topicId: topicId,
-    );
+    return Result.success([]);
+    // return _interviewRepository.getQuestions(
+    //   userUid: userUid,
+    //   topicId: topicId,
+    // );
   }
 }

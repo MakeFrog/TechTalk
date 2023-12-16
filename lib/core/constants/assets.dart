@@ -6,7 +6,6 @@ class Assets {
   static const String characterGreenPlus = 'assets/character/green_plus.svg';
   static const String characterPurplePlus = 'assets/character/purple_plus.svg';
   static const String characterRedPlus = 'assets/character/red_plus.svg';
-  static const String constantsAssets = 'lib/core/constants/assets.dart';
   static const String iconsArrowDown = 'assets/icons/arrow_down.svg';
   static const String iconsArrowDownThick = 'assets/icons/arrow_down_thick.svg';
   static const String iconsArrowLeft = 'assets/icons/arrow_left.svg';
@@ -97,6 +96,7 @@ class Assets {
   static const String imagesWelcomeTechtalk =
       'assets/images/welcome_techtalk.svg';
   static const String jsonChatCollection = 'assets/json/chat_collection.json';
+  static const String jsonMOCKDATA = 'assets/json/MOCK_DATA.json';
   static const String jsonSkill = 'assets/json/skill.json';
   static const String logoTechTalkLogo = 'assets/logo/tech_talk_logo.svg';
   static const String pretendardPretendardBold =
