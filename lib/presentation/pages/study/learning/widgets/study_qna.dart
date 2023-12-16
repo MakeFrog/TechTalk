@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
@@ -34,7 +35,7 @@ class StudyQnaView extends ConsumerWidget with StudyLearningEvent {
   }
 }
 
-class _StudyQna extends StatelessWidget {
+class _StudyQna extends HookWidget {
   const _StudyQna({
     super.key,
     required this.question,
@@ -44,6 +45,8 @@ class _StudyQna extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    useAutomaticKeepAlive();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
