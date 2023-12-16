@@ -3,10 +3,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
+import 'package:techtalk/presentation/pages/interview/topic_select/widgets/topic_card.dart';
 import 'package:techtalk/presentation/pages/study/topic_select/study_topic_select_event.dart';
 import 'package:techtalk/presentation/providers/study/categorized_study_topics_provider.dart';
 import 'package:techtalk/presentation/widgets/common/chip/label_chip.dart';
-import 'package:techtalk/presentation/widgets/study_topic_card.dart';
 
 class StudyTopicSelectPage extends HookWidget {
   const StudyTopicSelectPage({super.key});
@@ -99,7 +99,7 @@ class _Body extends StatelessWidget with StudyTopicSelectEvent {
                       itemBuilder: (context, index) {
                         final topic = topics[index];
 
-                        return StudyTopicCard(
+                        return TopicCard(
                           topic: topic,
                           onTap: () => onTapCard(
                             ref,

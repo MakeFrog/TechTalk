@@ -6,7 +6,7 @@ import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_event.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/study_controller_bar.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/study_progress_indicator.dart';
-import 'package:techtalk/presentation/pages/study/learning/widgets/study_qna_view.dart';
+import 'package:techtalk/presentation/pages/study/learning/widgets/study_qna.dart';
 import 'package:techtalk/presentation/providers/study/selected_study_topic_provider.dart';
 import 'package:techtalk/presentation/providers/study/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/providers/study/study_questions_provider.dart';
