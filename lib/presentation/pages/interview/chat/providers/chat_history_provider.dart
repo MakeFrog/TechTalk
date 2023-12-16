@@ -99,12 +99,12 @@ class ChatHistory extends _$ChatHistory {
               category: 'Swift',
               checkAnswer: updateUserAnswerState,
               onFeedBackCompleted: onFeedbackCompleted,
-              question: state.requireValue
+              qna: state.requireValue
                   .firstWhere((chat) => chat.type.isAskQuestionMessage)
                   .message
                   .value,
               userAnswer: userAnswer,
-            ),
+            ) as GetQuestionFeedbackParam,
           ),
         ),
         ...previous
