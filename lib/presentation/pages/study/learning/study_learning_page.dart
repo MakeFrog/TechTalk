@@ -42,7 +42,7 @@ class _AppBar extends StatelessWidget
       titleSpacing: 0,
       title: Consumer(
         builder: (context, ref, child) => Text(
-          ref.watch(selectedStudyTopicProvider).name,
+          ref.watch(selectedStudyTopicProvider)!.name,
         ),
       ),
       actions: [
@@ -65,7 +65,7 @@ class _AppBar extends StatelessWidget
   }
 }
 
-class _Body extends ConsumerWidget {
+class _Body extends HookConsumerWidget {
   const _Body({
     super.key,
   });

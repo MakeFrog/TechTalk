@@ -104,7 +104,7 @@ class TopicInterviewCard extends StatelessWidget with HomeEvent {
           ),
           const Gap(16),
           Text(
-            topic.name,
+            topic.text,
             style: AppTextStyle.title1,
           ),
           const Spacer(),

@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'question_page_controller.dart';
+part of 'study_question_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
 String _$currentQuestionPageHash() =>
-    r'3719c41964f8fd36a357b8e29d3270e5785f5990';
+    r'154694a88154eaae508db229ed3f4b0f70fe34d4';
 
 /// See also [currentQuestionPage].
 @ProviderFor(currentQuestionPage)
@@ -22,22 +22,22 @@ final currentQuestionPageProvider = AutoDisposeProvider<int>.internal(
 );
 
 typedef CurrentQuestionPageRef = AutoDisposeProviderRef<int>;
-String _$questionPageControllerHash() =>
-    r'9555031f94c139c3ac5f1a9b739d0e42b03a8883';
+String _$studyQuestionControllerHash() =>
+    r'5028cdf85352377b10257dff3f17d0e3bafc9c2d';
 
-/// See also [QuestionPageController].
-@ProviderFor(QuestionPageController)
-final questionPageControllerProvider = AutoDisposeNotifierProvider<
-    QuestionPageController, PageController>.internal(
-  QuestionPageController.new,
-  name: r'questionPageControllerProvider',
+/// See also [StudyQuestionController].
+@ProviderFor(StudyQuestionController)
+final studyQuestionControllerProvider = AutoDisposeNotifierProvider<
+    StudyQuestionController, PageController>.internal(
+  StudyQuestionController.new,
+  name: r'studyQuestionControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$questionPageControllerHash,
+      : _$studyQuestionControllerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$QuestionPageController = AutoDisposeNotifier<PageController>;
+typedef _$StudyQuestionController = AutoDisposeNotifier<PageController>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

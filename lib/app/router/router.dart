@@ -17,7 +17,6 @@ import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_page.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/review_note_detail_page.dart';
-import 'package:techtalk/presentation/providers/study/selected_study_topic_provider.dart';
 
 part 'route_argument.dart';
 part 'router.g.dart';
@@ -140,12 +139,7 @@ class StudyRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ProviderScope(
-      overrides: [
-        selectedStudyTopicIdProvider.overrideWithValue(topicId),
-      ],
-      child: const StudyLearningPage(),
-    );
+    return const StudyLearningPage();
   }
 }
 

@@ -3,9 +3,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
-import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/study/topic_select/study_topic_select_event.dart';
 import 'package:techtalk/presentation/providers/study/categorized_study_topics_provider.dart';
+import 'package:techtalk/presentation/widgets/common/chip/label_chip.dart';
 import 'package:techtalk/presentation/widgets/study_topic_card.dart';
 
 class StudyTopicSelectPage extends HookWidget {
@@ -15,9 +15,9 @@ class StudyTopicSelectPage extends HookWidget {
   Widget build(BuildContext context) {
     useAutomaticKeepAlive();
 
-    return const ColoredBox(
-      color: Colors.white,
-      child: Column(
+    return ColoredBox(
+      color: AppColor.of.white,
+      child: const Column(
         children: [
           _AppBar(),
           _Body(),
@@ -36,92 +36,86 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColor.of.white,
       title: const Text('학습'),
     );
   }
 }
 
-class _Body extends ConsumerWidget with StudyTopicSelectEvent {
+class _Body extends StatelessWidget with StudyTopicSelectEvent {
   const _Body({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final categorizedTopicsAsync = ref.watch(categorizedStudyTopicsProvider);
-
-    final child = categorizedTopicsAsync.when(
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: _buildTopicGrid(),
       ),
-      error: (error, stackTrace) => Center(
-        child: Text('$error'),
-      ),
-      data: (topicAndCategories) {
-        return ListView.builder(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          itemCount: topicAndCategories.length,
-          itemBuilder: (context, index) {
-            final MapEntry(key: category, value: topics) =
-                topicAndCategories.entries.elementAt(index);
+    );
+  }
 
-            final categoryLabel = Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColor.of.brand1,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  category.text,
-                  style: AppTextStyle.body1.copyWith(
-                    color: AppColor.of.brand3,
-                  ),
-                ),
-              ),
-            );
+  Widget _buildTopicGrid() {
+    return Consumer(
+      builder: (context, ref, child) {
+        final categorizedTopicsAsync =
+            ref.watch(categorizedStudyTopicsProvider);
 
-            final topicGrid = GridView.builder(
-              shrinkWrap: true,
-              primary: false,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 11,
-                mainAxisSpacing: 12,
-              ),
-              itemCount: topics.length,
+        return categorizedTopicsAsync.when(
+          loading: () => const Center(
+            child: CircularProgressIndicator(),
+          ),
+          error: (error, stackTrace) => Center(
+            child: Text('$error'),
+          ),
+          data: (topicAndCategories) {
+            return ListView.separated(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              itemCount: topicAndCategories.length,
+              separatorBuilder: (context, index) => const Gap(36),
               itemBuilder: (context, index) {
-                final topic = topics[index];
+                final MapEntry(key: category, value: topics) =
+                    topicAndCategories.entries.elementAt(index);
 
-                return StudyTopicCard(
-                  topic: topic,
-                  onTap: () => onTapCard(topic),
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: LabelChip(label: category.text),
+                    ),
+                    const Gap(16),
+                    GridView.builder(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 11,
+                        mainAxisSpacing: 12,
+                      ),
+                      itemCount: topics.length,
+                      itemBuilder: (context, index) {
+                        final topic = topics[index];
+
+                        return StudyTopicCard(
+                          topic: topic,
+                          onTap: () => onTapCard(
+                            ref,
+                            topic: topic,
+                          ),
+                        );
+                      },
+                    ),
+                    const Gap(36),
+                  ],
                 );
               },
-            );
-
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                categoryLabel,
-                const Gap(16),
-                topicGrid,
-                const Gap(36),
-              ],
             );
           },
         );
       },
-    );
-
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: child,
-      ),
     );
   }
 }

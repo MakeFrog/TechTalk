@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'question_page_controller.g.dart';
+part 'study_question_controller.g.dart';
 
 @riverpod
-class QuestionPageController extends _$QuestionPageController {
+class StudyQuestionController extends _$StudyQuestionController {
   final _qnaAnimationDuration = 400.ms;
   final _qnaAnimationCurves = Curves.easeOutQuint;
 
@@ -38,7 +38,7 @@ class QuestionPageController extends _$QuestionPageController {
 @riverpod
 int currentQuestionPage(CurrentQuestionPageRef ref) {
   try {
-    return ref.watch(questionPageControllerProvider).page?.round() ?? 0;
+    return ref.watch(studyQuestionControllerProvider).page?.round() ?? 0;
   } catch (e) {
     return 0;
   }

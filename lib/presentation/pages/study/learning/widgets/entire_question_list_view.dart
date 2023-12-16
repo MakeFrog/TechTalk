@@ -3,43 +3,43 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/interview/entities/interview_question_entity.dart';
+import 'package:techtalk/features/topic/entities/topic_question_entity.dart';
+import 'package:techtalk/presentation/providers/study/study_questions_provider.dart';
+import 'package:techtalk/presentation/widgets/common/button/app_back_button.dart';
 
 class EntireQuestionListView extends ConsumerWidget {
   const EntireQuestionListView({
     super.key,
-    required this.questions,
   });
-
-  final List<InterviewQuestionEntity> questions;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ColoredBox(
-      color: Colors.white,
-      child: Column(
-        children: [
-          AppBar(
-            backgroundColor: Colors.white,
-            leading: const BackButton(),
-            title: Text('전체 문항'),
-            titleSpacing: 0,
-          ),
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.symmetric(
-                vertical: 8,
-              ),
-              itemExtent: 68,
-              itemCount: questions.length,
-              itemBuilder: (context, index) => _buildQuestion(
-                ref,
-                index,
-                questions[index],
-              ),
-            ),
-          ),
-        ],
+    final questions = ref.watch(studyQuestionsProvider).requireValue;
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: const AppBackButton(),
+        title: Text('전체 문항'),
+        titleSpacing: 0,
+      ),
+      body: ListView.separated(
+        padding: const EdgeInsets.symmetric(
+          vertical: 8,
+        ),
+        // itemExtent: 68,
+        itemCount: questions.length,
+        separatorBuilder: (context, index) => Divider(
+          color: AppColor.of.gray2,
+          height: 1,
+          thickness: 1,
+        ),
+        itemBuilder: (context, index) => _buildQuestion(
+          ref,
+          index,
+          questions[index],
+        ),
       ),
     );
   }
@@ -47,12 +47,12 @@ class EntireQuestionListView extends ConsumerWidget {
   Widget _buildQuestion(
     WidgetRef ref,
     int index,
-    InterviewQuestionEntity question,
+    TopicQuestionEntity question,
   ) {
     return InkWell(
       onTap: () => Navigator.pop(ref.context, index),
       child: Padding(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 24,
         ),
@@ -64,7 +64,7 @@ class EntireQuestionListView extends ConsumerWidget {
                 color: AppColor.of.gray3,
               ),
             ),
-            Gap(16),
+            const Gap(16),
             Text(
               question.question,
               style: AppTextStyle.body1,

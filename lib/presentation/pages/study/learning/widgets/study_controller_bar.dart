@@ -5,8 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/pages/study/learning/providers/question_page_controller.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_event.dart';
+import 'package:techtalk/presentation/providers/study/study_question_controller.dart';
 import 'package:techtalk/presentation/providers/study/study_questions_provider.dart';
 
 class StudyControllerBar extends ConsumerWidget with StudyLearningEvent {
@@ -36,10 +36,7 @@ class StudyControllerBar extends ConsumerWidget with StudyLearningEvent {
             isActive: true,
             label: '전체 문항',
             icon: Assets.iconsMenu,
-            onTap: () => onTapEntireQuestion(
-              ref,
-              questions: questions,
-            ),
+            onTap: () => onTapEntireQuestion(ref),
           ),
           _ControllerButton(
             isActive: currentPage + 1 != questions.length,

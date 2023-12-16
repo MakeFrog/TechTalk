@@ -5,26 +5,23 @@ import 'package:techtalk/presentation/providers/study/categorized_study_topics_p
 
 part 'selected_study_topic_provider.g.dart';
 
-@riverpod
-String selectedStudyTopicId(SelectedStudyTopicIdRef ref) {
-  throw UnimplementedError();
-}
-
 @Riverpod(
-  dependencies: [
-    selectedStudyTopicId,
-  ],
+  keepAlive: true,
 )
 class SelectedStudyTopic extends _$SelectedStudyTopic {
   @override
-  Topic build() {
-    final topicId = ref.watch(selectedStudyTopicIdProvider);
+  Topic? build() {
+    return null;
+  }
+
+  void update(Topic value) {
     final topicList =
         ref.read(categorizedStudyTopicsProvider).requireValue.values;
     Topic? topic;
+
     for (final topics in topicList) {
       final findTopic = topics.firstWhereOrNull(
-        (element) => element.id == topicId,
+        (element) => element.id == value.id,
       );
 
       if (findTopic != null) {
@@ -32,11 +29,6 @@ class SelectedStudyTopic extends _$SelectedStudyTopic {
         break;
       }
     }
-
-    if (topic == null) {
-      throw UnimplementedError;
-    }
-
-    return topic;
+    state = topic;
   }
 }

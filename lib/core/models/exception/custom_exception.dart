@@ -24,13 +24,13 @@ class AlreadyExistNicknameException extends CustomException {
   const AlreadyExistNicknameException() : super('100003', '중복된 닉네임입니다.');
 }
 
-class NoInterviewQuestionException extends CustomException {
-  const NoInterviewQuestionException(String topic)
+class NoTopicQuestionException extends CustomException {
+  const NoTopicQuestionException(String topic)
       : super('200002', '$topic 주제의 면접 질문이 없습니다.');
 }
 
-class NoInterviewTopicException extends CustomException {
-  const NoInterviewTopicException(String topic)
+class NoTopicException extends CustomException {
+  const NoTopicException(String topic)
       : super('200003', '$topic 주제 데이터가 없습니다.');
 }
 

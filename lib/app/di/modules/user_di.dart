@@ -45,7 +45,7 @@ final class UserDependencyInjection extends FeatureDependencyInjection {
         ),
       )
       ..registerFactory(
-        () => GetUserInterviewTopicsUseCase(
+        () => GetUserTopicsUseCase(
           userRepository,
         ),
       );
