@@ -1,12 +1,19 @@
+import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/topic/data/local/interview_topic_local_data_source.dart';
+import 'package:techtalk/features/topic/data/local/topic_local_data_source.dart';
+import 'package:techtalk/features/topic/data/models/topic_question_model.dart';
+import 'package:techtalk/features/topic/data/remote/topic_remote_data_source.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
-class InterviewTopicRepositoryImpl implements TopicRepository {
-  const InterviewTopicRepositoryImpl({
-    required InterviewTopicLocalDataSource localDataSource,
-  }) : _localDataSource = localDataSource;
-  final InterviewTopicLocalDataSource _localDataSource;
+class TopicRepositoryImpl implements TopicRepository {
+  const TopicRepositoryImpl({
+    required TopicLocalDataSource localDataSource,
+    required TopicRemoteDataSource remoteDataSource,
+  })  : _remoteDataSource = remoteDataSource,
+        _localDataSource = localDataSource;
+
+  final TopicLocalDataSource _localDataSource;
+  final TopicRemoteDataSource _remoteDataSource;
 
   @override
   Result<List<Topic>> getTopics() {
@@ -24,5 +31,38 @@ class InterviewTopicRepositoryImpl implements TopicRepository {
         ),
       ],
     );
+  }
+
+  @override
+  Future<Result<List<TopicQuestionEntity>>> getTopicQuestions(
+    String topicId,
+  ) async {
+    List<TopicQuestionModel> questionsModel;
+    try {
+      final cacheUpdateDate = await _localDataSource.getUpdateDate(topicId);
+
+      if (cacheUpdateDate != null) {
+        final lastUpdateDate = await _remoteDataSource.getUpdateDate(topicId);
+        if (lastUpdateDate.compareTo(cacheUpdateDate) == 0) {
+          questionsModel = (await _localDataSource.getQuestions(topicId))!;
+        } else {
+          questionsModel = await _remoteDataSource.getQuestions(topicId);
+        }
+      } else {
+        questionsModel = await _remoteDataSource.getQuestions(topicId);
+      }
+
+      return Result.success(
+        [
+          ...questionsModel.map((e) => e.toEntity()),
+        ],
+      );
+    } on Exception catch (e) {
+      final topic = Topic.getTopicById(topicId);
+
+      return Result.failure(
+        NoTopicQuestionException(topic.text),
+      );
+    }
   }
 }

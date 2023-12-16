@@ -19,33 +19,30 @@ final class GetTopicsUseCase extends BaseNoParamUseCase<Result<List<Topic>>> {
 
   @override
   Future<Result<List<Topic>>> call({
-    bool sort = false,
-    bool onlyAvailable = false,
+    bool includeUnavailable = false,
   }) async {
     try {
       List<Topic> topics = [..._topicRepository.getTopics().getOrThrow()];
 
-      if (sort) {
-        final userTopicIds =
-            (await _userRepository.getUserTopicIds()).getOrThrow();
-        final topicIds = [...topics.map((e) => e.id)];
-
-        for (final topicId in userTopicIds) {
-          if (topicIds.contains(topicId)) {
-            final topic = topics.firstWhere(
-              (element) => element.id == topicId,
-            );
-
-            topics.remove(topic);
-            topics.insert(0, topic);
-          }
-        }
-      }
-
-      if (onlyAvailable) {
+      if (!includeUnavailable) {
         topics = [
           ...topics.where((element) => element.isAvailable),
         ];
+      }
+
+      final userTopicIds =
+          (await _userRepository.getUserTopicIds()).getOrThrow();
+      final topicIds = [...topics.map((e) => e.id)];
+
+      for (final topicId in userTopicIds) {
+        if (topicIds.contains(topicId)) {
+          final topic = topics.firstWhere(
+            (element) => element.id == topicId,
+          );
+
+          topics.remove(topic);
+          topics.insert(0, topic);
+        }
       }
 
       return Result.success(topics);

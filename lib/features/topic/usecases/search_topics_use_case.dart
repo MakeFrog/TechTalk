@@ -1,8 +1,8 @@
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
-final class SearchInterviewTopicsUseCase {
-  SearchInterviewTopicsUseCase(this._topicRepository);
+final class SearchTopicsUseCase {
+  SearchTopicsUseCase(this._topicRepository);
 
   final TopicRepository _topicRepository;
 

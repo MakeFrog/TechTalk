@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:techtalk/features/interview/entities/interview_question_entity.dart';
+import 'package:techtalk/features/topic/entities/topic_question_entity.dart';
 
-part 'interview_question_model.g.dart';
+part 'topic_question_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class InterviewQuestionModel {
-  InterviewQuestionModel({
+class TopicQuestionModel {
+  TopicQuestionModel({
     required this.id,
     required this.question,
     required this.answers,
@@ -16,29 +16,29 @@ class InterviewQuestionModel {
   final String question;
   final List<String> answers;
 
-  InterviewQuestionEntity toEntity() {
-    return InterviewQuestionEntity(
+  TopicQuestionEntity toEntity() {
+    return TopicQuestionEntity(
       id: id,
       question: question,
       answers: answers,
     );
   }
 
-  factory InterviewQuestionModel.fromFirestore(
+  factory TopicQuestionModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
   ) {
     final data = snapshot.data()!;
 
-    return InterviewQuestionModel(
+    return TopicQuestionModel(
       id: data['id'] as String,
       question: data['question'] as String,
       answers: (data['answers'] as List).cast<String>(),
     );
   }
 
-  factory InterviewQuestionModel.fromJson(Map<String, dynamic> json) {
-    return _$InterviewQuestionModelFromJson(json);
+  factory TopicQuestionModel.fromJson(Map<String, dynamic> json) {
+    return _$TopicQuestionModelFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$InterviewQuestionModelToJson(this);
+  Map<String, dynamic> toJson() => _$TopicQuestionModelToJson(this);
 }

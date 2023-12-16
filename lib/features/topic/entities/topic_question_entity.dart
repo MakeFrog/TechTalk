@@ -1,10 +1,10 @@
-class InterviewQuestionEntity {
+class TopicQuestionEntity {
   final String id;
   final String question;
   final List<String> answers;
 
 //<editor-fold desc="Data Methods">
-  const InterviewQuestionEntity({
+  const TopicQuestionEntity({
     required this.id,
     required this.question,
     required this.answers,
@@ -13,7 +13,7 @@ class InterviewQuestionEntity {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is InterviewQuestionEntity &&
+      (other is TopicQuestionEntity &&
           runtimeType == other.runtimeType &&
           id == other.id &&
           question == other.question &&
@@ -31,12 +31,12 @@ class InterviewQuestionEntity {
         '}';
   }
 
-  InterviewQuestionEntity copyWith({
+  TopicQuestionEntity copyWith({
     String? id,
     String? question,
     List<String>? answers,
   }) {
-    return InterviewQuestionEntity(
+    return TopicQuestionEntity(
       id: id ?? this.id,
       question: question ?? this.question,
       answers: answers ?? this.answers,
@@ -51,8 +51,8 @@ class InterviewQuestionEntity {
     };
   }
 
-  factory InterviewQuestionEntity.fromMap(Map<String, dynamic> map) {
-    return InterviewQuestionEntity(
+  factory TopicQuestionEntity.fromMap(Map<String, dynamic> map) {
+    return TopicQuestionEntity(
       id: map['id'] as String,
       question: map['question'] as String,
       answers: map['answers'] as List<String>,
