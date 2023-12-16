@@ -216,11 +216,11 @@ class ChatPageRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     final ChatPageRouteArg arg = (
       progressState: progressState,
-      qnaProgressInfo: $extra,
+      progressInfo: $extra,
       roomId: roomId,
       topic: topic,
       interviewer: interviewer,
-    );
+    ) as ChatPageRouteArg;
 
     return ProviderScope(
       overrides: [chatPageRouteArgProvider.overrideWithValue(arg)],

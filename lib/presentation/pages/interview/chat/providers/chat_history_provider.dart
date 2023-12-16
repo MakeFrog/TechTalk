@@ -193,8 +193,8 @@ class ChatHistory extends _$ChatHistory {
       answerState: answerState,
       chatRoomId: ref.read(chatPageRouteArgProvider).roomId,
       topic: ref.read(chatPageRouteArgProvider).topic,
-      qnaProgressInfo: null,
-    );
+      progressInfo: null,
+    ) as UpdateChatInfoParam;
     await updateChatInfoUseCase.call(param);
     ref.read(chatListProvider.notifier).updateChatList();
   }
@@ -216,8 +216,8 @@ class ChatHistory extends _$ChatHistory {
       chatRoomId: ref.read(chatPageRouteArgProvider).roomId,
       topic: ref.read(chatPageRouteArgProvider).topic,
       interviewer: null,
-      qnaProgressInfo: null,
-    );
+      progressInfo: null,
+    ) as UpdateChatInfoParam;
     await updateChatInfoUseCase.call(param);
     ref.read(chatListProvider.notifier).updateChatList();
   }
@@ -232,8 +232,8 @@ class ChatHistory extends _$ChatHistory {
       chatRoomId: ref.read(chatPageRouteArgProvider).roomId,
       topic: ref.read(chatPageRouteArgProvider).topic,
       interviewer: ref.read(chatPageRouteArgProvider).interviewer,
-      qnaProgressInfo: ref.read(chatPageRouteArgProvider).qnaProgressInfo,
-    );
+      progressInfo: ref.read(chatPageRouteArgProvider).qnaProgressInfo,
+    ) as UpdateChatInfoParam;
     await updateChatInfoUseCase(param);
     ref.read(chatListProvider.notifier).updateChatList();
   }
