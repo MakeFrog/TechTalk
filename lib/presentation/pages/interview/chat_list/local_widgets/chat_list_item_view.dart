@@ -5,7 +5,6 @@ import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_event.dart';
-import 'package:techtalk/presentation/pages/interview/chat_list/local_widgets/qna_count_indicator.dart';
 import 'package:techtalk/presentation/widgets/common/avatar/clip_oval_circle_avatar.dart';
 import 'package:techtalk/presentation/widgets/common/box/skeleton_box.dart';
 import 'package:techtalk/presentation/widgets/common/indicator/pass_fail_indicator.dart';
@@ -35,11 +34,7 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
         onPressed: () {
           routeToChatPage(
             context,
-            roomId: item!.chatRoomId,
-            progressState: item!.progressSate,
-            qnaProgressInfo: item!.qnaProgressInfo,
-            topic: item!.topic,
-            interviewer: item!.interviewerInfo,
+            room: item!,
           );
         },
         child: SizedBox(
@@ -78,7 +73,7 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
                             2,
                         width: AppSize.to.rationWidth(174),
                         child: Text(
-                          item!.lastChatMessage,
+                          item!.lastChatMessage!,
                           style: AppTextStyle.alert2,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -95,7 +90,7 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
                 children: <Widget>[
                   // LAST CHAT DATE
                   Text(
-                    item!.lastChatDate.formatyyMMdd,
+                    item!.lastChatDate!.formatyyMMdd,
                     style: AppTextStyle.alert2.copyWith(
                       color: AppColor.of.gray3,
                     ),
@@ -105,11 +100,20 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
                     builder: (context) {
                       switch (item!.progressSate) {
                         case InterviewProgressState.ongoing:
-                          return QnaCountIndicator(
-                            totalQuestionCount:
-                                item!.qnaProgressInfo.totalQuestionCount,
-                            completedQuestionCount:
-                                item!.completedQuestionCount,
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColor.of.background1,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              '${item!.completedQuestionCount}/${item!.qnaProgressInfo.totalQuestionCount}',
+                              style: AppTextStyle.alert1
+                                  .copyWith(color: AppColor.of.gray6),
+                            ),
                           );
                         case InterviewProgressState.completed:
                           return PassFailIndicator(

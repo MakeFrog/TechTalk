@@ -6,7 +6,7 @@ part of 'chat_progress_state_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chatProgressStateHash() => r'0d8e03a6ca8f8b67cd5a2fee75de73a9611b0a44';
+String _$chatProgressStateHash() => r'3c74de22af5eb62d003e7faaf1e223410e414017';
 
 /// See also [ChatProgressState].
 @ProviderFor(ChatProgressState)
@@ -17,13 +17,8 @@ final chatProgressStateProvider =
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$chatProgressStateHash,
-  dependencies: <ProviderOrFamily>[
-    chatPageRouteArgProvider,
-    chatHistoryProvider
-  ],
+  dependencies: <ProviderOrFamily>[chatHistoryProvider],
   allTransitiveDependencies: <ProviderOrFamily>{
-    chatPageRouteArgProvider,
-    ...?chatPageRouteArgProvider.allTransitiveDependencies,
     chatHistoryProvider,
     ...?chatHistoryProvider.allTransitiveDependencies
   },

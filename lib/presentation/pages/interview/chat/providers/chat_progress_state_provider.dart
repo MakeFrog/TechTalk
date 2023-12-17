@@ -1,13 +1,12 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_history_provider.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/chat_page_route_argument_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/completed_qna_list_provider.dart';
+import 'package:techtalk/presentation/providers/interview/selected_interview_room_provider.dart';
 
 part 'chat_progress_state_provider.g.dart';
 
 @Riverpod(
   dependencies: [
-    chatPageRouteArg,
     ChatHistory,
   ],
 )
@@ -16,8 +15,10 @@ class ChatProgressState extends _$ChatProgressState {
   ChatProgress build() {
     final completedQnaListener =
         ref.listen(completedQnAListProvider, (_, next) {
-      final totalQuestionCount =
-          ref.read(chatPageRouteArgProvider).qnaProgressInfo.totalQuestionCount;
+      final totalQuestionCount = ref
+          .read(selectedInterviewRoomProvider)!
+          .qnaProgressInfo
+          .totalQuestionCount;
       if (next.requireValue.length >= totalQuestionCount) {
         state = ChatProgress.done;
       }

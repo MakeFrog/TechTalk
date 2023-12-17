@@ -7,7 +7,7 @@ part of 'sign_up_step_controller.dart';
 // **************************************************************************
 
 String _$signUpStepControllerHash() =>
-    r'69ff24a47279ada4220803a9342b9e4df22a513e';
+    r'75fdf0cca4bfa71746f86d1db7be4017e6051ea0';
 
 /// See also [SignUpStepController].
 @ProviderFor(SignUpStepController)

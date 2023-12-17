@@ -1,20 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/src/consumer.dart';
 import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/pages/interview/questino_count_select/provider/selected_question_count_provider.dart';
-import 'package:techtalk/presentation/pages/interview/questino_count_select/question_count_select_event.dart';
+import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_event.dart';
+import 'package:techtalk/presentation/providers/interview/selected_interview_question_count_provider.dart';
+import 'package:techtalk/presentation/providers/interview/selected_interview_topic_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 
-class QuestionCountSelectPage extends BasePage {
+class QuestionCountSelectPage extends BasePage with QuestionCountSelectEvent {
   const QuestionCountSelectPage({Key? key}) : super(key: key);
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
-    List<int> options = List.generate(18, (index) => index + 3); // 3 ~ 20
+    ref.watch(selectedInterviewTopicProvider);
+
+    final List<int> options = List.generate(18, (index) => index + 3); // 3 ~ 20
+    final questionCount = ref.watch(selectedInterviewQuestionCountProvider);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -22,35 +26,32 @@ class QuestionCountSelectPage extends BasePage {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           const Gap(20),
-          _buildLeadingMessage(),
+          Text(
+            '면접 질문 개수를\n선택해주세요',
+            style: AppTextStyle.headline1,
+          ),
           Expanded(
             child: Center(
               child: SizedBox(
                 height: AppSize.to.screenHeight * 0.6,
                 child: CupertinoPicker.builder(
                   scrollController: FixedExtentScrollController(
-                    initialItem: options
-                        .indexOf(ref.watch(selectedQuestionCountProvider)),
+                    initialItem: questionCount - 3,
                   ),
                   useMagnifier: true,
                   magnification: 1.22,
                   squeeze: 1.2,
                   itemExtent: 35,
                   childCount: options.length,
-                  onSelectedItemChanged: (value) {
-                    final selectedCount = options[value];
-                    ref
-                        .read(selectedQuestionCountProvider.notifier)
-                        .onCountPickerChanged(selectedCount);
-                  },
-                  itemBuilder: (context, index) {
-                    return Text(
-                      options[index].toString(),
-                      style: const TextStyle(
-                        fontSize: 24,
-                      ),
-                    );
-                  },
+                  onSelectedItemChanged: (value) => ref
+                      .read(selectedInterviewQuestionCountProvider.notifier)
+                      .onCountPickerChanged(value + 3),
+                  itemBuilder: (context, index) => Text(
+                    options[index].toString(),
+                    style: const TextStyle(
+                      fontSize: 24,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -64,25 +65,15 @@ class QuestionCountSelectPage extends BasePage {
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
       const BackButtonAppBar();
-
-  Widget _buildLeadingMessage() {
-    return Text(
-      '면접 질문 개수를\n선택해주세요',
-      style: AppTextStyle.headline1,
-    );
-  }
 }
 
-class _StartInterviewBtn extends ConsumerWidget
-    with QuestionCountSelectedEvent {
+class _StartInterviewBtn extends ConsumerWidget with QuestionCountSelectEvent {
   const _StartInterviewBtn({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FilledButton(
-      onPressed: () {
-        routeToChatPage(ref);
-      },
+      onPressed: () => routeToChatPage(ref),
       child: const Center(
         child: Text('시작하기'),
       ),

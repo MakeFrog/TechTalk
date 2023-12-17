@@ -6,7 +6,7 @@ part of 'chat_history_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chatHistoryHash() => r'7b89cd3203ea92175e7d006caaeda15100d2c93f';
+String _$chatHistoryHash() => r'6c3da07aaca55298713fa28b56f07a586c9818a7';
 
 /// See also [ChatHistory].
 @ProviderFor(ChatHistory)
@@ -16,11 +16,8 @@ final chatHistoryProvider =
   name: r'chatHistoryProvider',
   debugGetCreateSourceHash:
       const bool.fromEnvironment('dart.vm.product') ? null : _$chatHistoryHash,
-  dependencies: <ProviderOrFamily>[chatPageRouteArgProvider],
-  allTransitiveDependencies: <ProviderOrFamily>{
-    chatPageRouteArgProvider,
-    ...?chatPageRouteArgProvider.allTransitiveDependencies
-  },
+  dependencies: null,
+  allTransitiveDependencies: null,
 );
 
 typedef _$ChatHistory = AutoDisposeAsyncNotifier<List<MessageEntity>>;

@@ -49,11 +49,5 @@ final class UserDependencyInjection extends FeatureDependencyInjection {
           userRepository,
         ),
       );
-    // ..registerFactory(
-    //   () => GetUserInterviewTopicsUseCase(
-    //     userRepository: userRepository,
-    //     topicRepository: interviewTopicRepository,
-    //   ),
-    // );
   }
 }

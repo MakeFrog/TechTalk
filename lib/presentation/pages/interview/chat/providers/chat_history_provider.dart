@@ -8,36 +8,28 @@ import 'package:techtalk/core/services/toast_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/use_cases/update_chat_info_use_case.dart';
 import 'package:techtalk/features/topic/topic.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/chat_page_route_argument_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/completed_qna_list_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/total_qna_list_provider.dart';
-import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_provider.dart';
+import 'package:techtalk/presentation/providers/interview/interview_rooms_provider.dart';
+import 'package:techtalk/presentation/providers/interview/selected_interview_room_provider.dart';
 import 'package:techtalk/presentation/widgets/common/toast/app_toast.dart';
 
 part 'chat_history_provider.g.dart';
 
-@Riverpod(dependencies: [chatPageRouteArg])
+@Riverpod()
 class ChatHistory extends _$ChatHistory {
   @override
   FutureOr<List<MessageEntity>> build() async {
     ref.onDispose(() {
       ref.invalidate(totalQnaListProvider);
     });
+    final room = ref.watch(selectedInterviewRoomProvider)!;
 
-    final routeArg = ref.read(chatPageRouteArgProvider);
-
-    final GetChatListParam param = (
-      progressState: routeArg.progressState,
-      userName: '지혜',
-      roomId: routeArg.roomId,
-      topic: routeArg.topic
-    );
-
-    final response = await getChatMessagesUseCase(param);
+    final response = await getChatMessagesUseCase(room.chatRoomId);
     return response.fold(
       onSuccess: (chatList) async {
         // 처음 채팅방에 진입한 경우
-        if (routeArg.progressState.isInitial) {
+        if (room.progressSate.isInitial) {
           ref.read(totalQnaListProvider.notifier).initializeQnaList();
           await addRandomQuestionToQnaList();
           chatList.first.message.listen(null, onDone: () {
@@ -191,12 +183,12 @@ class ChatHistory extends _$ChatHistory {
       )),
       interviewer: null,
       answerState: answerState,
-      chatRoomId: ref.read(chatPageRouteArgProvider).roomId,
-      topic: ref.read(chatPageRouteArgProvider).topic,
+      chatRoomId: ref.read(selectedInterviewRoomProvider)!.chatRoomId,
+      topic: ref.read(selectedInterviewRoomProvider)!.topic,
       progressInfo: null,
     ) as UpdateChatInfoParam;
     await updateChatInfoUseCase.call(param);
-    ref.read(chatListProvider.notifier).updateChatList();
+    ref.invalidate(interviewRoomsProvider);
   }
 
   ///
@@ -213,13 +205,13 @@ class ChatHistory extends _$ChatHistory {
     final UpdateChatInfoParam param = (
       messages: state.requireValue.sublist(0, lastMessageIndex),
       answerState: answerState,
-      chatRoomId: ref.read(chatPageRouteArgProvider).roomId,
-      topic: ref.read(chatPageRouteArgProvider).topic,
+      chatRoomId: ref.read(selectedInterviewRoomProvider)!.chatRoomId,
+      topic: ref.read(selectedInterviewRoomProvider)!.topic,
       interviewer: null,
       progressInfo: null,
     ) as UpdateChatInfoParam;
     await updateChatInfoUseCase.call(param);
-    ref.read(chatListProvider.notifier).updateChatList();
+    ref.invalidate(interviewRoomsProvider);
   }
 
   ///
@@ -229,13 +221,13 @@ class ChatHistory extends _$ChatHistory {
     final UpdateChatInfoParam param = (
       messages: state.requireValue,
       answerState: AnswerState.initial,
-      chatRoomId: ref.read(chatPageRouteArgProvider).roomId,
-      topic: ref.read(chatPageRouteArgProvider).topic,
-      interviewer: ref.read(chatPageRouteArgProvider).interviewer,
-      progressInfo: ref.read(chatPageRouteArgProvider).qnaProgressInfo,
+      chatRoomId: ref.read(selectedInterviewRoomProvider)!.chatRoomId,
+      topic: ref.read(selectedInterviewRoomProvider)!.topic,
+      interviewer: ref.read(selectedInterviewRoomProvider)!.interviewerInfo,
+      progressInfo: ref.read(selectedInterviewRoomProvider)!.qnaProgressInfo,
     ) as UpdateChatInfoParam;
     await updateChatInfoUseCase(param);
-    ref.read(chatListProvider.notifier).updateChatList();
+    ref.invalidate(interviewRoomsProvider);
   }
 
   ///
@@ -245,7 +237,10 @@ class ChatHistory extends _$ChatHistory {
   void onFeedbackCompleted() {
     // 마지막 답변일 경우
     if (ref.read(completedQnAListProvider).requireValue.length >=
-        ref.read(chatPageRouteArgProvider).qnaProgressInfo.totalQuestionCount) {
+        ref
+            .read(selectedInterviewRoomProvider)!
+            .qnaProgressInfo
+            .totalQuestionCount) {
       final interviewClosingText = '면접이 종료 되었습니다'.convertToStreamText;
 
       update(

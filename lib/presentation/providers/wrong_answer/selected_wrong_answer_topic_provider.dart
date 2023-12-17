@@ -8,7 +8,7 @@ part 'selected_wrong_answer_topic_provider.g.dart';
 class SelectedWrongAnswerTopic extends _$SelectedWrongAnswerTopic {
   @override
   Topic build() {
-    final userTopics = ref.watch(userTopicsProvider).requireValue;
+    final userTopics = ref.watch(userTopicsProvider);
 
     return userTopics.where((element) => element.isAvailable).first;
   }

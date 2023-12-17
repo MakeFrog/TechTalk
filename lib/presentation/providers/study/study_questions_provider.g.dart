@@ -6,7 +6,7 @@ part of 'study_questions_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$studyQuestionsHash() => r'ac0b7818caf80c37d4bbd4044cf43b46585d3bf4';
+String _$studyQuestionsHash() => r'ab0807b17b919de5a3da2cc35ec1dbddeb0cd244';
 
 /// See also [StudyQuestions].
 @ProviderFor(StudyQuestions)

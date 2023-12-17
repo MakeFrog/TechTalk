@@ -23,7 +23,9 @@ class StudyLearningPage extends BasePage {
       const _AppBar();
 
   @override
-  Widget buildPage(BuildContext context, WidgetRef ref) => const _Body();
+  Widget buildPage(BuildContext context, WidgetRef ref) {
+    return const _Body();
+  }
 }
 
 class _AppBar extends StatelessWidget

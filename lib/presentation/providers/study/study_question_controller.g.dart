@@ -6,24 +6,8 @@ part of 'study_question_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$currentQuestionPageHash() =>
-    r'154694a88154eaae508db229ed3f4b0f70fe34d4';
-
-/// See also [currentQuestionPage].
-@ProviderFor(currentQuestionPage)
-final currentQuestionPageProvider = AutoDisposeProvider<int>.internal(
-  currentQuestionPage,
-  name: r'currentQuestionPageProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$currentQuestionPageHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef CurrentQuestionPageRef = AutoDisposeProviderRef<int>;
 String _$studyQuestionControllerHash() =>
-    r'5028cdf85352377b10257dff3f17d0e3bafc9c2d';
+    r'ac510d142af7ada7e91de59b48f5af2f9413517c';
 
 /// See also [StudyQuestionController].
 @ProviderFor(StudyQuestionController)

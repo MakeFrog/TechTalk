@@ -12,8 +12,4 @@ class StudyQuestions extends _$StudyQuestions {
 
     return getTopicQuestionsUseCase(topic.id);
   }
-
-  void updateTest() {
-    state = AsyncData([...state.requireValue, ...state.requireValue]);
-  }
 }

@@ -1,13 +1,20 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/presentation/providers/topic/topics_provider.dart';
 import 'package:techtalk/presentation/providers/user/auth/is_user_authorized_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 
 abstract interface class _SplashEvent {
+  Future<void> initStaticProviders(WidgetRef ref);
   Future<void> routeByUserAuthAndData(WidgetRef ref);
 }
 
 mixin class SplashEvent implements _SplashEvent {
+  @override
+  Future<void> initStaticProviders(WidgetRef ref) async {
+    await ref.read(topicsProvider.future);
+  }
+
   @override
   Future<void> routeByUserAuthAndData(WidgetRef ref) async {
     final isAuthorized = ref.read(isUserAuthorizedProvider);

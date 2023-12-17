@@ -1,15 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/features/chat/repositories/entities/chat_qna_progress_info_entity.dart';
-import 'package:techtalk/features/chat/repositories/enums/interview_progress_state.enum.dart';
-import 'package:techtalk/features/shared/enums/interviewer_avatar.dart';
-import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/chat_page_route_argument_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
-import 'package:techtalk/presentation/pages/interview/questino_count_select/provider/question_count_select_page_route_arg_provider.dart';
-import 'package:techtalk/presentation/pages/interview/questino_count_select/question_count_select_page.dart';
+import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
@@ -109,7 +103,7 @@ class SignUpRoute extends GoRouteData {
       name: WrongAnswerRoute.name,
     ),
     TypedGoRoute<ChatListPageRoute>(
-      path: ChatListPageRoute.name,
+      path: ChatListPageRoute.path,
       name: ChatListPageRoute.name,
       routes: [
         TypedGoRoute<ChatPageRoute>(
@@ -167,64 +161,42 @@ class HomeTopicSelectRoute extends GoRouteData {
 }
 
 class QuestionCountSelectPageRoute extends GoRouteData {
-  const QuestionCountSelectPageRoute({required this.selectedTopic});
-
-  final Topic selectedTopic;
+  const QuestionCountSelectPageRoute();
 
   static const String name = 'question-count-select';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ProviderScope(
-      overrides: [
-        questionCountSelectRouteArgProvider.overrideWithValue(selectedTopic),
-      ],
-      child: QuestionCountSelectPage(),
-    );
+    return const QuestionCountSelectPage();
   }
 }
 
 class ChatListPageRoute extends GoRouteData {
-  const ChatListPageRoute();
+  const ChatListPageRoute(this.topicId);
 
+  static const String path = 'chat-list/:topicId';
   static const String name = 'chat-list';
+
+  final String topicId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const ChatListPage();
+    return ChatListPage(
+      topicId: topicId,
+    );
   }
 }
 
 class ChatPageRoute extends GoRouteData {
-  ChatPageRoute({
-    required this.progressState,
-    required this.$extra,
-    required this.roomId,
-    required this.topic,
-    required this.interviewer,
-  });
+  ChatPageRoute(this.topicId, this.roomId);
 
   static const String name = 'chat';
 
-  final InterviewProgressState progressState;
-  final ChatQnaProgressInfoEntity $extra;
+  final String topicId;
   final String roomId;
-  final Topic topic;
-  final InterviewerAvatar interviewer;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final ChatPageRouteArg arg = (
-      progressState: progressState,
-      progressInfo: $extra,
-      roomId: roomId,
-      topic: topic,
-      interviewer: interviewer,
-    ) as ChatPageRouteArg;
-
-    return ProviderScope(
-      overrides: [chatPageRouteArgProvider.overrideWithValue(arg)],
-      child: const ChatPage(),
-    );
+    return const ChatPage();
   }
 }

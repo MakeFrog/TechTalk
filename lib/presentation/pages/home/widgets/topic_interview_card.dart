@@ -65,24 +65,13 @@ class TopicInterviewCard extends StatelessWidget with HomeEvent {
   Widget _buildTopics() {
     return Consumer(
       builder: (context, ref, child) {
-        final userTopicsAsync = ref.watch(userTopicsProvider);
-
-        return userTopicsAsync.when(
-          loading: () => const Center(
-            child: CircularProgressIndicator(),
-          ),
-          error: (error, stackTrace) => Center(
-            child: Text('$error'),
-          ),
-          data: (data) {
-            return Column(
-              children: [
-                ...data.where((element) => element.isAvailable).map(
-                      _buildTopic,
-                    ),
-              ],
-            );
-          },
+        final userTopics = ref.watch(userTopicsProvider);
+        return Column(
+          children: [
+            ...userTopics.where((element) => element.isAvailable).map(
+                  _buildTopic,
+                ),
+          ],
         );
       },
     );
@@ -108,20 +97,27 @@ class TopicInterviewCard extends StatelessWidget with HomeEvent {
             style: AppTextStyle.title1,
           ),
           const Spacer(),
-          FilledButton(
-            style: FilledButton.styleFrom(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 6,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              backgroundColor: AppColor.of.background1,
-              foregroundColor: AppColor.of.gray4,
-            ),
-            onPressed: () => onTapGoToInterviewRoomPage(topic),
-            child: const Text('면접 보기'),
+          Consumer(
+            builder: (context, ref, child) {
+              return FilledButton(
+                style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  backgroundColor: AppColor.of.background1,
+                  foregroundColor: AppColor.of.gray4,
+                ),
+                onPressed: () => onTapGoToInterviewRoomListPage(
+                  ref,
+                  topic: topic,
+                ),
+                child: const Text('면접 보기'),
+              );
+            },
           ),
         ],
       ),

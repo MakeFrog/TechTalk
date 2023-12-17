@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/providers/study/study_question_controller.dart';
+import 'package:techtalk/presentation/providers/study/current_study_question_index_provider.dart';
 import 'package:techtalk/presentation/providers/study/study_questions_provider.dart';
 
 class StudyProgressIndicator extends ConsumerWidget {
@@ -12,7 +12,7 @@ class StudyProgressIndicator extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentPage = ref.watch(currentQuestionPageProvider);
+    final current = ref.watch(currentStudyQuestionIndexProvider);
     final questionCount = ref.watch(studyQuestionsProvider).requireValue.length;
 
     return Padding(
@@ -23,7 +23,7 @@ class StudyProgressIndicator extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            '${currentPage + 1}',
+            '${current + 1}',
             style: AppTextStyle.body3.copyWith(
               color: AppColor.of.brand3,
             ),

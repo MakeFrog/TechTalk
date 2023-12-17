@@ -2,14 +2,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'study_answer_blur_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class StudyAnswerBlur extends _$StudyAnswerBlur {
   @override
-  bool build() {
-    return false;
-  }
+  bool build() => false;
 
-  void toggle() {
-    state = !state;
-  }
+  void toggle() => state = !state;
 }

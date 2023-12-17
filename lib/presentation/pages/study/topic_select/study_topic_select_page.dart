@@ -3,10 +3,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
-import 'package:techtalk/presentation/pages/interview/topic_select/widgets/topic_card.dart';
 import 'package:techtalk/presentation/pages/study/topic_select/study_topic_select_event.dart';
-import 'package:techtalk/presentation/providers/study/categorized_study_topics_provider.dart';
+import 'package:techtalk/presentation/providers/topic/categorized_topics_provider.dart';
 import 'package:techtalk/presentation/widgets/common/chip/label_chip.dart';
+import 'package:techtalk/presentation/widgets/study_topic_card.dart';
 
 class StudyTopicSelectPage extends HookWidget {
   const StudyTopicSelectPage({super.key});
@@ -58,60 +58,48 @@ class _Body extends StatelessWidget with StudyTopicSelectEvent {
   Widget _buildTopicGrid() {
     return Consumer(
       builder: (context, ref, child) {
-        final categorizedTopicsAsync =
-            ref.watch(categorizedStudyTopicsProvider);
+        final categorizedTopics = ref.watch(categorizedTopicsProvider);
 
-        return categorizedTopicsAsync.when(
-          loading: () => const Center(
-            child: CircularProgressIndicator(),
-          ),
-          error: (error, stackTrace) => Center(
-            child: Text('$error'),
-          ),
-          data: (topicAndCategories) {
-            return ListView.separated(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              itemCount: topicAndCategories.length,
-              separatorBuilder: (context, index) => const Gap(36),
-              itemBuilder: (context, index) {
-                final MapEntry(key: category, value: topics) =
-                    topicAndCategories.entries.elementAt(index);
+        return ListView.separated(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          itemCount: categorizedTopics.length,
+          separatorBuilder: (context, index) => const Gap(36),
+          itemBuilder: (context, index) {
+            final MapEntry(key: category, value: topics) =
+                categorizedTopics.entries.elementAt(index);
 
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: LabelChip(label: category.text),
-                    ),
-                    const Gap(16),
-                    GridView.builder(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 11,
-                        mainAxisSpacing: 12,
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: LabelChip(label: category.text),
+                ),
+                const Gap(16),
+                GridView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 11,
+                    mainAxisSpacing: 12,
+                  ),
+                  itemCount: topics.length,
+                  itemBuilder: (context, index) {
+                    final topic = topics[index];
+
+                    return StudyTopicCard(
+                      topic: topic,
+                      onTap: () => onTapCard(
+                        ref,
+                        topic: topic,
                       ),
-                      itemCount: topics.length,
-                      itemBuilder: (context, index) {
-                        final topic = topics[index];
-
-                        return TopicCard(
-                          topic: topic,
-                          onTap: () => onTapCard(
-                            ref,
-                            topic: topic,
-                          ),
-                        );
-                      },
-                    ),
-                    const Gap(36),
-                  ],
-                );
-              },
+                    );
+                  },
+                ),
+                const Gap(36),
+              ],
             );
           },
         );

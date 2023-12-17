@@ -1,25 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'chat_list_provider.dart';
+part of 'topics_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chatListHash() => r'711b3fd2d5fc3578e14972adbabd01804ea763f2';
+String _$topicsHash() => r'0bcf505e58cbf82ae3e1824060e087b2944dceb3';
 
-/// See also [ChatList].
-@ProviderFor(ChatList)
-final chatListProvider =
-    AutoDisposeAsyncNotifierProvider<ChatList, List<ChatRoomEntity>>.internal(
-  ChatList.new,
-  name: r'chatListProvider',
+/// See also [topics].
+@ProviderFor(topics)
+final topicsProvider = FutureProvider<List<Topic>>.internal(
+  topics,
+  name: r'topicsProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$chatListHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$topicsHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$ChatList = AutoDisposeAsyncNotifier<List<ChatRoomEntity>>;
+typedef TopicsRef = FutureProviderRef<List<Topic>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

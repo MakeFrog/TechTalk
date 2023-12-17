@@ -1,13 +1,53 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/constants/firestore_collection.enum.dart';
 import 'package:techtalk/core/helper/string_generator.dart';
+import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data/models/chat_room_model.dart';
 import 'package:techtalk/features/chat/data/models/message_model.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
-import 'package:techtalk/features/chat/repositories/enums/answer_state.enum.dart';
+import 'package:techtalk/features/chat/repositories/entities/interviewer_avatar.dart';
 
 final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  @override
+  Future<String> createRoom({
+    required String userUid,
+    required String topicId,
+    required int questionCount,
+  }) async {
+    final roomModel = ChatRoomModel(
+      chatRoomId: StringGenerator.generateRandomString(),
+      interviewerId: InterviewerAvatar.getRandomInterviewer().id,
+      topicId: topicId,
+      totalQuestionCount: questionCount,
+      correctAnswerCount: 0,
+      incorrectAnswerCount: 0,
+    );
+
+    await FirebaseFirestore.instance
+        .collection(FirestoreCollection.users.name)
+        .doc(userUid)
+        .collection(FirestoreCollection.chats.name)
+        .doc(roomModel.chatRoomId)
+        .set(roomModel.toJson());
+
+    return roomModel.chatRoomId;
+  }
+
+  @override
+  Future<ChatRoomModel> getRoom(
+    String userUid,
+    String roomId,
+  ) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection(FirestoreCollection.users.name)
+        .doc(userUid)
+        .collection(FirestoreCollection.chats.name)
+        .doc(roomId)
+        .get();
+
+    return ChatRoomModel.fromFirestore(snapshot);
+  }
 
   @override
   Future<void> updateChatRoomAnswerCount(
@@ -39,89 +79,92 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }
 
   @override
-  Future<void> updateChatMessage(
-      {required String chatRoomId,
-      required List<MessageModel> messages}) async {
+  Future<void> updateMessages(
+    String userUid,
+    String roomId, {
+    required List<MessageEntity> messages,
+  }) async {
     try {
-      const userIdFromLocal = '2FXrROIad2RSKt37NA8tciQx7e53';
-      final chatRoomRef = _firestore
-          .collection(FirestoreCollection.users.name)
-          .doc(userIdFromLocal)
-          .collection(FirestoreCollection.chats.name)
-          .doc(chatRoomId)
-          .collection(FirestoreCollection.messages.name)
-          .withConverter(
-            fromFirestore: MessageModel.fromFirestore,
-            toFirestore: (model, _) => model.toJson(),
-          );
+      await FirebaseFirestore.instance.runTransaction(
+        (transaction) async {
+          final roomDoc = FirebaseFirestore.instance
+              .collection(FirestoreCollection.users.name)
+              .doc(userUid)
+              .collection(FirestoreCollection.chats.name)
+              .doc(roomId);
+          final messageCollection =
+              roomDoc.collection(FirestoreCollection.messages.name);
 
-      for (var message in messages) {
-        await chatRoomRef.doc(message.id).set(message);
-      }
+          for (final message in messages) {
+            transaction.set(
+              messageCollection.doc(message.id),
+              MessageModel.fromEntity(message).toFirestore(),
+            );
+            if (message is SentMessageEntity) {
+              final data = {
+                message.answerState.isCorrect
+                    ? 'correctAnswerCount'
+                    : 'incorrectAnswerCount': FieldValue.increment(1),
+              };
+              transaction.update(roomDoc, data);
+            }
+          }
+        },
+      );
     } catch (e) {}
   }
 
   @override
-  Future<List<MessageModel>> getChatHistory(String chatRoomId) async {
-    const userIdFromLocal = '2FXrROIad2RSKt37NA8tciQx7e53';
-    final chatHistorySnapshot = await _firestore
+  Future<List<MessageModel>> getChatHistory(
+    String userUid,
+    String roomId,
+  ) async {
+    final snapshot = await FirebaseFirestore.instance
         .collection(FirestoreCollection.users.name)
-        .doc(userIdFromLocal)
+        .doc(userUid)
         .collection(FirestoreCollection.chats.name)
-        .doc(chatRoomId)
+        .doc(roomId)
         .collection(FirestoreCollection.messages.name)
         .orderBy('timestamp', descending: true)
-        .withConverter(
-          fromFirestore: MessageModel.fromFirestore,
-          toFirestore: (model, _) => model.toJson(),
-        )
         .get();
 
-    final response = chatHistorySnapshot.docs.map((e) => e.data()).toList();
-
-    return response;
+    return [
+      ...snapshot.docs.map(MessageModel.fromFirestore),
+    ];
   }
 
   @override
-  Future<List<ChatRoomModel>> getChatRoomList(String topicId) async {
-    const userIdFromLocal = '2FXrROIad2RSKt37NA8tciQx7e53';
-
-    final chatRoomListSnapshot = await _firestore
+  Future<List<ChatRoomModel>> getInterviewRooms(
+    String userUid,
+    String topicId,
+  ) async {
+    final snapshot = await FirebaseFirestore.instance
         .collection(FirestoreCollection.users.name)
-        .doc(userIdFromLocal)
+        .doc(userUid)
         .collection(FirestoreCollection.chats.name)
-        .withConverter(
-          fromFirestore: ChatRoomModel.fromFirestore,
-          toFirestore: (model, _) => model.toJson(),
-        )
-        .where('topicId', isEqualTo: topicId)
+        .where('topic_id', isEqualTo: topicId)
         .get();
 
-    final response = chatRoomListSnapshot.docs.map((e) => e.data()).toList();
-
-    return response;
+    return [
+      ...snapshot.docs.map(ChatRoomModel.fromFirestore),
+    ];
   }
 
   @override
-  Future<MessageModel> getLastedChatMessage(String chatRoomId) async {
-    const userIdFromLocal = '2FXrROIad2RSKt37NA8tciQx7e53';
-
-    final chatMessageSnapshot = await _firestore
+  Future<MessageModel> getLastedChatMessage(
+    String userUid,
+    String roomId,
+  ) async {
+    final snapshot = await FirebaseFirestore.instance
         .collection(FirestoreCollection.users.name)
-        .doc(userIdFromLocal)
+        .doc(userUid)
         .collection(FirestoreCollection.chats.name)
-        .doc(chatRoomId)
+        .doc(roomId)
         .collection(FirestoreCollection.messages.name)
         .orderBy('timestamp', descending: true)
-        .withConverter(
-          fromFirestore: MessageModel.fromFirestore,
-          toFirestore: (model, _) => model.toJson(),
-        )
         .get();
 
-    final response = chatMessageSnapshot.docs.first.data();
-
-    return response;
+    return MessageModel.fromFirestore(snapshot.docs.first);
   }
 
   @override

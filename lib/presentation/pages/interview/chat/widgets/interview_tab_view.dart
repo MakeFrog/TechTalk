@@ -8,10 +8,11 @@ import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_focus_node_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_input_provider.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/chat_page_route_argument_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_progress_state_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/bubble.dart';
+import 'package:techtalk/presentation/providers/interview/chat_history_of_room_provider.dart';
+import 'package:techtalk/presentation/providers/interview/selected_interview_room_provider.dart';
 
 class InterviewTabView extends HookConsumerWidget with ChatEvent {
   const InterviewTabView({Key? key}) : super(key: key);
@@ -24,7 +25,8 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
       children: [
         Consumer(
           builder: (context, ref, _) {
-            final chatListAsync = ref.watch(chatHistoryProvider);
+            final chatListAsync = ref.watch(chatHistoryOfRoomProvider);
+
             return Expanded(
               child: GestureDetector(
                 onVerticalDragStart: (_) {
@@ -55,8 +57,9 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
                             isLatestReceivedChatInEachSection: ref
                                 .read(chatHistoryProvider.notifier)
                                 .isLastReceivedChatInEachQuestion(index: index),
-                            interviewer:
-                                ref.read(chatPageRouteArgProvider).interviewer,
+                            interviewer: ref
+                                .read(selectedInterviewRoomProvider)!
+                                .interviewerInfo,
                           );
                         },
                       ),
@@ -107,7 +110,7 @@ class _BottomInputField extends HookConsumerWidget with ChatEvent {
               maxLines: null,
               textAlignVertical: TextAlignVertical.top,
               decoration: InputDecoration(
-                enabled: ref.watch(chatProgressStateProvider).enableChat,
+                // enabled: ref.watch(chatProgressStateProvider).enableChat,
                 fillColor: AppColor.of.background1,
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.only(

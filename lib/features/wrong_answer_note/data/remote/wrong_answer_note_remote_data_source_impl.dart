@@ -336,9 +336,9 @@ final class WrongAnswerNoteRemoteDataSourceImpl
     final snapshot = await _firestore
         .collection(FirestoreCollection.users.name)
         .doc(userUid)
-        .collection(FirestoreCollection.wrongAnswers.name)
+        .collection(FirestoreCollection.usersWrongAnswers.name)
         .doc(topicId)
-        .collection('qna')
+        .collection(FirestoreCollection.usersWrongAnswersQna.name)
         .get();
 
     if (snapshot.docs.isEmpty) {

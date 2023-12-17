@@ -7,7 +7,7 @@ part of 'selected_wrong_answer_topic_provider.dart';
 // **************************************************************************
 
 String _$selectedWrongAnswerTopicHash() =>
-    r'e3796f63fbfdfa045c41c6d3b0d3c4a96bc8179c';
+    r'033e6a2a00aa77686fbc78dd2cef97cd27169dec';
 
 /// See also [SelectedWrongAnswerTopic].
 @ProviderFor(SelectedWrongAnswerTopic)

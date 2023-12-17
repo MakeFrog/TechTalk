@@ -33,18 +33,19 @@ class MainPage extends BasePage {
 class _Body extends HookConsumerWidget {
   const _Body({super.key});
 
-  static const _screens = [
-    HomePage(
+  static final _screens = [
+    const HomePage(
       key: ValueKey(MainNavigationTab.home),
     ),
-    StudyTopicSelectPage(
+    const StudyTopicSelectPage(
       key: ValueKey(MainNavigationTab.study),
     ),
-    WrongAnswerNotePage(
+    const WrongAnswerNotePage(
       key: ValueKey(MainNavigationTab.note),
     ),
     ChatListPage(
-      key: ValueKey(MainNavigationTab.myInfo),
+      key: const ValueKey(MainNavigationTab.myInfo),
+      topicId: 'swift',
     ),
     // TestPage(
     //   key: ValueKey(MainNavigationTab.myInfo),

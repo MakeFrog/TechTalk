@@ -6,7 +6,7 @@ import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_event.dart';
-import 'package:techtalk/presentation/providers/study/study_question_controller.dart';
+import 'package:techtalk/presentation/providers/study/current_study_question_index_provider.dart';
 import 'package:techtalk/presentation/providers/study/study_questions_provider.dart';
 
 class StudyControllerBar extends ConsumerWidget with StudyLearningEvent {
@@ -15,7 +15,7 @@ class StudyControllerBar extends ConsumerWidget with StudyLearningEvent {
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentPage = ref.watch(currentQuestionPageProvider);
+    final current = ref.watch(currentStudyQuestionIndexProvider);
     final questions = ref.watch(studyQuestionsProvider).requireValue;
 
     return Padding(
@@ -27,7 +27,7 @@ class StudyControllerBar extends ConsumerWidget with StudyLearningEvent {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _ControllerButton(
-            isActive: currentPage != 0,
+            isActive: current != 0,
             label: '이전 문항',
             icon: Assets.iconsArrowLeft,
             onTap: () => onTapPrevQuestion(ref),
@@ -39,7 +39,7 @@ class StudyControllerBar extends ConsumerWidget with StudyLearningEvent {
             onTap: () => onTapEntireQuestion(ref),
           ),
           _ControllerButton(
-            isActive: currentPage + 1 != questions.length,
+            isActive: current + 1 != questions.length,
             label: '다음 문항',
             icon: Assets.iconsArrowRight,
             onTap: () => onTapNextQuestion(ref),

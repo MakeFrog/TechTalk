@@ -7,6 +7,7 @@ import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/qna_tab_view.dart';
+import 'package:techtalk/presentation/providers/interview/selected_interview_room_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 
@@ -14,6 +15,12 @@ part 'widgets/chat_page_scaffold.dart';
 
 class ChatPage extends BasePage with ChatEvent {
   const ChatPage({Key? key}) : super(key: key);
+
+  @override
+  void onDispose(WidgetRef ref) {
+    ref.invalidate(selectedInterviewRoomProvider);
+    super.onDispose(ref);
+  }
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
@@ -30,11 +37,12 @@ class ChatPage extends BasePage with ChatEvent {
   bool get preventSwipeBack => true;
 
   @override
-  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
-      BackButtonAppBar(
-        title: 'Swift',
-        onBackBtnTapped: () {
-          onAppbarBackBtnTapped(context);
-        },
-      );
+  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) {
+    return BackButtonAppBar(
+      title: ref.watch(selectedInterviewRoomProvider)?.topic.name,
+      onBackBtnTapped: () {
+        onAppbarBackBtnTapped(context);
+      },
+    );
+  }
 }

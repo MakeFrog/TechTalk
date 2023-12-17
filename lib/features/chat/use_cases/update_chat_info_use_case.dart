@@ -1,7 +1,7 @@
 import 'package:techtalk/core/utils/base/base_use_case.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_qna_progress_info_entity.dart';
-import 'package:techtalk/features/shared/enums/interviewer_avatar.dart';
+import 'package:techtalk/features/chat/repositories/entities/interviewer_avatar.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 ///
@@ -33,8 +33,8 @@ class UpdateChatInfoUseCase extends BaseUseCase<UpdateChatInfoParam, void> {
       );
       return Future.wait([
         _repository.setBasicChatRoomInfo(initialRoomInfo),
-        chatRepository.updateChatMessage(
-          chatRoomId: request.chatRoomId,
+        chatRepository.updateMessages(
+          request.chatRoomId,
           messages: request.messages,
         )
       ]);
@@ -45,8 +45,8 @@ class UpdateChatInfoUseCase extends BaseUseCase<UpdateChatInfoParam, void> {
           chatRoomId: request.chatRoomId,
           answerState: request.answerState,
         ),
-        _repository.updateChatMessage(
-          chatRoomId: request.chatRoomId,
+        _repository.updateMessages(
+          request.chatRoomId,
           messages: request.messages,
         ),
       ]);

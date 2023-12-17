@@ -1,27 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'current_question_index_provider.dart';
+part of 'selected_interview_room_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$currentQuestionIndexHash() =>
-    r'7a4d68c6b6134d2b10a122e673104a4e6861a3c6';
+String _$selectedInterviewRoomHash() =>
+    r'c0747a6092e2b4695ce91d5ecd8a3202b0d46b68';
 
-/// See also [CurrentQuestionIndex].
-@ProviderFor(CurrentQuestionIndex)
-final currentQuestionIndexProvider =
-    AutoDisposeNotifierProvider<CurrentQuestionIndex, int>.internal(
-  CurrentQuestionIndex.new,
-  name: r'currentQuestionIndexProvider',
+/// See also [SelectedInterviewRoom].
+@ProviderFor(SelectedInterviewRoom)
+final selectedInterviewRoomProvider =
+    NotifierProvider<SelectedInterviewRoom, ChatRoomEntity?>.internal(
+  SelectedInterviewRoom.new,
+  name: r'selectedInterviewRoomProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$currentQuestionIndexHash,
+      : _$selectedInterviewRoomHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$CurrentQuestionIndex = AutoDisposeNotifier<int>;
+typedef _$SelectedInterviewRoom = Notifier<ChatRoomEntity?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
