@@ -12,8 +12,8 @@ _$TopicModelImpl _$$TopicModelImplFromJson(Map<String, dynamic> json) =>
       imageUrl: json['imageUrl'] as String,
       id: json['id'] as String,
       name: json['name'] as String,
-      lastUpdateDate:
-          const TimeStampConverter().fromJson(json['lastUpdateDate']),
+      lastUpdatedDate:
+          const TimeStampConverter().fromJson(json['lastUpdatedDate']),
     );
 
 Map<String, dynamic> _$$TopicModelImplToJson(_$TopicModelImpl instance) =>
@@ -22,6 +22,6 @@ Map<String, dynamic> _$$TopicModelImplToJson(_$TopicModelImpl instance) =>
       'imageUrl': instance.imageUrl,
       'id': instance.id,
       'name': instance.name,
-      'lastUpdateDate':
-          const TimeStampConverter().toJson(instance.lastUpdateDate),
+      'lastUpdatedDate':
+          const TimeStampConverter().toJson(instance.lastUpdatedDate),
     };

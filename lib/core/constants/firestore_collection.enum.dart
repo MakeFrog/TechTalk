@@ -8,4 +8,5 @@ enum FirestoreCollection {
   chats,
   messages,
   topics,
+  qna,
 }

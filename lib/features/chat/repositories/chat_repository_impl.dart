@@ -77,8 +77,6 @@ final class ChatRepositoryImpl implements ChatRepository {
         messages: messages.map(MessageModel.fromEntity).toList(),
       );
 
-      print("아지랑이 : ${messages.length}");
-
       return Result.success(response);
     } on Exception catch (e) {
       return Result.failure(e);

@@ -7,12 +7,12 @@ part of 'categorized_study_topics_provider.dart';
 // **************************************************************************
 
 String _$categorizedStudyTopicsHash() =>
-    r'bd9502e40e219d8bcce70b9a3e05d0d36c9fc87d';
+    r'4872755f14d0214ff00e105b88dcac74ee7fbc8f';
 
 /// See also [categorizedStudyTopics].
 @ProviderFor(categorizedStudyTopics)
-final categorizedStudyTopicsProvider = AutoDisposeFutureProvider<
-    Map<InterviewTopicCategory, List<TopicEntity>>>.internal(
+final categorizedStudyTopicsProvider =
+    AutoDisposeFutureProvider<Map<TopicCategory, List<TopicEntity>>>.internal(
   categorizedStudyTopics,
   name: r'categorizedStudyTopicsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,7 +22,7 @@ final categorizedStudyTopicsProvider = AutoDisposeFutureProvider<
   allTransitiveDependencies: null,
 );
 
-typedef CategorizedStudyTopicsRef = AutoDisposeFutureProviderRef<
-    Map<InterviewTopicCategory, List<TopicEntity>>>;
+typedef CategorizedStudyTopicsRef
+    = AutoDisposeFutureProviderRef<Map<TopicCategory, List<TopicEntity>>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

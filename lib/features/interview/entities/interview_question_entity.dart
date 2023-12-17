@@ -8,11 +8,10 @@ class InterviewQuestionEntity {
 
   factory InterviewQuestionEntity.fromModel(InterviewQuestionModel model) {
     return InterviewQuestionEntity(
-      id: model.id,
-      question: model.question,
-      answers: model.answers,
-      updateDate: model.updateDate,
-    );
+        id: model.id,
+        question: model.question,
+        answers: model.answers,
+        updateDate: model.updateDate);
   }
 
 //<editor-fold desc="Data Methods">

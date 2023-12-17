@@ -1,5 +1,7 @@
+import 'dart:developer';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/features/interview/entities/interview_question_entity.dart';
+import 'package:techtalk/features/interview/entities/qna_entity.dart';
 import 'package:techtalk/features/interview/interview.dart';
 import 'package:techtalk/presentation/providers/study/selected_study_topic_provider.dart';
 
@@ -12,12 +14,20 @@ part 'study_questions_provider.g.dart';
 )
 class StudyQuestions extends _$StudyQuestions {
   @override
-  FutureOr<List<InterviewQuestionEntity>> build() async {
+  FutureOr<List<QnaEntity>> build() async {
     final topicId = ref.watch(selectedStudyTopicIdProvider);
 
-    final result = await interviewRepository.getInterviewQuestions(topicId);
+    final response = await interviewRepository.getQnaList.call(topicId);
 
-    return result.getOrThrow();
+    return response.fold(
+      onSuccess: (qnaList) {
+        return qnaList;
+      },
+      onFailure: (e) {
+        log(e.toString());
+        throw e;
+      },
+    );
   }
 
   void updateTest() {

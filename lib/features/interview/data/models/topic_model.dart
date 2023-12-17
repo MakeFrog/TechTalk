@@ -12,7 +12,7 @@ class TopicModel with _$TopicModel {
     required String imageUrl,
     required String id,
     required String name,
-    @TimeStampConverter() required DateTime lastUpdateDate,
+    @TimeStampConverter() required DateTime lastUpdatedDate,
   }) = _TopicModel;
 
   factory TopicModel.fromJson(Map<String, dynamic> json) =>

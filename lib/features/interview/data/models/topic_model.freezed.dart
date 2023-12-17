@@ -25,7 +25,7 @@ mixin _$TopicModel {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   @TimeStampConverter()
-  DateTime get lastUpdateDate => throw _privateConstructorUsedError;
+  DateTime get lastUpdatedDate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,7 +44,7 @@ abstract class $TopicModelCopyWith<$Res> {
       String imageUrl,
       String id,
       String name,
-      @TimeStampConverter() DateTime lastUpdateDate});
+      @TimeStampConverter() DateTime lastUpdatedDate});
 }
 
 /// @nodoc
@@ -64,7 +64,7 @@ class _$TopicModelCopyWithImpl<$Res, $Val extends TopicModel>
     Object? imageUrl = null,
     Object? id = null,
     Object? name = null,
-    Object? lastUpdateDate = null,
+    Object? lastUpdatedDate = null,
   }) {
     return _then(_value.copyWith(
       categoryId: null == categoryId
@@ -83,9 +83,9 @@ class _$TopicModelCopyWithImpl<$Res, $Val extends TopicModel>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      lastUpdateDate: null == lastUpdateDate
-          ? _value.lastUpdateDate
-          : lastUpdateDate // ignore: cast_nullable_to_non_nullable
+      lastUpdatedDate: null == lastUpdatedDate
+          ? _value.lastUpdatedDate
+          : lastUpdatedDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
     ) as $Val);
   }
@@ -104,7 +104,7 @@ abstract class _$$TopicModelImplCopyWith<$Res>
       String imageUrl,
       String id,
       String name,
-      @TimeStampConverter() DateTime lastUpdateDate});
+      @TimeStampConverter() DateTime lastUpdatedDate});
 }
 
 /// @nodoc
@@ -122,7 +122,7 @@ class __$$TopicModelImplCopyWithImpl<$Res>
     Object? imageUrl = null,
     Object? id = null,
     Object? name = null,
-    Object? lastUpdateDate = null,
+    Object? lastUpdatedDate = null,
   }) {
     return _then(_$TopicModelImpl(
       categoryId: null == categoryId
@@ -141,9 +141,9 @@ class __$$TopicModelImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      lastUpdateDate: null == lastUpdateDate
-          ? _value.lastUpdateDate
-          : lastUpdateDate // ignore: cast_nullable_to_non_nullable
+      lastUpdatedDate: null == lastUpdatedDate
+          ? _value.lastUpdatedDate
+          : lastUpdatedDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
     ));
   }
@@ -157,7 +157,7 @@ class _$TopicModelImpl implements _TopicModel {
       required this.imageUrl,
       required this.id,
       required this.name,
-      @TimeStampConverter() required this.lastUpdateDate});
+      @TimeStampConverter() required this.lastUpdatedDate});
 
   factory _$TopicModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$TopicModelImplFromJson(json);
@@ -172,11 +172,11 @@ class _$TopicModelImpl implements _TopicModel {
   final String name;
   @override
   @TimeStampConverter()
-  final DateTime lastUpdateDate;
+  final DateTime lastUpdatedDate;
 
   @override
   String toString() {
-    return 'TopicModel(categoryId: $categoryId, imageUrl: $imageUrl, id: $id, name: $name, lastUpdateDate: $lastUpdateDate)';
+    return 'TopicModel(categoryId: $categoryId, imageUrl: $imageUrl, id: $id, name: $name, lastUpdatedDate: $lastUpdatedDate)';
   }
 
   @override
@@ -190,14 +190,14 @@ class _$TopicModelImpl implements _TopicModel {
                 other.imageUrl == imageUrl) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.lastUpdateDate, lastUpdateDate) ||
-                other.lastUpdateDate == lastUpdateDate));
+            (identical(other.lastUpdatedDate, lastUpdatedDate) ||
+                other.lastUpdatedDate == lastUpdatedDate));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, categoryId, imageUrl, id, name, lastUpdateDate);
+      Object.hash(runtimeType, categoryId, imageUrl, id, name, lastUpdatedDate);
 
   @JsonKey(ignore: true)
   @override
@@ -219,7 +219,7 @@ abstract class _TopicModel implements TopicModel {
           required final String imageUrl,
           required final String id,
           required final String name,
-          @TimeStampConverter() required final DateTime lastUpdateDate}) =
+          @TimeStampConverter() required final DateTime lastUpdatedDate}) =
       _$TopicModelImpl;
 
   factory _TopicModel.fromJson(Map<String, dynamic> json) =
@@ -235,7 +235,7 @@ abstract class _TopicModel implements TopicModel {
   String get name;
   @override
   @TimeStampConverter()
-  DateTime get lastUpdateDate;
+  DateTime get lastUpdatedDate;
   @override
   @JsonKey(ignore: true)
   _$$TopicModelImplCopyWith<_$TopicModelImpl> get copyWith =>

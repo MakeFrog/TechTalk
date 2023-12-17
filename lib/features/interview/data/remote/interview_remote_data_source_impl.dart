@@ -3,6 +3,7 @@ import 'package:techtalk/core/constants/firestore_collection.enum.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/features/interview/data/models/interview_qna_model.dart';
 import 'package:techtalk/features/interview/data/models/interview_question_model.dart';
+import 'package:techtalk/features/interview/data/models/qna_model.dart';
 import 'package:techtalk/features/interview/data/models/topic_model.dart';
 import 'package:techtalk/features/interview/interview.dart';
 
@@ -40,13 +41,13 @@ final class InterviewRemoteDataSourceImpl implements InterviewRemoteDataSource {
   }
 
   @override
-  Future<List<InterviewQuestionModel>> getInterviewQuestions(
+  Future<List<InterviewQuestionModel>> getQnaListOfTopic(
     String topicId,
   ) async {
     final snapshot = await _firestore
-        .collection('interview')
+        .collection(FirestoreCollection.topics.name)
         .doc(topicId)
-        .collection('questions')
+        .collection(FirestoreCollection.qna.name)
         .get();
 
     if (snapshot.docs.isEmpty) {
@@ -96,6 +97,27 @@ final class InterviewRemoteDataSourceImpl implements InterviewRemoteDataSource {
         .get();
 
     final response = topicSnapshot.data();
+
+    return response;
+  }
+
+  @override
+  Future<List<QnaModel>> getQnaList(String topicId) async {
+    final qnaListSnapshot = await _firestore
+        .collection(FirestoreCollection.topics.name)
+        .doc(topicId)
+        .collection(FirestoreCollection.qna.name)
+        .withConverter(
+          fromFirestore: QnaModel.fromFirestore,
+          toFirestore: (model, _) => model.toJson(),
+        )
+        .get(
+          const GetOptions(
+            source: Source.server,
+          ),
+        );
+
+    final response = qnaListSnapshot.docs.map((e) => e.data()).toList();
 
     return response;
   }

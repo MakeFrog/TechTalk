@@ -6,7 +6,7 @@ import 'package:techtalk/features/interview/entities/topic_entity.dart';
 part 'categorized_study_topics_provider.g.dart';
 
 @riverpod
-Future<Map<InterviewTopicCategory, List<TopicEntity>>> categorizedStudyTopics(
+Future<Map<TopicCategory, List<TopicEntity>>> categorizedStudyTopics(
   CategorizedStudyTopicsRef ref,
 ) async {
   final response = StoredTopics.list;
@@ -16,7 +16,7 @@ Future<Map<InterviewTopicCategory, List<TopicEntity>>> categorizedStudyTopics(
       (a, b) => a.category.text.compareTo(b.category.text),
     );
 
-  final resolvedTopics = <InterviewTopicCategory, List<TopicEntity>>{};
+  final resolvedTopics = <TopicCategory, List<TopicEntity>>{};
 
   for (final topic in topics) {
     if (resolvedTopics.containsKey(topic)) {

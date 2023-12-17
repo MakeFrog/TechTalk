@@ -29,6 +29,7 @@ class StoredTopics {
     );
   }
 
+  /// 특정 면접 주제 entity를 id 값을 기반으로 리턴
   static TopicEntity getById(String id) {
     return list.firstWhere(
       (topic) => topic.id == id,
@@ -36,11 +37,22 @@ class StoredTopics {
     );
   }
 
+  /// 특정 면접 주제의 마지막 업데이트된 날짜를 id 값을 기반으로 리턴
+  static DateTime getLastUpdatedDateById(String id) {
+    final selectedTopic = list.firstWhere(
+      (topic) => topic.id == id,
+      orElse: () => throw Exception('Unexpected Topic Id Value'),
+    );
+
+    return selectedTopic.lastUpdatedDate;
+  }
+
   //// TEMP
   static TopicEntity get selectedTopic => TopicEntity(
         id: 'swift',
         name: '스위프트',
         imageUrl: 'https://developer.apple.com/swift/images/swift-og.png',
-        category: InterviewTopicCategory.framework,
+        category: TopicCategory.framework,
+        lastUpdatedDate: DateTime.timestamp(),
       );
 }

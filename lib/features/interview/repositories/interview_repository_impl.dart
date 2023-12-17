@@ -1,8 +1,10 @@
+import 'package:techtalk/core/constants/stored_topics.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/interview/data/models/interview_question_model.dart';
 import 'package:techtalk/features/interview/entities/interview_question_entity.dart'
     as interview;
+import 'package:techtalk/features/interview/entities/qna_entity.dart';
 import 'package:techtalk/features/interview/entities/topic_entity.dart';
 import 'package:techtalk/features/interview/interview.dart';
 
@@ -23,7 +25,6 @@ class InterviewRepositoryImpl implements InterviewRepository {
 
       return Result.success(result);
     } on Exception catch (e) {
-      print('우시미 : ${e}');
       return Result.failure(e);
     }
   }
@@ -71,19 +72,48 @@ class InterviewRepositoryImpl implements InterviewRepository {
       final lastUpdateDate = await _interviewRemoteDataSource
           .getInterviewQuestionsUpdateDate(topicId);
       if (lastUpdateDate.compareTo(cacheUpdateDate) == 0) {
-        questionsModel = (await _interviewLocalDataSource
-            .getCachedInterviewQuestions(topicId))!;
+        questionsModel =
+            (await _interviewLocalDataSource.getCachedQnaListOfTopic(topicId))!;
       } else {
         questionsModel =
-            await _interviewRemoteDataSource.getInterviewQuestions(topicId);
+            await _interviewRemoteDataSource.getQnaListOfTopic(topicId);
       }
     } else {
       questionsModel =
-          await _interviewRemoteDataSource.getInterviewQuestions(topicId);
+          await _interviewRemoteDataSource.getQnaListOfTopic(topicId);
     }
 
     return Result.success(
       questionsModel.map(interview.InterviewQuestionEntity.fromModel).toList(),
     );
+  }
+
+  @override
+  Future<Result<List<QnaEntity>>> getQnaList(String topicId) async {
+    try {
+      final dateFromRemote = StoredTopics.getLastUpdatedDateById(topicId);
+      final dateFromLocal =
+          await _interviewLocalDataSource.getLastUpdatedDateByTopic(topicId);
+
+      final List<QnaEntity> result;
+
+      // 로컬에 데이터가 없거나
+      // 로컬 날짜가 최신 날짜가 아니라면 원격으로부터 데이터 호출
+      if (dateFromLocal == null || dateFromRemote.isAfter(dateFromLocal)) {
+        final response = await _interviewRemoteDataSource.getQnaList(topicId);
+        result = response.map(QnaEntity.fromModel).toList();
+
+        return Result.success(result);
+      }
+
+      // 그외의 경우
+      // 로컬에서 데이터를 호출
+      final response = await _interviewRemoteDataSource.getQnaList(topicId);
+      result = response.map(QnaEntity.fromModel).toList();
+
+      return Result.success(result);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
   }
 }
