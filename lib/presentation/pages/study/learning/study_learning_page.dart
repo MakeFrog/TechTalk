@@ -11,6 +11,7 @@ import 'package:techtalk/presentation/providers/study/selected_study_topic_provi
 import 'package:techtalk/presentation/providers/study/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/providers/study/study_questions_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
+import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class StudyLearningPage extends BasePage {
@@ -19,58 +20,7 @@ class StudyLearningPage extends BasePage {
   });
 
   @override
-  PreferredSizeWidget? buildAppBar(BuildContext context) => const _AppBar();
-
-  @override
-  Widget buildPage(BuildContext context, WidgetRef ref) => const _Body();
-}
-
-class _AppBar extends StatelessWidget
-    with StudyLearningEvent
-    implements PreferredSizeWidget {
-  const _AppBar({
-    super.key,
-  });
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      titleSpacing: 0,
-      title: Consumer(
-        builder: (context, ref, child) => Text(
-          ref.watch(selectedStudyTopicProvider).name,
-        ),
-      ),
-      actions: [
-        Text(
-          '답안 가리기',
-          style: AppTextStyle.alert1.copyWith(
-            color: AppColor.of.gray3,
-          ),
-        ),
-        const WidthBox(8),
-        Consumer(
-          builder: (context, ref, child) => FlatSwitch(
-            value: ref.watch(studyAnswerBlurProvider),
-            onTap: (_) => onToggleAnswerBlur(ref),
-          ),
-        ),
-        const WidthBox(16),
-      ],
-    );
-  }
-}
-
-class _Body extends ConsumerWidget {
-  const _Body({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget buildPage(BuildContext context, WidgetRef ref) {
     final questionsAsync = ref.watch(studyQuestionsProvider);
 
     return questionsAsync.when(
@@ -92,6 +42,41 @@ class _Body extends ConsumerWidget {
           ],
         );
       },
+    );
+  }
+
+  @override
+  PreferredSizeWidget? buildAppBar(BuildContext context) => const _AppBar();
+}
+
+class _AppBar extends ConsumerWidget
+    with StudyLearningEvent
+    implements PreferredSizeWidget {
+  const _AppBar({Key? key}) : super(key: key);
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return BackButtonAppBar(
+      title: ref.watch(selectedStudyTopicProvider).name,
+      actions: [
+        Text(
+          '답안 가리기',
+          style: AppTextStyle.alert1.copyWith(
+            color: AppColor.of.gray3,
+          ),
+        ),
+        const WidthBox(8),
+        Consumer(
+          builder: (context, ref, child) => FlatSwitch(
+            value: ref.watch(studyAnswerBlurProvider),
+            onTap: (_) => onToggleAnswerBlur(ref),
+          ),
+        ),
+        const WidthBox(16),
+      ],
     );
   }
 }

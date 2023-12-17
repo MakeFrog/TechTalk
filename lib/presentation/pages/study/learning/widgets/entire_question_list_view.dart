@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/interview/entities/interview_question_entity.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
+import 'package:techtalk/features/interview/entities/qna_entity.dart';
 
 class EntireQuestionListView extends ConsumerWidget {
   const EntireQuestionListView({
     super.key,
     required this.questions,
+    required this.currentPage,
   });
 
-  final List<InterviewQuestionEntity> questions;
+  final List<QnaEntity> questions;
+  final int currentPage;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,20 +24,20 @@ class EntireQuestionListView extends ConsumerWidget {
           AppBar(
             backgroundColor: Colors.white,
             leading: const BackButton(),
-            title: Text('전체 문항'),
+            title: const Text('전체 문항'),
             titleSpacing: 0,
           ),
           Expanded(
             child: ListView.builder(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 vertical: 8,
               ),
-              itemExtent: 68,
               itemCount: questions.length,
               itemBuilder: (context, index) => _buildQuestion(
                 ref,
                 index,
                 questions[index],
+                index == currentPage,
               ),
             ),
           ),
@@ -47,30 +49,34 @@ class EntireQuestionListView extends ConsumerWidget {
   Widget _buildQuestion(
     WidgetRef ref,
     int index,
-    InterviewQuestionEntity question,
+    QnaEntity question,
+    bool isSelected,
   ) {
-    return InkWell(
-      onTap: () => Navigator.pop(ref.context, index),
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 24,
-        ),
-        child: Row(
-          children: [
-            Text(
-              '${index + 1}번',
-              style: AppTextStyle.body3.copyWith(
-                color: AppColor.of.gray3,
-              ),
+    return MaterialButton(
+      onPressed: () => Navigator.pop(ref.context, index),
+      color: isSelected ? AppColor.of.brand1 : AppColor.of.white,
+      elevation: 0,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 24,
+      ),
+      shape: Border(bottom: BorderSide(color: AppColor.of.gray2, width: 0.5)),
+      child: Row(
+        children: [
+          Text(
+            '${index + 1}번',
+            style: AppTextStyle.body3.copyWith(
+              color: isSelected ? AppColor.of.brand3 : AppColor.of.gray3,
             ),
-            WidthBox(16),
-            Text(
+          ),
+          const Gap(16),
+          Expanded(
+            child: Text(
               question.question,
               style: AppTextStyle.body1,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

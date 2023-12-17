@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
@@ -34,19 +35,15 @@ class StudyTopicCard extends StatelessWidget {
               ),
               Align(
                 alignment: Alignment.centerRight,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(72),
-                  child: Image.asset(
-                    topic.imageUrl!,
-                    width: 72,
-                    height: 72,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      width: 72,
+                child: SizedBox(
+                  height: 72,
+                  width: 72,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(72),
+                    child: CachedNetworkImage(
                       height: 72,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
+                      width: 72,
+                      imageUrl: topic.imageUrl,
                     ),
                   ),
                 ),

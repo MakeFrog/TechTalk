@@ -39,6 +39,7 @@ class StudyControllerBar extends ConsumerWidget with StudyLearningEvent {
             onTap: () => onTapEntireQuestion(
               ref,
               questions: questions,
+              currenPage: currentPage,
             ),
           ),
           _ControllerButton(
