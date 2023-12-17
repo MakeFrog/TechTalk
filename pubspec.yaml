@@ -28,6 +28,7 @@ dependencies:
   smooth_page_indicator: ^1.1.0
   animations: ^2.0.8
   flutter_animate: ^4.2.0+1
+  cached_network_image: ^3.3.0
 
   # 상태관리
   provider: ^6.0.5
