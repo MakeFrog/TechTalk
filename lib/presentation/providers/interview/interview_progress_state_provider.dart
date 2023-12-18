@@ -9,16 +9,17 @@ part 'interview_progress_state_provider.g.dart';
 class InterviewProgressState extends _$InterviewProgressState {
   @override
   InterviewProgress build(ChatRoomEntity room) {
-    ref.listen(interviewQnAsOfRoomProvider(room), (_, next) {
-      final totalQuestionCount = room.qnaProgressInfo.totalQuestionCount;
-      final completedQnAs = next.requireValue.where(
+    final qnas = ref.watch(interviewQnAsOfRoomProvider(room)).valueOrNull;
+    if (qnas != null) {
+      final totalQuestionCount = qnas.length;
+      final completedQnAs = qnas.where(
         (e) => e.hasUserResponded && e.response!.state.isCompleted,
       );
 
       if (completedQnAs.length >= totalQuestionCount) {
-        state = InterviewProgress.done;
+        return InterviewProgress.done;
       }
-    });
+    }
 
     ref.listen(
       chatHistoryOfRoomProvider(room),

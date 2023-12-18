@@ -216,6 +216,9 @@ class ChatHistoryOfRoom extends _$ChatHistoryOfRoom {
       (previous) => [...previous]..[targetIndex] = resolvedAnsweredChat,
     );
     await _updateChat([resolvedAnsweredChat]);
+    ref
+        .read(interviewQnAsOfRoomProvider(room).notifier)
+        .updateQnA(resolvedAnsweredChat);
   }
 
   ///

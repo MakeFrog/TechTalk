@@ -21,9 +21,14 @@ class ChatPage extends BasePage with ChatEvent {
     final tabController = useTabController(initialLength: 2);
     final roomLoadingAsync = ref.watch(selectedInterviewRoomProvider);
 
-    return roomLoadingAsync.maybeWhen(
-      loading: () => Container(),
-      orElse: () {
+    return roomLoadingAsync.when(
+      loading: Container.new,
+      error: (error, stackTrace) {
+        return Center(
+          child: Text('$error'),
+        );
+      },
+      data: (data) {
         return _Scaffold(
           chatTabView: const InterviewTabView(),
           summaryTabView: const QnATabView(),

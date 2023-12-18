@@ -126,12 +126,10 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
             if (message is SentMessageEntity) {
               transaction
                 ..update(roomDoc, {
-                  'correct_answer_count': message.answerState.isCorrect
-                      ? FieldValue.increment(1)
-                      : null,
-                  'incorrect_answer_count': message.answerState.isWrong
-                      ? FieldValue.increment(1)
-                      : null,
+                  if (message.answerState.isCorrect)
+                    'correct_answer_count': FieldValue.increment(1),
+                  if (message.answerState.isWrong)
+                    'incorrect_answer_count': FieldValue.increment(1),
                 })
                 ..update(
                   qnaCollection.doc(message.qnaId),
