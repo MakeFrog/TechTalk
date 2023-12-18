@@ -1,4 +1,4 @@
-import 'package:techtalk/features/chat/repositories/entities/user_interview_response.dart';
+import 'package:techtalk/features/chat/entities/user_interview_response.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 class InterviewQnAEntity {

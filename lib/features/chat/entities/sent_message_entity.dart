@@ -1,7 +1,5 @@
 import 'package:rxdart/rxdart.dart';
-import 'package:techtalk/features/chat/repositories/entities/message_entity.dart';
-import 'package:techtalk/features/chat/repositories/enums/answer_state.enum.dart';
-import 'package:techtalk/features/chat/repositories/enums/chat_type.enum.dart';
+import 'package:techtalk/features/chat/chat.dart';
 
 class SentMessageEntity extends MessageEntity {
   final AnswerState answerState;

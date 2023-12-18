@@ -1,6 +1,6 @@
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/repositories/entities/chat_qna_progress_info_entity.dart';
-import 'package:techtalk/features/chat/repositories/entities/interviewer_avatar.dart';
+import 'package:techtalk/features/chat/entities/chat_qna_progress_info_entity.dart';
+import 'package:techtalk/features/chat/entities/interviewer_avatar.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 class ChatRoomEntity {

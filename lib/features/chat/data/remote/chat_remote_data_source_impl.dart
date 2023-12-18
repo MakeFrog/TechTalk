@@ -6,7 +6,7 @@ import 'package:techtalk/features/chat/data/models/chat_room_model.dart';
 import 'package:techtalk/features/chat/data/models/interview_qna_model.dart';
 import 'package:techtalk/features/chat/data/models/message_model.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
-import 'package:techtalk/features/chat/repositories/entities/interviewer_avatar.dart';
+import 'package:techtalk/features/chat/entities/interviewer_avatar.dart';
 
 final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
