@@ -2,9 +2,9 @@ import 'package:techtalk/core/utils/base/base_use_case.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
-class GetChatMessagesUseCase
+class GetChatHistoryUseCase
     extends BaseUseCase<String, Result<List<MessageEntity>>> {
-  GetChatMessagesUseCase(this._repository);
+  GetChatHistoryUseCase(this._repository);
 
   final ChatRepository _repository;
 

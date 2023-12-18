@@ -1,27 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'question_answer_blur_provider.dart';
+part of 'wrong_answer_blur_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$questionAnswerBlurHash() =>
-    r'4a3d88a3bdab5f7a478a6f49d58789dbb5ce0a02';
+String _$wrongAnswerBlurHash() => r'2f15340a8d6294fcd338500ca47371a60c68c89a';
 
-/// See also [QuestionAnswerBlur].
-@ProviderFor(QuestionAnswerBlur)
-final questionAnswerBlurProvider =
-    AutoDisposeNotifierProvider<QuestionAnswerBlur, bool>.internal(
-  QuestionAnswerBlur.new,
-  name: r'questionAnswerBlurProvider',
+/// See also [WrongAnswerBlur].
+@ProviderFor(WrongAnswerBlur)
+final wrongAnswerBlurProvider =
+    AutoDisposeNotifierProvider<WrongAnswerBlur, bool>.internal(
+  WrongAnswerBlur.new,
+  name: r'wrongAnswerBlurProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$questionAnswerBlurHash,
+      : _$wrongAnswerBlurHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$QuestionAnswerBlur = AutoDisposeNotifier<bool>;
+typedef _$WrongAnswerBlur = AutoDisposeNotifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

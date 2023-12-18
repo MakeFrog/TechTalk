@@ -11,8 +11,8 @@ import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/topic/entities/topic_question_entity.dart';
 import 'package:techtalk/features/wrong_answer_note/wrong_answer_note.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/review_note_detail_event.dart';
-import 'package:techtalk/presentation/providers/wrong_answer/question_answer_blur_provider.dart';
 import 'package:techtalk/presentation/providers/wrong_answer/selected_wrong_answer_topic_provider.dart';
+import 'package:techtalk/presentation/providers/wrong_answer/wrong_answer_blur_provider.dart';
 import 'package:techtalk/presentation/providers/wrong_answer/wrong_answer_questions_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
@@ -70,7 +70,7 @@ class _AppBar extends StatelessWidget
         const Gap(8),
         Consumer(
           builder: (context, ref, child) {
-            final isBlurAnswer = ref.watch(questionAnswerBlurProvider);
+            final isBlurAnswer = ref.watch(wrongAnswerBlurProvider);
 
             return FlatSwitch(
               value: isBlurAnswer,
@@ -95,7 +95,9 @@ class _Body extends HookConsumerWidget with ReviewNoteDetailEvent {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pageController = usePageController(initialPage: page);
-    final questions = ref.watch(wrongAnswerQuestionsProvider).requireValue;
+    final selectedTopic = ref.watch(selectedWrongAnswerTopicProvider);
+    final questions =
+        ref.watch(wrongAnswerQuestionsProvider(selectedTopic.id)).requireValue;
 
     return SafeArea(
       child: Column(
@@ -226,7 +228,7 @@ class _StudyQna extends HookWidget {
             ),
             child: Consumer(
               builder: (context, ref, child) {
-                final isBlur = ref.watch(questionAnswerBlurProvider);
+                final isBlur = ref.watch(wrongAnswerBlurProvider);
 
                 return ImageFiltered(
                   imageFilter: ImageFilter.blur(

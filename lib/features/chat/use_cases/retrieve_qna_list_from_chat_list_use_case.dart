@@ -33,13 +33,13 @@ class RetrieveQnaListFromChatListUseCase extends BaseNoFutureUseCase<
         final questionChat = chat as QuestionMessageEntity;
 
         // InterviewQnAEntity를 만들어서 목록에 추가
-        questions.add(
-          InterviewQnAEntity.fromInitialQuestionModel(
-            id: questionChat.questionId,
-            question: questionChat.message.value,
-            idealAnswer: questionChat.idealAnswers,
-          ),
-        );
+        // questions.add(
+        //   InterviewQnAEntity(
+        //     id: questionChat.questionId,
+        //     question: questionChat.message.value,
+        //     idealAnswer: questionChat.idealAnswers,
+        //   ),
+        // );
       }
     }
 
@@ -55,14 +55,15 @@ class RetrieveQnaListFromChatListUseCase extends BaseNoFutureUseCase<
     for (MessageEntity chat in chatList) {
       if (chat.type.isSentMessage) {
         final sentChat = chat as SentMessageEntity;
-        final selectedQnaItem = questions
+        var selectedQnaItem = questions
             .firstWhereOrNull((question) => question.id == sentChat.questionId);
 
         if (selectedQnaItem != null) {
-          selectedQnaItem.response = UserInterviewResponse(
+          selectedQnaItem = selectedQnaItem.copyWith(
+              response: UserInterviewResponse(
             sentChat.message.value,
             state: sentChat.answerState,
-          );
+          ));
         }
       }
     }

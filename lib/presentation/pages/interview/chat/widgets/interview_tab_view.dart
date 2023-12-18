@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/chat_focus_node_provider.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/chat_history_provider.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/chat_input_provider.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/chat_progress_state_provider.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/bubble.dart';
 import 'package:techtalk/presentation/providers/interview/chat_history_of_room_provider.dart';
+import 'package:techtalk/presentation/providers/interview/interview_progress_state_provider.dart';
 import 'package:techtalk/presentation/providers/interview/selected_interview_room_provider.dart';
 
 class InterviewTabView extends HookConsumerWidget with ChatEvent {
@@ -20,46 +17,37 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
+    final room = ref.watch(selectedInterviewRoomProvider).requireValue;
+    final chatScrollController = useScrollController();
 
     return Column(
       children: [
         Consumer(
           builder: (context, ref, _) {
-            final chatListAsync = ref.watch(chatHistoryOfRoomProvider);
+            final chatListAsync = ref.watch(chatHistoryOfRoomProvider(room));
 
             return Expanded(
               child: GestureDetector(
-                onVerticalDragStart: (_) {
-                  ref.read(chatFocusNodeProvider).unfocus();
-                },
-                onTap: () {
-                  ref.read(chatFocusNodeProvider).unfocus();
-                },
+                onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
                 child: chatListAsync.when(
                   data: (chatList) {
                     return Align(
                       alignment: Alignment.topCenter,
                       child: ListView.separated(
-                        controller: ref.watch(chatScrollControllerProvider),
+                        controller: chatScrollController,
                         shrinkWrap: true,
                         reverse: true,
                         padding: const EdgeInsets.only(top: 24, bottom: 20) +
                             const EdgeInsets.symmetric(horizontal: 12),
-                        separatorBuilder: (_, __) => const SizedBox(
-                          height: 8,
-                        ),
+                        separatorBuilder: (_, __) => const Gap(8),
                         itemCount: chatList.length,
                         itemBuilder: (context, index) {
-                          final item = chatList[index];
-
                           return Bubble(
-                            chat: item,
+                            chat: chatList[index],
                             isLatestReceivedChatInEachSection: ref
-                                .read(chatHistoryProvider.notifier)
+                                .read(chatHistoryOfRoomProvider(room).notifier)
                                 .isLastReceivedChatInEachQuestion(index: index),
-                            interviewer: ref
-                                .read(selectedInterviewRoomProvider)!
-                                .interviewerInfo,
+                            interviewer: room.interviewerInfo,
                           );
                         },
                       ),
@@ -68,8 +56,9 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
                   error: (e, _) => Center(
                     child: Text('채팅 내역을 불러오지 못했습니다[$e]'),
                   ),
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
               ),
             );
@@ -77,18 +66,30 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
         ),
 
         /// 하단 입력창
-        const _BottomInputField(),
+        _BottomInputField(
+          chatScrollController: chatScrollController,
+        ),
       ],
     );
   }
 }
 
 class _BottomInputField extends HookConsumerWidget with ChatEvent {
-  const _BottomInputField({Key? key}) : super(key: key);
+  const _BottomInputField({
+    Key? key,
+    required this.chatScrollController,
+  }) : super(key: key);
 
+  final ScrollController chatScrollController;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final textEditingController = TextEditingController();
+    final room = ref.watch(selectedInterviewRoomProvider).requireValue;
+    final interviewState = ref.watch(interviewProgressStateProvider(room));
+    final messageController = useTextEditingController();
+    final message = useListenableSelector(
+      messageController,
+      () => messageController.text,
+    );
 
     return SafeArea(
       child: Container(
@@ -102,35 +103,22 @@ class _BottomInputField extends HookConsumerWidget with ChatEvent {
         child: Stack(
           children: [
             TextField(
-              focusNode: ref.watch(chatFocusNodeProvider),
-              onChanged: (message) {
-                ref.read(chatInputProvider.notifier).update(message);
-              },
-              controller: textEditingController,
+              controller: messageController,
               maxLines: null,
               textAlignVertical: TextAlignVertical.top,
               decoration: InputDecoration(
-                // enabled: ref.watch(chatProgressStateProvider).enableChat,
+                enabled: interviewState.enableChat,
                 fillColor: AppColor.of.background1,
-                border: InputBorder.none,
+                border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
                 contentPadding: const EdgeInsets.only(
                   right: 42,
                   left: 16,
                   top: 18,
                 ),
-                hintText: ref.watch(chatProgressStateProvider).fieldHintText,
-                disabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(16.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(16.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(16.0),
-                ),
+                hintText: interviewState.fieldHintText,
               ),
             ),
             Positioned(
@@ -142,22 +130,22 @@ class _BottomInputField extends HookConsumerWidget with ChatEvent {
                     icon: SvgPicture.asset(
                       Assets.iconsSend,
                       colorFilter: ColorFilter.mode(
-                        ref.watch(chatInputProvider).isNotEmpty
+                        message.isNotEmpty
                             ? AppColor.of.blue2
                             : AppColor.of.gray3,
                         BlendMode.srcIn,
                       ),
                     ),
-                    onPressed:
-                        ref.watch(chatProgressStateProvider).isChatAvailable
-                            ? () {
-                                onChatFieldSubmitted(
-                                  ref,
-                                  message: textEditingController.text,
-                                  textEditingController: textEditingController,
-                                );
-                              }
-                            : null,
+                    onPressed: interviewState.enableChat
+                        ? () {
+                            onChatFieldSubmitted(
+                              ref,
+                              message: message,
+                              textEditingController: messageController,
+                              scrollController: chatScrollController,
+                            );
+                          }
+                        : null,
                   );
                 },
               ),

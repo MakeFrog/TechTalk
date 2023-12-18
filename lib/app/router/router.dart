@@ -1,6 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_page.dart';
@@ -11,6 +13,9 @@ import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_page.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/review_note_detail_page.dart';
+import 'package:techtalk/presentation/providers/interview/selected_interview_room_provider.dart';
+import 'package:techtalk/presentation/providers/interview/selected_interview_topic_provider.dart';
+import 'package:techtalk/presentation/providers/study/selected_study_topic_provider.dart';
 
 part 'route_argument.dart';
 part 'router.g.dart';
@@ -20,7 +25,7 @@ final rootNavigatorKey = GlobalKey<NavigatorState>();
 GoRouter appRouter(WidgetRef ref) => GoRouter(
       debugLogDiagnostics: false,
       navigatorKey: rootNavigatorKey,
-      initialLocation: SplashRoute.name,
+      initialLocation: SplashRoute.path,
       // initialLocation: SignInRoute.name,
       routes: $appRoutes,
     );
@@ -29,13 +34,14 @@ GoRouter appRouter(WidgetRef ref) => GoRouter(
 /// splash
 ///
 @TypedGoRoute<SplashRoute>(
-  path: SplashRoute.name,
+  path: SplashRoute.path,
   name: SplashRoute.name,
 )
 class SplashRoute extends GoRouteData {
   const SplashRoute();
 
-  static const String name = '/splash';
+  static const String path = '/splash';
+  static const String name = 'splash';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -47,13 +53,14 @@ class SplashRoute extends GoRouteData {
 /// Sign In Route
 ///
 @TypedGoRoute<SignInRoute>(
-  path: SignInRoute.name,
+  path: SignInRoute.path,
   name: SignInRoute.name,
 )
 class SignInRoute extends GoRouteData {
   const SignInRoute();
 
-  static const String name = '/sign_in';
+  static const String path = '/sign_in';
+  static const String name = 'sign_in';
 
   @override
   Widget build(BuildContext context, GoRouterState state) => const SignInPage();
@@ -63,13 +70,14 @@ class SignInRoute extends GoRouteData {
 /// Sign Up Route
 ///
 @TypedGoRoute<SignUpRoute>(
-  path: SignUpRoute.name,
+  path: SignUpRoute.path,
   name: SignUpRoute.name,
 )
 class SignUpRoute extends GoRouteData {
   const SignUpRoute();
 
-  static const String name = '/sign-up';
+  static const String path = '/sign-up';
+  static const String name = 'sign-up';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -84,9 +92,9 @@ class SignUpRoute extends GoRouteData {
   path: MainRoute.name,
   name: MainRoute.name,
   routes: [
-    TypedGoRoute<HomeTopicSelectRoute>(
-      path: HomeTopicSelectRoute.name,
-      name: HomeTopicSelectRoute.name,
+    TypedGoRoute<InterviewTopicSelectRoute>(
+      path: InterviewTopicSelectRoute.name,
+      name: InterviewTopicSelectRoute.name,
       routes: [
         TypedGoRoute<QuestionCountSelectPageRoute>(
           path: QuestionCountSelectPageRoute.name,
@@ -95,7 +103,7 @@ class SignUpRoute extends GoRouteData {
       ],
     ),
     TypedGoRoute<StudyRoute>(
-      path: StudyRoute.name,
+      path: StudyRoute.path,
       name: StudyRoute.name,
     ),
     TypedGoRoute<WrongAnswerRoute>(
@@ -129,11 +137,20 @@ class StudyRoute extends GoRouteData {
   const StudyRoute(this.topicId);
 
   final String topicId;
+
+  static const String path = ':topicId';
   static const String name = 'study';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const StudyLearningPage();
+    return ProviderScope(
+      overrides: [
+        selectedStudyTopicProvider.overrideWithValue(
+          Topic.getTopicById(topicId),
+        ),
+      ],
+      child: StudyLearningPage(),
+    );
   }
 }
 
@@ -149,8 +166,8 @@ class WrongAnswerRoute extends GoRouteData {
   }
 }
 
-class HomeTopicSelectRoute extends GoRouteData {
-  const HomeTopicSelectRoute();
+class InterviewTopicSelectRoute extends GoRouteData {
+  const InterviewTopicSelectRoute();
 
   static const String name = 'topic-select';
 
@@ -161,13 +178,19 @@ class HomeTopicSelectRoute extends GoRouteData {
 }
 
 class QuestionCountSelectPageRoute extends GoRouteData {
-  const QuestionCountSelectPageRoute();
+  const QuestionCountSelectPageRoute({
+    required this.$extra,
+  });
 
   static const String name = 'question-count-select';
 
+  final Topic $extra;
+
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const QuestionCountSelectPage();
+    return QuestionCountSelectPage(
+      topic: $extra,
+    );
   }
 }
 
@@ -181,8 +204,15 @@ class ChatListPageRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ChatListPage(
-      topicId: topicId,
+    return ProviderScope(
+      overrides: [
+        selectedInterviewTopicProvider.overrideWithValue(
+          Topic.getTopicById(topicId),
+        ),
+      ],
+      child: ChatListPage(
+        topicId: topicId,
+      ),
     );
   }
 }
@@ -190,6 +220,7 @@ class ChatListPageRoute extends GoRouteData {
 class ChatPageRoute extends GoRouteData {
   ChatPageRoute(this.topicId, this.roomId);
 
+  static const String path = ':roomId';
   static const String name = 'chat';
 
   final String topicId;
@@ -197,6 +228,13 @@ class ChatPageRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const ChatPage();
+    return ProviderScope(
+      overrides: [
+        selectedInterviewRoomProvider.overrideWith(
+          (ref) async => (await getInterviewRoomUseCase(roomId)).getOrThrow(),
+        ),
+      ],
+      child: const ChatPage(),
+    );
   }
 }

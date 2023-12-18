@@ -1,61 +1,68 @@
 import 'package:techtalk/features/chat/repositories/entities/user_interview_response.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 class InterviewQnAEntity {
   final String id; // 질문 Id
-  final String question; // 질문
-  final List<String> idealAnswer; // 모범 답변 리스트
-  UserInterviewResponse? response; // 유저 응답
+  final TopicQuestionEntity question;
+  final UserInterviewResponse? response; // 유저 응답
 
+  bool get hasUserResponded => response != null;
+
+//<editor-fold desc="Data Methods">
   InterviewQnAEntity({
     required this.id,
     required this.question,
-    required this.idealAnswer,
-    required this.response,
+    this.response,
   });
 
-  bool get hasUserResponded => response != null;
-  bool get hasUserNotRespondedYet => response == null;
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is InterviewQnAEntity &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          question == other.question &&
+          response == other.response);
 
-  /// 최초 질문 리스트를 불러올 때
-  factory InterviewQnAEntity.fromInitialQuestionModel({
-    required String id,
-    required String question,
-    required List<String> idealAnswer,
-  }) {
-    return InterviewQnAEntity(
-      id: id,
-      question: question,
-      idealAnswer: idealAnswer,
-      response: null,
-    );
-  }
+  @override
+  int get hashCode => id.hashCode ^ question.hashCode ^ response.hashCode;
 
-  /// 진행중인 QnA 리스트를 불러올 때
-  factory InterviewQnAEntity.fromOngoingQnAModel({
-    required String id,
-    required String question,
-    required List<String> idealAnswer,
-    required UserInterviewResponse? response,
-  }) {
-    return InterviewQnAEntity(
-      id: id,
-      question: question,
-      response: response,
-      idealAnswer: idealAnswer,
-    );
+  @override
+  String toString() {
+    return 'InterviewQnAEntity{' +
+        ' id: $id,' +
+        ' question: $question,' +
+        ' response: $response,' +
+        '}';
   }
 
   InterviewQnAEntity copyWith({
     String? id,
-    String? question,
-    List<String>? idealAnswer,
+    TopicQuestionEntity? question,
     UserInterviewResponse? response,
   }) {
     return InterviewQnAEntity(
       id: id ?? this.id,
       question: question ?? this.question,
-      idealAnswer: idealAnswer ?? this.idealAnswer,
       response: response ?? this.response,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': this.id,
+      'question': this.question,
+      'response': this.response,
+    };
+  }
+
+  factory InterviewQnAEntity.fromMap(Map<String, dynamic> map) {
+    return InterviewQnAEntity(
+      id: map['id'] as String,
+      question: map['question'] as TopicQuestionEntity,
+      response: map['response'] as UserInterviewResponse,
+    );
+  }
+
+//</editor-fold>
 }

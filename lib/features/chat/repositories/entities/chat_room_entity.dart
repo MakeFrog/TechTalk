@@ -11,32 +11,11 @@ class ChatRoomEntity {
   final DateTime? lastChatDate;
   final String chatRoomId;
 
-  int get completedQuestionCount =>
-      qnaProgressInfo.correctAnswerCount + qnaProgressInfo.incorrectAnswerCount;
+  int get completedQuestionCount => qnaProgressInfo.completedQuestionCount;
 
-  InterviewProgressState get progressSate {
-    if (qnaProgressInfo.totalQuestionCount > completedQuestionCount) {
-      return InterviewProgressState.ongoing;
-    } else if (qnaProgressInfo.totalQuestionCount == completedQuestionCount) {
-      return InterviewProgressState.completed;
-    } else {
-      throw UnimplementedError('유효하지 않은 [progressState]값 입니다.');
-    }
-  }
+  InterviewProgressState get progressState => qnaProgressInfo.progressState;
 
-  PassOrFail get passOrFail {
-    if (qnaProgressInfo.correctAnswerCount >=
-            qnaProgressInfo.incorrectAnswerCount &&
-        progressSate.isCompleted) {
-      return PassOrFail.pass;
-    } else if (qnaProgressInfo.correctAnswerCount <
-            qnaProgressInfo.incorrectAnswerCount &&
-        progressSate.isCompleted) {
-      return PassOrFail.failed;
-    } else {
-      throw UnimplementedError('유효하지 않은 [passOrFail]값 입니다.');
-    }
-  }
+  PassOrFail get passOrFail => qnaProgressInfo.passOrFail;
 
 //<editor-fold desc="Data Methods">
   ChatRoomEntity({

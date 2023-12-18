@@ -15,7 +15,7 @@ List<RouteBase> get $appRoutes => [
 
 RouteBase get $splashRoute => GoRouteData.$route(
       path: '/splash',
-      name: '/splash',
+      name: 'splash',
       factory: $SplashRouteExtension._fromState,
     );
 
@@ -38,7 +38,7 @@ extension $SplashRouteExtension on SplashRoute {
 
 RouteBase get $signInRoute => GoRouteData.$route(
       path: '/sign_in',
-      name: '/sign_in',
+      name: 'sign_in',
       factory: $SignInRouteExtension._fromState,
     );
 
@@ -61,7 +61,7 @@ extension $SignInRouteExtension on SignInRoute {
 
 RouteBase get $signUpRoute => GoRouteData.$route(
       path: '/sign-up',
-      name: '/sign-up',
+      name: 'sign-up',
       factory: $SignUpRouteExtension._fromState,
     );
 
@@ -90,7 +90,7 @@ RouteBase get $mainRoute => GoRouteData.$route(
         GoRouteData.$route(
           path: 'topic-select',
           name: 'topic-select',
-          factory: $HomeTopicSelectRouteExtension._fromState,
+          factory: $InterviewTopicSelectRouteExtension._fromState,
           routes: [
             GoRouteData.$route(
               path: 'question-count-select',
@@ -100,7 +100,7 @@ RouteBase get $mainRoute => GoRouteData.$route(
           ],
         ),
         GoRouteData.$route(
-          path: 'study',
+          path: ':topicId',
           name: 'study',
           factory: $StudyRouteExtension._fromState,
         ),
@@ -141,9 +141,9 @@ extension $MainRouteExtension on MainRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $HomeTopicSelectRouteExtension on HomeTopicSelectRoute {
-  static HomeTopicSelectRoute _fromState(GoRouterState state) =>
-      const HomeTopicSelectRoute();
+extension $InterviewTopicSelectRouteExtension on InterviewTopicSelectRoute {
+  static InterviewTopicSelectRoute _fromState(GoRouterState state) =>
+      const InterviewTopicSelectRoute();
 
   String get location => GoRouteData.$location(
         '/topic-select',
@@ -162,32 +162,33 @@ extension $HomeTopicSelectRouteExtension on HomeTopicSelectRoute {
 extension $QuestionCountSelectPageRouteExtension
     on QuestionCountSelectPageRoute {
   static QuestionCountSelectPageRoute _fromState(GoRouterState state) =>
-      const QuestionCountSelectPageRoute();
+      QuestionCountSelectPageRoute(
+        $extra: state.extra as Topic,
+      );
 
   String get location => GoRouteData.$location(
         '/topic-select/question-count-select',
       );
 
-  void go(BuildContext context) => context.go(location);
+  void go(BuildContext context) => context.go(location, extra: $extra);
 
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
 
   void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
+      context.pushReplacement(location, extra: $extra);
 
-  void replace(BuildContext context) => context.replace(location);
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
 }
 
 extension $StudyRouteExtension on StudyRoute {
   static StudyRoute _fromState(GoRouterState state) => StudyRoute(
-        state.uri.queryParameters['topic-id']!,
+        state.pathParameters['topicId']!,
       );
 
   String get location => GoRouteData.$location(
-        '/study',
-        queryParams: {
-          'topic-id': topicId,
-        },
+        '/${Uri.encodeComponent(topicId)}',
       );
 
   void go(BuildContext context) => context.go(location);

@@ -1,12 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'chat_history_of_room_provider.dart';
+part of 'interview_progress_state_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chatHistoryOfRoomHash() => r'7548c4d39f3b18fa549dbad2c8168acacc909d3e';
+String _$interviewProgressStateHash() =>
+    r'97b518ccf72a5faea02a11c28863ef49b7096f44';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,36 +30,36 @@ class _SystemHash {
   }
 }
 
-abstract class _$ChatHistoryOfRoom
-    extends BuildlessAutoDisposeAsyncNotifier<List<MessageEntity>> {
+abstract class _$InterviewProgressState
+    extends BuildlessAutoDisposeNotifier<InterviewProgress> {
   late final ChatRoomEntity room;
 
-  FutureOr<List<MessageEntity>> build(
+  InterviewProgress build(
     ChatRoomEntity room,
   );
 }
 
-/// See also [ChatHistoryOfRoom].
-@ProviderFor(ChatHistoryOfRoom)
-const chatHistoryOfRoomProvider = ChatHistoryOfRoomFamily();
+/// See also [InterviewProgressState].
+@ProviderFor(InterviewProgressState)
+const interviewProgressStateProvider = InterviewProgressStateFamily();
 
-/// See also [ChatHistoryOfRoom].
-class ChatHistoryOfRoomFamily extends Family<AsyncValue<List<MessageEntity>>> {
-  /// See also [ChatHistoryOfRoom].
-  const ChatHistoryOfRoomFamily();
+/// See also [InterviewProgressState].
+class InterviewProgressStateFamily extends Family<InterviewProgress> {
+  /// See also [InterviewProgressState].
+  const InterviewProgressStateFamily();
 
-  /// See also [ChatHistoryOfRoom].
-  ChatHistoryOfRoomProvider call(
+  /// See also [InterviewProgressState].
+  InterviewProgressStateProvider call(
     ChatRoomEntity room,
   ) {
-    return ChatHistoryOfRoomProvider(
+    return InterviewProgressStateProvider(
       room,
     );
   }
 
   @override
-  ChatHistoryOfRoomProvider getProviderOverride(
-    covariant ChatHistoryOfRoomProvider provider,
+  InterviewProgressStateProvider getProviderOverride(
+    covariant InterviewProgressStateProvider provider,
   ) {
     return call(
       provider.room,
@@ -77,30 +78,30 @@ class ChatHistoryOfRoomFamily extends Family<AsyncValue<List<MessageEntity>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'chatHistoryOfRoomProvider';
+  String? get name => r'interviewProgressStateProvider';
 }
 
-/// See also [ChatHistoryOfRoom].
-class ChatHistoryOfRoomProvider extends AutoDisposeAsyncNotifierProviderImpl<
-    ChatHistoryOfRoom, List<MessageEntity>> {
-  /// See also [ChatHistoryOfRoom].
-  ChatHistoryOfRoomProvider(
+/// See also [InterviewProgressState].
+class InterviewProgressStateProvider extends AutoDisposeNotifierProviderImpl<
+    InterviewProgressState, InterviewProgress> {
+  /// See also [InterviewProgressState].
+  InterviewProgressStateProvider(
     ChatRoomEntity room,
   ) : this._internal(
-          () => ChatHistoryOfRoom()..room = room,
-          from: chatHistoryOfRoomProvider,
-          name: r'chatHistoryOfRoomProvider',
+          () => InterviewProgressState()..room = room,
+          from: interviewProgressStateProvider,
+          name: r'interviewProgressStateProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$chatHistoryOfRoomHash,
-          dependencies: ChatHistoryOfRoomFamily._dependencies,
+                  : _$interviewProgressStateHash,
+          dependencies: InterviewProgressStateFamily._dependencies,
           allTransitiveDependencies:
-              ChatHistoryOfRoomFamily._allTransitiveDependencies,
+              InterviewProgressStateFamily._allTransitiveDependencies,
           room: room,
         );
 
-  ChatHistoryOfRoomProvider._internal(
+  InterviewProgressStateProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -113,8 +114,8 @@ class ChatHistoryOfRoomProvider extends AutoDisposeAsyncNotifierProviderImpl<
   final ChatRoomEntity room;
 
   @override
-  FutureOr<List<MessageEntity>> runNotifierBuild(
-    covariant ChatHistoryOfRoom notifier,
+  InterviewProgress runNotifierBuild(
+    covariant InterviewProgressState notifier,
   ) {
     return notifier.build(
       room,
@@ -122,10 +123,10 @@ class ChatHistoryOfRoomProvider extends AutoDisposeAsyncNotifierProviderImpl<
   }
 
   @override
-  Override overrideWith(ChatHistoryOfRoom Function() create) {
+  Override overrideWith(InterviewProgressState Function() create) {
     return ProviderOverride(
       origin: this,
-      override: ChatHistoryOfRoomProvider._internal(
+      override: InterviewProgressStateProvider._internal(
         () => create()..room = room,
         from: from,
         name: null,
@@ -138,14 +139,14 @@ class ChatHistoryOfRoomProvider extends AutoDisposeAsyncNotifierProviderImpl<
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<ChatHistoryOfRoom,
-      List<MessageEntity>> createElement() {
-    return _ChatHistoryOfRoomProviderElement(this);
+  AutoDisposeNotifierProviderElement<InterviewProgressState, InterviewProgress>
+      createElement() {
+    return _InterviewProgressStateProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ChatHistoryOfRoomProvider && other.room == room;
+    return other is InterviewProgressStateProvider && other.room == room;
   }
 
   @override
@@ -157,19 +158,19 @@ class ChatHistoryOfRoomProvider extends AutoDisposeAsyncNotifierProviderImpl<
   }
 }
 
-mixin ChatHistoryOfRoomRef
-    on AutoDisposeAsyncNotifierProviderRef<List<MessageEntity>> {
+mixin InterviewProgressStateRef
+    on AutoDisposeNotifierProviderRef<InterviewProgress> {
   /// The parameter `room` of this provider.
   ChatRoomEntity get room;
 }
 
-class _ChatHistoryOfRoomProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<ChatHistoryOfRoom,
-        List<MessageEntity>> with ChatHistoryOfRoomRef {
-  _ChatHistoryOfRoomProviderElement(super.provider);
+class _InterviewProgressStateProviderElement
+    extends AutoDisposeNotifierProviderElement<InterviewProgressState,
+        InterviewProgress> with InterviewProgressStateRef {
+  _InterviewProgressStateProviderElement(super.provider);
 
   @override
-  ChatRoomEntity get room => (origin as ChatHistoryOfRoomProvider).room;
+  ChatRoomEntity get room => (origin as InterviewProgressStateProvider).room;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

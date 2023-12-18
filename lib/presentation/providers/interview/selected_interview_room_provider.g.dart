@@ -7,13 +7,13 @@ part of 'selected_interview_room_provider.dart';
 // **************************************************************************
 
 String _$selectedInterviewRoomHash() =>
-    r'c0747a6092e2b4695ce91d5ecd8a3202b0d46b68';
+    r'0e46b8fc5d5b3e98e98f2e9f1a3b5848360c7085';
 
-/// See also [SelectedInterviewRoom].
-@ProviderFor(SelectedInterviewRoom)
+/// See also [selectedInterviewRoom].
+@ProviderFor(selectedInterviewRoom)
 final selectedInterviewRoomProvider =
-    NotifierProvider<SelectedInterviewRoom, ChatRoomEntity?>.internal(
-  SelectedInterviewRoom.new,
+    AutoDisposeFutureProvider<ChatRoomEntity>.internal(
+  selectedInterviewRoom,
   name: r'selectedInterviewRoomProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
@@ -22,6 +22,6 @@ final selectedInterviewRoomProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$SelectedInterviewRoom = Notifier<ChatRoomEntity?>;
+typedef SelectedInterviewRoomRef = AutoDisposeFutureProviderRef<ChatRoomEntity>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -1,6 +1,5 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/data/models/message_model.dart';
 import 'package:uuid/uuid.dart';
 
 ///
@@ -22,38 +21,46 @@ abstract class MessageEntity {
     required this.timestamp,
   }) : id = const Uuid().v1();
 
-  factory MessageEntity.fromModel(MessageModel model) {
-    final chatType = ChatType.getTypeById(model.type);
-    switch (chatType) {
-      case ChatType.guide:
-        return GuideMessageEntity.createStatic(
-          message: model.message,
-          timestamp: model.timestamp,
-        );
+//<editor-fold desc="Data Methods">
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MessageEntity &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          message == other.message &&
+          type == other.type &&
+          timestamp == other.timestamp &&
+          isStreamApplied == other.isStreamApplied);
 
-      case ChatType.userReply:
-        return SentMessageEntity(
-          message: model.message,
-          answerState: AnswerState.getStateById(model.qna!['state']!),
-          timestamp: model.timestamp,
-          questionId: model.qna!['questionId']!,
-        );
-      case ChatType.askQuestion:
-        return QuestionMessageEntity.createStaticChat(
-          questionId: model.qna!['questionId']!,
-          timestamp: model.timestamp,
-          idealAnswers: List<String>.from(model.qna!['idealAnswers']!),
-          message: model.message,
-        );
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      message.hashCode ^
+      type.hashCode ^
+      timestamp.hashCode ^
+      isStreamApplied.hashCode;
 
-      case ChatType.feedback:
-        return FeedbackMessageEntity.createStatic(
-          message: model.message,
-          timestamp: model.timestamp,
-        );
-
-      default:
-        throw Exception('Unexpected type id value');
-    }
+  @override
+  String toString() {
+    return 'MessageEntity{' +
+        ' id: $id,' +
+        ' message: $message,' +
+        ' type: $type,' +
+        ' timestamp: $timestamp,' +
+        ' isStreamApplied: $isStreamApplied,' +
+        '}';
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': this.id,
+      'message': this.message,
+      'type': this.type,
+      'timestamp': this.timestamp,
+      'isStreamApplied': this.isStreamApplied,
+    };
+  }
+
+//</editor-fold>
 }

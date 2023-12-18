@@ -19,7 +19,7 @@ mixin class HomeEvent implements _HomeEvent {
 
   @override
   void onTapNewTopicInterview() {
-    const HomeTopicSelectRoute().push(rootNavigatorKey.currentContext!);
+    const InterviewTopicSelectRoute().push(rootNavigatorKey.currentContext!);
   }
 
   @override

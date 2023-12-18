@@ -9,10 +9,10 @@ part 'user_topics_provider.g.dart';
 class UserTopics extends _$UserTopics {
   @override
   List<Topic> build() {
-    final topics = ref.watch(topicsProvider).requireValue;
     final userData = ref.watch(userDataProvider).requireValue;
-
     if (userData == null) throw Exception('유저 데이터가 존재하지 않음');
+
+    final topics = ref.watch(topicsProvider).requireValue;
 
     return [
       ...topics.where(

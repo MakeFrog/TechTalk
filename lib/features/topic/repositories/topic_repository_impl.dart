@@ -1,8 +1,5 @@
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/topic/data/local/topic_local_data_source.dart';
-import 'package:techtalk/features/topic/data/models/topic_question_model.dart';
-import 'package:techtalk/features/topic/data/remote/topic_remote_data_source.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 class TopicRepositoryImpl implements TopicRepository {
@@ -56,6 +53,29 @@ class TopicRepositoryImpl implements TopicRepository {
         [
           ...questionsModel.map((e) => e.toEntity()),
         ],
+      );
+    } on Exception catch (e) {
+      final topic = Topic.getTopicById(topicId);
+
+      return Result.failure(
+        NoTopicQuestionException(topic.text),
+      );
+    }
+  }
+
+  @override
+  Future<Result<TopicQuestionEntity>> getTopicQuestion(
+    String topicId,
+    String questionId,
+  ) async {
+    try {
+      final questionModel = await _remoteDataSource.getQuestion(
+        topicId,
+        questionId,
+      );
+
+      return Result.success(
+        questionModel.toEntity(),
       );
     } on Exception catch (e) {
       final topic = Topic.getTopicById(topicId);

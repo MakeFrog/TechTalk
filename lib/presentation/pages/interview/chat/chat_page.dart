@@ -17,19 +17,19 @@ class ChatPage extends BasePage with ChatEvent {
   const ChatPage({Key? key}) : super(key: key);
 
   @override
-  void onDispose(WidgetRef ref) {
-    ref.invalidate(selectedInterviewRoomProvider);
-    super.onDispose(ref);
-  }
-
-  @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
     final tabController = useTabController(initialLength: 2);
+    final roomLoadingAsync = ref.watch(selectedInterviewRoomProvider);
 
-    return _Scaffold(
-      chatTabView: const InterviewTabView(),
-      summaryTabView: const QnATabView(),
-      tabController: tabController,
+    return roomLoadingAsync.maybeWhen(
+      loading: () => Container(),
+      orElse: () {
+        return _Scaffold(
+          chatTabView: const InterviewTabView(),
+          summaryTabView: const QnATabView(),
+          tabController: tabController,
+        );
+      },
     );
   }
 
@@ -39,7 +39,7 @@ class ChatPage extends BasePage with ChatEvent {
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) {
     return BackButtonAppBar(
-      title: ref.watch(selectedInterviewRoomProvider)?.topic.name,
+      title: ref.watch(selectedInterviewRoomProvider).valueOrNull?.topic.name,
       onBackBtnTapped: () {
         onAppbarBackBtnTapped(context);
       },

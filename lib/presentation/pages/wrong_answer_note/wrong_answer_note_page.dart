@@ -39,7 +39,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColor.of.white,
       title: const Text('오답노트'),
     );
   }
@@ -54,7 +54,8 @@ class _Body extends HookConsumerWidget with WrongAnswerNoteEvent {
       ...ref.watch(userTopicsProvider).where((element) => element.isAvailable),
     ];
     final selectedTopic = ref.watch(selectedWrongAnswerTopicProvider);
-    final questionsAsync = ref.watch(wrongAnswerQuestionsProvider);
+    final questionsAsync =
+        ref.watch(wrongAnswerQuestionsProvider(selectedTopic.id));
 
     return Expanded(
       child: Column(

@@ -7,6 +7,7 @@ import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_event.dart';
 import 'package:techtalk/presentation/providers/study/current_study_question_index_provider.dart';
+import 'package:techtalk/presentation/providers/study/selected_study_topic_provider.dart';
 import 'package:techtalk/presentation/providers/study/study_questions_provider.dart';
 
 class StudyControllerBar extends ConsumerWidget with StudyLearningEvent {
@@ -15,8 +16,9 @@ class StudyControllerBar extends ConsumerWidget with StudyLearningEvent {
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final topic = ref.watch(selectedStudyTopicProvider);
     final current = ref.watch(currentStudyQuestionIndexProvider);
-    final questions = ref.watch(studyQuestionsProvider).requireValue;
+    final questions = ref.watch(studyQuestionsProvider(topic.id)).requireValue;
 
     return Padding(
       padding: EdgeInsets.symmetric(

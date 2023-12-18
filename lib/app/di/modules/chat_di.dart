@@ -38,14 +38,12 @@ final class ChatDependencyInject extends FeatureDependencyInjection {
         ),
       )
       ..registerFactory(
-        () => GetChatMessagesUseCase(
+        () => GetChatHistoryUseCase(
           chatRepository,
         ),
       )
       ..registerFactory(() => RetrieveQnaListFromChatListUseCase())
-      ..registerFactory(() => GetQuestionIdealAnswersUseCase(chatRepository))
       ..registerFactory(() => GetAnswerFeedbackUseCase())
-      ..registerFactory(() => GetRandomInterviewQuestionUseCase(chatRepository))
       ..registerFactory(() => UpdateChatInfoUseCase(chatRepository));
   }
 }

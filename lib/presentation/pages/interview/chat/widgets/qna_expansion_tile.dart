@@ -48,7 +48,7 @@ class QnAExpansionTile extends HookWidget {
 
           /// QUESTION
           Text(
-            item.question,
+            item.question.question,
             textAlign: TextAlign.start,
             style: AppTextStyle.title1,
           ),
@@ -80,11 +80,11 @@ class QnAExpansionTile extends HookWidget {
 
             /// LIST OF IDEAL ANSWER
             ...List.generate(
-              item.idealAnswer.length,
+              item.question.answers.length,
               (index) => Padding(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: BulletText(
-                  item.idealAnswer[index],
+                  item.question.answers[index],
                   style: AppTextStyle.alert2,
                 ),
               ),

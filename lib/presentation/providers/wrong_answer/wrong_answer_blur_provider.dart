@@ -1,9 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'question_answer_blur_provider.g.dart';
+part 'wrong_answer_blur_provider.g.dart';
 
 @riverpod
-class QuestionAnswerBlur extends _$QuestionAnswerBlur {
+class WrongAnswerBlur extends _$WrongAnswerBlur {
   @override
   bool build() {
     return false;

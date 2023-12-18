@@ -7,4 +7,8 @@ abstract interface class TopicRepository {
   Future<Result<List<TopicQuestionEntity>>> getTopicQuestions(
     String topicId,
   );
+  Future<Result<TopicQuestionEntity>> getTopicQuestion(
+    String topicId,
+    String questionId,
+  );
 }

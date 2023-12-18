@@ -4,10 +4,9 @@ import 'package:techtalk/features/chat/repositories/chat_repository.dart';
 import 'package:techtalk/features/chat/use_cases/create_interview_room_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/get_answer_feedback_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/get_chat_messages_use_case.dart';
+import 'package:techtalk/features/chat/use_cases/get_chat_qnas_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/get_interview_room_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/get_interview_rooms_use_case.dart';
-import 'package:techtalk/features/chat/use_cases/get_question_ideal_answers_use_case.dart';
-import 'package:techtalk/features/chat/use_cases/get_random_interview_question_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/retrieve_qna_list_from_chat_list_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/update_chat_info_use_case.dart';
 
@@ -30,23 +29,19 @@ export 'repositories/enums/pass_or_fail.enum.dart';
 export 'repositories/enums/reply_state.enum.dart';
 export 'use_cases/get_answer_feedback_use_case.dart';
 export 'use_cases/get_chat_messages_use_case.dart';
+export 'use_cases/get_chat_qnas_use_case.dart';
 export 'use_cases/get_interview_room_use_case.dart';
 export 'use_cases/get_interview_rooms_use_case.dart';
-export 'use_cases/get_question_ideal_answers_use_case.dart';
-export 'use_cases/get_random_interview_question_use_case.dart';
 export 'use_cases/retrieve_qna_list_from_chat_list_use_case.dart';
 
 final chatRemoteDataSource = locator<ChatRemoteDataSource>();
 final chatRepository = locator<ChatRepository>();
-final getChatMessagesUseCase = locator<GetChatMessagesUseCase>();
+final getChatMessagesUseCase = locator<GetChatHistoryUseCase>();
 final getAnswerFeedBackUseCase = locator<GetAnswerFeedbackUseCase>();
-final getQuestionIdealAnswersUseCase =
-    locator<GetQuestionIdealAnswersUseCase>();
 final retrieveQnaListFromChatListUseCase =
     locator<RetrieveQnaListFromChatListUseCase>();
-final getRandomInterviewQuestionUseCase =
-    locator<GetRandomInterviewQuestionUseCase>();
 final getInterviewRoomsUseCase = locator<GetInterviewRoomsUseCase>();
 final updateChatInfoUseCase = locator<UpdateChatInfoUseCase>();
 final createInterviewRoomUseCase = locator<CreateInterviewRoomUseCase>();
 final getInterviewRoomUseCase = locator<GetInterviewRoomUseCase>();
+final getChatQnAsUseCase = locator<GetChatQnAsUseCase>();

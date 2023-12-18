@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_event.dart';
-import 'package:techtalk/presentation/providers/interview/selected_interview_topic_provider.dart';
 import 'package:techtalk/presentation/providers/topic/interviewable_topics_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
@@ -18,6 +19,8 @@ class InterviewTopicSelectPage extends BasePage {
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
+    final selectedTopicState = useState<Topic?>(null);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -28,8 +31,12 @@ class InterviewTopicSelectPage extends BasePage {
             'AI 면접을 진행할\n주제를 알려주세요',
             style: AppTextStyle.headline1,
           ),
-          _TopicListView(),
-          _NextButton(),
+          _TopicListView(
+            selectedTopicState: selectedTopicState,
+          ),
+          _NextButton(
+            selectedTopic: selectedTopicState.value,
+          ),
         ],
       ),
     );
@@ -39,7 +46,10 @@ class InterviewTopicSelectPage extends BasePage {
 class _TopicListView extends ConsumerWidget with InterviewTopicSelectEvent {
   const _TopicListView({
     Key? key,
+    required this.selectedTopicState,
   }) : super(key: key);
+
+  final ValueNotifier<Topic?> selectedTopicState;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -48,7 +58,6 @@ class _TopicListView extends ConsumerWidget with InterviewTopicSelectEvent {
       crossAxisSpacing: 11,
       mainAxisSpacing: 12,
     );
-    final selectedTopic = ref.watch(selectedInterviewTopicProvider);
 
     return Expanded(
       child: Container(
@@ -61,14 +70,12 @@ class _TopicListView extends ConsumerWidget with InterviewTopicSelectEvent {
               itemCount: topicList.length,
               itemBuilder: (context, index) {
                 final topic = topicList[index];
-                final isSelected = selectedTopic == topic;
+                final isSelected = selectedTopicState.value == topic;
                 return InterviewTopicCard(
                   topic: topic,
                   isSelected: isSelected,
-                  onTap: () => onTapTopicCard(
-                    ref,
-                    topic: topic,
-                  ),
+                  onTap: () =>
+                      selectedTopicState.value = isSelected ? null : topic,
                 );
               },
             );
@@ -80,14 +87,22 @@ class _TopicListView extends ConsumerWidget with InterviewTopicSelectEvent {
 }
 
 class _NextButton extends ConsumerWidget with InterviewTopicSelectEvent {
-  const _NextButton({Key? key}) : super(key: key);
+  const _NextButton({
+    Key? key,
+    this.selectedTopic,
+  }) : super(key: key);
+
+  final Topic? selectedTopic;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedTopic = ref.watch(selectedInterviewTopicProvider);
     return FilledButton(
-      onPressed:
-          selectedTopic != null ? () => routeToQuestionCountSelect(ref) : null,
+      onPressed: selectedTopic != null
+          ? () => routeToQuestionCountSelect(
+                ref,
+                topic: selectedTopic!,
+              )
+          : null,
       child: const Center(
         child: Text('다음'),
       ),

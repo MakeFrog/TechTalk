@@ -1,5 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/presentation/providers/wrong_answer/question_answer_blur_provider.dart';
+import 'package:techtalk/presentation/providers/wrong_answer/wrong_answer_blur_provider.dart';
 
 abstract interface class _ReviewNoteDetailEvent {
   void onToggleAnswerBlur(WidgetRef ref);
@@ -8,6 +8,6 @@ abstract interface class _ReviewNoteDetailEvent {
 mixin class ReviewNoteDetailEvent implements _ReviewNoteDetailEvent {
   @override
   void onToggleAnswerBlur(WidgetRef ref) {
-    ref.read(questionAnswerBlurProvider.notifier).toggle();
+    ref.read(wrongAnswerBlurProvider.notifier).toggle();
   }
 }

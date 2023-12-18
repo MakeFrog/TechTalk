@@ -73,7 +73,7 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
                             2,
                         width: AppSize.to.rationWidth(174),
                         child: Text(
-                          item!.lastChatMessage!,
+                          item!.lastChatMessage ?? '',
                           style: AppTextStyle.alert2,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -90,7 +90,7 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
                 children: <Widget>[
                   // LAST CHAT DATE
                   Text(
-                    item!.lastChatDate!.formatyyMMdd,
+                    item!.lastChatDate?.formatyyMMdd ?? '',
                     style: AppTextStyle.alert2.copyWith(
                       color: AppColor.of.gray3,
                     ),
@@ -98,7 +98,7 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
                   // PROGRESS INDICATOR
                   Builder(
                     builder: (context) {
-                      switch (item!.progressSate) {
+                      switch (item!.progressState) {
                         case InterviewProgressState.ongoing:
                           return Container(
                             padding: const EdgeInsets.symmetric(
