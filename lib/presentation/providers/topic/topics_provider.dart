@@ -7,7 +7,8 @@ part 'topics_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 Future<List<Topic>> topics(TopicsRef ref) async {
-  return (await getTopicsUseCase()).fold(
+  final topicResult = await getTopicsUseCase();
+  return topicResult.fold(
     onSuccess: (value) => value,
     onFailure: (e) {
       log('$e');

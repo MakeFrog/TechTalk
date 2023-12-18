@@ -47,7 +47,6 @@ final class ChatDependencyInject extends FeatureDependencyInjection {
           chatRepository,
         ),
       )
-      ..registerFactory(() => RetrieveQnaListFromChatListUseCase())
       ..registerFactory(() => GetAnswerFeedbackUseCase())
       ..registerFactory(() => UpdateChatInfoUseCase(chatRepository));
   }

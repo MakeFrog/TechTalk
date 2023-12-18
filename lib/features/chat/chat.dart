@@ -7,7 +7,6 @@ import 'package:techtalk/features/chat/use_cases/get_chat_messages_use_case.dart
 import 'package:techtalk/features/chat/use_cases/get_chat_qnas_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/get_interview_room_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/get_interview_rooms_use_case.dart';
-import 'package:techtalk/features/chat/use_cases/retrieve_qna_list_from_chat_list_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/update_chat_info_use_case.dart';
 
 export 'chat.dart';
@@ -32,14 +31,11 @@ export 'use_cases/get_chat_messages_use_case.dart';
 export 'use_cases/get_chat_qnas_use_case.dart';
 export 'use_cases/get_interview_room_use_case.dart';
 export 'use_cases/get_interview_rooms_use_case.dart';
-export 'use_cases/retrieve_qna_list_from_chat_list_use_case.dart';
 
 final chatRemoteDataSource = locator<ChatRemoteDataSource>();
 final chatRepository = locator<ChatRepository>();
 final getChatMessagesUseCase = locator<GetChatHistoryUseCase>();
 final getAnswerFeedBackUseCase = locator<GetAnswerFeedbackUseCase>();
-final retrieveQnaListFromChatListUseCase =
-    locator<RetrieveQnaListFromChatListUseCase>();
 final getInterviewRoomsUseCase = locator<GetInterviewRoomsUseCase>();
 final updateChatInfoUseCase = locator<UpdateChatInfoUseCase>();
 final createInterviewRoomUseCase = locator<CreateInterviewRoomUseCase>();
