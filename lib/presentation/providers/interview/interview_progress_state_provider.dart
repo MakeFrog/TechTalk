@@ -23,24 +23,27 @@ class InterviewProgressState extends _$InterviewProgressState {
     ref.listen(
       chatHistoryOfRoomProvider(room),
       (_, next) {
-        if (next.requireValue.isEmpty) return;
-
-        final lastChat = next.requireValue.first;
-        if (lastChat.type.isAskQuestionMessage) {
-          lastChat.message.listen(
-            null,
-            onDone: () {
-              state = InterviewProgress.readyToAnswer;
-            },
-          );
+        if (next.hasValue) {
+          final lastChat = next.requireValue.first;
+          switch (lastChat.type) {
+            case ChatType.userReply:
+            case ChatType.guide:
+            case ChatType.feedback:
+              state = InterviewProgress.interviewerReplying;
+            case ChatType.askQuestion:
+              lastChat.message.listen(
+                null,
+                onDone: () {
+                  state = InterviewProgress.readyToAnswer;
+                },
+              );
+          }
         }
       },
     );
 
     return InterviewProgress.initial;
   }
-
-  void changeState(InterviewProgress passState) => state = passState;
 }
 
 enum InterviewProgress {

@@ -6,7 +6,7 @@ part of 'chat_history_of_room_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chatHistoryOfRoomHash() => r'7548c4d39f3b18fa549dbad2c8168acacc909d3e';
+String _$chatHistoryOfRoomHash() => r'0dbaa0829f78d55d63fe384537b048a74e5039d1';
 
 /// Copied from Dart SDK
 class _SystemHash {

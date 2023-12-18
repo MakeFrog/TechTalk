@@ -56,7 +56,7 @@ class RetrieveQnaListFromChatListUseCase extends BaseNoFutureUseCase<
       if (chat.type.isSentMessage) {
         final sentChat = chat as SentMessageEntity;
         var selectedQnaItem = questions
-            .firstWhereOrNull((question) => question.id == sentChat.questionId);
+            .firstWhereOrNull((question) => question.id == sentChat.qnaId);
 
         if (selectedQnaItem != null) {
           selectedQnaItem = selectedQnaItem.copyWith(

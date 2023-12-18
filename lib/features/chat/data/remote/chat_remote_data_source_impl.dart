@@ -112,21 +112,34 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
               .doc(roomId);
           final messageCollection =
               roomDoc.collection(FirestoreCollection.messages.name);
+          final qnaCollection = roomDoc.collection('qna');
 
           // 메세지 업데이트
-          // 유저의 응답메세지라면 채팅방의 정답 or 오답카운트도 업데이트한다
+          // 유저의 응답메세지라면 채팅방의 정답 or 오답카운트, 채팅방 qna 정보를 업데이트한다
           for (final message in messages) {
+            final messageModel = MessageModel.fromEntity(message);
+
             transaction.set(
               messageCollection.doc(message.id),
-              MessageModel.fromEntity(message).toFirestore(),
+              messageModel.toFirestore(),
             );
             if (message is SentMessageEntity) {
-              final data = {
-                message.answerState.isCorrect
-                    ? 'correctAnswerCount'
-                    : 'incorrectAnswerCount': FieldValue.increment(1),
-              };
-              transaction.update(roomDoc, data);
+              transaction
+                ..update(roomDoc, {
+                  'correctAnswerCount': message.answerState.isCorrect
+                      ? FieldValue.increment(1)
+                      : null,
+                  'incorrectAnswerCount': message.answerState.isWrong
+                      ? FieldValue.increment(1)
+                      : null,
+                })
+                ..update(
+                  qnaCollection.doc(message.qnaId),
+                  {
+                    'message_id': message.id,
+                    'state': message.answerState.tag,
+                  },
+                );
             }
           }
         },

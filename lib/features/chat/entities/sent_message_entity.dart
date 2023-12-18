@@ -3,13 +3,13 @@ import 'package:techtalk/features/chat/chat.dart';
 
 class SentMessageEntity extends MessageEntity {
   final AnswerState answerState;
-  final String questionId;
+  final String qnaId;
 
   SentMessageEntity({
     required String message,
     required DateTime timestamp,
     required this.answerState,
-    required this.questionId,
+    required this.qnaId,
   }) : super(
           message: BehaviorSubject.seeded(message)..close(),
           type: ChatType.userReply,
@@ -22,7 +22,7 @@ class SentMessageEntity extends MessageEntity {
     required String questionId,
   }) =>
       SentMessageEntity(
-        questionId: questionId,
+        qnaId: questionId,
         message: message,
         answerState: AnswerState.loading,
         timestamp: DateTime.now(),
@@ -37,7 +37,7 @@ class SentMessageEntity extends MessageEntity {
       timestamp: timestamp ?? this.timestamp,
       message: message ?? this.message.value,
       answerState: answerState ?? this.answerState,
-      questionId: questionId,
+      qnaId: qnaId,
     );
   }
 }

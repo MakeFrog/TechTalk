@@ -1,14 +1,12 @@
 import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/core/helper/list_extension.dart';
 import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/core/services/toast_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/use_cases/update_chat_info_use_case.dart';
 import 'package:techtalk/presentation/providers/interview/interview_qnas_of_room_provider.dart';
 import 'package:techtalk/presentation/providers/interview/interview_rooms_provider.dart';
-import 'package:techtalk/presentation/providers/interview/selected_interview_room_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
@@ -26,7 +24,6 @@ class ChatHistoryOfRoom extends _$ChatHistoryOfRoom {
     });
 
     final response = await getChatMessagesUseCase(room.chatRoomId);
-
     return response.fold(
       onSuccess: (chatList) => chatList,
       onFailure: (e) {
@@ -41,52 +38,57 @@ class ChatHistoryOfRoom extends _$ChatHistoryOfRoom {
     );
   }
 
-  ///
-  /// 최초 채팅 정보를 서버로 업데이트
-  ///
-  Future<void> updateInitialChaInfo() async {
-    await updateChatInfoUseCase(
-      (
-        messages: state.requireValue,
-        chatRoomId: room.chatRoomId,
-      ),
+  /// [messages]를 서버로 업데이트
+  Future<void> _updateChat(List<MessageEntity> messages) async {
+    final UpdateChatInfoParam param = (
+      messages: messages,
+      chatRoomId: room.chatRoomId,
     );
+
+    await updateChatInfoUseCase(param);
     ref.invalidate(interviewRoomsProvider);
   }
 
+  /// 최초 진입시 보여질 메세지
+  /// 인사를 호출 한 뒤 바로 질문을 요청한다.
   void _showStartMessage() {
     final nickname = ref.read(userDataProvider).requireValue!.nickname!;
     final String message = '반가워요! $nickname님. ${room.topic.text} 면접 질문을 드리겠습니다';
-
+    final streamedMessage = message.convertToStreamText;
     final startChat = GuideMessageEntity.createStream(
-      message.convertToStreamText,
-    )..message.listen(
-        null,
-        onDone: () {
-          showQuestion();
-          state.valueOrNull?.first.message.close();
-        },
-      );
+      streamedMessage,
+    );
+    streamedMessage.listen(
+      null,
+      onDone: () {
+        _updateChat([startChat]);
+        _showQuestion();
+        state.valueOrNull?.first.message.close();
+      },
+    );
 
-    state.valueOrNull?.add(startChat);
+    update(
+      (previous) => [
+        startChat,
+        ...previous,
+      ],
+    );
   }
 
-  Future<void> showQuestion() async {
+  Future<void> _showQuestion() async {
     final qnas = await ref.read(interviewQnAsOfRoomProvider(room).future);
-    final targetQuestion = qnas.firstWhere((qna) => !qna.hasUserResponded);
-    final streamedChatMessage =
-        targetQuestion.question.question.convertToStreamText;
+    final qna = qnas.firstWhere((qna) => !qna.hasUserResponded);
+    final streamedChatMessage = qna.question.question.convertToStreamText;
     final chat = QuestionMessageEntity.createStreamedChat(
-      questionId: targetQuestion.id,
-      idealAnswers: targetQuestion.question.answers,
-      streamedMessage: streamedChatMessage
-        ..listen(
-          null,
-          onDone: () {
-            updateInitialChaInfo();
-            streamedChatMessage.close();
-          },
-        ),
+      questionId: qna.id,
+      streamedMessage: streamedChatMessage,
+    );
+    streamedChatMessage.listen(
+      null,
+      onDone: () {
+        _updateChat([chat]);
+        streamedChatMessage.close();
+      },
     );
 
     await update(
@@ -100,13 +102,13 @@ class ChatHistoryOfRoom extends _$ChatHistoryOfRoom {
   ///
   /// 유저 채팅 응답 추가
   ///
-  Future<void> addUserChatResponse({required String message}) async {
+  Future<void> addUserChatResponse(String message) async {
     final answeredQuestion =
         state.requireValue.firstWhere((chat) => chat.type.isAskQuestionMessage)
             as QuestionMessageEntity;
     final answerChat = SentMessageEntity.initial(
       message: message,
-      questionId: answeredQuestion.questionId,
+      questionId: answeredQuestion.qnaId,
     );
 
     await update(
@@ -114,8 +116,9 @@ class ChatHistoryOfRoom extends _$ChatHistoryOfRoom {
         answerChat,
         ...previous,
       ],
+    ).then(
+      (_) => _respondToUserAnswer(message),
     );
-    await updateChat([answerChat]);
   }
 
   ///
@@ -123,62 +126,36 @@ class ChatHistoryOfRoom extends _$ChatHistoryOfRoom {
   /// 정답 여부를 판별하고
   /// 간단한 설명을 덧붙여 피드백을 함.
   ///
-  Future<void> respondToUserAnswer({required String userAnswer}) async {
+  Future<void> _respondToUserAnswer(String userAnswer) async {
+    final feedbackMessage = getAnswerFeedBackUseCase.call(
+      (
+        category: 'Swift',
+        checkAnswer: updateUserAnswerState,
+        onFeedBackCompleted: onFeedbackCompleted,
+        question: state.requireValue
+            .firstWhere((chat) => chat.type.isAskQuestionMessage)
+            .message
+            .value,
+        userAnswer: userAnswer,
+      ),
+    );
+
+    final feedbackChat = FeedbackMessageEntity.createStreamChat(
+      messageStream: feedbackMessage,
+    );
+    feedbackMessage.listen(
+      null,
+      onDone: () {
+        _updateChat([feedbackChat]);
+      },
+    );
+
     await update(
       (previous) => [
-        FeedbackMessageEntity.createStreamChat(
-          messageStream: getAnswerFeedBackUseCase.call(
-            (
-              category: 'Swift',
-              checkAnswer: updateUserAnswerState,
-              onFeedBackCompleted: onFeedbackCompleted,
-              qna: state.requireValue
-                  .firstWhere((chat) => chat.type.isAskQuestionMessage)
-                  .message
-                  .value,
-              userAnswer: userAnswer,
-            ) as GetQuestionFeedbackParam,
-          ),
-        ),
-        ...previous
+        feedbackChat,
+        ...previous,
       ],
     );
-  }
-
-  ///
-  /// 추가된 채팅 목록을 서버로 업데이트
-  ///
-  Future<void> updateChat(List<MessageEntity> messages) async {
-    final UpdateChatInfoParam param = (
-      messages: messages,
-      chatRoomId: room.chatRoomId,
-    );
-    await updateChatInfoUseCase(param);
-    ref.invalidate(interviewRoomsProvider);
-  }
-
-  ///
-  /// 면접이 종료될 때 나머지 채팅 목록을 서버로 업데이트
-  ///
-  Future<void> updateEndOfChatInfo() async {
-    final answerState =
-        (state.requireValue.firstWhere((message) => message.type.isSentMessage)
-                as SentMessageEntity)
-            .answerState;
-
-    final lastMessageIndex = state.requireValue
-        .firstIndexWhereOrNull((message) => message.type.isSentMessage);
-    final UpdateChatInfoParam param = (
-      messages: state.requireValue.sublist(0, lastMessageIndex),
-      state: answerState,
-      chatRoomId:
-          ref.read(selectedInterviewRoomProvider).requireValue.chatRoomId,
-      topic: ref.read(selectedInterviewRoomProvider).requireValue.topic,
-      interviewer: null,
-      progressInfo: null,
-    ) as UpdateChatInfoParam;
-    await updateChatInfoUseCase.call(param);
-    ref.invalidate(interviewRoomsProvider);
   }
 
   ///
@@ -196,10 +173,7 @@ class ChatHistoryOfRoom extends _$ChatHistoryOfRoom {
         interviewClosingText
           ..listen(
             null,
-            onDone: () {
-              updateEndOfChatInfo();
-              interviewClosingText.close();
-            },
+            onDone: interviewClosingText.close,
           ),
       );
     } else {
@@ -209,7 +183,7 @@ class ChatHistoryOfRoom extends _$ChatHistoryOfRoom {
           ..listen(
             null,
             onDone: () {
-              showQuestion();
+              _showQuestion();
               guideStreamedText.close();
             },
           ),
@@ -225,9 +199,7 @@ class ChatHistoryOfRoom extends _$ChatHistoryOfRoom {
   }
 
   ///
-  /// 1. 채팅 리스트 유저 답변 정답 체크
-  /// 2. QnA 리스트 상태 업데이트 (유저 응답)
-  /// TODO: 리팩토링 필요
+  /// 채팅 리스트 유저 답변 정답 체크
   ///
   Future<void> updateUserAnswerState({required bool isCorrect}) async {
     // 1. 채팅 리스트 유저 답변 정답 체크
@@ -235,26 +207,15 @@ class ChatHistoryOfRoom extends _$ChatHistoryOfRoom {
 
     final answeredChat = chatList.firstWhere((chat) => chat.type.isSentMessage)
         as SentMessageEntity;
-
+    final resolvedAnsweredChat = answeredChat.copyWith(
+      answerState: isCorrect ? AnswerState.correct : AnswerState.wrong,
+    );
     final targetIndex = chatList.indexWhere((chat) => chat == answeredChat);
 
-    chatList[targetIndex] = answeredChat.copyWith(
-        answerState: isCorrect ? AnswerState.correct : AnswerState.wrong);
-
-    await update((_) => chatList);
-
-    // 2. QnA 리스트 상태 업데이트 (유저 응답)
-    final updatedSentChat = chatList
-        .firstWhere((chat) => chat.type.isSentMessage) as SentMessageEntity;
-
-    final userResponse = UserInterviewResponse(
-      updatedSentChat.message.value,
-      state: updatedSentChat.answerState,
+    await update(
+      (previous) => [...previous]..[targetIndex] = resolvedAnsweredChat,
     );
-
-    // await ref
-    //     .read(totalQnaListProvider.notifier)
-    //     .updateUserQnaResponse(userResponse);
+    await _updateChat([resolvedAnsweredChat]);
   }
 
   ///

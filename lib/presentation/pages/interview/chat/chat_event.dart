@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
 import 'package:techtalk/core/services/toast_service.dart';
 import 'package:techtalk/presentation/providers/interview/chat_history_of_room_provider.dart';
-import 'package:techtalk/presentation/providers/interview/interview_progress_state_provider.dart';
 import 'package:techtalk/presentation/providers/interview/selected_interview_room_provider.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
@@ -13,9 +12,7 @@ abstract class _ChatEvent {
   /// 채팅 입력창이 전송 되었을 때
   Future<void> onChatFieldSubmitted(
     WidgetRef ref, {
-    required String message,
     required TextEditingController textEditingController,
-    required ScrollController scrollController,
   });
 
   /// 앱바 뒤로 가기 버튼이 클릭 되었을 때
@@ -32,33 +29,20 @@ mixin class ChatEvent implements _ChatEvent {
   @override
   Future<void> onChatFieldSubmitted(
     WidgetRef ref, {
-    required String message,
     required TextEditingController textEditingController,
-    required ScrollController scrollController,
   }) async {
+    final message = textEditingController.text;
+    textEditingController.clear();
     if (message.isEmpty) {
       return ToastService.show(
         NormalToast(message: '답변을 입력해 주세요'),
       );
     }
     final room = ref.read(selectedInterviewRoomProvider).requireValue;
-    ref
-        .read(interviewProgressStateProvider(room).notifier)
-        .changeState(InterviewProgress.interviewerReplying);
-
-    textEditingController.clear();
-    scrollController.animateTo(
-      0,
-      duration: const Duration(milliseconds: 100),
-      curve: Curves.bounceIn,
-    );
 
     await ref
         .read(chatHistoryOfRoomProvider(room).notifier)
-        .addUserChatResponse(message: message);
-    await ref
-        .read(chatHistoryOfRoomProvider(room).notifier)
-        .respondToUserAnswer(userAnswer: message);
+        .addUserChatResponse(message);
   }
 
   @override

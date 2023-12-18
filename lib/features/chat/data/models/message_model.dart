@@ -49,7 +49,7 @@ class MessageModel {
     if (entity.type.isSentMessage) {
       entity as SentMessageEntity;
       qna = {
-        'questionId': entity.questionId,
+        'id': entity.qnaId,
         'state': entity.answerState.tag,
       };
     }
@@ -57,8 +57,7 @@ class MessageModel {
     if (entity.type.isAskQuestionMessage) {
       entity as QuestionMessageEntity;
       qna = {
-        'questionId': entity.questionId,
-        'idealAnswers': entity.idealAnswers,
+        'id': entity.qnaId,
       };
     }
 
@@ -85,13 +84,12 @@ class MessageModel {
           message: message,
           answerState: AnswerState.getStateById(qna!['state']!),
           timestamp: timestamp,
-          questionId: qna!['questionId']!,
+          qnaId: qna!['id']!,
         );
       case ChatType.askQuestion:
         return QuestionMessageEntity.createStaticChat(
-          questionId: qna!['questionId']!,
+          questionId: qna!['id']!,
           timestamp: timestamp,
-          idealAnswers: List<String>.from(qna!['idealAnswers']!),
           message: message,
         );
 

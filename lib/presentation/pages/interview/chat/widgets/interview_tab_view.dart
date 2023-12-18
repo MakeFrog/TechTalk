@@ -20,6 +20,20 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
     final room = ref.watch(selectedInterviewRoomProvider).requireValue;
     final chatScrollController = useScrollController();
 
+    // 채팅 리스트에 내용이 추가되면 아래로 스크롤한다.
+    ref.listen(chatHistoryOfRoomProvider(room), (previous, next) {
+      if (previous != null && previous.hasValue) {
+        if (previous.requireValue.length != next.requireValue.length) {
+          if (chatScrollController.hasClients) {
+            chatScrollController.animateTo(
+              0,
+              duration: const Duration(milliseconds: 100),
+              curve: Curves.bounceIn,
+            );
+          }
+        }
+      }
+    });
     return Column(
       children: [
         Consumer(
@@ -66,9 +80,7 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
         ),
 
         /// 하단 입력창
-        _BottomInputField(
-          chatScrollController: chatScrollController,
-        ),
+        _BottomInputField(),
       ],
     );
   }
@@ -77,10 +89,8 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
 class _BottomInputField extends HookConsumerWidget with ChatEvent {
   const _BottomInputField({
     Key? key,
-    required this.chatScrollController,
   }) : super(key: key);
 
-  final ScrollController chatScrollController;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final room = ref.watch(selectedInterviewRoomProvider).requireValue;
@@ -140,9 +150,7 @@ class _BottomInputField extends HookConsumerWidget with ChatEvent {
                         ? () {
                             onChatFieldSubmitted(
                               ref,
-                              message: message,
                               textEditingController: messageController,
-                              scrollController: chatScrollController,
                             );
                           }
                         : null,

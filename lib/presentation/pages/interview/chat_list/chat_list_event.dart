@@ -32,7 +32,6 @@ mixin class ChatListEvent implements _ChatListEvent {
     WidgetRef ref, {
     required Topic topic,
   }) {
-    // ref.read(selectedInterviewTopicProvider.notifier).onTopicSelected(topic);
-    // QuestionCountSelectPageRoute().push(ref.context);
+    QuestionCountSelectPageRoute($extra: topic).push(ref.context);
   }
 }

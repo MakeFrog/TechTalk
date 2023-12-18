@@ -2,12 +2,10 @@ import 'package:rxdart/subjects.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
 class QuestionMessageEntity extends MessageEntity {
-  final String questionId;
-  final List<String> idealAnswers;
+  final String qnaId;
 
   QuestionMessageEntity(
-      {required this.questionId,
-      required this.idealAnswers,
+      {required this.qnaId,
       required BehaviorSubject<String> message,
       required DateTime timestamp,
       required bool isStreamApplied})
@@ -23,13 +21,11 @@ class QuestionMessageEntity extends MessageEntity {
   ///
   factory QuestionMessageEntity.createStaticChat({
     required String questionId,
-    required List<String> idealAnswers,
     required String message,
     required DateTime timestamp,
   }) =>
       QuestionMessageEntity(
-        questionId: questionId,
-        idealAnswers: idealAnswers,
+        qnaId: questionId,
         message: BehaviorSubject.seeded(message)..close(),
         timestamp: timestamp,
         isStreamApplied: false,
@@ -40,12 +36,10 @@ class QuestionMessageEntity extends MessageEntity {
   ///
   factory QuestionMessageEntity.createStreamedChat({
     required String questionId,
-    required List<String> idealAnswers,
     required BehaviorSubject<String> streamedMessage,
   }) =>
       QuestionMessageEntity(
-        questionId: questionId,
-        idealAnswers: idealAnswers,
+        qnaId: questionId,
         message: streamedMessage,
         timestamp: DateTime.now(),
         isStreamApplied: true,
