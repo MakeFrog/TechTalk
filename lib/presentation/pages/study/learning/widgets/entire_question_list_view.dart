@@ -3,19 +3,19 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/topic/entities/topic_question_entity.dart';
-import 'package:techtalk/presentation/providers/study/selected_study_topic_provider.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/providers/study/study_questions_provider.dart';
 import 'package:techtalk/presentation/widgets/common/button/app_back_button.dart';
 
 class EntireQuestionListView extends ConsumerWidget {
   const EntireQuestionListView({
     super.key,
+    required this.topic,
   });
 
+  final Topic topic;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final topic = ref.watch(selectedStudyTopicProvider);
     final questions = ref.watch(studyQuestionsProvider(topic.id)).requireValue;
 
     return Scaffold(
