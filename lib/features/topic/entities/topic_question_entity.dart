@@ -43,21 +43,5 @@ class TopicQuestionEntity {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': this.id,
-      'question': this.question,
-      'answers': this.answers,
-    };
-  }
-
-  factory TopicQuestionEntity.fromMap(Map<String, dynamic> map) {
-    return TopicQuestionEntity(
-      id: map['id'] as String,
-      question: map['question'] as String,
-      answers: map['answers'] as List<String>,
-    );
-  }
-
 //</editor-fold>
 }

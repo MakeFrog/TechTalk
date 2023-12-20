@@ -52,15 +52,5 @@ abstract class MessageEntity {
         '}';
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': this.id,
-      'message': this.message,
-      'type': this.type,
-      'timestamp': this.timestamp,
-      'isStreamApplied': this.isStreamApplied,
-    };
-  }
-
 //</editor-fold>
 }

@@ -46,20 +46,5 @@ class JobGroupListEntity {
       groups: groups ?? this.groups,
     );
   }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'totalCount': this.totalCount,
-      'groups': this.groups,
-    };
-  }
-
-  factory JobGroupListEntity.fromMap(Map<String, dynamic> map) {
-    return JobGroupListEntity(
-      totalCount: map['totalCount'] as int,
-      groups: map['groups'] as List<JobGroupEntity>,
-    );
-  }
-
 //</editor-fold>
 }

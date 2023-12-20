@@ -52,23 +52,5 @@ class WrongAnswerQnAEntity {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': this.id,
-      'chatRoomId': this.chatRoomId,
-      'question': this.question,
-      'answers': this.answers,
-    };
-  }
-
-  factory WrongAnswerQnAEntity.fromMap(Map<String, dynamic> map) {
-    return WrongAnswerQnAEntity(
-      id: map['id'] as String,
-      chatRoomId: map['chatRoomId'] as String,
-      question: map['question'] as TopicQuestionEntity,
-      answers: map['answers'] as List<String>,
-    );
-  }
-
 //</editor-fold>
 }

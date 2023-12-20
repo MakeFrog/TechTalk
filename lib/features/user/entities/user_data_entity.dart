@@ -57,23 +57,5 @@ class UserDataEntity {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'uid': this.uid,
-      'nickname': this.nickname,
-      'jobGroupIds': this.jobGroupIds,
-      'topicIds': this.topicIds,
-    };
-  }
-
-  factory UserDataEntity.fromMap(Map<String, dynamic> map) {
-    return UserDataEntity(
-      uid: map['uid'] as String,
-      nickname: map['nickname'] as String,
-      jobGroupIds: map['jobGroupIds'] as List<String>,
-      topicIds: map['topicIds'] as List<String>,
-    );
-  }
-
 //</editor-fold>
 }

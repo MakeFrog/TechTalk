@@ -48,21 +48,5 @@ class InterviewQnAEntity {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': this.id,
-      'question': this.question,
-      'response': this.response,
-    };
-  }
-
-  factory InterviewQnAEntity.fromMap(Map<String, dynamic> map) {
-    return InterviewQnAEntity(
-      id: map['id'] as String,
-      question: map['question'] as TopicQuestionEntity,
-      response: map['response'] as UserInterviewResponse,
-    );
-  }
-
 //</editor-fold>
 }

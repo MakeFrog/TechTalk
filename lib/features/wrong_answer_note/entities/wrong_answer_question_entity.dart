@@ -37,19 +37,5 @@ class WrongAnswerQuestionEntity {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': this.id,
-      'question': this.question,
-    };
-  }
-
-  factory WrongAnswerQuestionEntity.fromMap(Map<String, dynamic> map) {
-    return WrongAnswerQuestionEntity(
-      id: map['id'] as String,
-      question: map['question'] as String,
-    );
-  }
-
 //</editor-fold>
 }

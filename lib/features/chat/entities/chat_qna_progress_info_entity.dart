@@ -85,21 +85,5 @@ class ChatQnaProgressInfoEntity {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'totalQuestionCount': this.totalQuestionCount,
-      'correctAnswerCount': this.correctAnswerCount,
-      'incorrectAnswerCount': this.incorrectAnswerCount,
-    };
-  }
-
-  factory ChatQnaProgressInfoEntity.fromMap(Map<String, dynamic> map) {
-    return ChatQnaProgressInfoEntity(
-      totalQuestionCount: map['totalQuestionCount'] as int,
-      correctAnswerCount: map['correctAnswerCount'] as int,
-      incorrectAnswerCount: map['incorrectAnswerCount'] as int,
-    );
-  }
-
 //</editor-fold>
 }

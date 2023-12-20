@@ -43,19 +43,5 @@ class JobGroupEntity {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': this.id,
-      'name': this.name,
-    };
-  }
-
-  factory JobGroupEntity.fromMap(Map<String, dynamic> map) {
-    return JobGroupEntity(
-      id: map['id'] as String,
-      name: map['name'] as String,
-    );
-  }
-
 //</editor-fold>
 }

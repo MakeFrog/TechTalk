@@ -13,7 +13,6 @@ import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_page.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/review_note_detail_page.dart';
-import 'package:techtalk/presentation/providers/interview/interview_qnas_of_room_provider.dart';
 import 'package:techtalk/presentation/providers/interview/selected_interview_room_provider.dart';
 import 'package:techtalk/presentation/providers/interview/selected_interview_topic_provider.dart';
 import 'package:techtalk/presentation/providers/study/selected_study_topic_provider.dart';
@@ -233,10 +232,7 @@ class ChatPageRoute extends GoRouteData {
       overrides: [
         selectedInterviewRoomProvider.overrideWith(
           (ref) async {
-            final room = (await getInterviewRoomUseCase(roomId)).getOrThrow();
-            await ref.watch(interviewQnAsOfRoomProvider(room).future);
-
-            return room;
+            return (await getInterviewRoomUseCase(roomId)).getOrThrow();
           },
         ),
       ],

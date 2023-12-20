@@ -78,27 +78,5 @@ class ChatRoomEntity {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'interviewerInfo': this.interviewerInfo,
-      'topic': this.topic,
-      'qnaProgressInfo': this.qnaProgressInfo,
-      'lastChatMessage': this.lastChatMessage,
-      'lastChatDate': this.lastChatDate,
-      'chatRoomId': this.chatRoomId,
-    };
-  }
-
-  factory ChatRoomEntity.fromMap(Map<String, dynamic> map) {
-    return ChatRoomEntity(
-      interviewerInfo: map['interviewerInfo'] as InterviewerAvatar,
-      topic: map['topic'] as Topic,
-      qnaProgressInfo: map['qnaProgressInfo'] as ChatQnaProgressInfoEntity,
-      lastChatMessage: map['lastChatMessage'] as String,
-      lastChatDate: map['lastChatDate'] as DateTime,
-      chatRoomId: map['chatRoomId'] as String,
-    );
-  }
-
 //</editor-fold>
 }
