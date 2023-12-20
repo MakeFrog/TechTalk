@@ -19,25 +19,9 @@ class InterviewQnaModel {
 
   factory InterviewQnaModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
-  ) {
-    final data = snapshot.data()!;
-
-    return InterviewQnaModel(
-      id: data['id'] as String,
-      questionId: data['question_id'] as String,
-      messageId: data['message_id'] as String?,
-      state: data['state'] as String?,
-    );
-  }
-
-  Map<String, dynamic> toFirestore() {
-    return <String, dynamic>{
-      'id': id,
-      'question_id': questionId,
-      'message_id': messageId,
-      'state': state,
-    };
-  }
+    SnapshotOptions? options,
+  ) =>
+      InterviewQnaModel.fromJson(snapshot.data()!);
 
   factory InterviewQnaModel.fromJson(Map<String, dynamic> json) {
     return _$InterviewQnaModelFromJson(json);

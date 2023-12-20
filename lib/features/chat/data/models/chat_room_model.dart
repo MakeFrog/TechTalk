@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:techtalk/core/helper/string_generator.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/entities/chat_qna_progress_info_entity.dart';
 import 'package:techtalk/features/chat/entities/interviewer_avatar.dart';
@@ -25,8 +26,22 @@ class ChatRoomModel {
   final int incorrectAnswerCount;
   final String chatRoomId;
 
+  factory ChatRoomModel.random({
+    required String topicId,
+    required int totalQuestionCount,
+  }) =>
+      ChatRoomModel(
+        chatRoomId: StringGenerator.generateRandomString(),
+        interviewerId: InterviewerAvatar.getRandomInterviewer().id,
+        topicId: topicId,
+        totalQuestionCount: totalQuestionCount,
+        correctAnswerCount: 0,
+        incorrectAnswerCount: 0,
+      );
+
   factory ChatRoomModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
   ) =>
       ChatRoomModel.fromJson(snapshot.data()!);
 

@@ -1,10 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:techtalk/core/utils/time_stamp_converter.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
 part 'message_model.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable(
+  fieldRename: FieldRename.snake,
+  explicitToJson: true,
+  converters: [
+    TimeStampConverter(),
+  ],
+)
 class MessageModel {
   MessageModel({
     required this.id,
@@ -18,30 +25,14 @@ class MessageModel {
   final String message;
   final String type;
   final Map<String, dynamic>? qna;
+
   final DateTime timestamp;
 
   factory MessageModel.fromFirestore(
-      DocumentSnapshot<Map<String, dynamic>> snapshot) {
-    final data = snapshot.data()!;
-
-    return MessageModel(
-      id: data['id'] as String,
-      message: data['message'] as String,
-      type: data['type'] as String,
-      qna: data['qna'] as Map<String, dynamic>?,
-      timestamp: (data['timestamp'] as Timestamp).toDate(),
-    );
-  }
-
-  Map<String, dynamic> toFirestore() {
-    return <String, dynamic>{
-      'id': id,
-      'message': message,
-      'type': type,
-      'qna': qna,
-      'timestamp': Timestamp.fromDate(timestamp),
-    };
-  }
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) =>
+      MessageModel.fromJson(snapshot.data()!);
 
   factory MessageModel.fromEntity(MessageEntity entity) {
     Map<String, dynamic>? qna;
