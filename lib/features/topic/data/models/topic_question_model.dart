@@ -26,15 +26,9 @@ class TopicQuestionModel {
 
   factory TopicQuestionModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
-  ) {
-    final data = snapshot.data()!;
-
-    return TopicQuestionModel(
-      id: data['id'] as String,
-      question: data['question'] as String,
-      answers: (data['answers'] as List).cast<String>(),
-    );
-  }
+    SnapshotOptions? options,
+  ) =>
+      TopicQuestionModel.fromJson(snapshot.data()!);
 
   factory TopicQuestionModel.fromJson(Map<String, dynamic> json) {
     return _$TopicQuestionModelFromJson(json);

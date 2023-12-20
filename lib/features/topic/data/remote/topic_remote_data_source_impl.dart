@@ -1,58 +1,60 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:techtalk/features/topic/data/models/topic_question_model.dart';
-import 'package:techtalk/features/topic/data/remote/topic_remote_data_source.dart';
+import 'package:techtalk/core/core.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   @override
   Future<TopicQuestionModel> getQuestion(
     String topicId,
     String questionId,
   ) async {
-    final snapshot = await _firestore
-        .collection('interview')
-        .doc(topicId)
-        .collection('questions')
+    final snapshot = await FirestoreCollections.topics
+        .question(topicId)
         .doc(questionId)
+        .withConverter(
+          fromFirestore: TopicQuestionModel.fromFirestore,
+          toFirestore: (value, options) => value.toJson(),
+        )
         .get();
 
     if (!snapshot.exists) {
       throw Exception();
     }
 
-    return TopicQuestionModel.fromFirestore(snapshot);
+    return snapshot.data()!;
   }
 
   @override
   Future<List<TopicQuestionModel>> getQuestions(String topicId) async {
-    final snapshot = await _firestore
-        .collection('interview')
-        .doc(topicId)
-        .collection('questions')
+    final snapshot = await FirestoreCollections.topics
+        .question(topicId)
+        .collection()
+        .withConverter(
+          fromFirestore: TopicQuestionModel.fromFirestore,
+          toFirestore: (value, options) => value.toJson(),
+        )
         .get();
 
     if (snapshot.docs.isEmpty) {
       throw Exception();
     }
 
-    final questions =
-        snapshot.docs.map(TopicQuestionModel.fromFirestore).toList();
-
-    return questions;
+    return [...snapshot.docs.map((e) => e.data())];
   }
 
   @override
   Future<DateTime> getUpdateDate(String topicId) async {
-    final snapshot =
-        await _firestore.collection('interview').doc(topicId).get();
+    final snapshot = await FirestoreCollections.topics
+        .doc(topicId)
+        .withConverter(
+          fromFirestore: TopicModel.fromFirestore,
+          toFirestore: (value, options) => value.toJson(),
+        )
+        .get();
 
     if (!snapshot.exists) {
       throw Exception();
     }
 
-    final updateDate = snapshot.get('update_date') as Timestamp;
-
-    return updateDate.toDate();
+    return snapshot.data()!.updatedAt!;
   }
 }

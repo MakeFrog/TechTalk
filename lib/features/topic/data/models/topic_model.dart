@@ -1,31 +1,43 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:techtalk/features/topic/data/models/topic_category_model.dart';
+import 'package:techtalk/core/utils/time_stamp_converter.dart';
 import 'package:techtalk/features/topic/entities/topic.enum.dart';
 
 part 'topic_model.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable(
+  fieldRename: FieldRename.snake,
+  explicitToJson: true,
+  converters: [
+    TimeStampConverter(),
+  ],
+)
 class TopicModel {
   TopicModel({
     required this.id,
-    required this.text,
-    required this.category,
-    this.imageUrl,
+    required this.name,
+    required this.categoryId,
     required this.isAvailable,
+    this.updatedAt,
   });
 
   final String id;
-  final String text;
-  final TopicCategoryModel category;
-  final String? imageUrl;
+  final String name;
+  final String categoryId;
   final bool isAvailable;
+  final DateTime? updatedAt;
+
+  factory TopicModel.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) =>
+      TopicModel.fromJson(snapshot.data()!);
 
   factory TopicModel.fromEntity(Topic data) {
     return TopicModel(
       id: data.id,
-      text: data.text,
-      category: TopicCategoryModel.fromEntity(data.category),
-      imageUrl: data.imageUrl,
+      name: data.text,
+      categoryId: data.category.id,
       isAvailable: data.isAvailable,
     );
   }
