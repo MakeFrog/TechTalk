@@ -5,6 +5,7 @@ enum FirestoreCollection {
   interview('interview'),
   interviewQuestions('questions'),
   chats('chats'),
+  chatsQna('qna'),
   messages('messages');
 
   final String name;
