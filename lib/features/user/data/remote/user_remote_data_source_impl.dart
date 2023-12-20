@@ -5,19 +5,19 @@ import 'package:techtalk/features/user/data/models/user_data_model.dart';
 import 'package:techtalk/features/user/user.dart';
 
 final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   /// firestore에 저장된 users 컬렉션을 조회한다
-  CollectionReference<UserDataModel> get _usersCollection => _firestore
-      .collection(FirestoreCollection.users.name)
-      .withConverter<UserDataModel>(
-        fromFirestore: (snapshot, _) => UserDataModel.fromFirestore(snapshot),
-        toFirestore: (value, _) => value.toFirestore(),
-      );
+  CollectionReference<UserDataModel> get _usersCollection =>
+      FirestoreCollections.users.collection().withConverter(
+            fromFirestore: UserDataModel.fromFirestore,
+            toFirestore: (value, _) => value.toJson(),
+          );
 
   /// [data.uid]를 키로 가지는 도큐먼트를 조회한다
   DocumentReference<UserDataModel> _userDoc(String uid) =>
-      _usersCollection.doc(uid);
+      FirestoreCollections.users.doc(uid).withConverter(
+            fromFirestore: UserDataModel.fromFirestore,
+            toFirestore: (value, _) => value.toJson(),
+          );
 
   /// [uid]를 키로 가지는 데이터가 있는지 여부
   Future<bool> _isExistUserData(String uid) async =>
@@ -27,10 +27,7 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     String uid,
     String nickname,
   ) async {
-    final userSnapshot = await _userDoc(uid).get();
-    final userNickname = userSnapshot.get('nickname');
-
-    final isNicknameExist = await _usersCollection
+    return _usersCollection
         .where(
           'nickname',
           isEqualTo: nickname,
@@ -40,8 +37,6 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         .then(
           (value) => value.count > 0,
         );
-
-    return isNicknameExist && userNickname != nickname;
   }
 
   @override
@@ -67,7 +62,7 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     }
 
     await _userDoc(data.uid).update(
-      UserDataModel.fromEntity(data).toFirestore(),
+      UserDataModel.fromEntity(data).toJson(),
     );
   }
 
