@@ -7,6 +7,6 @@ part 'study_questions_provider.g.dart';
 class StudyQuestions extends _$StudyQuestions {
   @override
   FutureOr<List<TopicQuestionEntity>> build(String topicId) async {
-    return getTopicQuestionsUseCase(topicId);
+    return (await getTopicQuestionsUseCase(topicId)).getOrThrow();
   }
 }

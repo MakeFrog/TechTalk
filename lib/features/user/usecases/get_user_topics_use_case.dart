@@ -1,3 +1,4 @@
+import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/user/user.dart';
 
@@ -8,7 +9,7 @@ final class GetUserTopicsUseCase {
 
   final UserRepository _userRepository;
 
-  Future<List<Topic>> call() async {
+  Future<Result<List<Topic>>> call() async {
     final userTopicIds = await _userRepository.getUserTopicIds();
 
     return userTopicIds.fold(
@@ -17,11 +18,13 @@ final class GetUserTopicsUseCase {
 
         return topics.fold(
           onSuccess: (value) {
-            return [
-              ...value.where(
-                (element) => topicIds.contains(element.id),
-              ),
-            ];
+            return Result.success(
+              [
+                ...value.where(
+                  (element) => topicIds.contains(element.id),
+                ),
+              ],
+            );
           },
           onFailure: (e) {
             throw e;

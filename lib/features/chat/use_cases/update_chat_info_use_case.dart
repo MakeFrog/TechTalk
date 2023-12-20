@@ -1,4 +1,5 @@
 import 'package:techtalk/core/utils/base/base_use_case.dart';
+import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
 ///
@@ -18,7 +19,7 @@ class UpdateChatInfoUseCase extends BaseUseCase<UpdateChatInfoParam, void> {
   final ChatRepository _repository;
 
   @override
-  Future<void> call(UpdateChatInfoParam request) {
+  Future<Result<void>> call(UpdateChatInfoParam request) {
     return _repository.updateMessages(
       request.chatRoomId,
       messages: request.messages,

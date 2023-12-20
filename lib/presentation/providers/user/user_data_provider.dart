@@ -18,7 +18,7 @@ class UserData extends _$UserData {
 
       final userData = await getUserDataUseCase();
 
-      return userData;
+      return userData.getOrThrow();
     } on UnAuthorizedException catch (e) {
       ToastService.show(
         NormalToast(message: '$e'),
