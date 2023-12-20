@@ -64,6 +64,10 @@ class FirestoreUserCollection {
       FirestoreChatRoomCollection._(
         doc(id ?? _userUid),
       );
+  FirestoreWrongAnswerCollection wrongAnswer([String? id]) =>
+      FirestoreWrongAnswerCollection._(
+        doc(id ?? _userUid),
+      );
 }
 
 class FirestoreChatRoomCollection {
@@ -109,4 +113,16 @@ class FirestoreChatQnaCollection {
 
   DocumentReference<Map<String, dynamic>> doc(String id) =>
       _roomDoc.collection(name).doc(id);
+}
+
+class FirestoreWrongAnswerCollection {
+  FirestoreWrongAnswerCollection._(this._userDoc);
+  final DocumentReference<Map<String, dynamic>> _userDoc;
+  static const String name = 'WrongAnswers';
+
+  CollectionReference<Map<String, dynamic>> collection() =>
+      _userDoc.collection(name);
+
+  DocumentReference<Map<String, dynamic>> doc(String id) =>
+      _userDoc.collection(name).doc(id);
 }

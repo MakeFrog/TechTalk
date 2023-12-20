@@ -18,16 +18,11 @@ class WrongAnswerQnAModel {
   final String qnaId;
 
   factory WrongAnswerQnAModel.fromFirestore(
-      DocumentSnapshot<Map<String, dynamic>> snapshot) {
-    final data = snapshot.data()!;
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) =>
+      WrongAnswerQnAModel.fromJson(snapshot.data()!);
 
-    return WrongAnswerQnAModel(
-      id: data['id'] as String,
-      questionId: data['question_id'] as String,
-      chatRoomId: data['chat_room_id'] as String,
-      qnaId: data['qna_id'] as String,
-    );
-  }
   factory WrongAnswerQnAModel.fromJson(Map<String, dynamic> json) {
     return _$WrongAnswerQnAModelFromJson(json);
   }
