@@ -5,8 +5,8 @@ import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/core/services/toast_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/use_cases/update_chat_info_use_case.dart';
-import 'package:techtalk/presentation/providers/interview/interview_qnas_of_room_provider.dart';
-import 'package:techtalk/presentation/providers/interview/interview_rooms_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/interview_qnas_of_room_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat_list/providers/interview_rooms_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 

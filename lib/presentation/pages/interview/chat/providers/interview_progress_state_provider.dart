@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/presentation/providers/interview/chat_history_of_room_provider.dart';
-import 'package:techtalk/presentation/providers/interview/interview_qnas_of_room_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_history_of_room_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/interview_qnas_of_room_provider.dart';
 
 part 'interview_progress_state_provider.g.dart';
 

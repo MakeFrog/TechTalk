@@ -3,8 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
 import 'package:techtalk/core/services/toast_service.dart';
-import 'package:techtalk/presentation/providers/interview/chat_history_of_room_provider.dart';
-import 'package:techtalk/presentation/providers/interview/selected_interview_room_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_history_of_room_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/selected_interview_room_provider.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 

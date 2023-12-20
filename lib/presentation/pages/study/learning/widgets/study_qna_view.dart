@@ -7,11 +7,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/topic/entities/topic_question_entity.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/study_question_controller.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/study_questions_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_event.dart';
-import 'package:techtalk/presentation/providers/study/selected_study_topic_provider.dart';
-import 'package:techtalk/presentation/providers/study/study_answer_blur_provider.dart';
-import 'package:techtalk/presentation/providers/study/study_question_controller.dart';
-import 'package:techtalk/presentation/providers/study/study_questions_provider.dart';
+import 'package:techtalk/presentation/pages/study/topic_select/providers/selected_study_topic_provider.dart';
 
 class StudyQnaView extends ConsumerWidget with StudyLearningEvent {
   const StudyQnaView({

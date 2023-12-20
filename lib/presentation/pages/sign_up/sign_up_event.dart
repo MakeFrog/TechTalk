@@ -7,7 +7,7 @@ import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
 import 'package:techtalk/features/job/job.dart';
 import 'package:techtalk/features/topic/topic.dart';
-import 'package:techtalk/presentation/providers/sign_up/sign_up_step_controller.dart';
+import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_controller.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 

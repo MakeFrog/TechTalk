@@ -6,10 +6,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_history_of_room_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/selected_interview_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/bubble.dart';
-import 'package:techtalk/presentation/providers/interview/chat_history_of_room_provider.dart';
-import 'package:techtalk/presentation/providers/interview/interview_progress_state_provider.dart';
-import 'package:techtalk/presentation/providers/interview/selected_interview_room_provider.dart';
 
 class InterviewTabView extends HookConsumerWidget with ChatEvent {
   const InterviewTabView({Key? key}) : super(key: key);

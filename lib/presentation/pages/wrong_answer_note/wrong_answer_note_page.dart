@@ -4,10 +4,10 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/presentation/pages/wrong_answer_note/providers/selected_wrong_answer_topic_provider.dart';
+import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_questions_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_note_event.dart';
 import 'package:techtalk/presentation/providers/user/user_topics_provider.dart';
-import 'package:techtalk/presentation/providers/wrong_answer/selected_wrong_answer_topic_provider.dart';
-import 'package:techtalk/presentation/providers/wrong_answer/wrong_answer_questions_provider.dart';
 
 class WrongAnswerNotePage extends HookWidget {
   const WrongAnswerNotePage({super.key});

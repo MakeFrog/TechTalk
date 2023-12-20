@@ -6,7 +6,7 @@ import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/local_widgets/chat_list_item_view.dart';
-import 'package:techtalk/presentation/providers/interview/interview_rooms_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat_list/providers/interview_rooms_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 

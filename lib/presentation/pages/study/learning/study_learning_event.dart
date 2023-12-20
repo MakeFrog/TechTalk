@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/current_study_question_index_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/study_question_controller.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/entire_question_list_view.dart';
-import 'package:techtalk/presentation/providers/study/current_study_question_index_provider.dart';
-import 'package:techtalk/presentation/providers/study/selected_study_topic_provider.dart';
-import 'package:techtalk/presentation/providers/study/study_answer_blur_provider.dart';
-import 'package:techtalk/presentation/providers/study/study_question_controller.dart';
+import 'package:techtalk/presentation/pages/study/topic_select/providers/selected_study_topic_provider.dart';
 
 abstract interface class _StudyLearningEvent {
   void onToggleAnswerBlur(WidgetRef ref);

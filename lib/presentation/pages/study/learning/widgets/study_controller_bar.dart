@@ -5,10 +5,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/current_study_question_index_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/study_questions_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_event.dart';
-import 'package:techtalk/presentation/providers/study/current_study_question_index_provider.dart';
-import 'package:techtalk/presentation/providers/study/selected_study_topic_provider.dart';
-import 'package:techtalk/presentation/providers/study/study_questions_provider.dart';
+import 'package:techtalk/presentation/pages/study/topic_select/providers/selected_study_topic_provider.dart';
 
 class StudyControllerBar extends ConsumerWidget with StudyLearningEvent {
   const StudyControllerBar({
