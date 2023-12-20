@@ -75,7 +75,9 @@ mixin class SignUpEvent implements _SignUpEvent {
             nickname: nickname,
           );
 
-      await ref.read(userDataProvider.notifier).updateUserData(userData);
+      if (userData.nickname != nickname) {
+        await ref.read(userDataProvider.notifier).updateUserData(userData);
+      }
 
       ref.read(signUpStepControllerProvider.notifier).next();
     } on AlreadyExistNicknameException catch (e) {
