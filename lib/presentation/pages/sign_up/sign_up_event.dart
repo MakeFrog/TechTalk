@@ -27,7 +27,7 @@ abstract class _SignUpEvent {
 
   Future<void> onTapJobGroupStepNext(
     WidgetRef ref, {
-    required List<JobGroupEntity> jobGroups,
+    required List<JobEntity> jobGroups,
   });
 
   Future<void> onTapSignUp(
@@ -105,7 +105,7 @@ mixin class SignUpEvent implements _SignUpEvent {
   @override
   Future<void> onTapJobGroupStepNext(
     WidgetRef ref, {
-    required List<JobGroupEntity> jobGroups,
+    required List<JobEntity> jobGroups,
   }) async {
     try {
       FocusManager.instance.primaryFocus?.unfocus();

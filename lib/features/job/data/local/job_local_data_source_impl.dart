@@ -1,15 +1,22 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/features/job/data/local/job_local_data_source.dart';
-import 'package:techtalk/features/job/data/models/job_group_list_model.dart';
-import 'package:techtalk/features/job/data/models/job_group_model.dart';
+import 'package:techtalk/features/job/data/models/job_ref.dart';
+import 'package:techtalk/features/job/job.dart';
 
 final class JobLocalDataSourceImpl implements JobLocalDataSource {
   @override
-  FutureOr<JobGroupListModel> getJobGroups() {
-    return JobGroupListModel(
-      totalCount: JobGroupModel.values.length,
-      groups: JobGroupModel.values,
+  Future<List<JobEntity>?> getJobs() async {
+    final cachedJobs = await FirestoreJobsRef.collection().get(
+      const GetOptions(source: Source.cache),
     );
+    if (cachedJobs.docs.isEmpty) {
+      return null;
+    }
+
+    return [
+      ...cachedJobs.docs.map((e) => e.data().toEntity()),
+    ];
   }
 }

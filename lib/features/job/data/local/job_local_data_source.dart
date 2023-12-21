@@ -1,7 +1,5 @@
-import 'dart:async';
-
-import 'package:techtalk/features/job/data/models/job_group_list_model.dart';
+import 'package:techtalk/features/job/job.dart';
 
 abstract interface class JobLocalDataSource {
-  FutureOr<JobGroupListModel> getJobGroups();
+  Future<List<JobEntity>?> getJobs();
 }

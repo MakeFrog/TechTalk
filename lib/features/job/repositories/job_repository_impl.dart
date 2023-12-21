@@ -14,11 +14,18 @@ final class JobRepositoryImpl implements JobRepository {
   final JobLocalDataSource _jobLocalDataSource;
 
   @override
-  Future<Result<JobGroupListEntity>> getJobGroups() async {
-    final model = await _jobLocalDataSource.getJobGroups();
+  Future<Result<List<JobEntity>>> getJobs() async {
+    try {
+      final cachedJobs = await _jobLocalDataSource.getJobs();
+      if (cachedJobs != null) {
+        return Result.success(cachedJobs);
+      }
 
-    return Result.success(
-      JobGroupListEntity.fromModel(model),
-    );
+      final jobs = await _jobRemoteDataSource.getJobs();
+
+      return Result.success(jobs);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
   }
 }

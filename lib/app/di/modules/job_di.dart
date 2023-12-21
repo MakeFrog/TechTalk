@@ -30,8 +30,8 @@ final class JobDependencyInjection extends FeatureDependencyInjection {
 
   @override
   void useCases() {
-    GetIt.I.registerFactory<GetJobGroupsUseCase>(
-      () => GetJobGroupsUseCase(
+    GetIt.I.registerFactory<GetJobsUseCase>(
+      () => GetJobsUseCase(
         jobRepository,
       ),
     );

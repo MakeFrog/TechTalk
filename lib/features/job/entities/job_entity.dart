@@ -1,11 +1,9 @@
-import 'package:techtalk/features/job/data/models/job_group_model.dart';
-
-class JobGroupEntity {
+class JobEntity {
   final String id;
   final String name;
 
 //<editor-fold desc="Data Methods">
-  const JobGroupEntity({
+  const JobEntity({
     required this.id,
     required this.name,
   });
@@ -13,7 +11,7 @@ class JobGroupEntity {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is JobGroupEntity &&
+      (other is JobEntity &&
           runtimeType == other.runtimeType &&
           id == other.id &&
           name == other.name);
@@ -26,20 +24,13 @@ class JobGroupEntity {
     return 'JobGroupEntity{' + ' id: $id,' + ' name: $name,' + '}';
   }
 
-  JobGroupEntity copyWith({
+  JobEntity copyWith({
     String? id,
     String? name,
   }) {
-    return JobGroupEntity(
+    return JobEntity(
       id: id ?? this.id,
       name: name ?? this.name,
-    );
-  }
-
-  factory JobGroupEntity.fromModel(JobGroupModel model) {
-    return JobGroupEntity(
-      id: model.id,
-      name: model.name,
     );
   }
 
