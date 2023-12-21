@@ -24,7 +24,7 @@ final class UserRepositoryImpl implements UserRepository {
   Future<Result<void>> createUserData() async {
     try {
       return Result.success(
-        _userRemoteDataSource.createUserData(_userUid),
+        await _userRemoteDataSource.createUserData(_userUid),
       );
     } on Exception catch (e) {
       return Result.failure(e);
