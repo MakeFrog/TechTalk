@@ -55,14 +55,28 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     if (!await _isExistUserData(data.uid)) {
       throw const NoUserDataException();
     }
+    UserDataModel userModel = UserDataModel.fromEntity(data);
+    final orgUserData = await _userDoc(data.uid).get().then(
+          (value) => value.data()!,
+        );
 
-    if (data.nickname != null &&
+    if (userModel.nickname != orgUserData.nickname &&
         await _isExistNickname(data.uid, data.nickname!)) {
       throw AlreadyExistNicknameException();
     }
 
+    userModel = UserDataModel(
+      uid: userModel.uid,
+      nickname: userModel.nickname,
+      topicIds: userModel.topicIds != orgUserData.topicIds
+          ? userModel.topicIds
+          : null,
+      jobGroupIds: userModel.jobGroupIds != orgUserData.jobGroupIds
+          ? userModel.jobGroupIds
+          : null,
+    );
     await _userDoc(data.uid).update(
-      UserDataModel.fromEntity(data).toJson(),
+      userModel.toJson(),
     );
   }
 
