@@ -1,7 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
 abstract class BaseUseCase<REQUEST, RESPONSE> {
-  Future<RESPONSE> call(REQUEST request);
+  FutureOr<RESPONSE> call(REQUEST request);
 
   BaseUseCase() {
     onInit();
