@@ -7,7 +7,7 @@ abstract interface class _HomeEvent {
   void onTapNewTopicInterview();
   void onTapGoToInterviewRoomListPage(
     WidgetRef ref, {
-    required Topic topic,
+    required TopicEntity topic,
   });
 }
 
@@ -25,7 +25,7 @@ mixin class HomeEvent implements _HomeEvent {
   @override
   void onTapGoToInterviewRoomListPage(
     WidgetRef ref, {
-    required Topic topic,
+    required TopicEntity topic,
   }) {
     ChatListPageRoute(topic.id).push(rootNavigatorKey.currentContext!);
   }

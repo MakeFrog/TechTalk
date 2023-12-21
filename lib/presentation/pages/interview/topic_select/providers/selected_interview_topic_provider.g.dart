@@ -7,11 +7,12 @@ part of 'selected_interview_topic_provider.dart';
 // **************************************************************************
 
 String _$selectedInterviewTopicHash() =>
-    r'b47bbadeef8b85ba4eacfe5fa3713c5da46304a8';
+    r'b4891d5c880b1acde21d7cbc3cd29a9cfaeaf555';
 
 /// See also [selectedInterviewTopic].
 @ProviderFor(selectedInterviewTopic)
-final selectedInterviewTopicProvider = AutoDisposeProvider<Topic>.internal(
+final selectedInterviewTopicProvider =
+    AutoDisposeProvider<TopicEntity>.internal(
   selectedInterviewTopic,
   name: r'selectedInterviewTopicProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -21,6 +22,6 @@ final selectedInterviewTopicProvider = AutoDisposeProvider<Topic>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef SelectedInterviewTopicRef = AutoDisposeProviderRef<Topic>;
+typedef SelectedInterviewTopicRef = AutoDisposeProviderRef<TopicEntity>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -7,7 +7,7 @@ import 'package:techtalk/features/topic/topic.dart';
 abstract class _QuestionCountSelectEvent {
   Future<void> routeToChatPage(
     WidgetRef ref, {
-    required Topic topic,
+    required TopicEntity topic,
     required int questionCount,
   });
 }
@@ -16,7 +16,7 @@ mixin class QuestionCountSelectEvent implements _QuestionCountSelectEvent {
   @override
   Future<void> routeToChatPage(
     WidgetRef ref, {
-    required Topic topic,
+    required TopicEntity topic,
     required int questionCount,
   }) async {
     // 페이지 이동 및 채팅방 정보 조회 후 제거한다.

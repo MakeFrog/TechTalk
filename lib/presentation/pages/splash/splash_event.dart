@@ -1,5 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/providers/user/auth/is_user_authorized_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 
@@ -13,13 +14,12 @@ mixin class SplashEvent implements _SplashEvent {
 
   @override
   Future<void> initStaticProviders(WidgetRef ref) async {
-    // await ref.read(topicsProvider.future);
+    await topicRepository.initCache();
   }
 
   @override
   Future<void> routeByUserAuthAndData(WidgetRef ref) async {
     final isAuthorized = ref.read(isUserAuthorizedProvider);
-
     if (!isAuthorized) {
       const SignInRoute().go(ref.context);
       return;

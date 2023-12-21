@@ -13,7 +13,7 @@ class EntireQuestionListView extends ConsumerWidget {
     required this.topic,
   });
 
-  final Topic topic;
+  final TopicEntity topic;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final questions = ref.watch(studyQuestionsProvider(topic.id)).requireValue;

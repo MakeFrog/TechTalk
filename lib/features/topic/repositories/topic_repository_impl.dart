@@ -3,7 +3,7 @@ import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 class TopicRepositoryImpl implements TopicRepository {
-  const TopicRepositoryImpl({
+  TopicRepositoryImpl({
     required TopicLocalDataSource localDataSource,
     required TopicRemoteDataSource remoteDataSource,
   })  : _remoteDataSource = remoteDataSource,
@@ -12,42 +12,66 @@ class TopicRepositoryImpl implements TopicRepository {
   final TopicLocalDataSource _localDataSource;
   final TopicRemoteDataSource _remoteDataSource;
 
+  late final List<TopicEntity> _cachedTopics;
+  late final List<TopicCategoryEntity> _cachedTopicCategories;
+
   @override
-  Result<List<Topic>> getTopics() {
-    return Result.success(Topic.values);
+  Future<void> initCache() async {
+    _cachedTopics = await _remoteDataSource.getTopics().then(
+          (value) => value.map((e) => e.toEntity()).toList(),
+        );
+    _cachedTopicCategories = await _remoteDataSource.getTopicCategories().then(
+          (value) => value.map((e) => e.toEntity()).toList(),
+        );
   }
 
   @override
-  Result<List<Topic>> searchTopics(String keyword) {
-    return Result.success(
-      [
-        ...Topic.values.where(
-          (e) => e.text.toLowerCase().startsWith(
-                keyword.toLowerCase(),
-              ),
-        ),
-      ],
-    );
+  Result<List<TopicEntity>> getTopics() {
+    try {
+      return Result.success(_cachedTopics);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Result<TopicEntity> getTopic(String id) {
+    try {
+      return Result.success(
+        _cachedTopics.firstWhere((element) => element.id == id),
+      );
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Result<List<TopicCategoryEntity>> getTopicCategories() {
+    try {
+      return Result.success(_cachedTopicCategories);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Result<TopicCategoryEntity> getTopicCategory(String id) {
+    try {
+      return Result.success(
+        _cachedTopicCategories.firstWhere((element) => element.id == id),
+      );
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
   }
 
   @override
   Future<Result<List<TopicQuestionEntity>>> getTopicQuestions(
     String topicId,
   ) async {
-    List<TopicQuestionModel> questionsModel;
     try {
-      final cacheUpdateDate = await _localDataSource.getUpdateDate(topicId);
-
-      if (cacheUpdateDate != null) {
-        final lastUpdateDate = await _remoteDataSource.getUpdateDate(topicId);
-        if (lastUpdateDate.compareTo(cacheUpdateDate) == 0) {
-          questionsModel = (await _localDataSource.getQuestions(topicId))!;
-        } else {
-          questionsModel = await _remoteDataSource.getQuestions(topicId);
-        }
-      } else {
-        questionsModel = await _remoteDataSource.getQuestions(topicId);
-      }
+      final questionsModel = await _localDataSource.getQuestions(topicId) ??
+          await _remoteDataSource.getQuestions(topicId);
 
       return Result.success(
         [
@@ -55,10 +79,8 @@ class TopicRepositoryImpl implements TopicRepository {
         ],
       );
     } on Exception catch (e) {
-      final topic = Topic.getTopicById(topicId);
-
       return Result.failure(
-        NoTopicQuestionException(topic.text),
+        NoTopicQuestionException(topicId),
       );
     }
   }
@@ -78,10 +100,8 @@ class TopicRepositoryImpl implements TopicRepository {
         questionModel.toEntity(),
       );
     } on Exception catch (e) {
-      final topic = Topic.getTopicById(topicId);
-
       return Result.failure(
-        NoTopicQuestionException(topic.text),
+        NoTopicQuestionException(topicId),
       );
     }
   }

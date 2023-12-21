@@ -8,7 +8,7 @@ abstract class _InterviewTopicSelectEvent {
   ///
   void routeToQuestionCountSelect(
     WidgetRef ref, {
-    required Topic topic,
+    required TopicEntity topic,
   });
 }
 
@@ -16,7 +16,7 @@ mixin class InterviewTopicSelectEvent implements _InterviewTopicSelectEvent {
   @override
   void routeToQuestionCountSelect(
     WidgetRef ref, {
-    required Topic topic,
+    required TopicEntity topic,
   }) {
     QuestionCountSelectPageRoute($extra: topic)
         .push(rootNavigatorKey.currentContext!);

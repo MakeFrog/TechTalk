@@ -4,6 +4,6 @@ import 'package:techtalk/features/topic/topic.dart';
 part 'selected_study_topic_provider.g.dart';
 
 @riverpod
-Topic selectedStudyTopic(SelectedStudyTopicRef ref) {
+TopicEntity selectedStudyTopic(SelectedStudyTopicRef ref) {
   throw UnimplementedError();
 }

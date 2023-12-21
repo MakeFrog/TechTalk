@@ -146,7 +146,7 @@ class StudyRoute extends GoRouteData {
     return ProviderScope(
       overrides: [
         selectedStudyTopicProvider.overrideWithValue(
-          Topic.getTopicById(topicId),
+          getTopicUseCase(topicId).getOrThrow(),
         ),
       ],
       child: StudyLearningPage(),
@@ -184,7 +184,7 @@ class QuestionCountSelectPageRoute extends GoRouteData {
 
   static const String name = 'question-count-select';
 
-  final Topic $extra;
+  final TopicEntity $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -207,7 +207,7 @@ class ChatListPageRoute extends GoRouteData {
     return ProviderScope(
       overrides: [
         selectedInterviewTopicProvider.overrideWithValue(
-          Topic.getTopicById(topicId),
+          getTopicUseCase(topicId).getOrThrow(),
         ),
       ],
       child: ChatListPage(

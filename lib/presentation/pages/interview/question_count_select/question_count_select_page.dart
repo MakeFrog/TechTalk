@@ -16,7 +16,7 @@ class QuestionCountSelectPage extends BasePage with QuestionCountSelectEvent {
     required this.topic,
   }) : super(key: key);
 
-  final Topic topic;
+  final TopicEntity topic;
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
     final List<int> options = List.generate(18, (index) => index + 3); // 3 ~ 20

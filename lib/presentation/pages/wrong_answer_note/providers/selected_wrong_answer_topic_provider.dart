@@ -7,11 +7,11 @@ part 'selected_wrong_answer_topic_provider.g.dart';
 @riverpod
 class SelectedWrongAnswerTopic extends _$SelectedWrongAnswerTopic {
   @override
-  Topic build() {
+  TopicEntity build() {
     final userTopics = ref.watch(userTopicsProvider);
 
     return userTopics.where((element) => element.isAvailable).first;
   }
 
-  void update(Topic value) => state = value;
+  void update(TopicEntity value) => state = value;
 }

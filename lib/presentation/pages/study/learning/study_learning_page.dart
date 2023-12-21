@@ -43,7 +43,7 @@ class _AppBar extends StatelessWidget
       title: Consumer(
         builder: (context, ref, child) {
           return Text(
-            ref.watch(selectedStudyTopicProvider).name ?? '',
+            ref.watch(selectedStudyTopicProvider).text ?? '',
           );
         },
       ),

@@ -163,7 +163,7 @@ extension $QuestionCountSelectPageRouteExtension
     on QuestionCountSelectPageRoute {
   static QuestionCountSelectPageRoute _fromState(GoRouterState state) =>
       QuestionCountSelectPageRoute(
-        $extra: state.extra as Topic,
+        $extra: state.extra as TopicEntity,
       );
 
   String get location => GoRouteData.$location(

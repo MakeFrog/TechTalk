@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_event.dart';
-import 'package:techtalk/presentation/providers/topic/interviewable_topics_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 import 'package:techtalk/presentation/widgets/interview_topic_card.dart';
@@ -19,7 +18,7 @@ class InterviewTopicSelectPage extends BasePage {
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
-    final selectedTopicState = useState<Topic?>(null);
+    final selectedTopicState = useState<TopicEntity?>(null);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -49,7 +48,7 @@ class _TopicListView extends ConsumerWidget with InterviewTopicSelectEvent {
     required this.selectedTopicState,
   }) : super(key: key);
 
-  final ValueNotifier<Topic?> selectedTopicState;
+  final ValueNotifier<TopicEntity?> selectedTopicState;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -64,7 +63,8 @@ class _TopicListView extends ConsumerWidget with InterviewTopicSelectEvent {
         padding: const EdgeInsets.only(top: 24, bottom: 16),
         child: Consumer(
           builder: (context, ref, child) {
-            final topicList = ref.watch(interviewableTopicsProvider);
+            final topicList = getTopicsUseCase().getOrThrow();
+
             return GridView.builder(
               gridDelegate: gridDelegate,
               itemCount: topicList.length,
@@ -92,7 +92,7 @@ class _NextButton extends ConsumerWidget with InterviewTopicSelectEvent {
     this.selectedTopic,
   }) : super(key: key);
 
-  final Topic? selectedTopic;
+  final TopicEntity? selectedTopic;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

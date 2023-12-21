@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:techtalk/core/utils/time_stamp_converter.dart';
-import 'package:techtalk/features/topic/entities/topic.enum.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 part 'topic_model.g.dart';
 
@@ -15,32 +15,36 @@ part 'topic_model.g.dart';
 class TopicModel {
   TopicModel({
     required this.id,
-    required this.name,
     required this.categoryId,
+    required this.name,
+    this.imagePath,
     required this.isAvailable,
     this.updatedAt,
   });
 
   final String id;
-  final String name;
   final String categoryId;
+  final String name;
+  final String? imagePath;
   final bool isAvailable;
   final DateTime? updatedAt;
+
+  TopicEntity toEntity() {
+    return TopicEntity(
+      id: id,
+      categoryId: categoryId,
+      text: name,
+      imageUrl: imagePath,
+      isAvailable: isAvailable,
+      updatedAt: updatedAt ?? DateTime.now(),
+    );
+  }
 
   factory TopicModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
   ) =>
       TopicModel.fromJson(snapshot.data()!);
-
-  factory TopicModel.fromEntity(Topic data) {
-    return TopicModel(
-      id: data.id,
-      name: data.text,
-      categoryId: data.category.id,
-      isAvailable: data.isAvailable,
-    );
-  }
 
   factory TopicModel.fromJson(Map<String, dynamic> json) {
     return _$TopicModelFromJson(json);

@@ -5,7 +5,7 @@ import 'package:techtalk/features/topic/topic.dart';
 
 class ChatRoomEntity {
   final InterviewerAvatar interviewerInfo;
-  final Topic topic;
+  final TopicEntity topic;
   final ChatQnaProgressInfoEntity qnaProgressInfo;
   final String? lastChatMessage;
   final DateTime? lastChatDate;
@@ -62,7 +62,7 @@ class ChatRoomEntity {
 
   ChatRoomEntity copyWith({
     InterviewerAvatar? interviewerInfo,
-    Topic? topic,
+    TopicEntity? topic,
     ChatQnaProgressInfoEntity? qnaProgressInfo,
     String? lastChatMessage,
     DateTime? lastChatDate,

@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
+import 'package:techtalk/features/chat/entities/chat_qna_progress_info_entity.dart';
+import 'package:techtalk/features/chat/entities/interviewer_avatar.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 final class ChatRepositoryImpl implements ChatRepository {
@@ -38,10 +40,19 @@ final class ChatRepositoryImpl implements ChatRepository {
           e.chatRoomId,
         );
 
-        return e.toEntity().copyWith(
-              lastChatMessage: messageResponse?.message,
-              lastChatDate: messageResponse?.timestamp,
-            );
+        return ChatRoomEntity(
+          chatRoomId: e.chatRoomId,
+          interviewerInfo: InterviewerAvatar.getAvatarInfoById(e.interviewerId),
+          topic: topicRepository.getTopic(topicId).getOrThrow(),
+          qnaProgressInfo: ChatQnaProgressInfoEntity(
+            totalQuestionCount: e.totalQuestionCount,
+            correctAnswerCount: e.correctAnswerCount,
+            incorrectAnswerCount: e.incorrectAnswerCount,
+          ),
+        ).copyWith(
+          lastChatMessage: messageResponse?.message,
+          lastChatDate: messageResponse?.timestamp,
+        );
       });
       final rooms = await Future.wait(asyncResult);
       rooms.sort(
@@ -65,7 +76,17 @@ final class ChatRepositoryImpl implements ChatRepository {
     );
 
     return Result.success(
-      roomModel.toEntity(),
+      ChatRoomEntity(
+        chatRoomId: roomModel.chatRoomId,
+        interviewerInfo:
+            InterviewerAvatar.getAvatarInfoById(roomModel.interviewerId),
+        topic: topicRepository.getTopic(roomModel.topicId).getOrThrow(),
+        qnaProgressInfo: ChatQnaProgressInfoEntity(
+          totalQuestionCount: roomModel.totalQuestionCount,
+          correctAnswerCount: roomModel.correctAnswerCount,
+          incorrectAnswerCount: roomModel.incorrectAnswerCount,
+        ),
+      ),
     );
   }
 

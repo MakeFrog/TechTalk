@@ -96,7 +96,7 @@ class _Body extends HookConsumerWidget with WrongAnswerNoteEvent {
                     ref,
                     topic,
                   ),
-                  label: Text(topic.name),
+                  label: Text(topic.text),
                 );
               },
             ),

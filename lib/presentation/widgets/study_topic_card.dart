@@ -10,7 +10,7 @@ class StudyTopicCard extends StatelessWidget {
     this.onTap,
   });
 
-  final Topic topic;
+  final TopicEntity topic;
   final VoidCallback? onTap;
 
   @override
@@ -28,7 +28,7 @@ class StudyTopicCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  topic.name,
+                  topic.text,
                   style: AppTextStyle.headline3,
                 ),
               ),

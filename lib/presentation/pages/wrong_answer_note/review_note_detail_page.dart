@@ -55,7 +55,7 @@ class _AppBar extends StatelessWidget
       titleSpacing: 0,
       title: Consumer(
         builder: (_, ref, __) {
-          final topicName = ref.watch(selectedWrongAnswerTopicProvider).name;
+          final topicName = ref.watch(selectedWrongAnswerTopicProvider).text;
 
           return Text(topicName);
         },

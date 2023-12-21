@@ -2,11 +2,17 @@ import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 final class SearchTopicsUseCase {
-  SearchTopicsUseCase(this._topicRepository);
+  SearchTopicsUseCase();
 
-  final TopicRepository _topicRepository;
+  Result<List<TopicEntity>> call(String keyword) {
+    final topics = getTopicsUseCase().getOrThrow();
 
-  Future<Result<List<Topic>>> call(String keyword) async {
-    return _topicRepository.searchTopics(keyword);
+    return Result.success([
+      ...topics.where(
+        (e) => e.text.toLowerCase().startsWith(
+              keyword.toLowerCase(),
+            ),
+      ),
+    ]);
   }
 }

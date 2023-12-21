@@ -1,12 +1,9 @@
 import 'package:techtalk/app/di/feature_di_interface.dart';
 import 'package:techtalk/app/di/locator.dart';
-import 'package:techtalk/features/topic/data/local/topic_local_data_source.dart';
 import 'package:techtalk/features/topic/data/local/topic_local_data_source_impl.dart';
-import 'package:techtalk/features/topic/data/remote/topic_remote_data_source.dart';
 import 'package:techtalk/features/topic/data/remote/topic_remote_data_source_impl.dart';
 import 'package:techtalk/features/topic/repositories/topic_repository_impl.dart';
 import 'package:techtalk/features/topic/topic.dart';
-import 'package:techtalk/features/user/user.dart';
 
 final class TopicDependencyInjection extends FeatureDependencyInjection {
   @override
@@ -35,14 +32,16 @@ final class TopicDependencyInjection extends FeatureDependencyInjection {
     locator
       ..registerFactory(
         () => GetTopicsUseCase(
-          topicRepository: topicRepository,
-          userRepository: userRepository,
+          topicRepository,
         ),
       )
       ..registerFactory(
-        () => SearchTopicsUseCase(
+        () => GetTopicUseCase(
           topicRepository,
         ),
+      )
+      ..registerFactory(
+        SearchTopicsUseCase.new,
       )
       ..registerFactory(
         () => GetTopicQuestionsUseCase(

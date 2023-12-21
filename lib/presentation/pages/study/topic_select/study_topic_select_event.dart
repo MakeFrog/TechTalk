@@ -5,7 +5,7 @@ import 'package:techtalk/features/topic/topic.dart';
 abstract interface class _StudyTopicSelectEvent {
   void onTapCard(
     WidgetRef ref, {
-    required Topic topic,
+    required TopicEntity topic,
   });
 }
 
@@ -13,7 +13,7 @@ mixin class StudyTopicSelectEvent implements _StudyTopicSelectEvent {
   @override
   void onTapCard(
     WidgetRef ref, {
-    required Topic topic,
+    required TopicEntity topic,
   }) {
     StudyRoute(topic.id).push(rootNavigatorKey.currentContext!);
   }

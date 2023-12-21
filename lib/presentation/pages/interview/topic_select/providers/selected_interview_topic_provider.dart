@@ -4,6 +4,6 @@ import 'package:techtalk/features/topic/topic.dart';
 part 'selected_interview_topic_provider.g.dart';
 
 @riverpod
-Topic selectedInterviewTopic(SelectedInterviewTopicRef ref) {
+TopicEntity selectedInterviewTopic(SelectedInterviewTopicRef ref) {
   throw UnimplementedError();
 }

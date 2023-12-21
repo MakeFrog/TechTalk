@@ -14,7 +14,7 @@ abstract class _ChatListEvent {
   /// 면접 질문 갯수 선택 페이지로 이동
   void routeToQuestionCountSelectPage(
     WidgetRef ref, {
-    required Topic topic,
+    required TopicEntity topic,
   });
 }
 
@@ -30,7 +30,7 @@ mixin class ChatListEvent implements _ChatListEvent {
   @override
   void routeToQuestionCountSelectPage(
     WidgetRef ref, {
-    required Topic topic,
+    required TopicEntity topic,
   }) {
     QuestionCountSelectPageRoute($extra: topic).push(ref.context);
   }

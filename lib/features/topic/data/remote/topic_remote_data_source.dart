@@ -1,7 +1,10 @@
-import 'package:techtalk/features/topic/data/models/topic_question_model.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 abstract interface class TopicRemoteDataSource {
-  Future<DateTime> getUpdateDate(String topicId);
+  Future<List<TopicModel>> getTopics();
+  Future<TopicModel> getTopic(String id);
+  Future<List<TopicCategoryModel>> getTopicCategories();
+  Future<TopicCategoryModel> getTopicCategory(String id);
   Future<List<TopicQuestionModel>> getQuestions(String topicId);
   Future<TopicQuestionModel> getQuestion(
     String topicId,

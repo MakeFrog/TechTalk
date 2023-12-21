@@ -44,7 +44,7 @@ class ChatPage extends BasePage with ChatEvent {
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) {
     return BackButtonAppBar(
-      title: ref.watch(selectedInterviewRoomProvider).valueOrNull?.topic.name,
+      title: ref.watch(selectedInterviewRoomProvider).valueOrNull?.topic.text,
       onBackBtnTapped: () {
         onAppbarBackBtnTapped(context);
       },

@@ -4,13 +4,13 @@ import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 class GetInterviewRoomsUseCase
-    extends BaseUseCase<Topic, Result<List<ChatRoomEntity>>> {
+    extends BaseUseCase<TopicEntity, Result<List<ChatRoomEntity>>> {
   GetInterviewRoomsUseCase(this._repository);
 
   final ChatRepository _repository;
 
   @override
-  Future<Result<List<ChatRoomEntity>>> call(Topic topic) {
+  Future<Result<List<ChatRoomEntity>>> call(TopicEntity topic) {
     return _repository.getRooms(topic.id);
   }
 }

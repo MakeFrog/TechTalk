@@ -6,7 +6,7 @@ part of 'interview_rooms_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$interviewRoomsHash() => r'bd4e33c274b839d1f82831d98447b7b4f811eeae';
+String _$interviewRoomsHash() => r'8836eb0cdad3537ec986ebfc5ad86293a592d4b5';
 
 /// Copied from Dart SDK
 class _SystemHash {

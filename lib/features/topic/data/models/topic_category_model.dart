@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:techtalk/features/topic/entities/topic_category.enum.dart';
+import 'package:techtalk/features/topic/entities/topic_category_entity.dart';
 
 part 'topic_category_model.g.dart';
 
@@ -8,11 +8,11 @@ part 'topic_category_model.g.dart';
 class TopicCategoryModel {
   TopicCategoryModel({
     required this.id,
-    required this.text,
+    required this.name,
   });
 
   final String id;
-  final String text;
+  final String name;
 
   factory TopicCategoryModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -20,12 +20,10 @@ class TopicCategoryModel {
   ) =>
       TopicCategoryModel.fromJson(snapshot.data()!);
 
-  factory TopicCategoryModel.fromEntity(
-    TopicCategory data,
-  ) {
-    return TopicCategoryModel(
-      id: data.id,
-      text: data.text,
+  TopicCategoryEntity toEntity() {
+    return TopicCategoryEntity(
+      id: id,
+      text: name,
     );
   }
 

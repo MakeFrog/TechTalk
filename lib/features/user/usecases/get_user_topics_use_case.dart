@@ -9,12 +9,12 @@ final class GetUserTopicsUseCase {
 
   final UserRepository _userRepository;
 
-  Future<Result<List<Topic>>> call() async {
+  Future<Result<List<TopicEntity>>> call() async {
     final userTopicIds = await _userRepository.getUserTopicIds();
 
     return userTopicIds.fold(
       onSuccess: (topicIds) async {
-        final topics = await getTopicsUseCase();
+        final topics = getTopicsUseCase();
 
         return topics.fold(
           onSuccess: (value) {

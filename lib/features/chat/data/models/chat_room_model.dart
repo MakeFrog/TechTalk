@@ -2,9 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:techtalk/core/helper/string_generator.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/entities/chat_qna_progress_info_entity.dart';
 import 'package:techtalk/features/chat/entities/interviewer_avatar.dart';
-import 'package:techtalk/features/topic/topic.dart';
 
 part 'chat_room_model.g.dart';
 
@@ -52,17 +50,6 @@ class ChatRoomModel {
         correctAnswerCount: entity.qnaProgressInfo.correctAnswerCount,
         incorrectAnswerCount: entity.qnaProgressInfo.incorrectAnswerCount,
         chatRoomId: entity.chatRoomId,
-      );
-
-  ChatRoomEntity toEntity() => ChatRoomEntity(
-        chatRoomId: chatRoomId,
-        interviewerInfo: InterviewerAvatar.getAvatarInfoById(interviewerId),
-        topic: Topic.getTopicById(topicId),
-        qnaProgressInfo: ChatQnaProgressInfoEntity(
-          totalQuestionCount: totalQuestionCount,
-          correctAnswerCount: correctAnswerCount,
-          incorrectAnswerCount: incorrectAnswerCount,
-        ),
       );
 
   factory ChatRoomModel.fromJson(Map<String, dynamic> json) {

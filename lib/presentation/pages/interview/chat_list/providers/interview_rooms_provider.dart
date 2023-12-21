@@ -10,7 +10,7 @@ part 'interview_rooms_provider.g.dart';
 class InterviewRooms extends _$InterviewRooms {
   @override
   FutureOr<List<ChatRoomEntity>> build(String topicId) async {
-    final topic = Topic.getTopicById(topicId);
+    final topic = getTopicUseCase(topicId).getOrThrow();
     final response = await getInterviewRoomsUseCase(topic);
     return response.fold(
       onSuccess: (chatList) {

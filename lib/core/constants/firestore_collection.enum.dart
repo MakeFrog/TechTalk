@@ -19,8 +19,20 @@ enum FirestoreCollection {
 }
 
 class FirestoreCollections {
-  static FirestoreUserCollection get users => FirestoreUserCollection();
+  static FirestoreTopicCategoryCollection get topicCategories =>
+      FirestoreTopicCategoryCollection();
   static FirestoreTopicCollection get topics => FirestoreTopicCollection();
+  static FirestoreUserCollection get users => FirestoreUserCollection();
+}
+
+class FirestoreTopicCategoryCollection {
+  static const String name = 'TopicCategories';
+
+  CollectionReference<Map<String, dynamic>> collection() =>
+      _firestore.collection(name);
+
+  DocumentReference<Map<String, dynamic>> doc(String id) =>
+      _firestore.collection(name).doc(id);
 }
 
 class FirestoreTopicCollection {

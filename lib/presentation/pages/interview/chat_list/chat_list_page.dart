@@ -14,11 +14,11 @@ class ChatListPage extends BasePage with ChatListEvent {
   ChatListPage({
     Key? key,
     required this.topicId,
-  })  : _topic = Topic.getTopicById(topicId),
+  })  : _topic = getTopicUseCase(topicId).getOrThrow(),
         super(key: key);
 
   final String topicId;
-  final Topic _topic;
+  final TopicEntity _topic;
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {

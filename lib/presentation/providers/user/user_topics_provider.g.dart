@@ -6,11 +6,12 @@ part of 'user_topics_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userTopicsHash() => r'99015b3c7fe5ac660ab7485267c5520bf1084cf5';
+String _$userTopicsHash() => r'74cbbc7e32f026b289d519755c979ce0542372dd';
 
 /// See also [UserTopics].
 @ProviderFor(UserTopics)
-final userTopicsProvider = NotifierProvider<UserTopics, List<Topic>>.internal(
+final userTopicsProvider =
+    NotifierProvider<UserTopics, List<TopicEntity>>.internal(
   UserTopics.new,
   name: r'userTopicsProvider',
   debugGetCreateSourceHash:
@@ -19,6 +20,6 @@ final userTopicsProvider = NotifierProvider<UserTopics, List<Topic>>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef _$UserTopics = Notifier<List<Topic>>;
+typedef _$UserTopics = Notifier<List<TopicEntity>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

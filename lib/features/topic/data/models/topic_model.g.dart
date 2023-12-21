@@ -8,8 +8,9 @@ part of 'topic_model.dart';
 
 TopicModel _$TopicModelFromJson(Map<String, dynamic> json) => TopicModel(
       id: json['id'] as String,
-      name: json['name'] as String,
       categoryId: json['category_id'] as String,
+      name: json['name'] as String,
+      imagePath: json['image_path'] as String?,
       isAvailable: json['is_available'] as bool,
       updatedAt: _$JsonConverterFromJson<Timestamp, DateTime>(
           json['updated_at'], const TimeStampConverter().fromJson),
@@ -18,8 +19,9 @@ TopicModel _$TopicModelFromJson(Map<String, dynamic> json) => TopicModel(
 Map<String, dynamic> _$TopicModelToJson(TopicModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'name': instance.name,
       'category_id': instance.categoryId,
+      'name': instance.name,
+      'image_path': instance.imagePath,
       'is_available': instance.isAvailable,
       'updated_at': _$JsonConverterToJson<Timestamp, DateTime>(
           instance.updatedAt, const TimeStampConverter().toJson),

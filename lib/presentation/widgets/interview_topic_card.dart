@@ -14,7 +14,7 @@ class InterviewTopicCard extends StatelessWidget {
     this.onTap,
   });
 
-  final Topic? topic;
+  final TopicEntity? topic;
   final bool isSelected;
   final VoidCallback? onTap;
   final bool isLoaded;
@@ -64,7 +64,7 @@ class InterviewTopicCard extends StatelessWidget {
                     ),
                     const Gap(16),
                     Text(
-                      topic!.name,
+                      topic!.text,
                       style: AppTextStyle.headline3,
                     ),
                   ],

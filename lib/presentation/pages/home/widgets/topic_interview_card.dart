@@ -77,7 +77,7 @@ class TopicInterviewCard extends StatelessWidget with HomeEvent {
     );
   }
 
-  Widget _buildTopic(Topic topic) {
+  Widget _buildTopic(TopicEntity topic) {
     return SizedBox(
       height: 64,
       child: Row(

@@ -26,23 +26,6 @@ class TopicLocalDataSourceImpl implements TopicLocalDataSource {
   }
 
   @override
-  Future<DateTime?> getUpdateDate(String topicId) async {
-    try {
-      final topicSnapshot = await FirestoreCollections.topics
-          .doc(topicId)
-          .withConverter(
-            fromFirestore: TopicModel.fromFirestore,
-            toFirestore: (value, options) => value.toJson(),
-          )
-          .get(const GetOptions(source: Source.cache));
-
-      return topicSnapshot.data()?.updatedAt;
-    } catch (e) {
-      return null;
-    }
-  }
-
-  @override
   Future<TopicQuestionModel?> getQuestion(
     String topicId,
     String questionId,
