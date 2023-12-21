@@ -91,10 +91,14 @@ class TopicRepositoryImpl implements TopicRepository {
     String questionId,
   ) async {
     try {
-      final questionModel = await _remoteDataSource.getQuestion(
-        topicId,
-        questionId,
-      );
+      final questionModel = await _localDataSource.getQuestion(
+            topicId,
+            questionId,
+          ) ??
+          await _remoteDataSource.getQuestion(
+            topicId,
+            questionId,
+          );
 
       return Result.success(
         questionModel.toEntity(),

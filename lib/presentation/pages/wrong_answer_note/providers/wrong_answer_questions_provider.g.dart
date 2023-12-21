@@ -7,7 +7,7 @@ part of 'wrong_answer_questions_provider.dart';
 // **************************************************************************
 
 String _$wrongAnswerQuestionsHash() =>
-    r'f34b4c1f86313fdf1b2654f0821135156778cb31';
+    r'e12be23f8ab9f443f42c5b429961d1be143d80e5';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,10 +31,10 @@ class _SystemHash {
 }
 
 abstract class _$WrongAnswerQuestions
-    extends BuildlessAsyncNotifier<List<WrongAnswerQuestionEntity>> {
+    extends BuildlessAsyncNotifier<List<TopicQuestionEntity>> {
   late final String topicId;
 
-  FutureOr<List<WrongAnswerQuestionEntity>> build(
+  FutureOr<List<TopicQuestionEntity>> build(
     String topicId,
   );
 }
@@ -45,7 +45,7 @@ const wrongAnswerQuestionsProvider = WrongAnswerQuestionsFamily();
 
 /// See also [WrongAnswerQuestions].
 class WrongAnswerQuestionsFamily
-    extends Family<AsyncValue<List<WrongAnswerQuestionEntity>>> {
+    extends Family<AsyncValue<List<TopicQuestionEntity>>> {
   /// See also [WrongAnswerQuestions].
   const WrongAnswerQuestionsFamily();
 
@@ -84,7 +84,7 @@ class WrongAnswerQuestionsFamily
 
 /// See also [WrongAnswerQuestions].
 class WrongAnswerQuestionsProvider extends AsyncNotifierProviderImpl<
-    WrongAnswerQuestions, List<WrongAnswerQuestionEntity>> {
+    WrongAnswerQuestions, List<TopicQuestionEntity>> {
   /// See also [WrongAnswerQuestions].
   WrongAnswerQuestionsProvider(
     String topicId,
@@ -115,7 +115,7 @@ class WrongAnswerQuestionsProvider extends AsyncNotifierProviderImpl<
   final String topicId;
 
   @override
-  FutureOr<List<WrongAnswerQuestionEntity>> runNotifierBuild(
+  FutureOr<List<TopicQuestionEntity>> runNotifierBuild(
     covariant WrongAnswerQuestions notifier,
   ) {
     return notifier.build(
@@ -140,8 +140,8 @@ class WrongAnswerQuestionsProvider extends AsyncNotifierProviderImpl<
   }
 
   @override
-  AsyncNotifierProviderElement<WrongAnswerQuestions,
-      List<WrongAnswerQuestionEntity>> createElement() {
+  AsyncNotifierProviderElement<WrongAnswerQuestions, List<TopicQuestionEntity>>
+      createElement() {
     return _WrongAnswerQuestionsProviderElement(this);
   }
 
@@ -160,14 +160,14 @@ class WrongAnswerQuestionsProvider extends AsyncNotifierProviderImpl<
 }
 
 mixin WrongAnswerQuestionsRef
-    on AsyncNotifierProviderRef<List<WrongAnswerQuestionEntity>> {
+    on AsyncNotifierProviderRef<List<TopicQuestionEntity>> {
   /// The parameter `topicId` of this provider.
   String get topicId;
 }
 
 class _WrongAnswerQuestionsProviderElement extends AsyncNotifierProviderElement<
     WrongAnswerQuestions,
-    List<WrongAnswerQuestionEntity>> with WrongAnswerQuestionsRef {
+    List<TopicQuestionEntity>> with WrongAnswerQuestionsRef {
   _WrongAnswerQuestionsProviderElement(super.provider);
 
   @override
