@@ -12,7 +12,7 @@ final class CreateUserDataUseCase extends BaseNoParamUseCase<Result<void>> {
   final UserRepository _userRepository;
 
   @override
-  FutureOr<Result<void>> call() async {
+  Future<Result<void>> call() async {
     return _userRepository.createUserData();
   }
 }

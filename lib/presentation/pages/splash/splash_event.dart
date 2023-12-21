@@ -27,7 +27,7 @@ mixin class SplashEvent implements _SplashEvent {
 
     await ref.read(userDataProvider.future).then(
       (userData) {
-        if (userData == null || !userData.isCompleteSignUp) {
+        if (userData == null || !userData.hasEssentialData) {
           const SignInRoute().go(ref.context);
         } else {
           const MainRoute().go(ref.context);

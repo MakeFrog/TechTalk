@@ -9,7 +9,7 @@ final class DeleteUserDataUseCase extends BaseNoParamUseCase<Result<void>> {
 
   final UserRepository _userRepository;
   @override
-  FutureOr<Result<void>> call() {
+  Future<Result<void>> call() async {
     return _userRepository.deleteUserData();
   }
 }

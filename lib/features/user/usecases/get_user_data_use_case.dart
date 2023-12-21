@@ -13,7 +13,7 @@ final class GetUserDataUseCase
   final UserRepository _userRepository;
 
   @override
-  FutureOr<Result<UserDataEntity>> call() async {
+  Future<Result<UserDataEntity>> call() async {
     return _userRepository.getUserData();
   }
 }

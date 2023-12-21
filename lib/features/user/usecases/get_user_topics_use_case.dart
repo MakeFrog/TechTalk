@@ -14,7 +14,7 @@ final class GetUserTopicsUseCase
   final UserRepository _userRepository;
 
   @override
-  FutureOr<Result<List<TopicEntity>>> call() async {
+  Future<Result<List<TopicEntity>>> call() async {
     try {
       final userTopicIds = await _userRepository.getUserData().then(
             (value) => value.getOrThrow().topicIds,
