@@ -3,6 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/core/helper/validation_extension.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
 import 'package:techtalk/features/job/job.dart';
@@ -31,11 +32,27 @@ abstract class _SignUpEvent {
 
   Future<void> onTapSignUp(
     WidgetRef ref, {
-    required List<Topic> topics,
+    required List<TopicEntity> topics,
   });
 }
 
 mixin class SignUpEvent implements _SignUpEvent {
+  String? validateNickname(String nickname) {
+    if (nickname.isEmpty) {
+      return null;
+    } else if (nickname.hasSpace) {
+      return '닉네임에 공백이 포함되어 있습니다.';
+    } else if (!nickname.hasProperCharacter) {
+      return '닉네임은 한글, 알파벳, 숫자, 언더스코어(_), 하이픈(-)만 사용할 수 있습니다.';
+    } else if (nickname.hasContainFWord) {
+      return '닉네임에 비속어가 포함되어 있습니다.';
+    } else if (nickname.hasContainOperationWord) {
+      return '허용되지 않는 단어가 포함되어 있습니다.';
+    } else {
+      return null;
+    }
+  }
+
   @override
   void onTapBackButton(WidgetRef ref) {
     if (ref.read(signUpStepControllerProvider).page!.round() == 0) {
@@ -109,7 +126,7 @@ mixin class SignUpEvent implements _SignUpEvent {
   @override
   Future<void> onTapSignUp(
     WidgetRef ref, {
-    required List<Topic> topics,
+    required List<TopicEntity> topics,
   }) async {
     try {
       await EasyLoading.show();
