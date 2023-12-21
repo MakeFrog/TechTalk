@@ -18,80 +18,58 @@ enum FirestoreCollection {
   const FirestoreCollection(this.name);
 }
 
-class FirestoreCollections {
-  static FirestoreTopicCategoryCollection get topicCategories =>
-      FirestoreTopicCategoryCollection();
-  static FirestoreTopicCollection get topics => FirestoreTopicCollection();
-  static FirestoreUserCollection get users => FirestoreUserCollection();
-}
-
-class FirestoreTopicCategoryCollection {
+abstract class FirestoreTopicCategoryRef {
   static const String name = 'TopicCategories';
 
-  CollectionReference<Map<String, dynamic>> collection() =>
+  static CollectionReference<Map<String, dynamic>> collection() =>
       _firestore.collection(name);
 
-  DocumentReference<Map<String, dynamic>> doc(String id) =>
+  static DocumentReference<Map<String, dynamic>> doc(String id) =>
       _firestore.collection(name).doc(id);
 }
 
-class FirestoreTopicCollection {
+abstract class FirestoreTopicRef {
   static const String name = 'Topics';
 
-  CollectionReference<Map<String, dynamic>> collection() =>
+  static CollectionReference<Map<String, dynamic>> collection() =>
       _firestore.collection(name);
 
-  DocumentReference<Map<String, dynamic>> doc(String id) =>
+  static DocumentReference<Map<String, dynamic>> doc(String id) =>
       _firestore.collection(name).doc(id);
-
-  FirestoreTopicQuestionCollection question(String id) =>
-      FirestoreTopicQuestionCollection._(
-        doc(id),
-      );
 }
 
-class FirestoreTopicQuestionCollection {
-  FirestoreTopicQuestionCollection._(this._topicDoc);
-  final DocumentReference<Map<String, dynamic>> _topicDoc;
+abstract class FirestoreTopicQuestionRef {
   static const String name = 'Questions';
 
-  CollectionReference<Map<String, dynamic>> collection() =>
-      _topicDoc.collection(name);
+  static CollectionReference<Map<String, dynamic>> collection(String topicId) =>
+      FirestoreTopicRef.doc(topicId).collection(name);
 
-  DocumentReference<Map<String, dynamic>> doc(String id) =>
-      _topicDoc.collection(name).doc(id);
+  static DocumentReference<Map<String, dynamic>> doc(
+    String topicId,
+    String id,
+  ) =>
+      FirestoreTopicRef.doc(topicId).collection(name).doc(id);
 }
 
-class FirestoreUserCollection {
+abstract class FirestoreUserRef {
   static const String name = 'Users';
-  String get _userUid => FirebaseAuth.instance.currentUser!.uid;
+  static String get _userUid => FirebaseAuth.instance.currentUser!.uid;
 
-  CollectionReference<Map<String, dynamic>> collection() =>
+  static CollectionReference<Map<String, dynamic>> collection() =>
       _firestore.collection(name);
 
-  DocumentReference<Map<String, dynamic>> doc([String? id]) =>
+  static DocumentReference<Map<String, dynamic>> doc([String? id]) =>
       _firestore.collection(name).doc(id ?? _userUid);
-
-  FirestoreChatRoomCollection chatRoom([String? id]) =>
-      FirestoreChatRoomCollection._(
-        doc(id ?? _userUid),
-      );
-  FirestoreWrongAnswerCollection wrongAnswer([String? id]) =>
-      FirestoreWrongAnswerCollection._(
-        doc(id ?? _userUid),
-      );
 }
 
-class FirestoreChatRoomCollection {
-  FirestoreChatRoomCollection._(this._userDoc);
-  final DocumentReference<Map<String, dynamic>> _userDoc;
+abstract class FirestoreChatRoomRef {
   static const String name = 'Chats';
 
-  CollectionReference<Map<String, dynamic>> collection() =>
-      _userDoc.collection(name);
+  static CollectionReference<Map<String, dynamic>> collection() =>
+      FirestoreUserRef.doc().collection(name);
 
-  DocumentReference<Map<String, dynamic>> doc(String id) =>
-      _userDoc.collection(name).doc(id);
+  static DocumentReference<Map<String, dynamic>> doc(String id) =>
+      FirestoreUserRef.doc().collection(name).doc(id);
 
   FirestoreChatMessageCollection message(String id) =>
       FirestoreChatMessageCollection._(
