@@ -14,8 +14,10 @@ class SplashPage extends BasePage with SplashEvent {
     Future.delayed(
       500.milliseconds,
       () async {
-        await initStaticProviders(ref);
-        await routeByUserAuthAndData(ref);
+        if (!SplashEvent.initComplete) {
+          await initStaticProviders(ref);
+          await routeByUserAuthAndData(ref);
+        }
       },
     );
   }
