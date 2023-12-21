@@ -7,7 +7,9 @@ class TopicLocalDataSourceImpl implements TopicLocalDataSource {
   Future<List<TopicQuestionModel>?> getQuestions(
     String topicId,
   ) async {
-    final snapshot = await FirestoreTopicQuestionRef.collection(topicId)
+    final snapshot = await FirestoreCollections.topics
+        .question(topicId)
+        .collection()
         .withConverter(
           fromFirestore: TopicQuestionModel.fromFirestore,
           toFirestore: (value, options) => value.toJson(),
@@ -28,7 +30,9 @@ class TopicLocalDataSourceImpl implements TopicLocalDataSource {
     String topicId,
     String questionId,
   ) async {
-    final snapshot = await FirestoreTopicQuestionRef.doc(topicId, questionId)
+    final snapshot = await FirestoreCollections.topics
+        .question(topicId)
+        .doc(questionId)
         .withConverter(
           fromFirestore: TopicQuestionModel.fromFirestore,
           toFirestore: (value, options) => value.toJson(),

@@ -4,7 +4,8 @@ import 'package:techtalk/features/topic/topic.dart';
 final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
   @override
   Future<List<TopicModel>> getTopics() async {
-    final topicModels = await FirestoreTopicRef.collection()
+    final topicModels = await FirestoreCollections.topics
+        .collection()
         .withConverter(
           fromFirestore: TopicModel.fromFirestore,
           toFirestore: (value, options) => value.toJson(),
@@ -18,7 +19,8 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
 
   @override
   Future<TopicModel> getTopic(String id) async {
-    final topicModel = await FirestoreTopicRef.doc(id)
+    final topicModel = await FirestoreCollections.topics
+        .doc(id)
         .withConverter(
           fromFirestore: TopicModel.fromFirestore,
           toFirestore: (value, options) => value.toJson(),
@@ -30,7 +32,8 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
 
   @override
   Future<List<TopicCategoryModel>> getTopicCategories() async {
-    final topicCategoryModels = await FirestoreTopicCategoryRef.collection()
+    final topicCategoryModels = await FirestoreCollections.topicCategories
+        .collection()
         .withConverter(
           fromFirestore: TopicCategoryModel.fromFirestore,
           toFirestore: (value, options) => value.toJson(),
@@ -44,7 +47,8 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
 
   @override
   Future<TopicCategoryModel> getTopicCategory(String id) async {
-    final topicCategoryModel = await FirestoreTopicCategoryRef.doc(id)
+    final topicCategoryModel = await FirestoreCollections.topicCategories
+        .doc(id)
         .withConverter(
           fromFirestore: TopicCategoryModel.fromFirestore,
           toFirestore: (value, options) => value.toJson(),
@@ -59,7 +63,9 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
     String topicId,
     String questionId,
   ) async {
-    final snapshot = await FirestoreTopicQuestionRef.doc(topicId, questionId)
+    final snapshot = await FirestoreCollections.topics
+        .question(topicId)
+        .doc(questionId)
         .withConverter(
           fromFirestore: TopicQuestionModel.fromFirestore,
           toFirestore: (value, options) => value.toJson(),
@@ -75,7 +81,9 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
 
   @override
   Future<List<TopicQuestionModel>> getQuestions(String topicId) async {
-    final snapshot = await FirestoreTopicQuestionRef.collection(topicId)
+    final snapshot = await FirestoreCollections.topics
+        .question(topicId)
+        .collection()
         .withConverter(
           fromFirestore: TopicQuestionModel.fromFirestore,
           toFirestore: (value, options) => value.toJson(),
