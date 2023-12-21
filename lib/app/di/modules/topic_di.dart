@@ -36,6 +36,11 @@ final class TopicDependencyInjection extends FeatureDependencyInjection {
         ),
       )
       ..registerFactory(
+        () => GetCategorizedTopicsUseCase(
+          topicRepository,
+        ),
+      )
+      ..registerFactory(
         () => GetTopicUseCase(
           topicRepository,
         ),

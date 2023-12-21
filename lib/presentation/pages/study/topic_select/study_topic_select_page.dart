@@ -3,8 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/study/topic_select/study_topic_select_event.dart';
-import 'package:techtalk/presentation/providers/topic/categorized_topics_provider.dart';
 import 'package:techtalk/presentation/widgets/common/chip/label_chip.dart';
 import 'package:techtalk/presentation/widgets/study_topic_card.dart';
 
@@ -58,7 +58,7 @@ class _Body extends StatelessWidget with StudyTopicSelectEvent {
   Widget _buildTopicGrid() {
     return Consumer(
       builder: (context, ref, child) {
-        final categorizedTopics = ref.watch(categorizedTopicsProvider);
+        final categorizedTopics = getCategorizedTopicsUseCase().getOrThrow();
 
         return ListView.separated(
           padding: const EdgeInsets.symmetric(vertical: 8),
