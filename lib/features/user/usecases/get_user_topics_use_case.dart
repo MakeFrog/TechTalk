@@ -1,39 +1,35 @@
+import 'dart:async';
+
+import 'package:techtalk/core/utils/base/base_no_param_use_case.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/user/user.dart';
 
-final class GetUserTopicsUseCase {
-  const GetUserTopicsUseCase(
+final class GetUserTopicsUseCase
+    extends BaseNoParamUseCase<Result<List<TopicEntity>>> {
+  GetUserTopicsUseCase(
     this._userRepository,
   );
 
   final UserRepository _userRepository;
 
-  Future<Result<List<TopicEntity>>> call() async {
-    final userTopicIds = await _userRepository.getUserTopicIds();
+  @override
+  FutureOr<Result<List<TopicEntity>>> call() async {
+    try {
+      final userTopicIds = await _userRepository.getUserData().then(
+            (value) => value.getOrThrow().topicIds,
+          );
+      final topics = getTopicsUseCase().getOrThrow();
 
-    return userTopicIds.fold(
-      onSuccess: (topicIds) async {
-        final topics = getTopicsUseCase();
-
-        return topics.fold(
-          onSuccess: (value) {
-            return Result.success(
-              [
-                ...value.where(
-                  (element) => topicIds.contains(element.id),
-                ),
-              ],
-            );
-          },
-          onFailure: (e) {
-            throw e;
-          },
-        );
-      },
-      onFailure: (e) {
-        throw e;
-      },
-    );
+      return Result.success(
+        [
+          ...topics.where(
+            (element) => userTopicIds.contains(element.id),
+          ),
+        ],
+      );
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
   }
 }

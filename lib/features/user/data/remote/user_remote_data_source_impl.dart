@@ -1,33 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:techtalk/core/constants/firestore_collection.enum.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/features/user/data/models/user_data_model.dart';
+import 'package:techtalk/features/user/data/models/users_ref.dart';
 import 'package:techtalk/features/user/user.dart';
 
 final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
-  /// firestore에 저장된 users 컬렉션을 조회한다
-  CollectionReference<UserDataModel> get _usersCollection =>
-      FirestoreUserRef.collection().withConverter(
-        fromFirestore: UserDataModel.fromFirestore,
-        toFirestore: (value, _) => value.toJson(),
-      );
-
-  /// [data.uid]를 키로 가지는 도큐먼트를 조회한다
-  DocumentReference<UserDataModel> _userDoc(String uid) =>
-      FirestoreUserRef.doc(uid).withConverter(
-        fromFirestore: UserDataModel.fromFirestore,
-        toFirestore: (value, _) => value.toJson(),
-      );
-
-  /// [uid]를 키로 가지는 데이터가 있는지 여부
-  Future<bool> _isExistUserData(String uid) async =>
-      (await _userDoc(uid).get()).exists;
-
   Future<bool> _isExistNickname(
-    String uid,
     String nickname,
   ) async {
-    return _usersCollection
+    return FirestoreUsersRef.collection()
         .where(
           'nickname',
           isEqualTo: nickname,
@@ -40,29 +20,32 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }
 
   @override
-  Future<void> createUserData(String uid) async {
-    if (await _isExistUserData(uid)) {
+  Future<void> createUserData() async {
+    if (await FirestoreUsersRef.isExist()) {
       throw const AlreadyExistUserDataException();
     }
 
-    await _userDoc(uid).set(
-      UserDataModel(uid: uid),
+    final userData = FirestoreUsersRef.doc();
+
+    await userData.set(
+      UserDataModel(uid: userData.id),
     );
   }
 
   @override
   Future<void> updateUserData(UserDataEntity data) async {
-    if (!await _isExistUserData(data.uid)) {
+    if (!await FirestoreUsersRef.isExist()) {
       throw const NoUserDataException();
     }
+
     UserDataModel userModel = UserDataModel.fromEntity(data);
-    final orgUserData = await _userDoc(data.uid).get().then(
+    final orgUserData = await FirestoreUsersRef.doc().get().then(
           (value) => value.data()!,
         );
 
     if (userModel.nickname != orgUserData.nickname &&
-        await _isExistNickname(data.uid, data.nickname!)) {
-      throw AlreadyExistNicknameException();
+        await _isExistNickname(data.nickname!)) {
+      throw const AlreadyExistNicknameException();
     }
 
     userModel = UserDataModel(
@@ -75,24 +58,24 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
           ? userModel.jobGroupIds
           : null,
     );
-    await _userDoc(data.uid).update(
+    await FirestoreUsersRef.doc(data.uid).update(
       userModel.toJson(),
     );
   }
 
   @override
-  Future<UserDataModel?> getUserData(String uid) async {
-    if (!await _isExistUserData(uid)) {
-      return null;
+  Future<UserDataEntity> getUserData() async {
+    if (!await FirestoreUsersRef.isExist()) {
+      throw const NoUserDataException();
     }
 
-    final snapshot = await _userDoc(uid).get();
+    final snapshot = await FirestoreUsersRef.doc().get();
 
-    return snapshot.data();
+    return snapshot.data()!.toEntity();
   }
 
   @override
-  Future<void> deleteUserData(String uid) async {
-    await _userDoc(uid).delete();
+  Future<void> deleteUserData() async {
+    await FirestoreUsersRef.doc().delete();
   }
 }
