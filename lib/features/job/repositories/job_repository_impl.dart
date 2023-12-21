@@ -1,29 +1,26 @@
 import 'dart:async';
 
 import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/job/data/local/job_local_data_source.dart';
 import 'package:techtalk/features/job/job.dart';
 
 final class JobRepositoryImpl implements JobRepository {
-  const JobRepositoryImpl(
+  JobRepositoryImpl(
     this._jobRemoteDataSource,
-    this._jobLocalDataSource,
   );
 
   final JobRemoteDataSource _jobRemoteDataSource;
-  final JobLocalDataSource _jobLocalDataSource;
+
+  List<JobEntity>? _cachedJobs;
 
   @override
-  Future<Result<List<JobEntity>>> getJobs() async {
+  Future<void> initStaticData() async {
+    _cachedJobs ??= await _jobRemoteDataSource.getJobs();
+  }
+
+  @override
+  Result<List<JobEntity>> getJobs() {
     try {
-      final cachedJobs = await _jobLocalDataSource.getJobs();
-      if (cachedJobs != null) {
-        return Result.success(cachedJobs);
-      }
-
-      final jobs = await _jobRemoteDataSource.getJobs();
-
-      return Result.success(jobs);
+      return Result.success(_cachedJobs!);
     } on Exception catch (e) {
       return Result.failure(e);
     }

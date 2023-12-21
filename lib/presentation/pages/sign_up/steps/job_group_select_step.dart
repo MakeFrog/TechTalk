@@ -42,25 +42,7 @@ class JobGroupSelectStep extends HookConsumerWidget with SignUpEvent {
               ),
               HookBuilder(
                 builder: (context) {
-                  final getJobGroups = useMemoized(getJobsUseCase);
-                  final getJobGroupsAsync = useFuture(getJobGroups);
-
-                  if (getJobGroupsAsync.connectionState ==
-                      ConnectionState.waiting) {
-                    return const SliverFillRemaining(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  } else if (getJobGroupsAsync.hasError) {
-                    return SliverFillRemaining(
-                      child: Center(
-                        child: Text('${getJobGroupsAsync.error}'),
-                      ),
-                    );
-                  }
-
-                  final jobGroups = getJobGroupsAsync.requireData.getOrThrow();
+                  final jobGroups = getJobsUseCase().getOrThrow();
 
                   return SliverList.builder(
                     itemCount: jobGroups.length,
