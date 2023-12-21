@@ -1,44 +1,45 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:techtalk/core/constants/firestore_collection.enum.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data/models/chat_room_model.dart';
 import 'package:techtalk/features/chat/data/models/interview_qna_model.dart';
 import 'package:techtalk/features/chat/data/models/message_model.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  String get _userUid => FirebaseAuth.instance.currentUser!.uid;
-
-  CollectionReference<ChatRoomModel> get _roomCollection => _firestore
-      .collection(FirestoreCollection.users.name)
-      .doc(_userUid)
-      .collection(FirestoreCollection.chats.name)
-      .withConverter(
+  CollectionReference<ChatRoomModel> get _roomCollection =>
+      FirestoreChatRoomRef.collection().withConverter(
         fromFirestore: ChatRoomModel.fromFirestore,
         toFirestore: (value, options) => value.toJson(),
       );
 
   DocumentReference<ChatRoomModel> _roomDoc(String roomId) =>
-      _roomCollection.doc(roomId);
+      FirestoreChatRoomRef.doc(roomId).withConverter(
+        fromFirestore: ChatRoomModel.fromFirestore,
+        toFirestore: (value, options) => value.toJson(),
+      );
 
   CollectionReference<MessageModel> _chatMessageCollection(String roomId) =>
-      _roomDoc(roomId).collection('Messages').withConverter(
-            fromFirestore: MessageModel.fromFirestore,
-            toFirestore: (value, options) => value.toJson(),
-          );
+      FirestoreChatMessageRef.collection(roomId).withConverter(
+        fromFirestore: MessageModel.fromFirestore,
+        toFirestore: (value, options) => value.toJson(),
+      );
 
   DocumentReference<MessageModel> _chatMessageDoc(
-          String roomId, String chatId) =>
-      _chatMessageCollection(roomId).doc(chatId);
+    String roomId,
+    String chatId,
+  ) =>
+      FirestoreChatMessageRef.doc(roomId, chatId).withConverter(
+        fromFirestore: MessageModel.fromFirestore,
+        toFirestore: (value, options) => value.toJson(),
+      );
 
   CollectionReference<InterviewQnaModel> _chatQnaCollection(String roomId) =>
-      _roomDoc(roomId).collection('Qna').withConverter(
-            fromFirestore: InterviewQnaModel.fromFirestore,
-            toFirestore: (value, options) => value.toJson(),
-          );
+      FirestoreChatQnaRef.collection(roomId).withConverter(
+        fromFirestore: InterviewQnaModel.fromFirestore,
+        toFirestore: (value, options) => value.toJson(),
+      );
 
   @override
   Future<String> createRoom({
@@ -57,27 +58,29 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
     await roomDoc.set(roomModel);
 
     // 면접주제의 질문 목록 조회 후 무작위 [questionCount]만큼 id 추출
-    final questionsSnapshot = await _firestore
-        .collection(FirestoreCollection.interview.name)
-        .doc(topicId)
-        .collection(FirestoreCollection.interviewQuestions.name)
-        .get();
+    final questionsSnapshot =
+        await FirestoreTopicQuestionRef.collection(topicId)
+            .withConverter(
+              fromFirestore: TopicQuestionModel.fromFirestore,
+              toFirestore: (value, options) => value.toJson(),
+            )
+            .get();
     final questionIds = [
-      ...questionsSnapshot.docs.map((e) => e.id),
+      ...questionsSnapshot.docs.map((e) => e.data()),
     ]..shuffle();
-    final slicedQuestionIds = questionIds.sublist(0, questionCount);
+    final slicedQuestions = questionIds.sublist(0, questionCount);
 
     // 만들어진 채팅방 문서에 질문 리스트 추가
     // 트랜잭션을 사용해 한번에 처리
-    final qnaCollection = roomDoc.collection('qna');
-    await _firestore.runTransaction((transaction) async {
-      for (final questionId in slicedQuestionIds) {
+    final qnaCollection = _chatQnaCollection(roomModel.chatRoomId);
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      for (final question in slicedQuestions) {
         final qnaDoc = qnaCollection.doc();
         transaction.set(
           qnaDoc,
           InterviewQnaModel(
             id: qnaDoc.id,
-            questionId: questionId,
+            questionId: question.id,
           ).toJson(),
         );
       }
@@ -120,21 +123,21 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
     required List<MessageEntity> messages,
   }) async {
     try {
-      await _firestore.runTransaction(
-        (transaction) async {
-          final roomDoc = _roomDoc(roomId);
-          final messageCollection = _chatMessageCollection(roomId);
-          final qnaCollection = _chatQnaCollection(roomId);
+      final roomDoc = _roomDoc(roomId);
+      final messageCollection = _chatMessageCollection(roomId);
+      final qnaCollection = _chatQnaCollection(roomId);
 
+      await FirebaseFirestore.instance.runTransaction(
+        (transaction) async {
           // 메세지 업데이트
           // 유저의 응답메세지라면 채팅방의 정답 or 오답카운트, 채팅방 qna 정보를 업데이트한다
           for (final message in messages) {
             final messageModel = MessageModel.fromEntity(message);
-
             transaction.set(
               messageCollection.doc(message.id),
               messageModel,
             );
+
             if (message is SentMessageEntity) {
               transaction
                 ..update(roomDoc, {
@@ -183,7 +186,7 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }
 
   @override
-  Future<MessageModel?> getLastedChat(
+  Future<MessageModel?> getLastChat(
     String userUid,
     String roomId,
   ) async {

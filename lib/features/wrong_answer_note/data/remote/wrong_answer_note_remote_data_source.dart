@@ -1,7 +1,7 @@
-import 'package:techtalk/features/topic/data/models/topic_question_model.dart';
+import 'package:techtalk/features/wrong_answer_note/wrong_answer_note.dart';
 
 abstract interface class WrongAnswerNoteRemoteDataSource {
-  Future<List<TopicQuestionModel>> getQuestions({
+  Future<List<WrongAnswerQnAModel>> getQuestions({
     required String userUid,
     required String topicId,
   });

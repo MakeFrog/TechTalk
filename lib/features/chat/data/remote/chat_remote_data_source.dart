@@ -22,7 +22,7 @@ abstract interface class ChatRemoteDataSource {
   );
 
   /// 채팅방의 가장 마지막 채팅 메세지 호출
-  Future<MessageModel?> getLastedChat(
+  Future<MessageModel?> getLastChat(
     String userUid,
     String chatRoomId,
   );

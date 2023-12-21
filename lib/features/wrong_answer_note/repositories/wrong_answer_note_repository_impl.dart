@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:techtalk/core/utils/result.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/wrong_answer_note/wrong_answer_note.dart';
 
 class WrongAnswerNoteRepositoryImpl implements WrongAnswerNoteRepository {
@@ -20,16 +21,22 @@ class WrongAnswerNoteRepositoryImpl implements WrongAnswerNoteRepository {
         topicId: topicId,
       );
 
-      return Result.success(
-        [
-          ...questionsModel.map(
-            (e) => WrongAnswerQuestionEntity(
-              id: e.id,
-              question: e.question,
-            ),
-          ),
-        ],
-      );
+      final questions = <WrongAnswerQuestionEntity>[];
+
+      await Future.forEach(questionsModel, (element) async {
+        final question = (await topicRepository.getTopicQuestion(
+          topicId,
+          element.questionId,
+        ))
+            .getOrThrow();
+
+        questions.add(
+          WrongAnswerQuestionEntity(
+              id: question.id, question: question.question),
+        );
+      });
+
+      return Result.success(questions);
     } on Exception catch (e) {
       return Result.failure(e);
     }

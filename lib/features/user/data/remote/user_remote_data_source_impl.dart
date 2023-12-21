@@ -7,17 +7,17 @@ import 'package:techtalk/features/user/user.dart';
 final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   /// firestore에 저장된 users 컬렉션을 조회한다
   CollectionReference<UserDataModel> get _usersCollection =>
-      FirestoreCollections.users.collection().withConverter(
-            fromFirestore: UserDataModel.fromFirestore,
-            toFirestore: (value, _) => value.toJson(),
-          );
+      FirestoreUserRef.collection().withConverter(
+        fromFirestore: UserDataModel.fromFirestore,
+        toFirestore: (value, _) => value.toJson(),
+      );
 
   /// [data.uid]를 키로 가지는 도큐먼트를 조회한다
   DocumentReference<UserDataModel> _userDoc(String uid) =>
-      FirestoreCollections.users.doc(uid).withConverter(
-            fromFirestore: UserDataModel.fromFirestore,
-            toFirestore: (value, _) => value.toJson(),
-          );
+      FirestoreUserRef.doc(uid).withConverter(
+        fromFirestore: UserDataModel.fromFirestore,
+        toFirestore: (value, _) => value.toJson(),
+      );
 
   /// [uid]를 키로 가지는 데이터가 있는지 여부
   Future<bool> _isExistUserData(String uid) async =>

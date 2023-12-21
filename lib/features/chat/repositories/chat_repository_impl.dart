@@ -35,7 +35,7 @@ final class ChatRepositoryImpl implements ChatRepository {
         topicId,
       );
       final asyncResult = roomModels.map((e) async {
-        final messageResponse = await _remoteDataSource.getLastedChat(
+        final messageResponse = await _remoteDataSource.getLastChat(
           userUid,
           e.chatRoomId,
         );
