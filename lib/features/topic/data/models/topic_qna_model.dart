@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:techtalk/features/topic/entities/topic_question_entity.dart';
+import 'package:techtalk/features/topic/entities/topic_qna_entity.dart';
 
-part 'topic_question_model.g.dart';
+part 'topic_qna_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class TopicQuestionModel {
-  TopicQuestionModel({
+class TopicQnaModel {
+  TopicQnaModel({
     required this.id,
     required this.question,
     required this.answers,
@@ -16,23 +16,23 @@ class TopicQuestionModel {
   final String question;
   final List<String> answers;
 
-  TopicQuestionEntity toEntity() {
-    return TopicQuestionEntity(
+  TopicQnaEntity toEntity() {
+    return TopicQnaEntity(
       id: id,
       question: question,
       answers: answers,
     );
   }
 
-  factory TopicQuestionModel.fromFirestore(
+  factory TopicQnaModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
   ) =>
-      TopicQuestionModel.fromJson(snapshot.data()!);
+      TopicQnaModel.fromJson(snapshot.data()!);
 
-  factory TopicQuestionModel.fromJson(Map<String, dynamic> json) {
-    return _$TopicQuestionModelFromJson(json);
+  factory TopicQnaModel.fromJson(Map<String, dynamic> json) {
+    return _$TopicQnaModelFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$TopicQuestionModelToJson(this);
+  Map<String, dynamic> toJson() => _$TopicQnaModelToJson(this);
 }

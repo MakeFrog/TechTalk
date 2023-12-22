@@ -1,10 +1,10 @@
-class TopicQuestionEntity {
+class TopicQnaEntity {
   final String id;
   final String question;
   final List<String> answers;
 
 //<editor-fold desc="Data Methods">
-  const TopicQuestionEntity({
+  const TopicQnaEntity({
     required this.id,
     required this.question,
     required this.answers,
@@ -13,7 +13,7 @@ class TopicQuestionEntity {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is TopicQuestionEntity &&
+      (other is TopicQnaEntity &&
           runtimeType == other.runtimeType &&
           id == other.id &&
           question == other.question &&
@@ -24,19 +24,19 @@ class TopicQuestionEntity {
 
   @override
   String toString() {
-    return 'InterviewQuestionEntity{' +
+    return 'InterviewQnaEntity{' +
         ' id: $id,' +
         ' question: $question,' +
         ' answers: $answers,' +
         '}';
   }
 
-  TopicQuestionEntity copyWith({
+  TopicQnaEntity copyWith({
     String? id,
     String? question,
     List<String>? answers,
   }) {
-    return TopicQuestionEntity(
+    return TopicQnaEntity(
       id: id ?? this.id,
       question: question ?? this.question,
       answers: answers ?? this.answers,

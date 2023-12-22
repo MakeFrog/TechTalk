@@ -16,13 +16,9 @@ class TopicRepositoryImpl implements TopicRepository {
   late final List<TopicCategoryEntity> _cachedTopicCategories;
 
   @override
-  Future<void> initCache() async {
-    _cachedTopics = await _remoteDataSource.getTopics().then(
-          (value) => value.map((e) => e.toEntity()).toList(),
-        );
-    _cachedTopicCategories = await _remoteDataSource.getTopicCategories().then(
-          (value) => value.map((e) => e.toEntity()).toList(),
-        );
+  Future<void> initStaticData() async {
+    _cachedTopics = await _remoteDataSource.getTopics();
+    _cachedTopicCategories = await _remoteDataSource.getTopicCategories();
   }
 
   @override
@@ -66,18 +62,14 @@ class TopicRepositoryImpl implements TopicRepository {
   }
 
   @override
-  Future<Result<List<TopicQuestionEntity>>> getTopicQuestions(
+  Future<Result<List<TopicQnaEntity>>> getTopicQnas(
     String topicId,
   ) async {
     try {
-      final questionsModel = await _localDataSource.getQuestions(topicId) ??
-          await _remoteDataSource.getQuestions(topicId);
+      final questionsModel = await _localDataSource.getQnas(topicId) ??
+          await _remoteDataSource.getQnas(topicId);
 
-      return Result.success(
-        [
-          ...questionsModel.map((e) => e.toEntity()),
-        ],
-      );
+      return Result.success(questionsModel);
     } on Exception catch (e) {
       return Result.failure(
         NoTopicQuestionException(topicId),
@@ -86,23 +78,21 @@ class TopicRepositoryImpl implements TopicRepository {
   }
 
   @override
-  Future<Result<TopicQuestionEntity>> getTopicQuestion(
+  Future<Result<TopicQnaEntity>> getTopicQna(
     String topicId,
     String questionId,
   ) async {
     try {
-      final questionModel = await _localDataSource.getQuestion(
+      final questionModel = await _localDataSource.getQna(
             topicId,
             questionId,
           ) ??
-          await _remoteDataSource.getQuestion(
+          await _remoteDataSource.getQna(
             topicId,
             questionId,
           );
 
-      return Result.success(
-        questionModel.toEntity(),
-      );
+      return Result.success(questionModel);
     } on Exception catch (e) {
       return Result.failure(
         NoTopicQuestionException(topicId),

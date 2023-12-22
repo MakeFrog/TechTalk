@@ -24,7 +24,7 @@ class WrongAnswerNoteRepositoryImpl implements WrongAnswerNoteRepository {
       final questions = <WrongAnswerQuestionEntity>[];
 
       await Future.forEach(questionsModel, (element) async {
-        final question = (await topicRepository.getTopicQuestion(
+        final question = (await topicRepository.getTopicQna(
           topicId,
           element.questionId,
         ))

@@ -12,8 +12,8 @@ TopicModel _$TopicModelFromJson(Map<String, dynamic> json) => TopicModel(
       name: json['name'] as String,
       imagePath: json['image_path'] as String?,
       isAvailable: json['is_available'] as bool,
-      updatedAt: _$JsonConverterFromJson<Timestamp, DateTime>(
-          json['updated_at'], const TimeStampConverter().fromJson),
+      updatedAt:
+          const TimeStampConverter().fromJson(json['updated_at'] as Timestamp),
     );
 
 Map<String, dynamic> _$TopicModelToJson(TopicModel instance) =>
@@ -23,18 +23,5 @@ Map<String, dynamic> _$TopicModelToJson(TopicModel instance) =>
       'name': instance.name,
       'image_path': instance.imagePath,
       'is_available': instance.isAvailable,
-      'updated_at': _$JsonConverterToJson<Timestamp, DateTime>(
-          instance.updatedAt, const TimeStampConverter().toJson),
+      'updated_at': const TimeStampConverter().toJson(instance.updatedAt),
     };
-
-Value? _$JsonConverterFromJson<Json, Value>(
-  Object? json,
-  Value? Function(Json json) fromJson,
-) =>
-    json == null ? null : fromJson(json as Json);
-
-Json? _$JsonConverterToJson<Json, Value>(
-  Value? value,
-  Json? Function(Value value) toJson,
-) =>
-    value == null ? null : toJson(value);

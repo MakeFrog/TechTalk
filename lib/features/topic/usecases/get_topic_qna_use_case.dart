@@ -1,22 +1,20 @@
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
-final class GetTopicQuestionUseCase {
-  const GetTopicQuestionUseCase(
+final class GetTopicQnaUseCase {
+  const GetTopicQnaUseCase(
     this._topicRepository,
   );
 
   final TopicRepository _topicRepository;
 
-  Future<Result<TopicQuestionEntity>> call(
+  Future<Result<TopicQnaEntity>> call(
     String topicId,
     String questionId,
   ) async {
-    final question = await _topicRepository.getTopicQuestion(
+    return _topicRepository.getTopicQna(
       topicId,
       questionId,
     );
-
-    return question;
   }
 }

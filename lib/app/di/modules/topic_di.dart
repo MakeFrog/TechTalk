@@ -49,7 +49,7 @@ final class TopicDependencyInjection extends FeatureDependencyInjection {
         SearchTopicsUseCase.new,
       )
       ..registerFactory(
-        () => GetTopicQuestionsUseCase(
+        () => GetTopicQnasUseCase(
           topicRepository,
         ),
       );

@@ -19,7 +19,7 @@ class TopicModel {
     required this.name,
     this.imagePath,
     required this.isAvailable,
-    this.updatedAt,
+    required this.updatedAt,
   });
 
   final String id;
@@ -27,7 +27,7 @@ class TopicModel {
   final String name;
   final String? imagePath;
   final bool isAvailable;
-  final DateTime? updatedAt;
+  final DateTime updatedAt;
 
   TopicEntity toEntity() {
     return TopicEntity(
@@ -36,7 +36,7 @@ class TopicModel {
       text: name,
       imageUrl: imagePath,
       isAvailable: isAvailable,
-      updatedAt: updatedAt ?? DateTime.now(),
+      updatedAt: updatedAt,
     );
   }
 

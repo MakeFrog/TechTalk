@@ -49,7 +49,7 @@ class EntireQuestionListView extends ConsumerWidget {
   Widget _buildQuestion(
     WidgetRef ref,
     int index,
-    TopicQuestionEntity question,
+    TopicQnaEntity question,
   ) {
     return InkWell(
       onTap: () => Navigator.pop(ref.context, index),

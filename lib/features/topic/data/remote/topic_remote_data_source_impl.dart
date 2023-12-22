@@ -3,7 +3,7 @@ import 'package:techtalk/features/topic/topic.dart';
 
 final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
   @override
-  Future<List<TopicModel>> getTopics() async {
+  Future<List<TopicEntity>> getTopics() async {
     final topicModels = await FirestoreTopicRef.collection()
         .withConverter(
           fromFirestore: TopicModel.fromFirestore,
@@ -12,24 +12,12 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
         .get();
 
     return [
-      ...topicModels.docs.map((e) => e.data()),
+      ...topicModels.docs.map((e) => e.data().toEntity()),
     ];
   }
 
   @override
-  Future<TopicModel> getTopic(String id) async {
-    final topicModel = await FirestoreTopicRef.doc(id)
-        .withConverter(
-          fromFirestore: TopicModel.fromFirestore,
-          toFirestore: (value, options) => value.toJson(),
-        )
-        .get();
-
-    return topicModel.data()!;
-  }
-
-  @override
-  Future<List<TopicCategoryModel>> getTopicCategories() async {
+  Future<List<TopicCategoryEntity>> getTopicCategories() async {
     final topicCategoryModels = await FirestoreTopicCategoryRef.collection()
         .withConverter(
           fromFirestore: TopicCategoryModel.fromFirestore,
@@ -38,30 +26,18 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
         .get();
 
     return [
-      ...topicCategoryModels.docs.map((e) => e.data()),
+      ...topicCategoryModels.docs.map((e) => e.data().toEntity()),
     ];
   }
 
   @override
-  Future<TopicCategoryModel> getTopicCategory(String id) async {
-    final topicCategoryModel = await FirestoreTopicCategoryRef.doc(id)
-        .withConverter(
-          fromFirestore: TopicCategoryModel.fromFirestore,
-          toFirestore: (value, options) => value.toJson(),
-        )
-        .get();
-
-    return topicCategoryModel.data()!;
-  }
-
-  @override
-  Future<TopicQuestionModel> getQuestion(
+  Future<TopicQnaEntity> getQna(
     String topicId,
     String questionId,
   ) async {
     final snapshot = await FirestoreTopicQuestionRef.doc(topicId, questionId)
         .withConverter(
-          fromFirestore: TopicQuestionModel.fromFirestore,
+          fromFirestore: TopicQnaModel.fromFirestore,
           toFirestore: (value, options) => value.toJson(),
         )
         .get();
@@ -70,14 +46,14 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
       throw Exception();
     }
 
-    return snapshot.data()!;
+    return snapshot.data()!.toEntity();
   }
 
   @override
-  Future<List<TopicQuestionModel>> getQuestions(String topicId) async {
+  Future<List<TopicQnaEntity>> getQnas(String topicId) async {
     final snapshot = await FirestoreTopicQuestionRef.collection(topicId)
         .withConverter(
-          fromFirestore: TopicQuestionModel.fromFirestore,
+          fromFirestore: TopicQnaModel.fromFirestore,
           toFirestore: (value, options) => value.toJson(),
         )
         .get();
@@ -86,6 +62,8 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
       throw Exception();
     }
 
-    return [...snapshot.docs.map((e) => e.data())];
+    return [
+      ...snapshot.docs.map((e) => e.data().toEntity()),
+    ];
   }
 }

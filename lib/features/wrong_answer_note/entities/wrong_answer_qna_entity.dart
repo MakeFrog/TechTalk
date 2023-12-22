@@ -3,7 +3,7 @@ import 'package:techtalk/features/topic/topic.dart';
 class WrongAnswerQnAEntity {
   final String id;
   final String chatRoomId;
-  final TopicQuestionEntity question;
+  final TopicQnaEntity question;
   final List<String> answers;
 
 //<editor-fold desc="Data Methods">
@@ -41,7 +41,7 @@ class WrongAnswerQnAEntity {
   WrongAnswerQnAEntity copyWith({
     String? id,
     String? chatRoomId,
-    TopicQuestionEntity? question,
+    TopicQnaEntity? question,
     List<String>? answers,
   }) {
     return WrongAnswerQnAEntity(

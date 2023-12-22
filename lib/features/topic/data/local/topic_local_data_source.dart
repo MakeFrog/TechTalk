@@ -1,9 +1,9 @@
-import 'package:techtalk/features/topic/data/models/topic_question_model.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 abstract interface class TopicLocalDataSource {
-  Future<List<TopicQuestionModel>?> getQuestions(String topicId);
+  Future<List<TopicQnaEntity>?> getQnas(String topicId);
 
-  Future<TopicQuestionModel?> getQuestion(
+  Future<TopicQnaEntity?> getQna(
     String topicId,
     String questionId,
   );
