@@ -1,54 +1,33 @@
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/data/models/chat_message_model.dart';
+import 'package:techtalk/features/chat/data/models/chat_qna_model.dart';
 import 'package:techtalk/features/chat/data/models/chat_room_model.dart';
-import 'package:techtalk/features/chat/data/models/interview_qna_model.dart';
-import 'package:techtalk/features/chat/data/models/message_model.dart';
 
 abstract interface class ChatRemoteDataSource {
-  Future<String> createRoom({
-    required String userUid,
-    required String topicId,
-    required int questionCount,
-  });
+  Future<ChatRoomModel> createRoom(ChatRoomEntity room);
 
-  Future<ChatRoomModel> getRoom(
-    String userUid,
-    String roomId,
-  );
+  Future<ChatRoomModel> getRoom(String roomId);
 
   /// 채방 리스트의 엔트리 정보 호출
-  Future<List<ChatRoomModel>> getRooms(
-    String userUid,
-    String topicId,
-  );
+  Future<List<ChatRoomModel>> getRooms(String topicId);
 
   /// 채팅방의 가장 마지막 채팅 메세지 호출
-  Future<MessageModel?> getLastChat(
-    String userUid,
-    String chatRoomId,
-  );
+  Future<ChatMessageModel?> getLastChatMessage(String chatRoomId);
 
   /// 채팅 메세지 리시트 호출
-  Future<List<MessageModel>> getChatHistory(
-    String userUid,
-    String chatRoomId,
-  );
+  Future<List<ChatMessageModel>> getChatMessageHistory(String chatRoomId);
 
-  /// 채팅 메세지 리시트 호출
-  Future<MessageModel> getChat(
-    String userUid,
+  /// 채팅 메세지  호출
+  Future<ChatMessageModel> getChatMessage(
     String chatRoomId,
     String chatId,
   );
 
   /// 채팅 메세지 업데이트
-  Future<void> updateChats(
-    String userUid,
+  Future<void> updateChatMessages(
     String roomId, {
-    required List<MessageEntity> messages,
+    required List<ChatMessageEntity> messages,
   });
 
-  Future<List<InterviewQnaModel>> getChatQnAs(
-    String userUid,
-    String roomId,
-  );
+  Future<List<ChatQnaModel>> getChatQnas(String roomId);
 }

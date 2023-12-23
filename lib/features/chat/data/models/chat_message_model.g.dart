@@ -1,12 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'message_model.dart';
+part of 'chat_message_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-MessageModel _$MessageModelFromJson(Map<String, dynamic> json) => MessageModel(
+ChatMessageModel _$ChatMessageModelFromJson(Map<String, dynamic> json) =>
+    ChatMessageModel(
       id: json['id'] as String,
       message: json['message'] as String,
       type: json['type'] as String,
@@ -15,7 +16,7 @@ MessageModel _$MessageModelFromJson(Map<String, dynamic> json) => MessageModel(
           const TimeStampConverter().fromJson(json['timestamp'] as Timestamp),
     );
 
-Map<String, dynamic> _$MessageModelToJson(MessageModel instance) =>
+Map<String, dynamic> _$ChatMessageModelToJson(ChatMessageModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'message': instance.message,

@@ -1,8 +1,8 @@
 import 'package:rxdart/subjects.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
-class FeedbackMessageEntity extends MessageEntity {
-  FeedbackMessageEntity({
+class FeedbackChatMessageEntity extends ChatMessageEntity {
+  FeedbackChatMessageEntity({
     required BehaviorSubject<String> message,
     required bool isStreamApplied,
     required DateTime timestamp,
@@ -13,19 +13,21 @@ class FeedbackMessageEntity extends MessageEntity {
           timestamp: timestamp,
         );
 
-  factory FeedbackMessageEntity.createStatic(
-      {required String message, required DateTime timestamp}) {
-    return FeedbackMessageEntity(
+  factory FeedbackChatMessageEntity.createStatic({
+    required String message,
+    required DateTime timestamp,
+  }) {
+    return FeedbackChatMessageEntity(
       message: BehaviorSubject.seeded(message)..close(),
       timestamp: timestamp,
       isStreamApplied: false,
     );
   }
 
-  factory FeedbackMessageEntity.createStreamChat({
+  factory FeedbackChatMessageEntity.createStreamChat({
     required BehaviorSubject<String> messageStream,
   }) {
-    return FeedbackMessageEntity(
+    return FeedbackChatMessageEntity(
       message: messageStream,
       timestamp: DateTime.now().add(const Duration(milliseconds: 500)),
       isStreamApplied: true,

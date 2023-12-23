@@ -1,30 +1,30 @@
 import 'package:techtalk/features/chat/chat.dart';
 
-class ChatQnaProgressInfoEntity {
+class ChatProgressInfoEntity {
   final int totalQuestionCount;
   final int correctAnswerCount;
   final int incorrectAnswerCount;
 
   int get completedQuestionCount => correctAnswerCount + incorrectAnswerCount;
 
-  InterviewProgressState get progressState {
+  ChatProgress get progressState {
     if (totalQuestionCount > completedQuestionCount) {
-      return InterviewProgressState.ongoing;
+      return ChatProgress.ongoing;
     } else if (totalQuestionCount == completedQuestionCount) {
-      return InterviewProgressState.completed;
+      return ChatProgress.completed;
     } else if (correctAnswerCount == 0 && incorrectAnswerCount == 0) {
-      return InterviewProgressState.initial;
+      return ChatProgress.initial;
     } else {
       throw UnimplementedError('유효하지 않은 [progressState]값 입니다.');
     }
   }
 
-  PassOrFail get passOrFail {
+  ChatResult get chatResult {
     if (progressState.isCompleted) {
       if (correctAnswerCount >= incorrectAnswerCount) {
-        return PassOrFail.pass;
+        return ChatResult.pass;
       } else if (correctAnswerCount < incorrectAnswerCount) {
-        return PassOrFail.failed;
+        return ChatResult.failed;
       } else {
         throw UnimplementedError('유효하지 않은 [passOrFail]값 입니다.');
       }
@@ -33,17 +33,17 @@ class ChatQnaProgressInfoEntity {
     }
   }
 
-  factory ChatQnaProgressInfoEntity.onInitial({
+  factory ChatProgressInfoEntity.onInitial({
     required int totalQuestionCount,
   }) =>
-      ChatQnaProgressInfoEntity(
+      ChatProgressInfoEntity(
         totalQuestionCount: totalQuestionCount,
         correctAnswerCount: 0,
         incorrectAnswerCount: 0,
       );
 
 //<editor-fold desc="Data Methods">
-  const ChatQnaProgressInfoEntity({
+  const ChatProgressInfoEntity({
     required this.totalQuestionCount,
     required this.correctAnswerCount,
     required this.incorrectAnswerCount,
@@ -52,7 +52,7 @@ class ChatQnaProgressInfoEntity {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is ChatQnaProgressInfoEntity &&
+      (other is ChatProgressInfoEntity &&
           runtimeType == other.runtimeType &&
           totalQuestionCount == other.totalQuestionCount &&
           correctAnswerCount == other.correctAnswerCount &&
@@ -73,12 +73,12 @@ class ChatQnaProgressInfoEntity {
         '}';
   }
 
-  ChatQnaProgressInfoEntity copyWith({
+  ChatProgressInfoEntity copyWith({
     int? totalQuestionCount,
     int? correctAnswerCount,
     int? incorrectAnswerCount,
   }) {
-    return ChatQnaProgressInfoEntity(
+    return ChatProgressInfoEntity(
       totalQuestionCount: totalQuestionCount ?? this.totalQuestionCount,
       correctAnswerCount: correctAnswerCount ?? this.correctAnswerCount,
       incorrectAnswerCount: incorrectAnswerCount ?? this.incorrectAnswerCount,

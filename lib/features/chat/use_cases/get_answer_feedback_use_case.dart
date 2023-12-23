@@ -13,7 +13,7 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
   ///
   /// 피드백 진행 상태
   ///
-  FeedbackProgressState state = FeedbackProgressState.init;
+  FeedbackProgress state = FeedbackProgress.init;
 
   // ##########  Intent  ##############
 
@@ -25,7 +25,7 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
   BehaviorSubject<String> call(GetQuestionFeedbackParam param) {
     final BehaviorSubject<String> streamedFeedbackResponse =
         BehaviorSubject<String>();
-    state = FeedbackProgressState.onProgress;
+    state = FeedbackProgress.onProgress;
 
     log('Subject : ${param.category}\n Question : ${param.question}\n UserAnswer : ${param.userAnswer}');
 
@@ -81,7 +81,7 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
       /// 3) 완료 콜백 메소드 실행
       (_) {
         streamedFeedbackResponse.close();
-        state = FeedbackProgressState.init;
+        state = FeedbackProgress.init;
         param.onFeedBackCompleted();
       },
     );
@@ -100,9 +100,9 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
 
     if (response.contains(AnswerState.wrong.tag)) {
       checkAnswer(isCorrect: false);
-      state = FeedbackProgressState.completed;
+      state = FeedbackProgress.completed;
     } else if (response.contains(AnswerState.correct.tag)) {
-      state = FeedbackProgressState.completed;
+      state = FeedbackProgress.completed;
       checkAnswer(isCorrect: true);
     }
   }

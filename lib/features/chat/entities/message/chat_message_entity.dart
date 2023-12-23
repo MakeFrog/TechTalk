@@ -4,17 +4,17 @@ import 'package:uuid/uuid.dart';
 
 ///
 /// 기본 채팅 Entity 모델 클래스
-/// [ReceivedChatEntity], [SentMessageEntity] 클래스에서 상속됨
+/// [ReceivedChatEntity], [AnswerChatMessageEntity] 클래스에서 상속됨
 ///
 
-abstract class MessageEntity {
+abstract class ChatMessageEntity {
   final String id; // ID
   final BehaviorSubject<String> message; // 채팅 메세지
   final ChatType type; // 채팅 타입
   final DateTime timestamp;
   bool isStreamApplied; // Stream 적용 여부
 
-  MessageEntity({
+  ChatMessageEntity({
     required this.message,
     required this.type,
     required this.isStreamApplied,
@@ -25,7 +25,7 @@ abstract class MessageEntity {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is MessageEntity &&
+      (other is ChatMessageEntity &&
           runtimeType == other.runtimeType &&
           id == other.id &&
           message == other.message &&

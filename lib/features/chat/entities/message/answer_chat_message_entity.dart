@@ -1,11 +1,11 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
-class SentMessageEntity extends MessageEntity {
+class AnswerChatMessageEntity extends ChatMessageEntity {
   final AnswerState answerState;
   final String qnaId;
 
-  SentMessageEntity({
+  AnswerChatMessageEntity({
     required String message,
     required DateTime timestamp,
     required this.answerState,
@@ -17,23 +17,23 @@ class SentMessageEntity extends MessageEntity {
           timestamp: timestamp,
         );
 
-  factory SentMessageEntity.initial({
+  factory AnswerChatMessageEntity.initial({
     required String message,
-    required String questionId,
+    required String qnaId,
   }) =>
-      SentMessageEntity(
-        qnaId: questionId,
+      AnswerChatMessageEntity(
+        qnaId: qnaId,
         message: message,
         answerState: AnswerState.loading,
         timestamp: DateTime.now(),
       );
 
-  SentMessageEntity copyWith({
+  AnswerChatMessageEntity copyWith({
     String? message,
     AnswerState? answerState,
     DateTime? timestamp,
   }) {
-    return SentMessageEntity(
+    return AnswerChatMessageEntity(
       timestamp: timestamp ?? this.timestamp,
       message: message ?? this.message.value,
       answerState: answerState ?? this.answerState,

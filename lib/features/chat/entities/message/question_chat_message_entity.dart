@@ -1,15 +1,14 @@
 import 'package:rxdart/subjects.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
-class QuestionMessageEntity extends MessageEntity {
+class QuestionChatMessageEntity extends ChatMessageEntity {
   final String qnaId;
-
-  QuestionMessageEntity(
-      {required this.qnaId,
-      required BehaviorSubject<String> message,
-      required DateTime timestamp,
-      required bool isStreamApplied})
-      : super(
+  QuestionChatMessageEntity({
+    required this.qnaId,
+    required BehaviorSubject<String> message,
+    required DateTime timestamp,
+    required bool isStreamApplied,
+  }) : super(
           type: ChatType.askQuestion,
           message: message,
           isStreamApplied: isStreamApplied,
@@ -19,13 +18,13 @@ class QuestionMessageEntity extends MessageEntity {
   ///
   /// 스트림 상태 적용 X (정적)
   ///
-  factory QuestionMessageEntity.createStaticChat({
-    required String questionId,
+  factory QuestionChatMessageEntity.createStaticChat({
+    required String qnaId,
     required String message,
     required DateTime timestamp,
   }) =>
-      QuestionMessageEntity(
-        qnaId: questionId,
+      QuestionChatMessageEntity(
+        qnaId: qnaId,
         message: BehaviorSubject.seeded(message)..close(),
         timestamp: timestamp,
         isStreamApplied: false,
@@ -34,12 +33,12 @@ class QuestionMessageEntity extends MessageEntity {
   ///
   /// 스트림 상태 적용 X (정적)
   ///
-  factory QuestionMessageEntity.createStreamedChat({
-    required String questionId,
+  factory QuestionChatMessageEntity.createStreamedChat({
+    required String qnaId,
     required BehaviorSubject<String> streamedMessage,
   }) =>
-      QuestionMessageEntity(
-        qnaId: questionId,
+      QuestionChatMessageEntity(
+        qnaId: qnaId,
         message: streamedMessage,
         timestamp: DateTime.now(),
         isStreamApplied: true,

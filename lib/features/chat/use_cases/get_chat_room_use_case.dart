@@ -1,8 +1,8 @@
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
-final class GetInterviewRoomUseCase {
-  GetInterviewRoomUseCase(
+final class GetChatRoomUseCase {
+  GetChatRoomUseCase(
     this.chatRepository,
   );
 

@@ -4,7 +4,7 @@ import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source_impl.dart';
 import 'package:techtalk/features/chat/use_cases/create_interview_room_use_case.dart';
-import 'package:techtalk/features/chat/use_cases/update_chat_info_use_case.dart';
+import 'package:techtalk/features/chat/use_cases/update_chat_messages_use_case.dart';
 
 final class ChatDependencyInject extends FeatureDependencyInjection {
   @override
@@ -23,31 +23,31 @@ final class ChatDependencyInject extends FeatureDependencyInjection {
   void useCases() {
     locator
       ..registerFactory(
-        () => CreateInterviewRoomUseCase(
+        () => CreateChatRoomUseCase(
           chatRepository,
         ),
       )
       ..registerFactory(
-        () => GetInterviewRoomsUseCase(
+        () => GetChatRoomsUseCase(
           chatRepository,
         ),
       )
       ..registerFactory(
-        () => GetInterviewRoomUseCase(
+        () => GetChatRoomUseCase(
           chatRepository,
         ),
       )
       ..registerFactory(
-        () => GetChatHistoryUseCase(
+        () => GetChatMessageHistoryUseCase(
           chatRepository,
         ),
       )
       ..registerFactory(
-        () => GetChatQnAsUseCase(
+        () => GetChatQnasUseCase(
           chatRepository,
         ),
       )
       ..registerFactory(() => GetAnswerFeedbackUseCase())
-      ..registerFactory(() => UpdateChatInfoUseCase(chatRepository));
+      ..registerFactory(() => UpdateChatMessagesUseCase(chatRepository));
   }
 }

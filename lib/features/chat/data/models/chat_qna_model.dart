@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'interview_qna_model.g.dart';
+part 'chat_qna_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class InterviewQnaModel {
-  InterviewQnaModel({
+class ChatQnaModel {
+  ChatQnaModel({
     required this.id,
     required this.questionId,
     this.messageId,
@@ -17,15 +17,15 @@ class InterviewQnaModel {
   final String? messageId;
   final String? state;
 
-  factory InterviewQnaModel.fromFirestore(
+  factory ChatQnaModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
   ) =>
-      InterviewQnaModel.fromJson(snapshot.data()!);
+      ChatQnaModel.fromJson(snapshot.data()!);
 
-  factory InterviewQnaModel.fromJson(Map<String, dynamic> json) {
-    return _$InterviewQnaModelFromJson(json);
+  factory ChatQnaModel.fromJson(Map<String, dynamic> json) {
+    return _$ChatQnaModelFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$InterviewQnaModelToJson(this);
+  Map<String, dynamic> toJson() => _$ChatQnaModelToJson(this);
 }

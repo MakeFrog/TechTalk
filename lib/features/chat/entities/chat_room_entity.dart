@@ -1,30 +1,43 @@
+import 'package:techtalk/core/helper/string_generator.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/entities/chat_qna_progress_info_entity.dart';
-import 'package:techtalk/features/chat/entities/interviewer_avatar.dart';
+import 'package:techtalk/features/chat/entities/chat_progress_info_entity.dart';
+import 'package:techtalk/features/chat/entities/interviewer_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 class ChatRoomEntity {
-  final InterviewerAvatar interviewerInfo;
+  final String id;
+  final InterviewerEntity interviewer;
   final TopicEntity topic;
-  final ChatQnaProgressInfoEntity qnaProgressInfo;
+  final ChatProgressInfoEntity progressInfo;
   final String? lastChatMessage;
   final DateTime? lastChatDate;
-  final String chatRoomId;
 
-  int get completedQuestionCount => qnaProgressInfo.completedQuestionCount;
+  int get completedQuestionCount => progressInfo.completedQuestionCount;
+  ChatProgress get progressState => progressInfo.progressState;
+  ChatResult get passOrFail => progressInfo.chatResult;
 
-  InterviewProgressState get progressState => qnaProgressInfo.progressState;
-
-  PassOrFail get passOrFail => qnaProgressInfo.passOrFail;
+  factory ChatRoomEntity.random({
+    required TopicEntity topic,
+    required int questionCount,
+  }) {
+    return ChatRoomEntity(
+      id: StringGenerator.generateRandomString(),
+      interviewer: InterviewerEntity.getRandomInterviewer(),
+      topic: topic,
+      progressInfo: ChatProgressInfoEntity.onInitial(
+        totalQuestionCount: questionCount,
+      ),
+    );
+  }
 
 //<editor-fold desc="Data Methods">
-  ChatRoomEntity({
-    required this.interviewerInfo,
+  const ChatRoomEntity({
+    required this.id,
+    required this.interviewer,
     required this.topic,
-    required this.qnaProgressInfo,
+    required this.progressInfo,
     this.lastChatMessage,
     this.lastChatDate,
-    required this.chatRoomId,
   });
 
   @override
@@ -32,51 +45,50 @@ class ChatRoomEntity {
       identical(this, other) ||
       (other is ChatRoomEntity &&
           runtimeType == other.runtimeType &&
-          interviewerInfo == other.interviewerInfo &&
+          id == other.id &&
+          interviewer == other.interviewer &&
           topic == other.topic &&
-          qnaProgressInfo == other.qnaProgressInfo &&
+          progressInfo == other.progressInfo &&
           lastChatMessage == other.lastChatMessage &&
-          lastChatDate == other.lastChatDate &&
-          chatRoomId == other.chatRoomId);
+          lastChatDate == other.lastChatDate);
 
   @override
   int get hashCode =>
-      interviewerInfo.hashCode ^
+      id.hashCode ^
+      interviewer.hashCode ^
       topic.hashCode ^
-      qnaProgressInfo.hashCode ^
+      progressInfo.hashCode ^
       lastChatMessage.hashCode ^
-      lastChatDate.hashCode ^
-      chatRoomId.hashCode;
+      lastChatDate.hashCode;
 
   @override
   String toString() {
     return 'ChatRoomEntity{' +
-        ' interviewerInfo: $interviewerInfo,' +
+        ' id: $id,' +
+        ' interviewer: $interviewer,' +
         ' topic: $topic,' +
-        ' qnaProgressInfo: $qnaProgressInfo,' +
+        ' progressInfo: $progressInfo,' +
         ' lastChatMessage: $lastChatMessage,' +
         ' lastChatDate: $lastChatDate,' +
-        ' chatRoomId: $chatRoomId,' +
         '}';
   }
 
   ChatRoomEntity copyWith({
-    InterviewerAvatar? interviewerInfo,
+    String? id,
+    InterviewerEntity? interviewer,
     TopicEntity? topic,
-    ChatQnaProgressInfoEntity? qnaProgressInfo,
+    ChatProgressInfoEntity? progressInfo,
     String? lastChatMessage,
     DateTime? lastChatDate,
-    String? chatRoomId,
   }) {
     return ChatRoomEntity(
-      interviewerInfo: interviewerInfo ?? this.interviewerInfo,
+      id: id ?? this.id,
+      interviewer: interviewer ?? this.interviewer,
       topic: topic ?? this.topic,
-      qnaProgressInfo: qnaProgressInfo ?? this.qnaProgressInfo,
+      progressInfo: progressInfo ?? this.progressInfo,
       lastChatMessage: lastChatMessage ?? this.lastChatMessage,
       lastChatDate: lastChatDate ?? this.lastChatDate,
-      chatRoomId: chatRoomId ?? this.chatRoomId,
     );
   }
-
 //</editor-fold>
 }

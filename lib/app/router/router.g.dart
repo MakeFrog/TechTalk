@@ -245,6 +245,7 @@ extension $ChatPageRouteExtension on ChatPageRoute {
   static ChatPageRoute _fromState(GoRouterState state) => ChatPageRoute(
         state.pathParameters['topicId']!,
         state.uri.queryParameters['room-id']!,
+        $extra: state.extra as ChatRoomEntity?,
       );
 
   String get location => GoRouteData.$location(
@@ -254,12 +255,14 @@ extension $ChatPageRouteExtension on ChatPageRoute {
         },
       );
 
-  void go(BuildContext context) => context.go(location);
+  void go(BuildContext context) => context.go(location, extra: $extra);
 
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
 
   void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
+      context.pushReplacement(location, extra: $extra);
 
-  void replace(BuildContext context) => context.replace(location);
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
 }

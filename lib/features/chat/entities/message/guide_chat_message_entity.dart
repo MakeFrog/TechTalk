@@ -1,8 +1,8 @@
 import 'package:rxdart/subjects.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
-class GuideMessageEntity extends MessageEntity {
-  GuideMessageEntity({
+class GuideChatMessageEntity extends ChatMessageEntity {
+  GuideChatMessageEntity({
     required BehaviorSubject<String> message,
     required bool isStreamApplied,
     required DateTime timestamp,
@@ -13,17 +13,20 @@ class GuideMessageEntity extends MessageEntity {
           timestamp: timestamp,
         );
 
-  factory GuideMessageEntity.createStatic(
-          {required String message, required DateTime timestamp}) =>
-      GuideMessageEntity(
+  factory GuideChatMessageEntity.createStatic({
+    required String message,
+    required DateTime timestamp,
+  }) =>
+      GuideChatMessageEntity(
         message: BehaviorSubject.seeded(message)..close(),
         isStreamApplied: false,
         timestamp: timestamp,
       );
 
-  factory GuideMessageEntity.createStream(
-          BehaviorSubject<String> streamedMessage) =>
-      GuideMessageEntity(
+  factory GuideChatMessageEntity.createStream(
+    BehaviorSubject<String> streamedMessage,
+  ) =>
+      GuideChatMessageEntity(
         message: streamedMessage,
         isStreamApplied: true,
         timestamp: DateTime.now(),

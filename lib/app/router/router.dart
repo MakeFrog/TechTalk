@@ -218,13 +218,18 @@ class ChatListPageRoute extends GoRouteData {
 }
 
 class ChatPageRoute extends GoRouteData {
-  ChatPageRoute(this.topicId, this.roomId);
+  ChatPageRoute(
+    this.topicId,
+    this.roomId, {
+    this.$extra,
+  });
 
   static const String path = ':roomId';
   static const String name = 'chat';
 
   final String topicId;
   final String roomId;
+  final ChatRoomEntity? $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -232,7 +237,11 @@ class ChatPageRoute extends GoRouteData {
       overrides: [
         selectedInterviewRoomProvider.overrideWith(
           (ref) async {
-            return (await getInterviewRoomUseCase(roomId)).getOrThrow();
+            if ($extra != null) {
+              return $extra!;
+            } else {
+              return (await getChatRoomUseCase(roomId)).getOrThrow();
+            }
           },
         ),
       ],

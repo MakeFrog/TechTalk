@@ -3,17 +3,14 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:techtalk/core/utils/time_stamp_converter.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
-part 'message_model.g.dart';
+part 'chat_message_model.g.dart';
 
 @JsonSerializable(
   fieldRename: FieldRename.snake,
   explicitToJson: true,
-  converters: [
-    TimeStampConverter(),
-  ],
 )
-class MessageModel {
-  MessageModel({
+class ChatMessageModel {
+  ChatMessageModel({
     required this.id,
     required this.message,
     required this.type,
@@ -25,20 +22,20 @@ class MessageModel {
   final String message;
   final String type;
   final Map<String, dynamic>? qna;
-
+  @TimeStampConverter()
   final DateTime timestamp;
 
-  factory MessageModel.fromFirestore(
+  factory ChatMessageModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
   ) =>
-      MessageModel.fromJson(snapshot.data()!);
+      ChatMessageModel.fromJson(snapshot.data()!);
 
-  factory MessageModel.fromEntity(MessageEntity entity) {
+  factory ChatMessageModel.fromEntity(ChatMessageEntity entity) {
     Map<String, dynamic>? qna;
 
     if (entity.type.isSentMessage) {
-      entity as SentMessageEntity;
+      entity as AnswerChatMessageEntity;
       qna = {
         'id': entity.qnaId,
         'state': entity.answerState.tag,
@@ -46,13 +43,13 @@ class MessageModel {
     }
 
     if (entity.type.isAskQuestionMessage) {
-      entity as QuestionMessageEntity;
+      entity as QuestionChatMessageEntity;
       qna = {
         'id': entity.qnaId,
       };
     }
 
-    return MessageModel(
+    return ChatMessageModel(
       id: entity.id,
       message: entity.message.value,
       type: entity.type.id,
@@ -61,31 +58,29 @@ class MessageModel {
     );
   }
 
-  MessageEntity toEntity() {
+  ChatMessageEntity toEntity() {
     final chatType = ChatType.getTypeById(type);
     switch (chatType) {
       case ChatType.guide:
-        return GuideMessageEntity.createStatic(
+        return GuideChatMessageEntity.createStatic(
           message: message,
           timestamp: timestamp,
         );
-
       case ChatType.userReply:
-        return SentMessageEntity(
+        return AnswerChatMessageEntity(
           message: message,
           answerState: AnswerState.getStateById(qna!['state']!),
           timestamp: timestamp,
           qnaId: qna!['id']!,
         );
       case ChatType.askQuestion:
-        return QuestionMessageEntity.createStaticChat(
-          questionId: qna!['id']!,
+        return QuestionChatMessageEntity.createStaticChat(
+          qnaId: qna!['id']!,
           timestamp: timestamp,
           message: message,
         );
-
       case ChatType.feedback:
-        return FeedbackMessageEntity.createStatic(
+        return FeedbackChatMessageEntity.createStatic(
           message: message,
           timestamp: timestamp,
         );
@@ -95,9 +90,9 @@ class MessageModel {
     }
   }
 
-  factory MessageModel.fromJson(Map<String, dynamic> json) {
-    return _$MessageModelFromJson(json);
+  factory ChatMessageModel.fromJson(Map<String, dynamic> json) {
+    return _$ChatMessageModelFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$MessageModelToJson(this);
+  Map<String, dynamic> toJson() => _$ChatMessageModelToJson(this);
 }

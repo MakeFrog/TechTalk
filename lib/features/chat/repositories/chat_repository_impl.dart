@@ -1,9 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
-import 'package:techtalk/features/chat/entities/chat_qna_progress_info_entity.dart';
-import 'package:techtalk/features/chat/entities/interviewer_avatar.dart';
+import 'package:techtalk/features/chat/entities/chat_progress_info_entity.dart';
+import 'package:techtalk/features/chat/entities/interviewer_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 final class ChatRepositoryImpl implements ChatRepository {
@@ -12,53 +11,39 @@ final class ChatRepositoryImpl implements ChatRepository {
   final ChatRemoteDataSource _remoteDataSource;
 
   @override
-  Future<Result<String>> createRoom({
-    required String topicId,
-    required int questionCount,
-  }) async {
-    final userUid = FirebaseAuth.instance.currentUser!.uid;
-    final roomId = await _remoteDataSource.createRoom(
-      userUid: userUid,
-      topicId: topicId,
-      questionCount: questionCount,
-    );
+  Future<Result<ChatRoomEntity>> createRoom(ChatRoomEntity room) async {
+    await _remoteDataSource.createRoom(room);
 
-    return Result.success(roomId);
+    return Result.success(room);
   }
 
   @override
-  Future<Result<List<ChatRoomEntity>>> getRooms(String topicId) async {
+  Future<Result<List<ChatRoomEntity>>> getRooms(TopicEntity topic) async {
     try {
-      final userUid = FirebaseAuth.instance.currentUser!.uid;
-      final roomModels = await _remoteDataSource.getRooms(
-        userUid,
-        topicId,
-      );
-      final asyncResult = roomModels.map((e) async {
-        final messageResponse = await _remoteDataSource.getLastChat(
-          userUid,
-          e.chatRoomId,
+      final roomModels = await _remoteDataSource.getRooms(topic.id);
+      final rooms = <ChatRoomEntity>[];
+      await Future.forEach(roomModels, (roomModel) async {
+        final messageResponse = await _remoteDataSource.getLastChatMessage(
+          roomModel.id,
         );
-
         return ChatRoomEntity(
-          chatRoomId: e.chatRoomId,
-          interviewerInfo: InterviewerAvatar.getAvatarInfoById(e.interviewerId),
-          topic: topicRepository.getTopic(topicId).getOrThrow(),
-          qnaProgressInfo: ChatQnaProgressInfoEntity(
-            totalQuestionCount: e.totalQuestionCount,
-            correctAnswerCount: e.correctAnswerCount,
-            incorrectAnswerCount: e.incorrectAnswerCount,
+          id: roomModel.id,
+          interviewer:
+              InterviewerEntity.getAvatarInfoById(roomModel.interviewerId),
+          topic: topic,
+          progressInfo: ChatProgressInfoEntity(
+            totalQuestionCount: roomModel.totalQuestionCount,
+            correctAnswerCount: roomModel.correctAnswerCount,
+            incorrectAnswerCount: roomModel.incorrectAnswerCount,
           ),
         ).copyWith(
           lastChatMessage: messageResponse?.message,
           lastChatDate: messageResponse?.timestamp,
         );
       });
-      final rooms = await Future.wait(asyncResult);
+
       rooms.sort(
-        (a, b) => a.lastChatDate == null || b.lastChatDate == null
-            ? 1
-            : b.lastChatDate!.compareTo(a.lastChatDate!),
+        (a, b) => b.lastChatDate!.compareTo(a.lastChatDate!),
       );
 
       return Result.success(rooms);
@@ -69,19 +54,15 @@ final class ChatRepositoryImpl implements ChatRepository {
 
   @override
   Future<Result<ChatRoomEntity>> getRoom(String roomId) async {
-    final userUid = FirebaseAuth.instance.currentUser!.uid;
-    final roomModel = await _remoteDataSource.getRoom(
-      userUid,
-      roomId,
-    );
+    final roomModel = await _remoteDataSource.getRoom(roomId);
 
     return Result.success(
       ChatRoomEntity(
-        chatRoomId: roomModel.chatRoomId,
-        interviewerInfo:
-            InterviewerAvatar.getAvatarInfoById(roomModel.interviewerId),
+        id: roomModel.id,
+        interviewer:
+            InterviewerEntity.getAvatarInfoById(roomModel.interviewerId),
         topic: topicRepository.getTopic(roomModel.topicId).getOrThrow(),
-        qnaProgressInfo: ChatQnaProgressInfoEntity(
+        progressInfo: ChatProgressInfoEntity(
           totalQuestionCount: roomModel.totalQuestionCount,
           correctAnswerCount: roomModel.correctAnswerCount,
           incorrectAnswerCount: roomModel.incorrectAnswerCount,
@@ -91,13 +72,12 @@ final class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<Result<List<MessageEntity>>> getChatHistory(String roomId) async {
+  Future<Result<List<ChatMessageEntity>>> getChatMessageHistory(
+    String roomId,
+  ) async {
     try {
-      final userUid = FirebaseAuth.instance.currentUser!.uid;
-      final messageModels = await _remoteDataSource.getChatHistory(
-        userUid,
-        roomId,
-      );
+      final messageModels =
+          await _remoteDataSource.getChatMessageHistory(roomId);
 
       return Result.success([
         ...messageModels.map((e) => e.toEntity()),
@@ -108,14 +88,29 @@ final class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<Result<void>> updateMessages(
+  Future<Result<ChatMessageEntity>> getChatMessage(
+    String roomId,
+    String chatId,
+  ) async {
+    try {
+      final messageModel = await _remoteDataSource.getChatMessage(
+        roomId,
+        chatId,
+      );
+
+      return Result.success(messageModel.toEntity());
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<void>> updateChatMessages(
     String roomId, {
-    required List<MessageEntity> messages,
+    required List<ChatMessageEntity> messages,
   }) async {
     try {
-      final userUid = FirebaseAuth.instance.currentUser!.uid;
-      final response = await _remoteDataSource.updateChats(
-        userUid,
+      final response = await _remoteDataSource.updateChatMessages(
         roomId,
         messages: messages,
       );
@@ -127,50 +122,41 @@ final class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<Result<List<InterviewQnAEntity>>> getChatQnAs(
+  Future<Result<List<ChatQnaEntity>>> getChatQnAs(
     String roomId,
   ) async {
-    final userUid = FirebaseAuth.instance.currentUser!.uid;
     final roomModel = await _remoteDataSource.getRoom(
-      userUid,
       roomId,
     );
-    final roomQnAs = await _remoteDataSource.getChatQnAs(
-      userUid,
+    final roomQnAs = await _remoteDataSource.getChatQnas(
       roomId,
     );
 
-    final qnas = <InterviewQnAEntity>[];
+    final qnas = <ChatQnaEntity>[];
     await Future.forEach(roomQnAs, (element) async {
       // 질문 조회
-      final question = (await topicRepository.getTopicQuestion(
+      final question = (await topicRepository.getTopicQna(
         roomModel.topicId,
         element.questionId,
       ))
           .getOrThrow();
       // 응답 id가 있으면 응답 데이터 조회
-      final SentMessageEntity? answer;
+      final AnswerChatMessageEntity? answer;
       if (element.messageId != null) {
-        final messageModel = await _remoteDataSource.getChat(
-          userUid,
+        final messageModel = await _remoteDataSource.getChatMessage(
           roomId,
           element.messageId!,
         );
-        answer = messageModel.toEntity() as SentMessageEntity;
+        answer = messageModel.toEntity() as AnswerChatMessageEntity;
       } else {
         answer = null;
       }
 
       qnas.add(
-        InterviewQnAEntity(
+        ChatQnaEntity(
           id: element.id,
           question: question,
-          response: answer != null
-              ? UserInterviewResponse(
-                  answer.message.value,
-                  state: answer.answerState,
-                )
-              : null,
+          answer: answer,
         ),
       );
     });
