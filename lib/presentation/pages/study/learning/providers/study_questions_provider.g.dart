@@ -6,7 +6,7 @@ part of 'study_questions_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$studyQuestionsHash() => r'a15411d8d96793cc94cab432b247e4953897943d';
+String _$studyQuestionsHash() => r'c7b0541a5ef4e6de1c8290a6a2ecb9f17762e32b';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,10 +30,10 @@ class _SystemHash {
 }
 
 abstract class _$StudyQuestions
-    extends BuildlessAutoDisposeAsyncNotifier<List<TopicQuestionEntity>> {
+    extends BuildlessAutoDisposeAsyncNotifier<List<TopicQnaEntity>> {
   late final String topicId;
 
-  FutureOr<List<TopicQuestionEntity>> build(
+  FutureOr<List<TopicQnaEntity>> build(
     String topicId,
   );
 }
@@ -43,8 +43,7 @@ abstract class _$StudyQuestions
 const studyQuestionsProvider = StudyQuestionsFamily();
 
 /// See also [StudyQuestions].
-class StudyQuestionsFamily
-    extends Family<AsyncValue<List<TopicQuestionEntity>>> {
+class StudyQuestionsFamily extends Family<AsyncValue<List<TopicQnaEntity>>> {
   /// See also [StudyQuestions].
   const StudyQuestionsFamily();
 
@@ -83,7 +82,7 @@ class StudyQuestionsFamily
 
 /// See also [StudyQuestions].
 class StudyQuestionsProvider extends AutoDisposeAsyncNotifierProviderImpl<
-    StudyQuestions, List<TopicQuestionEntity>> {
+    StudyQuestions, List<TopicQnaEntity>> {
   /// See also [StudyQuestions].
   StudyQuestionsProvider(
     String topicId,
@@ -114,7 +113,7 @@ class StudyQuestionsProvider extends AutoDisposeAsyncNotifierProviderImpl<
   final String topicId;
 
   @override
-  FutureOr<List<TopicQuestionEntity>> runNotifierBuild(
+  FutureOr<List<TopicQnaEntity>> runNotifierBuild(
     covariant StudyQuestions notifier,
   ) {
     return notifier.build(
@@ -139,8 +138,8 @@ class StudyQuestionsProvider extends AutoDisposeAsyncNotifierProviderImpl<
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<StudyQuestions,
-      List<TopicQuestionEntity>> createElement() {
+  AutoDisposeAsyncNotifierProviderElement<StudyQuestions, List<TopicQnaEntity>>
+      createElement() {
     return _StudyQuestionsProviderElement(this);
   }
 
@@ -159,14 +158,14 @@ class StudyQuestionsProvider extends AutoDisposeAsyncNotifierProviderImpl<
 }
 
 mixin StudyQuestionsRef
-    on AutoDisposeAsyncNotifierProviderRef<List<TopicQuestionEntity>> {
+    on AutoDisposeAsyncNotifierProviderRef<List<TopicQnaEntity>> {
   /// The parameter `topicId` of this provider.
   String get topicId;
 }
 
 class _StudyQuestionsProviderElement
     extends AutoDisposeAsyncNotifierProviderElement<StudyQuestions,
-        List<TopicQuestionEntity>> with StudyQuestionsRef {
+        List<TopicQnaEntity>> with StudyQuestionsRef {
   _StudyQuestionsProviderElement(super.provider);
 
   @override

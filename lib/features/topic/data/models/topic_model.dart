@@ -8,9 +8,6 @@ part 'topic_model.g.dart';
 @JsonSerializable(
   fieldRename: FieldRename.snake,
   explicitToJson: true,
-  converters: [
-    TimeStampConverter(),
-  ],
 )
 class TopicModel {
   TopicModel({
@@ -27,6 +24,7 @@ class TopicModel {
   final String name;
   final String? imagePath;
   final bool isAvailable;
+  @TimeStampConverter()
   final DateTime updatedAt;
 
   TopicEntity toEntity() {
