@@ -17,8 +17,12 @@ class TopicRepositoryImpl implements TopicRepository {
 
   @override
   Future<void> initStaticData() async {
-    _cachedTopics = await _remoteDataSource.getTopics();
-    _cachedTopicCategories = await _remoteDataSource.getTopicCategories();
+    _cachedTopics = await _remoteDataSource.getTopics().then(
+          (value) => value.map((e) => e.toEntity()).toList(),
+        );
+    _cachedTopicCategories = await _remoteDataSource.getTopicCategories().then(
+          (value) => value.map((e) => e.toEntity()).toList(),
+        );
   }
 
   @override
@@ -69,7 +73,9 @@ class TopicRepositoryImpl implements TopicRepository {
       final questionsModel = await _localDataSource.getQnas(topicId) ??
           await _remoteDataSource.getQnas(topicId);
 
-      return Result.success(questionsModel);
+      return Result.success(
+        questionsModel.map((e) => e.toEntity()).toList(),
+      );
     } on Exception catch (e) {
       return Result.failure(
         NoTopicQuestionException(topicId),
@@ -92,7 +98,7 @@ class TopicRepositoryImpl implements TopicRepository {
             questionId,
           );
 
-      return Result.success(questionModel);
+      return Result.success(questionModel.toEntity());
     } on Exception catch (e) {
       return Result.failure(
         NoTopicQuestionException(topicId),

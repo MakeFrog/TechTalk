@@ -4,7 +4,7 @@ import 'package:techtalk/features/topic/topic.dart';
 
 class TopicLocalDataSourceImpl implements TopicLocalDataSource {
   @override
-  Future<List<TopicQnaEntity>?> getQnas(
+  Future<List<TopicQnaModel>?> getQnas(
     String topicId,
   ) async {
     final snapshot = await FirestoreTopicQuestionRef.collection(topicId)
@@ -19,12 +19,12 @@ class TopicLocalDataSourceImpl implements TopicLocalDataSource {
     }
 
     return [
-      ...snapshot.docs.map((e) => e.data().toEntity()),
+      ...snapshot.docs.map((e) => e.data()),
     ];
   }
 
   @override
-  Future<TopicQnaEntity?> getQna(
+  Future<TopicQnaModel?> getQna(
     String topicId,
     String questionId,
   ) async {
@@ -39,6 +39,6 @@ class TopicLocalDataSourceImpl implements TopicLocalDataSource {
       return null;
     }
 
-    return snapshot.data()!.toEntity();
+    return snapshot.data();
   }
 }

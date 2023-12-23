@@ -3,7 +3,7 @@ import 'package:techtalk/features/topic/topic.dart';
 
 final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
   @override
-  Future<List<TopicEntity>> getTopics() async {
+  Future<List<TopicModel>> getTopics() async {
     final topicModels = await FirestoreTopicRef.collection()
         .withConverter(
           fromFirestore: TopicModel.fromFirestore,
@@ -12,12 +12,12 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
         .get();
 
     return [
-      ...topicModels.docs.map((e) => e.data().toEntity()),
+      ...topicModels.docs.map((e) => e.data()),
     ];
   }
 
   @override
-  Future<List<TopicCategoryEntity>> getTopicCategories() async {
+  Future<List<TopicCategoryModel>> getTopicCategories() async {
     final topicCategoryModels = await FirestoreTopicCategoryRef.collection()
         .withConverter(
           fromFirestore: TopicCategoryModel.fromFirestore,
@@ -26,12 +26,12 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
         .get();
 
     return [
-      ...topicCategoryModels.docs.map((e) => e.data().toEntity()),
+      ...topicCategoryModels.docs.map((e) => e.data()),
     ];
   }
 
   @override
-  Future<TopicQnaEntity> getQna(
+  Future<TopicQnaModel> getQna(
     String topicId,
     String questionId,
   ) async {
@@ -46,11 +46,11 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
       throw Exception();
     }
 
-    return snapshot.data()!.toEntity();
+    return snapshot.data()!;
   }
 
   @override
-  Future<List<TopicQnaEntity>> getQnas(String topicId) async {
+  Future<List<TopicQnaModel>> getQnas(String topicId) async {
     final snapshot = await FirestoreTopicQuestionRef.collection(topicId)
         .withConverter(
           fromFirestore: TopicQnaModel.fromFirestore,
@@ -63,7 +63,7 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
     }
 
     return [
-      ...snapshot.docs.map((e) => e.data().toEntity()),
+      ...snapshot.docs.map((e) => e.data()),
     ];
   }
 }
