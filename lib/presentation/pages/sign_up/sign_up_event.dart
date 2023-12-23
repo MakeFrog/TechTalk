@@ -63,7 +63,7 @@ mixin class SignUpEvent implements _SignUpEvent {
           isDividedBtnFormat: true,
           btnText: '네',
           onBtnClicked: () async {
-            await ref.read(userDataProvider.notifier).deleteUserData();
+            await ref.read(userDataProvider.notifier).deleteData();
             ref.context
               ..pop()
               ..pop();
@@ -92,7 +92,7 @@ mixin class SignUpEvent implements _SignUpEvent {
             nickname: nickname,
           );
 
-      await ref.read(userDataProvider.notifier).updateUserData(userData);
+      await ref.read(userDataProvider.notifier).updateData(userData);
 
       ref.read(signUpStepControllerProvider.notifier).next();
     } on AlreadyExistNicknameException catch (e) {
@@ -115,7 +115,7 @@ mixin class SignUpEvent implements _SignUpEvent {
         jobGroupIds: [...jobGroups.map((e) => e.id)],
       );
 
-      await ref.read(userDataProvider.notifier).updateUserData(userData);
+      await ref.read(userDataProvider.notifier).updateData(userData);
 
       ref.read(signUpStepControllerProvider.notifier).next();
     } finally {
@@ -135,7 +135,7 @@ mixin class SignUpEvent implements _SignUpEvent {
         topicIds: [...topics.map((e) => e.id)],
       );
 
-      await ref.read(userDataProvider.notifier).updateUserData(userData).then(
+      await ref.read(userDataProvider.notifier).updateData(userData).then(
         (_) {
           const MainRoute().go(ref.context);
         },

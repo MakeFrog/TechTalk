@@ -23,10 +23,7 @@ mixin class SignInEvent implements _SignInEvent {
         if (userData?.hasEssentialData ?? false) {
           const MainRoute().go(ref.context);
         } else {
-          await ref
-              .read(userDataProvider.notifier)
-              .createUserData()
-              .then((value) {
+          await ref.read(userDataProvider.notifier).createData().then((value) {
             const SignUpRoute().push(ref.context);
           });
         }

@@ -11,51 +11,73 @@ part 'user_data_provider.g.dart';
 class UserData extends _$UserData {
   @override
   FutureOr<UserDataEntity?> build() async {
-    try {
-      final userAuth = ref.watch(userAuthProvider);
+    final userAuth = ref.watch(userAuthProvider);
 
-      if (userAuth == null) throw const UnAuthorizedException();
+    if (userAuth == null) throw const UnAuthorizedException();
 
-      final userData = await getUserDataUseCase();
+    final userData = await getUserDataUseCase();
 
-      return userData.getOrThrow();
-    } on UnAuthorizedException catch (e) {
-      ToastService.show(
-        NormalToast(message: '$e'),
-      );
+    return userData.fold(
+      onSuccess: (value) {
+        return value;
+      },
+      onFailure: (e) {
+        ToastService.show(
+          NormalToast(message: '$e'),
+        );
 
-      rethrow;
-    }
+        throw e;
+      },
+    );
   }
 
-  Future<void> createUserData() async {
-    try {
-      await createUserDataUseCase();
+  Future<void> createData() async {
+    final createUserData = await createUserDataUseCase();
+    await createUserData.fold(
+      onSuccess: (value) async {
+        ref.invalidateSelf();
 
-      ref.invalidateSelf();
+        await future;
+      },
+      onFailure: (e) {
+        ToastService.show(
+          NormalToast(message: '$e'),
+        );
 
-      await future;
-    } on AlreadyExistUserDataException catch (e) {
-      ToastService.show(
-        NormalToast(message: '$e'),
-      );
-
-      rethrow;
-    }
+        throw e;
+      },
+    );
   }
 
-  Future<void> updateUserData(UserDataEntity data) async {
-    try {
-      await updateUserDataUseCase(data);
+  Future<void> updateData(UserDataEntity data) async {
+    final updateUserData = await updateUserDataUseCase(data);
+    updateUserData.fold(
+      onSuccess: (value) {
+        state = AsyncData(data);
+      },
+      onFailure: (e) {
+        ToastService.show(
+          NormalToast(message: '$e'),
+        );
 
-      state = AsyncData(data);
-    } on AlreadyExistNicknameException catch (e) {
-      rethrow;
-    }
+        throw e;
+      },
+    );
   }
 
-  Future<void> deleteUserData() async {
-    await deleteUserDataUseCase();
-    ref.invalidateSelf();
+  Future<void> deleteData() async {
+    final deleteUserData = await deleteUserDataUseCase();
+    deleteUserData.fold(
+      onSuccess: (value) {
+        ref.invalidateSelf();
+      },
+      onFailure: (e) {
+        ToastService.show(
+          NormalToast(message: '$e'),
+        );
+
+        throw e;
+      },
+    );
   }
 }
