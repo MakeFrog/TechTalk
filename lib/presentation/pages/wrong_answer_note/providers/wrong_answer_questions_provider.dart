@@ -6,8 +6,8 @@ part 'wrong_answer_questions_provider.g.dart';
 @Riverpod(keepAlive: true)
 class WrongAnswerQuestions extends _$WrongAnswerQuestions {
   @override
-  FutureOr<List<WrongAnswerQuestionEntity>> build(String topicId) async {
-    final questions = await getWrongAnswerNoteQuestionsUseCase(topicId);
+  FutureOr<List<WrongAnswerNoteEntity>> build(String topicId) async {
+    final questions = await getWrongAnswerNotesUseCase(topicId);
 
     return questions.getOrThrow();
   }

@@ -1,40 +1,30 @@
-import 'package:techtalk/core/constants/firestore_collection.enum.dart';
 import 'package:techtalk/features/wrong_answer_note/wrong_answer_note.dart';
 
 final class WrongAnswerNoteRemoteDataSourceImpl
     implements WrongAnswerNoteRemoteDataSource {
   @override
-  Future<List<WrongAnswerQnAModel>> getQuestions({
-    required String userUid,
-    required String topicId,
-  }) async {
-    final snapshot = await FirestoreWrongAnswerRef.collection()
-        .withConverter(
-          fromFirestore: WrongAnswerQnAModel.fromFirestore,
-          toFirestore: (value, options) => value.toJson(),
-        )
-        .get();
+  Future<List<WrongAnswerNoteModel>> getWrongAnswerNotes(String topicId) async {
+    final snapshot = await FirestoreWrongAnswerNoteRef.collection().get();
 
     if (snapshot.docs.isEmpty) {
-      throw Exception();
+      throw Exception('오답노트가 비어있습니다.');
     }
 
-    final data = snapshot.docs.where((element) => element.id.contains(topicId));
-
-    return [
-      ...data.map((e) => e.data()),
+    final notes = [
+      ...snapshot.docs
+          .where(
+            (element) => element.id.contains(topicId),
+          )
+          .map((e) => e.data()),
     ];
 
-    // final questions = data.map(
-    //   (e) async => FirestoreTopicQuestionRef.doc(topicId, e.id)
-    //       .withConverter(
-    //         fromFirestore: TopicQuestionModel.fromFirestore,
-    //         toFirestore: (value, options) => value.toJson(),
-    //       )
-    //       .get()
-    //       .then((value) => value.data()!),
-    // );
-    //
-    // return Future.wait(questions);
+    return notes;
+  }
+
+  @override
+  Future<DateTime> getLastUpdateDate(String questionId) async {
+    final snapshot = await FirestoreWrongAnswerNoteRef.doc(questionId).get();
+
+    return snapshot.data()!.updatedAt;
   }
 }

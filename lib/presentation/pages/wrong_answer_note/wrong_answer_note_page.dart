@@ -128,7 +128,7 @@ class _Body extends HookConsumerWidget with WrongAnswerNoteEvent {
                           vertical: 24,
                         ),
                         child: Text(
-                          question.question,
+                          question.question.question,
                           style: AppTextStyle.body1,
                         ),
                       ),

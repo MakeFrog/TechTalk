@@ -110,12 +110,11 @@ class _Body extends HookConsumerWidget with ReviewNoteDetailEvent {
               itemCount: questions.length,
               itemBuilder: (context, index) {
                 return _StudyQna(
-                  qna: WrongAnswerQnAEntity(
+                  note: WrongAnswerNoteEntity(
                     id: 'id',
-                    chatRoomId: 'chatRoomId',
                     question: TopicQnaEntity(
                       id: '',
-                      question: questions[index].question,
+                      question: questions[index].question.question,
                       answers: [
                         'test',
                       ],
@@ -177,10 +176,10 @@ class _Body extends HookConsumerWidget with ReviewNoteDetailEvent {
 class _StudyQna extends HookWidget {
   const _StudyQna({
     super.key,
-    required this.qna,
+    required this.note,
   });
 
-  final WrongAnswerQnAEntity qna;
+  final WrongAnswerNoteEntity note;
 
   @override
   Widget build(BuildContext context) {
@@ -202,14 +201,14 @@ class _StudyQna extends HookWidget {
         horizontal: 16,
       ),
       child: Text(
-        qna.question.question,
+        note.question.question,
         style: AppTextStyle.title1,
       ),
     );
   }
 
   Widget _buildAnswers() {
-    final answers = qna.question.answers;
+    final answers = note.question.answers;
     return Expanded(
       child: ListView.builder(
         physics: const ScrollPhysics(),

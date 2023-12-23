@@ -1,15 +1,14 @@
 import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/features/wrong_answer_note/entities/wrong_answer_note_answer_entity.dart';
 
-class WrongAnswerQnAEntity {
+class WrongAnswerNoteEntity {
   final String id;
-  final String chatRoomId;
   final TopicQnaEntity question;
-  final List<String> answers;
+  final List<WrongAnswerNoteAnswerEntity> answers;
 
 //<editor-fold desc="Data Methods">
-  const WrongAnswerQnAEntity({
+  const WrongAnswerNoteEntity({
     required this.id,
-    required this.chatRoomId,
     required this.question,
     required this.answers,
   });
@@ -17,36 +16,31 @@ class WrongAnswerQnAEntity {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is WrongAnswerQnAEntity &&
+      (other is WrongAnswerNoteEntity &&
           runtimeType == other.runtimeType &&
           id == other.id &&
-          chatRoomId == other.chatRoomId &&
           question == other.question &&
           answers == other.answers);
 
   @override
-  int get hashCode =>
-      id.hashCode ^ chatRoomId.hashCode ^ question.hashCode ^ answers.hashCode;
+  int get hashCode => id.hashCode ^ question.hashCode ^ answers.hashCode;
 
   @override
   String toString() {
-    return 'WrongAnswerQnAEntity{' +
+    return 'WrongAnswerNoteEntity{' +
         ' id: $id,' +
-        ' chatRoomId: $chatRoomId,' +
         ' question: $question,' +
         ' answers: $answers,' +
         '}';
   }
 
-  WrongAnswerQnAEntity copyWith({
+  WrongAnswerNoteEntity copyWith({
     String? id,
-    String? chatRoomId,
     TopicQnaEntity? question,
-    List<String>? answers,
+    List<WrongAnswerNoteAnswerEntity>? answers,
   }) {
-    return WrongAnswerQnAEntity(
+    return WrongAnswerNoteEntity(
       id: id ?? this.id,
-      chatRoomId: chatRoomId ?? this.chatRoomId,
       question: question ?? this.question,
       answers: answers ?? this.answers,
     );

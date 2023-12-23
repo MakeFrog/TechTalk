@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/user/data/models/users_ref.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -41,14 +42,20 @@ abstract class FirestoreTopicRef {
 abstract class FirestoreTopicQuestionRef {
   static const String name = 'Questions';
 
-  static CollectionReference<Map<String, dynamic>> collection(String topicId) =>
-      FirestoreTopicRef.doc(topicId).collection(name);
+  static CollectionReference<TopicQnaModel> collection(String topicId) =>
+      FirestoreTopicRef.doc(topicId).collection(name).withConverter(
+            fromFirestore: TopicQnaModel.fromFirestore,
+            toFirestore: (value, options) => value.toJson(),
+          );
 
-  static DocumentReference<Map<String, dynamic>> doc(
+  static DocumentReference<TopicQnaModel> doc(
     String topicId,
     String id,
   ) =>
-      FirestoreTopicRef.doc(topicId).collection(name).doc(id);
+      FirestoreTopicRef.doc(topicId).collection(name).doc(id).withConverter(
+            fromFirestore: TopicQnaModel.fromFirestore,
+            toFirestore: (value, options) => value.toJson(),
+          );
 }
 
 abstract class FirestoreChatRoomRef {
@@ -85,14 +92,4 @@ abstract class FirestoreChatQnaRef {
     String id,
   ) =>
       FirestoreChatRoomRef.doc(roomId).collection(name).doc(id);
-}
-
-abstract class FirestoreWrongAnswerRef {
-  static const String name = 'WrongAnswers';
-
-  static CollectionReference<Map<String, dynamic>> collection() =>
-      FirestoreUsersRef.doc().collection(name);
-
-  static DocumentReference<Map<String, dynamic>> doc(String id) =>
-      FirestoreUsersRef.doc().collection(name).doc(id);
 }

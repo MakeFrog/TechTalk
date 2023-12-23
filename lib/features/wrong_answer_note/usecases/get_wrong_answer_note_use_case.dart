@@ -1,14 +1,14 @@
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/wrong_answer_note/wrong_answer_note.dart';
 
-final class GetWrongAnswerNoteQuestionsUseCase {
-  GetWrongAnswerNoteQuestionsUseCase(
+final class GetWrongAnswerNoteUseCase {
+  GetWrongAnswerNoteUseCase(
     this.wrongAnswerNoteRepository,
   );
 
   final WrongAnswerNoteRepository wrongAnswerNoteRepository;
 
-  Future<Result<List<WrongAnswerQuestionEntity>>> call(String topicId) async {
-    return wrongAnswerNoteRepository.getQuestions(topicId);
+  Future<Result<List<WrongAnswerNoteEntity>>> call(String topicId) async {
+    return wrongAnswerNoteRepository.getWrongAnswerNotes(topicId);
   }
 }
