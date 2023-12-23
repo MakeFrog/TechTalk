@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:techtalk/core/core.dart';
+import 'package:techtalk/features/topic/data/models/topic_ref.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 class TopicLocalDataSourceImpl implements TopicLocalDataSource {
@@ -8,10 +8,6 @@ class TopicLocalDataSourceImpl implements TopicLocalDataSource {
     String topicId,
   ) async {
     final snapshot = await FirestoreTopicQuestionRef.collection(topicId)
-        .withConverter(
-          fromFirestore: TopicQnaModel.fromFirestore,
-          toFirestore: (value, options) => value.toJson(),
-        )
         .get(const GetOptions(source: Source.cache));
 
     if (snapshot.docs.isEmpty) {
@@ -29,10 +25,6 @@ class TopicLocalDataSourceImpl implements TopicLocalDataSource {
     String questionId,
   ) async {
     final snapshot = await FirestoreTopicQuestionRef.doc(topicId, questionId)
-        .withConverter(
-          fromFirestore: TopicQnaModel.fromFirestore,
-          toFirestore: (value, options) => value.toJson(),
-        )
         .get(const GetOptions(source: Source.cache));
 
     if (!snapshot.exists) {
