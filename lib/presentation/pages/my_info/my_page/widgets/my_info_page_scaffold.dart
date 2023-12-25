@@ -1,4 +1,4 @@
-part of '../my_info_page.dart';
+part of '../my_page.dart';
 
 class _Scaffold extends StatelessWidget {
   const _Scaffold({
@@ -20,20 +20,13 @@ class _Scaffold extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       children: [
         const Gap(32),
-
         introView,
-
         const Gap(52),
-
         myInfoCard,
-        Gap(24),
-
+        const Gap(24),
         settingCard,
-        Gap(24),
-
+        const Gap(24),
         additionalInfoCard,
-
-        /// 기타
       ],
     );
   }

@@ -1,12 +1,10 @@
-part of '../my_info_page.dart';
+part of '../my_page.dart';
 
-class _SettingCard extends ConsumerWidget {
+class _SettingCard extends ConsumerWidget with MyPageEvent {
   const _SettingCard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const String versionNum = '1.0.5';
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -28,9 +26,16 @@ class _SettingCard extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CardListTileButton(onTap: () {}, text: '현재 버전 $versionNum'),
-              CardListTileButton(onTap: () {}, text: '피드백 및 문의사항'),
-              CardListTileButton(onTap: () {}, text: '개인정보 및 약관'),
+              ref.watch(appVersionProvider).when(
+                    data: (versionInfo) => CardListTileButton(
+                        text: '현재 버전 ${versionInfo.versionCode}'),
+                    error: (e, _) => const EmptyBox(),
+                    loading: () => const CardListTileButton(text: '현재 버전'),
+                  ),
+              CardListTileButton(
+                  onTap: onVisitCsPageTapped, text: '피드백 및 문의사항'),
+              CardListTileButton(
+                  onTap: onVisitPolicyPageBtnTapped, text: '개인정보 및 약관'),
             ],
           ),
         ),

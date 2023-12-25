@@ -1,29 +1,37 @@
-part of '../my_info_page.dart';
+part of '../my_page.dart';
 
-class _UserInfoCard extends ConsumerWidget {
+class _UserInfoCard extends ConsumerWidget with MyPageEvent {
   const _UserInfoCard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // return Container(
+    //   height: 20,
+    //   width: double.infinity,
+    //   color: Colors.black,
+    // );
+
     return Column(
       children: <Widget>[
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               '내 정보',
               style: AppTextStyle.title1,
             ),
-            const Spacer(),
-            GestureDetector(
-              child: SvgPicture.asset(
-                Assets.iconsPencil,
-                width: 16,
-              ),
+            IconFlashAreaButton.assetIcon(
+              iconPath: Assets.iconsPencil,
+              size: 16,
+              onIconTapped: () {
+                onProfileEditBtnTapped(context);
+              },
             ),
           ],
         ),
         const Gap(8),
         Container(
+          width: double.infinity,
           padding: const EdgeInsets.symmetric(
             horizontal: 16,
             vertical: 20,

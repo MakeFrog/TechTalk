@@ -4,9 +4,9 @@ import 'package:techtalk/core/theme/extension/app_text_style.dart';
 
 class CardListTileButton extends StatelessWidget {
   const CardListTileButton(
-      {super.key, required this.onTap, required this.text, this.textColor});
+      {super.key, this.onTap, required this.text, this.textColor});
 
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final String text;
   final Color? textColor;
 

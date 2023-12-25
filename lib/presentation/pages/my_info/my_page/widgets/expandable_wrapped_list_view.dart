@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/helper/bool_extension.dart';
 import 'package:techtalk/core/helper/hook_helper.dart';
-import 'package:techtalk/presentation/pages/my_info/my_page_widget_event.dart';
+import 'package:techtalk/presentation/pages/my_info/my_page/events/my_page_widget_event.dart';
 import 'package:techtalk/presentation/widgets/common/chip/rounded_filled_chip.dart';
 
 ///

@@ -1,6 +1,6 @@
-part of '../my_info_page.dart';
+part of '../my_page.dart';
 
-class _AdditionalInfoCard extends StatelessWidget {
+class _AdditionalInfoCard extends StatelessWidget with MyPageEvent {
   const _AdditionalInfoCard({super.key});
 
   @override
@@ -26,9 +26,9 @@ class _AdditionalInfoCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CardListTileButton(onTap: () {}, text: '로그아웃'),
+              CardListTileButton(onTap: onLogOutBtnTapped, text: '로그아웃'),
               CardListTileButton(
-                onTap: () {},
+                onTap: onWithdrawalBtnTapped,
                 text: '회원 탈퇴',
                 textColor: AppColor.of.gray2,
               ),
