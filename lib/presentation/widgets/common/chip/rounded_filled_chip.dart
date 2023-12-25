@@ -8,11 +8,13 @@ import 'package:techtalk/core/theme/extension/app_text_style.dart';
 ///
 
 class RoundedFilledChip extends StatelessWidget {
-  const RoundedFilledChip({Key? key, required this.text, this.margin})
+  const RoundedFilledChip(
+      {Key? key, required this.text, this.margin, this.color})
       : super(key: key);
 
   final String text;
   final EdgeInsetsGeometry? margin;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class RoundedFilledChip extends StatelessWidget {
         vertical: 8,
       ),
       decoration: BoxDecoration(
-        color: AppColor.of.gray1,
+        color: color ?? AppColor.of.gray1,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
