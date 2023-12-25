@@ -7,5 +7,5 @@ abstract base class FeatureDependencyInjection {
 
   void dataSources();
   void repositories();
-  void useCases();
+  void useCases() {}
 }

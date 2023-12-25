@@ -69,7 +69,8 @@ dependencies:
   lorem_ipsum_generator: ^0.0.1 # 랜던 텍스트 generator(삭제 예정)
 
   # 앱 정보
-  package_info_plus: ^4.1.0
+  package_info_plus: ^5.0.1 # 현재 앱 버전 정보
+  pub_semver: ^2.1.4 # 주부수 버전 비교 연산
   collection: ^1.17.1
   gap: ^3.0.1
 

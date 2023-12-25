@@ -38,13 +38,10 @@ class RoundProfileImg extends StatelessWidget {
                   ),
                 ),
               )
-            : Container(
-                color: Colors.red,
-                child: Image.asset(
-                  'assets/images/blank_profile.png',
-                  height: size,
-                  width: size,
-                ),
+            : Image.asset(
+                'assets/images/blank_profile.png',
+                height: size,
+                width: size,
               ),
       );
     }
