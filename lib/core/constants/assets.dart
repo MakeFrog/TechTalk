@@ -6,7 +6,6 @@ class Assets {
   static const String characterGreenPlus = 'assets/character/green_plus.svg';
   static const String characterPurplePlus = 'assets/character/purple_plus.svg';
   static const String characterRedPlus = 'assets/character/red_plus.svg';
-  static const String constantsAssets = 'lib/core/constants/assets.dart';
   static const String iconsArrowDown = 'assets/icons/arrow_down.svg';
   static const String iconsArrowDownThick = 'assets/icons/arrow_down_thick.svg';
   static const String iconsArrowLeft = 'assets/icons/arrow_left.svg';
@@ -66,6 +65,7 @@ class Assets {
   static const String iconsWarnning = 'assets/icons/warnning.svg';
   static const String iconsWrongIndicator = 'assets/icons/wrong_indicator.svg';
   static const String imagesAvatar1 = 'assets/images/avatar_1.png';
+  static const String imagesBlankProfile = 'assets/images/blank_profile.png';
   static const String imagesSparkle = 'assets/images/sparkle.svg';
   static const String imagesSplashImage = 'assets/images/splash_image.png';
   static const String imagesTechTalkCharacterBlue01 =

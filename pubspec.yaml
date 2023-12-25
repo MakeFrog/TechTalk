@@ -28,6 +28,7 @@ dependencies:
   smooth_page_indicator: ^1.1.0
   animations: ^2.0.8
   flutter_animate: ^4.2.0+1
+  cached_network_image: ^3.3.0
   defer_pointer: ^0.0.2 # Overflow 영역에도 터치를 보장할 수 있도록 도와주는 패키지
 
   # 상태관리
