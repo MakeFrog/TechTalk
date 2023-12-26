@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/interview_qnas_of_room_provider.dart';
 
 part 'interview_progress_state_provider.g.dart';
@@ -12,7 +13,7 @@ class InterviewProgressState extends _$InterviewProgressState {
     if (qnas != null) {
       final totalQuestionCount = qnas.length;
       final completedQnAs = qnas.where(
-        (e) => e.hasUserResponded && e.response!.state.isCompleted,
+        (e) => e.hasUserResponded,
       );
 
       if (completedQnAs.length >= totalQuestionCount) {
@@ -21,7 +22,7 @@ class InterviewProgressState extends _$InterviewProgressState {
     }
 
     ref.listen(
-      chatHistoryOfRoomProvider(room),
+      chatMessageHistoryProvider(room),
       (_, next) {
         if (next.hasValue) {
           final lastChat = next.requireValue.first;

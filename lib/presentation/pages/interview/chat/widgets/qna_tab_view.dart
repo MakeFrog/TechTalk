@@ -15,12 +15,12 @@ class QnATabView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
-    final room = ref.watch(selectedInterviewRoomProvider).requireValue;
+    final room = ref.watch(selectedChatRoomProvider).requireValue;
     final completedQnAsAsync =
         ref.watch(interviewQnAsOfRoomProvider(room)).whenData(
               (value) => [
                 ...value.where(
-                  (e) => e.hasUserResponded && e.response!.state.isCompleted,
+                  (e) => e.hasUserResponded,
                 ),
               ],
             );

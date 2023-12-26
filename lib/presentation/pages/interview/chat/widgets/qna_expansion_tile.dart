@@ -31,7 +31,7 @@ class QnAExpansionTile extends HookWidget {
             children: [
               /// CORRECT WRONG INDICATOR
               SvgPicture.asset(
-                item.response!.state.isCorrect
+                item.answer!.answerState.isCorrect
                     ? Assets.iconsCorrectIndicator
                     : Assets.iconsWrongIndicator,
               ),
@@ -68,7 +68,7 @@ class QnAExpansionTile extends HookWidget {
 
             /// USER ANSWER RESPONSE
             BulletText(
-              item.response!.text,
+              item.answer!.message.value,
               style: AppTextStyle.alert2,
             ),
             const Gap(18),

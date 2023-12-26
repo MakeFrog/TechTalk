@@ -44,10 +44,7 @@ class InterviewQnAsOfRoom extends _$InterviewQnAsOfRoom {
       (element) => element.id == message.qnaId,
     );
     final resolvedQna = qnas[targetQnaIndex].copyWith(
-      answer: UserInterviewResponse(
-        message.message.value,
-        state: message.answerState,
-      ),
+      answer: message,
     );
 
     update((previous) {

@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/bubble.dart';
@@ -22,7 +23,7 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
 
     // 채팅 리스트에 내용이 추가되면 아래로 스크롤한다.
     ref.listen(
-      chatHistoryOfRoomProvider(room),
+      chatMessageHistoryProvider(room),
       (previous, next) {
         if (chatScrollController.hasClients) {
           chatScrollController.animateTo(
@@ -42,7 +43,7 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
             child: Consumer(
               builder: (context, ref, _) {
                 final chatListAsync =
-                    ref.watch(chatHistoryOfRoomProvider(room));
+                    ref.watch(chatMessageHistoryProvider(room));
 
                 return switch (chatListAsync) {
                   AsyncData(:final value) => Align(
@@ -58,7 +59,7 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
                         itemBuilder: (context, index) => Bubble(
                           chat: value[index],
                           isLatestReceivedChatInEachSection: ref
-                              .read(chatHistoryOfRoomProvider(room).notifier)
+                              .read(chatMessageHistoryProvider(room).notifier)
                               .isLastReceivedChatInEachQuestion(index: index),
                           interviewer: room.interviewer,
                         ),
@@ -88,7 +89,7 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
                 //           return Bubble(
                 //             chat: chatList[index],
                 //             isLatestReceivedChatInEachSection: ref
-                //                 .read(chatHistoryOfRoomProvider(room).notifier)
+                //                 .read(cchatMessageHistoryProviderroom).notifier)
                 //                 .isLastReceivedChatInEachQuestion(index: index),
                 //             interviewer: room.interviewerInfo,
                 //           );

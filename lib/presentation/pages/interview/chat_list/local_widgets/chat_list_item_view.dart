@@ -43,7 +43,7 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
             children: <Widget>[
               // CHARACTER IMAGE
               ClipOvalCircleAvatar.create(
-                svgPath: item!.interviewerInfo.iconPath,
+                svgPath: item!.interviewer.iconPath,
                 size: 64,
               ),
               const SizedBox(
@@ -58,7 +58,7 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
                   children: [
                     // CHARACTER NAME
                     Text(
-                      item!.interviewerInfo.name,
+                      item!.interviewer.name,
                       style: AppTextStyle.title1,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
