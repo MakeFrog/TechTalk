@@ -9,6 +9,7 @@ part of 'user_data_model.dart';
 UserDataModel _$UserDataModelFromJson(Map<String, dynamic> json) =>
     UserDataModel(
       uid: json['uid'] as String,
+      profileImgUrl: json['profile_img_url'] as String?,
       nickname: json['nickname'] as String?,
       jobGroupIds: (json['job_group_ids'] as List<dynamic>?)
           ?.map((e) => e as String)
@@ -21,6 +22,7 @@ UserDataModel _$UserDataModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$UserDataModelToJson(UserDataModel instance) =>
     <String, dynamic>{
       'uid': instance.uid,
+      'profile_img_url': instance.profileImgUrl,
       'nickname': instance.nickname,
       'job_group_ids': instance.jobGroupIds,
       'topic_ids': instance.topicIds,

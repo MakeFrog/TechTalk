@@ -2,6 +2,7 @@ import 'package:techtalk/app/di/modules/auth_di.dart';
 import 'package:techtalk/app/di/modules/chat_di.dart';
 import 'package:techtalk/app/di/modules/interview_di.dart';
 import 'package:techtalk/app/di/modules/job_di.dart';
+import 'package:techtalk/app/di/modules/system_di.dart';
 import 'package:techtalk/app/di/modules/user_di.dart';
 
 final class AppBinder {
@@ -15,6 +16,7 @@ final class AppBinder {
     _initTopPriority();
 
     for (final di in [
+      SystemDependencyInjection(),
       AuthDependencyInjection(),
       UserDependencyInjection(),
       JobDependencyInjection(),
