@@ -8,12 +8,14 @@ part 'user_data_model.g.dart';
 class UserDataModel {
   UserDataModel({
     required this.uid,
+    this.profileImgUrl,
     this.nickname,
     this.jobGroupIds,
     this.topicIds,
   });
 
   final String uid;
+  final String? profileImgUrl;
   final String? nickname;
   final List<String>? jobGroupIds;
   final List<String>? topicIds;
@@ -21,6 +23,7 @@ class UserDataModel {
   factory UserDataModel.fromEntity(UserDataEntity entity) {
     return UserDataModel(
       uid: entity.uid,
+      profileImgUrl: entity.profileImgUrl,
       nickname: entity.nickname,
       jobGroupIds: entity.jobGroupIds,
       topicIds: entity.topicIds,

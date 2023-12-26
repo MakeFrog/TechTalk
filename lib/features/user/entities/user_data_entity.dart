@@ -1,5 +1,6 @@
 class UserDataEntity {
   final String uid;
+  final String? profileImgUrl;
   final String? nickname;
   final List<String> jobGroupIds;
   final List<String> topicIds;
@@ -10,6 +11,7 @@ class UserDataEntity {
 
   const UserDataEntity({
     required this.uid,
+    this.profileImgUrl,
     this.nickname,
     List<String>? jobGroupIds,
     List<String>? topicIds,
