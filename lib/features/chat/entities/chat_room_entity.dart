@@ -12,6 +12,7 @@ class ChatRoomEntity {
   final String? lastChatMessage;
   final DateTime? lastChatDate;
 
+  bool get isTempRoom => lastChatMessage == null;
   int get completedQuestionCount => progressInfo.completedQuestionCount;
   ChatProgress get progressState => progressInfo.progressState;
   ChatResult get passOrFail => progressInfo.chatResult;

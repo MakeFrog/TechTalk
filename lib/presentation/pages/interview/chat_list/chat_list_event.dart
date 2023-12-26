@@ -24,7 +24,7 @@ mixin class ChatListEvent implements _ChatListEvent {
     BuildContext context, {
     required ChatRoomEntity room,
   }) {
-    ChatPageRoute(room.topic.id, room.chatRoomId).go(context);
+    ChatPageRoute(room.topic.id, room.id).go(context);
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
+import 'package:uuid/uuid.dart';
 
 class ChatQnaEntity {
   final String id; // 질문 Id
@@ -8,11 +9,11 @@ class ChatQnaEntity {
   bool get hasUserResponded => answer != null;
 
 //<editor-fold desc="Data Methods">
-  const ChatQnaEntity({
-    required this.id,
+  ChatQnaEntity({
+    String? id,
     required this.question,
     this.answer,
-  });
+  }) : id = id ?? const Uuid().v1();
 
   @override
   bool operator ==(Object other) =>

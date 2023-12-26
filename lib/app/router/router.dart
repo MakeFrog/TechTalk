@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/selected_interview_room_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
@@ -235,14 +235,9 @@ class ChatPageRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return ProviderScope(
       overrides: [
-        selectedInterviewRoomProvider.overrideWith(
-          (ref) async {
-            if ($extra != null) {
-              return $extra!;
-            } else {
-              return (await getChatRoomUseCase(roomId)).getOrThrow();
-            }
-          },
+        selectedChatRoomProvider.overrideWith(
+          (ref) async =>
+              $extra ?? (await getChatRoomUseCase(roomId)).getOrThrow(),
         ),
       ],
       child: const ChatPage(),

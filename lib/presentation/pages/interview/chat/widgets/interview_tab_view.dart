@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -6,9 +7,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/chat_history_of_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/selected_interview_room_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/bubble.dart';
 
 class InterviewTabView extends HookConsumerWidget with ChatEvent {
@@ -17,35 +17,35 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
-    final room = ref.watch(selectedInterviewRoomProvider).requireValue;
+    final room = ref.watch(selectedChatRoomProvider).requireValue;
     final chatScrollController = useScrollController();
 
     // 채팅 리스트에 내용이 추가되면 아래로 스크롤한다.
-    ref.listen(chatHistoryOfRoomProvider(room), (previous, next) {
-      if (previous != null && previous.hasValue) {
-        if (previous.requireValue.length != next.requireValue.length) {
-          if (chatScrollController.hasClients) {
-            chatScrollController.animateTo(
-              0,
-              duration: const Duration(milliseconds: 100),
-              curve: Curves.bounceIn,
-            );
-          }
+    ref.listen(
+      chatHistoryOfRoomProvider(room),
+      (previous, next) {
+        if (chatScrollController.hasClients) {
+          chatScrollController.animateTo(
+            0,
+            duration: 0.ms,
+            curve: Curves.linear,
+          );
         }
-      }
-    });
+      },
+    );
+
     return Column(
       children: [
-        Consumer(
-          builder: (context, ref, _) {
-            final chatListAsync = ref.watch(chatHistoryOfRoomProvider(room));
+        Expanded(
+          child: GestureDetector(
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            child: Consumer(
+              builder: (context, ref, _) {
+                final chatListAsync =
+                    ref.watch(chatHistoryOfRoomProvider(room));
 
-            return Expanded(
-              child: GestureDetector(
-                onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-                child: chatListAsync.when(
-                  data: (chatList) {
-                    return Align(
+                return switch (chatListAsync) {
+                  AsyncData(:final value) => Align(
                       alignment: Alignment.topCenter,
                       child: ListView.separated(
                         controller: chatScrollController,
@@ -54,33 +54,62 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
                         padding: const EdgeInsets.only(top: 24, bottom: 20) +
                             const EdgeInsets.symmetric(horizontal: 12),
                         separatorBuilder: (_, __) => const Gap(8),
-                        itemCount: chatList.length,
-                        itemBuilder: (context, index) {
-                          return Bubble(
-                            chat: chatList[index],
-                            isLatestReceivedChatInEachSection: ref
-                                .read(chatHistoryOfRoomProvider(room).notifier)
-                                .isLastReceivedChatInEachQuestion(index: index),
-                            interviewer: room.interviewerInfo,
-                          );
-                        },
+                        itemCount: value.length,
+                        itemBuilder: (context, index) => Bubble(
+                          chat: value[index],
+                          isLatestReceivedChatInEachSection: ref
+                              .read(chatHistoryOfRoomProvider(room).notifier)
+                              .isLastReceivedChatInEachQuestion(index: index),
+                          interviewer: room.interviewer,
+                        ),
                       ),
-                    );
-                  },
-                  error: (e, _) => Center(
-                    child: Text('채팅 내역을 불러오지 못했습니다[$e]'),
-                  ),
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
-              ),
-            );
-          },
+                    ),
+                  AsyncError(error: final e) => Center(
+                      child: Text('채팅 내역을 불러오지 못했습니다[$e]'),
+                    ),
+                  _ => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                };
+
+                // return chatListAsync.when(
+                //   data: (chatList) {
+                //     return Align(
+                //       alignment: Alignment.topCenter,
+                //       child: ListView.separated(
+                //         controller: chatScrollController,
+                //         shrinkWrap: true,
+                //         reverse: true,
+                //         padding: const EdgeInsets.only(top: 24, bottom: 20) +
+                //             const EdgeInsets.symmetric(horizontal: 12),
+                //         separatorBuilder: (_, __) => const Gap(8),
+                //         itemCount: chatList.length,
+                //         itemBuilder: (context, index) {
+                //           return Bubble(
+                //             chat: chatList[index],
+                //             isLatestReceivedChatInEachSection: ref
+                //                 .read(chatHistoryOfRoomProvider(room).notifier)
+                //                 .isLastReceivedChatInEachQuestion(index: index),
+                //             interviewer: room.interviewerInfo,
+                //           );
+                //         },
+                //       ),
+                //     );
+                //   },
+                //   error: (e, _) => Center(
+                //     child: Text('채팅 내역을 불러오지 못했습니다[$e]'),
+                //   ),
+                //   loading: () => const Center(
+                //     child: CircularProgressIndicator(),
+                //   ),
+                // );
+              },
+            ),
+          ),
         ),
 
         /// 하단 입력창
-        _BottomInputField(),
+        const _BottomInputField(),
       ],
     );
   }
@@ -93,7 +122,7 @@ class _BottomInputField extends HookConsumerWidget with ChatEvent {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final room = ref.watch(selectedInterviewRoomProvider).requireValue;
+    final room = ref.watch(selectedChatRoomProvider).requireValue;
     final interviewState = ref.watch(interviewProgressStateProvider(room));
     final messageController = useTextEditingController();
     final message = useListenableSelector(

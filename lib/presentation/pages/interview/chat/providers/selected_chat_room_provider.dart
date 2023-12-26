@@ -1,9 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
-part 'selected_interview_room_provider.g.dart';
+part 'selected_chat_room_provider.g.dart';
 
 @riverpod
-FutureOr<ChatRoomEntity> selectedInterviewRoom(SelectedInterviewRoomRef ref) {
+FutureOr<ChatRoomEntity> selectedChatRoom(SelectedChatRoomRef ref) {
   throw UnimplementedError();
 }

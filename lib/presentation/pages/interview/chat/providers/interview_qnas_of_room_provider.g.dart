@@ -7,7 +7,7 @@ part of 'interview_qnas_of_room_provider.dart';
 // **************************************************************************
 
 String _$interviewQnAsOfRoomHash() =>
-    r'170d637803cedae2ee19149bf0a55fdd7b8f4b1b';
+    r'0861f2071371d292a3cbb99fb5f8a6c131f2da4a';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,10 +31,10 @@ class _SystemHash {
 }
 
 abstract class _$InterviewQnAsOfRoom
-    extends BuildlessAutoDisposeAsyncNotifier<List<InterviewQnAEntity>> {
+    extends BuildlessAutoDisposeAsyncNotifier<List<ChatQnaEntity>> {
   late final ChatRoomEntity room;
 
-  FutureOr<List<InterviewQnAEntity>> build(
+  FutureOr<List<ChatQnaEntity>> build(
     ChatRoomEntity room,
   );
 }
@@ -45,7 +45,7 @@ const interviewQnAsOfRoomProvider = InterviewQnAsOfRoomFamily();
 
 /// See also [InterviewQnAsOfRoom].
 class InterviewQnAsOfRoomFamily
-    extends Family<AsyncValue<List<InterviewQnAEntity>>> {
+    extends Family<AsyncValue<List<ChatQnaEntity>>> {
   /// See also [InterviewQnAsOfRoom].
   const InterviewQnAsOfRoomFamily();
 
@@ -84,7 +84,7 @@ class InterviewQnAsOfRoomFamily
 
 /// See also [InterviewQnAsOfRoom].
 class InterviewQnAsOfRoomProvider extends AutoDisposeAsyncNotifierProviderImpl<
-    InterviewQnAsOfRoom, List<InterviewQnAEntity>> {
+    InterviewQnAsOfRoom, List<ChatQnaEntity>> {
   /// See also [InterviewQnAsOfRoom].
   InterviewQnAsOfRoomProvider(
     ChatRoomEntity room,
@@ -115,7 +115,7 @@ class InterviewQnAsOfRoomProvider extends AutoDisposeAsyncNotifierProviderImpl<
   final ChatRoomEntity room;
 
   @override
-  FutureOr<List<InterviewQnAEntity>> runNotifierBuild(
+  FutureOr<List<ChatQnaEntity>> runNotifierBuild(
     covariant InterviewQnAsOfRoom notifier,
   ) {
     return notifier.build(
@@ -141,7 +141,7 @@ class InterviewQnAsOfRoomProvider extends AutoDisposeAsyncNotifierProviderImpl<
 
   @override
   AutoDisposeAsyncNotifierProviderElement<InterviewQnAsOfRoom,
-      List<InterviewQnAEntity>> createElement() {
+      List<ChatQnaEntity>> createElement() {
     return _InterviewQnAsOfRoomProviderElement(this);
   }
 
@@ -160,14 +160,14 @@ class InterviewQnAsOfRoomProvider extends AutoDisposeAsyncNotifierProviderImpl<
 }
 
 mixin InterviewQnAsOfRoomRef
-    on AutoDisposeAsyncNotifierProviderRef<List<InterviewQnAEntity>> {
+    on AutoDisposeAsyncNotifierProviderRef<List<ChatQnaEntity>> {
   /// The parameter `room` of this provider.
   ChatRoomEntity get room;
 }
 
 class _InterviewQnAsOfRoomProviderElement
     extends AutoDisposeAsyncNotifierProviderElement<InterviewQnAsOfRoom,
-        List<InterviewQnAEntity>> with InterviewQnAsOfRoomRef {
+        List<ChatQnaEntity>> with InterviewQnAsOfRoomRef {
   _InterviewQnAsOfRoomProviderElement(super.provider);
 
   @override

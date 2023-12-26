@@ -1,12 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'chat_history_of_room_provider.dart';
+part of 'chat_message_history_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chatHistoryOfRoomHash() => r'3790a01ce48de1915f1f9fde29bdda8af65d4b95';
+String _$chatMessageHistoryHash() =>
+    r'f7b87120e29500051bb41115ff69ec4c014c1c58';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,36 +30,37 @@ class _SystemHash {
   }
 }
 
-abstract class _$ChatHistoryOfRoom
-    extends BuildlessAutoDisposeAsyncNotifier<List<MessageEntity>> {
+abstract class _$ChatMessageHistory
+    extends BuildlessAutoDisposeAsyncNotifier<List<ChatMessageEntity>> {
   late final ChatRoomEntity room;
 
-  FutureOr<List<MessageEntity>> build(
+  FutureOr<List<ChatMessageEntity>> build(
     ChatRoomEntity room,
   );
 }
 
-/// See also [ChatHistoryOfRoom].
-@ProviderFor(ChatHistoryOfRoom)
-const chatHistoryOfRoomProvider = ChatHistoryOfRoomFamily();
+/// See also [ChatMessageHistory].
+@ProviderFor(ChatMessageHistory)
+const chatMessageHistoryProvider = ChatMessageHistoryFamily();
 
-/// See also [ChatHistoryOfRoom].
-class ChatHistoryOfRoomFamily extends Family<AsyncValue<List<MessageEntity>>> {
-  /// See also [ChatHistoryOfRoom].
-  const ChatHistoryOfRoomFamily();
+/// See also [ChatMessageHistory].
+class ChatMessageHistoryFamily
+    extends Family<AsyncValue<List<ChatMessageEntity>>> {
+  /// See also [ChatMessageHistory].
+  const ChatMessageHistoryFamily();
 
-  /// See also [ChatHistoryOfRoom].
-  ChatHistoryOfRoomProvider call(
+  /// See also [ChatMessageHistory].
+  ChatMessageHistoryProvider call(
     ChatRoomEntity room,
   ) {
-    return ChatHistoryOfRoomProvider(
+    return ChatMessageHistoryProvider(
       room,
     );
   }
 
   @override
-  ChatHistoryOfRoomProvider getProviderOverride(
-    covariant ChatHistoryOfRoomProvider provider,
+  ChatMessageHistoryProvider getProviderOverride(
+    covariant ChatMessageHistoryProvider provider,
   ) {
     return call(
       provider.room,
@@ -77,30 +79,30 @@ class ChatHistoryOfRoomFamily extends Family<AsyncValue<List<MessageEntity>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'chatHistoryOfRoomProvider';
+  String? get name => r'chatMessageHistoryProvider';
 }
 
-/// See also [ChatHistoryOfRoom].
-class ChatHistoryOfRoomProvider extends AutoDisposeAsyncNotifierProviderImpl<
-    ChatHistoryOfRoom, List<MessageEntity>> {
-  /// See also [ChatHistoryOfRoom].
-  ChatHistoryOfRoomProvider(
+/// See also [ChatMessageHistory].
+class ChatMessageHistoryProvider extends AutoDisposeAsyncNotifierProviderImpl<
+    ChatMessageHistory, List<ChatMessageEntity>> {
+  /// See also [ChatMessageHistory].
+  ChatMessageHistoryProvider(
     ChatRoomEntity room,
   ) : this._internal(
-          () => ChatHistoryOfRoom()..room = room,
-          from: chatHistoryOfRoomProvider,
-          name: r'chatHistoryOfRoomProvider',
+          () => ChatMessageHistory()..room = room,
+          from: chatMessageHistoryProvider,
+          name: r'chatMessageHistoryProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$chatHistoryOfRoomHash,
-          dependencies: ChatHistoryOfRoomFamily._dependencies,
+                  : _$chatMessageHistoryHash,
+          dependencies: ChatMessageHistoryFamily._dependencies,
           allTransitiveDependencies:
-              ChatHistoryOfRoomFamily._allTransitiveDependencies,
+              ChatMessageHistoryFamily._allTransitiveDependencies,
           room: room,
         );
 
-  ChatHistoryOfRoomProvider._internal(
+  ChatMessageHistoryProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -113,8 +115,8 @@ class ChatHistoryOfRoomProvider extends AutoDisposeAsyncNotifierProviderImpl<
   final ChatRoomEntity room;
 
   @override
-  FutureOr<List<MessageEntity>> runNotifierBuild(
-    covariant ChatHistoryOfRoom notifier,
+  FutureOr<List<ChatMessageEntity>> runNotifierBuild(
+    covariant ChatMessageHistory notifier,
   ) {
     return notifier.build(
       room,
@@ -122,10 +124,10 @@ class ChatHistoryOfRoomProvider extends AutoDisposeAsyncNotifierProviderImpl<
   }
 
   @override
-  Override overrideWith(ChatHistoryOfRoom Function() create) {
+  Override overrideWith(ChatMessageHistory Function() create) {
     return ProviderOverride(
       origin: this,
-      override: ChatHistoryOfRoomProvider._internal(
+      override: ChatMessageHistoryProvider._internal(
         () => create()..room = room,
         from: from,
         name: null,
@@ -138,14 +140,14 @@ class ChatHistoryOfRoomProvider extends AutoDisposeAsyncNotifierProviderImpl<
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<ChatHistoryOfRoom,
-      List<MessageEntity>> createElement() {
-    return _ChatHistoryOfRoomProviderElement(this);
+  AutoDisposeAsyncNotifierProviderElement<ChatMessageHistory,
+      List<ChatMessageEntity>> createElement() {
+    return _ChatMessageHistoryProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ChatHistoryOfRoomProvider && other.room == room;
+    return other is ChatMessageHistoryProvider && other.room == room;
   }
 
   @override
@@ -157,19 +159,19 @@ class ChatHistoryOfRoomProvider extends AutoDisposeAsyncNotifierProviderImpl<
   }
 }
 
-mixin ChatHistoryOfRoomRef
-    on AutoDisposeAsyncNotifierProviderRef<List<MessageEntity>> {
+mixin ChatMessageHistoryRef
+    on AutoDisposeAsyncNotifierProviderRef<List<ChatMessageEntity>> {
   /// The parameter `room` of this provider.
   ChatRoomEntity get room;
 }
 
-class _ChatHistoryOfRoomProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<ChatHistoryOfRoom,
-        List<MessageEntity>> with ChatHistoryOfRoomRef {
-  _ChatHistoryOfRoomProviderElement(super.provider);
+class _ChatMessageHistoryProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<ChatMessageHistory,
+        List<ChatMessageEntity>> with ChatMessageHistoryRef {
+  _ChatMessageHistoryProviderElement(super.provider);
 
   @override
-  ChatRoomEntity get room => (origin as ChatHistoryOfRoomProvider).room;
+  ChatRoomEntity get room => (origin as ChatMessageHistoryProvider).room;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

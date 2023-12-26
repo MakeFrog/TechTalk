@@ -11,7 +11,7 @@ class InterviewRooms extends _$InterviewRooms {
   @override
   FutureOr<List<ChatRoomEntity>> build(String topicId) async {
     final topic = getTopicUseCase(topicId).getOrThrow();
-    final response = await getInterviewRoomsUseCase(topic);
+    final response = await getChatRoomsUseCase(topic);
     return response.fold(
       onSuccess: (chatList) {
         return chatList;

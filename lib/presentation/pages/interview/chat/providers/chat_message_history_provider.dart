@@ -4,18 +4,17 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/core/services/toast_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/use_cases/update_chat_info_use_case.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/interview_qnas_of_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/interview_rooms_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-part 'chat_history_of_room_provider.g.dart';
+part 'chat_message_history_provider.g.dart';
 
 @riverpod
-class ChatHistoryOfRoom extends _$ChatHistoryOfRoom {
+class ChatMessageHistory extends _$ChatMessageHistory {
   @override
-  FutureOr<List<MessageEntity>> build(ChatRoomEntity room) async {
+  FutureOr<List<ChatMessageEntity>> build(ChatRoomEntity room) async {
     ref.listenSelf((previous, next) {
       // 처음 채팅방에 진입한 경우
       if (next.hasValue && next.requireValue.isEmpty) {
@@ -23,7 +22,7 @@ class ChatHistoryOfRoom extends _$ChatHistoryOfRoom {
       }
     });
 
-    final response = await getChatMessagesUseCase(room.chatRoomId);
+    final response = await getChatMessageHistoryUseCase(room.id);
     return response.fold(
       onSuccess: (chatList) => chatList,
       onFailure: (e) {
@@ -39,48 +38,74 @@ class ChatHistoryOfRoom extends _$ChatHistoryOfRoom {
   }
 
   /// [messages]를 서버로 업데이트
-  Future<void> _updateChat(List<MessageEntity> messages) async {
-    final UpdateChatInfoParam param = (
+  Future<void> _updateChat(List<ChatMessageEntity> messages) async {
+    await updateChatMessagesUseCase(
       messages: messages,
-      chatRoomId: room.chatRoomId,
+      chatRoomId: room.id,
     );
 
-    await updateChatInfoUseCase(param);
     ref.invalidate(interviewRoomsProvider);
   }
 
   /// 최초 진입시 보여질 메세지
   /// 인사를 호출 한 뒤 바로 질문을 요청한다.
-  void _showStartMessage() {
+  Future<Stream<String>> _showStartMessage() async {
     final nickname = ref.read(userDataProvider).requireValue!.nickname!;
     final String message = '반가워요! $nickname님. ${room.topic.text} 면접 질문을 드리겠습니다';
     final streamedMessage = message.convertToStreamText;
-    final startChat = GuideMessageEntity.createStream(
+    final startChat = GuideChatMessageEntity.createStream(
       streamedMessage,
     );
     streamedMessage.listen(
       null,
-      onDone: () {
-        _updateChat([startChat]);
-        _showQuestion();
-        state.valueOrNull?.first.message.close();
+      onDone: () async {
+        streamedMessage.close();
+
+        final qna = ref
+            .read(interviewQnAsOfRoomProvider(room).notifier)
+            .getFirstNotResponseQna()!;
+        final streamedQnaMessage = qna.question.question.convertToStreamText;
+        final qnaChat = QuestionChatMessageEntity.createStreamedChat(
+          qnaId: qna.id,
+          streamedMessage: streamedQnaMessage,
+        );
+        streamedQnaMessage.listen(
+          null,
+          onDone: () {
+            _updateChat([
+              qnaChat,
+              startChat,
+            ]);
+            streamedQnaMessage.close();
+          },
+        );
+
+        await update(
+          (previous) => [
+            qnaChat,
+            ...previous,
+          ],
+        );
       },
     );
 
-    update(
+    await update(
       (previous) => [
         startChat,
         ...previous,
       ],
     );
+
+    return streamedMessage;
   }
 
-  Future<void> _showQuestion() async {
-    final qnas = await ref.read(interviewQnAsOfRoomProvider(room).future);
-    final qna = qnas.firstWhere((qna) => !qna.hasUserResponded);
+  Future<Stream<String>> _showQuestion() async {
+    final qna = ref
+        .read(interviewQnAsOfRoomProvider(room).notifier)
+        .getFirstNotResponseQna()!;
     final streamedChatMessage = qna.question.question.convertToStreamText;
-    final chat = QuestionMessageEntity.createStreamedChat(
-      questionId: qna.id,
+    final chat = QuestionChatMessageEntity.createStreamedChat(
+      qnaId: qna.id,
       streamedMessage: streamedChatMessage,
     );
     streamedChatMessage.listen(
@@ -97,6 +122,8 @@ class ChatHistoryOfRoom extends _$ChatHistoryOfRoom {
         ...previous,
       ],
     );
+
+    return streamedChatMessage;
   }
 
   ///
@@ -105,10 +132,10 @@ class ChatHistoryOfRoom extends _$ChatHistoryOfRoom {
   Future<void> addUserChatResponse(String message) async {
     final answeredQuestion =
         state.requireValue.firstWhere((chat) => chat.type.isAskQuestionMessage)
-            as QuestionMessageEntity;
-    final answerChat = SentMessageEntity.initial(
+            as QuestionChatMessageEntity;
+    final answerChat = AnswerChatMessageEntity.initial(
       message: message,
-      questionId: answeredQuestion.qnaId,
+      qnaId: answeredQuestion.qnaId,
     );
 
     await update(
@@ -140,7 +167,7 @@ class ChatHistoryOfRoom extends _$ChatHistoryOfRoom {
       ),
     );
 
-    final feedbackChat = FeedbackMessageEntity.createStreamChat(
+    final feedbackChat = FeedbackChatMessageEntity.createStreamChat(
       messageStream: feedbackMessage,
     );
     feedbackMessage.listen(
@@ -165,11 +192,11 @@ class ChatHistoryOfRoom extends _$ChatHistoryOfRoom {
   void onFeedbackCompleted() {
     final qnas = ref.read(interviewQnAsOfRoomProvider(room)).requireValue;
     final isComplete = qnas.every((element) => element.hasUserResponded);
-    final GuideMessageEntity chat;
+    final GuideChatMessageEntity chat;
     // 마지막 답변일 경우
     if (isComplete) {
       final interviewClosingText = '면접이 종료 되었습니다'.convertToStreamText;
-      chat = GuideMessageEntity.createStream(
+      chat = GuideChatMessageEntity.createStream(
         interviewClosingText
           ..listen(
             null,
@@ -178,7 +205,7 @@ class ChatHistoryOfRoom extends _$ChatHistoryOfRoom {
       );
     } else {
       final guideStreamedText = '다음 질문을 드리겠습니다'.convertToStreamText;
-      chat = GuideMessageEntity.createStream(
+      chat = GuideChatMessageEntity.createStream(
         guideStreamedText
           ..listen(
             null,
@@ -206,7 +233,7 @@ class ChatHistoryOfRoom extends _$ChatHistoryOfRoom {
     final chatList = state.requireValue;
 
     final answeredChat = chatList.firstWhere((chat) => chat.type.isSentMessage)
-        as SentMessageEntity;
+        as AnswerChatMessageEntity;
     final resolvedAnsweredChat = answeredChat.copyWith(
       answerState: isCorrect ? AnswerState.correct : AnswerState.wrong,
     );
@@ -226,8 +253,8 @@ class ChatHistoryOfRoom extends _$ChatHistoryOfRoom {
   /// 하나의 질문 단위로 섹션이 구분
   ///
   /// ex)
-  /// [ReceivedChatEntity](N) - [ReceivedChatEntity](Y) - [SentMessageEntity]
-  /// [ReceivedChatEntity](N) - [ReceivedChatEntity](Y) - [SentMessageEntity] - [ReceivedChatEntity](N) - [ReceivedChatEntity](Y)
+  /// [ReceivedChatEntity](N) - [ReceivedChatEntity](Y) - [AnswerChatMessageEntity]
+  /// [ReceivedChatEntity](N) - [ReceivedChatEntity](Y) - [AnswerChatMessageEntity] - [ReceivedChatEntity](N) - [ReceivedChatEntity](Y)
   ///
   bool isLastReceivedChatInEachQuestion({required int index}) {
     final chatList = state.requireValue;

@@ -1,27 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'selected_interview_room_provider.dart';
+part of 'selected_chat_room_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$selectedInterviewRoomHash() =>
-    r'0e46b8fc5d5b3e98e98f2e9f1a3b5848360c7085';
+String _$selectedChatRoomHash() => r'c985466e2aa4e26aa4fe376c2ffaf60114e2c63f';
 
-/// See also [selectedInterviewRoom].
-@ProviderFor(selectedInterviewRoom)
-final selectedInterviewRoomProvider =
+/// See also [selectedChatRoom].
+@ProviderFor(selectedChatRoom)
+final selectedChatRoomProvider =
     AutoDisposeFutureProvider<ChatRoomEntity>.internal(
-  selectedInterviewRoom,
-  name: r'selectedInterviewRoomProvider',
+  selectedChatRoom,
+  name: r'selectedChatRoomProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$selectedInterviewRoomHash,
+      : _$selectedChatRoomHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef SelectedInterviewRoomRef = AutoDisposeFutureProviderRef<ChatRoomEntity>;
+typedef SelectedChatRoomRef = AutoDisposeFutureProviderRef<ChatRoomEntity>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

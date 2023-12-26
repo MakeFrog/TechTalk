@@ -99,7 +99,7 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
                   Builder(
                     builder: (context) {
                       switch (item!.progressState) {
-                        case InterviewProgressState.ongoing:
+                        case ChatProgress.ongoing:
                           return Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 8,
@@ -110,12 +110,12 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
-                              '${item!.completedQuestionCount}/${item!.qnaProgressInfo.totalQuestionCount}',
+                              '${item!.completedQuestionCount}/${item!.progressInfo.totalQuestionCount}',
                               style: AppTextStyle.alert1
                                   .copyWith(color: AppColor.of.gray6),
                             ),
                           );
-                        case InterviewProgressState.completed:
+                        case ChatProgress.completed:
                           return PassFailIndicator(
                             status: item!.passOrFail,
                             text: item!.passOrFail.isPassed ? '합격' : '불합격',

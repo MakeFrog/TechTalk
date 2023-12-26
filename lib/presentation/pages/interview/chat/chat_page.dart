@@ -5,7 +5,7 @@ import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/selected_interview_room_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/qna_tab_view.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
@@ -19,23 +19,34 @@ class ChatPage extends BasePage with ChatEvent {
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
     final tabController = useTabController(initialLength: 2);
-    final roomLoadingAsync = ref.watch(selectedInterviewRoomProvider);
+    final roomLoadingAsync = ref.watch(selectedChatRoomProvider);
 
-    return roomLoadingAsync.when(
-      loading: Container.new,
-      error: (error, stackTrace) {
-        return Center(
-          child: Text('$error'),
-        );
-      },
-      data: (data) {
-        return _Scaffold(
+    return switch (roomLoadingAsync) {
+      AsyncData() => _Scaffold(
           chatTabView: const InterviewTabView(),
           summaryTabView: const QnATabView(),
           tabController: tabController,
-        );
-      },
-    );
+        ),
+      AsyncError(:final error) => Center(
+          child: Text('$error'),
+        ),
+      _ => Container(),
+    };
+    // return roomLoadingAsync.when(
+    //   loading: Container.new,
+    //   error: (error, stackTrace) {
+    //     return Center(
+    //       child: Text('$error'),
+    //     );
+    //   },
+    //   data: (data) {
+    //     return _Scaffold(
+    //       chatTabView: const InterviewTabView(),
+    //       summaryTabView: const QnATabView(),
+    //       tabController: tabController,
+    //     );
+    //   },
+    // );
   }
 
   @override
@@ -44,7 +55,7 @@ class ChatPage extends BasePage with ChatEvent {
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) {
     return BackButtonAppBar(
-      title: ref.watch(selectedInterviewRoomProvider).valueOrNull?.topic.text,
+      title: ref.watch(selectedChatRoomProvider).valueOrNull?.topic.text,
       onBackBtnTapped: () {
         onAppbarBackBtnTapped(context);
       },

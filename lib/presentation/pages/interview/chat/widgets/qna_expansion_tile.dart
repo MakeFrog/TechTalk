@@ -5,14 +5,14 @@ import 'package:gap/gap.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/chat/entities/interview_qna_entity.dart';
+import 'package:techtalk/features/chat/entities/chat_qna_entity.dart';
 import 'package:techtalk/presentation/widgets/common/text/bullet_text.dart';
 import 'package:techtalk/presentation/widgets/common/tile/flexible_expansion_tile.dart';
 
 class QnAExpansionTile extends HookWidget {
   const QnAExpansionTile(this.item, {Key? key}) : super(key: key);
 
-  final InterviewQnAEntity item;
+  final ChatQnaEntity item;
 
   @override
   Widget build(BuildContext context) {
