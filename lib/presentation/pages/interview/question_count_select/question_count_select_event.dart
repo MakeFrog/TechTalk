@@ -22,16 +22,12 @@ mixin class QuestionCountSelectEvent implements _QuestionCountSelectEvent {
     // 페이지 이동 및 채팅방 정보 조회 후 제거한다.
     await EasyLoading.show();
 
-    final tempRoom = ChatRoomEntity.random(
+    final room = ChatRoomEntity.random(
       topic: topic,
       questionCount: questionCount,
     );
 
-    ChatPageRoute(
-      topic.id,
-      tempRoom.id,
-      $extra: tempRoom,
-    ).go(ref.context);
+    ChatPageRoute(room).go(ref.context);
 
     await EasyLoading.dismiss();
   }

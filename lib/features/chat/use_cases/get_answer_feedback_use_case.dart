@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:chatgpt_completions/chatgpt_completions.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:techtalk/core/utils/base/base_no_future_use_case.dart';
 import 'package:techtalk/features/chat/chat.dart';
@@ -41,8 +40,7 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
           ),
           MessageTurbo(
               role: TurboRole.assistant,
-              content:
-                  '${param.category}분야의 질문입니다. ${param.checkAnswer}. 질문 의도에 맞는 답변을 해주세요'),
+              content: '${param.category}분야의 질문입니다. 질문 의도에 맞는 답변을 해주세요'),
           MessageTurbo(
             role: TurboRole.system,
             content:
@@ -70,6 +68,7 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
       /// 2) 응답 텍스트 포맷
       /// 3) 스트림 값 삽입
       onStreamValue: (response) {
+        print(response);
         setCorrectnessIfNeeded(response, param.checkAnswer);
         final filteredRes = formatResponse(response);
         streamedFeedbackResponse.add(filteredRes);
@@ -79,10 +78,13 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
       /// 1) Stream 닫기
       /// 2) 응답 진행 상태 초기화
       /// 3) 완료 콜백 메소드 실행
-      (_) {
+      (feedback) {
+        print(feedback);
         streamedFeedbackResponse.close();
         state = FeedbackProgress.init;
-        param.onFeedBackCompleted();
+        if (feedback != null) {
+          param.onFeedBackCompleted(feedback);
+        }
       },
     );
 
@@ -99,11 +101,15 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
     if (!state.isOnProgress) return;
 
     if (response.contains(AnswerState.wrong.tag)) {
-      checkAnswer(isCorrect: false);
+      checkAnswer(
+        isCorrect: false,
+      );
       state = FeedbackProgress.completed;
     } else if (response.contains(AnswerState.correct.tag)) {
       state = FeedbackProgress.completed;
-      checkAnswer(isCorrect: true);
+      checkAnswer(
+        isCorrect: true,
+      );
     }
   }
 
@@ -111,9 +117,13 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
   /// 1. [c] & [w] 인디에키터 포맷, [AnswerState]
   /// 2. 불필요 줄바꿈 제거
   String formatResponse(String response) {
+    print(response);
+
     String formattedText = response.replaceAll('\n', '');
 
     if (formattedText.length <= 3) return '';
+
+    print(formattedText);
 
     if (formattedText.contains(AnswerState.wrong.tag)) {
       return formattedText.replaceFirst(AnswerState.wrong.tag, '').trim();
@@ -128,6 +138,6 @@ typedef GetQuestionFeedbackParam = ({
   String category,
   String question,
   String userAnswer,
-  VoidCallback onFeedBackCompleted,
+  void Function(String feedback) onFeedBackCompleted,
   void Function({required bool isCorrect}) checkAnswer
 });

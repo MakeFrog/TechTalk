@@ -11,6 +11,6 @@ class GetChatRoomsUseCase
 
   @override
   Future<Result<List<ChatRoomEntity>>> call(TopicEntity topic) {
-    return _repository.getRooms(topic);
+    return _repository.getChatRooms(topic);
   }
 }

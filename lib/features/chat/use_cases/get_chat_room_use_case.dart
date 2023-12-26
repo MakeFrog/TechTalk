@@ -9,6 +9,6 @@ final class GetChatRoomUseCase {
   final ChatRepository chatRepository;
 
   Future<Result<ChatRoomEntity>> call(String roomId) async {
-    return chatRepository.getRoom(roomId);
+    return chatRepository.getChatRoom(roomId);
   }
 }

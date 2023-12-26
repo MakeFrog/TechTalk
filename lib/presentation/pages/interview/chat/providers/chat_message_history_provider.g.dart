@@ -7,7 +7,7 @@ part of 'chat_message_history_provider.dart';
 // **************************************************************************
 
 String _$chatMessageHistoryHash() =>
-    r'f7b87120e29500051bb41115ff69ec4c014c1c58';
+    r'29077aaef42238113948aa5fc8fd1c6a798f83e2';
 
 /// Copied from Dart SDK
 class _SystemHash {

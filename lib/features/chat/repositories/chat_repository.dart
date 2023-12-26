@@ -3,12 +3,22 @@ import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 abstract interface class ChatRepository {
-  Future<Result<ChatRoomEntity>> createRoom(ChatRoomEntity room);
+  Future<Result<void>> createChatRoom({
+    required ChatRoomEntity room,
+    required List<ChatQnaEntity> qnas,
+    required List<ChatMessageEntity> messages,
+  });
 
   /// 채팅 면접 리스트 호출
-  Future<Result<List<ChatRoomEntity>>> getRooms(TopicEntity topicId);
+  Future<Result<List<ChatRoomEntity>>> getChatRooms(TopicEntity topicId);
 
-  Future<Result<ChatRoomEntity>> getRoom(String roomId);
+  Future<Result<ChatRoomEntity>> getChatRoom(String roomId);
+
+  /// 채팅 메세지 업데이트
+  Future<Result<void>> createChatMessages(
+    String roomId, {
+    required List<ChatMessageEntity> messages,
+  });
 
   /// 채팅 메세지 리스트 호출
   Future<Result<List<ChatMessageEntity>>> getChatMessageHistory(String roomId);
@@ -25,5 +35,5 @@ abstract interface class ChatRepository {
     required List<ChatMessageEntity> messages,
   });
 
-  Future<Result<List<ChatQnaEntity>>> getChatQnAs(String roomId);
+  Future<Result<List<ChatQnaEntity>>> getChatQnAs(ChatRoomEntity room);
 }

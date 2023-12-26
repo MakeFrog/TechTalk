@@ -115,7 +115,7 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $ChatListPageRouteExtension._fromState,
           routes: [
             GoRouteData.$route(
-              path: 'chat',
+              path: ':roomId',
               name: 'chat',
               factory: $ChatPageRouteExtension._fromState,
             ),
@@ -243,16 +243,11 @@ extension $ChatListPageRouteExtension on ChatListPageRoute {
 
 extension $ChatPageRouteExtension on ChatPageRoute {
   static ChatPageRoute _fromState(GoRouterState state) => ChatPageRoute(
-        state.pathParameters['topicId']!,
-        state.uri.queryParameters['room-id']!,
-        $extra: state.extra as ChatRoomEntity?,
+        state.extra as ChatRoomEntity,
       );
 
   String get location => GoRouteData.$location(
-        '/chat-list/${Uri.encodeComponent(topicId)}/chat',
-        queryParams: {
-          'room-id': roomId,
-        },
+        '/chat-list/${Uri.encodeComponent(topicId)}/${Uri.encodeComponent(roomId)}',
       );
 
   void go(BuildContext context) => context.go(location, extra: $extra);

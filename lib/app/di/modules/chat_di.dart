@@ -3,7 +3,7 @@ import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source_impl.dart';
-import 'package:techtalk/features/chat/use_cases/create_interview_room_use_case.dart';
+import 'package:techtalk/features/chat/use_cases/create_chat_room_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/update_chat_messages_use_case.dart';
 
 final class ChatDependencyInject extends FeatureDependencyInjection {
@@ -48,6 +48,11 @@ final class ChatDependencyInject extends FeatureDependencyInjection {
         ),
       )
       ..registerFactory(() => GetAnswerFeedbackUseCase())
+      ..registerFactory(
+        () => CreateChatMessagesUseCase(
+          chatRepository,
+        ),
+      )
       ..registerFactory(() => UpdateChatMessagesUseCase(chatRepository));
   }
 }

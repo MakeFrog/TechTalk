@@ -49,9 +49,9 @@ abstract class FirestoreChatQnaRef {
           );
 
   static DocumentReference<ChatQnaModel> doc(
-    String roomId,
-    String id,
-  ) =>
+    String roomId, [
+    String? id,
+  ]) =>
       FirestoreChatRoomRef.doc(roomId).collection(name).doc(id).withConverter(
             fromFirestore: ChatQnaModel.fromFirestore,
             toFirestore: (value, options) => value.toJson(),

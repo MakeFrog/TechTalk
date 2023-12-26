@@ -11,34 +11,42 @@ final class ChatRepositoryImpl implements ChatRepository {
   final ChatRemoteDataSource _remoteDataSource;
 
   @override
-  Future<Result<ChatRoomEntity>> createRoom(ChatRoomEntity room) async {
-    await _remoteDataSource.createRoom(room);
+  Future<Result<void>> createChatRoom({
+    required ChatRoomEntity room,
+    required List<ChatQnaEntity> qnas,
+    required List<ChatMessageEntity> messages,
+  }) async {
+    await _remoteDataSource.createChatRoom(room);
+    await _remoteDataSource.createChatQnas(room.id, qnas: qnas);
+    await _remoteDataSource.createChatMessages(room.id, messages: messages);
 
-    return Result.success(room);
+    return Result.success(null);
   }
 
   @override
-  Future<Result<List<ChatRoomEntity>>> getRooms(TopicEntity topic) async {
+  Future<Result<List<ChatRoomEntity>>> getChatRooms(TopicEntity topic) async {
     try {
-      final roomModels = await _remoteDataSource.getRooms(topic.id);
+      final roomModels = await _remoteDataSource.getChatRooms(topic.id);
       final rooms = <ChatRoomEntity>[];
       await Future.forEach(roomModels, (roomModel) async {
         final messageResponse = await _remoteDataSource.getLastChatMessage(
           roomModel.id,
         );
-        return ChatRoomEntity(
-          id: roomModel.id,
-          interviewer:
-              InterviewerEntity.getAvatarInfoById(roomModel.interviewerId),
-          topic: topic,
-          progressInfo: ChatProgressInfoEntity(
-            totalQuestionCount: roomModel.totalQuestionCount,
-            correctAnswerCount: roomModel.correctAnswerCount,
-            incorrectAnswerCount: roomModel.incorrectAnswerCount,
+        rooms.add(
+          ChatRoomEntity(
+            id: roomModel.id,
+            interviewer:
+                InterviewerEntity.getAvatarInfoById(roomModel.interviewerId),
+            topic: topic,
+            progressInfo: ChatProgressInfoEntity(
+              totalQuestionCount: roomModel.totalQuestionCount,
+              correctAnswerCount: roomModel.correctAnswerCount,
+              incorrectAnswerCount: roomModel.incorrectAnswerCount,
+            ),
+          ).copyWith(
+            lastChatMessage: messageResponse?.message,
+            lastChatDate: messageResponse?.timestamp,
           ),
-        ).copyWith(
-          lastChatMessage: messageResponse?.message,
-          lastChatDate: messageResponse?.timestamp,
         );
       });
 
@@ -53,8 +61,8 @@ final class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<Result<ChatRoomEntity>> getRoom(String roomId) async {
-    final roomModel = await _remoteDataSource.getRoom(roomId);
+  Future<Result<ChatRoomEntity>> getChatRoom(String roomId) async {
+    final roomModel = await _remoteDataSource.getChatRoom(roomId);
 
     return Result.success(
       ChatRoomEntity(
@@ -69,6 +77,23 @@ final class ChatRepositoryImpl implements ChatRepository {
         ),
       ),
     );
+  }
+
+  @override
+  Future<Result<void>> createChatMessages(
+    String roomId, {
+    required List<ChatMessageEntity> messages,
+  }) async {
+    try {
+      return Result.success(
+        await _remoteDataSource.createChatMessages(
+          roomId,
+          messages: messages,
+        ),
+      );
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
   }
 
   @override
@@ -110,41 +135,36 @@ final class ChatRepositoryImpl implements ChatRepository {
     required List<ChatMessageEntity> messages,
   }) async {
     try {
-      final response = await _remoteDataSource.updateChatMessages(
-        roomId,
-        messages: messages,
+      return Result.success(
+        await _remoteDataSource.updateChatMessages(
+          roomId,
+          messages: messages,
+        ),
       );
-
-      return Result.success(response);
     } on Exception catch (e) {
       return Result.failure(e);
     }
   }
 
   @override
-  Future<Result<List<ChatQnaEntity>>> getChatQnAs(
-    String roomId,
-  ) async {
-    final roomModel = await _remoteDataSource.getRoom(
-      roomId,
-    );
-    final roomQnAs = await _remoteDataSource.getChatQnas(
-      roomId,
-    );
+  Future<Result<List<ChatQnaEntity>>> getChatQnAs(ChatRoomEntity room) async {
+    final roomQnAs = await _remoteDataSource.getChatQnas(room);
 
     final qnas = <ChatQnaEntity>[];
     await Future.forEach(roomQnAs, (element) async {
       // 질문 조회
-      final question = (await topicRepository.getTopicQna(
-        roomModel.topicId,
-        element.questionId,
-      ))
-          .getOrThrow();
+      final question = await topicRepository
+          .getTopicQna(
+            room.topic.id,
+            element.questionId,
+          )
+          .then((value) => value.getOrThrow());
+
       // 응답 id가 있으면 응답 데이터 조회
       final AnswerChatMessageEntity? answer;
       if (element.messageId != null) {
         final messageModel = await _remoteDataSource.getChatMessage(
-          roomId,
+          room.id,
           element.messageId!,
         );
         answer = messageModel.toEntity() as AnswerChatMessageEntity;

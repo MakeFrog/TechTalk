@@ -115,7 +115,7 @@ class SignUpRoute extends GoRouteData {
       name: ChatListPageRoute.name,
       routes: [
         TypedGoRoute<ChatPageRoute>(
-          path: ChatPageRoute.name,
+          path: ChatPageRoute.path,
           name: ChatPageRoute.name,
         ),
       ],
@@ -218,27 +218,22 @@ class ChatListPageRoute extends GoRouteData {
 }
 
 class ChatPageRoute extends GoRouteData {
-  ChatPageRoute(
-    this.topicId,
-    this.roomId, {
-    this.$extra,
-  });
+  ChatPageRoute(this.$extra)
+      : topicId = $extra.topic.id,
+        roomId = $extra.id;
 
   static const String path = ':roomId';
   static const String name = 'chat';
 
   final String topicId;
   final String roomId;
-  final ChatRoomEntity? $extra;
+  final ChatRoomEntity $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return ProviderScope(
       overrides: [
-        selectedChatRoomProvider.overrideWith(
-          (ref) async =>
-              $extra ?? (await getChatRoomUseCase(roomId)).getOrThrow(),
-        ),
+        selectedChatRoomProvider.overrideWith((ref) => $extra),
       ],
       child: const ChatPage(),
     );

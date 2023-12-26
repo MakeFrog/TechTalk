@@ -11,8 +11,8 @@ class ChatRoomEntity {
   final ChatProgressInfoEntity progressInfo;
   final String? lastChatMessage;
   final DateTime? lastChatDate;
+  final bool isTemporary;
 
-  bool get isTempRoom => lastChatMessage == null;
   int get completedQuestionCount => progressInfo.completedQuestionCount;
   ChatProgress get progressState => progressInfo.progressState;
   ChatResult get passOrFail => progressInfo.chatResult;
@@ -22,6 +22,7 @@ class ChatRoomEntity {
     required int questionCount,
   }) {
     return ChatRoomEntity(
+      isTemporary: true,
       id: StringGenerator.generateRandomString(),
       interviewer: InterviewerEntity.getRandomInterviewer(),
       topic: topic,
@@ -39,6 +40,7 @@ class ChatRoomEntity {
     required this.progressInfo,
     this.lastChatMessage,
     this.lastChatDate,
+    this.isTemporary = false,
   });
 
   @override
@@ -51,7 +53,8 @@ class ChatRoomEntity {
           topic == other.topic &&
           progressInfo == other.progressInfo &&
           lastChatMessage == other.lastChatMessage &&
-          lastChatDate == other.lastChatDate);
+          lastChatDate == other.lastChatDate &&
+          isTemporary == other.isTemporary);
 
   @override
   int get hashCode =>
@@ -60,7 +63,8 @@ class ChatRoomEntity {
       topic.hashCode ^
       progressInfo.hashCode ^
       lastChatMessage.hashCode ^
-      lastChatDate.hashCode;
+      lastChatDate.hashCode ^
+      isTemporary.hashCode;
 
   @override
   String toString() {
@@ -71,6 +75,7 @@ class ChatRoomEntity {
         ' progressInfo: $progressInfo,' +
         ' lastChatMessage: $lastChatMessage,' +
         ' lastChatDate: $lastChatDate,' +
+        ' isTemporary: $isTemporary,' +
         '}';
   }
 
@@ -81,6 +86,7 @@ class ChatRoomEntity {
     ChatProgressInfoEntity? progressInfo,
     String? lastChatMessage,
     DateTime? lastChatDate,
+    bool? isTemporary,
   }) {
     return ChatRoomEntity(
       id: id ?? this.id,
@@ -89,7 +95,9 @@ class ChatRoomEntity {
       progressInfo: progressInfo ?? this.progressInfo,
       lastChatMessage: lastChatMessage ?? this.lastChatMessage,
       lastChatDate: lastChatDate ?? this.lastChatDate,
+      isTemporary: isTemporary ?? this.isTemporary,
     );
   }
+
 //</editor-fold>
 }

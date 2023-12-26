@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/interview_qnas_of_room_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
 
 part 'interview_progress_state_provider.g.dart';
 
@@ -9,7 +9,8 @@ part 'interview_progress_state_provider.g.dart';
 class InterviewProgressState extends _$InterviewProgressState {
   @override
   InterviewProgress build(ChatRoomEntity room) {
-    final qnas = ref.watch(interviewQnAsOfRoomProvider(room)).valueOrNull;
+    final qnas = ref.watch(chatQnAsProvider(room)).valueOrNull;
+
     if (qnas != null) {
       final totalQuestionCount = qnas.length;
       final completedQnAs = qnas.where(
@@ -19,29 +20,26 @@ class InterviewProgressState extends _$InterviewProgressState {
       if (completedQnAs.length >= totalQuestionCount) {
         return InterviewProgress.done;
       }
-    }
 
-    ref.listen(
-      chatMessageHistoryProvider(room),
-      (_, next) {
-        if (next.hasValue) {
-          final lastChat = next.requireValue.first;
-          switch (lastChat.type) {
-            case ChatType.userReply:
-            case ChatType.guide:
-            case ChatType.feedback:
-              state = InterviewProgress.interviewerReplying;
-            case ChatType.askQuestion:
-              lastChat.message.listen(
-                null,
-                onDone: () {
-                  state = InterviewProgress.readyToAnswer;
-                },
-              );
-          }
+      final chatMessages =
+          ref.watch(chatMessageHistoryProvider(room)).valueOrNull;
+      if (chatMessages != null && chatMessages.isNotEmpty) {
+        final lastChat = chatMessages.first;
+        switch (lastChat.type) {
+          case ChatType.userReply:
+          case ChatType.guide:
+          case ChatType.feedback:
+            state = InterviewProgress.interviewerReplying;
+          case ChatType.askQuestion:
+            lastChat.message.listen(
+              null,
+              onDone: () {
+                state = InterviewProgress.readyToAnswer;
+              },
+            );
         }
-      },
-    );
+      }
+    }
 
     return InterviewProgress.initial;
   }

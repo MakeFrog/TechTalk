@@ -18,7 +18,7 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
-    final room = ref.watch(selectedChatRoomProvider).requireValue;
+    final room = ref.watch(selectedChatRoomProvider);
     final chatScrollController = useScrollController();
 
     // 채팅 리스트에 내용이 추가되면 아래로 스크롤한다.
@@ -123,7 +123,7 @@ class _BottomInputField extends HookConsumerWidget with ChatEvent {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final room = ref.watch(selectedChatRoomProvider).requireValue;
+    final room = ref.watch(selectedChatRoomProvider);
     final interviewState = ref.watch(interviewProgressStateProvider(room));
     final messageController = useTextEditingController();
     final message = useListenableSelector(

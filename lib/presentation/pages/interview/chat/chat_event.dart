@@ -38,7 +38,7 @@ mixin class ChatEvent implements _ChatEvent {
         NormalToast(message: '답변을 입력해 주세요'),
       );
     }
-    final room = ref.read(selectedChatRoomProvider).requireValue;
+    final room = ref.read(selectedChatRoomProvider);
 
     await ref
         .read(chatMessageHistoryProvider(room).notifier)

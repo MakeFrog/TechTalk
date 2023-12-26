@@ -1,13 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'interview_qnas_of_room_provider.dart';
+part of 'chat_qnas_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$interviewQnAsOfRoomHash() =>
-    r'0861f2071371d292a3cbb99fb5f8a6c131f2da4a';
+String _$chatQnAsHash() => r'122fd223bcc55ecd09b97a78cf8239930a5eb841';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,7 +29,7 @@ class _SystemHash {
   }
 }
 
-abstract class _$InterviewQnAsOfRoom
+abstract class _$ChatQnAs
     extends BuildlessAutoDisposeAsyncNotifier<List<ChatQnaEntity>> {
   late final ChatRoomEntity room;
 
@@ -39,28 +38,27 @@ abstract class _$InterviewQnAsOfRoom
   );
 }
 
-/// See also [InterviewQnAsOfRoom].
-@ProviderFor(InterviewQnAsOfRoom)
-const interviewQnAsOfRoomProvider = InterviewQnAsOfRoomFamily();
+/// See also [ChatQnAs].
+@ProviderFor(ChatQnAs)
+const chatQnAsProvider = ChatQnAsFamily();
 
-/// See also [InterviewQnAsOfRoom].
-class InterviewQnAsOfRoomFamily
-    extends Family<AsyncValue<List<ChatQnaEntity>>> {
-  /// See also [InterviewQnAsOfRoom].
-  const InterviewQnAsOfRoomFamily();
+/// See also [ChatQnAs].
+class ChatQnAsFamily extends Family<AsyncValue<List<ChatQnaEntity>>> {
+  /// See also [ChatQnAs].
+  const ChatQnAsFamily();
 
-  /// See also [InterviewQnAsOfRoom].
-  InterviewQnAsOfRoomProvider call(
+  /// See also [ChatQnAs].
+  ChatQnAsProvider call(
     ChatRoomEntity room,
   ) {
-    return InterviewQnAsOfRoomProvider(
+    return ChatQnAsProvider(
       room,
     );
   }
 
   @override
-  InterviewQnAsOfRoomProvider getProviderOverride(
-    covariant InterviewQnAsOfRoomProvider provider,
+  ChatQnAsProvider getProviderOverride(
+    covariant ChatQnAsProvider provider,
   ) {
     return call(
       provider.room,
@@ -79,30 +77,29 @@ class InterviewQnAsOfRoomFamily
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'interviewQnAsOfRoomProvider';
+  String? get name => r'chatQnAsProvider';
 }
 
-/// See also [InterviewQnAsOfRoom].
-class InterviewQnAsOfRoomProvider extends AutoDisposeAsyncNotifierProviderImpl<
-    InterviewQnAsOfRoom, List<ChatQnaEntity>> {
-  /// See also [InterviewQnAsOfRoom].
-  InterviewQnAsOfRoomProvider(
+/// See also [ChatQnAs].
+class ChatQnAsProvider extends AutoDisposeAsyncNotifierProviderImpl<ChatQnAs,
+    List<ChatQnaEntity>> {
+  /// See also [ChatQnAs].
+  ChatQnAsProvider(
     ChatRoomEntity room,
   ) : this._internal(
-          () => InterviewQnAsOfRoom()..room = room,
-          from: interviewQnAsOfRoomProvider,
-          name: r'interviewQnAsOfRoomProvider',
+          () => ChatQnAs()..room = room,
+          from: chatQnAsProvider,
+          name: r'chatQnAsProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$interviewQnAsOfRoomHash,
-          dependencies: InterviewQnAsOfRoomFamily._dependencies,
-          allTransitiveDependencies:
-              InterviewQnAsOfRoomFamily._allTransitiveDependencies,
+                  : _$chatQnAsHash,
+          dependencies: ChatQnAsFamily._dependencies,
+          allTransitiveDependencies: ChatQnAsFamily._allTransitiveDependencies,
           room: room,
         );
 
-  InterviewQnAsOfRoomProvider._internal(
+  ChatQnAsProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -116,7 +113,7 @@ class InterviewQnAsOfRoomProvider extends AutoDisposeAsyncNotifierProviderImpl<
 
   @override
   FutureOr<List<ChatQnaEntity>> runNotifierBuild(
-    covariant InterviewQnAsOfRoom notifier,
+    covariant ChatQnAs notifier,
   ) {
     return notifier.build(
       room,
@@ -124,10 +121,10 @@ class InterviewQnAsOfRoomProvider extends AutoDisposeAsyncNotifierProviderImpl<
   }
 
   @override
-  Override overrideWith(InterviewQnAsOfRoom Function() create) {
+  Override overrideWith(ChatQnAs Function() create) {
     return ProviderOverride(
       origin: this,
-      override: InterviewQnAsOfRoomProvider._internal(
+      override: ChatQnAsProvider._internal(
         () => create()..room = room,
         from: from,
         name: null,
@@ -140,14 +137,14 @@ class InterviewQnAsOfRoomProvider extends AutoDisposeAsyncNotifierProviderImpl<
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<InterviewQnAsOfRoom,
-      List<ChatQnaEntity>> createElement() {
-    return _InterviewQnAsOfRoomProviderElement(this);
+  AutoDisposeAsyncNotifierProviderElement<ChatQnAs, List<ChatQnaEntity>>
+      createElement() {
+    return _ChatQnAsProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is InterviewQnAsOfRoomProvider && other.room == room;
+    return other is ChatQnAsProvider && other.room == room;
   }
 
   @override
@@ -159,19 +156,17 @@ class InterviewQnAsOfRoomProvider extends AutoDisposeAsyncNotifierProviderImpl<
   }
 }
 
-mixin InterviewQnAsOfRoomRef
-    on AutoDisposeAsyncNotifierProviderRef<List<ChatQnaEntity>> {
+mixin ChatQnAsRef on AutoDisposeAsyncNotifierProviderRef<List<ChatQnaEntity>> {
   /// The parameter `room` of this provider.
   ChatRoomEntity get room;
 }
 
-class _InterviewQnAsOfRoomProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<InterviewQnAsOfRoom,
-        List<ChatQnaEntity>> with InterviewQnAsOfRoomRef {
-  _InterviewQnAsOfRoomProviderElement(super.provider);
+class _ChatQnAsProviderElement extends AutoDisposeAsyncNotifierProviderElement<
+    ChatQnAs, List<ChatQnaEntity>> with ChatQnAsRef {
+  _ChatQnAsProviderElement(super.provider);
 
   @override
-  ChatRoomEntity get room => (origin as InterviewQnAsOfRoomProvider).room;
+  ChatRoomEntity get room => (origin as ChatQnAsProvider).room;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
