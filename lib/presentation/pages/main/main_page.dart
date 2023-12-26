@@ -7,8 +7,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/home/home_page.dart';
-import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/main/main_event.dart';
+import 'package:techtalk/presentation/pages/my_info/my_info_page.dart';
 import 'package:techtalk/presentation/pages/study/topic_select/study_topic_select_page.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_note_page.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
@@ -33,20 +33,22 @@ class MainPage extends BasePage {
 class _Body extends HookConsumerWidget {
   const _Body({super.key});
 
-  static final _screens = [
-    const HomePage(
+  static const _screens = [
+    HomePage(
       key: ValueKey(MainNavigationTab.home),
     ),
-    const StudyTopicSelectPage(
+    StudyTopicSelectPage(
       key: ValueKey(MainNavigationTab.study),
     ),
-    const WrongAnswerNotePage(
+    WrongAnswerNotePage(
       key: ValueKey(MainNavigationTab.note),
     ),
-    ChatListPage(
-      key: const ValueKey(MainNavigationTab.myInfo),
-      topicId: 'swift',
-    ),
+    MyInfoPage(
+      key: ValueKey(MainNavigationTab.myInfo),
+    )
+    // ChatListPage(
+    //   key: ValueKey(MainNavigationTab.myInfo),
+    // ),
     // TestPage(
     //   key: ValueKey(MainNavigationTab.myInfo),
     // ),

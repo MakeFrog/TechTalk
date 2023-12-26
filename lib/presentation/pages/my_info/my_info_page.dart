@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/presentation/pages/my_info/widgets/expandable_wrapped_list_view.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 
 class MyInfoPage extends BasePage {
@@ -12,10 +13,20 @@ class MyInfoPage extends BasePage {
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
+    final wrapWidgetKey = GlobalKey();
+    final List<String> names = [
+      '서버 백엔드 개발자',
+      '서버 백엔드 개발자',
+      '서버 백엔드 개발자',
+      '서버 백엔드 개발자',
+      '서버 백엔드 개발자',
+      '서버 백엔드 개발자',
+    ];
+
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        Gap(32),
+        const Gap(32),
 
         /// 프로필 수정
         Row(
@@ -33,7 +44,7 @@ class MyInfoPage extends BasePage {
                 shape: BoxShape.circle,
                 color: AppColor.of.background1,
               ),
-              padding: EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(top: 10),
               child: UnconstrainedBox(
                 alignment: Alignment.topCenter,
                 clipBehavior: Clip.antiAlias,
@@ -50,6 +61,7 @@ class MyInfoPage extends BasePage {
           ],
         ),
         Gap(6),
+
         Padding(
           padding: const EdgeInsets.only(left: 2),
           child: GestureDetector(
@@ -96,34 +108,20 @@ class MyInfoPage extends BasePage {
                 '관심 직군',
                 style: AppTextStyle.body3,
               ),
-              Gap(8),
-              SizedBox(
-                height: 36,
-                child: Row(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(right: 8),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColor.of.gray1,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        '서버/백앤드 개발자',
-                        style: AppTextStyle.body1.copyWith(
-                          color: AppColor.of.gray5,
-                        ),
-                      ),
-                    ),
-                    SvgPicture.asset(
-                      Assets.iconsRoundedMore,
-                    ),
-                  ],
-                ),
-              ),
+              const Gap(8),
+
+              ExpandableWrappedListview(items: [
+                '서버 백엔드 개발자',
+                '크래스  개발자3',
+                'iOS 개발자',
+                '안드로이드21323423232 개발자',
+                '닷넷 개발자',
+                '슈퍼 개발자',
+              ]),
+
+              // SvgPicture.asset(
+              //   Assets.iconsRoundedMore,
+              // ),
               Gap(16),
               Text(
                 '관심 주제',

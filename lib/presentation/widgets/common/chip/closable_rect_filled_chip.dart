@@ -5,8 +5,8 @@ import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 
-class RoundedRectFilledChip extends StatelessWidget {
-  const RoundedRectFilledChip({
+class ClosableRectFilledChip extends StatelessWidget {
+  const ClosableRectFilledChip({
     super.key,
     required this.label,
     this.onTap,
@@ -24,7 +24,7 @@ class RoundedRectFilledChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         onTap: onTap,
         child: Padding(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: 12,
             vertical: 8,
           ),
