@@ -12,15 +12,15 @@ class TopicRepositoryImpl implements TopicRepository {
   final TopicLocalDataSource _localDataSource;
   final TopicRemoteDataSource _remoteDataSource;
 
-  late final List<TopicEntity> _cachedTopics;
-  late final List<TopicCategoryEntity> _cachedTopicCategories;
+  List<TopicEntity>? _cachedTopics;
+  List<TopicCategoryEntity>? _cachedTopicCategories;
 
   @override
   Future<void> initStaticData() async {
-    _cachedTopics = await _remoteDataSource.getTopics().then(
+    _cachedTopics ??= await _remoteDataSource.getTopics().then(
           (value) => value.map((e) => e.toEntity()).toList(),
         );
-    _cachedTopicCategories = await _remoteDataSource.getTopicCategories().then(
+    _cachedTopicCategories ??= await _localDataSource.getTopicCategories().then(
           (value) => value.map((e) => e.toEntity()).toList(),
         );
   }
@@ -28,7 +28,7 @@ class TopicRepositoryImpl implements TopicRepository {
   @override
   Result<List<TopicEntity>> getTopics() {
     try {
-      return Result.success(_cachedTopics);
+      return Result.success(_cachedTopics!);
     } on Exception catch (e) {
       return Result.failure(e);
     }
@@ -38,7 +38,7 @@ class TopicRepositoryImpl implements TopicRepository {
   Result<TopicEntity> getTopic(String id) {
     try {
       return Result.success(
-        _cachedTopics.firstWhere((element) => element.id == id),
+        _cachedTopics!.firstWhere((element) => element.id == id),
       );
     } on Exception catch (e) {
       return Result.failure(e);
@@ -48,7 +48,7 @@ class TopicRepositoryImpl implements TopicRepository {
   @override
   Result<List<TopicCategoryEntity>> getTopicCategories() {
     try {
-      return Result.success(_cachedTopicCategories);
+      return Result.success(_cachedTopicCategories!);
     } on Exception catch (e) {
       return Result.failure(e);
     }
@@ -58,7 +58,7 @@ class TopicRepositoryImpl implements TopicRepository {
   Result<TopicCategoryEntity> getTopicCategory(String id) {
     try {
       return Result.success(
-        _cachedTopicCategories.firstWhere((element) => element.id == id),
+        _cachedTopicCategories!.firstWhere((element) => element.id == id),
       );
     } on Exception catch (e) {
       return Result.failure(e);

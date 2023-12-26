@@ -98,7 +98,6 @@ class Assets {
   static const String jsonChatCollection = 'assets/json/chat_collection.json';
   static const String jsonJobsData = 'assets/json/jobs_data.json';
   static const String jsonMOCKDATA = 'assets/json/MOCK_DATA.json';
-  static const String jsonSkill = 'assets/json/skill.json';
   static const String jsonTopicCategoriesData =
       'assets/json/topic_categories_data.json';
   static const String logoTechTalkLogo = 'assets/logo/tech_talk_logo.svg';

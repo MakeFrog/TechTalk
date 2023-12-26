@@ -7,4 +7,6 @@ abstract interface class TopicLocalDataSource {
     String topicId,
     String questionId,
   );
+
+  Future<List<TopicCategoryModel>> getTopicCategories();
 }
