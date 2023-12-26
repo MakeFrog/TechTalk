@@ -36,7 +36,7 @@ class TestPage extends BasePage {
                 // const ChatPageRoute(
                 //   progressState: InterviewProgressState.initial,
                 //   roomId: 'RWNSK@32ASDF3',
-                //   topic: InterviewTopic.swift,
+                //   topic: Topic.swift,
                 // ).go(ref.context);
               },
               child: const Text(
@@ -51,7 +51,7 @@ class TestPage extends BasePage {
                 // const ChatPageRoute(
                 //   progressState: InterviewProgressState.ongoing,
                 //   roomId: 'RWNSK@32ASDF3',
-                //   topic: InterviewTopic.swift,
+                //   topic: Topic.swift,
                 // ).push(ref.context);
               },
               child: const Text(

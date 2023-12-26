@@ -11,9 +11,13 @@ class SplashPage extends BasePage with SplashEvent {
 
   @override
   void onInit(WidgetRef ref) {
-    Future.delayed(500.milliseconds).then(
-      (_) async {
-        await routeByUserAuthAndData(ref);
+    Future.delayed(
+      500.milliseconds,
+      () async {
+        if (!SplashEvent.initComplete) {
+          await initStaticData(ref);
+          await routeByUserAuthAndData(ref);
+        }
       },
     );
   }

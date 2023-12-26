@@ -1,37 +1,37 @@
 import 'package:flutter/cupertino.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/repositories/entities/chat_qna_progress_info_entity.dart';
-import 'package:techtalk/features/shared/enums/interviewer_avatar.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 abstract class _ChatListEvent {
   /// 채팅 페이지로 이동
-  void routeToChatPage(BuildContext context,
-      {required InterviewProgressState progressState,
-      required ChatQnaProgressInfoEntity qnaProgressInfo,
-      required String roomId,
-      required InterviewTopic topic,
-      required InterviewerAvatar interviewer});
+  void routeToChatPage(
+    BuildContext context, {
+    required ChatRoomEntity room,
+  });
+
+  /// 면접 질문 갯수 선택 페이지로 이동
+  void routeToQuestionCountSelectPage(
+    WidgetRef ref, {
+    required TopicEntity topic,
+  });
 }
 
 mixin class ChatListEvent implements _ChatListEvent {
   @override
-  void routeToChatPage(BuildContext context,
-      {required String roomId,
-      required InterviewProgressState progressState,
-      required ChatQnaProgressInfoEntity qnaProgressInfo,
-      required InterviewTopic topic,
-      required InterviewerAvatar interviewer}) {
-    ChatPageRoute(
-      progressState: progressState,
-      roomId: roomId,
-      topic: topic,
-      $extra: ChatQnaProgressInfoEntity(
-        totalQuestionCount: qnaProgressInfo.totalQuestionCount,
-        correctAnswerCount: qnaProgressInfo.correctAnswerCount,
-        incorrectAnswerCount: qnaProgressInfo.incorrectAnswerCount,
-      ),
-      interviewer: interviewer,
-    ).go(context);
+  void routeToChatPage(
+    BuildContext context, {
+    required ChatRoomEntity room,
+  }) {
+    ChatPageRoute(room).go(context);
+  }
+
+  @override
+  void routeToQuestionCountSelectPage(
+    WidgetRef ref, {
+    required TopicEntity topic,
+  }) {
+    QuestionCountSelectPageRoute($extra: topic).push(ref.context);
   }
 }

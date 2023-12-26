@@ -15,7 +15,7 @@ class JobGroupSelectStep extends HookConsumerWidget with SignUpEvent {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
-    final selectedJobGroups = useState<List<JobGroupEntity>>([]);
+    final selectedJobGroups = useState<List<JobEntity>>([]);
 
     return Column(
       children: [
@@ -42,26 +42,7 @@ class JobGroupSelectStep extends HookConsumerWidget with SignUpEvent {
               ),
               HookBuilder(
                 builder: (context) {
-                  final getJobGroups = useMemoized(getJobGroupsUseCase);
-                  final getJobGroupsAsync = useFuture(getJobGroups);
-
-                  if (getJobGroupsAsync.connectionState ==
-                      ConnectionState.waiting) {
-                    return const SliverFillRemaining(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  } else if (getJobGroupsAsync.hasError) {
-                    return SliverFillRemaining(
-                      child: Center(
-                        child: Text('${getJobGroupsAsync.error}'),
-                      ),
-                    );
-                  }
-
-                  final jobGroups =
-                      getJobGroupsAsync.requireData.getOrThrow().groups;
+                  final jobGroups = getJobsUseCase().getOrThrow();
 
                   return SliverList.builder(
                     itemCount: jobGroups.length,
@@ -133,7 +114,7 @@ class _SelectedJobGroupListViewDelegate extends SliverPersistentHeaderDelegate {
     required this.onTapItem,
   });
 
-  final List<JobGroupEntity> jobGroups;
+  final List<JobEntity> jobGroups;
   final void Function(int index) onTapItem;
 
   @override

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/features/interview/entities/interview_question_entity.dart';
-import 'package:techtalk/presentation/pages/study/learning/providers/question_page_controller.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/current_study_question_index_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/study_question_controller.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/entire_question_list_view.dart';
-import 'package:techtalk/presentation/providers/study/study_answer_blur_provider.dart';
+import 'package:techtalk/presentation/pages/study/topic_select/providers/selected_study_topic_provider.dart';
 
 abstract interface class _StudyLearningEvent {
   void onToggleAnswerBlur(WidgetRef ref);
@@ -12,10 +13,7 @@ abstract interface class _StudyLearningEvent {
 
   void onTapPrevQuestion(WidgetRef ref);
 
-  Future<void> onTapEntireQuestion(
-    WidgetRef ref, {
-    required List<InterviewQuestionEntity> questions,
-  });
+  Future<void> onTapEntireQuestion(WidgetRef ref);
 
   void onTapNextQuestion(WidgetRef ref);
 }
@@ -28,38 +26,35 @@ mixin class StudyLearningEvent implements _StudyLearningEvent {
 
   @override
   void onQuestionPageChanged(WidgetRef ref) {
-    ref.invalidate(currentQuestionPageProvider);
+    ref.invalidate(currentStudyQuestionIndexProvider);
   }
 
   @override
   void onTapPrevQuestion(WidgetRef ref) {
-    ref.read(questionPageControllerProvider.notifier).prev();
+    ref.read(studyQuestionControllerProvider.notifier).prev();
   }
 
   @override
-  Future<void> onTapEntireQuestion(
-    WidgetRef ref, {
-    required List<InterviewQuestionEntity> questions,
-  }) async {
+  Future<void> onTapEntireQuestion(WidgetRef ref) async {
     final selectedQuestionIndex = await Navigator.push<int>(
       ref.context,
       MaterialPageRoute(
         fullscreenDialog: true,
         builder: (context) => EntireQuestionListView(
-          questions: questions,
+          topic: ref.read(selectedStudyTopicProvider),
         ),
       ),
     );
 
     if (selectedQuestionIndex != null) {
       ref
-          .read(questionPageControllerProvider)
+          .read(studyQuestionControllerProvider)
           .jumpToPage(selectedQuestionIndex);
     }
   }
 
   @override
   void onTapNextQuestion(WidgetRef ref) {
-    ref.read(questionPageControllerProvider.notifier).next();
+    ref.read(studyQuestionControllerProvider.notifier).next();
   }
 }

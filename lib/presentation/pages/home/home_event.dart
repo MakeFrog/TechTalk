@@ -1,12 +1,14 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
-import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 abstract interface class _HomeEvent {
   void onTapPracticalInterview();
   void onTapNewTopicInterview();
-  void onTapGoToInterviewRoomPage(
-    InterviewTopic topic,
-  );
+  void onTapGoToInterviewRoomListPage(
+    WidgetRef ref, {
+    required TopicEntity topic,
+  });
 }
 
 mixin class HomeEvent implements _HomeEvent {
@@ -17,14 +19,14 @@ mixin class HomeEvent implements _HomeEvent {
 
   @override
   void onTapNewTopicInterview() {
-    const HomeTopicSelectRoute().push(rootNavigatorKey.currentContext!);
+    const InterviewTopicSelectRoute().push(rootNavigatorKey.currentContext!);
   }
 
   @override
-  void onTapGoToInterviewRoomPage(
-    InterviewTopic topic,
-  ) {
-    // TODO : 토픽 전달 후 데이터 변경 필요
-    const ChatListPageRoute().push(rootNavigatorKey.currentContext!);
+  void onTapGoToInterviewRoomListPage(
+    WidgetRef ref, {
+    required TopicEntity topic,
+  }) {
+    ChatListPageRoute(topic.id).push(rootNavigatorKey.currentContext!);
   }
 }

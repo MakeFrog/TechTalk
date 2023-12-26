@@ -43,17 +43,6 @@ final class UserDependencyInjection extends FeatureDependencyInjection {
         () => DeleteUserDataUseCase(
           userRepository,
         ),
-      )
-      ..registerFactory(
-        () => GetUserInterviewTopicsUseCase(
-          userRepository,
-        ),
       );
-    // ..registerFactory(
-    //   () => GetUserInterviewTopicsUseCase(
-    //     userRepository: userRepository,
-    //     topicRepository: interviewTopicRepository,
-    //   ),
-    // );
   }
 }

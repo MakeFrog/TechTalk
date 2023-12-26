@@ -4,9 +4,9 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/home/home_event.dart';
-import 'package:techtalk/presentation/providers/user/user_interview_topics_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_topics_provider.dart';
 
 class TopicInterviewCard extends StatelessWidget with HomeEvent {
   const TopicInterviewCard({super.key});
@@ -65,30 +65,19 @@ class TopicInterviewCard extends StatelessWidget with HomeEvent {
   Widget _buildTopics() {
     return Consumer(
       builder: (context, ref, child) {
-        final userTopicsAsync = ref.watch(availableUserInterviewTopicsProvider);
-
-        return userTopicsAsync.when(
-          loading: () => const Center(
-            child: CircularProgressIndicator(),
-          ),
-          error: (error, stackTrace) => Center(
-            child: Text('$error'),
-          ),
-          data: (data) {
-            return Column(
-              children: [
-                ...data.map(
+        final userTopics = ref.watch(userTopicsProvider);
+        return Column(
+          children: [
+            ...userTopics.where((element) => element.isAvailable).map(
                   _buildTopic,
                 ),
-              ],
-            );
-          },
+          ],
         );
       },
     );
   }
 
-  Widget _buildTopic(InterviewTopic topic) {
+  Widget _buildTopic(TopicEntity topic) {
     return SizedBox(
       height: 64,
       child: Row(
@@ -104,24 +93,31 @@ class TopicInterviewCard extends StatelessWidget with HomeEvent {
           ),
           const Gap(16),
           Text(
-            topic.name,
+            topic.text,
             style: AppTextStyle.title1,
           ),
           const Spacer(),
-          FilledButton(
-            style: FilledButton.styleFrom(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 6,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              backgroundColor: AppColor.of.background1,
-              foregroundColor: AppColor.of.gray4,
-            ),
-            onPressed: () => onTapGoToInterviewRoomPage(topic),
-            child: const Text('면접 보기'),
+          Consumer(
+            builder: (context, ref, child) {
+              return FilledButton(
+                style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  backgroundColor: AppColor.of.background1,
+                  foregroundColor: AppColor.of.gray4,
+                ),
+                onPressed: () => onTapGoToInterviewRoomListPage(
+                  ref,
+                  topic: topic,
+                ),
+                child: const Text('면접 보기'),
+              );
+            },
           ),
         ],
       ),

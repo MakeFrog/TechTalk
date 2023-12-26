@@ -3,11 +3,12 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/core/helper/validation_extension.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
-import 'package:techtalk/features/interview/entities/interview_topic.enum.dart';
 import 'package:techtalk/features/job/job.dart';
-import 'package:techtalk/presentation/providers/sign_up/sign_up_step_controller.dart';
+import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_controller.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
@@ -26,16 +27,32 @@ abstract class _SignUpEvent {
 
   Future<void> onTapJobGroupStepNext(
     WidgetRef ref, {
-    required List<JobGroupEntity> jobGroups,
+    required List<JobEntity> jobGroups,
   });
 
   Future<void> onTapSignUp(
     WidgetRef ref, {
-    required List<InterviewTopic> topics,
+    required List<TopicEntity> topics,
   });
 }
 
 mixin class SignUpEvent implements _SignUpEvent {
+  String? validateNickname(String nickname) {
+    if (nickname.isEmpty) {
+      return null;
+    } else if (nickname.hasSpace) {
+      return '닉네임에 공백이 포함되어 있습니다.';
+    } else if (!nickname.hasProperCharacter) {
+      return '닉네임은 한글, 알파벳, 숫자, 언더스코어(_), 하이픈(-)만 사용할 수 있습니다.';
+    } else if (nickname.hasContainFWord) {
+      return '닉네임에 비속어가 포함되어 있습니다.';
+    } else if (nickname.hasContainOperationWord) {
+      return '허용되지 않는 단어가 포함되어 있습니다.';
+    } else {
+      return null;
+    }
+  }
+
   @override
   void onTapBackButton(WidgetRef ref) {
     if (ref.read(signUpStepControllerProvider).page!.round() == 0) {
@@ -46,7 +63,7 @@ mixin class SignUpEvent implements _SignUpEvent {
           isDividedBtnFormat: true,
           btnText: '네',
           onBtnClicked: () async {
-            await ref.read(userDataProvider.notifier).deleteUserData();
+            await ref.read(userDataProvider.notifier).deleteData();
             ref.context
               ..pop()
               ..pop();
@@ -75,7 +92,7 @@ mixin class SignUpEvent implements _SignUpEvent {
             nickname: nickname,
           );
 
-      await ref.read(userDataProvider.notifier).updateUserData(userData);
+      await ref.read(userDataProvider.notifier).updateData(userData);
 
       ref.read(signUpStepControllerProvider.notifier).next();
     } on AlreadyExistNicknameException catch (e) {
@@ -88,7 +105,7 @@ mixin class SignUpEvent implements _SignUpEvent {
   @override
   Future<void> onTapJobGroupStepNext(
     WidgetRef ref, {
-    required List<JobGroupEntity> jobGroups,
+    required List<JobEntity> jobGroups,
   }) async {
     try {
       FocusManager.instance.primaryFocus?.unfocus();
@@ -98,7 +115,7 @@ mixin class SignUpEvent implements _SignUpEvent {
         jobGroupIds: [...jobGroups.map((e) => e.id)],
       );
 
-      await ref.read(userDataProvider.notifier).updateUserData(userData);
+      await ref.read(userDataProvider.notifier).updateData(userData);
 
       ref.read(signUpStepControllerProvider.notifier).next();
     } finally {
@@ -109,7 +126,7 @@ mixin class SignUpEvent implements _SignUpEvent {
   @override
   Future<void> onTapSignUp(
     WidgetRef ref, {
-    required List<InterviewTopic> topics,
+    required List<TopicEntity> topics,
   }) async {
     try {
       await EasyLoading.show();
@@ -118,7 +135,7 @@ mixin class SignUpEvent implements _SignUpEvent {
         topicIds: [...topics.map((e) => e.id)],
       );
 
-      await ref.read(userDataProvider.notifier).updateUserData(userData).then(
+      await ref.read(userDataProvider.notifier).updateData(userData).then(
         (_) {
           const MainRoute().go(ref.context);
         },
