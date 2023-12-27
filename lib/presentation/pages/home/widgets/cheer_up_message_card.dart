@@ -41,7 +41,7 @@ class CheerUpMessageCard extends HookWidget {
             right: -15,
             bottom: -11,
             child: SvgPicture.asset(
-              Assets.imagesTechTalkCharacterBlue04,
+              Assets.characterBlue04,
               height: 80,
               width: 80,
             ),
