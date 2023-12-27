@@ -38,3 +38,7 @@ class NoQnAsException extends CustomException {
   const NoQnAsException(String topic)
       : super('200004', '$topic 주제의 면접 문답 데이터가 없습니다.');
 }
+
+class UploadFileFailedException extends CustomException {
+  const UploadFileFailedException() : super('000004', '파일을 업로드하는데 실패하였습니다');
+}
