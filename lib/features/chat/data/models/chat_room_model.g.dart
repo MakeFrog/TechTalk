@@ -6,24 +6,22 @@ part of 'chat_room_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ChatListItemModelImpl _$$ChatListItemModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$ChatListItemModelImpl(
-      interviewerId: json['interviewerId'] as String,
-      topicId: json['topicId'] as String,
-      totalQuestionCount: json['totalQuestionCount'] as int,
-      correctAnswerCount: json['correctAnswerCount'] as int,
-      incorrectAnswerCount: json['incorrectAnswerCount'] as int,
-      chatRoomId: json['chatRoomId'] as String,
+ChatRoomModel _$ChatRoomModelFromJson(Map<String, dynamic> json) =>
+    ChatRoomModel(
+      id: json['id'] as String,
+      interviewerId: json['interviewer_id'] as String,
+      topicId: json['topic_id'] as String,
+      totalQuestionCount: json['total_question_count'] as int,
+      correctAnswerCount: json['correct_answer_count'] as int,
+      incorrectAnswerCount: json['incorrect_answer_count'] as int,
     );
 
-Map<String, dynamic> _$$ChatListItemModelImplToJson(
-        _$ChatListItemModelImpl instance) =>
+Map<String, dynamic> _$ChatRoomModelToJson(ChatRoomModel instance) =>
     <String, dynamic>{
-      'interviewerId': instance.interviewerId,
-      'topicId': instance.topicId,
-      'totalQuestionCount': instance.totalQuestionCount,
-      'correctAnswerCount': instance.correctAnswerCount,
-      'incorrectAnswerCount': instance.incorrectAnswerCount,
-      'chatRoomId': instance.chatRoomId,
+      'id': instance.id,
+      'interviewer_id': instance.interviewerId,
+      'topic_id': instance.topicId,
+      'total_question_count': instance.totalQuestionCount,
+      'correct_answer_count': instance.correctAnswerCount,
+      'incorrect_answer_count': instance.incorrectAnswerCount,
     };

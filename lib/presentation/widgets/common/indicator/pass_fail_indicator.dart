@@ -9,7 +9,7 @@ class PassFailIndicator extends StatelessWidget {
   const PassFailIndicator({Key? key, required this.status, required this.text})
       : super(key: key);
 
-  final PassOrFail status;
+  final ChatResult status;
   final String text;
 
   @override

@@ -1,15 +1,21 @@
 import 'dart:async';
+import 'dart:convert';
 
-import 'package:techtalk/features/job/data/local/job_local_data_source.dart';
-import 'package:techtalk/features/job/data/models/job_group_list_model.dart';
-import 'package:techtalk/features/job/data/models/job_group_model.dart';
+import 'package:flutter/services.dart';
+import 'package:techtalk/core/core.dart';
+import 'package:techtalk/features/job/data/models/job_model.dart';
+import 'package:techtalk/features/job/job.dart';
 
 final class JobLocalDataSourceImpl implements JobLocalDataSource {
   @override
-  FutureOr<JobGroupListModel> getJobGroups() {
-    return JobGroupListModel(
-      totalCount: JobGroupModel.values.length,
-      groups: JobGroupModel.values,
-    );
+  Future<List<JobModel>> getJobs() async {
+    final jobsJsonString = await rootBundle.loadString(Assets.jsonJobsData);
+    final jobsJson = jsonDecode(jobsJsonString) as List;
+
+    return [
+      ...jobsJson.map(
+        (e) => JobModel.fromJson(e),
+      ),
+    ];
   }
 }

@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/job/data/local/job_local_data_source.dart';
 import 'package:techtalk/features/job/job.dart';
 
 final class JobRepositoryImpl implements JobRepository {
-  const JobRepositoryImpl(
+  JobRepositoryImpl(
     this._jobRemoteDataSource,
     this._jobLocalDataSource,
   );
@@ -13,12 +12,20 @@ final class JobRepositoryImpl implements JobRepository {
   final JobRemoteDataSource _jobRemoteDataSource;
   final JobLocalDataSource _jobLocalDataSource;
 
-  @override
-  Future<Result<JobGroupListEntity>> getJobGroups() async {
-    final model = await _jobLocalDataSource.getJobGroups();
+  List<JobEntity>? _cachedJobs;
 
-    return Result.success(
-      JobGroupListEntity.fromModel(model),
-    );
+  @override
+  Future<void> initStaticData() async {
+    final jobsModel = await _jobLocalDataSource.getJobs();
+    _cachedJobs ??= jobsModel.map((e) => e.toEntity()).toList();
+  }
+
+  @override
+  Result<List<JobEntity>> getJobs() {
+    try {
+      return Result.success(_cachedJobs!);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
   }
 }

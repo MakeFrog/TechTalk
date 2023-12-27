@@ -1,326 +1,242 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:techtalk/core/constants/firestore_collection.enum.dart';
-import 'package:techtalk/core/helper/string_generator.dart';
+import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/data/models/chat_message_model.dart';
+import 'package:techtalk/features/chat/data/models/chat_qna_model.dart';
+import 'package:techtalk/features/chat/data/models/chat_ref.dart';
 import 'package:techtalk/features/chat/data/models/chat_room_model.dart';
-import 'package:techtalk/features/chat/data/models/message_model.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
-import 'package:techtalk/features/chat/repositories/enums/answer_state.enum.dart';
+import 'package:techtalk/features/topic/data/models/topic_ref.dart';
 
 final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   @override
-  Future<void> updateChatRoomAnswerCount(
-      {required String chatRoomId, required AnswerState answerState}) async {
-    const userIdFromLocal = '2FXrROIad2RSKt37NA8tciQx7e53';
-    final chatRoomRef = _firestore
-        .collection(FirestoreCollection.users.name)
-        .doc(userIdFromLocal)
-        .collection(FirestoreCollection.chats.name)
-        .doc(chatRoomId);
+  Future<void> createChatRoom(ChatRoomEntity room) async {
+    final roomDoc = FirestoreChatRoomRef.doc(room.id);
+    final roomSnapshot = await roomDoc.get();
 
-    final data = {
-      answerState.isCorrect ? 'correctAnswerCount' : 'incorrectAnswerCount':
-          FieldValue.increment(1)
-    };
+    if (roomSnapshot.exists) {
+      throw Exception('이미 채팅방이 존재합니다.');
+    }
 
-    await chatRoomRef.update(data);
+    // 채팅방 데이터 저장
+    await roomDoc.set(ChatRoomModel.fromEntity(room));
   }
 
   @override
-  Future<void> setBasicChatRoomInfo(ChatRoomModel chatRoomInfo) async {
-    const userIdFromLocal = '2FXrROIad2RSKt37NA8tciQx7e53';
-    final chatRoomRef = _firestore
-        .collection(FirestoreCollection.users.name)
-        .doc(userIdFromLocal)
-        .collection(FirestoreCollection.chats.name);
+  Future<List<ChatRoomModel>> getChatRooms(String topicId) async {
+    final snapshot = await FirestoreChatRoomRef.collection()
+        .where(
+          'topic_id',
+          isEqualTo: topicId,
+        )
+        .get();
 
-    await chatRoomRef.doc(chatRoomInfo.chatRoomId).set(chatRoomInfo.toJson());
+    return [
+      ...snapshot.docs.map((e) => e.data()),
+    ];
   }
 
   @override
-  Future<void> updateChatMessage(
-      {required String chatRoomId,
-      required List<MessageModel> messages}) async {
+  Future<ChatRoomModel> getChatRoom(String roomId) async {
+    final snapshot = await FirestoreChatRoomRef.doc(roomId).get();
+
+    return snapshot.data()!;
+  }
+
+  @override
+  Future<void> updateChatRoom(ChatRoomEntity room) async {
+    final roomModel = ChatRoomModel.fromEntity(room);
+    final roomDoc = FirestoreChatRoomRef.doc(roomModel.id);
+    final roomSnapshot = await roomDoc.get();
+
+    if (!roomSnapshot.exists) {
+      throw Exception('채팅방이 존재하지 않습니다.');
+    }
+
+    // 채팅방 데이터 저장
+    await roomDoc.set(roomModel);
+  }
+
+  @override
+  Future<void> createChatMessages(
+    String roomId, {
+    required List<ChatMessageEntity> messages,
+  }) async {
     try {
-      const userIdFromLocal = '2FXrROIad2RSKt37NA8tciQx7e53';
-      final chatRoomRef = _firestore
-          .collection(FirestoreCollection.users.name)
-          .doc(userIdFromLocal)
-          .collection(FirestoreCollection.chats.name)
-          .doc(chatRoomId)
-          .collection(FirestoreCollection.messages.name)
-          .withConverter(
-            fromFirestore: MessageModel.fromFirestore,
-            toFirestore: (model, _) => model.toJson(),
-          );
+      await FirebaseFirestore.instance.runTransaction(
+        (transaction) async {
+          for (final message in messages) {
+            final messageModel = ChatMessageModel.fromEntity(message);
+            transaction.set(
+              FirestoreChatMessageRef.collection(roomId).doc(message.id),
+              messageModel,
+            );
 
-      for (var message in messages) {
-        await chatRoomRef.doc(message.id).set(message);
-      }
+            if (message is AnswerChatMessageEntity) {
+              transaction
+                ..update(FirestoreChatRoomRef.doc(roomId), {
+                  if (message.answerState.isCorrect)
+                    'correct_answer_count': FieldValue.increment(1),
+                  if (message.answerState.isWrong)
+                    'incorrect_answer_count': FieldValue.increment(1),
+                })
+                ..update(
+                  FirestoreChatQnaRef.collection(roomId).doc(message.qnaId),
+                  {
+                    'message_id': message.id,
+                    'state': message.answerState.tag,
+                  },
+                );
+            }
+          }
+        },
+      );
     } catch (e) {}
   }
 
   @override
-  Future<List<MessageModel>> getChatHistory(String chatRoomId) async {
-    const userIdFromLocal = '2FXrROIad2RSKt37NA8tciQx7e53';
-    final chatHistorySnapshot = await _firestore
-        .collection(FirestoreCollection.users.name)
-        .doc(userIdFromLocal)
-        .collection(FirestoreCollection.chats.name)
-        .doc(chatRoomId)
-        .collection(FirestoreCollection.messages.name)
+  Future<List<ChatMessageModel>> getChatMessageHistory(String roomId) async {
+    final snapshot = await FirestoreChatMessageRef.collection(roomId)
         .orderBy('timestamp', descending: true)
-        .withConverter(
-          fromFirestore: MessageModel.fromFirestore,
-          toFirestore: (model, _) => model.toJson(),
-        )
         .get();
 
-    final response = chatHistorySnapshot.docs.map((e) => e.data()).toList();
-
-    return response;
-  }
-
-  @override
-  Future<List<ChatRoomModel>> getChatRoomList(String topicId) async {
-    const userIdFromLocal = '2FXrROIad2RSKt37NA8tciQx7e53';
-
-    final chatRoomListSnapshot = await _firestore
-        .collection(FirestoreCollection.users.name)
-        .doc(userIdFromLocal)
-        .collection(FirestoreCollection.chats.name)
-        .withConverter(
-          fromFirestore: ChatRoomModel.fromFirestore,
-          toFirestore: (model, _) => model.toJson(),
-        )
-        .where('topicId', isEqualTo: topicId)
-        .get();
-
-    final response = chatRoomListSnapshot.docs.map((e) => e.data()).toList();
-
-    return response;
-  }
-
-  @override
-  Future<MessageModel> getLastedChatMessage(String chatRoomId) async {
-    const userIdFromLocal = '2FXrROIad2RSKt37NA8tciQx7e53';
-
-    final chatMessageSnapshot = await _firestore
-        .collection(FirestoreCollection.users.name)
-        .doc(userIdFromLocal)
-        .collection(FirestoreCollection.chats.name)
-        .doc(chatRoomId)
-        .collection(FirestoreCollection.messages.name)
-        .orderBy('timestamp', descending: true)
-        .withConverter(
-          fromFirestore: MessageModel.fromFirestore,
-          toFirestore: (model, _) => model.toJson(),
-        )
-        .get();
-
-    final response = chatMessageSnapshot.docs.first.data();
-
-    return response;
-  }
-
-  @override
-  Future<void> addChatInfo() async {
-    const userIdFromLocal = '2FXrROIad2RSKt37NA8tciQx7e53';
-
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-    // JSON 데이터
-    Map<String, dynamic> chatData = {
-      "interviewerId": "greenPlus",
-      "topicId": "flutter",
-      "totalQuestionCount": 5,
-      "correctAnswerCount": 3,
-      "incorrectAnswerCount": 2,
-      "chatRoomId": StringGenerator.generateRandomString(),
-    };
-
-    List<Map<String, dynamic>> messagesData = [
-      {
-        "id": StringGenerator.generateRandomString(),
-        "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 20)),
-        "message": "수고하셨습니다. 면접을 종료합니다.",
-        "type": "guide",
-      },
-      {
-        "id": StringGenerator.generateRandomString(),
-        "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 19)),
-        "message":
-            "면접관이 피드백을 주는 메세지 내용입니다. 이 메세지에는 유저가 틀리게 답변한 내용을 다시 피드백하고 있습니다.",
-        "type": "feedback"
-      },
-      {
-        "id": StringGenerator.generateRandomString(),
-        "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 18)),
-        "message": "유저가 면접 질문에 답변하는 메세지 내용입니다.",
-        "type": "sent",
-        "qna": {"questionId": "flutter-5", "state": "[c]"}
-      },
-      {
-        "id": StringGenerator.generateRandomString(),
-        "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 17)),
-        "message": "Array보다 Set을 사용하는게 더 좋을 때는 언제일까요?",
-        "type": "question",
-        "qna": {
-          "questionId": "flutter-5",
-          "idealAnswers": ["모범답변1", "모범답변2"]
-        }
-      },
-      {
-        "id": StringGenerator.generateRandomString(),
-        "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 16)),
-        "message": "다음 질문입니다.",
-        "type": "guide",
-      },
-      {
-        "id": StringGenerator.generateRandomString(),
-        "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 15)),
-        "message":
-            "면접관이 피드백을 주는 메세지 내용입니다. 이 메세지에는 유저가 틀리게 답변한 내용을 다시 피드백하고 있습니다.",
-        "type": "feedback"
-      },
-      {
-        "id": StringGenerator.generateRandomString(),
-        "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 14)),
-        "message": "유저가 면접 질문에 답변하는 메세지 내용입니다.",
-        "type": "sent",
-        "qna": {"questionId": "flutter-4", "state": "[c]"}
-      },
-      {
-        "id": StringGenerator.generateRandomString(),
-        "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 13)),
-        "message": "Array보다 Set을 사용하는게 더 좋을 때는 언제일까요?",
-        "type": "question",
-        "qna": {
-          "questionId": "flutter-4",
-          "idealAnswers": ["모범답변1", "모범답변2"]
-        }
-      },
-      {
-        "id": StringGenerator.generateRandomString(),
-        "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 12)),
-        "message": "다음 질문입니다.",
-        "type": "guide",
-      },
-      {
-        "id": StringGenerator.generateRandomString(),
-        "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 11)),
-        "message": "유저가 면접 질문에 답변하는 메세지 내용입니다.",
-        "type": "sent",
-        "qna": {"questionId": "flutter-3", "state": "[w]"}
-      },
-      {
-        "id": StringGenerator.generateRandomString(),
-        "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 10)),
-        "message": "Array보다 Set을 사용하는게 더 좋을 때는 언제일까요?",
-        "type": "question",
-        "qna": {
-          "questionId": "flutter-3",
-          "idealAnswers": ["모범답변1", "모범답변2"]
-        }
-      },
-      {
-        "id": StringGenerator.generateRandomString(),
-        "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 9)),
-        "message": "다음 질문입니다.",
-        "type": "guide",
-      },
-      {
-        "id": StringGenerator.generateRandomString(),
-        "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 8)),
-        "message":
-            "면접관이 피드백을 주는 메세지 내용입니다. 이 메세지에는 유저가 틀리게 답변한 내용을 다시 피드백하고 있습니다.",
-        "type": "feedback"
-      },
-      {
-        "id": StringGenerator.generateRandomString(),
-        "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 7)),
-        "message": "유저가 면접 질문에 답변하는 메세지 내용입니다.",
-        "type": "sent",
-        "qna": {"questionId": "flutter-2", "state": "[w]"}
-      },
-      {
-        "id": StringGenerator.generateRandomString(),
-        "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 6)),
-        "message": "Array보다 Set을 사용하는게 더 좋을 때는 언제일까요?",
-        "type": "question",
-        "qna": {
-          "questionId": "flutter-2",
-          "idealAnswers": ["모범답변1", "모범답변2"]
-        }
-      },
-      {
-        "id": StringGenerator.generateRandomString(),
-        "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 5)),
-        "message": "다음 질문입니다.",
-        "type": "guide",
-      },
-      {
-        "id": StringGenerator.generateRandomString(),
-        "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 4)),
-        "message":
-            "면접관이 피드백을 주는 메세지 내용입니다. 이 메세지에는 유저가 올바르게 답변한 내용을 다시 피드백하고 있습니다.",
-        "type": "feedback"
-      },
-      {
-        "id": StringGenerator.generateRandomString(),
-        "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 3)),
-        "message": "유저가 면접 질문에 답변하는 메세지 내용입니다.",
-        "type": "sent",
-        "qna": {"questionId": "flutter-1", "state": "[c]"}
-      },
-      {
-        "id": StringGenerator.generateRandomString(),
-        "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 2)),
-        "message": "Array보다 Set을 사용하는게 더 좋을 때는 언제일까요?",
-        "type": "question",
-        "qna": {
-          "questionId": "flutter-1",
-          "idealAnswers": ["모범답변1", "모범답변2"]
-        }
-      },
-      {
-        "id": StringGenerator.generateRandomString(),
-        "timestamp": Timestamp.fromDate(DateTime(2023, 10, 19, 15, 1)),
-        "message": "반가워요! 지혜님. flutter면접 질문을 드리겠습니다",
-        "type": "guide"
-      }
+    return [
+      ...snapshot.docs.map((e) => e.data()),
     ];
+  }
 
-    try {
-      // "users" 컬렉션에 대한 레퍼런스
-      CollectionReference usersRef = firestore.collection('users');
+  @override
+  Future<ChatMessageModel> getChatMessage(
+    String roomId,
+    String chatId,
+  ) async {
+    final snapshot = await FirestoreChatMessageRef.doc(roomId, chatId).get();
 
-      // "userId" 문서에 대한 레퍼런스
-      DocumentReference userDocRef =
-          usersRef.doc(userIdFromLocal); // userId에 실제 사용자 ID를 넣어야 합니다.
+    return snapshot.data()!;
+  }
 
-      // "chats" 서브콜렉션에 대한 레퍼런스
-      CollectionReference chatsRef = userDocRef.collection('chats');
+  @override
+  Future<ChatMessageModel?> getLastChatMessage(String roomId) async {
+    final snapshot = await FirestoreChatMessageRef.collection(roomId)
+        .orderBy('timestamp', descending: true)
+        .get();
 
-      // "chatRoomId" 문서에 대한 레퍼런스
-      DocumentReference chatRoomDocRef = chatsRef
-          .doc(chatData['chatRoomId']); // chatRoomId에 실제 채팅방 ID를 넣어야 합니다.
-
-      await chatRoomDocRef.set(chatData);
-
-      // "messages" 서브콜렉션에 대한 레퍼런스
-      CollectionReference messagesRef = chatRoomDocRef.collection('messages');
-
-      // "messages" 서브콜렉션에 새로운 문서 추가
-      for (int i = 0; i < messagesData.length; i++) {
-        await messagesRef.doc(messagesData[i]['id']).set(messagesData[i]);
-      }
-
-      print('성공');
-      // print('새로운 문서가 "messages" 서브콜렉션에 추가되었습니다. 문서 ID: ${newDocRef.id}');
-    } catch (e) {
-      print('문서 추가 중 오류 발생: $e');
+    if (snapshot.docs.isEmpty) {
+      return null;
     }
+
+    return snapshot.docs.first.data();
+  }
+
+  @override
+  Future<void> updateChatMessages(
+    String roomId, {
+    required List<ChatMessageEntity> messages,
+  }) async {
+    try {
+      await FirebaseFirestore.instance.runTransaction(
+        (transaction) async {
+          // 메세지 업데이트
+          // 유저의 응답메세지라면 채팅방의 정답 or 오답카운트, 채팅방 qna 정보를 업데이트한다
+          for (final message in messages) {
+            final messageModel = ChatMessageModel.fromEntity(message);
+            final messageDoc = await FirestoreChatMessageRef.collection(roomId)
+                .doc(message.id)
+                .get();
+
+            if (messageDoc.exists) {
+              transaction.set(
+                FirestoreChatMessageRef.collection(roomId).doc(message.id),
+                messageModel,
+              );
+
+              if (message is AnswerChatMessageEntity) {
+                transaction
+                  ..update(FirestoreChatRoomRef.doc(roomId), {
+                    if (message.answerState.isCorrect)
+                      'correct_answer_count': FieldValue.increment(1),
+                    if (message.answerState.isWrong)
+                      'incorrect_answer_count': FieldValue.increment(1),
+                  })
+                  ..update(
+                    FirestoreChatQnaRef.collection(roomId).doc(message.qnaId),
+                    {
+                      'message_id': message.id,
+                      'state': message.answerState.tag,
+                    },
+                  );
+              }
+            }
+          }
+        },
+      );
+    } catch (e) {}
+  }
+
+  @override
+  Future<void> createChatQnas(
+    String roomId, {
+    required List<ChatQnaEntity> qnas,
+  }) async {
+    final roomModel = await getChatRoom(roomId);
+
+    // 만들어진 채팅방 문서에 질문 리스트 추가
+    // 트랜잭션을 사용해 한번에 처리
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      for (final qna in qnas) {
+        final qnaDoc = FirestoreChatQnaRef.doc(roomModel.id, qna.id);
+        transaction.set(
+          qnaDoc,
+          ChatQnaModel(
+            id: qnaDoc.id,
+            questionId: qna.question.id,
+          ),
+        );
+      }
+    });
+  }
+
+  @override
+  Future<List<ChatQnaModel>> getChatQnas(ChatRoomEntity room) async {
+    if (room.isTemporary) {
+      final roomModel = ChatRoomModel.fromEntity(room);
+
+      // 면접주제의 질문 목록 조회 후 무작위 [questionCount]만큼 id 추출
+      final questionsSnapshot =
+          await FirestoreTopicQuestionRef.collection(roomModel.topicId).get();
+      final questionIds = [
+        ...questionsSnapshot.docs.map((e) => e.data()),
+      ]..shuffle();
+      final slicedQuestions = questionIds.sublist(
+        0,
+        roomModel.totalQuestionCount,
+      );
+
+      return slicedQuestions.map(
+        (e) {
+          final qnaDoc = FirestoreChatQnaRef.doc(roomModel.id);
+
+          return ChatQnaModel(
+            id: qnaDoc.id,
+            questionId: e.id,
+          );
+        },
+      ).toList();
+    }
+
+    final snapshot = await FirestoreChatQnaRef.collection(room.id).get();
+
+    return [
+      ...snapshot.docs.map((e) => e.data()),
+    ];
+  }
+
+  @override
+  Future<void> updateChatQnas(
+    String roomId, {
+    required ChatQnaEntity qna,
+  }) async {
+    await FirestoreChatQnaRef.collection(roomId)
+        .doc(qna.id)
+        .set(ChatQnaModel.fromEntity(qna));
   }
 }

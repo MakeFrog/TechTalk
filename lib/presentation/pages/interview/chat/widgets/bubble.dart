@@ -6,7 +6,7 @@ import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/shared/enums/interviewer_avatar.dart';
+import 'package:techtalk/features/chat/entities/interviewer_entity.dart';
 import 'package:techtalk/presentation/widgets/common/avatar/clip_oval_circle_avatar.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
@@ -19,10 +19,10 @@ class Bubble extends StatelessWidget {
   }) : super(key: key);
 
   /// 채팅 정보
-  final MessageEntity chat;
+  final ChatMessageEntity chat;
 
   /// 아바타
-  final InterviewerAvatar interviewer;
+  final InterviewerEntity interviewer;
 
   /// '받은' 채팅중 가장 최신 상태 여부 (문제 섹션 단위)
   final bool isLatestReceivedChatInEachSection;
@@ -110,7 +110,7 @@ class Bubble extends StatelessWidget {
       );
     } else {
       /// SENT CHAT
-      final item = chat as SentMessageEntity;
+      final item = chat as AnswerChatMessageEntity;
       return Align(
         alignment: Alignment.centerRight,
         child: Column(

@@ -5,9 +5,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/pages/study/learning/providers/question_page_controller.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/current_study_question_index_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/study_questions_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_event.dart';
-import 'package:techtalk/presentation/providers/study/study_questions_provider.dart';
+import 'package:techtalk/presentation/pages/study/topic_select/providers/selected_study_topic_provider.dart';
 
 class StudyControllerBar extends ConsumerWidget with StudyLearningEvent {
   const StudyControllerBar({
@@ -15,8 +16,9 @@ class StudyControllerBar extends ConsumerWidget with StudyLearningEvent {
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentPage = ref.watch(currentQuestionPageProvider);
-    final questions = ref.watch(studyQuestionsProvider).requireValue;
+    final topic = ref.watch(selectedStudyTopicProvider);
+    final current = ref.watch(currentStudyQuestionIndexProvider);
+    final questions = ref.watch(studyQuestionsProvider(topic.id)).requireValue;
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -27,7 +29,7 @@ class StudyControllerBar extends ConsumerWidget with StudyLearningEvent {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _ControllerButton(
-            isActive: currentPage != 0,
+            isActive: current != 0,
             label: '이전 문항',
             icon: Assets.iconsArrowLeft,
             onTap: () => onTapPrevQuestion(ref),
@@ -36,13 +38,10 @@ class StudyControllerBar extends ConsumerWidget with StudyLearningEvent {
             isActive: true,
             label: '전체 문항',
             icon: Assets.iconsMenu,
-            onTap: () => onTapEntireQuestion(
-              ref,
-              questions: questions,
-            ),
+            onTap: () => onTapEntireQuestion(ref),
           ),
           _ControllerButton(
-            isActive: currentPage + 1 != questions.length,
+            isActive: current + 1 != questions.length,
             label: '다음 문항',
             icon: Assets.iconsArrowRight,
             onTap: () => onTapNextQuestion(ref),

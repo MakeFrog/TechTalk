@@ -20,7 +20,7 @@ class Flavor {
 
   /// [env]에 따라 어플리케이션 초기 설정을 진행한다.
   Future<void> setup() async {
-    final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+    WidgetsFlutterBinding.ensureInitialized();
 
     // 환경 파일 로드
     await dotenv.load(
@@ -37,7 +37,7 @@ class Flavor {
       options: option,
     );
 
-    // 앱 DI 실행
+    // // 앱 DI 실행
     AppBinder.init();
   }
 }

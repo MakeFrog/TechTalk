@@ -1,0 +1,14 @@
+[
+  {
+    "id" : "cs",
+    "name" : "CS"
+  },
+  {
+    "id" : "programming",
+    "name" : "개발 언어"
+  },
+  {
+    "id" : "framework",
+    "name" : "기술 스택"
+  }
+]

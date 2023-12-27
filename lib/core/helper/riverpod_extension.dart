@@ -14,6 +14,12 @@ extension RiverpodRefExt on Ref {
     return notifier;
   }
 
+  T autoDisposeChangeNotifier<T extends ChangeNotifier>(T notifier) {
+    onDispose(notifier.dispose);
+    // We return the notifier to ease the usage a bit
+    return notifier;
+  }
+
   CancelToken createCancelToken() {
     final token = CancelToken();
 

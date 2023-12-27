@@ -41,23 +41,9 @@ class UserDataModel {
 
   factory UserDataModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
-  ) {
-    final data = snapshot.data()!;
-
-    return UserDataModel(
-      uid: data['uid'] as String,
-      nickname: data['nickname'] as String?,
-      jobGroupIds: (data['job_group_ids'] as List<dynamic>?)?.cast<String>(),
-      topicIds: (data['topic_ids'] as List<dynamic>?)?.cast<String>(),
-    );
-  }
-
-  Map<String, dynamic> toFirestore() => {
-        'uid': uid,
-        'nickname': nickname,
-        'job_group_ids': jobGroupIds,
-        'topic_ids': topicIds,
-      };
+    SnapshotOptions? options,
+  ) =>
+      UserDataModel.fromJson(snapshot.data()!);
 
   factory UserDataModel.fromJson(Map<String, dynamic> json) {
     return _$UserDataModelFromJson(json);

@@ -1,0 +1,34 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/topic/topic.dart';
+
+abstract class _QuestionCountSelectEvent {
+  Future<void> routeToChatPage(
+    WidgetRef ref, {
+    required TopicEntity topic,
+    required int questionCount,
+  });
+}
+
+mixin class QuestionCountSelectEvent implements _QuestionCountSelectEvent {
+  @override
+  Future<void> routeToChatPage(
+    WidgetRef ref, {
+    required TopicEntity topic,
+    required int questionCount,
+  }) async {
+    // 페이지 이동 및 채팅방 정보 조회 후 제거한다.
+    await EasyLoading.show();
+
+    final room = ChatRoomEntity.random(
+      topic: topic,
+      questionCount: questionCount,
+    );
+
+    ChatPageRoute(room).go(ref.context);
+
+    await EasyLoading.dismiss();
+  }
+}

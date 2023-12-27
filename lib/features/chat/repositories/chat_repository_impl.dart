@@ -1,12 +1,9 @@
-import 'dart:math';
-
-import 'package:lorem_ipsum_generator/lorem_ipsum_generator.dart';
-import 'package:techtalk/core/helper/string_generator.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/data/models/chat_room_model.dart';
-import 'package:techtalk/features/chat/data/models/message_model.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
+import 'package:techtalk/features/chat/entities/chat_progress_info_entity.dart';
+import 'package:techtalk/features/chat/entities/interviewer_entity.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 final class ChatRepositoryImpl implements ChatRepository {
   ChatRepositoryImpl(this._remoteDataSource);
@@ -14,98 +11,176 @@ final class ChatRepositoryImpl implements ChatRepository {
   final ChatRemoteDataSource _remoteDataSource;
 
   @override
-  Future<Result<List<ChatRoomEntity>>> getChatRoomList(String topicId) async {
+  Future<Result<void>> createChatRoom({
+    required ChatRoomEntity room,
+    required List<ChatQnaEntity> qnas,
+    required List<ChatMessageEntity> messages,
+  }) async {
+    await _remoteDataSource.createChatRoom(room);
+    await _remoteDataSource.createChatQnas(room.id, qnas: qnas);
+    await _remoteDataSource.createChatMessages(room.id, messages: messages);
+
+    return Result.success(null);
+  }
+
+  @override
+  Future<Result<List<ChatRoomEntity>>> getChatRooms(TopicEntity topic) async {
     try {
-      final chatRoomResponse = await _remoteDataSource.getChatRoomList(topicId);
-      final asyncResult = chatRoomResponse.map((e) async {
-        final messageResponse =
-            await _remoteDataSource.getLastedChatMessage(e.chatRoomId);
-        return ChatRoomEntity.fromFireStore(
-          chatRoom: e,
-          message: messageResponse,
+      final roomModels = await _remoteDataSource.getChatRooms(topic.id);
+      final rooms = <ChatRoomEntity>[];
+      await Future.forEach(roomModels, (roomModel) async {
+        final messageResponse = await _remoteDataSource.getLastChatMessage(
+          roomModel.id,
         );
-      }).toList();
-      final result = await Future.wait(asyncResult);
+        rooms.add(
+          ChatRoomEntity(
+            id: roomModel.id,
+            interviewer:
+                InterviewerEntity.getAvatarInfoById(roomModel.interviewerId),
+            topic: topic,
+            progressInfo: ChatProgressInfoEntity(
+              totalQuestionCount: roomModel.totalQuestionCount,
+              correctAnswerCount: roomModel.correctAnswerCount,
+              incorrectAnswerCount: roomModel.incorrectAnswerCount,
+            ),
+          ).copyWith(
+            lastChatMessage: messageResponse?.message,
+            lastChatDate: messageResponse?.timestamp,
+          ),
+        );
+      });
 
-      result.sort((a, b) => b.lastChatDate.compareTo(a.lastChatDate));
-
-      return Result.success(result);
-    } on Exception catch (e) {
-      return Result.failure(e);
-    }
-  }
-
-  @override
-  Future<Result<List<MessageEntity>>> getChatHistory(String roomId) async {
-    try {
-      final response = await _remoteDataSource.getChatHistory(roomId);
-      final result = response.map(MessageEntity.fromModel).toList();
-      return Result.success(result);
-    } on Exception catch (e) {
-      return Result.failure(e);
-    }
-  }
-
-  @override
-  Future<Result<List<String>>> getIdealAnswers(
-      InterviewQuestionEntity questionId) async {
-    final List<String> result = ['모범답입니다1.', '모범답안입니다2'];
-
-    return Result.success(result);
-  }
-
-  @override
-  Future<Result<InterviewQuestionEntity>> getRandomQuestion(
-      String categoryId) async {
-    final int randomNum = Random().nextInt(20);
-    final InterviewQuestionEntity result = InterviewQuestionEntity(
-      id: 'swift-${StringGenerator.generateRandomString()}',
-      content: LoremIpsumGenerator.generate(words: 10 + randomNum),
-    );
-
-    return Result.success(result);
-  }
-
-  @override
-  Future<Result<void>> updateChatMessage(
-      {required String chatRoomId,
-      required List<MessageEntity> messages}) async {
-    try {
-      final response = await _remoteDataSource.updateChatMessage(
-        chatRoomId: chatRoomId,
-        messages: messages.map(MessageModel.fromEntity).toList(),
+      rooms.sort(
+        (a, b) => b.lastChatDate!.compareTo(a.lastChatDate!),
       );
 
-      print("아지랑이 : ${messages.length}");
-
-      return Result.success(response);
+      return Result.success(rooms);
     } on Exception catch (e) {
       return Result.failure(e);
     }
   }
 
   @override
-  Future<Result<void>> updateChatRoomAnswerCount(
-      {required String chatRoomId, required AnswerState answerState}) async {
-    try {
-      final response = await _remoteDataSource.updateChatRoomAnswerCount(
-          chatRoomId: chatRoomId, answerState: answerState);
+  Future<Result<ChatRoomEntity>> getChatRoom(String roomId) async {
+    final roomModel = await _remoteDataSource.getChatRoom(roomId);
 
-      return Result.success(response);
+    return Result.success(
+      ChatRoomEntity(
+        id: roomModel.id,
+        interviewer:
+            InterviewerEntity.getAvatarInfoById(roomModel.interviewerId),
+        topic: topicRepository.getTopic(roomModel.topicId).getOrThrow(),
+        progressInfo: ChatProgressInfoEntity(
+          totalQuestionCount: roomModel.totalQuestionCount,
+          correctAnswerCount: roomModel.correctAnswerCount,
+          incorrectAnswerCount: roomModel.incorrectAnswerCount,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Future<Result<void>> createChatMessages(
+    String roomId, {
+    required List<ChatMessageEntity> messages,
+  }) async {
+    try {
+      return Result.success(
+        await _remoteDataSource.createChatMessages(
+          roomId,
+          messages: messages,
+        ),
+      );
     } on Exception catch (e) {
       return Result.failure(e);
     }
   }
 
   @override
-  Future<Result<void>> setBasicChatRoomInfo(ChatRoomEntity chatRoomInfo) async {
+  Future<Result<List<ChatMessageEntity>>> getChatMessageHistory(
+    String roomId,
+  ) async {
     try {
-      final response = await _remoteDataSource
-          .setBasicChatRoomInfo(ChatRoomModel.fromEntity(chatRoomInfo));
+      final messageModels =
+          await _remoteDataSource.getChatMessageHistory(roomId);
 
-      return Result.success(response);
+      return Result.success([
+        ...messageModels.map((e) => e.toEntity()),
+      ]);
     } on Exception catch (e) {
       return Result.failure(e);
     }
+  }
+
+  @override
+  Future<Result<ChatMessageEntity>> getChatMessage(
+    String roomId,
+    String chatId,
+  ) async {
+    try {
+      final messageModel = await _remoteDataSource.getChatMessage(
+        roomId,
+        chatId,
+      );
+
+      return Result.success(messageModel.toEntity());
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<void>> updateChatMessages(
+    String roomId, {
+    required List<ChatMessageEntity> messages,
+  }) async {
+    try {
+      return Result.success(
+        await _remoteDataSource.updateChatMessages(
+          roomId,
+          messages: messages,
+        ),
+      );
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<List<ChatQnaEntity>>> getChatQnAs(ChatRoomEntity room) async {
+    final roomQnAs = await _remoteDataSource.getChatQnas(room);
+
+    final qnas = <ChatQnaEntity>[];
+    await Future.forEach(roomQnAs, (element) async {
+      // 질문 조회
+      final question = await topicRepository
+          .getTopicQna(
+            room.topic.id,
+            element.questionId,
+          )
+          .then((value) => value.getOrThrow());
+
+      // 응답 id가 있으면 응답 데이터 조회
+      final AnswerChatMessageEntity? answer;
+      if (element.messageId != null) {
+        final messageModel = await _remoteDataSource.getChatMessage(
+          room.id,
+          element.messageId!,
+        );
+        answer = messageModel.toEntity() as AnswerChatMessageEntity;
+      } else {
+        answer = null;
+      }
+
+      qnas.add(
+        ChatQnaEntity(
+          id: element.id,
+          question: question,
+          answer: answer,
+        ),
+      );
+    });
+
+    return Result.success(qnas);
   }
 }

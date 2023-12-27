@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
+import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_controller.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_event.dart';
 import 'package:techtalk/presentation/pages/sign_up/steps/job_group_select_step.dart';
 import 'package:techtalk/presentation/pages/sign_up/steps/nickname_input_step.dart';
 import 'package:techtalk/presentation/pages/sign_up/steps/topic_select_step.dart';
-import 'package:techtalk/presentation/providers/sign_up/sign_up_step_controller.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/button/app_back_button.dart';
 

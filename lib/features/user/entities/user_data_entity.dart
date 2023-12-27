@@ -5,7 +5,7 @@ class UserDataEntity {
   final List<String> jobGroupIds;
   final List<String> topicIds;
 
-  bool get isCompleteSignUp => nickname != null;
+  bool get hasEssentialData => nickname != null;
 
   const UserDataEntity({
     required this.uid,

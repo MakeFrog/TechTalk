@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 class StudyTopicCard extends StatelessWidget {
   const StudyTopicCard({
@@ -10,7 +10,7 @@ class StudyTopicCard extends StatelessWidget {
     this.onTap,
   });
 
-  final InterviewTopic topic;
+  final TopicEntity topic;
   final VoidCallback? onTap;
 
   @override
@@ -28,7 +28,7 @@ class StudyTopicCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  topic.name,
+                  topic.text,
                   style: AppTextStyle.headline3,
                 ),
               ),

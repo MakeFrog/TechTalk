@@ -5,14 +5,14 @@ import 'package:gap/gap.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/chat/repositories/entities/interview_qna_entity.dart';
+import 'package:techtalk/features/chat/entities/chat_qna_entity.dart';
 import 'package:techtalk/presentation/widgets/common/text/bullet_text.dart';
 import 'package:techtalk/presentation/widgets/common/tile/flexible_expansion_tile.dart';
 
 class QnAExpansionTile extends HookWidget {
   const QnAExpansionTile(this.item, {Key? key}) : super(key: key);
 
-  final InterviewQnAEntity item;
+  final ChatQnaEntity item;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class QnAExpansionTile extends HookWidget {
             children: [
               /// CORRECT WRONG INDICATOR
               SvgPicture.asset(
-                item.response!.state.isCorrect
+                item.answer!.answerState.isCorrect
                     ? Assets.iconsCorrectIndicator
                     : Assets.iconsWrongIndicator,
               ),
@@ -48,7 +48,7 @@ class QnAExpansionTile extends HookWidget {
 
           /// QUESTION
           Text(
-            item.question,
+            item.question.question,
             textAlign: TextAlign.start,
             style: AppTextStyle.title1,
           ),
@@ -68,7 +68,7 @@ class QnAExpansionTile extends HookWidget {
 
             /// USER ANSWER RESPONSE
             BulletText(
-              item.response!.text,
+              item.answer!.message.value,
               style: AppTextStyle.alert2,
             ),
             const Gap(18),
@@ -80,11 +80,11 @@ class QnAExpansionTile extends HookWidget {
 
             /// LIST OF IDEAL ANSWER
             ...List.generate(
-              item.idealAnswer.length,
+              item.question.answers.length,
               (index) => Padding(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: BulletText(
-                  item.idealAnswer[index],
+                  item.question.answers[index],
                   style: AppTextStyle.alert2,
                 ),
               ),

@@ -1,32 +1,39 @@
 import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/chat/repositories/entities/chat_room_entity.dart';
-import 'package:techtalk/features/chat/repositories/entities/interview_question_entity.dart';
-import 'package:techtalk/features/chat/repositories/entities/message_entity.dart';
-import 'package:techtalk/features/chat/repositories/enums/answer_state.enum.dart';
+import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 abstract interface class ChatRepository {
-  /// 채팅 메세지 리스트 호출
-  Future<Result<List<MessageEntity>>> getChatHistory(String roomId);
-
-  /// 모범답안 리스트 호출
-  Future<Result<List<String>>> getIdealAnswers(
-    InterviewQuestionEntity questionId,
-  );
-
-  /// 채팅방 답변 개수 업데이트
-  Future<Result<void>> updateChatRoomAnswerCount(
-      {required String chatRoomId, required AnswerState answerState});
-
-  /// 채팅 메세지 업데이트
-  Future<Result<void>> updateChatMessage(
-      {required String chatRoomId, required List<MessageEntity> messages});
-
-  /// 랜던 문제 호출
-  Future<Result<InterviewQuestionEntity>> getRandomQuestion(String categoryId);
+  Future<Result<void>> createChatRoom({
+    required ChatRoomEntity room,
+    required List<ChatQnaEntity> qnas,
+    required List<ChatMessageEntity> messages,
+  });
 
   /// 채팅 면접 리스트 호출
-  Future<Result<List<ChatRoomEntity>>> getChatRoomList(String topicId);
+  Future<Result<List<ChatRoomEntity>>> getChatRooms(TopicEntity topicId);
 
-  ///
-  Future<Result<void>> setBasicChatRoomInfo(ChatRoomEntity chatRoomInfo);
+  Future<Result<ChatRoomEntity>> getChatRoom(String roomId);
+
+  /// 채팅 메세지 업데이트
+  Future<Result<void>> createChatMessages(
+    String roomId, {
+    required List<ChatMessageEntity> messages,
+  });
+
+  /// 채팅 메세지 리스트 호출
+  Future<Result<List<ChatMessageEntity>>> getChatMessageHistory(String roomId);
+
+  /// 채팅 메세지  호출
+  Future<Result<ChatMessageEntity>> getChatMessage(
+    String chatRoomId,
+    String chatId,
+  );
+
+  /// 채팅 메세지 업데이트
+  Future<Result<void>> updateChatMessages(
+    String roomId, {
+    required List<ChatMessageEntity> messages,
+  });
+
+  Future<Result<List<ChatQnaEntity>>> getChatQnAs(ChatRoomEntity room);
 }
