@@ -9,10 +9,10 @@ class UserEntity {
   final String? nickname;
 
   /// 유저 관심 직군 ID 목록
-  final List<String>? jobGroupIds;
+  final List<String> jobGroupIds;
 
   /// 유저가 준비하고 있는 기술면접 주제 ID 목록
-  final List<String>? topicIds;
+  final List<String> topicIds;
 
   bool get hasEssentialData => nickname != null;
 
