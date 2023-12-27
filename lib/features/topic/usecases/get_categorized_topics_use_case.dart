@@ -1,12 +1,14 @@
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
+typedef CategorizedTopics = Map<TopicCategoryEntity, List<TopicEntity>>;
+
 final class GetCategorizedTopicsUseCase {
   GetCategorizedTopicsUseCase(this._topicRepository);
 
   final TopicRepository _topicRepository;
 
-  Result<Map<TopicCategoryEntity, List<TopicEntity>>> call() {
+  Result<CategorizedTopics> call() {
     try {
       final topics = _topicRepository.getTopics().getOrThrow()
         ..sort(
@@ -14,7 +16,7 @@ final class GetCategorizedTopicsUseCase {
         );
       final categories = _topicRepository.getTopicCategories().getOrThrow();
 
-      final resolvedTopics = <TopicCategoryEntity, List<TopicEntity>>{};
+      final resolvedTopics = CategorizedTopics();
 
       for (final topic in topics) {
         final category = categories.firstWhere(

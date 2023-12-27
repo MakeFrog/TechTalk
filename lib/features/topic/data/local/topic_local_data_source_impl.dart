@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:techtalk/core/core.dart';
-import 'package:techtalk/features/topic/data/models/topic_ref.dart';
+import 'package:techtalk/features/topic/data/models/topics_ref.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 class TopicLocalDataSourceImpl implements TopicLocalDataSource {
@@ -23,7 +23,7 @@ class TopicLocalDataSourceImpl implements TopicLocalDataSource {
   Future<List<TopicQnaModel>?> getQnas(
     String topicId,
   ) async {
-    final snapshot = await FirestoreTopicQuestionRef.collection(topicId)
+    final snapshot = await FirestoreTopicQuestionsRef.collection(topicId)
         .get(const GetOptions(source: Source.cache));
 
     if (snapshot.docs.isEmpty) {
@@ -40,12 +40,8 @@ class TopicLocalDataSourceImpl implements TopicLocalDataSource {
     String topicId,
     String questionId,
   ) async {
-    final snapshot = await FirestoreTopicQuestionRef.doc(topicId, questionId)
+    final snapshot = await FirestoreTopicQuestionsRef.doc(topicId, questionId)
         .get(const GetOptions(source: Source.cache));
-
-    if (!snapshot.exists) {
-      return null;
-    }
 
     return snapshot.data();
   }

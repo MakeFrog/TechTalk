@@ -5,7 +5,7 @@ import 'package:techtalk/features/chat/data/models/chat_qna_model.dart';
 import 'package:techtalk/features/chat/data/models/chat_ref.dart';
 import 'package:techtalk/features/chat/data/models/chat_room_model.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
-import 'package:techtalk/features/topic/data/models/topic_ref.dart';
+import 'package:techtalk/features/topic/data/models/topics_ref.dart';
 
 final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   @override
@@ -202,7 +202,7 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
 
       // 면접주제의 질문 목록 조회 후 무작위 [questionCount]만큼 id 추출
       final questionsSnapshot =
-          await FirestoreTopicQuestionRef.collection(roomModel.topicId).get();
+          await FirestoreTopicQuestionsRef.collection(roomModel.topicId).get();
       final questionIds = [
         ...questionsSnapshot.docs.map((e) => e.data()),
       ]..shuffle();

@@ -21,8 +21,8 @@ final class TopicDependencyInjection extends FeatureDependencyInjection {
   void repositories() {
     locator.registerLazySingleton<TopicRepository>(
       () => TopicRepositoryImpl(
-        remoteDataSource: topicRemoteDataSource,
-        localDataSource: topicLocalDataSource,
+        topicLocalDataSource,
+        topicRemoteDataSource,
       ),
     );
   }
