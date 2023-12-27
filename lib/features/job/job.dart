@@ -12,6 +12,5 @@ export 'usecases/get_jobs_use_case.dart';
 
 final jobRemoteDataSource = locator<JobRemoteDataSource>();
 final jobLocalDataSource = locator<JobLocalDataSource>();
-
 final jobRepository = locator<JobRepository>();
 final getJobsUseCase = locator<GetJobsUseCase>();

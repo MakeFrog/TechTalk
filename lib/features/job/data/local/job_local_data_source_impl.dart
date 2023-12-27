@@ -13,9 +13,7 @@ final class JobLocalDataSourceImpl implements JobLocalDataSource {
     final jobsJson = jsonDecode(jobsJsonString) as List;
 
     return [
-      ...jobsJson.map(
-        (e) => JobModel.fromJson(e),
-      ),
+      ...jobsJson.cast<Map<String, dynamic>>().map(JobModel.fromJson),
     ];
   }
 }
