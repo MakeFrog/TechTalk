@@ -4,16 +4,7 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
-abstract class _QuestionCountSelectEvent {
-  Future<void> routeToChatPage(
-    WidgetRef ref, {
-    required TopicEntity topic,
-    required int questionCount,
-  });
-}
-
-mixin class QuestionCountSelectEvent implements _QuestionCountSelectEvent {
-  @override
+mixin class QuestionCountSelectEvent {
   Future<void> routeToChatPage(
     WidgetRef ref, {
     required TopicEntity topic,

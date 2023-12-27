@@ -5,21 +5,14 @@ import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/providers/user/auth/is_user_authorized_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 
-abstract interface class _SplashEvent {
-  Future<void> initStaticData(WidgetRef ref);
-  Future<void> routeByUserAuthAndData(WidgetRef ref);
-}
-
-mixin class SplashEvent implements _SplashEvent {
+mixin class SplashEvent {
   static bool initComplete = false;
 
-  @override
   Future<void> initStaticData(WidgetRef ref) async {
     await jobRepository.initStaticData();
     await topicRepository.initStaticData();
   }
 
-  @override
   Future<void> routeByUserAuthAndData(WidgetRef ref) async {
     final isAuthorized = ref.read(isUserAuthorizedProvider);
     if (!isAuthorized) {
