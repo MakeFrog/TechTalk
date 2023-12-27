@@ -69,12 +69,12 @@ class ChatMessageHistory extends _$ChatMessageHistory {
         .firstWhere((qna) => !qna.hasUserResponded);
 
     if (isStream) {
-      return QuestionChatMessageEntity.createStreamedChat(
+      return QuestionChatMessageEntity(
         qnaId: qna.id,
-        streamedMessage: qna.question.question.convertToStreamText,
+        message: qna.question.question.convertToStreamText,
       );
     } else {
-      return QuestionChatMessageEntity.createStaticChat(
+      return QuestionChatMessageEntity.createStatic(
         qnaId: qna.id,
         message: qna.question.question,
         timestamp: DateTime.now(),
@@ -110,8 +110,8 @@ class ChatMessageHistory extends _$ChatMessageHistory {
     );
 
     await _showMessage(
-      message: GuideChatMessageEntity.createStream(
-        message.convertToStreamText,
+      message: GuideChatMessageEntity(
+        message: message.convertToStreamText,
       ),
       onDone: () async {
         await _showMessage(
@@ -126,7 +126,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   ///
   Future<void> addUserChatResponse(String message) async {
     final answeredQuestion =
-        state.requireValue.firstWhere((chat) => chat.type.isAskQuestionMessage)
+        state.requireValue.firstWhere((chat) => chat.type.isQuestionMessage)
             as QuestionChatMessageEntity;
     final answerChat = AnswerChatMessageEntity.initial(
       message: message,
@@ -177,8 +177,8 @@ class ChatMessageHistory extends _$ChatMessageHistory {
               .updateState(resolvedUserAnswer);
 
           await _showMessage(
-            message: GuideChatMessageEntity.createStream(
-              message.convertToStreamText,
+            message: GuideChatMessageEntity(
+              message: message.convertToStreamText,
             ),
             onDone: () async {
               if (!isComplete) {
@@ -190,7 +190,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           );
         },
         question: state.requireValue
-            .firstWhere((chat) => chat.type.isAskQuestionMessage)
+            .firstWhere((chat) => chat.type.isQuestionMessage)
             .message
             .value,
         userAnswer: userAnswer.message.value,
@@ -198,8 +198,8 @@ class ChatMessageHistory extends _$ChatMessageHistory {
     );
 
     await _showMessage(
-      message: FeedbackChatMessageEntity.createStreamChat(
-        messageStream: feedbackChat,
+      message: FeedbackChatMessageEntity(
+        message: feedbackChat,
       ),
     );
   }

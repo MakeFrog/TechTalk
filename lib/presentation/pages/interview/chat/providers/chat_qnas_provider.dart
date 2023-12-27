@@ -12,17 +12,16 @@ class ChatQnAs extends _$ChatQnAs {
     return qnas.fold(
       onSuccess: (value) async {
         if (value.isEmpty) {
-          print(value);
           final qnas = await getTopicQnasUseCase(room.topic.id).then(
             (value) => value.getOrThrow(),
           )
             ..shuffle();
 
-          print(qnas);
           return qnas
               .sublist(0, room.progressInfo.totalQuestionCount)
               .map(
                 (e) => ChatQnaEntity(
+                  id: e.id,
                   question: e,
                 ),
               )
@@ -41,6 +40,7 @@ class ChatQnAs extends _$ChatQnAs {
             .sublist(0, room.progressInfo.totalQuestionCount)
             .map(
               (e) => ChatQnaEntity(
+                id: e.id,
                 question: e,
               ),
             )
