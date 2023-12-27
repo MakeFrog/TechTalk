@@ -8,6 +8,8 @@ class DialogService {
     required Dialog dialog,
   }) {
     showDialog(
-        context: rootNavigatorKey.currentContext!, builder: (_) => dialog);
+      context: rootNavigatorKey.currentContext!,
+      builder: (_) => dialog,
+    );
   }
 }
