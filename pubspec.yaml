@@ -44,11 +44,11 @@ dependencies:
   get_it: ^7.2.0
 
   # Firebase
-  firebase_core: ^2.4.1
-  firebase_auth: ^4.2.5
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.15.3
   google_sign_in: ^6.1.5
-  cloud_firestore: ^4.4.3
-  firebase_storage: ^11.0.14
+  cloud_firestore: ^4.13.6
+  firebase_storage: ^11.5.6
 
   # 네트워크
   dio: ^5.0.3
@@ -65,14 +65,17 @@ dependencies:
   json_annotation: ^4.8.1
   logger: ^2.0.2+1
   uuid: ^4.1.0
+  image_picker: ^1.0.5
   single_import_generator: ^1.0.0 # barrel file generator
   lorem_ipsum_generator: ^0.0.1 # 랜던 텍스트 generator(삭제 예정)
+  app_settings: ^5.1.1 # Device Setting Route
 
   # 앱 정보
   package_info_plus: ^5.0.1 # 현재 앱 버전 정보
   pub_semver: ^2.1.4 # 주부수 버전 비교 연산
   collection: ^1.17.1
   gap: ^3.0.1
+
 
 dev_dependencies:
   flutter_lints: ^2.0.1

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/utils/result.dart';
@@ -77,6 +79,18 @@ final class UserRepositoryImpl implements UserRepository {
       final topicIds = response?.topicIds ?? [];
 
       return Result.success(topicIds);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<String>> uploadImgFileAndGetUrl(File imageFile) async {
+    try {
+      final response =
+          await _userRemoteDataSource.uploadImgFileAndGetUrl(imageFile);
+
+      return Result.success(response);
     } on Exception catch (e) {
       return Result.failure(e);
     }

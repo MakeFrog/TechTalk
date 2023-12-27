@@ -1,11 +1,17 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:techtalk/core/constants/firestore_collection.enum.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/features/user/data/models/user_data_model.dart';
 import 'package:techtalk/features/user/user.dart';
+import 'package:uuid/uuid.dart';
 
 final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
   /// firestore에 저장된 users 컬렉션을 조회한다
   CollectionReference<UserDataModel> get _usersCollection => _firestore
@@ -85,5 +91,15 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   @override
   Future<void> deleteUserData(String uid) async {
     await _userDoc(uid).delete();
+  }
+
+  @override
+  Future<String> uploadImgFileAndGetUrl(File imageFile) async {
+    final storageRef = _firebaseStorage
+        .ref('profileImage')
+        .child(FirebaseAuth.instance.currentUser?.uid ?? const Uuid().v1());
+    final snapshot = await storageRef.putFile(imageFile);
+    final String imgUrl = await snapshot.ref.getDownloadURL();
+    return imgUrl;
   }
 }

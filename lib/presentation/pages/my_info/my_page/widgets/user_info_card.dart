@@ -24,7 +24,7 @@ class _UserInfoCard extends ConsumerWidget with MyPageEvent {
               iconPath: Assets.iconsPencil,
               size: 16,
               onIconTapped: () {
-                onProfileEditBtnTapped(context);
+                onProfileEditBtnTapped(ref);
               },
             ),
           ],

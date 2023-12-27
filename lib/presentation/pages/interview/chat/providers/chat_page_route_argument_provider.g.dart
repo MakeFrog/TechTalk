@@ -10,14 +10,7 @@ String _$chatPageRouteArgHash() => r'b644102300d1d1b752dbdf4c7a4d80c3d304b554';
 
 /// See also [chatPageRouteArg].
 @ProviderFor(chatPageRouteArg)
-final chatPageRouteArgProvider = AutoDisposeProvider<
-    ({
-      InterviewerAvatar interviewer,
-      InterviewProgressState progressState,
-      ChatQnaProgressInfoEntity qnaProgressInfo,
-      String roomId,
-      InterviewTopic topic
-    })>.internal(
+final chatPageRouteArgProvider = AutoDisposeProvider<ChatPageRouteArg>.internal(
   chatPageRouteArg,
   name: r'chatPageRouteArgProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -27,13 +20,6 @@ final chatPageRouteArgProvider = AutoDisposeProvider<
   allTransitiveDependencies: null,
 );
 
-typedef ChatPageRouteArgRef = AutoDisposeProviderRef<
-    ({
-      InterviewerAvatar interviewer,
-      InterviewProgressState progressState,
-      ChatQnaProgressInfoEntity qnaProgressInfo,
-      String roomId,
-      InterviewTopic topic
-    })>;
+typedef ChatPageRouteArgRef = AutoDisposeProviderRef<ChatPageRouteArg>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -28,7 +28,7 @@ String _$questionPageControllerHash() =>
 /// See also [QuestionPageController].
 @ProviderFor(QuestionPageController)
 final questionPageControllerProvider = AutoDisposeNotifierProvider<
-    QuestionPageController, PageController>.internal(
+    QuestionPageController, Raw<PageController>>.internal(
   QuestionPageController.new,
   name: r'questionPageControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -38,6 +38,6 @@ final questionPageControllerProvider = AutoDisposeNotifierProvider<
   allTransitiveDependencies: null,
 );
 
-typedef _$QuestionPageController = AutoDisposeNotifier<PageController>;
+typedef _$QuestionPageController = AutoDisposeNotifier<Raw<PageController>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

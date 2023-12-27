@@ -11,8 +11,8 @@ String _$detailPageControllerHash() =>
 
 /// See also [DetailPageController].
 @ProviderFor(DetailPageController)
-final detailPageControllerProvider =
-    AutoDisposeNotifierProvider<DetailPageController, PageController>.internal(
+final detailPageControllerProvider = AutoDisposeNotifierProvider<
+    DetailPageController, Raw<PageController>>.internal(
   DetailPageController.new,
   name: r'detailPageControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +22,6 @@ final detailPageControllerProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$DetailPageController = AutoDisposeNotifier<PageController>;
+typedef _$DetailPageController = AutoDisposeNotifier<Raw<PageController>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -105,6 +105,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $StudyRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: 'profile-setting',
+          name: 'profile-setting',
+          factory: $ProfileSettingRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'chat-list',
           name: 'chat-list',
           factory: $ChatListPageRouteExtension._fromState,
@@ -210,6 +215,28 @@ extension $StudyRouteExtension on StudyRoute {
       context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
+}
+
+extension $ProfileSettingRouteExtension on ProfileSettingRoute {
+  static ProfileSettingRoute _fromState(GoRouterState state) =>
+      ProfileSettingRoute(
+        state.extra as UserDataEntity,
+      );
+
+  String get location => GoRouteData.$location(
+        '/profile-setting',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
 }
 
 extension $ChatListPageRouteExtension on ChatListPageRoute {

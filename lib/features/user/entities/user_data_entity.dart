@@ -7,8 +7,6 @@ class UserDataEntity {
 
   bool get isCompleteSignUp => nickname != null;
 
-//<editor-fold desc="Data Methods">
-
   const UserDataEntity({
     required this.uid,
     this.profileImgUrl,

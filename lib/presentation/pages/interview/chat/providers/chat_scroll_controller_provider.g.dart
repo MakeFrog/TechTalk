@@ -12,7 +12,7 @@ String _$chatScrollControllerHash() =>
 /// See also [ChatScrollController].
 @ProviderFor(ChatScrollController)
 final chatScrollControllerProvider = AutoDisposeNotifierProvider<
-    ChatScrollController, ScrollController>.internal(
+    ChatScrollController, Raw<ScrollController>>.internal(
   ChatScrollController.new,
   name: r'chatScrollControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +22,6 @@ final chatScrollControllerProvider = AutoDisposeNotifierProvider<
   allTransitiveDependencies: null,
 );
 
-typedef _$ChatScrollController = AutoDisposeNotifier<ScrollController>;
+typedef _$ChatScrollController = AutoDisposeNotifier<Raw<ScrollController>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
