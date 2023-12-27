@@ -15,6 +15,6 @@ mixin class StudyTopicSelectEvent implements _StudyTopicSelectEvent {
     WidgetRef ref, {
     required TopicEntity topic,
   }) {
-    StudyRoute(topic.id).push(rootNavigatorKey.currentContext!);
+    StudyRoute(topic).push(rootNavigatorKey.currentContext!);
   }
 }

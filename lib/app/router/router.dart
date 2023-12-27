@@ -17,7 +17,6 @@ import 'package:techtalk/presentation/pages/study/learning/study_learning_page.d
 import 'package:techtalk/presentation/pages/study/topic_select/providers/selected_study_topic_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/review_note_detail_page.dart';
 
-part 'route_argument.dart';
 part 'router.g.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -26,7 +25,6 @@ GoRouter appRouter(WidgetRef ref) => GoRouter(
       debugLogDiagnostics: false,
       navigatorKey: rootNavigatorKey,
       initialLocation: SplashRoute.path,
-      // initialLocation: SignInRoute.name,
       routes: $appRoutes,
     );
 
@@ -59,8 +57,8 @@ class SplashRoute extends GoRouteData {
 class SignInRoute extends GoRouteData {
   const SignInRoute();
 
-  static const String path = '/sign_in';
-  static const String name = 'sign_in';
+  static const String path = '/sign-in';
+  static const String name = 'sign in';
 
   @override
   Widget build(BuildContext context, GoRouterState state) => const SignInPage();
@@ -77,7 +75,7 @@ class SignUpRoute extends GoRouteData {
   const SignUpRoute();
 
   static const String path = '/sign-up';
-  static const String name = 'sign-up';
+  static const String name = 'sign up';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -89,15 +87,15 @@ class SignUpRoute extends GoRouteData {
 /// Main Route
 ///
 @TypedGoRoute<MainRoute>(
-  path: MainRoute.name,
+  path: MainRoute.path,
   name: MainRoute.name,
   routes: [
     TypedGoRoute<InterviewTopicSelectRoute>(
-      path: InterviewTopicSelectRoute.name,
+      path: InterviewTopicSelectRoute.path,
       name: InterviewTopicSelectRoute.name,
       routes: [
         TypedGoRoute<QuestionCountSelectPageRoute>(
-          path: QuestionCountSelectPageRoute.name,
+          path: QuestionCountSelectPageRoute.path,
           name: QuestionCountSelectPageRoute.name,
         ),
       ],
@@ -107,7 +105,7 @@ class SignUpRoute extends GoRouteData {
       name: StudyRoute.name,
     ),
     TypedGoRoute<WrongAnswerRoute>(
-      path: WrongAnswerRoute.name,
+      path: WrongAnswerRoute.path,
       name: WrongAnswerRoute.name,
     ),
     TypedGoRoute<ChatListPageRoute>(
@@ -125,7 +123,8 @@ class SignUpRoute extends GoRouteData {
 class MainRoute extends GoRouteData {
   const MainRoute();
 
-  static const String name = '/';
+  static const String path = '/';
+  static const String name = 'main';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -134,9 +133,10 @@ class MainRoute extends GoRouteData {
 }
 
 class StudyRoute extends GoRouteData {
-  const StudyRoute(this.topicId);
+  StudyRoute(this.$extra) : topicId = $extra.id;
 
   final String topicId;
+  final TopicEntity $extra;
 
   static const String path = ':topicId';
   static const String name = 'study';
@@ -145,20 +145,19 @@ class StudyRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return ProviderScope(
       overrides: [
-        selectedStudyTopicProvider.overrideWithValue(
-          getTopicUseCase(topicId).getOrThrow(),
-        ),
+        selectedStudyTopicProvider.overrideWithValue($extra),
       ],
-      child: StudyLearningPage(),
+      child: const StudyLearningPage(),
     );
   }
 }
 
 class WrongAnswerRoute extends GoRouteData {
-  const WrongAnswerRoute({this.$extra});
+  const WrongAnswerRoute(this.$extra);
 
   final int? $extra;
-  static const String name = 'wrong-answer';
+  static const String path = 'wrong-answer';
+  static const String name = 'wrong answer';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -169,7 +168,8 @@ class WrongAnswerRoute extends GoRouteData {
 class InterviewTopicSelectRoute extends GoRouteData {
   const InterviewTopicSelectRoute();
 
-  static const String name = 'topic-select';
+  static const String path = 'topic-select';
+  static const String name = 'topic select';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -182,7 +182,8 @@ class QuestionCountSelectPageRoute extends GoRouteData {
     required this.$extra,
   });
 
-  static const String name = 'question-count-select';
+  static const String path = 'question-count-select';
+  static const String name = 'question count select';
 
   final TopicEntity $extra;
 
@@ -195,20 +196,18 @@ class QuestionCountSelectPageRoute extends GoRouteData {
 }
 
 class ChatListPageRoute extends GoRouteData {
-  const ChatListPageRoute(this.topicId);
+  ChatListPageRoute(this.$extra) : topicId = $extra.id;
 
   static const String path = 'chat-list/:topicId';
-  static const String name = 'chat-list';
+  static const String name = 'chat list';
 
   final String topicId;
-
+  final TopicEntity $extra;
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return ProviderScope(
       overrides: [
-        selectedInterviewTopicProvider.overrideWithValue(
-          getTopicUseCase(topicId).getOrThrow(),
-        ),
+        selectedInterviewTopicProvider.overrideWithValue($extra),
       ],
       child: ChatListPage(
         topicId: topicId,

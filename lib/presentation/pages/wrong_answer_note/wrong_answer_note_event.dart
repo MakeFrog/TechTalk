@@ -17,6 +17,6 @@ mixin class WrongAnswerNoteEvent implements _WrongAnswerNoteEvent {
 
   @override
   void onTapQuestion(int page) {
-    WrongAnswerRoute($extra: page).push(rootNavigatorKey.currentContext!);
+    WrongAnswerRoute(page).push(rootNavigatorKey.currentContext!);
   }
 }
