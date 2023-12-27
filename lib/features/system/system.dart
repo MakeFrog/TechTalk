@@ -1,4 +1,4 @@
-import 'package:techtalk/app/di/locator.dart';
+import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/features/system/use_cases/get_version_info_use_case.dart';
 
 export 'data/model/version_model.dart';

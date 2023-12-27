@@ -1,4 +1,4 @@
-import 'package:techtalk/app/di/locator.dart';
+import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/features/user/data/remote/user_remote_data_source.dart';
 import 'package:techtalk/features/user/repositories/user_repository.dart';
 import 'package:techtalk/features/user/usecases/create_user_data_use_case.dart';
