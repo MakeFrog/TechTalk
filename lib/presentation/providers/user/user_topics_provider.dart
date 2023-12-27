@@ -16,7 +16,7 @@ class UserTopics extends _$UserTopics {
     final userTopicIds = userData.topicIds;
     final topicIds = [...topics.map((e) => e.id)];
 
-    for (final userTopicId in userTopicIds) {
+    for (final userTopicId in topicIds) {
       if (topicIds.contains(userTopicId)) {
         final topic = topics.firstWhere(
           (element) => element.id == userTopicId,

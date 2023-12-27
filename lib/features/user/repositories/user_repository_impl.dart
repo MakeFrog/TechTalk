@@ -24,9 +24,9 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<UserEntity>> getUser() async {
+  Future<Result<UserEntity>> getUser([String? uid]) async {
     try {
-      final userModel = await _userRemoteDataSource.getUser();
+      final userModel = await _userRemoteDataSource.getUser(uid);
 
       return Result.success(
         userModel.toEntity(),

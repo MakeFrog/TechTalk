@@ -14,10 +14,19 @@ class UserModel {
     this.topicIds,
   });
 
+  /// 유저 UID
   String uid;
+
+  /// 유저 프로필 이미지 URL
   String? profileImgUrl;
+
+  /// 유저 닉네임
   String? nickname;
+
+  /// 유저 관심 직군 ID 목록
   List<String>? jobGroupIds;
+
+  /// 유저가 준비하고 있는 기술면접 주제 ID 목록
   List<String>? topicIds;
 
   factory UserModel.fromEntity(UserEntity entity) {
