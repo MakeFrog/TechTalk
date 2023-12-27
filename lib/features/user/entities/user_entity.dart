@@ -1,4 +1,4 @@
-class UserDataEntity {
+class UserEntity {
   final String uid;
   final String? profileImgUrl;
   final String? nickname;
@@ -9,7 +9,7 @@ class UserDataEntity {
 
 //<editor-fold desc="Data Methods">
 
-  const UserDataEntity({
+  const UserEntity({
     required this.uid,
     this.profileImgUrl,
     this.nickname,
@@ -21,7 +21,7 @@ class UserDataEntity {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is UserDataEntity &&
+      (other is UserEntity &&
           runtimeType == other.runtimeType &&
           uid == other.uid &&
           nickname == other.nickname &&
@@ -37,7 +37,7 @@ class UserDataEntity {
 
   @override
   String toString() {
-    return 'UserDataEntity{' +
+    return 'UserEntity{' +
         ' uid: $uid,' +
         ' nickname: $nickname,' +
         ' jobGroupIds: $jobGroupIds,' +
@@ -45,13 +45,13 @@ class UserDataEntity {
         '}';
   }
 
-  UserDataEntity copyWith({
+  UserEntity copyWith({
     String? uid,
     String? nickname,
     List<String>? jobGroupIds,
     List<String>? topicIds,
   }) {
-    return UserDataEntity(
+    return UserEntity(
       uid: uid ?? this.uid,
       nickname: nickname ?? this.nickname,
       jobGroupIds: jobGroupIds ?? this.jobGroupIds,

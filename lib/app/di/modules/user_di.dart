@@ -25,22 +25,22 @@ final class UserDependencyInjection extends FeatureDependencyInjection {
   void useCases() {
     locator
       ..registerFactory(
-        () => CreateUserDataUseCase(
+        () => CreateUserUseCase(
           userRepository,
         ),
       )
       ..registerFactory(
-        () => GetUserDataUseCase(
+        () => GetUserUseCase(
           userRepository,
         ),
       )
       ..registerFactory(
-        () => UpdateUserDataUseCase(
+        () => UpdateUserUseCase(
           userRepository,
         ),
       )
       ..registerFactory(
-        () => DeleteUserDataUseCase(
+        () => DeleteUserUseCase(
           userRepository,
         ),
       );
