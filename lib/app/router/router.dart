@@ -42,8 +42,16 @@ class SplashRoute extends GoRouteData {
   static const String name = 'splash';
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const SplashPage();
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: Tween(begin: 1.0, end: 0.0).animate(secondaryAnimation),
+          child: child,
+        );
+      },
+      child: const SplashPage(),
+    );
   }
 }
 
@@ -61,7 +69,18 @@ class SignInRoute extends GoRouteData {
   static const String name = 'sign in';
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const SignInPage();
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
+          child: child,
+        );
+      },
+      child: SignInPage(),
+    );
+  }
 }
 
 ///
@@ -126,9 +145,23 @@ class MainRoute extends GoRouteData {
   static const String path = '/';
   static const String name = 'main';
 
+  // @override
+  // Widget build(BuildContext context, GoRouterState state) {
+  //   return const MainPage();
+  // }
+
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const MainPage();
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      transitionsBuilder: (_, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
+          child: child,
+        );
+      },
+      child: MainPage(),
+    );
   }
 }
 
@@ -196,18 +229,20 @@ class QuestionCountSelectPageRoute extends GoRouteData {
 }
 
 class ChatListPageRoute extends GoRouteData {
-  ChatListPageRoute(this.$extra) : topicId = $extra.id;
+  const ChatListPageRoute(this.topicId);
 
   static const String path = 'chat-list/:topicId';
   static const String name = 'chat list';
 
   final String topicId;
-  final TopicEntity $extra;
+
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return ProviderScope(
       overrides: [
-        selectedInterviewTopicProvider.overrideWithValue($extra),
+        selectedInterviewTopicProvider.overrideWithValue(
+          getTopicUseCase(topicId).getOrThrow(),
+        ),
       ],
       child: ChatListPage(
         topicId: topicId,
