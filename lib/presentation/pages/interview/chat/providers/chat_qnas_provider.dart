@@ -67,10 +67,7 @@ class ChatQnAs extends _$ChatQnAs {
   QuestionChatMessageEntity createQuestionChat({
     bool isStream = true,
   }) {
-    final qna = ref
-        .read(chatQnAsProvider(room))
-        .requireValue
-        .firstWhere((qna) => !qna.hasUserResponded);
+    final qna = state.requireValue.firstWhere((qna) => !qna.hasUserResponded);
 
     if (isStream) {
       return QuestionChatMessageEntity(
