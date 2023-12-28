@@ -15,6 +15,6 @@ mixin class HomeEvent {
     WidgetRef ref, {
     required TopicEntity topic,
   }) {
-    ChatListPageRoute(topic).push(rootNavigatorKey.currentContext!);
+    ChatListPageRoute(topic.id).push(rootNavigatorKey.currentContext!);
   }
 }

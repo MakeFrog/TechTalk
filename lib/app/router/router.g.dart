@@ -226,23 +226,21 @@ extension $WrongAnswerRouteExtension on WrongAnswerRoute {
 
 extension $ChatListPageRouteExtension on ChatListPageRoute {
   static ChatListPageRoute _fromState(GoRouterState state) => ChatListPageRoute(
-        state.extra as TopicEntity,
+        state.pathParameters['topicId']!,
       );
 
   String get location => GoRouteData.$location(
         '/chat-list/${Uri.encodeComponent(topicId)}',
       );
 
-  void go(BuildContext context) => context.go(location, extra: $extra);
+  void go(BuildContext context) => context.go(location);
 
-  Future<T?> push<T>(BuildContext context) =>
-      context.push<T>(location, extra: $extra);
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
   void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location, extra: $extra);
+      context.pushReplacement(location);
 
-  void replace(BuildContext context) =>
-      context.replace(location, extra: $extra);
+  void replace(BuildContext context) => context.replace(location);
 }
 
 extension $ChatPageRouteExtension on ChatPageRoute {

@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
@@ -61,5 +62,27 @@ class ChatQnAs extends _$ChatQnAs {
     await update((previous) {
       return [...previous]..[targetQnaIndex] = resolvedQna;
     });
+  }
+
+  QuestionChatMessageEntity createQuestionChat({
+    bool isStream = true,
+  }) {
+    final qna = ref
+        .read(chatQnAsProvider(room))
+        .requireValue
+        .firstWhere((qna) => !qna.hasUserResponded);
+
+    if (isStream) {
+      return QuestionChatMessageEntity(
+        qnaId: qna.id,
+        message: qna.question.question.convertToStreamText,
+      );
+    } else {
+      return QuestionChatMessageEntity.createStatic(
+        qnaId: qna.id,
+        message: qna.question.question,
+        timestamp: DateTime.now(),
+      );
+    }
   }
 }
