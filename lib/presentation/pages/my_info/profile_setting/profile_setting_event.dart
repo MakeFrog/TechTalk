@@ -60,8 +60,9 @@ mixin class ProfileSettingEvent {
         .call((user: user, imageFile: profileImgFile));
 
     response.fold(
-      onSuccess: (data) {
+      onSuccess: (userRes) {
         EasyLoading.dismiss();
+        ref.read(userDataProvider.notifier).edit(userRes);
         ref.context.pop();
         SnackBarService.showSnackBar('프로필 정보를 업데이트 했습니다');
       },

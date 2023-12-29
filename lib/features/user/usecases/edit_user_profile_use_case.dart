@@ -12,13 +12,13 @@ import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_sett
 /// [ProfileSettingPage] 영역에서 사용됨
 ///
 class EditUserProfileUseCase extends BaseUseCase<
-    ({UserDataEntity user, File? imageFile}), Result<void>> {
+    ({UserDataEntity user, File? imageFile}), Result<UserDataEntity>> {
   EditUserProfileUseCase(this._repository);
 
   final UserRepository _repository;
 
   @override
-  FutureOr<Result<void>> call(
+  FutureOr<Result<UserDataEntity>> call(
       ({File? imageFile, UserDataEntity user}) request) async {
     UserDataEntity user;
 
@@ -31,10 +31,15 @@ class EditUserProfileUseCase extends BaseUseCase<
           await _repository.uploadImgFileAndGetUrl(request.imageFile!);
       final imgUrl = response.getOrThrow();
       user = request.user.copyWith(profileImgUrl: imgUrl);
-      print('url : $imgUrl');
     }
 
-    print('에임스 : ${user.profileImgUrl}');
-    return _repository.updateUserData(user);
+    final response = await _repository.updateUserData(user);
+
+    return response.fold(
+      onSuccess: (_) {
+        return Result.success(user);
+      },
+      onFailure: Result.failure,
+    );
   }
 }
