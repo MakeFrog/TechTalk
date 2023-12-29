@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -34,14 +33,11 @@ class PickedProfileImg extends _$PickedProfileImg {
   ///
   Future<void> pickImageFile() async {
     try {
-      await EasyLoading.show();
       final imageSource = await _picker.pickImage(source: ImageSource.gallery);
       if (imageSource != null) {
         state = File(imageSource.path);
       }
-      unawaited(EasyLoading.dismiss());
     } on Exception catch (e) {
-      unawaited(EasyLoading.dismiss());
       if (e is PlatformException) {
         DialogService.show(
           dialog: AppDialog.dividedBtn(

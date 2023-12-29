@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/user/data/remote/user_remote_data_source.dart';
 import 'package:techtalk/features/user/entities/user_data_entity.dart';
@@ -47,6 +49,17 @@ final class UserRepositoryImpl implements UserRepository {
       return Result.success(
         await _userRemoteDataSource.deleteUserData(),
       );
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<String>> uploadImgFileAndGetUrl(File imageFile) async {
+    try {
+      final response =
+          await _userRemoteDataSource.uploadImgFileAndGetUrl(imageFile);
+      return Result.success(response);
     } on Exception catch (e) {
       return Result.failure(e);
     }
