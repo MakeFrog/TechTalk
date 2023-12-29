@@ -36,6 +36,7 @@ class UserDataModel {
       nickname: nickname,
       jobGroupIds: jobGroupIds,
       topicIds: topicIds,
+      profileImgUrl: profileImgUrl,
     );
   }
 

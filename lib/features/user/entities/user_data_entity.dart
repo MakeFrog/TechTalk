@@ -16,46 +16,39 @@ class UserDataEntity {
   })  : jobGroupIds = jobGroupIds ?? const [],
         topicIds = topicIds ?? const [];
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is UserDataEntity &&
-          runtimeType == other.runtimeType &&
-          uid == other.uid &&
-          nickname == other.nickname &&
-          jobGroupIds == other.jobGroupIds &&
-          topicIds == other.topicIds);
-
-  @override
-  int get hashCode =>
-      uid.hashCode ^
-      nickname.hashCode ^
-      jobGroupIds.hashCode ^
-      topicIds.hashCode;
-
-  @override
-  String toString() {
-    return 'UserDataEntity{' +
-        ' uid: $uid,' +
-        ' nickname: $nickname,' +
-        ' jobGroupIds: $jobGroupIds,' +
-        ' topicIds: $topicIds,' +
-        '}';
-  }
-
   UserDataEntity copyWith({
     String? uid,
+    String? profileImgUrl,
     String? nickname,
     List<String>? jobGroupIds,
     List<String>? topicIds,
   }) {
     return UserDataEntity(
       uid: uid ?? this.uid,
+      profileImgUrl: profileImgUrl ?? this.profileImgUrl,
       nickname: nickname ?? this.nickname,
       jobGroupIds: jobGroupIds ?? this.jobGroupIds,
       topicIds: topicIds ?? this.topicIds,
     );
   }
 
-//</editor-fold>
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': this.uid,
+      'profileImgUrl': this.profileImgUrl,
+      'nickname': this.nickname,
+      'jobGroupIds': this.jobGroupIds,
+      'topicIds': this.topicIds,
+    };
+  }
+
+  factory UserDataEntity.fromMap(Map<String, dynamic> map) {
+    return UserDataEntity(
+      uid: map['uid'] as String,
+      profileImgUrl: map['profileImgUrl'] as String,
+      nickname: map['nickname'] as String,
+      jobGroupIds: map['jobGroupIds'] as List<String>,
+      topicIds: map['topicIds'] as List<String>,
+    );
+  }
 }

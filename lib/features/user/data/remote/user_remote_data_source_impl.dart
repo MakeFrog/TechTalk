@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
+import 'package:techtalk/features/user/data/models/fire_storage_user_ref.dart';
 import 'package:techtalk/features/user/data/models/user_data_model.dart';
 import 'package:techtalk/features/user/data/models/users_ref.dart';
 import 'package:techtalk/features/user/user.dart';
@@ -57,6 +61,7 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       jobGroupIds: userModel.jobGroupIds != orgUserData.jobGroupIds
           ? userModel.jobGroupIds
           : null,
+      profileImgUrl: data.profileImgUrl,
     );
     await FirestoreUsersRef.doc(data.uid).update(
       userModel.toJson(),
@@ -77,5 +82,26 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   @override
   Future<void> deleteUserData() async {
     await FirestoreUsersRef.doc().delete();
+  }
+
+  @override
+  Future<String> uploadImgFileAndGetUrl(File imageFile) async {
+    try {
+      print('aim22');
+      final profileImgRef = FireStorageUserRef.profileImgRef;
+      print('aim3');
+      final snapshot = await profileImgRef.putFile(imageFile);
+      print('aim4');
+
+      if (snapshot.state == TaskState.success) {
+        final String downloadUrl = await snapshot.ref.getDownloadURL();
+        return downloadUrl;
+      } else {
+        throw ImgStoreFailedException();
+      }
+    } catch (e) {
+      print(e);
+      throw ImgStoreFailedException();
+    }
   }
 }
