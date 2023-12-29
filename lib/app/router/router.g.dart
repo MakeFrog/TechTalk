@@ -100,6 +100,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           ],
         ),
         GoRouteData.$route(
+          path: 'profile-setting',
+          name: 'profile-setting',
+          factory: $ProfileSettingRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: ':topicId',
           name: 'study',
           factory: $StudyRouteExtension._fromState,
@@ -168,6 +173,28 @@ extension $QuestionCountSelectPageRouteExtension
 
   String get location => GoRouteData.$location(
         '/topic-select/question-count-select',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+extension $ProfileSettingRouteExtension on ProfileSettingRoute {
+  static ProfileSettingRoute _fromState(GoRouterState state) =>
+      ProfileSettingRoute(
+        state.extra as UserDataEntity,
+      );
+
+  String get location => GoRouteData.$location(
+        '/profile-setting',
       );
 
   void go(BuildContext context) => context.go(location, extra: $extra);

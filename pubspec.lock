@@ -425,6 +425,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.9.3+1"
+  firebase_analytics:
+    dependency: "direct main"
+    description:
+      name: firebase_analytics
+      sha256: "5e92d510eacd66c354718fd9cc8f66ffdfa025640b645c4742297fb973770508"
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.7.4"
+  firebase_analytics_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_analytics_platform_interface
+      sha256: "72977325a72af5ebb8e53b5c5533cb2e33eec481cd46210cfe5427f5efba55d8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.8.4"
+  firebase_analytics_web:
+    dependency: transitive
+    description:
+      name: firebase_analytics_web
+      sha256: "8b9710be7e292e2a5ad34fff449d4b668c5808fb339649e69181727a4534f579"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.5+11"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -473,6 +497,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.10.0"
+  firebase_crashlytics:
+    dependency: "direct main"
+    description:
+      name: firebase_crashlytics
+      sha256: "5ccdf05de039f9544d0ba41c5ae2052ca2425985d32229911b09f69981164518"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.4.8"
+  firebase_crashlytics_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_crashlytics_platform_interface
+      sha256: "359197344def001589c84f8d1d57c05f6e2e773f559205610ce58c25e2045a57"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.6.16"
   firebase_storage:
     dependency: "direct main"
     description:
@@ -888,6 +928,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.7.1"
+  korean_profanity_filter:
+    dependency: "direct main"
+    description:
+      name: korean_profanity_filter
+      sha256: "2e162e2377d96035f9eb89382488cd5ca44e765b6561c6703f9a89c9ee541d97"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   lints:
     dependency: transitive
     description:

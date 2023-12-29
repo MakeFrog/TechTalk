@@ -9,10 +9,6 @@ part 'user_data_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 class UserData extends _$UserData {
-  UserData() {
-    print('해쉬 : ${this.hashCode}');
-  }
-
   @override
   FutureOr<UserDataEntity?> build() async {
     final userAuth = ref.watch(userAuthProvider);
