@@ -8,7 +8,8 @@ import 'package:techtalk/features/user/data/models/users_ref.dart';
 import 'package:techtalk/features/user/user.dart';
 
 final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
-  Future<bool> _isExistNickname(
+  @override
+  Future<bool> isExistNickname(
     String nickname,
   ) async {
     return FirestoreUsersRef.collection()
@@ -48,7 +49,7 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         );
 
     if (userModel.nickname != orgUserData.nickname &&
-        await _isExistNickname(data.nickname!)) {
+        await isExistNickname(data.nickname!)) {
       throw const AlreadyExistNicknameException();
     }
 
@@ -86,22 +87,15 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
   @override
   Future<String> uploadImgFileAndGetUrl(File imageFile) async {
-    try {
-      print('aim22');
-      final profileImgRef = FireStorageUserRef.profileImgRef;
-      print('aim3');
-      final snapshot = await profileImgRef.putFile(imageFile);
-      print('aim4');
+    final profileImgRef = FireStorageUserRef.profileImgRef;
 
-      if (snapshot.state == TaskState.success) {
-        final String downloadUrl = await snapshot.ref.getDownloadURL();
-        return downloadUrl;
-      } else {
-        throw ImgStoreFailedException();
-      }
-    } catch (e) {
-      print(e);
-      throw ImgStoreFailedException();
+    final snapshot = await profileImgRef.putFile(imageFile);
+
+    if (snapshot.state == TaskState.success) {
+      final String downloadUrl = await snapshot.ref.getDownloadURL();
+      return downloadUrl;
+    } else {
+      throw const ImgStoreFailedException();
     }
   }
 }

@@ -14,4 +14,7 @@ abstract interface class UserRepository {
 
   /// storage에 이미지 파일을 업로드하고 url를 리턴
   Future<Result<String>> uploadImgFileAndGetUrl(File imageFile);
+
+  /// 닉네임 중복 여부
+  Future<Result<bool>> isNicknameDuplicated(String nickname);
 }
