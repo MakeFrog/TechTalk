@@ -50,7 +50,29 @@ mixin class ProfileSettingEvent {
   ///
   Future<void> onSaveBtnTapped(WidgetRef ref) async {
     await EasyLoading.show();
+
     final editedNickname = ref.read(nicknameInputProvider);
+
+    final checkDuplicationRes =
+        await checkIsNicknameIsDuplicated.call(editedNickname!);
+
+    checkDuplicationRes.fold(
+      onSuccess: (isDuplicated) {
+        if (isDuplicated) {
+          SnackBarService.showSnackBar('중복된 닉네임 입니다');
+          EasyLoading.dismiss();
+        } else {
+          _saveProfileInfo(ref, editedNickname);
+        }
+      },
+      onFailure: (e) {
+        _dismissLoadingAndShowMessage(ref, '프로필 정보를 업데이트하지 못했습니다');
+        log(e.toString());
+      },
+    );
+  }
+
+  Future<void> _saveProfileInfo(WidgetRef ref, String editedNickname) async {
     final profileImgFile = ref.read(pickedProfileImgProvider);
 
     final user =
@@ -61,17 +83,19 @@ mixin class ProfileSettingEvent {
 
     response.fold(
       onSuccess: (userRes) {
-        EasyLoading.dismiss();
         ref.read(userDataProvider.notifier).edit(userRes);
-        ref.context.pop();
-        SnackBarService.showSnackBar('프로필 정보를 업데이트 했습니다');
+        _dismissLoadingAndShowMessage(ref, '프로필 정보를 업데이트 했습니다');
       },
       onFailure: (e) {
-        EasyLoading.dismiss();
-        ref.context.pop();
-        SnackBarService.showSnackBar('프로필 정보를 업데이트하지 못했습니다');
-        log('e');
+        log(e.toString());
+        _dismissLoadingAndShowMessage(ref, '프로필 정보를 업데이트하지 못했습니다');
       },
     );
+  }
+
+  void _dismissLoadingAndShowMessage(WidgetRef ref, String message) {
+    EasyLoading.dismiss();
+    ref.context.pop();
+    SnackBarService.showSnackBar(message);
   }
 }

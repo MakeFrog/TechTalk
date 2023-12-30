@@ -64,4 +64,15 @@ final class UserRepositoryImpl implements UserRepository {
       return Result.failure(e);
     }
   }
+
+  @override
+  Future<Result<bool>> isNicknameDuplicated(String nickname) async {
+    try {
+      final response = await _userRemoteDataSource.isExistNickname(nickname);
+
+      return Result.success(response);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
 }

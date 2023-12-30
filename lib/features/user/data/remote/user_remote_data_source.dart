@@ -11,6 +11,8 @@ abstract interface class UserRemoteDataSource {
 
   Future<void> deleteUserData();
 
+  Future<bool> isExistNickname(String nickname);
+
   /// storage에 이미지 파일을 업로드하고 url를 리턴
   Future<String> uploadImgFileAndGetUrl(File imageFile);
 }
