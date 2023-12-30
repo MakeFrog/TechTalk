@@ -1,0 +1,1 @@
+mixin class JobGroupSettingEvent {}

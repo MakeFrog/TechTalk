@@ -11,6 +11,7 @@ import 'package:techtalk/presentation/pages/interview/question_count_select/ques
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/providers/selected_interview_topic_provider.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
+import 'package:techtalk/presentation/pages/my_info/joup_group_setting/job_group_setting_page.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_setting_page.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/providers/profile_setting_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
@@ -108,6 +109,10 @@ class SignUpRoute extends GoRouteData {
     TypedGoRoute<ProfileSettingRoute>(
       path: ProfileSettingRoute.name,
       name: ProfileSettingRoute.name,
+    ),
+    TypedGoRoute<JobGroupSettingRoute>(
+      path: JobGroupSettingRoute.name,
+      name: JobGroupSettingRoute.name,
     ),
     TypedGoRoute<StudyRoute>(
       path: StudyRoute.path,
@@ -216,6 +221,15 @@ class ProfileSettingRoute extends GoRouteData {
       ],
       child: const ProfileSettingPage(),
     );
+  }
+}
+
+class JobGroupSettingRoute extends GoRouteData {
+  static const String name = 'job_group_setting';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const JobGroupSettingPage();
   }
 }
 

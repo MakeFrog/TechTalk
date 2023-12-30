@@ -25,17 +25,17 @@ mixin class ProfileSettingEvent {
   }
 
   ///
-  /// 닉네임 유효성 검사
-  ///
-  String? nicknameValidation(WidgetRef ref, {required String? input}) {
-    return ref.read(nicknameInputProvider.notifier).nickNameValidation(input);
-  }
-
-  ///
   /// 닉네임이 입력되었을 때
   ///
   void onNicknameChanged(WidgetRef ref, {required String? input}) {
     return ref.read(nicknameInputProvider.notifier).onInputChanged(input);
+  }
+
+  ///
+  /// 닉네임 유효성 검사
+  ///
+  String? nicknameValidation(WidgetRef ref, {required String? input}) {
+    return ref.read(nicknameInputProvider.notifier).nickNameValidation(input);
   }
 
   ///
