@@ -47,10 +47,8 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     }
 
     final userModel = UserModel.fromEntity(user);
-    final orgUser = await getUser();
 
-    if (userModel.nickname != orgUser.nickname &&
-        await _isExistNickname(user.nickname!)) {
+    if (await _isExistNickname(user.nickname!)) {
       throw const AlreadyExistNicknameException();
     }
 
