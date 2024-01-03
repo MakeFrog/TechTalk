@@ -17,6 +17,11 @@ class QuestionCountSelectPage extends BasePage with QuestionCountSelectEvent {
   }) : super(key: key);
 
   final TopicEntity topic;
+
+  @override
+  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
+      const BackButtonAppBar();
+
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
     final List<int> options = List.generate(18, (index) => index + 3); // 3 ~ 20
@@ -71,8 +76,4 @@ class QuestionCountSelectPage extends BasePage with QuestionCountSelectEvent {
       ),
     );
   }
-
-  @override
-  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
-      const BackButtonAppBar();
 }

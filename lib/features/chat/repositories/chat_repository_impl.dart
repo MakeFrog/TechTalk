@@ -156,7 +156,7 @@ final class ChatRepositoryImpl implements ChatRepository {
       final question = await topicRepository
           .getTopicQna(
             room.topic.id,
-            element.questionId,
+            element.id,
           )
           .then((value) => value.getOrThrow());
 

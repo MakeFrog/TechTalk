@@ -68,7 +68,6 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
       /// 2) 응답 텍스트 포맷
       /// 3) 스트림 값 삽입
       onStreamValue: (response) {
-        print(response);
         setCorrectnessIfNeeded(response, param.checkAnswer);
         final filteredRes = formatResponse(response);
         streamedFeedbackResponse.add(filteredRes);
@@ -79,7 +78,6 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
       /// 2) 응답 진행 상태 초기화
       /// 3) 완료 콜백 메소드 실행
       (feedback) {
-        print(feedback);
         streamedFeedbackResponse.close();
         state = FeedbackProgress.init;
         if (feedback != null) {
@@ -117,13 +115,9 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
   /// 1. [c] & [w] 인디에키터 포맷, [AnswerState]
   /// 2. 불필요 줄바꿈 제거
   String formatResponse(String response) {
-    print(response);
-
     String formattedText = response.replaceAll('\n', '');
 
     if (formattedText.length <= 3) return '';
-
-    print(formattedText);
 
     if (formattedText.contains(AnswerState.wrong.tag)) {
       return formattedText.replaceFirst(AnswerState.wrong.tag, '').trim();

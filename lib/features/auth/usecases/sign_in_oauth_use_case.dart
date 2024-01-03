@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:techtalk/core/core.dart';
-import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/auth/auth.dart';
 
 final class SignInOAuthUseCase {

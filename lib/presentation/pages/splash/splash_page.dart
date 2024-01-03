@@ -26,7 +26,7 @@ class SplashPage extends BasePage with SplashEvent {
   Widget buildPage(BuildContext context, WidgetRef ref) {
     return Center(
       child: SvgPicture.asset(
-        Assets.imagesTechTalkCharacterBlue04,
+        Assets.characterBlue04,
       ),
     );
   }

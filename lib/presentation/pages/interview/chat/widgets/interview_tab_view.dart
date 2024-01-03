@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -20,20 +19,6 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
     useAutomaticKeepAlive();
     final room = ref.watch(selectedChatRoomProvider);
     final chatScrollController = useScrollController();
-
-    // 채팅 리스트에 내용이 추가되면 아래로 스크롤한다.
-    ref.listen(
-      chatMessageHistoryProvider(room),
-      (previous, next) {
-        if (chatScrollController.hasClients) {
-          chatScrollController.animateTo(
-            0,
-            duration: 0.ms,
-            curve: Curves.linear,
-          );
-        }
-      },
-    );
 
     return Column(
       children: [

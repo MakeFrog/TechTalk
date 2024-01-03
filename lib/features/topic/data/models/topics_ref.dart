@@ -1,23 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
-abstract class FirestoreTopicCategoryRef {
-  static const String name = 'TopicCategories';
-
-  static CollectionReference<TopicCategoryModel> collection() =>
-      FirebaseFirestore.instance.collection(name).withConverter(
-            fromFirestore: TopicCategoryModel.fromFirestore,
-            toFirestore: (value, options) => value.toJson(),
-          );
-
-  static DocumentReference<TopicCategoryModel> doc(String id) =>
-      FirebaseFirestore.instance.collection(name).doc(id).withConverter(
-            fromFirestore: TopicCategoryModel.fromFirestore,
-            toFirestore: (value, options) => value.toJson(),
-          );
-}
-
-abstract class FirestoreTopicRef {
+abstract class FirestoreTopicsRef {
   static const String name = 'Topics';
 
   static CollectionReference<TopicModel> collection() =>
@@ -33,11 +17,11 @@ abstract class FirestoreTopicRef {
           );
 }
 
-abstract class FirestoreTopicQuestionRef {
+abstract class FirestoreTopicQuestionsRef {
   static const String name = 'Questions';
 
   static CollectionReference<TopicQnaModel> collection(String topicId) =>
-      FirestoreTopicRef.doc(topicId).collection(name).withConverter(
+      FirestoreTopicsRef.doc(topicId).collection(name).withConverter(
             fromFirestore: TopicQnaModel.fromFirestore,
             toFirestore: (value, options) => value.toJson(),
           );
@@ -46,7 +30,7 @@ abstract class FirestoreTopicQuestionRef {
     String topicId,
     String id,
   ) =>
-      FirestoreTopicRef.doc(topicId).collection(name).doc(id).withConverter(
+      FirestoreTopicsRef.doc(topicId).collection(name).doc(id).withConverter(
             fromFirestore: TopicQnaModel.fromFirestore,
             toFirestore: (value, options) => value.toJson(),
           );

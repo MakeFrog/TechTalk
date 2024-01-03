@@ -8,25 +8,14 @@ import 'package:techtalk/presentation/pages/interview/chat/providers/selected_ch
 import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
-abstract class _ChatEvent {
+mixin class ChatEvent {
   /// 채팅 입력창이 전송 되었을 때
-  Future<void> onChatFieldSubmitted(
-    WidgetRef ref, {
-    required TextEditingController textEditingController,
-  });
-
-  /// 앱바 뒤로 가기 버튼이 클릭 되었을 때
-  void onAppbarBackBtnTapped(BuildContext context);
-}
-
-mixin class ChatEvent implements _ChatEvent {
   ///
   /// - 유저 채팅 응답 추가
   /// - 유저 채팅 응답
   /// - 입력된 채팅 state 초기화
   /// - 스크롤 포지션 맨 아래로 변경
   ///
-  @override
   Future<void> onChatFieldSubmitted(
     WidgetRef ref, {
     required TextEditingController textEditingController,
@@ -45,7 +34,7 @@ mixin class ChatEvent implements _ChatEvent {
         .addUserChatResponse(message);
   }
 
-  @override
+  /// 앱바 뒤로 가기 버튼이 클릭 되었을 때
   void onAppbarBackBtnTapped(BuildContext context) {
     DialogService.show(
       dialog: AppDialog.dividedBtn(

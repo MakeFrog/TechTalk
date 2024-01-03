@@ -16,17 +16,17 @@ class UserTopics extends _$UserTopics {
     final userTopicIds = userData.topicIds;
     final topicIds = [...topics.map((e) => e.id)];
 
+    final userTopics = <TopicEntity>[];
     for (final userTopicId in userTopicIds) {
       if (topicIds.contains(userTopicId)) {
         final topic = topics.firstWhere(
           (element) => element.id == userTopicId,
         );
 
-        topics.remove(topic);
-        topics.insert(0, topic);
+        userTopics.add(topic);
       }
     }
 
-    return topics;
+    return userTopics;
   }
 }

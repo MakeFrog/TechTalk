@@ -6,15 +6,16 @@ class AnswerChatMessageEntity extends ChatMessageEntity {
   final String qnaId;
 
   AnswerChatMessageEntity({
+    super.id,
     required String message,
-    required DateTime timestamp,
-    required this.answerState,
+    DateTime? timestamp,
+    this.answerState = AnswerState.loading,
     required this.qnaId,
   }) : super(
-          message: BehaviorSubject.seeded(message)..close(),
-          type: ChatType.userReply,
+          type: ChatType.reply,
           isStreamApplied: false,
-          timestamp: timestamp,
+          message: BehaviorSubject.seeded(message)..close(),
+          timestamp: timestamp ?? DateTime.now(),
         );
 
   factory AnswerChatMessageEntity.initial({
@@ -24,20 +25,15 @@ class AnswerChatMessageEntity extends ChatMessageEntity {
       AnswerChatMessageEntity(
         qnaId: qnaId,
         message: message,
-        answerState: AnswerState.loading,
-        timestamp: DateTime.now(),
       );
 
   AnswerChatMessageEntity copyWith({
-    String? message,
     AnswerState? answerState,
-    DateTime? timestamp,
   }) {
     return AnswerChatMessageEntity(
-      timestamp: timestamp ?? this.timestamp,
-      message: message ?? this.message.value,
-      answerState: answerState ?? this.answerState,
       qnaId: qnaId,
+      message: message.value,
+      answerState: answerState ?? this.answerState,
     );
   }
 }
