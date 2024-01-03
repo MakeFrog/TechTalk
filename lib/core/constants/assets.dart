@@ -106,7 +106,6 @@ class Assets {
   static const String imagesTopicSwift = 'assets/images/topic_swift.png';
   static const String imagesWelcomeTechtalk =
       'assets/images/welcome_techtalk.svg';
-  static const String jsonJobsData = 'assets/json/jobs_data.json';
   static const String jsonTopicCategoriesData =
       'assets/json/topic_categories_data.json';
   static const String logoTechTalkLogo = 'assets/logo/tech_talk_logo.svg';
