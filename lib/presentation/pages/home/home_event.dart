@@ -1,18 +1,19 @@
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/interview_rooms_provider.dart';
 
 mixin class HomeEvent {
-  void onTapPracticalInterview() {
-    // TODO: implement onTapPracticalInterview
+  void onTapPracticalInterview(BuildContext context) {
+    const InterviewTopicSelectRoute().push(context);
   }
 
   void onTapNewTopicInterview() {
     const InterviewTopicSelectRoute().push(rootNavigatorKey.currentContext!);
   }
 
-  void onTapGoToInterviewRoomListPage(
+  Future<void> onTapGoToInterviewRoomListPage(
     WidgetRef ref, {
     required TopicEntity topic,
   }) async {

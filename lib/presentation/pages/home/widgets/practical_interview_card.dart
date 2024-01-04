@@ -10,45 +10,48 @@ class PracticalInterviewCard extends StatelessWidget with HomeEvent {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Material(
+        clipBehavior: Clip.antiAlias,
         color: AppColor.of.brand1,
         borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  '실전형 면접',
-                  style: AppTextStyle.headline2.copyWith(
-                    color: AppColor.of.brand3,
+        child: InkWell(
+          onTap: () => onTapPracticalInterview(context),
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        '실전형 면접',
+                        style: AppTextStyle.headline2.copyWith(
+                          color: AppColor.of.brand3,
+                        ),
+                      ),
+                    ),
+                    const Gap(48),
+                    FaIcon(
+                      FontAwesomeIcons.circlePlus,
+                      color: AppColor.of.brand2,
+                      size: 24,
+                    ),
+                  ],
+                ),
+                const Gap(12),
+                Text(
+                  '여러 주제를 선택해 실전 연습을 해보세요!',
+                  style: AppTextStyle.body1.copyWith(
+                    color: AppColor.of.gray3,
                   ),
                 ),
-              ),
-              const Gap(48),
-              GestureDetector(
-                onTap: onTapPracticalInterview,
-                child: FaIcon(
-                  FontAwesomeIcons.circlePlus,
-                  color: AppColor.of.brand2,
-                  size: 24,
-                ),
-              ),
-            ],
-          ),
-          const Gap(12),
-          Text(
-            '여러 주제를 선택해 실전 연습을 해보세요!',
-            style: AppTextStyle.body1.copyWith(
-              color: AppColor.of.gray3,
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
