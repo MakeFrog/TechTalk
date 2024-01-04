@@ -1,24 +1,22 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/features/chat/repositories/entities/chat_qna_progress_info_entity.dart';
-import 'package:techtalk/features/chat/repositories/enums/interview_progress_state.enum.dart';
-import 'package:techtalk/features/interview/entities/interview_topic.enum.dart';
-import 'package:techtalk/features/shared/enums/interviewer_avatar.dart';
+import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/chat_page_route_argument_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
-import 'package:techtalk/presentation/pages/interview/questino_count_select/provider/question_count_select_page_route_arg_provider.dart';
-import 'package:techtalk/presentation/pages/interview/questino_count_select/question_count_select_page.dart';
+import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
+import 'package:techtalk/presentation/pages/interview/topic_select/providers/selected_interview_topic_provider.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_page.dart';
-import 'package:techtalk/presentation/providers/study/selected_study_topic_provider.dart';
+import 'package:techtalk/presentation/pages/study/topic_select/providers/selected_study_topic_provider.dart';
+import 'package:techtalk/presentation/pages/wrong_answer_note/review_note_detail_page.dart';
 
-part 'route_argument.dart';
 part 'router.g.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -26,8 +24,7 @@ final rootNavigatorKey = GlobalKey<NavigatorState>();
 GoRouter appRouter(WidgetRef ref) => GoRouter(
       debugLogDiagnostics: false,
       navigatorKey: rootNavigatorKey,
-      initialLocation: SplashRoute.name,
-      // initialLocation: SignInRoute.name,
+      initialLocation: SplashRoute.path,
       routes: $appRoutes,
     );
 
@@ -35,17 +32,26 @@ GoRouter appRouter(WidgetRef ref) => GoRouter(
 /// splash
 ///
 @TypedGoRoute<SplashRoute>(
-  path: SplashRoute.name,
+  path: SplashRoute.path,
   name: SplashRoute.name,
 )
 class SplashRoute extends GoRouteData {
   const SplashRoute();
 
-  static const String name = '/splash';
+  static const String path = '/splash';
+  static const String name = 'splash';
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const SplashPage();
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: Tween(begin: 1.0, end: 0.0).animate(secondaryAnimation),
+          child: child,
+        );
+      },
+      child: const SplashPage(),
+    );
   }
 }
 
@@ -53,29 +59,42 @@ class SplashRoute extends GoRouteData {
 /// Sign In Route
 ///
 @TypedGoRoute<SignInRoute>(
-  path: SignInRoute.name,
+  path: SignInRoute.path,
   name: SignInRoute.name,
 )
 class SignInRoute extends GoRouteData {
   const SignInRoute();
 
-  static const String name = '/sign_in';
+  static const String path = '/sign-in';
+  static const String name = 'sign in';
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const SignInPage();
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
+          child: child,
+        );
+      },
+      child: SignInPage(),
+    );
+  }
 }
 
 ///
 /// Sign Up Route
 ///
 @TypedGoRoute<SignUpRoute>(
-  path: SignUpRoute.name,
+  path: SignUpRoute.path,
   name: SignUpRoute.name,
 )
 class SignUpRoute extends GoRouteData {
   const SignUpRoute();
 
-  static const String name = '/sign-up';
+  static const String path = '/sign-up';
+  static const String name = 'sign up';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -87,31 +106,35 @@ class SignUpRoute extends GoRouteData {
 /// Main Route
 ///
 @TypedGoRoute<MainRoute>(
-  path: MainRoute.name,
+  path: MainRoute.path,
   name: MainRoute.name,
   routes: [
-    TypedGoRoute<HomeTopicSelectRoute>(
-      path: HomeTopicSelectRoute.name,
-      name: HomeTopicSelectRoute.name,
+    TypedGoRoute<InterviewTopicSelectRoute>(
+      path: InterviewTopicSelectRoute.path,
+      name: InterviewTopicSelectRoute.name,
       routes: [
         TypedGoRoute<QuestionCountSelectPageRoute>(
-          path: QuestionCountSelectPageRoute.name,
+          path: QuestionCountSelectPageRoute.path,
           name: QuestionCountSelectPageRoute.name,
         ),
       ],
     ),
     TypedGoRoute<StudyRoute>(
-      path: StudyRoute.name,
+      path: StudyRoute.path,
       name: StudyRoute.name,
     ),
+    TypedGoRoute<WrongAnswerRoute>(
+      path: WrongAnswerRoute.path,
+      name: WrongAnswerRoute.name,
+    ),
     TypedGoRoute<ChatListPageRoute>(
-      path: ChatListPageRoute.name,
+      path: ChatListPageRoute.path,
       name: ChatListPageRoute.name,
       routes: [
         TypedGoRoute<ChatPageRoute>(
-          path: ChatPageRoute.name,
+          path: ChatPageRoute.path,
           name: ChatPageRoute.name,
-        )
+        ),
       ],
     ),
   ],
@@ -119,100 +142,133 @@ class SignUpRoute extends GoRouteData {
 class MainRoute extends GoRouteData {
   const MainRoute();
 
-  static const String name = '/';
+  static const String path = '/';
+  static const String name = 'main';
+
+  // @override
+  // Widget build(BuildContext context, GoRouterState state) {
+  //   return const MainPage();
+  // }
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return MainPage();
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      transitionsBuilder: (_, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: Tween(begin: 0.0, end: 1.0).animate(animation),
+          child: child,
+        );
+      },
+      child: MainPage(),
+    );
   }
 }
 
 class StudyRoute extends GoRouteData {
-  const StudyRoute(this.topicId);
+  StudyRoute(this.$extra) : topicId = $extra.id;
 
   final String topicId;
+  final TopicEntity $extra;
+
+  static const String path = ':topicId';
   static const String name = 'study';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return ProviderScope(
       overrides: [
-        selectedStudyTopicIdProvider.overrideWithValue(topicId),
+        selectedStudyTopicProvider.overrideWithValue($extra),
       ],
       child: const StudyLearningPage(),
     );
   }
 }
 
-class HomeTopicSelectRoute extends GoRouteData {
-  const HomeTopicSelectRoute();
+class WrongAnswerRoute extends GoRouteData {
+  const WrongAnswerRoute(this.$extra);
 
-  static const String name = 'topic-select';
+  final int? $extra;
+  static const String path = 'wrong-answer';
+  static const String name = 'wrong answer';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return InterviewTopicSelectPage();
+    return ReviewNoteDetailPage(page: $extra ?? 0);
+  }
+}
+
+class InterviewTopicSelectRoute extends GoRouteData {
+  const InterviewTopicSelectRoute();
+
+  static const String path = 'topic-select';
+  static const String name = 'topic select';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const InterviewTopicSelectPage();
   }
 }
 
 class QuestionCountSelectPageRoute extends GoRouteData {
-  const QuestionCountSelectPageRoute({required this.selectedTopic});
+  const QuestionCountSelectPageRoute({
+    required this.$extra,
+  });
 
-  final InterviewTopic selectedTopic;
+  static const String path = 'question-count-select';
+  static const String name = 'question count select';
 
-  static const String name = 'question-count-select';
+  final TopicEntity $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ProviderScope(
-      overrides: [
-        questionCountSelectRouteArgProvider.overrideWithValue(selectedTopic),
-      ],
-      child: QuestionCountSelectPage(),
+    return QuestionCountSelectPage(
+      topic: $extra,
     );
   }
 }
 
 class ChatListPageRoute extends GoRouteData {
-  const ChatListPageRoute();
+  const ChatListPageRoute(this.topicId);
 
-  static const String name = 'chat-list';
+  static const String path = 'chat-list/:topicId';
+  static const String name = 'chat list';
+
+  final String topicId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ChatListPage();
+    return ProviderScope(
+      overrides: [
+        selectedInterviewTopicProvider.overrideWithValue(
+          getTopicUseCase(topicId).getOrThrow(),
+        ),
+      ],
+      child: ChatListPage(
+        topicId: topicId,
+      ),
+    );
   }
 }
 
 class ChatPageRoute extends GoRouteData {
-  ChatPageRoute({
-    required this.progressState,
-    required this.$extra,
-    required this.roomId,
-    required this.topic,
-    required this.interviewer,
-  });
+  ChatPageRoute(this.$extra)
+      : topicId = $extra.topic.id,
+        roomId = $extra.id;
 
+  static const String path = ':roomId';
   static const String name = 'chat';
 
-  final InterviewProgressState progressState;
-  final ChatQnaProgressInfoEntity $extra;
+  final String topicId;
   final String roomId;
-  final InterviewTopic topic;
-  final InterviewerAvatar interviewer;
+  final ChatRoomEntity $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final ChatPageRouteArg arg = (
-      progressState: progressState,
-      qnaProgressInfo: $extra,
-      roomId: roomId,
-      topic: topic,
-      interviewer: interviewer,
-    );
-
     return ProviderScope(
-      overrides: [chatPageRouteArgProvider.overrideWithValue(arg)],
+      overrides: [
+        selectedChatRoomProvider.overrideWith((ref) => $extra),
+      ],
       child: const ChatPage(),
     );
   }

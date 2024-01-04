@@ -26,7 +26,7 @@ class SelectResultChipListView extends StatelessWidget {
 
           return Align(
             alignment: Alignment.topCenter,
-            child: RoundedRectFilledChip(
+            child: ClosableRectFilledChip(
               label: item,
               onTap: () => onTapItem?.call(index),
             ),

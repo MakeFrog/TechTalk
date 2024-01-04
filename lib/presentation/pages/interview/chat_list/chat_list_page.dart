@@ -2,24 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
-import 'package:techtalk/core/helper/string_generator.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
-import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/repositories/entities/chat_qna_progress_info_entity.dart';
-import 'package:techtalk/features/shared/enums/interviewer_avatar.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/local_widgets/chat_list_item_view.dart';
-import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat_list/providers/interview_rooms_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 
 class ChatListPage extends BasePage with ChatListEvent {
-  const ChatListPage({Key? key}) : super(key: key);
+  ChatListPage({
+    Key? key,
+    required this.topicId,
+  })  : _topic = getTopicUseCase(topicId).getOrThrow(),
+        super(key: key);
+
+  final String topicId;
+  final TopicEntity _topic;
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
-    final chatListAsync = ref.watch(chatListProvider);
-    return chatListAsync.when(
+    final roomsAsync = ref.watch(interviewRoomsProvider(topicId));
+
+    return roomsAsync.when(
       data: (chatList) {
         return ListView.builder(
           itemCount: chatList.length,
@@ -44,36 +49,34 @@ class ChatListPage extends BasePage with ChatListEvent {
 
   @override
   Widget? buildFloatingActionButton(BuildContext context) {
-    return MaterialButton(
-      onPressed: () {
-        routeToChatPage(
-          context,
-          roomId: StringGenerator.generateRandomString(),
-          progressState: InterviewProgressState.initial,
-          qnaProgressInfo:
-              ChatQnaProgressInfoEntity.onInitial(totalQuestionCount: 10),
-          topic: InterviewTopic.swift,
-          interviewer: InterviewerAvatar.getRandomInterviewer(),
+    return Consumer(
+      builder: (context, ref, child) {
+        return MaterialButton(
+          onPressed: () {
+            routeToQuestionCountSelectPage(
+              ref,
+              topic: _topic,
+            );
+          },
+          height: 56,
+          minWidth: 56,
+          padding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(28),
+          ),
+          color: AppColor.of.brand2,
+          child: SvgPicture.asset(
+            Assets.iconsPlus,
+            color: Colors.white,
+          ),
         );
       },
-      height: 56,
-      minWidth: 56,
-      padding: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(28),
-      ),
-      color: AppColor.of.brand2,
-      child: SvgPicture.asset(
-        Assets.iconsPlus,
-        color: Colors.white,
-      ),
     );
   }
 
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
       BackButtonAppBar(
-        title: 'Swift ',
-        onBackBtnTapped: () {},
+        title: _topic.text,
       );
 }

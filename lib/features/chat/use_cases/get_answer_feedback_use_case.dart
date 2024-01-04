@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:chatgpt_completions/chatgpt_completions.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:techtalk/core/utils/base/base_no_future_use_case.dart';
 import 'package:techtalk/features/chat/chat.dart';
@@ -13,7 +12,7 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
   ///
   /// 피드백 진행 상태
   ///
-  FeedbackProgressState state = FeedbackProgressState.init;
+  FeedbackProgress state = FeedbackProgress.init;
 
   // ##########  Intent  ##############
 
@@ -25,7 +24,7 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
   BehaviorSubject<String> call(GetQuestionFeedbackParam param) {
     final BehaviorSubject<String> streamedFeedbackResponse =
         BehaviorSubject<String>();
-    state = FeedbackProgressState.onProgress;
+    state = FeedbackProgress.onProgress;
 
     log('Subject : ${param.category}\n Question : ${param.question}\n UserAnswer : ${param.userAnswer}');
 
@@ -41,8 +40,7 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
           ),
           MessageTurbo(
               role: TurboRole.assistant,
-              content:
-                  '${param.category}분야의 질문입니다. ${param.checkAnswer}. 질문 의도에 맞는 답변을 해주세요'),
+              content: '${param.category}분야의 질문입니다. 질문 의도에 맞는 답변을 해주세요'),
           MessageTurbo(
             role: TurboRole.system,
             content:
@@ -79,10 +77,12 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
       /// 1) Stream 닫기
       /// 2) 응답 진행 상태 초기화
       /// 3) 완료 콜백 메소드 실행
-      (_) {
+      (feedback) {
         streamedFeedbackResponse.close();
-        state = FeedbackProgressState.init;
-        param.onFeedBackCompleted();
+        state = FeedbackProgress.init;
+        if (feedback != null) {
+          param.onFeedBackCompleted(feedback);
+        }
       },
     );
 
@@ -99,11 +99,15 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
     if (!state.isOnProgress) return;
 
     if (response.contains(AnswerState.wrong.tag)) {
-      checkAnswer(isCorrect: false);
-      state = FeedbackProgressState.completed;
+      checkAnswer(
+        isCorrect: false,
+      );
+      state = FeedbackProgress.completed;
     } else if (response.contains(AnswerState.correct.tag)) {
-      state = FeedbackProgressState.completed;
-      checkAnswer(isCorrect: true);
+      state = FeedbackProgress.completed;
+      checkAnswer(
+        isCorrect: true,
+      );
     }
   }
 
@@ -128,6 +132,6 @@ typedef GetQuestionFeedbackParam = ({
   String category,
   String question,
   String userAnswer,
-  VoidCallback onFeedBackCompleted,
+  void Function(String feedback) onFeedBackCompleted,
   void Function({required bool isCorrect}) checkAnswer
 });

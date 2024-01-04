@@ -4,7 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_event.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/select_result_chip_list_view.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_intro_message.dart';
@@ -16,7 +16,7 @@ class TopicSelectStep extends HookConsumerWidget with SignUpEvent {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
-    final selectedTopics = useState<List<InterviewTopic>>([]);
+    final selectedTopics = useState<List<TopicEntity>>([]);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,7 +29,7 @@ class TopicSelectStep extends HookConsumerWidget with SignUpEvent {
           ),
         ),
         SelectResultChipListView(
-          itemList: [...selectedTopics.value.map((e) => e.name)],
+          itemList: [...selectedTopics.value.map((e) => e.text)],
           onTapItem: selectedTopics.value.removeAt,
         ),
         Gap(16),
@@ -50,7 +50,7 @@ class _SearchedSkillListView extends HookConsumerWidget with SignUpEvent {
     required this.selectedTopicsNotifier,
   });
 
-  final ValueNotifier<List<InterviewTopic>> selectedTopicsNotifier;
+  final ValueNotifier<List<TopicEntity>> selectedTopicsNotifier;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = useTextEditingController();
@@ -59,7 +59,7 @@ class _SearchedSkillListView extends HookConsumerWidget with SignUpEvent {
       () => controller.text,
     );
     final searchTopicsFuture = useMemoized(
-      () async => <InterviewTopic>[],
+      () async => <TopicEntity>[],
       // () => searchInterviewTopicsUseCase(keyword),
     );
     final searchTopicAsync = useFuture(searchTopicsFuture);
@@ -98,7 +98,7 @@ class _SearchedSkillListView extends HookConsumerWidget with SignUpEvent {
                     itemBuilder: (context, index) {
                       final topic = searchTopics[index];
 
-                      final dimmedText = topic.name.replaceAll(keyword, '');
+                      final dimmedText = topic.text.replaceAll(keyword, '');
 
                       return ListTile(
                         minVerticalPadding: 0,
@@ -146,7 +146,7 @@ class _SignUpButton extends ConsumerWidget with SignUpEvent {
     super.key,
     required this.selectedTopicsNotifier,
   });
-  final ValueNotifier<List<InterviewTopic>> selectedTopicsNotifier;
+  final ValueNotifier<List<TopicEntity>> selectedTopicsNotifier;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

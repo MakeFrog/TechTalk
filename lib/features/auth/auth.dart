@@ -1,4 +1,4 @@
-import 'package:techtalk/app/di/locator.dart';
+import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/features/auth/data/remote/auth_remote_data_source.dart';
 import 'package:techtalk/features/auth/repositories/auth_repository.dart';
 import 'package:techtalk/features/auth/usecases/sign_in_oauth_use_case.dart';

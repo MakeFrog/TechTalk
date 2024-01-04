@@ -1,30 +1,26 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
-import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/presentation/pages/interview/chat_list/providers/interview_rooms_provider.dart';
 
-abstract interface class _HomeEvent {
-  void onTapPracticalInterview();
-  void onTapNewTopicInterview();
-  void onTapGoToInterviewRoomPage(
-    InterviewTopic topic,
-  );
-}
-
-mixin class HomeEvent implements _HomeEvent {
-  @override
+mixin class HomeEvent {
   void onTapPracticalInterview() {
     // TODO: implement onTapPracticalInterview
   }
 
-  @override
   void onTapNewTopicInterview() {
-    const HomeTopicSelectRoute().push(rootNavigatorKey.currentContext!);
+    const InterviewTopicSelectRoute().push(rootNavigatorKey.currentContext!);
   }
 
-  @override
-  void onTapGoToInterviewRoomPage(
-    InterviewTopic topic,
-  ) {
-    // TODO : 토픽 전달 후 데이터 변경 필요
-    const ChatListPageRoute().push(rootNavigatorKey.currentContext!);
+  void onTapGoToInterviewRoomListPage(
+    WidgetRef ref, {
+    required TopicEntity topic,
+  }) async {
+    final chatRooms = await ref.read(interviewRoomsProvider(topic.id).future);
+    if (chatRooms.isEmpty) {
+      QuestionCountSelectPageRoute($extra: topic).push(ref.context);
+    } else {
+      ChatListPageRoute(topic.id).push(rootNavigatorKey.currentContext!);
+    }
   }
 }

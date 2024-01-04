@@ -3,13 +3,13 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/study_questions_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_event.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/study_controller_bar.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/study_progress_indicator.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/study_qna_view.dart';
-import 'package:techtalk/presentation/providers/study/selected_study_topic_provider.dart';
-import 'package:techtalk/presentation/providers/study/study_answer_blur_provider.dart';
-import 'package:techtalk/presentation/providers/study/study_questions_provider.dart';
+import 'package:techtalk/presentation/pages/study/topic_select/providers/selected_study_topic_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
@@ -41,9 +41,11 @@ class _AppBar extends StatelessWidget
     return AppBar(
       titleSpacing: 0,
       title: Consumer(
-        builder: (context, ref, child) => Text(
-          ref.watch(selectedStudyTopicProvider).name,
-        ),
+        builder: (context, ref, child) {
+          return Text(
+            ref.watch(selectedStudyTopicProvider).text,
+          );
+        },
       ),
       actions: [
         Text(
@@ -65,14 +67,15 @@ class _AppBar extends StatelessWidget
   }
 }
 
-class _Body extends ConsumerWidget {
+class _Body extends HookConsumerWidget {
   const _Body({
     super.key,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final questionsAsync = ref.watch(studyQuestionsProvider);
+    final topic = ref.watch(selectedStudyTopicProvider);
+    final questionsAsync = ref.watch(studyQuestionsProvider(topic.id));
 
     return questionsAsync.when(
       loading: () => const Center(

@@ -1,5 +1,5 @@
+import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/app/di/feature_di_interface.dart';
-import 'package:techtalk/app/di/locator.dart';
 import 'package:techtalk/features/user/data/remote/user_remote_data_source_impl.dart';
 import 'package:techtalk/features/user/repositories/user_repository_impl.dart';
 import 'package:techtalk/features/user/user.dart';
@@ -25,35 +25,24 @@ final class UserDependencyInjection extends FeatureDependencyInjection {
   void useCases() {
     locator
       ..registerFactory(
-        () => CreateUserDataUseCase(
+        () => CreateUserUseCase(
           userRepository,
         ),
       )
       ..registerFactory(
-        () => GetUserDataUseCase(
+        () => GetUserUseCase(
           userRepository,
         ),
       )
       ..registerFactory(
-        () => UpdateUserDataUseCase(
+        () => UpdateUserUseCase(
           userRepository,
         ),
       )
       ..registerFactory(
-        () => DeleteUserDataUseCase(
-          userRepository,
-        ),
-      )
-      ..registerFactory(
-        () => GetUserInterviewTopicsUseCase(
+        () => DeleteUserUseCase(
           userRepository,
         ),
       );
-    // ..registerFactory(
-    //   () => GetUserInterviewTopicsUseCase(
-    //     userRepository: userRepository,
-    //     topicRepository: interviewTopicRepository,
-    //   ),
-    // );
   }
 }

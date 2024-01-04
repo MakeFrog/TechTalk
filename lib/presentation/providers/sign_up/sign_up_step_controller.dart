@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/core/helper/riverpod_extension.dart';
 
 part 'sign_up_step_controller.g.dart';
 
@@ -11,13 +12,9 @@ class SignUpStepController extends _$SignUpStepController {
 
   @override
   Raw<PageController> build() {
-    final controller = PageController();
-
-    ref.onDispose(
-      controller.dispose,
+    return ref.autoDisposeChangeNotifier(
+      PageController(),
     );
-
-    return controller;
   }
 
   void next() {

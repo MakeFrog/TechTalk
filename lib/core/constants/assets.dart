@@ -2,11 +2,34 @@
 class Assets {
   Assets._();
 
-  static const String characterBluePlus = 'assets/character/blue_plus.svg';
-  static const String characterGreenPlus = 'assets/character/green_plus.svg';
-  static const String characterPurplePlus = 'assets/character/purple_plus.svg';
-  static const String characterRedPlus = 'assets/character/red_plus.svg';
-  static const String constantsAssets = 'lib/core/constants/assets.dart';
+  static const String characterBlue01 = 'assets/character/blue_01.svg';
+  static const String characterBlue02 = 'assets/character/blue_02.svg';
+  static const String characterBlue03 = 'assets/character/blue_03.svg';
+  static const String characterBlue04 = 'assets/character/blue_04.svg';
+  static const String characterBlue05 = 'assets/character/blue_05.svg';
+  static const String characterBlue06 = 'assets/character/blue_06.svg';
+  static const String characterBlue07 = 'assets/character/blue_07.svg';
+  static const String characterGreen01 = 'assets/character/green_01.svg';
+  static const String characterGreen02 = 'assets/character/green_02.svg';
+  static const String characterGreen03 = 'assets/character/green_03.svg';
+  static const String characterGreen04 = 'assets/character/green_04.svg';
+  static const String characterGreen05 = 'assets/character/green_05.svg';
+  static const String characterGreen06 = 'assets/character/green_06.svg';
+  static const String characterGreen07 = 'assets/character/green_07.svg';
+  static const String characterPurple01 = 'assets/character/purple_01.svg';
+  static const String characterPurple02 = 'assets/character/purple_02.svg';
+  static const String characterPurple03 = 'assets/character/purple_03.svg';
+  static const String characterPurple04 = 'assets/character/purple_04.svg';
+  static const String characterPurple05 = 'assets/character/purple_05.svg';
+  static const String characterPurple06 = 'assets/character/purple_06.svg';
+  static const String characterPurple07 = 'assets/character/purple_07.svg';
+  static const String characterRed01 = 'assets/character/red_01.svg';
+  static const String characterRed02 = 'assets/character/red_02.svg';
+  static const String characterRed03 = 'assets/character/red_03.svg';
+  static const String characterRed04 = 'assets/character/red_04.svg';
+  static const String characterRed05 = 'assets/character/red_05.svg';
+  static const String characterRed06 = 'assets/character/red_06.svg';
+  static const String characterRed07 = 'assets/character/red_07.svg';
   static const String iconsArrowDown = 'assets/icons/arrow_down.svg';
   static const String iconsArrowDownThick = 'assets/icons/arrow_down_thick.svg';
   static const String iconsArrowLeft = 'assets/icons/arrow_left.svg';
@@ -66,22 +89,9 @@ class Assets {
   static const String iconsWarnning = 'assets/icons/warnning.svg';
   static const String iconsWrongIndicator = 'assets/icons/wrong_indicator.svg';
   static const String imagesAvatar1 = 'assets/images/avatar_1.png';
+  static const String imagesBlankProfile = 'assets/images/blank_profile.png';
   static const String imagesSparkle = 'assets/images/sparkle.svg';
   static const String imagesSplashImage = 'assets/images/splash_image.png';
-  static const String imagesTechTalkCharacterBlue01 =
-      'assets/images/tech_talk_character_blue_01.svg';
-  static const String imagesTechTalkCharacterBlue02 =
-      'assets/images/tech_talk_character_blue_02.svg';
-  static const String imagesTechTalkCharacterBlue03 =
-      'assets/images/tech_talk_character_blue_03.svg';
-  static const String imagesTechTalkCharacterBlue04 =
-      'assets/images/tech_talk_character_blue_04.svg';
-  static const String imagesTechTalkCharacterBlue05 =
-      'assets/images/tech_talk_character_blue_05.svg';
-  static const String imagesTechTalkCharacterBlue06 =
-      'assets/images/tech_talk_character_blue_06.svg';
-  static const String imagesTechTalkCharacterBlue07 =
-      'assets/images/tech_talk_character_blue_07.svg';
   static const String imagesTopicAndroid = 'assets/images/topic_android.png';
   static const String imagesTopicDataStructure =
       'assets/images/topic_data_structure.png';
@@ -96,8 +106,8 @@ class Assets {
   static const String imagesTopicSwift = 'assets/images/topic_swift.png';
   static const String imagesWelcomeTechtalk =
       'assets/images/welcome_techtalk.svg';
-  static const String jsonChatCollection = 'assets/json/chat_collection.json';
-  static const String jsonSkill = 'assets/json/skill.json';
+  static const String jsonTopicCategoriesData =
+      'assets/json/topic_categories_data.json';
   static const String logoTechTalkLogo = 'assets/logo/tech_talk_logo.svg';
   static const String pretendardPretendardBold =
       'assets/fonts/pretendard/Pretendard-Bold.otf';

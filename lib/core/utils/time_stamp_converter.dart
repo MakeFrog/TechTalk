@@ -5,11 +5,11 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 /// [freezed] 패키지에서 [Timestamp] 타입을 지원하지 않기 때문에
 /// [Timestamp] 데이터를 [DateTime]으로 변환하도록 도와주눈 converter
 ///
-class TimeStampConverter implements JsonConverter<DateTime, dynamic> {
+class TimeStampConverter implements JsonConverter<DateTime, Timestamp> {
   const TimeStampConverter();
 
   @override
-  DateTime fromJson(dynamic timestamp) => timestamp.toDate();
+  DateTime fromJson(Timestamp timestamp) => timestamp.toDate();
 
   @override
   Timestamp toJson(DateTime date) => Timestamp.fromDate(date);

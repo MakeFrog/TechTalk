@@ -5,6 +5,9 @@ import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/qna_tab_view.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
@@ -18,23 +21,43 @@ class ChatPage extends BasePage with ChatEvent {
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
     final tabController = useTabController(initialLength: 2);
+    final room = ref.watch(selectedChatRoomProvider);
 
-    return _Scaffold(
-      chatTabView: const InterviewTabView(),
-      summaryTabView: const QnATabView(),
-      tabController: tabController,
-    );
+    switch (ref.watch(chatQnAsProvider(room))) {
+      case AsyncData():
+        switch (ref.watch(chatMessageHistoryProvider(room))) {
+          case AsyncData():
+            return _Scaffold(
+              chatTabView: const InterviewTabView(),
+              summaryTabView: const QnATabView(),
+              tabController: tabController,
+            );
+          case AsyncError(:final error):
+            return Center(
+              child: Text('$error'),
+            );
+          default:
+            return Container();
+        }
+      case AsyncError(:final error):
+        return Center(
+          child: Text('$error'),
+        );
+      default:
+        return Container();
+    }
   }
 
   @override
   bool get preventSwipeBack => true;
 
   @override
-  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
-      BackButtonAppBar(
-        title: 'Swift',
-        onBackBtnTapped: () {
-          onAppbarBackBtnTapped(context);
-        },
-      );
+  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) {
+    return BackButtonAppBar(
+      title: ref.watch(selectedChatRoomProvider).topic.text,
+      onBackBtnTapped: () {
+        onAppbarBackBtnTapped(context);
+      },
+    );
+  }
 }

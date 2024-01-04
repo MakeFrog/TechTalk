@@ -2,33 +2,44 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
-part 'chat_room_model.freezed.dart';
 part 'chat_room_model.g.dart';
 
-@freezed
-class ChatRoomModel with _$ChatRoomModel {
-  const factory ChatRoomModel({
-    required String interviewerId,
-    required String topicId,
-    required int totalQuestionCount,
-    required int correctAnswerCount,
-    required int incorrectAnswerCount,
-    required String chatRoomId,
-  }) = _ChatListItemModel;
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+class ChatRoomModel {
+  ChatRoomModel({
+    required this.id,
+    required this.interviewerId,
+    required this.topicId,
+    required this.totalQuestionCount,
+    required this.correctAnswerCount,
+    required this.incorrectAnswerCount,
+  });
 
-  factory ChatRoomModel.fromJson(Map<String, dynamic> json) =>
-      _$ChatRoomModelFromJson(json);
+  final String id;
+  final String interviewerId;
+  final String topicId;
+  final int totalQuestionCount;
+  final int correctAnswerCount;
+  final int incorrectAnswerCount;
 
   factory ChatRoomModel.fromFirestore(
-          DocumentSnapshot snapshot, SnapshotOptions? options) =>
-      ChatRoomModel.fromJson(snapshot.data() as Map<String, dynamic>);
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) =>
+      ChatRoomModel.fromJson(snapshot.data()!);
 
   factory ChatRoomModel.fromEntity(ChatRoomEntity entity) => ChatRoomModel(
-        interviewerId: entity.interviewerInfo.id,
+        interviewerId: entity.interviewer.id,
         topicId: entity.topic.id,
-        totalQuestionCount: entity.qnaProgressInfo.totalQuestionCount,
-        correctAnswerCount: entity.qnaProgressInfo.correctAnswerCount,
-        incorrectAnswerCount: entity.qnaProgressInfo.incorrectAnswerCount,
-        chatRoomId: entity.chatRoomId,
+        totalQuestionCount: entity.progressInfo.totalQuestionCount,
+        correctAnswerCount: entity.progressInfo.correctAnswerCount,
+        incorrectAnswerCount: entity.progressInfo.incorrectAnswerCount,
+        id: entity.id,
       );
+
+  factory ChatRoomModel.fromJson(Map<String, dynamic> json) {
+    return _$ChatRoomModelFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() => _$ChatRoomModelToJson(this);
 }

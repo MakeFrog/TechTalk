@@ -7,8 +7,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/home/home_page.dart';
-import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/main/main_event.dart';
+import 'package:techtalk/presentation/pages/my_info/my_page/my_page.dart';
 import 'package:techtalk/presentation/pages/study/topic_select/study_topic_select_page.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_note_page.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
@@ -43,12 +43,9 @@ class _Body extends HookConsumerWidget {
     WrongAnswerNotePage(
       key: ValueKey(MainNavigationTab.note),
     ),
-    ChatListPage(
+    MyPage(
       key: ValueKey(MainNavigationTab.myInfo),
-    ),
-    // TestPage(
-    //   key: ValueKey(MainNavigationTab.myInfo),
-    // ),
+    )
   ];
 
   @override
