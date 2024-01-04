@@ -46,7 +46,10 @@ mixin class SignUpEvent {
     ref.read(signUpJobsProvider.notifier).removeAt(index);
   }
 
-  void onTapJob(WidgetRef ref, JobEntity job) {
+  void onTapJob(
+    WidgetRef ref,
+    JobEntity job,
+  ) {
     ref.read(signUpJobsProvider.notifier).toggle(job);
   }
 
