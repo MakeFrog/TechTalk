@@ -5,19 +5,17 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_event.dart';
+import 'package:techtalk/presentation/pages/sign_up/sign_up_state.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_intro_message.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-class NicknameInputStep extends HookConsumerWidget with SignUpEvent {
+class NicknameInputStep extends HookConsumerWidget
+    with SignUpEvent, SignUpState {
   const NicknameInputStep({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
-    final nickname = useState('');
-    final nicknameValidation = useState<String?>(null);
-    final isPass =
-        nickname.value.isNotEmpty && nicknameValidation.value == null;
 
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -33,25 +31,24 @@ class NicknameInputStep extends HookConsumerWidget with SignUpEvent {
             textInputAction: TextInputAction.done,
             inputDecoration: InputDecoration(
               hintText: '닉네임을 입력해 주세요',
-              errorText: isPass ? '사용 가능한 닉네임입니다.' : nicknameValidation.value,
+              errorText: isPassNickname(ref)
+                  ? '사용 가능한 닉네임입니다.'
+                  : signUpNicknameValidation(ref),
               errorStyle: AppTextStyle.alert2.copyWith(
-                color: isPass ? AppColor.of.brand3 : AppColor.of.red2,
+                color:
+                    isPassNickname(ref) ? AppColor.of.brand3 : AppColor.of.red2,
               ),
             ),
-            onChanged: (value) {
-              nickname.value = value;
-              nicknameValidation.value = validateNickname(value);
-            },
+            onClear: () => onClearNicknameField(ref),
+            onChanged: (value) => onChangeNicknameField(
+              ref,
+              value: value,
+            ),
           ),
           const Spacer(),
           FilledButton(
-            onPressed: isPass
-                ? () => onTapNicknameStepNext(
-                      ref,
-                      nickname: nickname.value,
-                      nicknameValidation: nicknameValidation,
-                    )
-                : null,
+            onPressed:
+                isPassNickname(ref) ? () => onTapNicknameStepNext(ref) : null,
             child: const Center(
               child: Text('다음'),
             ),
