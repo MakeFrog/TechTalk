@@ -14,7 +14,8 @@ class SplashPage extends BasePage with SplashEvent {
     Future.delayed(
       500.milliseconds,
       () async {
-        if (!SplashEvent.initComplete) {
+        if (!SplashEvent.isInitializing) {
+          SplashEvent.isInitializing = true;
           await initStaticData(ref);
           await routeByUserAuthAndData(ref);
         }
