@@ -8,7 +8,7 @@ import 'package:techtalk/presentation/providers/user/auth/user_auth_provider.dar
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 
 mixin class SignInEvent {
-  /// 유저 데이터 여부 조회 후 회원가입을 완료했는지 여부에 따라 라우팅을 분기한다.
+  /// 유저 데이터 존재 여부에 따라 라우팅을 분기한다.
   Future<void> _routeByUserData(WidgetRef ref) async {
     return ref.read(userDataProvider.future).then(
       (userData) async {
@@ -21,6 +21,7 @@ mixin class SignInEvent {
     );
   }
 
+  /// OAuth 인증을 실행한다.
   Future<void> _signInOAuth(
     WidgetRef ref, {
     required UserAccountProvider provider,
@@ -38,10 +39,12 @@ mixin class SignInEvent {
     }
   }
 
+  /// 구글 로그인을 눌렀을 때 실행할 콜백
   Future<void> onTapSignInWithGoogle(WidgetRef ref) async {
     await _signInOAuth(ref, provider: UserAccountProvider.google);
   }
 
+  /// 애플 로그인을 눌렀을 때 실행할 콜백
   Future<void> onTapSignInWithApple(WidgetRef ref) async {
     await _signInOAuth(ref, provider: UserAccountProvider.apple);
   }
