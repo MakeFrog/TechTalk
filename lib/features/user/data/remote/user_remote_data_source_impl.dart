@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/features/user/data/models/user_model.dart';
 import 'package:techtalk/features/user/data/models/users_ref.dart';
@@ -34,6 +35,10 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     }
 
     final snapshot = await FirestoreUsersRef.doc(uid).get();
+
+    await FirestoreUsersRef.doc(uid).update({
+      'last_login_date': FieldValue.serverTimestamp(),
+    });
 
     return snapshot.data()!;
   }

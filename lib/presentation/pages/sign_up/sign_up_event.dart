@@ -82,6 +82,7 @@ mixin class SignUpEvent {
         nickname: ref.read(signUpNicknameProvider),
         jobGroupIds: ref.read(signUpJobsProvider).map((e) => e.id).toList(),
         topicIds: ref.read(signUpTopicsProvider).map((e) => e.id).toList(),
+        lastLoginDate: DateTime.now(),
       );
 
       await ref.read(userDataProvider.notifier).createData(userData).then(

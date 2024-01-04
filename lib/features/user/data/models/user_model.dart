@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:techtalk/core/utils/time_stamp_converter.dart';
 import 'package:techtalk/features/user/entities/user_entity.dart';
 
 part 'user_model.g.dart';
@@ -12,22 +13,27 @@ class UserModel {
     this.nickname,
     this.jobGroupIds,
     this.topicIds,
-  });
+    DateTime? lastLoginDate,
+  }) : lastLoginDate = DateTime.now();
 
   /// 유저 UID
-  String uid;
+  final String uid;
 
   /// 유저 프로필 이미지 URL
-  String? profileImgUrl;
+  final String? profileImgUrl;
 
   /// 유저 닉네임
-  String? nickname;
+  final String? nickname;
 
   /// 유저 관심 직군 ID 목록
-  List<String>? jobGroupIds;
+  final List<String>? jobGroupIds;
 
   /// 유저가 준비하고 있는 기술면접 주제 ID 목록
-  List<String>? topicIds;
+  final List<String>? topicIds;
+
+  /// 마지막 로그인 시간
+  @TimeStampConverter()
+  final DateTime lastLoginDate;
 
   factory UserModel.fromEntity(UserEntity entity) {
     return UserModel(
@@ -46,6 +52,7 @@ class UserModel {
       nickname: nickname,
       jobGroupIds: jobGroupIds,
       topicIds: topicIds,
+      lastLoginDate: lastLoginDate,
     );
   }
 
