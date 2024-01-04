@@ -6,22 +6,22 @@ import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_event.dart';
+import 'package:techtalk/presentation/pages/sign_up/sign_up_state.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/select_result_chip_list_view.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_intro_message.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-class TopicSelectStep extends HookConsumerWidget with SignUpEvent {
+class TopicSelectStep extends HookConsumerWidget with SignUpEvent, SignUpState {
   const TopicSelectStep({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
-    final selectedTopics = useState<List<TopicEntity>>([]);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
+        const Padding(
           padding: EdgeInsets.all(16),
           child: SignUpStepIntroMessage(
             title: '준비하고 있는 기술면접\n주제를 알려주세요!',
@@ -29,28 +29,23 @@ class TopicSelectStep extends HookConsumerWidget with SignUpEvent {
           ),
         ),
         SelectResultChipListView(
-          itemList: [...selectedTopics.value.map((e) => e.text)],
-          onTapItem: selectedTopics.value.removeAt,
+          itemList: [...signUpTopics(ref).map((e) => e.text)],
+          onTapItem: (index) => onTapSelectedTopic(ref, index),
         ),
-        Gap(16),
-        _SearchedSkillListView(
-          selectedTopicsNotifier: selectedTopics,
-        ),
-        _SignUpButton(
-          selectedTopicsNotifier: selectedTopics,
-        ),
+        const Gap(16),
+        const _SearchedSkillListView(),
+        const _SignUpButton(),
       ],
     );
   }
 }
 
-class _SearchedSkillListView extends HookConsumerWidget with SignUpEvent {
+class _SearchedSkillListView extends HookConsumerWidget
+    with SignUpEvent, SignUpState {
   const _SearchedSkillListView({
     super.key,
-    required this.selectedTopicsNotifier,
   });
 
-  final ValueNotifier<List<TopicEntity>> selectedTopicsNotifier;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = useTextEditingController();
@@ -58,11 +53,7 @@ class _SearchedSkillListView extends HookConsumerWidget with SignUpEvent {
       controller,
       () => controller.text,
     );
-    final searchTopicsFuture = useMemoized(
-      () async => <TopicEntity>[],
-      // () => searchInterviewTopicsUseCase(keyword),
-    );
-    final searchTopicAsync = useFuture(searchTopicsFuture);
+    final searchedTopics = searchTopicsUseCase(keyword).getOrThrow();
 
     return Expanded(
       child: Padding(
@@ -78,58 +69,46 @@ class _SearchedSkillListView extends HookConsumerWidget with SignUpEvent {
               ),
             ),
             Expanded(
-              child: Builder(
-                builder: (context) {
-                  if (searchTopicAsync.connectionState ==
-                      ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (searchTopicAsync.hasError) {
-                    return Center(
-                      child: Text('${searchTopicAsync.error}'),
-                    );
+              child: ListView.builder(
+                itemCount: searchedTopics.length,
+                itemExtent: 52,
+                itemBuilder: (context, index) {
+                  final topic = searchedTopics[index];
+
+                  if (signUpTopics(ref).contains(topic)) {
+                    return const SizedBox();
                   }
-                  final searchTopics = searchTopicAsync.requireData;
 
-                  return ListView.builder(
-                    itemCount: searchTopics.length,
-                    itemExtent: 52,
-                    itemBuilder: (context, index) {
-                      final topic = searchTopics[index];
+                  final highlightedText =
+                      topic.text.substring(0, keyword.length);
+                  final dimmedText = topic.text.substring(keyword.length);
 
-                      final dimmedText = topic.text.replaceAll(keyword, '');
-
-                      return ListTile(
-                        minVerticalPadding: 0,
-                        title: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text.rich(
+                  return ListTile(
+                    minVerticalPadding: 0,
+                    title: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text.rich(
+                        TextSpan(
+                          children: [
                             TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: keyword,
-                                ),
-                                TextSpan(
-                                  text: dimmedText,
-                                  style: TextStyle(
-                                    color: AppColor.of.gray4,
-                                  ),
-                                ),
-                              ],
+                              text: highlightedText,
                             ),
-                            style: AppTextStyle.body2,
-                          ),
+                            TextSpan(
+                              text: dimmedText,
+                              style: TextStyle(
+                                color: AppColor.of.gray4,
+                              ),
+                            ),
+                          ],
                         ),
-                        onTap: () {
-                          if (selectedTopicsNotifier.value.contains(topic)) {
-                            selectedTopicsNotifier.value.remove(topic);
-                          } else {
-                            selectedTopicsNotifier.value.add(topic);
-                          }
-                        },
-                      );
-                    },
+                        style: AppTextStyle.body2,
+                      ),
+                    ),
+                    onTap: () => onTapTopic(
+                      ref,
+                      item: topic,
+                      controller: controller,
+                    ),
                   );
                 },
               ),
@@ -141,22 +120,17 @@ class _SearchedSkillListView extends HookConsumerWidget with SignUpEvent {
   }
 }
 
-class _SignUpButton extends ConsumerWidget with SignUpEvent {
+class _SignUpButton extends ConsumerWidget with SignUpEvent, SignUpState {
   const _SignUpButton({
     super.key,
-    required this.selectedTopicsNotifier,
   });
-  final ValueNotifier<List<TopicEntity>> selectedTopicsNotifier;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: FilledButton(
-        onPressed: () => onTapSignUp(
-          ref,
-          topics: selectedTopicsNotifier.value,
-        ),
+        onPressed: () => onTapSignUp(ref),
         child: const Center(
           child: Text('회원가입'),
         ),

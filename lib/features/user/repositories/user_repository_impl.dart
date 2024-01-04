@@ -11,13 +11,11 @@ final class UserRepositoryImpl implements UserRepository {
   final UserRemoteDataSource _userRemoteDataSource;
 
   @override
-  Future<Result<UserEntity>> createUser() async {
+  Future<Result<void>> createUser(UserEntity data) async {
     try {
-      final createdUser = await _userRemoteDataSource.createUser();
+      final createdUser = await _userRemoteDataSource.createUser(data);
 
-      return Result.success(
-        createdUser.toEntity(),
-      );
+      return Result.success(createdUser);
     } on Exception catch (e) {
       return Result.failure(e);
     }

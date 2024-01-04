@@ -23,8 +23,8 @@ class UserData extends _$UserData {
     );
   }
 
-  Future<void> createData() async {
-    final createUserData = await createUserUseCase();
+  Future<void> createData(UserEntity data) async {
+    final createUserData = await createUserUseCase(data);
     await createUserData.fold(
       onSuccess: (value) async {
         ref.invalidateSelf();

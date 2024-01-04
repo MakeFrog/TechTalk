@@ -3,9 +3,7 @@ import 'package:techtalk/features/user/user.dart';
 
 abstract interface class UserRemoteDataSource {
   /// 유저 데이터를 생성한다.
-  ///
-  /// 새로 만들어진 [UserModel]을 반환한다.
-  Future<UserModel> createUser();
+  Future<void> createUser(UserEntity data);
 
   /// [uid]와 일치하는 uid를 가지는 유저 데이터를 조회한다.
   ///

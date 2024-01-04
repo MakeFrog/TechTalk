@@ -5,8 +5,11 @@ final class SearchTopicsUseCase {
   SearchTopicsUseCase();
 
   Result<List<TopicEntity>> call(String keyword) {
-    // TODO : repo에 매소드 추가
-    final topics = getTopicsUseCase().getOrThrow();
+    if (keyword.isEmpty) {
+      return Result.success([]);
+    }
+
+    final topics = getTopicsUseCase(includeUnavailable: true).getOrThrow();
 
     return Result.success([
       ...topics.where(

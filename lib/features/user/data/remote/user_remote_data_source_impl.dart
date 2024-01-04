@@ -16,17 +16,15 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }
 
   @override
-  Future<UserModel> createUser() async {
+  Future<void> createUser(UserEntity data) async {
     if (await FirestoreUsersRef.isExist()) {
       throw const AlreadyExistUserDataException();
     }
 
     final userData = FirestoreUsersRef.doc();
-    final user = UserModel(uid: userData.id);
+    final user = UserModel.fromEntity(data);
 
     await userData.set(user);
-
-    return user;
   }
 
   @override
