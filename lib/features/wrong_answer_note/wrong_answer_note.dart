@@ -1,4 +1,4 @@
-import 'package:techtalk/app/di/locator.dart';
+import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/features/wrong_answer_note/data/remote/wrong_answer_note_remote_data_source.dart';
 import 'package:techtalk/features/wrong_answer_note/repositories/wrong_answer_note_repository.dart';
 import 'package:techtalk/features/wrong_answer_note/usecases/get_wrong_answer_note_use_case.dart';

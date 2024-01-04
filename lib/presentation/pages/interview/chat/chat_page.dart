@@ -22,26 +22,30 @@ class ChatPage extends BasePage with ChatEvent {
   Widget buildPage(BuildContext context, WidgetRef ref) {
     final tabController = useTabController(initialLength: 2);
     final room = ref.watch(selectedChatRoomProvider);
-    final chatMessagesAsync = ref.watch(chatMessageHistoryProvider(room));
-    final chatQnaAsync = ref.watch(chatQnAsProvider(room));
 
-    if (chatMessagesAsync.isLoading || chatQnaAsync.isLoading) {
-      return Container();
-    } else if (chatMessagesAsync.hasError) {
-      return Center(
-        child: Text('${chatMessagesAsync.error}'),
-      );
-    } else if (chatQnaAsync.hasError) {
-      return Center(
-        child: Text('${chatQnaAsync.error}'),
-      );
+    switch (ref.watch(chatQnAsProvider(room))) {
+      case AsyncData():
+        switch (ref.watch(chatMessageHistoryProvider(room))) {
+          case AsyncData():
+            return _Scaffold(
+              chatTabView: const InterviewTabView(),
+              summaryTabView: const QnATabView(),
+              tabController: tabController,
+            );
+          case AsyncError(:final error):
+            return Center(
+              child: Text('$error'),
+            );
+          default:
+            return Container();
+        }
+      case AsyncError(:final error):
+        return Center(
+          child: Text('$error'),
+        );
+      default:
+        return Container();
     }
-
-    return _Scaffold(
-      chatTabView: const InterviewTabView(),
-      summaryTabView: const QnATabView(),
-      tabController: tabController,
-    );
   }
 
   @override

@@ -8,20 +8,17 @@ part 'chat_qna_model.g.dart';
 class ChatQnaModel {
   ChatQnaModel({
     required this.id,
-    required this.questionId,
     this.messageId,
     this.state,
   });
 
   final String id;
-  final String questionId;
   final String? messageId;
   final String? state;
 
   factory ChatQnaModel.fromEntity(ChatQnaEntity entity) {
     return ChatQnaModel(
       id: entity.id,
-      questionId: entity.question.id,
       messageId: entity.answer?.id,
       state: entity.answer?.answerState.tag,
     );

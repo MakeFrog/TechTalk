@@ -1,5 +1,3 @@
-import 'package:techtalk/features/system/data/model/version_model.dart';
-
 class VersionEntity {
   final String versionCode;
   final bool isSystemAvailable;
@@ -8,10 +6,6 @@ class VersionEntity {
     required this.versionCode,
     required this.isSystemAvailable,
   });
-
-  factory VersionEntity.fromModel(VersionModel model) => VersionEntity(
-      versionCode: model.versionCode,
-      isSystemAvailable: model.isSystemAvailable);
 
   @override
   bool operator ==(Object other) =>

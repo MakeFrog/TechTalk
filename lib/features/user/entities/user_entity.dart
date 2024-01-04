@@ -1,15 +1,24 @@
-class UserDataEntity {
+class UserEntity {
+  /// 유저 UID
   final String uid;
+
+  /// 유저 프로필 이미지 URL
   final String? profileImgUrl;
+
+  /// 유저 닉네임
   final String? nickname;
+
+  /// 유저 관심 직군 ID 목록
   final List<String> jobGroupIds;
+
+  /// 유저가 준비하고 있는 기술면접 주제 ID 목록
   final List<String> topicIds;
 
   bool get hasEssentialData => nickname != null;
 
 //<editor-fold desc="Data Methods">
 
-  const UserDataEntity({
+  const UserEntity({
     required this.uid,
     this.profileImgUrl,
     this.nickname,
@@ -21,7 +30,7 @@ class UserDataEntity {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is UserDataEntity &&
+      (other is UserEntity &&
           runtimeType == other.runtimeType &&
           uid == other.uid &&
           nickname == other.nickname &&
@@ -37,7 +46,7 @@ class UserDataEntity {
 
   @override
   String toString() {
-    return 'UserDataEntity{' +
+    return 'UserEntity{' +
         ' uid: $uid,' +
         ' nickname: $nickname,' +
         ' jobGroupIds: $jobGroupIds,' +
@@ -45,13 +54,13 @@ class UserDataEntity {
         '}';
   }
 
-  UserDataEntity copyWith({
+  UserEntity copyWith({
     String? uid,
     String? nickname,
     List<String>? jobGroupIds,
     List<String>? topicIds,
   }) {
-    return UserDataEntity(
+    return UserEntity(
       uid: uid ?? this.uid,
       nickname: nickname ?? this.nickname,
       jobGroupIds: jobGroupIds ?? this.jobGroupIds,

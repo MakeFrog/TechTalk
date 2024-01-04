@@ -5,10 +5,7 @@ import 'package:techtalk/features/topic/topic.dart';
 
 part 'topic_model.g.dart';
 
-@JsonSerializable(
-  fieldRename: FieldRename.snake,
-  explicitToJson: true,
-)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class TopicModel {
   TopicModel({
     required this.id,

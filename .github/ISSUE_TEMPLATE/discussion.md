@@ -2,7 +2,7 @@
 name: Discussion
 about: Have a discussion about programming agreements
 title: "[섹션] 논의에 대한 설명"
-labels: good first issue
+labels: ''
 assignees: Xim-ya
 
 ---

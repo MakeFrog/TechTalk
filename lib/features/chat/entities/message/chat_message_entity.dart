@@ -15,11 +15,12 @@ abstract class ChatMessageEntity {
   bool isStreamApplied; // Stream 적용 여부
 
   ChatMessageEntity({
+    String? id,
     required this.message,
     required this.type,
     required this.isStreamApplied,
     required this.timestamp,
-  }) : id = const Uuid().v1();
+  }) : id = id ?? const Uuid().v1();
 
 //<editor-fold desc="Data Methods">
   @override
