@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
@@ -38,6 +39,7 @@ mixin class SignUpEvent {
           isDividedBtnFormat: true,
           btnText: '네',
           onBtnClicked: () async {
+            await FirebaseAuth.instance.signOut();
             await ref.read(userDataProvider.notifier).deleteData();
             ref.context
               ..pop()

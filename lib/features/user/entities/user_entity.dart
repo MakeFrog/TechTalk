@@ -14,7 +14,8 @@ class UserEntity {
   /// 유저가 준비하고 있는 기술면접 주제 ID 목록
   final List<String> topicIds;
 
-  bool get hasEssentialData => nickname != null;
+  /// 회원가입을 완료했는지 여부
+  bool get doneSignUp => nickname != null;
 
 //<editor-fold desc="Data Methods">
 

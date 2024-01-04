@@ -12,12 +12,10 @@ mixin class SignInEvent {
   Future<void> _routeByUserData(WidgetRef ref) async {
     return ref.read(userDataProvider.future).then(
       (userData) async {
-        if (userData?.hasEssentialData ?? false) {
+        if (userData != null) {
           const MainRoute().go(ref.context);
         } else {
-          await ref.read(userDataProvider.notifier).createData().then((value) {
-            const SignUpRoute().push(ref.context);
-          });
+          const SignUpRoute().go(ref.context);
         }
       },
     );

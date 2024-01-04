@@ -20,8 +20,8 @@ mixin class SplashEvent {
 
     await ref.read(userDataProvider.future).then(
       (userData) {
-        if (userData == null || !userData.hasEssentialData) {
-          const SignInRoute().go(ref.context);
+        if (userData == null) {
+          const SignUpRoute().go(ref.context);
         } else {
           const MainRoute().go(ref.context);
         }

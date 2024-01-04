@@ -18,16 +18,8 @@ class UserData extends _$UserData {
     final userData = await getUserUseCase();
 
     return userData.fold(
-      onSuccess: (value) {
-        return value;
-      },
-      onFailure: (e) {
-        ToastService.show(
-          NormalToast(message: '$e'),
-        );
-
-        throw e;
-      },
+      onSuccess: (value) => value,
+      onFailure: (e) => null,
     );
   }
 
