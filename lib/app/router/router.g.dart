@@ -88,12 +88,12 @@ RouteBase get $mainRoute => GoRouteData.$route(
       factory: $MainRouteExtension._fromState,
       routes: [
         GoRouteData.$route(
-          path: 'topic-select',
+          path: ':type',
           name: 'topic select',
           factory: $InterviewTopicSelectRouteExtension._fromState,
           routes: [
             GoRouteData.$route(
-              path: 'question-count-select',
+              path: ':_topicId',
               name: 'question count select',
               factory: $QuestionCountSelectPageRouteExtension._fromState,
             ),
@@ -143,10 +143,12 @@ extension $MainRouteExtension on MainRoute {
 
 extension $InterviewTopicSelectRouteExtension on InterviewTopicSelectRoute {
   static InterviewTopicSelectRoute _fromState(GoRouterState state) =>
-      const InterviewTopicSelectRoute();
+      InterviewTopicSelectRoute(
+        _$InterviewTypeEnumMap._$fromName(state.pathParameters['type']!),
+      );
 
   String get location => GoRouteData.$location(
-        '/topic-select',
+        '/${Uri.encodeComponent(_$InterviewTypeEnumMap[type]!)}',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -159,15 +161,21 @@ extension $InterviewTopicSelectRouteExtension on InterviewTopicSelectRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
+const _$InterviewTypeEnumMap = {
+  InterviewType.topic: 'topic',
+  InterviewType.practical: 'practical',
+};
+
 extension $QuestionCountSelectPageRouteExtension
     on QuestionCountSelectPageRoute {
   static QuestionCountSelectPageRoute _fromState(GoRouterState state) =>
       QuestionCountSelectPageRoute(
-        $extra: state.extra as TopicEntity,
+        _$InterviewTypeEnumMap._$fromName(state.pathParameters['type']!),
+        $extra: state.extra as List<TopicEntity>,
       );
 
   String get location => GoRouteData.$location(
-        '/topic-select/question-count-select',
+        '/${Uri.encodeComponent(_$InterviewTypeEnumMap[type]!)}/${Uri.encodeComponent(_topicId)}',
       );
 
   void go(BuildContext context) => context.go(location, extra: $extra);
@@ -262,4 +270,9 @@ extension $ChatPageRouteExtension on ChatPageRoute {
 
   void replace(BuildContext context) =>
       context.replace(location, extra: $extra);
+}
+
+extension<T extends Enum> on Map<T, String> {
+  T _$fromName(String value) =>
+      entries.singleWhere((element) => element.value == value).key;
 }

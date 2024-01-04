@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/core/constants/interview_type.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
@@ -199,31 +200,38 @@ class WrongAnswerRoute extends GoRouteData {
 }
 
 class InterviewTopicSelectRoute extends GoRouteData {
-  const InterviewTopicSelectRoute();
+  const InterviewTopicSelectRoute(this.type);
 
-  static const String path = 'topic-select';
+  static const String path = ':type';
   static const String name = 'topic select';
+
+  final InterviewType type;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const InterviewTopicSelectPage();
+    return InterviewTopicSelectPage(
+      type: type,
+    );
   }
 }
 
 class QuestionCountSelectPageRoute extends GoRouteData {
-  const QuestionCountSelectPageRoute({
+  QuestionCountSelectPageRoute(
+    this.type, {
     required this.$extra,
-  });
+  }) : _topicId = $extra.singleOrNull?.id ?? $extra.map((e) => e.id).toString();
 
-  static const String path = 'question-count-select';
+  static const String path = ':_topicId';
   static const String name = 'question count select';
 
-  final TopicEntity $extra;
+  final InterviewType type;
+  final String _topicId;
+  final List<TopicEntity> $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return QuestionCountSelectPage(
-      topic: $extra,
+      topic: $extra.first,
     );
   }
 }
