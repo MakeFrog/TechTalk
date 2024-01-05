@@ -1,7 +1,9 @@
+import 'package:techtalk/core/constants/interview_type.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data/models/chat_message_model.dart';
 import 'package:techtalk/features/chat/data/models/chat_qna_model.dart';
 import 'package:techtalk/features/chat/data/models/chat_room_model.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 abstract interface class ChatRemoteDataSource {
   Future<void> createChatRoom(ChatRoomEntity room);
@@ -9,10 +11,10 @@ abstract interface class ChatRemoteDataSource {
   Future<ChatRoomModel> getChatRoom(String roomId);
 
   /// 채방 리스트의 엔트리 정보 호출
-  Future<List<ChatRoomModel>> getChatRooms(String topicId);
-
-  /// 채팅방 업데이트
-  Future<void> updateChatRoom(ChatRoomEntity room);
+  Future<List<ChatRoomModel>> getChatRooms(
+    InterviewType type, [
+    TopicEntity? topic,
+  ]);
 
   Future<void> createChatMessages(
     String roomId, {
@@ -41,7 +43,7 @@ abstract interface class ChatRemoteDataSource {
     String roomId, {
     required List<ChatQnaEntity> qnas,
   });
-  Future<List<ChatQnaModel>> getChatQnas(ChatRoomEntity room);
+  Future<List<ChatQnaModel>> getChatQnas(String roomId);
 
   Future<void> updateChatQnas(
     String roomId, {

@@ -1,3 +1,4 @@
+import 'package:techtalk/core/constants/interview_type.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
@@ -10,7 +11,10 @@ abstract interface class ChatRepository {
   });
 
   /// 채팅 면접 리스트 호출
-  Future<Result<List<ChatRoomEntity>>> getChatRooms(TopicEntity topicId);
+  Future<Result<List<ChatRoomEntity>>> getChatRooms(
+    InterviewType type, [
+    TopicEntity? topicId,
+  ]);
 
   Future<Result<ChatRoomEntity>> getChatRoom(String roomId);
 
@@ -25,7 +29,7 @@ abstract interface class ChatRepository {
 
   /// 채팅 메세지  호출
   Future<Result<ChatMessageEntity>> getChatMessage(
-    String chatRoomId,
+    String roomId,
     String chatId,
   );
 

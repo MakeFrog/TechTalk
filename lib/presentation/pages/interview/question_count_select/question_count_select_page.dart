@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/core/constants/interview_type.dart';
 import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/topic/topic.dart';
@@ -13,10 +14,12 @@ import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar
 class QuestionCountSelectPage extends BasePage with QuestionCountSelectEvent {
   const QuestionCountSelectPage({
     Key? key,
-    required this.topic,
+    required this.type,
+    required this.topics,
   }) : super(key: key);
 
-  final TopicEntity topic;
+  final InterviewType type;
+  final List<TopicEntity> topics;
 
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
@@ -65,7 +68,8 @@ class QuestionCountSelectPage extends BasePage with QuestionCountSelectEvent {
           FilledButton(
             onPressed: () => routeToChatPage(
               ref,
-              topic: topic,
+              type: type,
+              topics: topics,
               questionCount: questionCountState.value,
             ),
             child: const Center(

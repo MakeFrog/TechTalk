@@ -53,8 +53,11 @@ class ChatPage extends BasePage with ChatEvent {
 
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) {
+    final firstTopic = ref.watch(selectedChatRoomProvider).topics.first.text;
+    final otherTopicCount =
+        ref.watch(selectedChatRoomProvider).topics.length - 1;
     return BackButtonAppBar(
-      title: ref.watch(selectedChatRoomProvider).topic.text,
+      title: '$firstTopic${otherTopicCount > 0 ? '외 $otherTopicCount' : ''}',
       onBackBtnTapped: () {
         onAppbarBackBtnTapped(context);
       },

@@ -19,14 +19,16 @@ mixin class HomeEvent {
     WidgetRef ref, {
     required TopicEntity topic,
   }) async {
-    final chatRooms = await ref.read(interviewRoomsProvider(topic.id).future);
+    final chatRooms = await ref
+        .read(interviewRoomsProvider(InterviewType.topic, topic.id).future);
     if (chatRooms.isEmpty) {
       QuestionCountSelectPageRoute(
         InterviewType.topic,
         $extra: [topic],
       ).push(ref.context);
     } else {
-      ChatListPageRoute(topic.id).push(rootNavigatorKey.currentContext!);
+      ChatListPageRoute(InterviewType.topic, topicId: topic.id)
+          .push(rootNavigatorKey.currentContext!);
     }
   }
 }

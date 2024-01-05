@@ -6,7 +6,7 @@ part of 'chat_qnas_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chatQnAsHash() => r'05a12f222f64b95d5ce488feae6ff1a203010d01';
+String _$chatQnAsHash() => r'901d18692d9d530fa24c50adca51b7c619f02a97';
 
 /// Copied from Dart SDK
 class _SystemHash {

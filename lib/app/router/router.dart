@@ -231,28 +231,32 @@ class QuestionCountSelectPageRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return QuestionCountSelectPage(
-      topic: $extra.first,
+      type: type,
+      topics: $extra,
     );
   }
 }
 
 class ChatListPageRoute extends GoRouteData {
-  const ChatListPageRoute(this.topicId);
+  const ChatListPageRoute(this.type, {this.topicId});
 
-  static const String path = 'chat-list/:topicId';
+  static const String path = ':type';
   static const String name = 'chat list';
 
-  final String topicId;
+  final InterviewType type;
+  final String? topicId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return ProviderScope(
       overrides: [
-        selectedInterviewTopicProvider.overrideWithValue(
-          getTopicUseCase(topicId).getOrThrow(),
-        ),
+        if (topicId != null)
+          selectedInterviewTopicProvider.overrideWithValue(
+            getTopicUseCase(topicId!).getOrThrow(),
+          ),
       ],
       child: ChatListPage(
+        type: type,
         topicId: topicId,
       ),
     );
@@ -260,14 +264,17 @@ class ChatListPageRoute extends GoRouteData {
 }
 
 class ChatPageRoute extends GoRouteData {
-  ChatPageRoute(this.$extra)
-      : topicId = $extra.topic.id,
+  ChatPageRoute(
+    this.type, {
+    required this.$extra,
+  })  : topicId = $extra.topics.single.id,
         roomId = $extra.id;
 
   static const String path = ':roomId';
   static const String name = 'chat';
 
-  final String topicId;
+  final InterviewType type;
+  final String? topicId;
   final String roomId;
   final ChatRoomEntity $extra;
 

@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:techtalk/core/constants/interview_type.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data/models/chat_message_model.dart';
 import 'package:techtalk/features/chat/data/models/chat_qna_model.dart';
 import 'package:techtalk/features/chat/data/models/chat_ref.dart';
 import 'package:techtalk/features/chat/data/models/chat_room_model.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   @override
@@ -21,13 +23,19 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }
 
   @override
-  Future<List<ChatRoomModel>> getChatRooms(String topicId) async {
-    final snapshot = await FirestoreChatRoomRef.collection()
-        .where(
-          'topic_id',
-          isEqualTo: topicId,
-        )
-        .get();
+  Future<List<ChatRoomModel>> getChatRooms(
+    InterviewType type, [
+    TopicEntity? topic,
+  ]) async {
+    final snapshot = switch (type) {
+      InterviewType.topic => await FirestoreChatRoomRef.collection()
+          .where('type', isEqualTo: type.name)
+          .where('topic_ids', arrayContains: topic!.id)
+          .get(),
+      InterviewType.practical => await FirestoreChatRoomRef.collection()
+          .where('type', isEqualTo: type.name)
+          .get()
+    };
 
     return [
       ...snapshot.docs.map((e) => e.data()),
@@ -39,20 +47,6 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
     final snapshot = await FirestoreChatRoomRef.doc(roomId).get();
 
     return snapshot.data()!;
-  }
-
-  @override
-  Future<void> updateChatRoom(ChatRoomEntity room) async {
-    final roomModel = ChatRoomModel.fromEntity(room);
-    final roomDoc = FirestoreChatRoomRef.doc(roomModel.id);
-    final roomSnapshot = await roomDoc.get();
-
-    if (!roomSnapshot.exists) {
-      throw Exception('채팅방이 존재하지 않습니다.');
-    }
-
-    // 채팅방 데이터 저장
-    await roomDoc.set(roomModel);
   }
 
   @override
@@ -177,8 +171,8 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }
 
   @override
-  Future<List<ChatQnaModel>> getChatQnas(ChatRoomEntity room) async {
-    final snapshot = await FirestoreChatQnaRef.collection(room.id).get();
+  Future<List<ChatQnaModel>> getChatQnas(String roomId) async {
+    final snapshot = await FirestoreChatQnaRef.collection(roomId).get();
 
     return [
       ...snapshot.docs.map((e) => e.data()),

@@ -6,7 +6,7 @@ part of 'interview_rooms_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$interviewRoomsHash() => r'fcf251206a757f79cd6c5526057f967853898822';
+String _$interviewRoomsHash() => r'259569c7feef8ca7167f632f6971300799b5fb10';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,11 +31,13 @@ class _SystemHash {
 
 abstract class _$InterviewRooms
     extends BuildlessAutoDisposeAsyncNotifier<List<ChatRoomEntity>> {
-  late final String topicId;
+  late final InterviewType type;
+  late final String? topicId;
 
   FutureOr<List<ChatRoomEntity>> build(
-    String topicId,
-  );
+    InterviewType type, [
+    String? topicId,
+  ]);
 }
 
 /// See also [InterviewRooms].
@@ -49,9 +51,11 @@ class InterviewRoomsFamily extends Family<AsyncValue<List<ChatRoomEntity>>> {
 
   /// See also [InterviewRooms].
   InterviewRoomsProvider call(
-    String topicId,
-  ) {
+    InterviewType type, [
+    String? topicId,
+  ]) {
     return InterviewRoomsProvider(
+      type,
       topicId,
     );
   }
@@ -61,6 +65,7 @@ class InterviewRoomsFamily extends Family<AsyncValue<List<ChatRoomEntity>>> {
     covariant InterviewRoomsProvider provider,
   ) {
     return call(
+      provider.type,
       provider.topicId,
     );
   }
@@ -85,9 +90,12 @@ class InterviewRoomsProvider extends AutoDisposeAsyncNotifierProviderImpl<
     InterviewRooms, List<ChatRoomEntity>> {
   /// See also [InterviewRooms].
   InterviewRoomsProvider(
-    String topicId,
-  ) : this._internal(
-          () => InterviewRooms()..topicId = topicId,
+    InterviewType type, [
+    String? topicId,
+  ]) : this._internal(
+          () => InterviewRooms()
+            ..type = type
+            ..topicId = topicId,
           from: interviewRoomsProvider,
           name: r'interviewRoomsProvider',
           debugGetCreateSourceHash:
@@ -97,6 +105,7 @@ class InterviewRoomsProvider extends AutoDisposeAsyncNotifierProviderImpl<
           dependencies: InterviewRoomsFamily._dependencies,
           allTransitiveDependencies:
               InterviewRoomsFamily._allTransitiveDependencies,
+          type: type,
           topicId: topicId,
         );
 
@@ -107,16 +116,19 @@ class InterviewRoomsProvider extends AutoDisposeAsyncNotifierProviderImpl<
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
+    required this.type,
     required this.topicId,
   }) : super.internal();
 
-  final String topicId;
+  final InterviewType type;
+  final String? topicId;
 
   @override
   FutureOr<List<ChatRoomEntity>> runNotifierBuild(
     covariant InterviewRooms notifier,
   ) {
     return notifier.build(
+      type,
       topicId,
     );
   }
@@ -126,12 +138,15 @@ class InterviewRoomsProvider extends AutoDisposeAsyncNotifierProviderImpl<
     return ProviderOverride(
       origin: this,
       override: InterviewRoomsProvider._internal(
-        () => create()..topicId = topicId,
+        () => create()
+          ..type = type
+          ..topicId = topicId,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
+        type: type,
         topicId: topicId,
       ),
     );
@@ -145,12 +160,15 @@ class InterviewRoomsProvider extends AutoDisposeAsyncNotifierProviderImpl<
 
   @override
   bool operator ==(Object other) {
-    return other is InterviewRoomsProvider && other.topicId == topicId;
+    return other is InterviewRoomsProvider &&
+        other.type == type &&
+        other.topicId == topicId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, type.hashCode);
     hash = _SystemHash.combine(hash, topicId.hashCode);
 
     return _SystemHash.finish(hash);
@@ -159,8 +177,11 @@ class InterviewRoomsProvider extends AutoDisposeAsyncNotifierProviderImpl<
 
 mixin InterviewRoomsRef
     on AutoDisposeAsyncNotifierProviderRef<List<ChatRoomEntity>> {
+  /// The parameter `type` of this provider.
+  InterviewType get type;
+
   /// The parameter `topicId` of this provider.
-  String get topicId;
+  String? get topicId;
 }
 
 class _InterviewRoomsProviderElement
@@ -169,7 +190,9 @@ class _InterviewRoomsProviderElement
   _InterviewRoomsProviderElement(super.provider);
 
   @override
-  String get topicId => (origin as InterviewRoomsProvider).topicId;
+  InterviewType get type => (origin as InterviewRoomsProvider).type;
+  @override
+  String? get topicId => (origin as InterviewRoomsProvider).topicId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

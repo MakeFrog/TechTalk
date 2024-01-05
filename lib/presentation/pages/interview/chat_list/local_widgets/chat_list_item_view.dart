@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:techtalk/core/constants/interview_type.dart';
 import 'package:techtalk/core/helper/date_time_extension.dart';
 import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
@@ -12,16 +13,18 @@ import 'package:techtalk/presentation/widgets/common/indicator/pass_fail_indicat
 class ChatListItemView extends StatelessWidget with ChatListEvent {
   const ChatListItemView({
     Key? key,
+    required this.type,
     required this.item,
     required this.isLoaded,
   }) : super(key: key);
 
   factory ChatListItemView.create(ChatRoomEntity item) =>
-      ChatListItemView(item: item, isLoaded: true);
+      ChatListItemView(type: InterviewType.topic, item: item, isLoaded: true);
 
-  factory ChatListItemView.createSkeleton() =>
-      const ChatListItemView(item: null, isLoaded: false);
+  factory ChatListItemView.createSkeleton() => const ChatListItemView(
+      type: InterviewType.topic, item: null, isLoaded: false);
 
+  final InterviewType type;
   final ChatRoomEntity? item;
   final bool isLoaded;
 
@@ -34,6 +37,7 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
         onPressed: () {
           routeToChatPage(
             context,
+            type: type,
             room: item!,
           );
         },
