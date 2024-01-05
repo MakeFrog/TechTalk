@@ -7,7 +7,7 @@ import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_event.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
-import 'package:techtalk/presentation/widgets/interview_topic_card.dart';
+import 'package:techtalk/presentation/widgets/section/interview_topic_card.dart';
 
 class InterviewTopicSelectPage extends BasePage {
   const InterviewTopicSelectPage({super.key});

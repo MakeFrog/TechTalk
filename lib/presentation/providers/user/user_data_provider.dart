@@ -11,6 +11,7 @@ part 'user_data_provider.g.dart';
 class UserData extends _$UserData {
   @override
   FutureOr<UserDataEntity?> build() async {
+    print('USERDATA RENDEREd');
     final userAuth = ref.watch(userAuthProvider);
 
     if (userAuth == null) throw const UnAuthorizedException();

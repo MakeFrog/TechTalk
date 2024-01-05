@@ -1,8 +1,10 @@
+import 'package:techtalk/core/constants/job_group.enum.dart';
+
 class UserDataEntity {
   final String uid;
   final String? profileImgUrl;
   final String? nickname;
-  final List<String> jobGroupIds;
+  final List<JobGroup> jobGroups;
   final List<String> topicIds;
 
   bool get hasEssentialData => nickname != null;
@@ -11,23 +13,23 @@ class UserDataEntity {
     required this.uid,
     this.profileImgUrl,
     this.nickname,
-    List<String>? jobGroupIds,
+    List<JobGroup>? jobGroupIds,
     List<String>? topicIds,
-  })  : jobGroupIds = jobGroupIds ?? const [],
+  })  : jobGroups = jobGroupIds ?? const [],
         topicIds = topicIds ?? const [];
 
   UserDataEntity copyWith({
     String? uid,
     String? profileImgUrl,
     String? nickname,
-    List<String>? jobGroupIds,
+    List<JobGroup>? jobGroups,
     List<String>? topicIds,
   }) {
     return UserDataEntity(
       uid: uid ?? this.uid,
       profileImgUrl: profileImgUrl ?? this.profileImgUrl,
       nickname: nickname ?? this.nickname,
-      jobGroupIds: jobGroupIds ?? this.jobGroupIds,
+      jobGroupIds: jobGroups ?? this.jobGroups,
       topicIds: topicIds ?? this.topicIds,
     );
   }
@@ -37,18 +39,27 @@ class UserDataEntity {
       'uid': this.uid,
       'profileImgUrl': this.profileImgUrl,
       'nickname': this.nickname,
-      'jobGroupIds': this.jobGroupIds,
+      'jobGroupIds': this.jobGroups,
       'topicIds': this.topicIds,
     };
   }
 
-  factory UserDataEntity.fromMap(Map<String, dynamic> map) {
-    return UserDataEntity(
-      uid: map['uid'] as String,
-      profileImgUrl: map['profileImgUrl'] as String,
-      nickname: map['nickname'] as String,
-      jobGroupIds: map['jobGroupIds'] as List<String>,
-      topicIds: map['topicIds'] as List<String>,
-    );
-  }
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UserDataEntity &&
+          runtimeType == other.runtimeType &&
+          uid == other.uid &&
+          profileImgUrl == other.profileImgUrl &&
+          nickname == other.nickname &&
+          jobGroups == other.jobGroups &&
+          topicIds == other.topicIds;
+
+  @override
+  int get hashCode =>
+      uid.hashCode ^
+      profileImgUrl.hashCode ^
+      nickname.hashCode ^
+      jobGroups.hashCode ^
+      topicIds.hashCode;
 }

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 ///
 /// 개발 직군 리스트.
 /// 원티드 채용 사이트를 참고함.
@@ -50,4 +52,11 @@ enum JobGroup {
         (job) => job.id == id,
         orElse: () => throw Exception('InCorrect Id: $id'),
       );
+}
+
+class TestWidget {
+  final GlobalKey<AnimatedListState> animatedlistKey;
+  final JobGroup job;
+
+  TestWidget(this.animatedlistKey, this.job);
 }

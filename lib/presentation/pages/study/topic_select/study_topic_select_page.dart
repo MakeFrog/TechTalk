@@ -6,7 +6,7 @@ import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/study/topic_select/study_topic_select_event.dart';
 import 'package:techtalk/presentation/widgets/common/chip/label_chip.dart';
-import 'package:techtalk/presentation/widgets/study_topic_card.dart';
+import 'package:techtalk/presentation/widgets/section/study_topic_card.dart';
 
 class StudyTopicSelectPage extends HookWidget {
   const StudyTopicSelectPage({super.key});

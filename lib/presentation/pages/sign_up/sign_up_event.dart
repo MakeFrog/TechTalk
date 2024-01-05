@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:korean_profanity_filter/korean_profanity_filter.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/core/helper/validation_extension.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
@@ -113,7 +114,7 @@ mixin class SignUpEvent implements _SignUpEvent {
 
       await EasyLoading.show();
       final userData = ref.read(userDataProvider).requireValue!.copyWith(
-        jobGroupIds: [...jobGroups.map((e) => e.id)],
+        jobGroups: [...jobGroups.map((e) => JobGroup.getById(e.id))],
       );
 
       await ref.read(userDataProvider.notifier).updateData(userData);

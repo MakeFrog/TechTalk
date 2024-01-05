@@ -18,7 +18,7 @@ class SelectResultChipListView extends StatelessWidget {
       height: 36,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         itemCount: itemList.length,
         separatorBuilder: (context, index) => Gap(8),
         itemBuilder: (context, index) {
