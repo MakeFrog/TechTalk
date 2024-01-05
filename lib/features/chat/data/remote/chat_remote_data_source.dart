@@ -33,20 +33,9 @@ abstract interface class ChatRemoteDataSource {
     String chatId,
   );
 
-  /// 채팅 메세지 업데이트
-  Future<void> updateChatMessages(
-    String roomId, {
-    required List<ChatMessageEntity> messages,
-  });
-
   Future<void> createChatQnas(
     String roomId, {
     required List<ChatQnaEntity> qnas,
   });
   Future<List<ChatQnaModel>> getChatQnas(String roomId);
-
-  Future<void> updateChatQnas(
-    String roomId, {
-    required ChatQnaEntity qna,
-  });
 }

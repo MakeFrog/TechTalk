@@ -33,11 +33,5 @@ abstract interface class ChatRepository {
     String chatId,
   );
 
-  /// 채팅 메세지 업데이트
-  Future<Result<void>> updateChatMessages(
-    String roomId, {
-    required List<ChatMessageEntity> messages,
-  });
-
   Future<Result<List<ChatQnaEntity>>> getChatQnAs(ChatRoomEntity room);
 }

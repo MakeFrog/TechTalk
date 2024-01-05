@@ -4,7 +4,6 @@ import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source_impl.dart';
 import 'package:techtalk/features/chat/use_cases/create_chat_room_use_case.dart';
-import 'package:techtalk/features/chat/use_cases/update_chat_messages_use_case.dart';
 
 final class ChatDependencyInject extends FeatureDependencyInjection {
   @override
@@ -52,7 +51,6 @@ final class ChatDependencyInject extends FeatureDependencyInjection {
         () => CreateChatMessagesUseCase(
           chatRepository,
         ),
-      )
-      ..registerFactory(() => UpdateChatMessagesUseCase(chatRepository));
+      );
   }
 }

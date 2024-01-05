@@ -121,34 +121,6 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }
 
   @override
-  Future<void> updateChatMessages(
-    String roomId, {
-    required List<ChatMessageEntity> messages,
-  }) async {
-    try {
-      await FirebaseFirestore.instance.runTransaction(
-        (transaction) async {
-          // 메세지 업데이트
-          // 유저의 응답메세지라면 채팅방의 정답 or 오답카운트, 채팅방 qna 정보를 업데이트한다
-          for (final message in messages) {
-            final messageModel = ChatMessageModel.fromEntity(message);
-            final messageDoc = await FirestoreChatMessageRef.collection(roomId)
-                .doc(message.id)
-                .get();
-
-            if (messageDoc.exists) {
-              transaction.set(
-                FirestoreChatMessageRef.collection(roomId).doc(message.id),
-                messageModel,
-              );
-            }
-          }
-        },
-      );
-    } catch (e) {}
-  }
-
-  @override
   Future<void> createChatQnas(
     String roomId, {
     required List<ChatQnaEntity> qnas,
@@ -177,15 +149,5 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
     return [
       ...snapshot.docs.map((e) => e.data()),
     ];
-  }
-
-  @override
-  Future<void> updateChatQnas(
-    String roomId, {
-    required ChatQnaEntity qna,
-  }) async {
-    await FirestoreChatQnaRef.collection(roomId)
-        .doc(qna.id)
-        .set(ChatQnaModel.fromEntity(qna));
   }
 }

@@ -153,23 +153,6 @@ final class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<Result<void>> updateChatMessages(
-    String roomId, {
-    required List<ChatMessageEntity> messages,
-  }) async {
-    try {
-      return Result.success(
-        await _remoteDataSource.updateChatMessages(
-          roomId,
-          messages: messages,
-        ),
-      );
-    } on Exception catch (e) {
-      return Result.failure(e);
-    }
-  }
-
-  @override
   Future<Result<List<ChatQnaEntity>>> getChatQnAs(ChatRoomEntity room) async {
     final roomQnAs = await _remoteDataSource.getChatQnas(room.id);
 
