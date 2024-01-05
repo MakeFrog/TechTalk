@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/interview_type.dart';
@@ -6,8 +5,16 @@ import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/interview_rooms_provider.dart';
 
 mixin class HomeEvent {
-  void onTapPracticalInterview(BuildContext context) {
-    const InterviewTopicSelectRoute(InterviewType.practical).push(context);
+  void onTapPracticalInterview(WidgetRef ref) async {
+    final chatRooms =
+        await ref.read(interviewRoomsProvider(InterviewType.practical).future);
+
+    if (chatRooms.isEmpty) {
+      const InterviewTopicSelectRoute(InterviewType.practical)
+          .push(ref.context);
+    } else {
+      ChatListPageRoute(InterviewType.practical).push(ref.context);
+    }
   }
 
   void onTapNewTopicInterview() {

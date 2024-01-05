@@ -9,7 +9,6 @@ import 'package:techtalk/presentation/pages/interview/chat/providers/selected_ch
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
-import 'package:techtalk/presentation/pages/interview/topic_select/providers/selected_interview_topic_provider.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
@@ -172,7 +171,7 @@ class StudyRoute extends GoRouteData {
   final String topicId;
   final TopicEntity $extra;
 
-  static const String path = ':topicId';
+  static const String path = 'study/:topicId';
   static const String name = 'study';
 
   @override
@@ -202,7 +201,7 @@ class WrongAnswerRoute extends GoRouteData {
 class InterviewTopicSelectRoute extends GoRouteData {
   const InterviewTopicSelectRoute(this.type);
 
-  static const String path = ':type';
+  static const String path = 'interview/:type';
   static const String name = 'topic select';
 
   final InterviewType type;
@@ -219,13 +218,13 @@ class QuestionCountSelectPageRoute extends GoRouteData {
   QuestionCountSelectPageRoute(
     this.type, {
     required this.$extra,
-  }) : _topicId = $extra.singleOrNull?.id ?? $extra.map((e) => e.id).toString();
+  }) : topicId = $extra.singleOrNull?.id ?? $extra.map((e) => e.id).toString();
 
-  static const String path = ':_topicId';
+  static const String path = ':topicId';
   static const String name = 'question count select';
 
   final InterviewType type;
-  final String _topicId;
+  final String topicId;
   final List<TopicEntity> $extra;
 
   @override
@@ -240,7 +239,7 @@ class QuestionCountSelectPageRoute extends GoRouteData {
 class ChatListPageRoute extends GoRouteData {
   const ChatListPageRoute(this.type, {this.topicId});
 
-  static const String path = ':type';
+  static const String path = 'chats/:type';
   static const String name = 'chat list';
 
   final InterviewType type;
@@ -248,26 +247,19 @@ class ChatListPageRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ProviderScope(
-      overrides: [
-        if (topicId != null)
-          selectedInterviewTopicProvider.overrideWithValue(
-            getTopicUseCase(topicId!).getOrThrow(),
-          ),
-      ],
-      child: ChatListPage(
-        type: type,
-        topicId: topicId,
-      ),
+    return ChatListPage(
+      type: type,
+      topicId: topicId,
     );
   }
 }
 
 class ChatPageRoute extends GoRouteData {
   ChatPageRoute(
-    this.type, {
-    required this.$extra,
-  })  : topicId = $extra.topics.single.id,
+    this.$extra, {
+    String? topicId,
+  })  : type = $extra.type,
+        topicId = topicId ?? $extra.topics.singleOrNull?.id,
         roomId = $extra.id;
 
   static const String path = ':roomId';

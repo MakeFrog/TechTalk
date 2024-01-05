@@ -14,8 +14,10 @@ class InterviewRooms extends _$InterviewRooms {
     InterviewType type, [
     String? topicId,
   ]) async {
-    final topic =
-        topicId != null ? getTopicUseCase(topicId).getOrThrow() : null;
+    final topic = switch (type) {
+      InterviewType.topic => getTopicUseCase(topicId!).getOrThrow(),
+      InterviewType.practical => null,
+    };
     final response = await getChatRoomsUseCase(type, topic);
 
     return response.fold(

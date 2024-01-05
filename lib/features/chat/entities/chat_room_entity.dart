@@ -20,11 +20,13 @@ class ChatRoomEntity {
   ChatResult get passOrFail => progressInfo.chatResult;
 
   factory ChatRoomEntity.random({
+    required InterviewType type,
     required List<TopicEntity> topics,
     required int questionCount,
   }) {
     return ChatRoomEntity(
       isTemporary: true,
+      type: type,
       id: StringGenerator.generateRandomString(),
       interviewer: InterviewerEntity.getRandomInterviewer(),
       topics: topics,
@@ -36,6 +38,7 @@ class ChatRoomEntity {
 
 //<editor-fold desc="Data Methods">
   const ChatRoomEntity({
+    required this.type,
     required this.id,
     required this.interviewer,
     required this.topics,
@@ -43,8 +46,7 @@ class ChatRoomEntity {
     this.lastChatMessage,
     this.lastChatDate,
     this.isTemporary = false,
-  }) : type =
-            topics.length == 1 ? InterviewType.topic : InterviewType.practical;
+  });
 
   @override
   bool operator ==(Object other) =>
@@ -96,6 +98,7 @@ class ChatRoomEntity {
   }) {
     return ChatRoomEntity(
       id: id ?? this.id,
+      type: type,
       interviewer: interviewer ?? this.interviewer,
       topics: topics ?? this.topics,
       progressInfo: progressInfo ?? this.progressInfo,

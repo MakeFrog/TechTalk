@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/core/constants/interview_type.dart';
 import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
@@ -8,13 +11,36 @@ part 'chat_qnas_provider.g.dart';
 @riverpod
 class ChatQnAs extends _$ChatQnAs {
   Future<List<ChatQnaEntity>> _getRandomQnas() async {
-    final qnas = await getTopicQnasUseCase(room.topics.first.id).then(
-      (value) => value.getOrThrow(),
-    )
-      ..shuffle();
+    final List<TopicQnaEntity> resolvedQnas = [];
+    switch (room.type) {
+      case InterviewType.topic:
+        final qnas = await getTopicQnasUseCase(room.topics.first.id).then(
+          (value) => value.getOrThrow(),
+        )
+          ..shuffle();
+        resolvedQnas.addAll(
+          qnas.sublist(0, room.progressInfo.totalQuestionCount),
+        );
+      case InterviewType.practical:
+        final topicCount = room.topics.length;
+        final qnaCount = room.progressInfo.totalQuestionCount;
+        final qnaCountPerTopic = qnaCount ~/ topicCount;
 
-    return qnas
-        .sublist(0, room.progressInfo.totalQuestionCount)
+        int remainingQnaCount = qnaCount;
+        for (final topic in room.topics) {
+          final qnas = await getTopicQnasUseCase(topic.id).then(
+            (value) => value.getOrThrow(),
+          )
+            ..shuffle();
+          resolvedQnas.addAll(
+            qnas.sublist(0, min(qnaCountPerTopic, remainingQnaCount)),
+          );
+          remainingQnaCount -= qnaCountPerTopic;
+        }
+        resolvedQnas.shuffle();
+    }
+
+    return resolvedQnas
         .map(
           (e) => ChatQnaEntity(
             id: e.id,

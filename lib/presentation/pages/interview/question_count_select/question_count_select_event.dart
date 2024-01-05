@@ -16,11 +16,12 @@ mixin class QuestionCountSelectEvent {
     await EasyLoading.show();
 
     final room = ChatRoomEntity.random(
+      type: type,
       topics: topics,
       questionCount: questionCount,
     );
 
-    ChatPageRoute(type, $extra: room).go(ref.context);
+    ChatPageRoute(room).go(ref.context);
 
     await EasyLoading.dismiss();
   }

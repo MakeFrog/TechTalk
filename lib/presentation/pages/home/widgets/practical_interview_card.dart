@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/home/home_event.dart';
 
-class PracticalInterviewCard extends StatelessWidget with HomeEvent {
+class PracticalInterviewCard extends ConsumerWidget with HomeEvent {
   const PracticalInterviewCard({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Material(
@@ -17,7 +18,7 @@ class PracticalInterviewCard extends StatelessWidget with HomeEvent {
         color: AppColor.of.brand1,
         borderRadius: BorderRadius.circular(16),
         child: InkWell(
-          onTap: () => onTapPracticalInterview(context),
+          onTap: () => onTapPracticalInterview(ref),
           child: Container(
             padding: const EdgeInsets.all(24),
             child: Column(

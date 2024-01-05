@@ -15,17 +15,16 @@ class ChatListPage extends BasePage with ChatListEvent {
   ChatListPage({
     Key? key,
     required this.type,
-    this.topicId,
-  })  : _topic = topicId != null ? getTopicUseCase(topicId).getOrThrow() : null,
+    String? topicId,
+  })  : topic = topicId != null ? getTopicUseCase(topicId).getOrThrow() : null,
         super(key: key);
 
   final InterviewType type;
-  final String? topicId;
-  final TopicEntity? _topic;
+  final TopicEntity? topic;
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
-    final roomsAsync = ref.watch(interviewRoomsProvider(type, topicId));
+    final roomsAsync = ref.watch(interviewRoomsProvider(type, topic?.id));
 
     return roomsAsync.when(
       data: (chatList) {
@@ -33,6 +32,7 @@ class ChatListPage extends BasePage with ChatListEvent {
           itemCount: chatList.length,
           itemBuilder: (context, index) {
             return ChatListItemView.create(
+              type,
               chatList[index],
             );
           },
@@ -60,7 +60,7 @@ class ChatListPage extends BasePage with ChatListEvent {
               case InterviewType.topic:
                 routeToQuestionCountSelectPage(
                   ref,
-                  topic: _topic!,
+                  topic: topic!,
                 );
               case InterviewType.practical:
                 routeToTopicSelectPage(ref);
@@ -86,7 +86,7 @@ class ChatListPage extends BasePage with ChatListEvent {
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
       BackButtonAppBar(
         title: switch (type) {
-          InterviewType.topic => _topic!.text,
+          InterviewType.topic => topic?.text,
           InterviewType.practical => '실전 면접',
         },
       );

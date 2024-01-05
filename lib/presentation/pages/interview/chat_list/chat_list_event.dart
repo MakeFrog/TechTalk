@@ -9,10 +9,9 @@ mixin class ChatListEvent {
   /// 채팅 페이지로 이동
   void routeToChatPage(
     BuildContext context, {
-    required InterviewType type,
     required ChatRoomEntity room,
   }) {
-    ChatPageRoute(type, $extra: room).go(context);
+    ChatPageRoute(room).go(context);
   }
 
   /// 면접 질문 갯수 선택 페이지로 이동
@@ -27,7 +26,7 @@ mixin class ChatListEvent {
   }
 
   void routeToTopicSelectPage(WidgetRef ref) {
-    InterviewTopicSelectRoute(
+    const InterviewTopicSelectRoute(
       InterviewType.practical,
     ).push(ref.context);
   }

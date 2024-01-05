@@ -57,6 +57,7 @@ final class ChatRepositoryImpl implements ChatRepository {
 
         rooms.add(
           ChatRoomEntity(
+            type: roomModel.type,
             id: roomModel.id,
             interviewer:
                 InterviewerEntity.getAvatarInfoById(roomModel.interviewerId),
@@ -89,6 +90,7 @@ final class ChatRepositoryImpl implements ChatRepository {
 
     return Result.success(
       ChatRoomEntity(
+        type: roomModel.type,
         id: roomModel.id,
         interviewer:
             InterviewerEntity.getAvatarInfoById(roomModel.interviewerId),

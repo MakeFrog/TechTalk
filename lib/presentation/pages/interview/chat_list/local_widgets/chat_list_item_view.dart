@@ -13,18 +13,16 @@ import 'package:techtalk/presentation/widgets/common/indicator/pass_fail_indicat
 class ChatListItemView extends StatelessWidget with ChatListEvent {
   const ChatListItemView({
     Key? key,
-    required this.type,
     required this.item,
     required this.isLoaded,
   }) : super(key: key);
 
-  factory ChatListItemView.create(ChatRoomEntity item) =>
-      ChatListItemView(type: InterviewType.topic, item: item, isLoaded: true);
+  factory ChatListItemView.create(InterviewType type, ChatRoomEntity item) =>
+      ChatListItemView(item: item, isLoaded: true);
 
-  factory ChatListItemView.createSkeleton() => const ChatListItemView(
-      type: InterviewType.topic, item: null, isLoaded: false);
+  factory ChatListItemView.createSkeleton() =>
+      const ChatListItemView(item: null, isLoaded: false);
 
-  final InterviewType type;
   final ChatRoomEntity? item;
   final bool isLoaded;
 
@@ -37,7 +35,6 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
         onPressed: () {
           routeToChatPage(
             context,
-            type: type,
             room: item!,
           );
         },

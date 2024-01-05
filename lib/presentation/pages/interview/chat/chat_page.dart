@@ -56,10 +56,11 @@ class ChatPage extends BasePage with ChatEvent {
     final firstTopic = ref.watch(selectedChatRoomProvider).topics.first.text;
     final otherTopicCount =
         ref.watch(selectedChatRoomProvider).topics.length - 1;
+
     return BackButtonAppBar(
-      title: '$firstTopic${otherTopicCount > 0 ? '외 $otherTopicCount' : ''}',
+      title: '$firstTopic${otherTopicCount > 0 ? ' 외 $otherTopicCount' : ''}',
       onBackBtnTapped: () {
-        onAppbarBackBtnTapped(context);
+        onAppbarBackBtnTapped(ref);
       },
     );
   }
