@@ -9,12 +9,8 @@ class SelectedJobGroups extends _$SelectedJobGroups {
   @override
   List<JobGroup> build() {
     final userJobGroups = ref.read(userDataProvider).value!.jobGroups;
-    ref.listen(userDataProvider, (previous, next) {
-      print('@@현재 user Data Provider -> ${next}');
-    });
-    return userJobGroups;
 
-    // return [JobGroup.WEB_DEVELOPER];
+    return userJobGroups.toList();
   }
 
   void add(JobGroup item) {
