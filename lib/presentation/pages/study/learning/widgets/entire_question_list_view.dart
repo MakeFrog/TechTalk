@@ -1,14 +1,9 @@
-import 'dart:ui';
-
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/core/helper/global_event_key.dart';
 import 'package:techtalk/core/helper/hook_helper.dart';
-import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/topic/topic.dart';
@@ -37,18 +32,7 @@ class EntireQuestionListView extends HookConsumerWidget {
 
     usePostFrameEffect(
       () {
-        final targetOffset = clampDouble(
-          itemKeys[currentIndex].globalPosition.dy -
-              AppSize.to.statusBarHeight -
-              kToolbarHeight,
-          0,
-          scrollController.position.maxScrollExtent,
-        );
-        scrollController.animateTo(
-          targetOffset,
-          duration: 1.seconds,
-          curve: Curves.easeOutExpo,
-        );
+        Scrollable.ensureVisible(itemKeys[currentIndex].currentContext!);
       },
       [],
     );
