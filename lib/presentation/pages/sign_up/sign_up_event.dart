@@ -8,37 +8,13 @@ import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/core/helper/validation_extension.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
-import 'package:techtalk/features/job/job.dart';
 import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/presentation/pages/my_info/job_group_setting/provider/selected_job_groups_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_controller.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
-abstract class _SignUpEvent {
-  /// 앱바의 [BackButton]을 눌렀을 때 실행할 콜백
-  ///
-  /// 이전 회원가입 단계로 넘어간다. 이전 단계로 넘어갈 시 현재 단계에 작성한 데이터는 삭제한다.
-  void onTapBackButton(WidgetRef ref);
-
-  /// 닉네임 입력 스크린의 다음단계 버튼을 눌렀을 때 실행할 콜백
-  Future<void> onTapNicknameStepNext(
-    WidgetRef ref, {
-    required String nickname,
-    required ValueNotifier<String?> nicknameValidation,
-  });
-
-  Future<void> onTapJobGroupStepNext(
-    WidgetRef ref, {
-    required List<JobEntity> jobGroups,
-  });
-
-  Future<void> onTapSignUp(
-    WidgetRef ref, {
-    required List<TopicEntity> topics,
-  });
-}
-
-mixin class SignUpEvent implements _SignUpEvent {
+mixin class SignUpEvent {
   String? validateNickname(String nickname) {
     if (nickname.isEmpty) {
       return null;
@@ -55,7 +31,6 @@ mixin class SignUpEvent implements _SignUpEvent {
     }
   }
 
-  @override
   void onTapBackButton(WidgetRef ref) {
     if (ref.read(signUpStepControllerProvider).page!.round() == 0) {
       DialogService.show(
@@ -79,7 +54,6 @@ mixin class SignUpEvent implements _SignUpEvent {
     }
   }
 
-  @override
   Future<void> onTapNicknameStepNext(
     WidgetRef ref, {
     required String nickname,
@@ -104,12 +78,12 @@ mixin class SignUpEvent implements _SignUpEvent {
     }
   }
 
-  @override
   Future<void> onTapJobGroupStepNext(
-    WidgetRef ref, {
-    required List<JobEntity> jobGroups,
-  }) async {
+    WidgetRef ref,
+  ) async {
     try {
+      final jobGroups = ref.read(selectedJobGroupsProvider);
+
       FocusManager.instance.primaryFocus?.unfocus();
 
       await EasyLoading.show();
@@ -125,7 +99,6 @@ mixin class SignUpEvent implements _SignUpEvent {
     }
   }
 
-  @override
   Future<void> onTapSignUp(
     WidgetRef ref, {
     required List<TopicEntity> topics,
@@ -145,5 +118,24 @@ mixin class SignUpEvent implements _SignUpEvent {
     } finally {
       await EasyLoading.dismiss();
     }
+  }
+
+  ///
+  /// 직군 ListTile이 클릭되었을 때
+  ///
+  void onJobGroupListTileTapped(WidgetRef ref, {required JobGroup item}) {
+    final selectedJobGroups = ref.read(selectedJobGroupsProvider);
+    if (selectedJobGroups.contains(item)) {
+      ref.read(selectedJobGroupsProvider.notifier).remove(item);
+    } else {
+      ref.read(selectedJobGroupsProvider.notifier).add(item);
+    }
+  }
+
+  ///
+  /// 선택된 직군 Chip 위젯이 클릭 되었을 때
+  ///
+  void onJogGroupChipTapped(WidgetRef ref, {required JobGroup item}) {
+    ref.read(selectedJobGroupsProvider.notifier).remove(item);
   }
 }

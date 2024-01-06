@@ -51,7 +51,6 @@ mixin class MyPageEvent {
               },
               jobGroup: (_) {
                 JobGroupSettingRoute().go(context);
-                print('ROUTE TO JOB GROUP SETTING PAGE');
               },
               topic: (_) {},
             );
