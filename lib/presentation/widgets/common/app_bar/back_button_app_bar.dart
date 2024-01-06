@@ -9,7 +9,8 @@ class BackButtonAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     this.title,
     this.onBackBtnTapped,
-  }) : actions = null;
+    this.actions,
+  });
 
   final String? title;
   final VoidCallback? onBackBtnTapped;
