@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/core/constants/profile_setting_type.enum.dart';
+import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 import 'package:techtalk/presentation/widgets/common/bottom_sheet/option_list_bottom_sheet.dart';
+
+class TestClass {
+  TestClass() {
+    print('TEST CLASS : $hashCode');
+  }
+}
 
 mixin class MyPageEvent {
   ///
@@ -26,9 +36,9 @@ mixin class MyPageEvent {
   ///
   /// 설정 bottom sheet 모달창 노출
   ///
-  void onProfileEditBtnTapped(BuildContext context) {
+  void onProfileEditBtnTapped(WidgetRef ref) {
     showModalBottomSheet(
-      context: context,
+      context: ref.context,
       useSafeArea: true,
       isDismissible: true,
       backgroundColor: Colors.transparent,
@@ -37,12 +47,22 @@ mixin class MyPageEvent {
         return OptionListBottomSheet(
           leadingText: '내 정보 수정',
           onCloseBtnTapped: context.pop,
-          options: const [
-            '프로필',
-            '관심 직군',
-            '관심 주제',
-          ],
-          onOptionTapped: () {},
+          options: ProfileSettingType.values.map((e) => e.name).toList(),
+          onOptionTapped: (int index) {
+            ProfileSettingType.branch(
+              targetCategory: ProfileSettingType.getByIndex(index),
+              profile: (_) {
+                final user = ref.read(userDataProvider).value;
+                ProfileSettingRoute(user!).go(context);
+              },
+              jobGroup: (_) {
+                print('ROUTE TO JOB GROUP SETTING PAGE');
+              },
+              topic: (_) {
+                print('ROUT TO TOPIC SETTING PAGE');
+              },
+            );
+          },
         );
       },
     );

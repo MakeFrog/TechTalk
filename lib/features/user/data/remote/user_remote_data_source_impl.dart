@@ -1,18 +1,27 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
+import 'package:techtalk/features/user/data/models/fire_storage_user_ref.dart';
 import 'package:techtalk/features/user/data/models/user_model.dart';
 import 'package:techtalk/features/user/data/models/users_ref.dart';
 import 'package:techtalk/features/user/user.dart';
 
 final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
-  Future<bool> _isExistNickname(
+  @override
+  Future<bool> isExistNickname(
     String nickname,
   ) async {
-    final nicknameCount = await FirestoreUsersRef.collection()
-        .where('nickname', isEqualTo: nickname)
+    return FirestoreUsersRef.collection()
+        .where(
+          'nickname',
+          isEqualTo: nickname,
+        )
         .count()
-        .get();
-
-    return nicknameCount.count > 0;
+        .get()
+        .then(
+          (value) => value.count > 0,
+        );
   }
 
   @override
@@ -48,7 +57,7 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
     final userModel = UserModel.fromEntity(user);
 
-    if (await _isExistNickname(user.nickname!)) {
+    if (await isExistNickname(user.nickname!)) {
       throw const AlreadyExistNicknameException();
     }
 
@@ -60,5 +69,19 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   @override
   Future<void> deleteUser() async {
     await FirestoreUsersRef.doc().delete();
+  }
+
+  @override
+  Future<String> uploadImgFileAndGetUrl(File imageFile) async {
+    final profileImgRef = FireStorageUserRef.profileImgRef;
+
+    final snapshot = await profileImgRef.putFile(imageFile);
+
+    if (snapshot.state == TaskState.success) {
+      final String downloadUrl = await snapshot.ref.getDownloadURL();
+      return downloadUrl;
+    } else {
+      throw const ImgStoreFailedException();
+    }
   }
 }
