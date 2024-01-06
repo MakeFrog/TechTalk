@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/job_group.enum.dart';
+import 'package:techtalk/core/helper/list_extension.dart';
 import 'package:techtalk/features/user/entities/user_data_entity.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/provider/selected_job_groups_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
@@ -28,10 +28,7 @@ mixin class JobGroupSettingState {
     }
 
     final userJobGroups = ref.read(userDataProvider).value!.jobGroups;
-    print('현재 유저 정보 : ${userJobGroups}');
 
-    final isNotEqual = !listEquals(selectedJobGroups, userJobGroups);
-    print('아리랑 : ${isNotEqual}');
-    return isNotEqual;
+    return !selectedJobGroups.isElementEquals(userJobGroups);
   }
 }

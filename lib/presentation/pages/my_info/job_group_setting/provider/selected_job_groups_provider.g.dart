@@ -6,7 +6,7 @@ part of 'selected_job_groups_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$selectedJobGroupsHash() => r'9f503f550a7e79db3ea7ad793cdf0c5e265cc3e3';
+String _$selectedJobGroupsHash() => r'eaf9eb7edeadb8e931906bc342d3ab7f21aedc9a';
 
 /// See also [SelectedJobGroups].
 @ProviderFor(SelectedJobGroups)
