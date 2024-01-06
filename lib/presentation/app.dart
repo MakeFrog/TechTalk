@@ -53,6 +53,7 @@ class App extends ConsumerWidget {
     EasyLoading.instance
       ..indicatorType = EasyLoadingIndicatorType.ring
       ..loadingStyle = EasyLoadingStyle.custom
+      // 로딩 인디케이터 배경 색상. 그림자는 사용하지 않아도 될 듯
       ..backgroundColor = Colors.transparent
       ..boxShadow = []
       ..indicatorColor = Colors.white
