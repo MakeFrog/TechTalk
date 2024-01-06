@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:techtalk/features/user/entities/user_data_entity.dart';
+import 'package:techtalk/features/user/entities/user_entity.dart';
 
 part 'user_data_model.g.dart';
 
@@ -20,7 +20,7 @@ class UserDataModel {
   final List<String>? jobGroupIds;
   final List<String>? topicIds;
 
-  factory UserDataModel.fromEntity(UserDataEntity entity) {
+  factory UserDataModel.fromEntity(UserEntity entity) {
     return UserDataModel(
       uid: entity.uid,
       profileImgUrl: entity.profileImgUrl,
@@ -30,8 +30,8 @@ class UserDataModel {
     );
   }
 
-  UserDataEntity toEntity() {
-    return UserDataEntity(
+  UserEntity toEntity() {
+    return UserEntity(
       uid: uid,
       nickname: nickname,
       jobGroupIds: jobGroupIds,

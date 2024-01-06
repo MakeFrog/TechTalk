@@ -2,13 +2,9 @@ import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/features/user/data/remote/user_remote_data_source.dart';
 import 'package:techtalk/features/user/repositories/user_repository.dart';
 import 'package:techtalk/features/user/usecases/check_nickname_duplication.dart';
-import 'package:techtalk/features/user/usecases/create_user_data_use_case.dart';
-import 'package:techtalk/features/user/usecases/delete_user_data_use_case.dart';
-import 'package:techtalk/features/user/usecases/edit_user_profile_use_case.dart';
-import 'package:techtalk/features/user/usecases/get_user_data_use_case.dart';
-import 'package:techtalk/features/user/usecases/update_user_data_use_case.dart';
 import 'package:techtalk/features/user/usecases/create_user_use_case.dart';
 import 'package:techtalk/features/user/usecases/delete_user_use_case.dart';
+import 'package:techtalk/features/user/usecases/edit_user_profile_use_case.dart';
 import 'package:techtalk/features/user/usecases/get_user_use_case.dart';
 import 'package:techtalk/features/user/usecases/update_user_use_case.dart';
 
@@ -22,10 +18,6 @@ export 'usecases/update_user_use_case.dart';
 
 final userRemoteDataSource = locator<UserRemoteDataSource>();
 final userRepository = locator<UserRepository>();
-final createUserDataUseCase = locator<CreateUserDataUseCase>();
-final updateUserDataUseCase = locator<UpdateUserDataUseCase>();
-final getUserDataUseCase = locator<GetUserDataUseCase>();
-final deleteUserDataUseCase = locator<DeleteUserDataUseCase>();
 final editUserProfileUseCase = locator<EditUserProfileUseCase>();
 final checkIsNicknameIsDuplicated = locator<CheckNicknameDuplication>();
 final createUserUseCase = locator<CreateUserUseCase>();

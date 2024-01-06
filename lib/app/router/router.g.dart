@@ -190,7 +190,7 @@ extension $QuestionCountSelectPageRouteExtension
 extension $ProfileSettingRouteExtension on ProfileSettingRoute {
   static ProfileSettingRoute _fromState(GoRouterState state) =>
       ProfileSettingRoute(
-        state.extra as UserDataEntity,
+        state.extra as UserEntity,
       );
 
   String get location => GoRouteData.$location(
@@ -232,7 +232,7 @@ extension $StudyRouteExtension on StudyRoute {
 
 extension $WrongAnswerRouteExtension on WrongAnswerRoute {
   static WrongAnswerRoute _fromState(GoRouterState state) => WrongAnswerRoute(
-        state.extra as int,
+        state.extra as int?,
       );
 
   String get location => GoRouteData.$location(

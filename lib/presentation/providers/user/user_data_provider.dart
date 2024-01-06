@@ -31,7 +31,7 @@ class UserData extends _$UserData {
     );
   }
 
-  void edit(UserDataEntity user) {
+  void edit(UserEntity user) {
     state = AsyncData(user);
   }
 

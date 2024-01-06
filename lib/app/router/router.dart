@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
-import 'package:techtalk/features/user/entities/user_data_entity.dart';
+import 'package:techtalk/features/user/entities/user_entity.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
@@ -240,7 +240,7 @@ class ProfileSettingRoute extends GoRouteData {
 
   static const String name = 'profile-setting';
 
-  final UserDataEntity $extra;
+  final UserEntity $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {

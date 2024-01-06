@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
-import 'package:techtalk/features/user/data/models/user_data_model.dart';
+import 'package:techtalk/features/user/data/models/fire_storage_user_ref.dart';
+import 'package:techtalk/features/user/data/models/user_model.dart';
 import 'package:techtalk/features/user/data/models/users_ref.dart';
 import 'package:techtalk/features/user/user.dart';
 
@@ -53,7 +57,7 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
     final userModel = UserModel.fromEntity(user);
 
-    if (await _isExistNickname(user.nickname!)) {
+    if (await isExistNickname(user.nickname!)) {
       throw const AlreadyExistNicknameException();
     }
 

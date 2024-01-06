@@ -4,22 +4,13 @@ import 'package:techtalk/features/user/data/models/user_model.dart';
 import 'package:techtalk/features/user/user.dart';
 
 abstract interface class UserRemoteDataSource {
-  Future<void> createUserData();
-
-  Future<void> updateUserData(UserDataEntity data);
-
-  Future<UserDataEntity> getUserData();
-
-  Future<void> deleteUserData();
-
-  Future<bool> isExistNickname(String nickname);
-
-  /// storage에 이미지 파일을 업로드하고 url를 리턴
-  Future<String> uploadImgFileAndGetUrl(File imageFile);
   /// 유저 데이터를 생성한다.
   ///
   /// 새로 만들어진 [UserModel]을 반환한다.
   Future<UserModel> createUser();
+
+  /// [data.uid]와 일치하는 uid를 가지는 유저 데이터를 업데이트한다.
+  Future<void> updateUser(UserEntity data);
 
   /// [uid]와 일치하는 uid를 가지는 유저 데이터를 조회한다.
   ///
@@ -27,9 +18,11 @@ abstract interface class UserRemoteDataSource {
   /// 조회된 데이터를 반환한다.
   Future<UserModel> getUser([String? uid]);
 
-  /// [data.uid]와 일치하는 uid를 가지는 유저 데이터를 업데이트한다.
-  Future<void> updateUser(UserEntity data);
-
   /// 현재 로그인되어있는 유저 데이터를 삭제한다.
   Future<void> deleteUser();
+
+  Future<bool> isExistNickname(String nickname);
+
+  /// storage에 이미지 파일을 업로드하고 url를 리턴
+  Future<String> uploadImgFileAndGetUrl(File imageFile);
 }

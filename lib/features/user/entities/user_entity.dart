@@ -16,8 +16,6 @@ class UserEntity {
 
   bool get hasEssentialData => nickname != null;
 
-//<editor-fold desc="Data Methods">
-
   const UserEntity({
     required this.uid,
     this.profileImgUrl,
@@ -27,46 +25,39 @@ class UserEntity {
   })  : jobGroupIds = jobGroupIds ?? const [],
         topicIds = topicIds ?? const [];
 
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': this.uid,
+      'profileImgUrl': this.profileImgUrl,
+      'nickname': this.nickname,
+      'jobGroupIds': this.jobGroupIds,
+      'topicIds': this.topicIds,
+    };
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is UserEntity &&
+      other is UserEntity &&
           runtimeType == other.runtimeType &&
-          uid == other.uid &&
-          nickname == other.nickname &&
-          jobGroupIds == other.jobGroupIds &&
-          topicIds == other.topicIds);
+          jobGroupIds == other.jobGroupIds;
 
   @override
-  int get hashCode =>
-      uid.hashCode ^
-      nickname.hashCode ^
-      jobGroupIds.hashCode ^
-      topicIds.hashCode;
-
-  @override
-  String toString() {
-    return 'UserEntity{' +
-        ' uid: $uid,' +
-        ' nickname: $nickname,' +
-        ' jobGroupIds: $jobGroupIds,' +
-        ' topicIds: $topicIds,' +
-        '}';
-  }
+  int get hashCode => jobGroupIds.hashCode;
 
   UserEntity copyWith({
     String? uid,
+    String? profileImgUrl,
     String? nickname,
     List<String>? jobGroupIds,
     List<String>? topicIds,
   }) {
     return UserEntity(
       uid: uid ?? this.uid,
+      profileImgUrl: profileImgUrl ?? this.profileImgUrl,
       nickname: nickname ?? this.nickname,
       jobGroupIds: jobGroupIds ?? this.jobGroupIds,
       topicIds: topicIds ?? this.topicIds,
     );
   }
-
-//</editor-fold>
 }
