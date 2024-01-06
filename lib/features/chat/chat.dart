@@ -1,4 +1,4 @@
-import 'package:techtalk/app/di/locator.dart';
+import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
 import 'package:techtalk/features/chat/repositories/chat_repository.dart';
 import 'package:techtalk/features/chat/use_cases/create_chat_messages_use_case.dart';

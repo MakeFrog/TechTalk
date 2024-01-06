@@ -13,31 +13,7 @@ import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_contr
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
-abstract class _SignUpEvent {
-  /// 앱바의 [BackButton]을 눌렀을 때 실행할 콜백
-  ///
-  /// 이전 회원가입 단계로 넘어간다. 이전 단계로 넘어갈 시 현재 단계에 작성한 데이터는 삭제한다.
-  void onTapBackButton(WidgetRef ref);
-
-  /// 닉네임 입력 스크린의 다음단계 버튼을 눌렀을 때 실행할 콜백
-  Future<void> onTapNicknameStepNext(
-    WidgetRef ref, {
-    required String nickname,
-    required ValueNotifier<String?> nicknameValidation,
-  });
-
-  Future<void> onTapJobGroupStepNext(
-    WidgetRef ref, {
-    required List<JobEntity> jobGroups,
-  });
-
-  Future<void> onTapSignUp(
-    WidgetRef ref, {
-    required List<TopicEntity> topics,
-  });
-}
-
-mixin class SignUpEvent implements _SignUpEvent {
+mixin class SignUpEvent {
   String? validateNickname(String nickname) {
     if (nickname.isEmpty) {
       return null;
@@ -54,7 +30,6 @@ mixin class SignUpEvent implements _SignUpEvent {
     }
   }
 
-  @override
   void onTapBackButton(WidgetRef ref) {
     if (ref.read(signUpStepControllerProvider).page!.round() == 0) {
       DialogService.show(
@@ -78,7 +53,6 @@ mixin class SignUpEvent implements _SignUpEvent {
     }
   }
 
-  @override
   Future<void> onTapNicknameStepNext(
     WidgetRef ref, {
     required String nickname,
@@ -103,7 +77,6 @@ mixin class SignUpEvent implements _SignUpEvent {
     }
   }
 
-  @override
   Future<void> onTapJobGroupStepNext(
     WidgetRef ref, {
     required List<JobEntity> jobGroups,
@@ -124,7 +97,6 @@ mixin class SignUpEvent implements _SignUpEvent {
     }
   }
 
-  @override
   Future<void> onTapSignUp(
     WidgetRef ref, {
     required List<TopicEntity> topics,

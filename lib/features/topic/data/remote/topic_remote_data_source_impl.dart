@@ -1,10 +1,10 @@
-import 'package:techtalk/features/topic/data/models/topic_ref.dart';
+import 'package:techtalk/features/topic/data/models/topics_ref.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
   @override
   Future<List<TopicModel>> getTopics() async {
-    final topicModels = await FirestoreTopicRef.collection().get();
+    final topicModels = await FirestoreTopicsRef.collection().get();
 
     return [
       ...topicModels.docs.map((e) => e.data()),
@@ -12,12 +12,15 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
   }
 
   @override
-  Future<List<TopicCategoryModel>> getTopicCategories() async {
-    final topicCategoryModels =
-        await FirestoreTopicCategoryRef.collection().get();
+  Future<List<TopicQnaModel>> getQnas(String topicId) async {
+    final snapshot = await FirestoreTopicQuestionsRef.collection(topicId).get();
+
+    if (snapshot.docs.isEmpty) {
+      throw Exception();
+    }
 
     return [
-      ...topicCategoryModels.docs.map((e) => e.data()),
+      ...snapshot.docs.map((e) => e.data()),
     ];
   }
 
@@ -27,25 +30,12 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
     String questionId,
   ) async {
     final snapshot =
-        await FirestoreTopicQuestionRef.doc(topicId, questionId).get();
+        await FirestoreTopicQuestionsRef.doc(topicId, questionId).get();
 
     if (!snapshot.exists) {
       throw Exception();
     }
 
     return snapshot.data()!;
-  }
-
-  @override
-  Future<List<TopicQnaModel>> getQnas(String topicId) async {
-    final snapshot = await FirestoreTopicQuestionRef.collection(topicId).get();
-
-    if (snapshot.docs.isEmpty) {
-      throw Exception();
-    }
-
-    return [
-      ...snapshot.docs.map((e) => e.data()),
-    ];
   }
 }

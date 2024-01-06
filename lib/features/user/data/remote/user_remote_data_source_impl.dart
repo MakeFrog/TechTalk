@@ -1,8 +1,4 @@
-import 'dart:io';
-
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
-import 'package:techtalk/features/user/data/models/fire_storage_user_ref.dart';
 import 'package:techtalk/features/user/data/models/user_data_model.dart';
 import 'package:techtalk/features/user/data/models/users_ref.dart';
 import 'package:techtalk/features/user/user.dart';
@@ -25,63 +21,49 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }
 
   @override
-  Future<void> createUserData() async {
+  Future<UserModel> createUser() async {
     if (await FirestoreUsersRef.isExist()) {
       throw const AlreadyExistUserDataException();
     }
 
     final userData = FirestoreUsersRef.doc();
+    final user = UserModel(uid: userData.id);
 
-    await userData.set(
-      UserDataModel(uid: userData.id),
-    );
+    await userData.set(user);
+
+    return user;
   }
 
   @override
-  Future<void> updateUserData(UserDataEntity data) async {
+  Future<UserModel> getUser([String? uid]) async {
     if (!await FirestoreUsersRef.isExist()) {
       throw const NoUserDataException();
     }
 
-    UserDataModel userModel = UserDataModel.fromEntity(data);
-    final orgUserData = await FirestoreUsersRef.doc().get().then(
-          (value) => value.data()!,
-        );
+    final snapshot = await FirestoreUsersRef.doc(uid).get();
 
-    if (userModel.nickname != orgUserData.nickname &&
-        await isExistNickname(data.nickname!)) {
+    return snapshot.data()!;
+  }
+
+  @override
+  Future<void> updateUser(UserEntity user) async {
+    if (!await FirestoreUsersRef.isExist()) {
+      throw const NoUserDataException();
+    }
+
+    final userModel = UserModel.fromEntity(user);
+
+    if (await _isExistNickname(user.nickname!)) {
       throw const AlreadyExistNicknameException();
     }
 
-    userModel = UserDataModel(
-      uid: userModel.uid,
-      nickname: userModel.nickname,
-      topicIds: userModel.topicIds != orgUserData.topicIds
-          ? userModel.topicIds
-          : null,
-      jobGroupIds: userModel.jobGroupIds != orgUserData.jobGroupIds
-          ? userModel.jobGroupIds
-          : null,
-      profileImgUrl: data.profileImgUrl,
-    );
-    await FirestoreUsersRef.doc(data.uid).update(
+    await FirestoreUsersRef.doc().update(
       userModel.toJson(),
     );
   }
 
   @override
-  Future<UserDataEntity> getUserData() async {
-    if (!await FirestoreUsersRef.isExist()) {
-      throw const NoUserDataException();
-    }
-
-    final snapshot = await FirestoreUsersRef.doc().get();
-
-    return snapshot.data()!.toEntity();
-  }
-
-  @override
-  Future<void> deleteUserData() async {
+  Future<void> deleteUser() async {
     await FirestoreUsersRef.doc().delete();
   }
 

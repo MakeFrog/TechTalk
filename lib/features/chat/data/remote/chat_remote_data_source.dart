@@ -20,14 +20,14 @@ abstract interface class ChatRemoteDataSource {
   });
 
   /// 채팅방의 가장 마지막 채팅 메세지 호출
-  Future<ChatMessageModel?> getLastChatMessage(String chatRoomId);
+  Future<ChatMessageModel?> getLastChatMessage(String roomId);
 
   /// 채팅 메세지 리시트 호출
-  Future<List<ChatMessageModel>> getChatMessageHistory(String chatRoomId);
+  Future<List<ChatMessageModel>> getChatMessageHistory(String roomId);
 
   /// 채팅 메세지  호출
   Future<ChatMessageModel> getChatMessage(
-    String chatRoomId,
+    String roomId,
     String chatId,
   );
 

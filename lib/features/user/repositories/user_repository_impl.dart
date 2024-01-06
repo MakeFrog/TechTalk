@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/user/data/remote/user_remote_data_source.dart';
-import 'package:techtalk/features/user/entities/user_data_entity.dart';
+import 'package:techtalk/features/user/entities/user_entity.dart';
 import 'package:techtalk/features/user/repositories/user_repository.dart';
 
 final class UserRepositoryImpl implements UserRepository {
@@ -13,10 +13,12 @@ final class UserRepositoryImpl implements UserRepository {
   final UserRemoteDataSource _userRemoteDataSource;
 
   @override
-  Future<Result<void>> createUserData() async {
+  Future<Result<UserEntity>> createUser() async {
     try {
+      final createdUser = await _userRemoteDataSource.createUser();
+
       return Result.success(
-        await _userRemoteDataSource.createUserData(),
+        createdUser.toEntity(),
       );
     } on Exception catch (e) {
       return Result.failure(e);
@@ -24,10 +26,12 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<void>> updateUserData(UserDataEntity data) async {
+  Future<Result<UserEntity>> getUser([String? uid]) async {
     try {
+      final userModel = await _userRemoteDataSource.getUser(uid);
+
       return Result.success(
-        _userRemoteDataSource.updateUserData(data),
+        userModel.toEntity(),
       );
     } on Exception catch (e) {
       return Result.failure(e);
@@ -35,19 +39,21 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<UserDataEntity>> getUserData() async {
+  Future<Result<void>> updateUser(UserEntity data) async {
     try {
-      return Result.success(await _userRemoteDataSource.getUserData());
+      return Result.success(
+        await _userRemoteDataSource.updateUser(data),
+      );
     } on Exception catch (e) {
       return Result.failure(e);
     }
   }
 
   @override
-  Future<Result<void>> deleteUserData() async {
+  Future<Result<void>> deleteUser() async {
     try {
       return Result.success(
-        await _userRemoteDataSource.deleteUserData(),
+        await _userRemoteDataSource.deleteUser(),
       );
     } on Exception catch (e) {
       return Result.failure(e);
