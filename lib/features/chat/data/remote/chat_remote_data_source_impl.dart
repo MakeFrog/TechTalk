@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:techtalk/core/constants/interview_type.dart';
+import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data/models/chat_message_model.dart';
 import 'package:techtalk/features/chat/data/models/chat_qna_model.dart';

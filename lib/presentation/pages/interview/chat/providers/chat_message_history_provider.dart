@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/core/constants/interview_greetings.dart';
 import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/core/services/toast_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
@@ -72,7 +73,8 @@ class ChatMessageHistory extends _$ChatMessageHistory {
     final nickname = ref.read(userDataProvider).requireValue!.nickname!;
     final topicName = room.topics.first.text +
         (room.topics.length == 1 ? '' : ' 외 ${room.topics.length - 1}');
-    final String message = '반가워요! $nickname님. $topicName 면접 질문을 드리겠습니다';
+    final String message =
+        '${greetingToInterviewee(nickname)} $topicName 면접 질문을 드리겠습니다';
     final startChat = GuideChatMessageEntity.createStatic(
       message: message,
       timestamp: DateTime.now(),

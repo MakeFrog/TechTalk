@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
-import 'package:techtalk/core/constants/interview_type.dart';
+import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 mixin class InterviewTopicSelectEvent {
