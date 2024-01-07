@@ -88,19 +88,24 @@ RouteBase get $mainRoute => GoRouteData.$route(
       factory: $MainRouteExtension._fromState,
       routes: [
         GoRouteData.$route(
-          path: 'interview/:type',
+          path: 'topic-select',
           name: 'topic select',
           factory: $InterviewTopicSelectRouteExtension._fromState,
           routes: [
             GoRouteData.$route(
-              path: ':topicId',
+              path: 'question-count-select',
               name: 'question count select',
               factory: $QuestionCountSelectPageRouteExtension._fromState,
             ),
           ],
         ),
         GoRouteData.$route(
-          path: 'study/:topicId',
+          path: 'profile-setting',
+          name: 'profile-setting',
+          factory: $ProfileSettingRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: ':topicId',
           name: 'study',
           factory: $StudyRouteExtension._fromState,
         ),
@@ -110,7 +115,7 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $WrongAnswerRouteExtension._fromState,
         ),
         GoRouteData.$route(
-          path: 'chats/:type',
+          path: 'chat-list/:topicId',
           name: 'chat list',
           factory: $ChatListPageRouteExtension._fromState,
           routes: [
@@ -143,12 +148,10 @@ extension $MainRouteExtension on MainRoute {
 
 extension $InterviewTopicSelectRouteExtension on InterviewTopicSelectRoute {
   static InterviewTopicSelectRoute _fromState(GoRouterState state) =>
-      InterviewTopicSelectRoute(
-        _$InterviewTypeEnumMap._$fromName(state.pathParameters['type']!),
-      );
+      const InterviewTopicSelectRoute();
 
   String get location => GoRouteData.$location(
-        '/interview/${Uri.encodeComponent(_$InterviewTypeEnumMap[type]!)}',
+        '/topic-select',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -161,21 +164,37 @@ extension $InterviewTopicSelectRouteExtension on InterviewTopicSelectRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-const _$InterviewTypeEnumMap = {
-  InterviewType.topic: 'topic',
-  InterviewType.practical: 'practical',
-};
-
 extension $QuestionCountSelectPageRouteExtension
     on QuestionCountSelectPageRoute {
   static QuestionCountSelectPageRoute _fromState(GoRouterState state) =>
       QuestionCountSelectPageRoute(
-        _$InterviewTypeEnumMap._$fromName(state.pathParameters['type']!),
-        $extra: state.extra as List<TopicEntity>,
+        $extra: state.extra as TopicEntity,
       );
 
   String get location => GoRouteData.$location(
-        '/interview/${Uri.encodeComponent(_$InterviewTypeEnumMap[type]!)}/${Uri.encodeComponent(topicId)}',
+        '/topic-select/question-count-select',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+extension $ProfileSettingRouteExtension on ProfileSettingRoute {
+  static ProfileSettingRoute _fromState(GoRouterState state) =>
+      ProfileSettingRoute(
+        state.extra as UserEntity,
+      );
+
+  String get location => GoRouteData.$location(
+        '/profile-setting',
       );
 
   void go(BuildContext context) => context.go(location, extra: $extra);
@@ -196,7 +215,7 @@ extension $StudyRouteExtension on StudyRoute {
       );
 
   String get location => GoRouteData.$location(
-        '/study/${Uri.encodeComponent(topicId)}',
+        '/${Uri.encodeComponent(topicId)}',
       );
 
   void go(BuildContext context) => context.go(location, extra: $extra);
@@ -213,7 +232,7 @@ extension $StudyRouteExtension on StudyRoute {
 
 extension $WrongAnswerRouteExtension on WrongAnswerRoute {
   static WrongAnswerRoute _fromState(GoRouterState state) => WrongAnswerRoute(
-        state.extra as int,
+        state.extra as int?,
       );
 
   String get location => GoRouteData.$location(
@@ -234,15 +253,11 @@ extension $WrongAnswerRouteExtension on WrongAnswerRoute {
 
 extension $ChatListPageRouteExtension on ChatListPageRoute {
   static ChatListPageRoute _fromState(GoRouterState state) => ChatListPageRoute(
-        _$InterviewTypeEnumMap._$fromName(state.pathParameters['type']!),
-        topicId: state.uri.queryParameters['topic-id'],
+        state.pathParameters['topicId']!,
       );
 
   String get location => GoRouteData.$location(
-        '/chats/${Uri.encodeComponent(_$InterviewTypeEnumMap[type]!)}',
-        queryParams: {
-          if (topicId != null) 'topic-id': topicId,
-        },
+        '/chat-list/${Uri.encodeComponent(topicId)}',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -257,15 +272,11 @@ extension $ChatListPageRouteExtension on ChatListPageRoute {
 
 extension $ChatPageRouteExtension on ChatPageRoute {
   static ChatPageRoute _fromState(GoRouterState state) => ChatPageRoute(
-        topicId: state.uri.queryParameters['topic-id'],
         state.extra as ChatRoomEntity,
       );
 
   String get location => GoRouteData.$location(
-        '/chats/${Uri.encodeComponent(_$InterviewTypeEnumMap[type]!)}/${Uri.encodeComponent(roomId)}',
-        queryParams: {
-          if (topicId != null) 'topic-id': topicId,
-        },
+        '/chat-list/${Uri.encodeComponent(topicId)}/${Uri.encodeComponent(roomId)}',
       );
 
   void go(BuildContext context) => context.go(location, extra: $extra);
@@ -278,9 +289,4 @@ extension $ChatPageRouteExtension on ChatPageRoute {
 
   void replace(BuildContext context) =>
       context.replace(location, extra: $extra);
-}
-
-extension<T extends Enum> on Map<T, String> {
-  T _$fromName(String value) =>
-      entries.singleWhere((element) => element.value == value).key;
 }

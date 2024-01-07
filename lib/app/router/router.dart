@@ -4,12 +4,15 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/interview_type.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/features/user/entities/user_entity.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
+import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_setting_page.dart';
+import 'package:techtalk/presentation/pages/my_info/profile_setting/providers/profile_setting_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
@@ -118,6 +121,10 @@ class SignUpRoute extends GoRouteData {
           name: QuestionCountSelectPageRoute.name,
         ),
       ],
+    ),
+    TypedGoRoute<ProfileSettingRoute>(
+      path: ProfileSettingRoute.name,
+      name: ProfileSettingRoute.name,
     ),
     TypedGoRoute<StudyRoute>(
       path: StudyRoute.path,
@@ -232,6 +239,24 @@ class QuestionCountSelectPageRoute extends GoRouteData {
     return QuestionCountSelectPage(
       type: type,
       topics: $extra,
+    );
+  }
+}
+
+class ProfileSettingRoute extends GoRouteData {
+  ProfileSettingRoute(this.$extra);
+
+  static const String name = 'profile-setting';
+
+  final UserEntity $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ProviderScope(
+      overrides: [
+        profileSettingRouteArgProvider.overrideWithValue($extra),
+      ],
+      child: const ProfileSettingPage(),
     );
   }
 }

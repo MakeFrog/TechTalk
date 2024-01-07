@@ -14,36 +14,41 @@ class RoundProfileImg extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (imgUrl == 'skeleton') {
-      return SkeletonBox(
-        height: size,
-        width: size,
-        borderRadius: size / 2,
-      );
-    } else {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(size / 2),
-        child: imgUrl != null
-            ? CachedNetworkImage(
-                height: size,
-                width: size,
-                memCacheHeight: size.cacheSize(context),
-                imageUrl: imgUrl!,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => const SkeletonBox(),
-                errorWidget: (context, url, error) => Container(
-                  color: Colors.grey.withOpacity(0.1),
-                  child: const Center(
-                    child: Icon(Icons.error),
+    return Builder(
+      builder: (BuildContext context) {
+        if (imgUrl == 'skeleton') {
+          return SkeletonBox(
+            height: size,
+            width: size,
+            borderRadius: size / 2,
+          );
+        } else {
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(size / 2),
+            child: imgUrl != null
+                ? CachedNetworkImage(
+                    height: size,
+                    width: size,
+                    memCacheHeight: size.cacheSize(context),
+                    imageUrl: imgUrl!,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => const SkeletonBox(),
+                    errorWidget: (context, url, error) => Container(
+                      color: Colors.grey.withOpacity(0.1),
+                      child: const Center(
+                        child: Icon(Icons.error),
+                      ),
+                    ),
+                  )
+                : Image.asset(
+                    'assets/images/blank_profile.png',
+                    height: size,
+                    width: size,
+                    fit: BoxFit.cover,
                   ),
-                ),
-              )
-            : Image.asset(
-                'assets/images/blank_profile.png',
-                height: size,
-                width: size,
-              ),
-      );
-    }
+          );
+        }
+      },
+    );
   }
 }

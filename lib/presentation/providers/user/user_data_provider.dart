@@ -31,6 +31,10 @@ class UserData extends _$UserData {
     );
   }
 
+  void edit(UserEntity user) {
+    state = AsyncData(user);
+  }
+
   Future<void> createData() async {
     final createUserData = await createUserUseCase();
     await createUserData.fold(
