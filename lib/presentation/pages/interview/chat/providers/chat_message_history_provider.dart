@@ -87,7 +87,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
       room: room,
       messages: [startChat, questionChat].reversed.toList(),
       qnas: ref.read(chatQnAsProvider(room)).requireValue,
-    );
+    ).then((_) => ref.invalidate(interviewRoomsProvider));
 
     await _showMessage(
       message: GuideChatMessageEntity(

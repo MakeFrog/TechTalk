@@ -50,6 +50,11 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }
 
   @override
+  Future<void> deleteChatRoom(String roomId) async {
+    await FirestoreChatRoomRef.doc(roomId).delete();
+  }
+
+  @override
   Future<void> createChatMessages(
     String roomId, {
     required List<ChatMessageEntity> messages,

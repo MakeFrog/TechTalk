@@ -39,6 +39,21 @@ final class ChatRepositoryImpl implements ChatRepository {
     await _remoteDataSource.createChatQnas(room.id, qnas: qnas);
     await _remoteDataSource.createChatMessages(room.id, messages: messages);
 
+    final rooms = await switch (room.type) {
+      InterviewType.topic => getChatRooms(room.type, room.topics.single),
+      InterviewType.practical => getChatRooms(room.type),
+    }
+        .then((value) => value.getOrThrow());
+
+    await Future.doWhile(() async {
+      if (rooms.length > 20) {
+        await _remoteDataSource.deleteChatRoom(rooms.last.id);
+        rooms.removeLast();
+        return true;
+      }
+      return false;
+    });
+
     return Result.success(null);
   }
 

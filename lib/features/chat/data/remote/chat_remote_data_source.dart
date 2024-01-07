@@ -16,6 +16,8 @@ abstract interface class ChatRemoteDataSource {
     TopicEntity? topic,
   ]);
 
+  Future<void> deleteChatRoom(String roomId);
+
   Future<void> createChatMessages(
     String roomId, {
     required List<ChatMessageEntity> messages,
