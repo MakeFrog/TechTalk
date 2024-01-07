@@ -70,8 +70,9 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   /// 인사 한 뒤 바로 질문을 요청한다.
   Future<void> _showStartMessage() async {
     final nickname = ref.read(userDataProvider).requireValue!.nickname!;
-    final String message =
-        '반가워요! $nickname님. ${room.topics.first.text} 면접 질문을 드리겠습니다';
+    final topicName = room.topics.first.text +
+        (room.topics.length == 1 ? '' : ' 외 ${room.topics.length - 1}');
+    final String message = '반가워요! $nickname님. $topicName 면접 질문을 드리겠습니다';
     final startChat = GuideChatMessageEntity.createStatic(
       message: message,
       timestamp: DateTime.now(),
@@ -117,8 +118,10 @@ class ChatMessageHistory extends _$ChatMessageHistory {
 
     await _showMessage(
       message: answerChat,
+      onDone: () {
+        _respondToUserAnswer(answerChat);
+      },
     );
-    await _respondToUserAnswer(answerChat);
   }
 
   ///
@@ -181,11 +184,10 @@ class ChatMessageHistory extends _$ChatMessageHistory {
       ),
     );
 
-    await _showMessage(
-      message: FeedbackChatMessageEntity(
-        message: feedbackChat,
-      ),
+    final feedback = FeedbackChatMessageEntity(
+      message: feedbackChat,
     );
+    await _showMessage(message: feedback);
   }
 
   ///
@@ -196,12 +198,14 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   }) async {
     final chatList = state.requireValue.toList();
 
-    final answeredChat = chatList.firstWhere((chat) => chat.type.isSentMessage)
-        as AnswerChatMessageEntity;
+    final targetIndex = chatList.indexWhere(
+      (chat) => chat is AnswerChatMessageEntity,
+    );
+    final answeredChat =
+        chatList.elementAt(targetIndex) as AnswerChatMessageEntity;
     final resolvedAnsweredChat = answeredChat.copyWith(
       answerState: isCorrect ? AnswerState.correct : AnswerState.wrong,
     );
-    final targetIndex = chatList.indexWhere((chat) => chat == answeredChat);
     chatList[targetIndex] = resolvedAnsweredChat;
 
     await update((previous) => chatList);

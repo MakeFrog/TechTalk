@@ -65,7 +65,7 @@ class Bubble extends StatelessWidget {
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
                 child: Builder(
                   builder: (BuildContext context) {
-                    if (item.isStreamApplied) {
+                    if (!item.message.isClosed) {
                       /// STREAMED MESSAGE
                       return HookBuilder(
                         builder: (context) {
@@ -74,12 +74,8 @@ class Bubble extends StatelessWidget {
                           return StreamBuilder<String>(
                             stream: item.message.stream,
                             builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return Text(
-                                  snapshot.requireData,
-                                  style: AppTextStyle.alert2,
-                                );
-                              } else {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
                                 /// LOADING INDICATOR
                                 return SizedBox(
                                   height: 17,
@@ -90,6 +86,11 @@ class Bubble extends StatelessWidget {
                                   ),
                                 );
                               }
+
+                              return Text(
+                                snapshot.requireData,
+                                style: AppTextStyle.alert2,
+                              );
                             },
                           );
                         },
