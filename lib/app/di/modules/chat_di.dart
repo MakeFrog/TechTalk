@@ -51,6 +51,11 @@ final class ChatDependencyInject extends FeatureDependencyInjection {
         () => CreateChatMessagesUseCase(
           chatRepository,
         ),
+      )
+      ..registerFactory(
+        () => ReportChatUseCase(
+          chatRepository,
+        ),
       );
   }
 }

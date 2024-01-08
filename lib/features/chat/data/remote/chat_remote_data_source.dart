@@ -40,4 +40,9 @@ abstract interface class ChatRemoteDataSource {
     required List<ChatQnaEntity> qnas,
   });
   Future<List<ChatQnaModel>> getChatQnas(String roomId);
+
+  Future<void> createReport(
+    FeedbackChatMessageEntity feedback,
+    AnswerChatMessageEntity answer,
+  );
 }

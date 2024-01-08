@@ -206,4 +206,21 @@ final class ChatRepositoryImpl implements ChatRepository {
 
     return Result.success(qnas);
   }
+
+  @override
+  Future<Result<void>> reportFeedback(
+    FeedbackChatMessageEntity feedback,
+    AnswerChatMessageEntity answer,
+  ) async {
+    try {
+      return Result.success(
+        await _remoteDataSource.createReport(
+          feedback,
+          answer,
+        ),
+      );
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
 }

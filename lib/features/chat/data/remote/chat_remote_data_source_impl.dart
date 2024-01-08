@@ -155,4 +155,23 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
       ...snapshot.docs.map((e) => e.data()),
     ];
   }
+
+  @override
+  Future<void> createReport(
+    FeedbackChatMessageEntity feedback,
+    AnswerChatMessageEntity answer,
+  ) async {
+    final docRef = FirebaseFirestore.instance
+        .collection('Reports')
+        .doc('chat')
+        .collection('WrongFeedback')
+        .doc();
+
+    await docRef.set({
+      'id': docRef.id,
+      'feedback': ChatMessageModel.fromEntity(feedback).toJson(),
+      'answer': ChatMessageModel.fromEntity(answer).toJson(),
+      'created_at': FieldValue.serverTimestamp(),
+    });
+  }
 }

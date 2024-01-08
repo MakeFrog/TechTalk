@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/entities/interviewer_entity.dart';
 import 'package:techtalk/presentation/widgets/common/avatar/clip_oval_circle_avatar.dart';
+import 'package:techtalk/presentation/widgets/common/button/icon_flash_area_button.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class Bubble extends StatelessWidget {
@@ -16,6 +18,7 @@ class Bubble extends StatelessWidget {
     required this.chat,
     required this.isLatestReceivedChatInEachSection,
     required this.interviewer,
+    this.onTapReport,
   }) : super(key: key);
 
   /// 채팅 정보
@@ -26,6 +29,8 @@ class Bubble extends StatelessWidget {
 
   /// '받은' 채팅중 가장 최신 상태 여부 (문제 섹션 단위)
   final bool isLatestReceivedChatInEachSection;
+
+  final VoidCallback? onTapReport;
 
   @override
   Widget build(BuildContext context) {
@@ -56,54 +61,88 @@ class Bubble extends StatelessWidget {
                     )
                   : null,
               constraints: const BoxConstraints(maxWidth: 250),
-              decoration: BoxDecoration(
-                color: AppColor.of.blue1,
-                borderRadius: radiusOnCase,
-              ),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-                child: Builder(
-                  builder: (BuildContext context) {
-                    if (!item.message.isClosed) {
-                      /// STREAMED MESSAGE
-                      return HookBuilder(
-                        builder: (context) {
-                          useAutomaticKeepAlive();
+              child: Builder(
+                builder: (BuildContext context) {
+                  Widget chat;
+                  if (item.isStreamApplied) {
+                    /// STREAMED MESSAGE
+                    chat = HookBuilder(
+                      builder: (context) {
+                        useAutomaticKeepAlive();
 
-                          return StreamBuilder<String>(
-                            stream: item.message.stream,
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                /// LOADING INDICATOR
-                                return SizedBox(
-                                  height: 17,
-                                  width: 17,
-                                  child: CircularProgressIndicator(
-                                    color: AppColor.of.gray3,
-                                    strokeWidth: 2,
-                                  ),
-                                );
-                              }
+                        return StreamBuilder<String>(
+                          stream: item.message.stream,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              /// LOADING INDICATOR
+                              return SizedBox(
+                                height: 17,
+                                width: 17,
+                                child: CircularProgressIndicator(
+                                  color: AppColor.of.gray3,
+                                  strokeWidth: 2,
+                                ),
+                              );
+                            }
 
-                              return Text(
-                                snapshot.requireData,
-                                style: AppTextStyle.alert2,
+                            return Text(
+                              snapshot.requireData,
+                              style: AppTextStyle.alert2,
+                            );
+                          },
+                        );
+                      },
+                    );
+                  } else {
+                    /// STATIC MESSAGE
+                    chat = Text(
+                      item.message.valueOrNull ?? '  ',
+                      style: AppTextStyle.alert2,
+                    );
+                  }
+
+                  chat = Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 14,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColor.of.blue1,
+                      borderRadius: radiusOnCase,
+                    ),
+                    child: chat,
+                  );
+
+                  if (item is FeedbackChatMessageEntity) {
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Flexible(
+                          child: chat,
+                        ),
+                        Gap(5),
+                        Container(
+                          padding: EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            color: AppColor.of.red1,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Consumer(
+                            builder: (context, ref, child) {
+                              return IconFlashAreaButton.assetIcon(
+                                iconPath: Assets.iconsWarning,
+                                size: 10,
+                                onIconTapped: onTapReport ?? () {},
                               );
                             },
-                          );
-                        },
-                      );
-                    } else {
-                      /// STATIC MESSAGE
-                      return Text(
-                        item.message.valueOrNull ?? '  ',
-                        style: AppTextStyle.alert2,
-                      );
-                    }
-                  },
-                ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  return chat;
+                },
               ),
             ),
           ],

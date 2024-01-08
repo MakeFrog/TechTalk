@@ -87,7 +87,7 @@ class Assets {
   static const String iconsStudy = 'assets/icons/study.svg';
   static const String iconsTalker = 'assets/icons/talker.svg';
   static const String iconsUser = 'assets/icons/user.svg';
-  static const String iconsWarnning = 'assets/icons/warnning.svg';
+  static const String iconsWarning = 'assets/icons/warning.svg';
   static const String iconsWrongIndicator = 'assets/icons/wrong_indicator.svg';
   static const String imagesAvatar1 = 'assets/images/avatar_1.png';
   static const String imagesBlankProfile = 'assets/images/blank_profile.png';

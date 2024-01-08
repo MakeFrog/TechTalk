@@ -34,4 +34,9 @@ abstract interface class ChatRepository {
   );
 
   Future<Result<List<ChatQnaEntity>>> getChatQnAs(ChatRoomEntity room);
+
+  Future<Result<void>> reportFeedback(
+    FeedbackChatMessageEntity feedback,
+    AnswerChatMessageEntity answer,
+  );
 }
