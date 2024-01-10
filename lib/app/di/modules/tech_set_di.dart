@@ -1,9 +1,10 @@
 import 'package:techtalk/app/di/feature_di_interface.dart';
 import 'package:techtalk/app/di/locator.dart';
-import 'package:techtalk/features/job/data/local/job_local_data_source_impl.dart';
-import 'package:techtalk/features/job/data/remote/job_remote_data_source_impl.dart';
-import 'package:techtalk/features/job/job.dart';
-import 'package:techtalk/features/job/repositories/job_repository_impl.dart';
+import 'package:techtalk/features/tech_set/data/local/tech_set_data_source_impl.dart';
+import 'package:techtalk/features/tech_set/repositories/tech_set_repository_impl.dart';
+import 'package:techtalk/features/tech_set/tech_set.dart';
+
+import '../../../features/tech_set/data/remote/tech_set_data_source_impl.dart';
 
 final class JobDependencyInjection extends FeatureDependencyInjection {
   @override

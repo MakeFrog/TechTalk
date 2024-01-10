@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/job/job.dart';
+import 'package:techtalk/features/tech_set/tech_set.dart';
 
 final class JobRepositoryImpl implements JobRepository {
   JobRepositoryImpl(

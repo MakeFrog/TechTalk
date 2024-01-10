@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:techtalk/features/job/job.dart';
+import 'package:techtalk/features/tech_set/tech_set.dart';
 
 part 'job_model.g.dart';
 

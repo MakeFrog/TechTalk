@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:techtalk/features/job/data/models/job_ref.dart';
-import 'package:techtalk/features/job/job.dart';
+import 'package:techtalk/features/tech_set/data/models/job_ref.dart';
+import 'package:techtalk/features/tech_set/tech_set.dart';
 
 final class JobRemoteDataSourceImpl implements JobRemoteDataSource {
   @override

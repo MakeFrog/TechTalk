@@ -3,8 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:techtalk/core/core.dart';
-import 'package:techtalk/features/job/data/models/job_model.dart';
-import 'package:techtalk/features/job/job.dart';
+import 'package:techtalk/features/tech_set/data/models/job_model.dart';
+import 'package:techtalk/features/tech_set/tech_set.dart';
 
 final class JobLocalDataSourceImpl implements JobLocalDataSource {
   @override
