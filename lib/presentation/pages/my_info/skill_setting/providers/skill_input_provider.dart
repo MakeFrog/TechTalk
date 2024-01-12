@@ -14,6 +14,10 @@ class SkillInput extends _$SkillInput {
     state = input;
   }
 
+  void clear() {
+    state = '';
+  }
+
   String? skillInputValidation(String? input) {
     if (input == null) {
       return '스킬을 검색해주세요';

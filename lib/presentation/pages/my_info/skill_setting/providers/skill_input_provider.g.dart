@@ -6,7 +6,7 @@ part of 'skill_input_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$skillInputHash() => r'd7eceac5d1beafc20acd0030616b756eca2cea53';
+String _$skillInputHash() => r'8404413414af5054b587c8d9470ff4c55a382903';
 
 /// See also [SkillInput].
 @ProviderFor(SkillInput)

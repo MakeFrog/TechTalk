@@ -5,7 +5,6 @@ import 'package:techtalk/core/services/snack_bar_servbice.dart';
 import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/searched_skills_provider.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/selected_skills_provider.dart';
-import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/skill_field_controller_provider.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/skill_input_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 
@@ -30,7 +29,7 @@ mixin class SkillSettingEvent {
   /// 닉네임필드에 값이 clear 되었을 때
   ///
   void onFieldCloseBtnTapped(WidgetRef ref) {
-    ref.read(skillFieldControllerProvider).clear();
+    ref.read(skillInputProvider.notifier).clear();
     ref.read(searchedSkillsProvider.notifier).clear();
   }
 

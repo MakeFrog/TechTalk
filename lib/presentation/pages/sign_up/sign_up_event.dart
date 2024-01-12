@@ -8,8 +8,10 @@ import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/core/helper/validation_extension.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
-import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/provider/selected_job_groups_provider.dart';
+import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/searched_skills_provider.dart';
+import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/selected_skills_provider.dart';
+import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/skill_input_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_controller.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
@@ -99,15 +101,13 @@ mixin class SignUpEvent {
     }
   }
 
-  Future<void> onTapSignUp(
-    WidgetRef ref, {
-    required List<SkillEntity> skills,
-  }) async {
+  Future<void> onTapSignUp(WidgetRef ref) async {
     try {
       await EasyLoading.show();
+      final selectedSkills = ref.watch(selectedSkillsProvider);
 
       final userData = ref.read(userDataProvider).requireValue!.copyWith(
-            skills: skills,
+            skills: selectedSkills,
           );
 
       await ref.read(userDataProvider.notifier).updateData(userData).then(
@@ -137,5 +137,29 @@ mixin class SignUpEvent {
   ///
   void onJogGroupChipTapped(WidgetRef ref, {required JobGroup item}) {
     ref.read(selectedJobGroupsProvider.notifier).remove(item);
+  }
+
+  ///
+  /// 닉네임 유효성 검사
+  ///
+  String? skillInputValidation(WidgetRef ref,
+          {required String? searchedTerm}) =>
+      ref.read(skillInputProvider.notifier).skillInputValidation(searchedTerm);
+
+  ///
+  /// 닉네임필드에 값이 clear 되었을 때
+  ///
+  void onSkillFieldCloseBtnTapped(WidgetRef ref) {
+    ref.read(skillInputProvider.notifier).clear();
+    ref.read(searchedSkillsProvider.notifier).clear();
+  }
+
+  ///
+  /// 검색된 스킬 리스트 호출
+  /// TextField 값 업데이트
+  ///
+  void onSkillFiledChanged(WidgetRef ref, {required String searchedTerm}) {
+    ref.read(searchedSkillsProvider.notifier).updateSearchedList(searchedTerm);
+    ref.read(skillInputProvider.notifier).update(searchedTerm);
   }
 }
