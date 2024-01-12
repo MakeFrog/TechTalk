@@ -110,6 +110,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $JobGroupSettingRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: 'topic-setting',
+          name: 'topic-setting',
+          factory: $SkillSettingRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: ':topicId',
           name: 'study',
           factory: $StudyRouteExtension._fromState,
@@ -220,6 +225,24 @@ extension $JobGroupSettingRouteExtension on JobGroupSettingRoute {
 
   String get location => GoRouteData.$location(
         '/job_group_setting',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $SkillSettingRouteExtension on SkillSettingRoute {
+  static SkillSettingRoute _fromState(GoRouterState state) =>
+      SkillSettingRoute();
+
+  String get location => GoRouteData.$location(
+        '/topic-setting',
       );
 
   void go(BuildContext context) => context.go(location);

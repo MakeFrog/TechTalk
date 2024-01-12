@@ -153,10 +153,11 @@ class _SignUpButton extends ConsumerWidget with SignUpEvent {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: FilledButton(
-        onPressed: () => onTapSignUp(
-          ref,
-          topics: selectedTopicsNotifier.value,
-        ),
+        onPressed: () {},
+        // onPressed: () => onTapSignUp(
+        //   ref,
+        //   topics: selectedTopicsNotifier.value,
+        // ),
         child: const Center(
           child: Text('회원가입'),
         ),

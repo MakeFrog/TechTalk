@@ -13,7 +13,7 @@ class UserTopics extends _$UserTopics {
 
     final topics = getTopicsUseCase().getOrThrow();
 
-    final userTopicIds = userData.topicIds;
+    final userTopicIds = userData.skills;
     final topicIds = [...topics.map((e) => e.id)];
 
     for (final userTopicId in userTopicIds) {

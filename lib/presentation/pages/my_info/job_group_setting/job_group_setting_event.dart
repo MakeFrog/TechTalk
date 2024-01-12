@@ -29,7 +29,7 @@ mixin class JobGroupSettingEvent {
   ///
   /// 변경된 직군 정보 저장
   ///
-  void saveEditedJobGroups(WidgetRef ref) {
+  void onSaveBtnTapped(WidgetRef ref) {
     EasyLoading.show();
     final selectedJogGroups = ref.watch(selectedJobGroupsProvider);
     final user = ref

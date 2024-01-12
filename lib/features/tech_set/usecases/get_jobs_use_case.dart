@@ -6,7 +6,7 @@ final class GetJobsUseCase {
     this._jobRepository,
   );
 
-  final JobRepository _jobRepository;
+  final TechSetRepository _jobRepository;
 
   Result<List<JobEntity>> call() {
     return _jobRepository.getJobs();

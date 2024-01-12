@@ -8,7 +8,7 @@ import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/core/helper/validation_extension.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
-import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/provider/selected_job_groups_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_controller.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
@@ -101,14 +101,14 @@ mixin class SignUpEvent {
 
   Future<void> onTapSignUp(
     WidgetRef ref, {
-    required List<TopicEntity> topics,
+    required List<SkillEntity> skills,
   }) async {
     try {
       await EasyLoading.show();
 
       final userData = ref.read(userDataProvider).requireValue!.copyWith(
-        topicIds: [...topics.map((e) => e.id)],
-      );
+            skills: skills,
+          );
 
       await ref.read(userDataProvider.notifier).updateData(userData).then(
         (_) {

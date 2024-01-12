@@ -35,4 +35,34 @@ extension StringExtensions on String {
 
     return messageSubject;
   }
+
+  ///
+  /// 검색일치 여부를 확인하기 위한
+  /// 정제된 문자열로 변환하는 메소드
+  ///
+  String get toSearchableStr => replaceAll(RegExp(r'[^a-zA-Z0-9 ]'), '')
+      .toLowerCase();
+
+
+  ///
+  /// 한국어 포함 여부
+  ///
+  bool get containsKorean {
+    RegExp koreanRegExp = RegExp(r'[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]');
+
+    return koreanRegExp.hasMatch(this);
+  }
+
+  ///
+  /// 문자열의 첫 번째 글자가 영어로 시작하는지 여부
+  ///
+  bool get startsWithEnglish {
+    if (isEmpty) {
+      return false;
+    }
+
+    int firstCharCode = codeUnitAt(0);
+    return (firstCharCode >= 65 && firstCharCode <= 90) ||
+        (firstCharCode >= 97 && firstCharCode <= 122);
+  }
 }
