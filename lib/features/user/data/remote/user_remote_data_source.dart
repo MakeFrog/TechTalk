@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:techtalk/features/user/data/models/user_data_model.dart';
 import 'package:techtalk/features/user/user.dart';
 
 abstract interface class UserRemoteDataSource {
@@ -7,7 +8,7 @@ abstract interface class UserRemoteDataSource {
 
   Future<void> updateUserData(UserDataEntity data);
 
-  Future<UserDataEntity> getUserData();
+  Future<UserDataModel> getUserData();
 
   Future<void> deleteUserData();
 

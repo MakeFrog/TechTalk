@@ -70,14 +70,14 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }
 
   @override
-  Future<UserDataEntity> getUserData() async {
+  Future<UserDataModel> getUserData() async {
     if (!await FirestoreUsersRef.isExist()) {
       throw const NoUserDataException();
     }
 
     final snapshot = await FirestoreUsersRef.doc().get();
 
-    return snapshot.data()!.toEntity();
+    return snapshot.data()!;
   }
 
   @override

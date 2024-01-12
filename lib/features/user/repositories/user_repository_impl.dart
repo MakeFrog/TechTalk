@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:techtalk/core/utils/result.dart';
+import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/tech_set_repository.dart';
 import 'package:techtalk/features/user/data/remote/user_remote_data_source.dart';
 import 'package:techtalk/features/user/entities/user_data_entity.dart';
 import 'package:techtalk/features/user/repositories/user_repository.dart';
@@ -8,9 +10,11 @@ import 'package:techtalk/features/user/repositories/user_repository.dart';
 final class UserRepositoryImpl implements UserRepository {
   const UserRepositoryImpl(
     this._userRemoteDataSource,
+    this._techSetRepository,
   );
 
   final UserRemoteDataSource _userRemoteDataSource;
+  final TechSetRepository _techSetRepository;
 
   @override
   Future<Result<void>> createUserData() async {
@@ -37,7 +41,14 @@ final class UserRepositoryImpl implements UserRepository {
   @override
   Future<Result<UserDataEntity>> getUserData() async {
     try {
-      return Result.success(await _userRemoteDataSource.getUserData());
+      final response = await _userRemoteDataSource.getUserData();
+      final List<SkillEntity> skills = response.topicIds != null
+          ? response.topicIds!.map(_techSetRepository.getSkillById).toList()
+          : [];
+
+      final result = UserDataEntity.fromModel(response, skills);
+
+      return Result.success(result);
     } on Exception catch (e) {
       return Result.failure(e);
     }

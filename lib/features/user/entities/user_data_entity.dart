@@ -1,11 +1,13 @@
 import 'package:techtalk/core/constants/job_group.enum.dart';
+import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
+import 'package:techtalk/features/user/data/models/user_data_model.dart';
 
 class UserDataEntity {
   final String uid;
   final String? profileImgUrl;
   final String? nickname;
   final List<JobGroup> jobGroups;
-  final List<String> topicIds;
+  final List<SkillEntity> skills;
 
   bool get hasEssentialData => nickname != null;
 
@@ -13,53 +15,41 @@ class UserDataEntity {
     required this.uid,
     this.profileImgUrl,
     this.nickname,
-    List<JobGroup>? jobGroupIds,
-    List<String>? topicIds,
-  })  : jobGroups = jobGroupIds ?? const [],
-        topicIds = topicIds ?? const [];
+    required this.jobGroups,
+    required this.skills,
+  });
+
+  factory UserDataEntity.fromModel(
+      UserDataModel model, List<SkillEntity> skills) {
+    return UserDataEntity(
+      uid: model.uid,
+      nickname: model.nickname,
+      profileImgUrl: model.profileImgUrl,
+      jobGroups: model.jobGroupIds != null
+          ? model.jobGroupIds!.map(JobGroup.getById).toList()
+          : [],
+      skills: skills,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'UserDataEntity{uid: $uid, profileImgUrl: $profileImgUrl, nickname: $nickname, jobGroups: $jobGroups, skills: $skills}';
+  }
 
   UserDataEntity copyWith({
     String? uid,
     String? profileImgUrl,
     String? nickname,
     List<JobGroup>? jobGroups,
-    List<String>? topicIds,
+    List<SkillEntity>? skills,
   }) {
     return UserDataEntity(
       uid: uid ?? this.uid,
       profileImgUrl: profileImgUrl ?? this.profileImgUrl,
       nickname: nickname ?? this.nickname,
-      jobGroupIds: jobGroups ?? this.jobGroups,
-      topicIds: topicIds ?? this.topicIds,
+      jobGroups: jobGroups ?? this.jobGroups,
+      skills: skills ?? this.skills,
     );
   }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'uid': this.uid,
-      'profileImgUrl': this.profileImgUrl,
-      'nickname': this.nickname,
-      'jobGroupIds': this.jobGroups,
-      'topicIds': this.topicIds,
-    };
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is UserDataEntity &&
-          runtimeType == other.runtimeType &&
-          uid == other.uid &&
-          profileImgUrl == other.profileImgUrl &&
-          nickname == other.nickname &&
-          jobGroups == other.jobGroups &&
-          topicIds == other.topicIds;
-
-  @override
-  int get hashCode =>
-      uid.hashCode ^
-      profileImgUrl.hashCode ^
-      nickname.hashCode ^
-      jobGroups.hashCode ^
-      topicIds.hashCode;
 }
