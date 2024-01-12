@@ -23,25 +23,26 @@ class ClosableRectFilledChip extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(8),
         onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 8,
-          ),
-          child: Row(
-            children: [
-              Text(
-                label,
-                style: AppTextStyle.body1.copyWith(
-                  color: Colors.white,
+        child: Container(
+          height: 32,
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Center(
+            child: Row(
+              children: [
+                Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  style: AppTextStyle.body1.copyWith(
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              Gap(2),
-              SvgPicture.asset(
-                Assets.iconsRoundedCloseThick,
-                width: 16,
-              ),
-            ],
+                const Gap(2),
+                SvgPicture.asset(
+                  Assets.iconsRoundedCloseBlue,
+                  width: 16,
+                ),
+              ],
+            ),
           ),
         ),
       ),
