@@ -8,11 +8,11 @@ class SignUpStepIntroMessage extends StatelessWidget {
   const SignUpStepIntroMessage({
     super.key,
     required this.title,
-    required this.subTitle,
+    this.subTitle,
   });
 
   final String title;
-  final String subTitle;
+  final String? subTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +26,13 @@ class SignUpStepIntroMessage extends StatelessWidget {
             style: AppTextStyle.headline1,
           ),
           const Gap(12),
-          Text(
-            subTitle,
-            style: AppTextStyle.body1.copyWith(
-              color: AppColor.of.gray4,
+          if (subTitle != null)
+            Text(
+              subTitle!,
+              style: AppTextStyle.body1.copyWith(
+                color: AppColor.of.gray4,
+              ),
             ),
-          ),
         ],
       ),
     );
