@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:techtalk/core/constants/assets.dart';
 
 enum InterviewerEntity {
-  bluePlus('bluePlus', '엄격한 면접관', Assets.characterBluePlus),
-  greenPlus('greenPlus', '너그러운 면접관', Assets.characterGreenPlus),
-  purplePlus('purplePlus', '딱딱한 면접관', Assets.characterPurplePlus),
-  redPlus('redPlus', '잘생긴 면접관', Assets.characterRedPlus);
+  bluePlus('bluePlus', '엄격한 면접관', Assets.characterBlue02),
+  greenPlus('greenPlus', '너그러운 면접관', Assets.characterGreen02),
+  purplePlus('purplePlus', '딱딱한 면접관', Assets.characterPurple02),
+  redPlus('redPlus', '잘생긴 면접관', Assets.characterRed02);
 
   final String id;
   final String name;

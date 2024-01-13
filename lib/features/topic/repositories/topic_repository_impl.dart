@@ -3,11 +3,10 @@ import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 class TopicRepositoryImpl implements TopicRepository {
-  TopicRepositoryImpl({
-    required TopicLocalDataSource localDataSource,
-    required TopicRemoteDataSource remoteDataSource,
-  })  : _remoteDataSource = remoteDataSource,
-        _localDataSource = localDataSource;
+  TopicRepositoryImpl(
+    this._localDataSource,
+    this._remoteDataSource,
+  );
 
   final TopicLocalDataSource _localDataSource;
   final TopicRemoteDataSource _remoteDataSource;
@@ -17,12 +16,11 @@ class TopicRepositoryImpl implements TopicRepository {
 
   @override
   Future<void> initStaticData() async {
-    _cachedTopics ??= await _remoteDataSource.getTopics().then(
-          (value) => value.map((e) => e.toEntity()).toList(),
-        );
-    _cachedTopicCategories ??= await _localDataSource.getTopicCategories().then(
-          (value) => value.map((e) => e.toEntity()).toList(),
-        );
+    final topicModels = await _remoteDataSource.getTopics();
+    _cachedTopics ??= topicModels.map((e) => e.toEntity()).toList();
+
+    final categoryModels = await _localDataSource.getTopicCategories();
+    _cachedTopicCategories ??= categoryModels.map((e) => e.toEntity()).toList();
   }
 
   @override

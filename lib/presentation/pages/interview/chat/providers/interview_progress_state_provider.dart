@@ -26,11 +26,11 @@ class InterviewProgressState extends _$InterviewProgressState {
       if (chatMessages != null && chatMessages.isNotEmpty) {
         final lastChat = chatMessages.first;
         switch (lastChat.type) {
-          case ChatType.userReply:
+          case ChatType.reply:
           case ChatType.guide:
           case ChatType.feedback:
             state = InterviewProgress.interviewerReplying;
-          case ChatType.askQuestion:
+          case ChatType.question:
             lastChat.message.listen(
               null,
               onDone: () {

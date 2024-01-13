@@ -7,7 +7,7 @@ part of 'interview_progress_state_provider.dart';
 // **************************************************************************
 
 String _$interviewProgressStateHash() =>
-    r'9c7a5af704b1de055521d2a6018359fbf487d306';
+    r'040860934703453d2e04e58a8eb5b64856539080';
 
 /// Copied from Dart SDK
 class _SystemHash {

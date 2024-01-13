@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:techtalk/core/utils/base/base_use_case.dart';
 import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/user/entities/user_data_entity.dart';
+import 'package:techtalk/features/user/entities/user_entity.dart';
 import 'package:techtalk/features/user/repositories/user_repository.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_setting_page.dart';
 
@@ -12,15 +12,15 @@ import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_sett
 /// [ProfileSettingPage] 영역에서 사용됨
 ///
 class EditUserProfileUseCase extends BaseUseCase<
-    ({UserDataEntity user, File? imageFile}), Result<UserDataEntity>> {
+    ({UserEntity user, File? imageFile}), Result<UserEntity>> {
   EditUserProfileUseCase(this._repository);
 
   final UserRepository _repository;
 
   @override
-  FutureOr<Result<UserDataEntity>> call(
-      ({File? imageFile, UserDataEntity user}) request) async {
-    UserDataEntity user;
+  FutureOr<Result<UserEntity>> call(
+      ({File? imageFile, UserEntity user}) request) async {
+    UserEntity user;
 
     user = request.user;
 
@@ -33,7 +33,7 @@ class EditUserProfileUseCase extends BaseUseCase<
       user = request.user.copyWith(profileImgUrl: imgUrl);
     }
 
-    final response = await _repository.updateUserData(user);
+    final response = await _repository.updateUser(user);
 
     return response.fold(
       onSuccess: (_) {

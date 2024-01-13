@@ -26,7 +26,6 @@ class UserAuth extends _$UserAuth {
         ToastService.show(
           NormalToast(message: '$e'),
         );
-        throw e;
       },
     );
   }
@@ -40,7 +39,6 @@ class UserAuth extends _$UserAuth {
         ToastService.show(
           NormalToast(message: '$e'),
         );
-        throw e;
       },
     );
   }
