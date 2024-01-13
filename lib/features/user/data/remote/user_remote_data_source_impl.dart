@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/features/user/data/models/fire_storage_user_ref.dart';
@@ -8,34 +9,27 @@ import 'package:techtalk/features/user/data/models/users_ref.dart';
 import 'package:techtalk/features/user/user.dart';
 
 final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
-  @override
   Future<bool> isExistNickname(
     String nickname,
   ) async {
-    return FirestoreUsersRef.collection()
-        .where(
-          'nickname',
-          isEqualTo: nickname,
-        )
+    final nicknameCount = await FirestoreUsersRef.collection()
+        .where('nickname', isEqualTo: nickname)
         .count()
-        .get()
-        .then(
-          (value) => value.count > 0,
-        );
+        .get();
+
+    return nicknameCount.count > 0;
   }
 
   @override
-  Future<UserModel> createUser() async {
+  Future<void> createUser(UserEntity data) async {
     if (await FirestoreUsersRef.isExist()) {
       throw const AlreadyExistUserDataException();
     }
 
     final userData = FirestoreUsersRef.doc();
-    final user = UserModel(uid: userData.id);
+    final user = UserModel.fromEntity(data);
 
     await userData.set(user);
-
-    return user;
   }
 
   @override
@@ -45,6 +39,10 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     }
 
     final snapshot = await FirestoreUsersRef.doc(uid).get();
+
+    await FirestoreUsersRef.doc(uid).update({
+      'last_login_date': FieldValue.serverTimestamp(),
+    });
 
     return snapshot.data()!;
   }

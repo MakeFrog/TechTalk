@@ -16,6 +16,8 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       topicIds: (json['topic_ids'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
+      lastLoginDate: _$JsonConverterFromJson<Timestamp, DateTime>(
+          json['last_login_date'], const TimeStampConverter().fromJson),
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -24,4 +26,12 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'nickname': instance.nickname,
       'job_group_ids': instance.jobGroupIds,
       'topic_ids': instance.topicIds,
+      'last_login_date':
+          const TimeStampConverter().toJson(instance.lastLoginDate),
     };
+
+Value? _$JsonConverterFromJson<Json, Value>(
+  Object? json,
+  Value? Function(Json json) fromJson,
+) =>
+    json == null ? null : fromJson(json as Json);

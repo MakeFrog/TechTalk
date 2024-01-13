@@ -6,16 +6,18 @@ import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/job/job.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_event.dart';
+import 'package:techtalk/presentation/pages/sign_up/sign_up_state.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/select_result_chip_list_view.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_intro_message.dart';
 
-class JobGroupSelectStep extends HookConsumerWidget with SignUpEvent {
+class JobGroupSelectStep extends HookConsumerWidget
+    with SignUpEvent, SignUpState {
   const JobGroupSelectStep({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
-    final selectedJobGroups = useState<List<JobEntity>>([]);
+    final jobs = getJobsUseCase().getOrThrow();
 
     return Column(
       children: [
@@ -32,57 +34,43 @@ class JobGroupSelectStep extends HookConsumerWidget with SignUpEvent {
                 ),
               ),
               SliverPersistentHeader(
-                floating: true,
                 pinned: true,
+                floating: true,
                 delegate: _SelectedJobGroupListViewDelegate(
-                  jobGroups: selectedJobGroups.value,
-                  onTapItem: (index) => selectedJobGroups.value =
-                      selectedJobGroups.value..removeAt(index),
+                  jobGroups: signUpJobs(ref),
+                  onTapItem: (index) => onTapSelectedJob(ref, index),
                 ),
               ),
-              HookBuilder(
-                builder: (context) {
-                  final jobGroups = getJobsUseCase().getOrThrow();
+              SliverList.builder(
+                itemCount: jobs.length,
+                itemBuilder: (context, index) {
+                  final job = jobs[index];
+                  final isSelected = signUpJobs(ref).contains(job);
 
-                  return SliverList.builder(
-                    itemCount: jobGroups.length,
-                    itemBuilder: (context, index) {
-                      final group = jobGroups[index];
-                      final isSelected =
-                          selectedJobGroups.value.contains(group);
-
-                      return ListTile(
-                        selected: isSelected,
-                        selectedColor: AppColor.of.black,
-                        selectedTileColor: AppColor.of.background1,
-                        minVerticalPadding: 0,
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 16),
-                        title: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            group.name,
-                            style: AppTextStyle.body2,
-                          ),
-                        ),
-                        trailing: isSelected
-                            ? FaIcon(
-                                FontAwesomeIcons.solidCircleCheck,
-                                color: AppColor.of.brand2,
-                                size: 20,
-                              )
-                            : null,
-                        onTap: () {
-                          if (selectedJobGroups.value.contains(group)) {
-                            selectedJobGroups.value =
-                                selectedJobGroups.value.toList()..remove(group);
-                          } else {
-                            selectedJobGroups.value =
-                                selectedJobGroups.value.toList()..add(group);
-                          }
-                        },
-                      );
-                    },
+                  return ListTile(
+                    selected: isSelected,
+                    selectedColor: AppColor.of.black,
+                    selectedTileColor: AppColor.of.background1,
+                    minVerticalPadding: 0,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                    title: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        job.name,
+                        style: AppTextStyle.body2,
+                      ),
+                    ),
+                    trailing: isSelected
+                        ? FaIcon(
+                            FontAwesomeIcons.solidCircleCheck,
+                            color: AppColor.of.brand2,
+                            size: 20,
+                          )
+                        : null,
+                    onTap: () => onTapJob(
+                      ref,
+                      job,
+                    ),
                   );
                 },
               ),
@@ -92,12 +80,8 @@ class JobGroupSelectStep extends HookConsumerWidget with SignUpEvent {
         Padding(
           padding: const EdgeInsets.all(16),
           child: FilledButton(
-            onPressed: selectedJobGroups.value.isNotEmpty
-                ? () => onTapJobGroupStepNext(
-                      ref,
-                      jobGroups: selectedJobGroups.value,
-                    )
-                : null,
+            onPressed:
+                signUpJobs(ref).isNotEmpty ? () => onTapJobStepNext(ref) : null,
             child: const Center(
               child: Text('다음'),
             ),
@@ -109,7 +93,7 @@ class JobGroupSelectStep extends HookConsumerWidget with SignUpEvent {
 }
 
 class _SelectedJobGroupListViewDelegate extends SliverPersistentHeaderDelegate {
-  const _SelectedJobGroupListViewDelegate({
+  _SelectedJobGroupListViewDelegate({
     required this.jobGroups,
     required this.onTapItem,
   });
@@ -125,7 +109,7 @@ class _SelectedJobGroupListViewDelegate extends SliverPersistentHeaderDelegate {
   ) {
     return Container(
       alignment: Alignment.center,
-      height: 68,
+      height: jobGroups.isEmpty ? 0 : 68,
       color: Colors.white,
       child: SelectResultChipListView(
         itemList: jobGroups.map((e) => e.name).toList(),
@@ -135,10 +119,10 @@ class _SelectedJobGroupListViewDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 68;
+  double get maxExtent => jobGroups.isEmpty ? 0 : 68;
 
   @override
-  double get minExtent => 68;
+  double get minExtent => jobGroups.isEmpty ? 0 : 68;
 
   @override
   bool shouldRebuild(covariant _SelectedJobGroupListViewDelegate oldDelegate) {
