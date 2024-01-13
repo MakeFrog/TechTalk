@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/features/job/job.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/user/entities/user_entity.dart';
+import 'package:techtalk/presentation/pages/my_info/job_group_setting/provider/selected_job_groups_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_jobs_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_nickname_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_controller.dart';
@@ -80,7 +82,7 @@ mixin class SignUpEvent {
       final userData = UserEntity(
         uid: ref.read(userAuthProvider)!.uid,
         nickname: ref.read(signUpNicknameProvider),
-        jobGroupIds: ref.read(signUpJobsProvider).map((e) => e.id).toList(),
+        jobGroups: ref.read(selectedJobGroupsProvider),
         topicIds: ref.read(signUpTopicsProvider).map((e) => e.id).toList(),
         lastLoginDate: DateTime.now(),
       );
@@ -93,5 +95,24 @@ mixin class SignUpEvent {
     } finally {
       await EasyLoading.dismiss();
     }
+  }
+
+  ///
+  /// 직군 ListTile이 클릭되었을 때
+  ///
+  void onJobGroupListTileTapped(WidgetRef ref, {required JobGroup item}) {
+    final selectedJobGroups = ref.read(selectedJobGroupsProvider);
+    if (selectedJobGroups.contains(item)) {
+      ref.read(selectedJobGroupsProvider.notifier).remove(item);
+    } else {
+      ref.read(selectedJobGroupsProvider.notifier).add(item);
+    }
+  }
+
+  ///
+  /// 선택된 직군 Chip 위젯이 클릭 되었을 때
+  ///
+  void onJogGroupChipTapped(WidgetRef ref, {required JobGroup item}) {
+    ref.read(selectedJobGroupsProvider.notifier).remove(item);
   }
 }

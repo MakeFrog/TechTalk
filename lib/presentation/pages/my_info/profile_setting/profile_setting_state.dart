@@ -17,6 +17,9 @@ mixin class ProfileSettingState {
   ///
   UserEntity user(WidgetRef ref) => ref.watch(userDataProvider).value!;
 
+  AsyncValue<UserEntity?> userAsync(WidgetRef ref) =>
+      ref.watch(userDataProvider);
+
   ///
   /// 닉네임
   ///

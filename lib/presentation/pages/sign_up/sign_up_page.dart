@@ -22,6 +22,9 @@ class SignUpPage extends BasePage {
   Color get screenBackgroundColor => Colors.white;
 
   @override
+  bool get setBottomSafeArea => false;
+
+  @override
   PreferredSizeWidget buildAppBar(BuildContext context, WidgetRef ref) =>
       const _AppBar();
 

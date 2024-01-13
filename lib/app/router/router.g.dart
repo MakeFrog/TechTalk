@@ -105,6 +105,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $ProfileSettingRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: 'job_group_setting',
+          name: 'job_group_setting',
+          factory: $JobGroupSettingRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: ':topicId',
           name: 'study',
           factory: $StudyRouteExtension._fromState,
@@ -207,6 +212,24 @@ extension $ProfileSettingRouteExtension on ProfileSettingRoute {
 
   void replace(BuildContext context) =>
       context.replace(location, extra: $extra);
+}
+
+extension $JobGroupSettingRouteExtension on JobGroupSettingRoute {
+  static JobGroupSettingRoute _fromState(GoRouterState state) =>
+      JobGroupSettingRoute();
+
+  String get location => GoRouteData.$location(
+        '/job_group_setting',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
 }
 
 extension $StudyRouteExtension on StudyRoute {
