@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/features/user/data/models/user_model.dart';
 import 'package:techtalk/features/user/data/models/users_ref.dart';
@@ -63,5 +62,19 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   @override
   Future<void> deleteUser() async {
     await FirestoreUsersRef.doc().delete();
+  }
+
+  @override
+  Future<String> uploadImgFileAndGetUrl(File imageFile) async {
+    final profileImgRef = FireStorageUserRef.profileImgRef;
+
+    final snapshot = await profileImgRef.putFile(imageFile);
+
+    if (snapshot.state == TaskState.success) {
+      final String downloadUrl = await snapshot.ref.getDownloadURL();
+      return downloadUrl;
+    } else {
+      throw const ImgStoreFailedException();
+    }
   }
 }

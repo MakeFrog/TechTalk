@@ -7,7 +7,7 @@ final _roundedBorderWithoutLine = OutlineInputBorder(
 
 abstract class _InputDecorationTheme {
   static final InputDecorationTheme light = InputDecorationTheme(
-    contentPadding: EdgeInsets.symmetric(
+    contentPadding: const EdgeInsets.symmetric(
       vertical: 14,
       horizontal: 16,
     ),
