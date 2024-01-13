@@ -35,7 +35,7 @@ class JobGroupSelectStep extends HookConsumerWidget
       bottomFixedBtn: FilledButton(
         onPressed: isJobGroupSelectionFilled(ref)
             ? () {
-                onTapJobGroupStepNext(ref);
+                // onJobGroupListTileTapped(ref, item: null);
               }
             : null,
         child: const Center(
