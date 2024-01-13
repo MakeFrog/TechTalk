@@ -16,21 +16,24 @@ class SignUpStepIntroMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: AppTextStyle.headline1,
-        ),
-        Gap(12),
-        Text(
-          subTitle,
-          style: AppTextStyle.body1.copyWith(
-            color: AppColor.of.gray4,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: AppTextStyle.headline1,
           ),
-        ),
-      ],
+          const Gap(12),
+          Text(
+            subTitle,
+            style: AppTextStyle.body1.copyWith(
+              color: AppColor.of.gray4,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

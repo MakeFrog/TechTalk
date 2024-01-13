@@ -6,7 +6,7 @@ part of 'user_auth_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userAuthHash() => r'5c9fae0c04bb2806fdabebf83903fdecd557f140';
+String _$userAuthHash() => r'e2b90a6d0818b5b04a10fff3c3ac3682f162c6bf';
 
 /// 앱 사용자 권한 프로바이더
 ///

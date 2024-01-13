@@ -18,21 +18,13 @@ class UserData extends _$UserData {
     final userData = await getUserUseCase();
 
     return userData.fold(
-      onSuccess: (value) {
-        return value;
-      },
-      onFailure: (e) {
-        ToastService.show(
-          NormalToast(message: '$e'),
-        );
-
-        throw e;
-      },
+      onSuccess: (value) => value,
+      onFailure: (e) => null,
     );
   }
 
-  Future<void> createData() async {
-    final createUserData = await createUserUseCase();
+  Future<void> createData(UserEntity data) async {
+    final createUserData = await createUserUseCase(data);
     await createUserData.fold(
       onSuccess: (value) async {
         ref.invalidateSelf();
@@ -47,6 +39,10 @@ class UserData extends _$UserData {
         throw e;
       },
     );
+  }
+
+  void edit(UserEntity user) {
+    state = AsyncData(user);
   }
 
   Future<void> updateData(UserEntity data) async {

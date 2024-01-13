@@ -11,8 +11,8 @@ String _$signUpStepControllerHash() =>
 
 /// See also [SignUpStepController].
 @ProviderFor(SignUpStepController)
-final signUpStepControllerProvider =
-    AutoDisposeNotifierProvider<SignUpStepController, PageController>.internal(
+final signUpStepControllerProvider = AutoDisposeNotifierProvider<
+    SignUpStepController, Raw<PageController>>.internal(
   SignUpStepController.new,
   name: r'signUpStepControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +22,6 @@ final signUpStepControllerProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$SignUpStepController = AutoDisposeNotifier<PageController>;
+typedef _$SignUpStepController = AutoDisposeNotifier<Raw<PageController>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

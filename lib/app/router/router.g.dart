@@ -100,6 +100,16 @@ RouteBase get $mainRoute => GoRouteData.$route(
           ],
         ),
         GoRouteData.$route(
+          path: 'profile-setting',
+          name: 'profile-setting',
+          factory: $ProfileSettingRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'job_group_setting',
+          name: 'job_group_setting',
+          factory: $JobGroupSettingRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'study/:topicId',
           name: 'study',
           factory: $StudyRouteExtension._fromState,
@@ -190,6 +200,46 @@ extension $QuestionCountSelectPageRouteExtension
       context.replace(location, extra: $extra);
 }
 
+extension $ProfileSettingRouteExtension on ProfileSettingRoute {
+  static ProfileSettingRoute _fromState(GoRouterState state) =>
+      ProfileSettingRoute(
+        state.extra as UserEntity,
+      );
+
+  String get location => GoRouteData.$location(
+        '/profile-setting',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+extension $JobGroupSettingRouteExtension on JobGroupSettingRoute {
+  static JobGroupSettingRoute _fromState(GoRouterState state) =>
+      JobGroupSettingRoute();
+
+  String get location => GoRouteData.$location(
+        '/job_group_setting',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
 extension $StudyRouteExtension on StudyRoute {
   static StudyRoute _fromState(GoRouterState state) => StudyRoute(
         state.extra as TopicEntity,
@@ -213,7 +263,7 @@ extension $StudyRouteExtension on StudyRoute {
 
 extension $WrongAnswerRouteExtension on WrongAnswerRoute {
   static WrongAnswerRoute _fromState(GoRouterState state) => WrongAnswerRoute(
-        state.extra as int,
+        state.extra as int?,
       );
 
   String get location => GoRouteData.$location(

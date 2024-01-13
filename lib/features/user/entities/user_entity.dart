@@ -1,3 +1,5 @@
+import 'package:techtalk/core/constants/job_group.enum.dart';
+
 class UserEntity {
   /// 유저 UID
   final String uid;
@@ -9,64 +11,43 @@ class UserEntity {
   final String? nickname;
 
   /// 유저 관심 직군 ID 목록
-  final List<String> jobGroupIds;
+  final List<JobGroup> jobGroups;
 
   /// 유저가 준비하고 있는 기술면접 주제 ID 목록
   final List<String> topicIds;
 
-  bool get hasEssentialData => nickname != null;
-
-//<editor-fold desc="Data Methods">
+  final DateTime lastLoginDate;
 
   const UserEntity({
     required this.uid,
     this.profileImgUrl,
     this.nickname,
-    List<String>? jobGroupIds,
+    required this.lastLoginDate,
+    List<JobGroup>? jobGroups,
     List<String>? topicIds,
-  })  : jobGroupIds = jobGroupIds ?? const [],
+  })  : jobGroups = jobGroups ?? const [],
         topicIds = topicIds ?? const [];
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is UserEntity &&
-          runtimeType == other.runtimeType &&
-          uid == other.uid &&
-          nickname == other.nickname &&
-          jobGroupIds == other.jobGroupIds &&
-          topicIds == other.topicIds);
-
-  @override
-  int get hashCode =>
-      uid.hashCode ^
-      nickname.hashCode ^
-      jobGroupIds.hashCode ^
-      topicIds.hashCode;
-
-  @override
   String toString() {
-    return 'UserEntity{' +
-        ' uid: $uid,' +
-        ' nickname: $nickname,' +
-        ' jobGroupIds: $jobGroupIds,' +
-        ' topicIds: $topicIds,' +
-        '}';
+    return 'UserEntity{uid: $uid, profileImgUrl: $profileImgUrl, nickname: $nickname, jobGroups: $jobGroups, topicIds: $topicIds, lastLoginDate: $lastLoginDate}';
   }
 
   UserEntity copyWith({
     String? uid,
+    String? profileImgUrl,
     String? nickname,
-    List<String>? jobGroupIds,
+    List<JobGroup>? jobGroups,
     List<String>? topicIds,
+    DateTime? lastLoginDate,
   }) {
     return UserEntity(
       uid: uid ?? this.uid,
+      profileImgUrl: profileImgUrl ?? this.profileImgUrl,
       nickname: nickname ?? this.nickname,
-      jobGroupIds: jobGroupIds ?? this.jobGroupIds,
+      jobGroups: jobGroups ?? this.jobGroups,
       topicIds: topicIds ?? this.topicIds,
+      lastLoginDate: lastLoginDate ?? this.lastLoginDate,
     );
   }
-
-//</editor-fold>
 }
