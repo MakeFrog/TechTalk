@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/core/constants/interview_type.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
@@ -18,6 +19,15 @@ mixin class ChatListEvent {
     WidgetRef ref, {
     required TopicEntity topic,
   }) {
-    QuestionCountSelectPageRoute($extra: topic).push(ref.context);
+    QuestionCountSelectPageRoute(
+      InterviewType.topic,
+      $extra: [topic],
+    ).push(ref.context);
+  }
+
+  void routeToTopicSelectPage(WidgetRef ref) {
+    const InterviewTopicSelectRoute(
+      InterviewType.practical,
+    ).push(ref.context);
   }
 }

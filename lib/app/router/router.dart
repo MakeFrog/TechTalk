@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/core/constants/interview_type.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/user/entities/user_entity.dart';
@@ -9,7 +10,6 @@ import 'package:techtalk/presentation/pages/interview/chat/providers/selected_ch
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
-import 'package:techtalk/presentation/pages/interview/topic_select/providers/selected_interview_topic_provider.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/job_group_setting_page.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_setting_page.dart';
@@ -182,7 +182,7 @@ class StudyRoute extends GoRouteData {
   final String topicId;
   final TopicEntity $extra;
 
-  static const String path = ':topicId';
+  static const String path = 'study/:topicId';
   static const String name = 'study';
 
   @override
@@ -210,31 +210,39 @@ class WrongAnswerRoute extends GoRouteData {
 }
 
 class InterviewTopicSelectRoute extends GoRouteData {
-  const InterviewTopicSelectRoute();
+  const InterviewTopicSelectRoute(this.type);
 
-  static const String path = 'topic-select';
+  static const String path = 'interview/:type';
   static const String name = 'topic select';
+
+  final InterviewType type;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const InterviewTopicSelectPage();
+    return InterviewTopicSelectPage(
+      type: type,
+    );
   }
 }
 
 class QuestionCountSelectPageRoute extends GoRouteData {
-  const QuestionCountSelectPageRoute({
+  QuestionCountSelectPageRoute(
+    this.type, {
     required this.$extra,
-  });
+  }) : topicId = $extra.singleOrNull?.id ?? $extra.map((e) => e.id).toString();
 
-  static const String path = 'question-count-select';
+  static const String path = ':topicId';
   static const String name = 'question count select';
 
-  final TopicEntity $extra;
+  final InterviewType type;
+  final String topicId;
+  final List<TopicEntity> $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return QuestionCountSelectPage(
-      topic: $extra,
+      type: type,
+      topics: $extra,
     );
   }
 }
@@ -262,37 +270,36 @@ class JobGroupSettingRoute extends GoRouteData {
 }
 
 class ChatListPageRoute extends GoRouteData {
-  const ChatListPageRoute(this.topicId);
+  const ChatListPageRoute(this.type, {this.topicId});
 
-  static const String path = 'chat-list/:topicId';
+  static const String path = 'chats/:type';
   static const String name = 'chat list';
 
-  final String topicId;
+  final InterviewType type;
+  final String? topicId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ProviderScope(
-      overrides: [
-        selectedInterviewTopicProvider.overrideWithValue(
-          getTopicUseCase(topicId).getOrThrow(),
-        ),
-      ],
-      child: ChatListPage(
-        topicId: topicId,
-      ),
+    return ChatListPage(
+      type: type,
+      topicId: topicId,
     );
   }
 }
 
 class ChatPageRoute extends GoRouteData {
-  ChatPageRoute(this.$extra)
-      : topicId = $extra.topic.id,
+  ChatPageRoute(
+    this.$extra, {
+    String? topicId,
+  })  : type = $extra.type,
+        topicId = topicId ?? $extra.topics.singleOrNull?.id,
         roomId = $extra.id;
 
   static const String path = ':roomId';
   static const String name = 'chat';
 
-  final String topicId;
+  final InterviewType type;
+  final String? topicId;
   final String roomId;
   final ChatRoomEntity $extra;
 

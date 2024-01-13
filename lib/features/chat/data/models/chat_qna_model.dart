@@ -16,6 +16,8 @@ class ChatQnaModel {
   final String? messageId;
   final String? state;
 
+  String get topicId => id.split('-').first;
+
   factory ChatQnaModel.fromEntity(ChatQnaEntity entity) {
     return ChatQnaModel(
       id: entity.id,

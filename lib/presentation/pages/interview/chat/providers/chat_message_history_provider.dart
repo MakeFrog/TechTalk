@@ -70,7 +70,8 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   /// 인사 한 뒤 바로 질문을 요청한다.
   Future<void> _showStartMessage() async {
     final nickname = ref.read(userDataProvider).requireValue!.nickname!;
-    final String message = '반가워요! $nickname님. ${room.topic.text} 면접 질문을 드리겠습니다';
+    final String message =
+        '반가워요! $nickname님. ${room.topics.first.text} 면접 질문을 드리겠습니다';
     final startChat = GuideChatMessageEntity.createStatic(
       message: message,
       timestamp: DateTime.now(),
@@ -129,7 +130,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
     AnswerChatMessageEntity resolvedUserAnswer = userAnswer;
     final feedbackChat = getAnswerFeedBackUseCase.call(
       (
-        category: room.topic.text,
+        category: room.topics.first.text,
         checkAnswer: ({required isCorrect}) async {
           resolvedUserAnswer =
               await updateUserAnswerState(isCorrect: isCorrect);

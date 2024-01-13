@@ -1,3 +1,4 @@
+import 'package:techtalk/core/constants/interview_type.dart';
 import 'package:techtalk/core/helper/string_generator.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/entities/chat_progress_info_entity.dart';
@@ -5,9 +6,10 @@ import 'package:techtalk/features/chat/entities/interviewer_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 class ChatRoomEntity {
+  final InterviewType type;
   final String id;
   final InterviewerEntity interviewer;
-  final TopicEntity topic;
+  final List<TopicEntity> topics;
   final ChatProgressInfoEntity progressInfo;
   final String? lastChatMessage;
   final DateTime? lastChatDate;
@@ -18,14 +20,16 @@ class ChatRoomEntity {
   ChatResult get passOrFail => progressInfo.chatResult;
 
   factory ChatRoomEntity.random({
-    required TopicEntity topic,
+    required InterviewType type,
+    required List<TopicEntity> topics,
     required int questionCount,
   }) {
     return ChatRoomEntity(
       isTemporary: true,
+      type: type,
       id: StringGenerator.generateRandomString(),
       interviewer: InterviewerEntity.getRandomInterviewer(),
-      topic: topic,
+      topics: topics,
       progressInfo: ChatProgressInfoEntity.onInitial(
         totalQuestionCount: questionCount,
       ),
@@ -34,9 +38,10 @@ class ChatRoomEntity {
 
 //<editor-fold desc="Data Methods">
   const ChatRoomEntity({
+    required this.type,
     required this.id,
     required this.interviewer,
-    required this.topic,
+    required this.topics,
     required this.progressInfo,
     this.lastChatMessage,
     this.lastChatDate,
@@ -48,9 +53,10 @@ class ChatRoomEntity {
       identical(this, other) ||
       (other is ChatRoomEntity &&
           runtimeType == other.runtimeType &&
+          type == other.type &&
           id == other.id &&
           interviewer == other.interviewer &&
-          topic == other.topic &&
+          topics == other.topics &&
           progressInfo == other.progressInfo &&
           lastChatMessage == other.lastChatMessage &&
           lastChatDate == other.lastChatDate &&
@@ -58,9 +64,10 @@ class ChatRoomEntity {
 
   @override
   int get hashCode =>
+      type.hashCode ^
       id.hashCode ^
       interviewer.hashCode ^
-      topic.hashCode ^
+      topics.hashCode ^
       progressInfo.hashCode ^
       lastChatMessage.hashCode ^
       lastChatDate.hashCode ^
@@ -69,9 +76,10 @@ class ChatRoomEntity {
   @override
   String toString() {
     return 'ChatRoomEntity{' +
+        ' type: $type,' +
         ' id: $id,' +
         ' interviewer: $interviewer,' +
-        ' topic: $topic,' +
+        ' topics: $topics,' +
         ' progressInfo: $progressInfo,' +
         ' lastChatMessage: $lastChatMessage,' +
         ' lastChatDate: $lastChatDate,' +
@@ -82,7 +90,7 @@ class ChatRoomEntity {
   ChatRoomEntity copyWith({
     String? id,
     InterviewerEntity? interviewer,
-    TopicEntity? topic,
+    List<TopicEntity>? topics,
     ChatProgressInfoEntity? progressInfo,
     String? lastChatMessage,
     DateTime? lastChatDate,
@@ -90,8 +98,9 @@ class ChatRoomEntity {
   }) {
     return ChatRoomEntity(
       id: id ?? this.id,
+      type: type,
       interviewer: interviewer ?? this.interviewer,
-      topic: topic ?? this.topic,
+      topics: topics ?? this.topics,
       progressInfo: progressInfo ?? this.progressInfo,
       lastChatMessage: lastChatMessage ?? this.lastChatMessage,
       lastChatDate: lastChatDate ?? this.lastChatDate,

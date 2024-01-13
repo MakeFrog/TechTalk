@@ -21,12 +21,12 @@ mixin class ChatEvent {
     required TextEditingController textEditingController,
   }) async {
     final message = textEditingController.text;
-    textEditingController.clear();
     if (message.isEmpty) {
       return ToastService.show(
         NormalToast(message: '답변을 입력해 주세요'),
       );
     }
+    textEditingController.clear();
     final room = ref.read(selectedChatRoomProvider);
 
     await ref
@@ -35,23 +35,29 @@ mixin class ChatEvent {
   }
 
   /// 앱바 뒤로 가기 버튼이 클릭 되었을 때
-  void onAppbarBackBtnTapped(BuildContext context) {
-    DialogService.show(
-      dialog: AppDialog.dividedBtn(
-        title: '알림',
-        subTitle: '정말 면접을 종료하시겠어요?',
-        description: '나중에 면접을 이어서 진행할 수 있습니다',
-        leftBtnContent: '취소',
-        rightBtnContent: '확인',
-        onRightBtnClicked: () {
-          context
-            ..pop()
-            ..pop();
-        },
-        onLeftBtnClicked: () {
-          context.pop();
-        },
-      ),
-    );
+  void onAppbarBackBtnTapped(WidgetRef ref) {
+    final room = ref.read(selectedChatRoomProvider);
+
+    if (room.progressState.isOngoing) {
+      DialogService.show(
+        dialog: AppDialog.dividedBtn(
+          title: '알림',
+          subTitle: '정말 면접을 종료하시겠어요?',
+          description: '나중에 면접을 이어서 진행할 수 있습니다',
+          leftBtnContent: '취소',
+          rightBtnContent: '확인',
+          onRightBtnClicked: () {
+            ref.context
+              ..pop()
+              ..pop();
+          },
+          onLeftBtnClicked: () {
+            ref.context.pop();
+          },
+        ),
+      );
+    } else {
+      ref.context.pop();
+    }
   }
 }

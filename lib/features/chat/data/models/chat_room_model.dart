@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:techtalk/core/constants/interview_type.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
 part 'chat_room_model.g.dart';
@@ -9,7 +10,8 @@ class ChatRoomModel {
   ChatRoomModel({
     required this.id,
     required this.interviewerId,
-    required this.topicId,
+    required this.topicIds,
+    required this.type,
     required this.totalQuestionCount,
     required this.correctAnswerCount,
     required this.incorrectAnswerCount,
@@ -17,7 +19,8 @@ class ChatRoomModel {
 
   final String id;
   final String interviewerId;
-  final String topicId;
+  final List<String> topicIds;
+  final InterviewType type;
   final int totalQuestionCount;
   final int correctAnswerCount;
   final int incorrectAnswerCount;
@@ -29,12 +32,13 @@ class ChatRoomModel {
       ChatRoomModel.fromJson(snapshot.data()!);
 
   factory ChatRoomModel.fromEntity(ChatRoomEntity entity) => ChatRoomModel(
+        id: entity.id,
         interviewerId: entity.interviewer.id,
-        topicId: entity.topic.id,
+        topicIds: entity.topics.map((e) => e.id).toList(),
+        type: entity.type,
         totalQuestionCount: entity.progressInfo.totalQuestionCount,
         correctAnswerCount: entity.progressInfo.correctAnswerCount,
         incorrectAnswerCount: entity.progressInfo.incorrectAnswerCount,
-        id: entity.id,
       );
 
   factory ChatRoomModel.fromJson(Map<String, dynamic> json) {
