@@ -23,7 +23,7 @@ final signUpNicknameProvider =
 
 typedef _$SignUpNickname = AutoDisposeNotifier<String?>;
 String _$signUpNicknameValidationHash() =>
-    r'6736c3cde419d02d5e53cde536a0ec19c0952039';
+    r'a27ae61336b8350da9aa9be4c766088c5b0c9e5f';
 
 /// See also [SignUpNicknameValidation].
 @ProviderFor(SignUpNicknameValidation)
