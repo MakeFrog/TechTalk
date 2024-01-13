@@ -5,7 +5,7 @@ import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 
-class OptionListBottomSheet extends StatelessWidget {
+class OptionListBottomSheet<T extends dynamic> extends StatelessWidget {
   const OptionListBottomSheet({
     Key? key,
     required this.options,
@@ -15,7 +15,7 @@ class OptionListBottomSheet extends StatelessWidget {
   }) : super(key: key);
 
   final List<String> options;
-  final VoidCallback onOptionTapped;
+  final void Function(int index) onOptionTapped;
   final VoidCallback onCloseBtnTapped;
   final String leadingText;
 
@@ -74,7 +74,10 @@ class OptionListBottomSheet extends StatelessWidget {
                             )
                           : BorderRadius.zero,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      context.pop();
+                      onOptionTapped(index);
+                    },
                     child: SizedBox(
                       height: 56,
                       child: Center(
@@ -88,7 +91,7 @@ class OptionListBottomSheet extends StatelessWidget {
                 },
               ),
 
-              Gap(8),
+              const Gap(8),
               // 하단 버튼
               MaterialButton(
                 color: AppColor.of.white,

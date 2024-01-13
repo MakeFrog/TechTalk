@@ -1,27 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'sign_up_step_controller.dart';
+part of 'profile_setting_route_arg_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$signUpStepControllerHash() =>
-    r'75fdf0cca4bfa71746f86d1db7be4017e6051ea0';
+String _$profileSettingRouteArgHash() =>
+    r'83983567ae0b288492ba557b9bd6d17ad2e1612a';
 
-/// See also [SignUpStepController].
-@ProviderFor(SignUpStepController)
-final signUpStepControllerProvider = AutoDisposeNotifierProvider<
-    SignUpStepController, Raw<PageController>>.internal(
-  SignUpStepController.new,
-  name: r'signUpStepControllerProvider',
+/// See also [profileSettingRouteArg].
+@ProviderFor(profileSettingRouteArg)
+final profileSettingRouteArgProvider = AutoDisposeProvider<UserEntity>.internal(
+  profileSettingRouteArg,
+  name: r'profileSettingRouteArgProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$signUpStepControllerHash,
+      : _$profileSettingRouteArgHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$SignUpStepController = AutoDisposeNotifier<Raw<PageController>>;
+typedef ProfileSettingRouteArgRef = AutoDisposeProviderRef<UserEntity>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

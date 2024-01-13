@@ -63,38 +63,21 @@ class ClearableTextField extends HookWidget {
               : null,
         );
 
-    if (validator != null) {
-      return TextFormField(
-        focusNode: focusNode,
-        controller: controller,
-        validator: validator,
-        autofocus: autoFocus,
-        enabled: enabled,
-        obscureText: obscureText,
-        style: style,
-        inputFormatters: inputFormatters,
-        textInputAction: textInputAction,
-        keyboardType: keyboardType,
-        decoration: inputDecoration,
-        onChanged: onChanged,
-        onEditingComplete: onEditingComplete,
-      );
-    } else {
-      return TextField(
-        focusNode: focusNode,
-        controller: controller,
-        autofocus: autoFocus,
-        enabled: enabled,
-        obscureText: obscureText,
-        style: style,
-        inputFormatters: inputFormatters,
-        textInputAction: textInputAction,
-        keyboardType: keyboardType,
-        decoration: inputDecoration,
-        onChanged: onChanged,
-        onEditingComplete: onEditingComplete,
-      );
-    }
+    return TextFormField(
+      focusNode: focusNode,
+      controller: controller,
+      autofocus: autoFocus,
+      validator: validator,
+      enabled: enabled,
+      obscureText: obscureText,
+      style: style,
+      inputFormatters: inputFormatters,
+      textInputAction: textInputAction,
+      keyboardType: keyboardType,
+      decoration: inputDecoration,
+      onChanged: onChanged,
+      onEditingComplete: onEditingComplete,
+    );
   }
 
   Widget _buildClearIcon(TextEditingController controller) {

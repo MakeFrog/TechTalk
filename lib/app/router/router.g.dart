@@ -100,6 +100,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           ],
         ),
         GoRouteData.$route(
+          path: 'profile-setting',
+          name: 'profile-setting',
+          factory: $ProfileSettingRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: ':topicId',
           name: 'study',
           factory: $StudyRouteExtension._fromState,
@@ -182,6 +187,28 @@ extension $QuestionCountSelectPageRouteExtension
       context.replace(location, extra: $extra);
 }
 
+extension $ProfileSettingRouteExtension on ProfileSettingRoute {
+  static ProfileSettingRoute _fromState(GoRouterState state) =>
+      ProfileSettingRoute(
+        state.extra as UserEntity,
+      );
+
+  String get location => GoRouteData.$location(
+        '/profile-setting',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
 extension $StudyRouteExtension on StudyRoute {
   static StudyRoute _fromState(GoRouterState state) => StudyRoute(
         state.extra as TopicEntity,
@@ -205,7 +232,7 @@ extension $StudyRouteExtension on StudyRoute {
 
 extension $WrongAnswerRouteExtension on WrongAnswerRoute {
   static WrongAnswerRoute _fromState(GoRouterState state) => WrongAnswerRoute(
-        state.extra as int,
+        state.extra as int?,
       );
 
   String get location => GoRouteData.$location(

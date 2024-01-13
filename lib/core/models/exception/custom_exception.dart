@@ -48,3 +48,7 @@ class NoInterviewTopicException extends CustomException {
   const NoInterviewTopicException(String topic)
       : super('000003', '$topic 주제 데이터가 없습니다.');
 }
+
+class ImgStoreFailedException extends CustomException {
+  const ImgStoreFailedException() : super('400001', '이미지 저장에 실패하였습니다.');
+}

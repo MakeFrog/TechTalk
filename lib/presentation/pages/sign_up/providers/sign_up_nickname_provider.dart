@@ -1,3 +1,4 @@
+import 'package:korean_profanity_filter/korean_profanity_filter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/helper/validation_extension.dart';
 
@@ -35,7 +36,7 @@ class SignUpNicknameValidation extends _$SignUpNicknameValidation {
       return '닉네임에 공백이 포함되어 있습니다.';
     } else if (!nickname.hasProperCharacter) {
       return '닉네임은 한글, 알파벳, 숫자, 언더스코어(_), 하이픈(-)만 사용할 수 있습니다.';
-    } else if (nickname.hasContainFWord) {
+    } else if (nickname.containsBadWords) {
       return '닉네임에 비속어가 포함되어 있습니다.';
     } else if (nickname.hasContainOperationWord) {
       return '허용되지 않는 단어가 포함되어 있습니다.';

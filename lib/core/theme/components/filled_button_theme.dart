@@ -8,7 +8,7 @@ abstract class _FilledButtonTheme {
       foregroundColor: AppColor().white,
       disabledForegroundColor: AppColor().white,
       elevation: 0,
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: 36,
         vertical: 18,
       ),
