@@ -4,7 +4,7 @@ import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/tech_set_repository.dart';
 import 'package:techtalk/features/user/data/remote/user_remote_data_source.dart';
-import 'package:techtalk/features/user/entities/user_data_entity.dart';
+import 'package:techtalk/features/user/entities/user_entity.dart';
 import 'package:techtalk/features/user/repositories/user_repository.dart';
 
 final class UserRepositoryImpl implements UserRepository {
@@ -17,36 +17,25 @@ final class UserRepositoryImpl implements UserRepository {
   final TechSetRepository _techSetRepository;
 
   @override
-  Future<Result<void>> createUserData() async {
+  Future<Result<void>> createUser(UserEntity data) async {
     try {
-      return Result.success(
-        await _userRemoteDataSource.createUserData(),
-      );
+      final createdUser = await _userRemoteDataSource.createUser(data);
+
+      return Result.success(createdUser);
     } on Exception catch (e) {
       return Result.failure(e);
     }
   }
 
   @override
-  Future<Result<void>> updateUserData(UserDataEntity data) async {
+  Future<Result<UserEntity>> getUser([String? uid]) async {
     try {
-      return Result.success(
-        _userRemoteDataSource.updateUserData(data),
-      );
-    } on Exception catch (e) {
-      return Result.failure(e);
-    }
-  }
-
-  @override
-  Future<Result<UserDataEntity>> getUserData() async {
-    try {
-      final response = await _userRemoteDataSource.getUserData();
+      final response = await _userRemoteDataSource.getUser();
       final List<SkillEntity> skills = response.topicIds != null
           ? response.topicIds!.map(_techSetRepository.getSkillById).toList()
           : [];
 
-      final result = UserDataEntity.fromModel(response, skills);
+      final result = UserEntity.fromModel(response, skills);
 
       return Result.success(result);
     } on Exception catch (e) {
@@ -55,10 +44,26 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<void>> deleteUserData() async {
+  Future<Result<void>> updateUser(UserEntity data) async {
+    try {
+      final response = await _userRemoteDataSource.getUser();
+      final List<SkillEntity> skills = response.topicIds != null
+          ? response.topicIds!.map(_techSetRepository.getSkillById).toList()
+          : [];
+
+      final result = UserEntity.fromModel(response, skills);
+
+      return Result.success(result);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<void>> deleteUser() async {
     try {
       return Result.success(
-        await _userRemoteDataSource.deleteUserData(),
+        await _userRemoteDataSource.deleteUser(),
       );
     } on Exception catch (e) {
       return Result.failure(e);

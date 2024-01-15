@@ -1,14 +1,12 @@
 import 'dart:async';
 
 import 'package:techtalk/core/utils/result.dart';
+import 'package:techtalk/features/tech_set/data/models/job_model.dart';
 import 'package:techtalk/features/tech_set/entities/skill_collection_entity.dart';
 import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
-import 'package:techtalk/features/tech_set/tech_set.dart';
 
 abstract interface class TechSetRepository {
-  Future<void> initStaticData();
-
-  Result<List<JobEntity>> getJobs();
+  List<Job> getJobs();
 
   /// 스킬 리스트 초기화
   Future<void> initSkills();

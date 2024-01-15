@@ -1,4 +1,4 @@
-import 'package:techtalk/app/di/locator.dart';
+import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/features/topic/data/local/topic_local_data_source.dart';
 import 'package:techtalk/features/topic/data/remote/topic_remote_data_source.dart';
 import 'package:techtalk/features/topic/repositories/topic_repository.dart';

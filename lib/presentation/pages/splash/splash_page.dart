@@ -14,7 +14,8 @@ class SplashPage extends BasePage with SplashEvent {
     Future.delayed(
       500.milliseconds,
       () async {
-        if (!SplashEvent.initComplete) {
+        if (!SplashEvent.isInitializing) {
+          SplashEvent.isInitializing = true;
           await initStaticData(ref);
           await routeByUserAuthAndData(ref);
         }
@@ -26,7 +27,7 @@ class SplashPage extends BasePage with SplashEvent {
   Widget buildPage(BuildContext context, WidgetRef ref) {
     return Center(
       child: SvgPicture.asset(
-        Assets.imagesTechTalkCharacterBlue04,
+        Assets.characterBlue04,
       ),
     );
   }

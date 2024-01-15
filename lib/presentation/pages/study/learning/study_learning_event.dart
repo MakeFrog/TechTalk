@@ -6,35 +6,19 @@ import 'package:techtalk/presentation/pages/study/learning/providers/study_quest
 import 'package:techtalk/presentation/pages/study/learning/widgets/entire_question_list_view.dart';
 import 'package:techtalk/presentation/pages/study/topic_select/providers/selected_study_topic_provider.dart';
 
-abstract interface class _StudyLearningEvent {
-  void onToggleAnswerBlur(WidgetRef ref);
-
-  void onQuestionPageChanged(WidgetRef ref);
-
-  void onTapPrevQuestion(WidgetRef ref);
-
-  Future<void> onTapEntireQuestion(WidgetRef ref);
-
-  void onTapNextQuestion(WidgetRef ref);
-}
-
-mixin class StudyLearningEvent implements _StudyLearningEvent {
-  @override
+mixin class StudyLearningEvent {
   void onToggleAnswerBlur(WidgetRef ref) {
     ref.read(studyAnswerBlurProvider.notifier).toggle();
   }
 
-  @override
   void onQuestionPageChanged(WidgetRef ref) {
     ref.invalidate(currentStudyQuestionIndexProvider);
   }
 
-  @override
   void onTapPrevQuestion(WidgetRef ref) {
     ref.read(studyQuestionControllerProvider.notifier).prev();
   }
 
-  @override
   Future<void> onTapEntireQuestion(WidgetRef ref) async {
     final selectedQuestionIndex = await Navigator.push<int>(
       ref.context,
@@ -53,7 +37,6 @@ mixin class StudyLearningEvent implements _StudyLearningEvent {
     }
   }
 
-  @override
   void onTapNextQuestion(WidgetRef ref) {
     ref.read(studyQuestionControllerProvider.notifier).next();
   }

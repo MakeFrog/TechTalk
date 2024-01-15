@@ -1,0 +1,4 @@
+enum InterviewType {
+  topic,
+  practical,
+}

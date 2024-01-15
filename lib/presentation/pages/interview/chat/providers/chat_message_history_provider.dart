@@ -41,49 +41,23 @@ class ChatMessageHistory extends _$ChatMessageHistory {
     required ChatMessageEntity message,
     void Function()? onDone,
   }) async {
-    if (message.isStreamApplied) {
-      message.message.listen(
-        null,
-        onDone: () {
-          onDone?.call();
-          message.message.close();
-        },
-      );
-    }
-
     await update(
       (previous) => [
         message,
         ...previous,
       ],
     );
-    if (!message.isStreamApplied) {
-      onDone?.call();
-    }
-  }
-
-  Future<QuestionChatMessageEntity> _createQuestionChat({
-    bool isStream = true,
-  }) async {
-    final qna = (await ref.read(chatQnAsProvider(room).future))
-        .firstWhere((qna) => !qna.hasUserResponded);
-
-    if (isStream) {
-      return QuestionChatMessageEntity.createStreamedChat(
-        qnaId: qna.id,
-        streamedMessage: qna.question.question.convertToStreamText,
-      );
-    } else {
-      return QuestionChatMessageEntity.createStaticChat(
-        qnaId: qna.id,
-        message: qna.question.question,
-        timestamp: DateTime.now(),
-      );
-    }
+    message.message.listen(
+      null,
+      onDone: () {
+        onDone?.call();
+        message.message.close();
+      },
+    );
   }
 
   /// [messages]를 서버에 생성
-  Future<void> _createChat(List<ChatMessageEntity> messages) async {
+  Future<void> _uploadChat(List<ChatMessageEntity> messages) async {
     await createChatMessagesUseCase(
       messages: messages,
       chatRoomId: room.id,
@@ -93,15 +67,18 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   }
 
   /// 최초 진입시 보여질 메세지
-  /// 인사를 호출 한 뒤 바로 질문을 요청한다.
+  /// 인사 한 뒤 바로 질문을 요청한다.
   Future<void> _showStartMessage() async {
     final nickname = ref.read(userDataProvider).requireValue!.nickname!;
-    final String message = '반가워요! $nickname님. ${room.topic.text} 면접 질문을 드리겠습니다';
+    final String message =
+        '반가워요! $nickname님. ${room.topics.first.text} 면접 질문을 드리겠습니다';
     final startChat = GuideChatMessageEntity.createStatic(
       message: message,
       timestamp: DateTime.now(),
     );
-    final questionChat = await _createQuestionChat(isStream: false);
+    final questionChat = ref
+        .read(chatQnAsProvider(room).notifier)
+        .createQuestionChat(isStream: false);
 
     await createChatRoomUseCase(
       room: room,
@@ -110,24 +87,29 @@ class ChatMessageHistory extends _$ChatMessageHistory {
     );
 
     await _showMessage(
-      message: GuideChatMessageEntity.createStream(
-        message.convertToStreamText,
+      message: GuideChatMessageEntity(
+        message: message.convertToStreamText,
       ),
       onDone: () async {
         await _showMessage(
-          message: await _createQuestionChat(),
+          message:
+              ref.read(chatQnAsProvider(room).notifier).createQuestionChat(),
         );
       },
     );
+  }
+
+  QuestionChatMessageEntity _getLastQuestionChat() {
+    return state.requireValue
+            .firstWhere((chat) => chat is QuestionChatMessageEntity)
+        as QuestionChatMessageEntity;
   }
 
   ///
   /// 유저 채팅 응답 추가
   ///
   Future<void> addUserChatResponse(String message) async {
-    final answeredQuestion =
-        state.requireValue.firstWhere((chat) => chat.type.isAskQuestionMessage)
-            as QuestionChatMessageEntity;
+    final answeredQuestion = _getLastQuestionChat();
     final answerChat = AnswerChatMessageEntity.initial(
       message: message,
       qnaId: answeredQuestion.qnaId,
@@ -135,8 +117,8 @@ class ChatMessageHistory extends _$ChatMessageHistory {
 
     await _showMessage(
       message: answerChat,
-      onDone: () => _respondToUserAnswer(answerChat),
     );
+    await _respondToUserAnswer(answerChat);
   }
 
   ///
@@ -148,7 +130,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
     AnswerChatMessageEntity resolvedUserAnswer = userAnswer;
     final feedbackChat = getAnswerFeedBackUseCase.call(
       (
-        category: room.topic.text,
+        category: room.topics.first.text,
         checkAnswer: ({required isCorrect}) async {
           resolvedUserAnswer =
               await updateUserAnswerState(isCorrect: isCorrect);
@@ -158,7 +140,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           final isComplete = qnas.every((element) => element.hasUserResponded);
           final String message = isComplete ? '면접이 종료 되었습니다' : '다음 질문을 드리겠습니다';
 
-          await _createChat(
+          await _uploadChat(
             [
               resolvedUserAnswer,
               FeedbackChatMessageEntity.createStatic(
@@ -169,28 +151,30 @@ class ChatMessageHistory extends _$ChatMessageHistory {
                 message: message,
                 timestamp: DateTime.now(),
               ),
-              await _createQuestionChat(isStream: false),
+              if (!isComplete)
+                ref
+                    .read(chatQnAsProvider(room).notifier)
+                    .createQuestionChat(isStream: false),
             ].reversed.toList(),
           );
-          await ref
-              .read(chatQnAsProvider(room).notifier)
-              .updateState(resolvedUserAnswer);
 
           await _showMessage(
-            message: GuideChatMessageEntity.createStream(
-              message.convertToStreamText,
+            message: GuideChatMessageEntity(
+              message: message.convertToStreamText,
             ),
             onDone: () async {
               if (!isComplete) {
-                _showMessage(
-                  message: await _createQuestionChat(),
+                await _showMessage(
+                  message: ref
+                      .read(chatQnAsProvider(room).notifier)
+                      .createQuestionChat(),
                 );
               }
             },
           );
         },
         question: state.requireValue
-            .firstWhere((chat) => chat.type.isAskQuestionMessage)
+            .firstWhere((chat) => chat.type.isQuestionMessage)
             .message
             .value,
         userAnswer: userAnswer.message.value,
@@ -198,8 +182,8 @@ class ChatMessageHistory extends _$ChatMessageHistory {
     );
 
     await _showMessage(
-      message: FeedbackChatMessageEntity.createStreamChat(
-        messageStream: feedbackChat,
+      message: FeedbackChatMessageEntity(
+        message: feedbackChat,
       ),
     );
   }
@@ -210,7 +194,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   Future<AnswerChatMessageEntity> updateUserAnswerState({
     required bool isCorrect,
   }) async {
-    final chatList = state.requireValue;
+    final chatList = state.requireValue.toList();
 
     final answeredChat = chatList.firstWhere((chat) => chat.type.isSentMessage)
         as AnswerChatMessageEntity;
@@ -218,10 +202,12 @@ class ChatMessageHistory extends _$ChatMessageHistory {
       answerState: isCorrect ? AnswerState.correct : AnswerState.wrong,
     );
     final targetIndex = chatList.indexWhere((chat) => chat == answeredChat);
+    chatList[targetIndex] = resolvedAnsweredChat;
 
-    await update(
-      (previous) => [...previous]..[targetIndex] = resolvedAnsweredChat,
-    );
+    await update((previous) => chatList);
+    await ref
+        .read(chatQnAsProvider(room).notifier)
+        .updateState(resolvedAnsweredChat);
 
     return resolvedAnsweredChat;
   }

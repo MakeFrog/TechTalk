@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/features/tech_set/tech_set.dart';
+import 'package:techtalk/features/tech_set/data/models/job_model.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_event.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_state.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/select_result_chip_list_view.dart';
@@ -35,7 +35,7 @@ class JobGroupSelectStep extends HookConsumerWidget
       bottomFixedBtn: FilledButton(
         onPressed: isJobGroupSelectionFilled(ref)
             ? () {
-                onTapJobGroupStepNext(ref);
+                // onJobGroupListTileTapped(ref, item: null);
               }
             : null,
         child: const Center(
@@ -144,7 +144,7 @@ class _SelectedJobGroupListViewDelegate extends SliverPersistentHeaderDelegate {
     required this.onTapItem,
   });
 
-  final List<JobEntity> jobGroups;
+  final List<Job> jobGroups;
   final void Function(int index) onTapItem;
 
   @override

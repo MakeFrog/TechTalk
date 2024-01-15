@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data/models/chat_message_model.dart';
 import 'package:techtalk/features/chat/data/models/chat_qna_model.dart';
 import 'package:techtalk/features/chat/data/models/chat_ref.dart';
 import 'package:techtalk/features/chat/data/models/chat_room_model.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
-import 'package:techtalk/features/topic/data/models/topic_ref.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   @override
@@ -22,13 +23,19 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }
 
   @override
-  Future<List<ChatRoomModel>> getChatRooms(String topicId) async {
-    final snapshot = await FirestoreChatRoomRef.collection()
-        .where(
-          'topic_id',
-          isEqualTo: topicId,
-        )
-        .get();
+  Future<List<ChatRoomModel>> getChatRooms(
+    InterviewType type, [
+    TopicEntity? topic,
+  ]) async {
+    final snapshot = switch (type) {
+      InterviewType.topic => await FirestoreChatRoomRef.collection()
+          .where('type', isEqualTo: type.name)
+          .where('topic_ids', arrayContains: topic!.id)
+          .get(),
+      InterviewType.practical => await FirestoreChatRoomRef.collection()
+          .where('type', isEqualTo: type.name)
+          .get()
+    };
 
     return [
       ...snapshot.docs.map((e) => e.data()),
@@ -43,17 +50,8 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }
 
   @override
-  Future<void> updateChatRoom(ChatRoomEntity room) async {
-    final roomModel = ChatRoomModel.fromEntity(room);
-    final roomDoc = FirestoreChatRoomRef.doc(roomModel.id);
-    final roomSnapshot = await roomDoc.get();
-
-    if (!roomSnapshot.exists) {
-      throw Exception('채팅방이 존재하지 않습니다.');
-    }
-
-    // 채팅방 데이터 저장
-    await roomDoc.set(roomModel);
+  Future<void> deleteChatRoom(String roomId) async {
+    await FirestoreChatRoomRef.doc(roomId).delete();
   }
 
   @override
@@ -128,51 +126,6 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }
 
   @override
-  Future<void> updateChatMessages(
-    String roomId, {
-    required List<ChatMessageEntity> messages,
-  }) async {
-    try {
-      await FirebaseFirestore.instance.runTransaction(
-        (transaction) async {
-          // 메세지 업데이트
-          // 유저의 응답메세지라면 채팅방의 정답 or 오답카운트, 채팅방 qna 정보를 업데이트한다
-          for (final message in messages) {
-            final messageModel = ChatMessageModel.fromEntity(message);
-            final messageDoc = await FirestoreChatMessageRef.collection(roomId)
-                .doc(message.id)
-                .get();
-
-            if (messageDoc.exists) {
-              transaction.set(
-                FirestoreChatMessageRef.collection(roomId).doc(message.id),
-                messageModel,
-              );
-
-              if (message is AnswerChatMessageEntity) {
-                transaction
-                  ..update(FirestoreChatRoomRef.doc(roomId), {
-                    if (message.answerState.isCorrect)
-                      'correct_answer_count': FieldValue.increment(1),
-                    if (message.answerState.isWrong)
-                      'incorrect_answer_count': FieldValue.increment(1),
-                  })
-                  ..update(
-                    FirestoreChatQnaRef.collection(roomId).doc(message.qnaId),
-                    {
-                      'message_id': message.id,
-                      'state': message.answerState.tag,
-                    },
-                  );
-              }
-            }
-          }
-        },
-      );
-    } catch (e) {}
-  }
-
-  @override
   Future<void> createChatQnas(
     String roomId, {
     required List<ChatQnaEntity> qnas,
@@ -188,7 +141,6 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
           qnaDoc,
           ChatQnaModel(
             id: qnaDoc.id,
-            questionId: qna.question.id,
           ),
         );
       }
@@ -196,34 +148,8 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }
 
   @override
-  Future<List<ChatQnaModel>> getChatQnas(ChatRoomEntity room) async {
-    if (room.isTemporary) {
-      final roomModel = ChatRoomModel.fromEntity(room);
-
-      // 면접주제의 질문 목록 조회 후 무작위 [questionCount]만큼 id 추출
-      final questionsSnapshot =
-          await FirestoreTopicQuestionRef.collection(roomModel.topicId).get();
-      final questionIds = [
-        ...questionsSnapshot.docs.map((e) => e.data()),
-      ]..shuffle();
-      final slicedQuestions = questionIds.sublist(
-        0,
-        roomModel.totalQuestionCount,
-      );
-
-      return slicedQuestions.map(
-        (e) {
-          final qnaDoc = FirestoreChatQnaRef.doc(roomModel.id);
-
-          return ChatQnaModel(
-            id: qnaDoc.id,
-            questionId: e.id,
-          );
-        },
-      ).toList();
-    }
-
-    final snapshot = await FirestoreChatQnaRef.collection(room.id).get();
+  Future<List<ChatQnaModel>> getChatQnas(String roomId) async {
+    final snapshot = await FirestoreChatQnaRef.collection(roomId).get();
 
     return [
       ...snapshot.docs.map((e) => e.data()),
@@ -231,12 +157,21 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }
 
   @override
-  Future<void> updateChatQnas(
-    String roomId, {
-    required ChatQnaEntity qna,
-  }) async {
-    await FirestoreChatQnaRef.collection(roomId)
-        .doc(qna.id)
-        .set(ChatQnaModel.fromEntity(qna));
+  Future<void> createReport(
+    FeedbackChatMessageEntity feedback,
+    AnswerChatMessageEntity answer,
+  ) async {
+    final docRef = FirebaseFirestore.instance
+        .collection('Reports')
+        .doc('chat')
+        .collection('WrongFeedback')
+        .doc();
+
+    await docRef.set({
+      'id': docRef.id,
+      'feedback': ChatMessageModel.fromEntity(feedback).toJson(),
+      'answer': ChatMessageModel.fromEntity(answer).toJson(),
+      'created_at': FieldValue.serverTimestamp(),
+    });
   }
 }

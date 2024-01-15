@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_event.dart';
@@ -10,7 +11,12 @@ import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar
 import 'package:techtalk/presentation/widgets/section/interview_topic_card.dart';
 
 class InterviewTopicSelectPage extends BasePage {
-  const InterviewTopicSelectPage({super.key});
+  const InterviewTopicSelectPage({
+    super.key,
+    required this.type,
+  });
+
+  final InterviewType type;
 
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
@@ -18,7 +24,7 @@ class InterviewTopicSelectPage extends BasePage {
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
-    final selectedTopicState = useState<TopicEntity?>(null);
+    final selectedTopicState = useState<List<TopicEntity>>([]);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -31,10 +37,12 @@ class InterviewTopicSelectPage extends BasePage {
             style: AppTextStyle.headline1,
           ),
           _TopicListView(
+            type: type,
             selectedTopicState: selectedTopicState,
           ),
           _NextButton(
-            selectedTopic: selectedTopicState.value,
+            type: type,
+            selectedTopics: selectedTopicState.value,
           ),
         ],
       ),
@@ -43,12 +51,14 @@ class InterviewTopicSelectPage extends BasePage {
 }
 
 class _TopicListView extends ConsumerWidget with InterviewTopicSelectEvent {
-  const _TopicListView({
+  _TopicListView({
     Key? key,
+    required this.type,
     required this.selectedTopicState,
   }) : super(key: key);
 
-  final ValueNotifier<TopicEntity?> selectedTopicState;
+  final InterviewType type;
+  final ValueNotifier<List<TopicEntity>> selectedTopicState;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -70,12 +80,16 @@ class _TopicListView extends ConsumerWidget with InterviewTopicSelectEvent {
               itemCount: topicList.length,
               itemBuilder: (context, index) {
                 final topic = topicList[index];
-                final isSelected = selectedTopicState.value == topic;
+                final isSelected = selectedTopicState.value.contains(topic);
+
                 return InterviewTopicCard(
                   topic: topic,
                   isSelected: isSelected,
-                  onTap: () =>
-                      selectedTopicState.value = isSelected ? null : topic,
+                  onTap: () => onTapTopic(
+                    type,
+                    selectedTopicState,
+                    topic,
+                  ),
                 );
               },
             );
@@ -89,18 +103,21 @@ class _TopicListView extends ConsumerWidget with InterviewTopicSelectEvent {
 class _NextButton extends ConsumerWidget with InterviewTopicSelectEvent {
   const _NextButton({
     Key? key,
-    this.selectedTopic,
+    required this.type,
+    required this.selectedTopics,
   }) : super(key: key);
 
-  final TopicEntity? selectedTopic;
+  final InterviewType type;
+  final List<TopicEntity> selectedTopics;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FilledButton(
-      onPressed: selectedTopic != null
+      onPressed: selectedTopics.isNotEmpty
           ? () => routeToQuestionCountSelect(
                 ref,
-                topic: selectedTopic!,
+                type: type,
+                topic: selectedTopics,
               )
           : null,
       child: const Center(

@@ -2,35 +2,23 @@ import 'dart:async';
 
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/utils/result.dart';
+import 'package:techtalk/features/tech_set/data/models/job_model.dart';
 import 'package:techtalk/features/tech_set/entities/skill_collection_entity.dart';
 import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 final class TechSetRepositoryImpl implements TechSetRepository {
   TechSetRepositoryImpl(
-    this._techSetRemoteDataSource,
     this._techSetLocalDataSource,
   );
 
-  final TechSetDataSource _techSetRemoteDataSource;
   final TechSetLocalDataSource _techSetLocalDataSource;
 
   final List<SkillCollectionEntity> _cachedSkillCollection = [];
-  List<JobEntity>? _cachedJobs;
 
   @override
-  Future<void> initStaticData() async {
-    final jobsModel = await _techSetLocalDataSource.getJobs();
-    _cachedJobs ??= jobsModel.map((e) => e.toEntity()).toList();
-  }
-
-  @override
-  Result<List<JobEntity>> getJobs() {
-    try {
-      return Result.success(_cachedJobs!);
-    } on Exception catch (e) {
-      return Result.failure(e);
-    }
+  List<Job> getJobs() {
+    return Job.values;
   }
 
   @override

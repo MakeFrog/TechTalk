@@ -1,32 +1,41 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/presentation/pages/interview/chat_list/providers/interview_rooms_provider.dart';
 
-abstract interface class _HomeEvent {
-  void onTapPracticalInterview();
-  void onTapNewTopicInterview();
-  void onTapGoToInterviewRoomListPage(
-    WidgetRef ref, {
-    required TopicEntity topic,
-  });
-}
+mixin class HomeEvent {
+  void onTapPracticalInterview(WidgetRef ref) async {
+    final chatRooms =
+        await ref.read(interviewRoomsProvider(InterviewType.practical).future);
 
-mixin class HomeEvent implements _HomeEvent {
-  @override
-  void onTapPracticalInterview() {
-    // TODO: implement onTapPracticalInterview
+    if (chatRooms.isEmpty) {
+      const InterviewTopicSelectRoute(InterviewType.practical)
+          .push(ref.context);
+    } else {
+      ChatListPageRoute(InterviewType.practical).push(ref.context);
+    }
   }
 
-  @override
   void onTapNewTopicInterview() {
-    const InterviewTopicSelectRoute().push(rootNavigatorKey.currentContext!);
+    const InterviewTopicSelectRoute(InterviewType.topic)
+        .push(rootNavigatorKey.currentContext!);
   }
 
-  @override
-  void onTapGoToInterviewRoomListPage(
+  Future<void> onTapGoToInterviewRoomListPage(
     WidgetRef ref, {
     required TopicEntity topic,
-  }) {
-    ChatListPageRoute(topic.id).push(rootNavigatorKey.currentContext!);
+  }) async {
+    final chatRooms = await ref
+        .read(interviewRoomsProvider(InterviewType.topic, topic.id).future);
+    if (chatRooms.isEmpty) {
+      QuestionCountSelectPageRoute(
+        InterviewType.topic,
+        $extra: [topic],
+      ).push(ref.context);
+    } else {
+      ChatListPageRoute(InterviewType.topic, topicId: topic.id)
+          .push(rootNavigatorKey.currentContext!);
+    }
   }
 }

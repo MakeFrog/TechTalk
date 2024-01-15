@@ -5,8 +5,6 @@ import 'package:techtalk/presentation/pages/sign_up/sign_up_event.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_state.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/select_result_chip_list_view.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_intro_message.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
-import 'package:techtalk/presentation/widgets/section/searched_skill_list_view.dart';
 import 'package:techtalk/presentation/widgets/section/skill_selection_scaffold.dart';
 
 class SkillSelectStep extends HookConsumerWidget with SignUpState, SignUpEvent {
@@ -33,28 +31,31 @@ class SkillSelectStep extends HookConsumerWidget with SignUpState, SignUpEvent {
           },
         ),
       ),
-      searchBar: Form(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        child: ClearableTextField(
-          inputDecoration: const InputDecoration(
-            hintText: '관심 기술을 검색해 주세요',
-          ),
-          validator: (input) => skillInputValidation(ref, searchedTerm: input),
-          onClear: () {
-            onSkillFieldCloseBtnTapped(ref);
-          },
-          onChanged: (searchedTerm) {
-            onSkillFiledChanged(ref, searchedTerm: searchedTerm);
-          },
-        ),
-      ),
-      searchedSkillListView: SearchedSkillListView(
-        items: skills(ref),
-        searchedTerm: searchedTerm(ref),
-        onItemTapped: (item) {
-          // onSearchedSkillTapped(ref, targetSkill: item);
-        },
-      ),
+      searchBar: Container(),
+      // Form(
+      //   autovalidateMode: AutovalidateMode.onUserInteraction,
+      //   child: ClearableTextField(
+      //     inputDecoration: const InputDecoration(
+      //       hintText: '관심 기술을 검색해 주세요',
+      //     ),
+      //     validator: (input) => skillInputValidation(ref, searchedTerm: input),
+      //     onClear: () {
+      //       onSkillFieldCloseBtnTapped(ref);
+      //     },
+      //     onChanged: (searchedTerm) {
+      //       onSkillFiledChanged(ref, searchedTerm: searchedTerm);
+      //     },
+      //   ),
+      // ),
+      searchedSkillListView: Container(),
+
+      // SearchedSkillListView(
+      //   items: skills(ref),
+      //   searchedTerm: searchedTerm(ref),
+      //   onItemTapped: (item) {
+      //     // onSearchedSkillTapped(ref, targetSkill: item);
+      //   },
+      // ),
       bottomFixedBtn: FilledButton(
         onPressed: () => onTapSignUp(
           ref,

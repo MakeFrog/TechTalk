@@ -4,9 +4,8 @@ import 'package:techtalk/core/utils/base/base_use_case.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/user/repositories/user_repository.dart';
 
-final class CheckIsNicknameDuplicatedUseCase
-    extends BaseUseCase<String, Result<bool>> {
-  CheckIsNicknameDuplicatedUseCase(this._repository);
+final class CheckNicknameDuplication extends BaseUseCase<String, Result<bool>> {
+  CheckNicknameDuplication(this._repository);
 
   final UserRepository _repository;
 

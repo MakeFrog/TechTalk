@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/features/user/entities/user_data_entity.dart';
+import 'package:techtalk/features/user/entities/user_entity.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/providers/picked_profile_img.dart';
 import 'package:techtalk/presentation/providers/input/nickname_input_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
@@ -15,9 +15,9 @@ mixin class ProfileSettingState {
   ///
   /// 유저 정보
   ///
-  UserDataEntity user(WidgetRef ref) => ref.watch(userDataProvider).value!;
+  UserEntity user(WidgetRef ref) => ref.watch(userDataProvider).value!;
 
-  AsyncValue<UserDataEntity?> userAsync(WidgetRef ref) =>
+  AsyncValue<UserEntity?> userAsync(WidgetRef ref) =>
       ref.watch(userDataProvider);
 
   ///

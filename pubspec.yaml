@@ -15,7 +15,7 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   #ChatGPT
-  chatgpt_completions: ^1.0.2
+  chat_gpt_sdk: ^2.2.5
 
   # UI
   cupertino_will_pop_scope: ^1.2.1  #pop scope (스와이프 백 제스쳐 지원)

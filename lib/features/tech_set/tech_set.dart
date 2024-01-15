@@ -1,4 +1,4 @@
-import 'package:techtalk/app/di/locator.dart';
+import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/features/tech_set/usecases/get_searched_skills.dart';
 

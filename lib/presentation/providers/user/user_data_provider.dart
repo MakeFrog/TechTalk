@@ -10,32 +10,21 @@ part 'user_data_provider.g.dart';
 @Riverpod(keepAlive: true)
 class UserData extends _$UserData {
   @override
-  FutureOr<UserDataEntity?> build() async {
+  FutureOr<UserEntity?> build() async {
     final userAuth = ref.watch(userAuthProvider);
 
     if (userAuth == null) throw const UnAuthorizedException();
 
-    final userData = await getUserDataUseCase();
+    final userData = await getUserUseCase();
 
     return userData.fold(
-      onSuccess: (value) {
-        return value;
-      },
-      onFailure: (e) {
-        ToastService.show(
-          NormalToast(message: '$e'),
-        );
-        throw e;
-      },
+      onSuccess: (value) => value,
+      onFailure: (e) => null,
     );
   }
 
-  void edit(UserDataEntity user) {
-    state = AsyncData(user);
-  }
-
-  Future<void> createData() async {
-    final createUserData = await createUserDataUseCase();
+  Future<void> createData(UserEntity data) async {
+    final createUserData = await createUserUseCase(data);
     await createUserData.fold(
       onSuccess: (value) async {
         ref.invalidateSelf();
@@ -52,8 +41,12 @@ class UserData extends _$UserData {
     );
   }
 
-  Future<void> updateData(UserDataEntity data) async {
-    final updateUserData = await updateUserDataUseCase(data);
+  void edit(UserEntity user) {
+    state = AsyncData(user);
+  }
+
+  Future<void> updateData(UserEntity data) async {
+    final updateUserData = await updateUserUseCase(data);
     updateUserData.fold(
       onSuccess: (value) {
         state = AsyncData(data);
@@ -69,7 +62,7 @@ class UserData extends _$UserData {
   }
 
   Future<void> deleteData() async {
-    final deleteUserData = await deleteUserDataUseCase();
+    final deleteUserData = await deleteUserUseCase();
     deleteUserData.fold(
       onSuccess: (value) {
         ref.invalidateSelf();

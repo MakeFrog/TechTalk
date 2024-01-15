@@ -1,4 +1,4 @@
-import 'package:techtalk/app/di/locator.dart';
+import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
 import 'package:techtalk/features/chat/repositories/chat_repository.dart';
 import 'package:techtalk/features/chat/use_cases/create_chat_messages_use_case.dart';
@@ -8,7 +8,7 @@ import 'package:techtalk/features/chat/use_cases/get_chat_message_history_use_ca
 import 'package:techtalk/features/chat/use_cases/get_chat_qnas_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/get_chat_room_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/get_chat_rooms_use_case.dart';
-import 'package:techtalk/features/chat/use_cases/update_chat_messages_use_case.dart';
+import 'package:techtalk/features/chat/use_cases/report_chat_use_case.dart';
 
 export 'chat.dart';
 export 'entities/chat_qna_entity.dart';
@@ -30,15 +30,15 @@ export 'use_cases/get_answer_feedback_use_case.dart';
 export 'use_cases/get_chat_message_history_use_case.dart';
 export 'use_cases/get_chat_qnas_use_case.dart';
 export 'use_cases/get_chat_room_use_case.dart';
-export 'use_cases/get_chat_rooms_use_case.dart';
+export 'use_cases/report_chat_use_case.dart';
 
 final chatRemoteDataSource = locator<ChatRemoteDataSource>();
 final chatRepository = locator<ChatRepository>();
 final getChatMessageHistoryUseCase = locator<GetChatMessageHistoryUseCase>();
 final getAnswerFeedBackUseCase = locator<GetAnswerFeedbackUseCase>();
-final getChatRoomsUseCase = locator<GetChatRoomsUseCase>();
 final createChatMessagesUseCase = locator<CreateChatMessagesUseCase>();
-final updateChatMessagesUseCase = locator<UpdateChatMessagesUseCase>();
 final createChatRoomUseCase = locator<CreateChatRoomUseCase>();
 final getChatRoomUseCase = locator<GetChatRoomUseCase>();
+final getChatRoomsUseCase = locator<GetChatRoomsUseCase>();
 final getChatQnasUseCase = locator<GetChatQnasUseCase>();
+final reportChatUseCase = locator<ReportChatUseCase>();

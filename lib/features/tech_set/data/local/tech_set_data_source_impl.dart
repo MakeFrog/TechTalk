@@ -8,15 +8,8 @@ import 'package:techtalk/features/tech_set/tech_set.dart';
 
 final class TechSetLocalDataSourceImpl implements TechSetLocalDataSource {
   @override
-  Future<List<JobModel>> getJobs() async {
-    final jobsJsonString = await rootBundle.loadString(Assets.jsonJobsData);
-    final jobsJson = jsonDecode(jobsJsonString) as List;
-
-    return [
-      ...jobsJson.map(
-        (e) => JobModel.fromJson(e),
-      ),
-    ];
+  Future<List<Job>> getJobs() async {
+    return Job.values;
   }
 
   @override

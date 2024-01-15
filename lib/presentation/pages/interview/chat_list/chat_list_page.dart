@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
+import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_event.dart';
@@ -13,16 +14,17 @@ import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar
 class ChatListPage extends BasePage with ChatListEvent {
   ChatListPage({
     Key? key,
-    required this.topicId,
-  })  : _topic = getTopicUseCase(topicId).getOrThrow(),
+    required this.type,
+    String? topicId,
+  })  : topic = topicId != null ? getTopicUseCase(topicId).getOrThrow() : null,
         super(key: key);
 
-  final String topicId;
-  final TopicEntity _topic;
+  final InterviewType type;
+  final TopicEntity? topic;
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
-    final roomsAsync = ref.watch(interviewRoomsProvider(topicId));
+    final roomsAsync = ref.watch(interviewRoomsProvider(type, topic?.id));
 
     return roomsAsync.when(
       data: (chatList) {
@@ -30,6 +32,7 @@ class ChatListPage extends BasePage with ChatListEvent {
           itemCount: chatList.length,
           itemBuilder: (context, index) {
             return ChatListItemView.create(
+              type,
               chatList[index],
             );
           },
@@ -53,10 +56,15 @@ class ChatListPage extends BasePage with ChatListEvent {
       builder: (context, ref, child) {
         return MaterialButton(
           onPressed: () {
-            routeToQuestionCountSelectPage(
-              ref,
-              topic: _topic,
-            );
+            switch (type) {
+              case InterviewType.topic:
+                routeToQuestionCountSelectPage(
+                  ref,
+                  topic: topic!,
+                );
+              case InterviewType.practical:
+                routeToTopicSelectPage(ref);
+            }
           },
           height: 56,
           minWidth: 56,
@@ -77,6 +85,9 @@ class ChatListPage extends BasePage with ChatListEvent {
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
       BackButtonAppBar(
-        title: _topic.text,
+        title: switch (type) {
+          InterviewType.topic => topic?.text,
+          InterviewType.practical => '실전 면접',
+        },
       );
 }

@@ -8,20 +8,23 @@ part 'chat_message_model.g.dart';
 @JsonSerializable(
   fieldRename: FieldRename.snake,
   explicitToJson: true,
+  includeIfNull: false,
 )
 class ChatMessageModel {
   ChatMessageModel({
     required this.id,
     required this.message,
     required this.type,
-    required this.qna,
+    this.qnaId,
+    this.state,
     required this.timestamp,
   });
 
   final String id;
   final String message;
   final String type;
-  final Map<String, dynamic>? qna;
+  final String? qnaId;
+  final String? state;
   @TimeStampConverter()
   final DateTime timestamp;
 
@@ -32,28 +35,23 @@ class ChatMessageModel {
       ChatMessageModel.fromJson(snapshot.data()!);
 
   factory ChatMessageModel.fromEntity(ChatMessageEntity entity) {
-    Map<String, dynamic>? qna;
-
-    if (entity.type.isSentMessage) {
-      entity as AnswerChatMessageEntity;
-      qna = {
-        'id': entity.qnaId,
-        'state': entity.answerState.tag,
-      };
+    String? qnaId;
+    String? state;
+    if (entity is AnswerChatMessageEntity) {
+      qnaId = entity.qnaId;
+      state = entity.answerState.tag;
     }
 
-    if (entity.type.isAskQuestionMessage) {
-      entity as QuestionChatMessageEntity;
-      qna = {
-        'id': entity.qnaId,
-      };
+    if (entity is QuestionChatMessageEntity) {
+      qnaId = entity.qnaId;
     }
 
     return ChatMessageModel(
       id: entity.id,
       message: entity.message.value,
-      type: entity.type.id,
-      qna: qna,
+      type: entity.type.name,
+      qnaId: qnaId,
+      state: state,
       timestamp: entity.timestamp,
     );
   }
@@ -63,24 +61,28 @@ class ChatMessageModel {
     switch (chatType) {
       case ChatType.guide:
         return GuideChatMessageEntity.createStatic(
+          id: id,
           message: message,
           timestamp: timestamp,
         );
-      case ChatType.userReply:
+      case ChatType.reply:
         return AnswerChatMessageEntity(
+          id: id,
           message: message,
-          answerState: AnswerState.getStateById(qna!['state']!),
+          answerState: AnswerState.getStateById(state!),
+          qnaId: qnaId!,
           timestamp: timestamp,
-          qnaId: qna!['id']!,
         );
-      case ChatType.askQuestion:
-        return QuestionChatMessageEntity.createStaticChat(
-          qnaId: qna!['id']!,
-          timestamp: timestamp,
+      case ChatType.question:
+        return QuestionChatMessageEntity.createStatic(
+          id: id,
+          qnaId: qnaId!,
           message: message,
+          timestamp: timestamp,
         );
       case ChatType.feedback:
         return FeedbackChatMessageEntity.createStatic(
+          id: id,
           message: message,
           timestamp: timestamp,
         );

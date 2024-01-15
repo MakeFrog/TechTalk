@@ -22,26 +22,30 @@ class ChatPage extends BasePage with ChatEvent {
   Widget buildPage(BuildContext context, WidgetRef ref) {
     final tabController = useTabController(initialLength: 2);
     final room = ref.watch(selectedChatRoomProvider);
-    final chatMessagesAsync = ref.watch(chatMessageHistoryProvider(room));
-    final chatQnaAsync = ref.watch(chatQnAsProvider(room));
 
-    if (chatMessagesAsync.isLoading || chatQnaAsync.isLoading) {
-      return Container();
-    } else if (chatMessagesAsync.hasError) {
-      return Center(
-        child: Text('${chatMessagesAsync.error}'),
-      );
-    } else if (chatQnaAsync.hasError) {
-      return Center(
-        child: Text('${chatQnaAsync.error}'),
-      );
+    switch (ref.watch(chatQnAsProvider(room))) {
+      case AsyncData():
+        switch (ref.watch(chatMessageHistoryProvider(room))) {
+          case AsyncData():
+            return _Scaffold(
+              chatTabView: const InterviewTabView(),
+              summaryTabView: const QnATabView(),
+              tabController: tabController,
+            );
+          case AsyncError(:final error):
+            return Center(
+              child: Text('$error'),
+            );
+          default:
+            return Container();
+        }
+      case AsyncError(:final error):
+        return Center(
+          child: Text('$error'),
+        );
+      default:
+        return Container();
     }
-
-    return _Scaffold(
-      chatTabView: const InterviewTabView(),
-      summaryTabView: const QnATabView(),
-      tabController: tabController,
-    );
   }
 
   @override
@@ -49,10 +53,14 @@ class ChatPage extends BasePage with ChatEvent {
 
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) {
+    final firstTopic = ref.watch(selectedChatRoomProvider).topics.first.text;
+    final otherTopicCount =
+        ref.watch(selectedChatRoomProvider).topics.length - 1;
+
     return BackButtonAppBar(
-      title: ref.watch(selectedChatRoomProvider).topic.text,
+      title: '$firstTopic${otherTopicCount > 0 ? ' 외 $otherTopicCount' : ''}',
       onBackBtnTapped: () {
-        onAppbarBackBtnTapped(context);
+        onAppbarBackBtnTapped(ref);
       },
     );
   }
