@@ -5,12 +5,19 @@ import 'package:techtalk/presentation/providers/user/auth/is_user_authorized_pro
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 
 mixin class SplashEvent {
-  static bool initComplete = false;
+  /// 초기화 실행중인지 여부
+  ///
+  /// 초기화를 한번만 실행하기 위해 사용
+  static bool isInitializing = false;
 
+  /// 면접 주제 등 초기 호출 후 재사용할 데이터를 초기화한다.
   Future<void> initStaticData(WidgetRef ref) async {
     await topicRepository.initStaticData();
   }
 
+  /// 유저 인증정보와 유저 정보를 토대로 라우팅을 분기한다.
+  ///
+  /// 인증 정보가 없으면 [SignInPage], 유저 정보가 없으면 [SignUpPage], 둘 다 있는 유저라면 [MainPage]로 라우팅한다.
   Future<void> routeByUserAuthAndData(WidgetRef ref) async {
     final isAuthorized = ref.read(isUserAuthorizedProvider);
     if (!isAuthorized) {
@@ -20,12 +27,12 @@ mixin class SplashEvent {
 
     await ref.read(userDataProvider.future).then(
       (userData) {
-        if (userData == null || !userData.hasEssentialData) {
-          const SignInRoute().go(ref.context);
+        if (userData == null) {
+          const SignUpRoute().go(ref.context);
         } else {
           const MainRoute().go(ref.context);
         }
       },
-    ).then((_) => initComplete = true);
+    );
   }
 }

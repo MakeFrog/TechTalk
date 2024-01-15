@@ -6,12 +6,6 @@ import 'package:techtalk/core/constants/profile_setting_type.enum.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 import 'package:techtalk/presentation/widgets/common/bottom_sheet/option_list_bottom_sheet.dart';
 
-class TestClass {
-  TestClass() {
-    print('TEST CLASS : $hashCode');
-  }
-}
-
 mixin class MyPageEvent {
   ///
   /// 개인정보 및 약관 사이트로 이동
@@ -56,11 +50,9 @@ mixin class MyPageEvent {
                 ProfileSettingRoute(user!).go(context);
               },
               jobGroup: (_) {
-                print('ROUTE TO JOB GROUP SETTING PAGE');
+                // JobGroupSettingRoute().go(context);
               },
-              topic: (_) {
-                print('ROUT TO TOPIC SETTING PAGE');
-              },
+              topic: (_) {},
             );
           },
         );

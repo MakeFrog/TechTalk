@@ -50,6 +50,7 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
               const SizedBox(
                 width: 16,
               ),
+
               SizedBox(
                 height: 64,
                 width: AppSize.to.rationWidth(174),
