@@ -177,14 +177,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.0"
-  chatgpt_completions:
+  chat_gpt_sdk:
     dependency: "direct main"
     description:
-      name: chatgpt_completions
-      sha256: a3760d41aabfbf0a69f9e34d6e4c20c439ed54edf9123e61838a0f01ba3644f4
+      name: chat_gpt_sdk
+      sha256: ace2b12df876249c79b95be1dd570ea0cd3fcc45b77252f8c0bcaed3ffdaa45a
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.2"
+    version: "2.2.5"
   checked_yaml:
     dependency: transitive
     description:

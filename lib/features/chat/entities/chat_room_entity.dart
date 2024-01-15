@@ -1,4 +1,4 @@
-import 'package:techtalk/core/constants/interview_type.dart';
+import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/helper/string_generator.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/entities/chat_progress_info_entity.dart';

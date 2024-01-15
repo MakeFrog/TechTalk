@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
+import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';
@@ -47,6 +48,15 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
                               .read(chatMessageHistoryProvider(room).notifier)
                               .isLastReceivedChatInEachQuestion(index: index),
                           interviewer: room.interviewer,
+                          onTapReport: value[index] is FeedbackChatMessageEntity
+                              ? () => onTapReportButton(
+                                    ref,
+                                    feedback: value[index]
+                                        as FeedbackChatMessageEntity,
+                                    answer: value[index + 1]
+                                        as AnswerChatMessageEntity,
+                                  )
+                              : null,
                         ),
                       ),
                     ),

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:techtalk/core/constants/interview_type.dart';
+import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data/models/chat_message_model.dart';
 import 'package:techtalk/features/chat/data/models/chat_qna_model.dart';
@@ -47,6 +47,11 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
     final snapshot = await FirestoreChatRoomRef.doc(roomId).get();
 
     return snapshot.data()!;
+  }
+
+  @override
+  Future<void> deleteChatRoom(String roomId) async {
+    await FirestoreChatRoomRef.doc(roomId).delete();
   }
 
   @override
@@ -149,5 +154,24 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
     return [
       ...snapshot.docs.map((e) => e.data()),
     ];
+  }
+
+  @override
+  Future<void> createReport(
+    FeedbackChatMessageEntity feedback,
+    AnswerChatMessageEntity answer,
+  ) async {
+    final docRef = FirebaseFirestore.instance
+        .collection('Reports')
+        .doc('chat')
+        .collection('WrongFeedback')
+        .doc();
+
+    await docRef.set({
+      'id': docRef.id,
+      'feedback': ChatMessageModel.fromEntity(feedback).toJson(),
+      'answer': ChatMessageModel.fromEntity(answer).toJson(),
+      'created_at': FieldValue.serverTimestamp(),
+    });
   }
 }

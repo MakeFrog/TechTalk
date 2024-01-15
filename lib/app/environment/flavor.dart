@@ -1,4 +1,4 @@
-import 'package:chatgpt_completions/chatgpt_completions.dart';
+import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -26,8 +26,12 @@ class Flavor {
     await dotenv.load(
       fileName: env.dotFileName,
     );
-
-    ChatGPTCompletions.instance.initialize(apiKey: env.openApiKey);
+    OpenAI.instance.build(
+      token: env.openApiKey,
+      baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 5)),
+      enableLog: true,
+    );
+    // ChatGPTCompletions.instance.initialize(apiKey: env.openApiKey);
 
     final option = env.firebaseOption;
 

@@ -1,4 +1,4 @@
-import 'package:techtalk/core/constants/interview_type.dart';
+import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data/models/chat_message_model.dart';
 import 'package:techtalk/features/chat/data/models/chat_qna_model.dart';
@@ -15,6 +15,8 @@ abstract interface class ChatRemoteDataSource {
     InterviewType type, [
     TopicEntity? topic,
   ]);
+
+  Future<void> deleteChatRoom(String roomId);
 
   Future<void> createChatMessages(
     String roomId, {
@@ -38,4 +40,9 @@ abstract interface class ChatRemoteDataSource {
     required List<ChatQnaEntity> qnas,
   });
   Future<List<ChatQnaModel>> getChatQnas(String roomId);
+
+  Future<void> createReport(
+    FeedbackChatMessageEntity feedback,
+    AnswerChatMessageEntity answer,
+  );
 }

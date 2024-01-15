@@ -37,7 +37,7 @@ Future<void> runFlavoredApp() async {
   return runApp(
     ProviderScope(
       observers: [
-        ProviderLogger(),
+        // ProviderLogger(),
       ],
       child: App(),
     ),

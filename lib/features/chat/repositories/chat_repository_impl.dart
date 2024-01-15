@@ -1,4 +1,4 @@
-import 'package:techtalk/core/constants/interview_type.dart';
+import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
@@ -38,6 +38,21 @@ final class ChatRepositoryImpl implements ChatRepository {
     await _remoteDataSource.createChatRoom(room);
     await _remoteDataSource.createChatQnas(room.id, qnas: qnas);
     await _remoteDataSource.createChatMessages(room.id, messages: messages);
+
+    final rooms = await switch (room.type) {
+      InterviewType.topic => getChatRooms(room.type, room.topics.single),
+      InterviewType.practical => getChatRooms(room.type),
+    }
+        .then((value) => value.getOrThrow());
+
+    await Future.doWhile(() async {
+      if (rooms.length > 20) {
+        await _remoteDataSource.deleteChatRoom(rooms.last.id);
+        rooms.removeLast();
+        return true;
+      }
+      return false;
+    });
 
     return Result.success(null);
   }
@@ -190,5 +205,22 @@ final class ChatRepositoryImpl implements ChatRepository {
     });
 
     return Result.success(qnas);
+  }
+
+  @override
+  Future<Result<void>> reportFeedback(
+    FeedbackChatMessageEntity feedback,
+    AnswerChatMessageEntity answer,
+  ) async {
+    try {
+      return Result.success(
+        await _remoteDataSource.createReport(
+          feedback,
+          answer,
+        ),
+      );
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
   }
 }

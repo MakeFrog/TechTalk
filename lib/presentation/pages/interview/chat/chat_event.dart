@@ -1,8 +1,11 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
 import 'package:techtalk/core/services/toast_service.dart';
+import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
@@ -59,5 +62,46 @@ mixin class ChatEvent {
     } else {
       ref.context.pop();
     }
+  }
+
+  Future<void> onTapReportButton(
+    WidgetRef ref, {
+    required FeedbackChatMessageEntity feedback,
+    required AnswerChatMessageEntity answer,
+  }) async {
+    DialogService.show(
+      dialog: AppDialog.dividedBtn(
+        title: '신고',
+        subTitle: '면접관의 답변이 이상하신가요?',
+        description: '면접관의 답변을 신고해 정확도를 향상시키는데 도움을 주시면 감사하겠습니다.',
+        leftBtnContent: '취소',
+        rightBtnContent: '확인',
+        onRightBtnClicked: () async {
+          await reportChatUseCase(feedback, answer).then((value) {
+            value.fold(
+              onSuccess: (value) {
+                ref.context.pop();
+                ScaffoldMessenger.of(ref.context).showSnackBar(
+                  const SnackBar(
+                    content: Text('신고해주셔서 감사합니다.'),
+                  ),
+                );
+              },
+              onFailure: (e) {
+                ref.context.pop();
+                ScaffoldMessenger.of(ref.context).showSnackBar(
+                  const SnackBar(
+                    content: Text('오류가 발생했습니다. 다시 시도해주세요.'),
+                  ),
+                );
+              },
+            );
+          });
+        },
+        onLeftBtnClicked: () {
+          ref.context.pop();
+        },
+      ),
+    );
   }
 }

@@ -50,7 +50,7 @@ mixin class MyPageEvent {
                 ProfileSettingRoute(user!).go(context);
               },
               jobGroup: (_) {
-                JobGroupSettingRoute().go(context);
+                // JobGroupSettingRoute().go(context);
               },
               topic: (_) {},
             );
