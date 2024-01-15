@@ -1,61 +1,26 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/job_group.enum.dart';
-import 'package:techtalk/features/job/job.dart';
+import 'package:techtalk/core/services/snack_bar_servbice.dart';
 import 'package:techtalk/features/topic/topic.dart';
-import 'package:techtalk/features/user/entities/user_entity.dart';
+import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/provider/selected_job_groups_provider.dart';
-import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_jobs_provider.dart';
-import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_nickname_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_controller.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_topics_provider.dart';
+import 'package:techtalk/presentation/providers/input/nickname_input_provider.dart';
 import 'package:techtalk/presentation/providers/user/auth/user_auth_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
+
+part 'job_group_event.p.dart';
+part 'nickname_input_event.p.dart';
 
 mixin class SignUpEvent {
   void onTapBackButton(WidgetRef ref) {
     ref.read(signUpStepControllerProvider.notifier).prev();
-  }
-
-  void onChangeNicknameField(
-    WidgetRef ref, {
-    required String value,
-  }) {
-    ref.read(signUpNicknameProvider.notifier).updateState(value);
-  }
-
-  void onClearNicknameField(WidgetRef ref) {
-    ref.invalidate(signUpNicknameProvider);
-  }
-
-  Future<void> onTapNicknameStepNext(WidgetRef ref) async {
-    FocusManager.instance.primaryFocus?.unfocus();
-
-    final isDuplicated =
-        await ref.read(signUpNicknameProvider.notifier).checkDuplication();
-
-    if (isDuplicated) {
-      ref
-          .read(signUpNicknameValidationProvider.notifier)
-          .updateState('사용중인 닉네임입니다.');
-
-      return;
-    }
-
-    ref.read(signUpStepControllerProvider.notifier).next();
-  }
-
-  void onTapSelectedJob(WidgetRef ref, int index) {
-    ref.read(signUpJobsProvider.notifier).removeAt(index);
-  }
-
-  void onTapJob(
-    WidgetRef ref,
-    JobEntity job,
-  ) {
-    ref.read(signUpJobsProvider.notifier).toggle(job);
   }
 
   Future<void> onTapJobStepNext(WidgetRef ref) async {
@@ -81,7 +46,7 @@ mixin class SignUpEvent {
 
       final userData = UserEntity(
         uid: ref.read(userAuthProvider)!.uid,
-        nickname: ref.read(signUpNicknameProvider),
+        nickname: ref.read(nicknameInputProvider),
         jobGroups: ref.read(selectedJobGroupsProvider),
         topicIds: ref.read(signUpTopicsProvider).map((e) => e.id).toList(),
         lastLoginDate: DateTime.now(),
@@ -95,24 +60,5 @@ mixin class SignUpEvent {
     } finally {
       await EasyLoading.dismiss();
     }
-  }
-
-  ///
-  /// 직군 ListTile이 클릭되었을 때
-  ///
-  void onJobGroupListTileTapped(WidgetRef ref, {required JobGroup item}) {
-    final selectedJobGroups = ref.read(selectedJobGroupsProvider);
-    if (selectedJobGroups.contains(item)) {
-      ref.read(selectedJobGroupsProvider.notifier).remove(item);
-    } else {
-      ref.read(selectedJobGroupsProvider.notifier).add(item);
-    }
-  }
-
-  ///
-  /// 선택된 직군 Chip 위젯이 클릭 되었을 때
-  ///
-  void onJogGroupChipTapped(WidgetRef ref, {required JobGroup item}) {
-    ref.read(selectedJobGroupsProvider.notifier).remove(item);
   }
 }
