@@ -11,6 +11,7 @@ import 'package:techtalk/presentation/pages/study/learning/widgets/study_progres
 import 'package:techtalk/presentation/pages/study/learning/widgets/study_qna_view.dart';
 import 'package:techtalk/presentation/pages/study/topic_select/providers/selected_study_topic_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
+import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class StudyLearningPage extends BasePage {
@@ -26,7 +27,7 @@ class StudyLearningPage extends BasePage {
   Widget buildPage(BuildContext context, WidgetRef ref) => const _Body();
 }
 
-class _AppBar extends StatelessWidget
+class _AppBar extends ConsumerWidget
     with StudyLearningEvent
     implements PreferredSizeWidget {
   const _AppBar({
@@ -37,16 +38,9 @@ class _AppBar extends StatelessWidget
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      titleSpacing: 0,
-      title: Consumer(
-        builder: (context, ref, child) {
-          return Text(
-            ref.watch(selectedStudyTopicProvider).text,
-          );
-        },
-      ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    return BackButtonAppBar(
+      title: ref.watch(selectedStudyTopicProvider).text,
       actions: [
         Text(
           '답안 가리기',
