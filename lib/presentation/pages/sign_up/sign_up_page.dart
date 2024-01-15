@@ -8,7 +8,7 @@ import 'package:techtalk/presentation/pages/sign_up/sign_up_event.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_state.dart';
 import 'package:techtalk/presentation/pages/sign_up/steps/job_group_select_step.dart';
 import 'package:techtalk/presentation/pages/sign_up/steps/nickname_input_step.dart';
-import 'package:techtalk/presentation/pages/sign_up/steps/topic_select_step.dart';
+import 'package:techtalk/presentation/pages/sign_up/steps/skill_select_step.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/button/app_back_button.dart';
 
@@ -103,9 +103,9 @@ class _Body extends ConsumerWidget with SignUpState {
       controller: signUpStepController(ref),
       physics: const NeverScrollableScrollPhysics(),
       children: const [
+        SkillSelectStep(),
         NicknameInputStep(),
         JobGroupSelectStep(),
-        TopicSelectStep(),
       ],
     );
   }

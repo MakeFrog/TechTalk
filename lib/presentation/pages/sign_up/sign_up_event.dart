@@ -3,7 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/job_group.enum.dart';
-import 'package:techtalk/features/job/job.dart';
+import 'package:techtalk/features/tech_set/data/models/job_model.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/user/entities/user_entity.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/provider/selected_job_groups_provider.dart';
@@ -53,7 +53,7 @@ mixin class SignUpEvent {
 
   void onTapJob(
     WidgetRef ref,
-    JobEntity job,
+    Job job,
   ) {
     ref.read(signUpJobsProvider.notifier).toggle(job);
   }
@@ -83,8 +83,9 @@ mixin class SignUpEvent {
         uid: ref.read(userAuthProvider)!.uid,
         nickname: ref.read(signUpNicknameProvider),
         jobGroups: ref.read(selectedJobGroupsProvider),
-        topicIds: ref.read(signUpTopicsProvider).map((e) => e.id).toList(),
         lastLoginDate: DateTime.now(),
+        // TODO 임시
+        skills: [],
       );
 
       await ref.read(userDataProvider.notifier).createData(userData).then(

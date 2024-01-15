@@ -49,6 +49,15 @@ class NoInterviewTopicException extends CustomException {
       : super('000003', '$topic 주제 데이터가 없습니다.');
 }
 
+class FetchSkillsFailedException extends CustomException {
+  const FetchSkillsFailedException()
+      : super('000004', '테크 스킬 목록을 불러오는데 실패하였습니다');
+}
+
 class ImgStoreFailedException extends CustomException {
   const ImgStoreFailedException() : super('400001', '이미지 저장에 실패하였습니다.');
+}
+
+class MappingFailedException extends CustomException {
+  const MappingFailedException() : super('400002', '데이터 호출에 실패하였습니다.');
 }

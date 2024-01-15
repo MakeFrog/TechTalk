@@ -1,11 +1,9 @@
-import 'package:techtalk/features/job/job.dart';
-
 ///
 /// 개발 직군 리스트.
 /// 원티드 채용 사이트를 참고함.
 ///
 
-enum JobModel {
+enum Job {
   softwareEngineer('software-engineer', '소프트웨어 엔지니어'),
   webDeveloper('web-developer', '웹 개발자'),
   serverDeveloper('server-developer', '서버 개발자'),
@@ -45,14 +43,9 @@ enum JobModel {
   final String id;
   final String name;
 
-  const JobModel(this.id, this.name);
+  const Job(this.id, this.name);
 
-  JobEntity toEntity() => JobEntity(
-        id: id,
-        name: name,
-      );
-
-  static JobModel getById(String id) => values.firstWhere(
+  static Job getById(String id) => values.firstWhere(
         (job) => job.id == id,
         orElse: () => throw Exception('InCorrect Id: $id'),
       );

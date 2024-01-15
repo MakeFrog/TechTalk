@@ -1,16 +1,16 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/features/job/job.dart';
+import 'package:techtalk/features/tech_set/data/models/job_model.dart';
 
 part 'sign_up_jobs_provider.g.dart';
 
 @riverpod
 class SignUpJobs extends _$SignUpJobs {
   @override
-  List<JobEntity> build() {
+  List<Job> build() {
     return [];
   }
 
-  void toggle(JobEntity item) {
+  void toggle(Job item) {
     if (state.contains(item)) {
       state = state.toList()..remove(item);
     } else {

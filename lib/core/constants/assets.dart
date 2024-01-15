@@ -69,6 +69,8 @@ class Assets {
   static const String iconsRoundedCheckThick =
       'assets/icons/rounded_check_thick.svg';
   static const String iconsRoundedClose = 'assets/icons/rounded_close.svg';
+  static const String iconsRoundedCloseBlue =
+      'assets/icons/rounded_close_blue.svg';
   static const String iconsRoundedCloseSmallRed =
       'assets/icons/rounded_close_small_red.svg';
   static const String iconsRoundedCloseThick =
@@ -107,6 +109,7 @@ class Assets {
   static const String imagesTopicSwift = 'assets/images/topic_swift.png';
   static const String imagesWelcomeTechtalk =
       'assets/images/welcome_techtalk.svg';
+  static const String jsonSkills = 'assets/json/skills.json';
   static const String jsonTopicCategoriesData =
       'assets/json/topic_categories_data.json';
   static const String logoTechTalkLogo = 'assets/logo/tech_talk_logo.svg';

@@ -35,7 +35,7 @@ class JobGroupSettingPage extends BasePage
       bottomFixedBtn: FilledButton(
         onPressed: isBottomFixedBtnActivate(ref)
             ? () {
-                saveEditedJobGroups(ref);
+                onSaveBtnTapped(ref);
               }
             : null,
         child: Center(

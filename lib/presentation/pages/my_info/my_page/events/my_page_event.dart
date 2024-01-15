@@ -52,7 +52,9 @@ mixin class MyPageEvent {
               jobGroup: (_) {
                 // JobGroupSettingRoute().go(context);
               },
-              topic: (_) {},
+              topic: (_) {
+                // SkillSettingRoute().go(context);
+              },
             );
           },
         );
