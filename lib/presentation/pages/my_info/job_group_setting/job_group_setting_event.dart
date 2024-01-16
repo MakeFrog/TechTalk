@@ -36,6 +36,7 @@ mixin class JobGroupSettingEvent {
         .read(userDataProvider)
         .value!
         .copyWith(jobGroups: selectedJogGroups);
+
     ref.read(userDataProvider.notifier).updateData(user).whenComplete(() {
       EasyLoading.dismiss();
       ref.context.pop();

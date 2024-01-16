@@ -32,23 +32,33 @@ class JobGroupSettingPage extends BasePage
           onJobGroupListTileTapped(ref, item: item);
         },
       ),
-      bottomFixedBtn: FilledButton(
-        onPressed: isBottomFixedBtnActivate(ref)
-            ? () {
-                onSaveBtnTapped(ref);
-              }
-            : null,
-        child: Center(
-          child: Text('저장하기'),
-        ),
-      ),
+      bottomFixedBtn: const _SaveBtn(),
     );
   }
 
   @override
-  bool get wrapWithSafeArea => false;
+  bool get setBottomSafeArea => true;
 
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
       const BackButtonAppBar();
+}
+
+class _SaveBtn extends ConsumerWidget
+    with JobGroupSettingState, JobGroupSettingEvent {
+  const _SaveBtn({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return FilledButton(
+      onPressed: isBottomFixedBtnActivate(ref)
+          ? () {
+              onSaveBtnTapped(ref);
+            }
+          : null,
+      child: const Center(
+        child: Text('저장하기'),
+      ),
+    );
+  }
 }

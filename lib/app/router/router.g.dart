@@ -105,6 +105,16 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $ProfileSettingRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: 'job-group-setting',
+          name: 'job-group-setting',
+          factory: $JobGroupSettingRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'skill-setting',
+          name: 'skill-setting',
+          factory: $SkillSettingRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'study/:topicId',
           name: 'study',
           factory: $StudyRouteExtension._fromState,
@@ -197,24 +207,56 @@ extension $QuestionCountSelectPageRouteExtension
 
 extension $ProfileSettingRouteExtension on ProfileSettingRoute {
   static ProfileSettingRoute _fromState(GoRouterState state) =>
-      ProfileSettingRoute(
-        state.extra as UserEntity,
-      );
+      ProfileSettingRoute();
 
   String get location => GoRouteData.$location(
         '/profile-setting',
       );
 
-  void go(BuildContext context) => context.go(location, extra: $extra);
+  void go(BuildContext context) => context.go(location);
 
-  Future<T?> push<T>(BuildContext context) =>
-      context.push<T>(location, extra: $extra);
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
   void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location, extra: $extra);
+      context.pushReplacement(location);
 
-  void replace(BuildContext context) =>
-      context.replace(location, extra: $extra);
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $JobGroupSettingRouteExtension on JobGroupSettingRoute {
+  static JobGroupSettingRoute _fromState(GoRouterState state) =>
+      JobGroupSettingRoute();
+
+  String get location => GoRouteData.$location(
+        '/job-group-setting',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $SkillSettingRouteExtension on SkillSettingRoute {
+  static SkillSettingRoute _fromState(GoRouterState state) =>
+      SkillSettingRoute();
+
+  String get location => GoRouteData.$location(
+        '/skill-setting',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
 }
 
 extension $StudyRouteExtension on StudyRoute {

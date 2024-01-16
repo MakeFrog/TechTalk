@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:techtalk/core/services/size_service.dart';
 
 class JobGroupSelectionScaffold extends StatelessWidget {
   const JobGroupSelectionScaffold({
@@ -36,8 +35,7 @@ class JobGroupSelectionScaffold extends StatelessWidget {
         ),
         Container(
           color: Colors.white,
-          padding: EdgeInsets.only(bottom: AppSize.to.bottomInset) +
-              const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: bottomFixedBtn,
         )
       ],

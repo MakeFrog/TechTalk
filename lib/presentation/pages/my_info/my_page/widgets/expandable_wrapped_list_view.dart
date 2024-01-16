@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/helper/bool_extension.dart';
 import 'package:techtalk/core/helper/hook_helper.dart';
-import 'package:techtalk/presentation/pages/my_info/my_page/events/my_page_widget_event.dart';
+import 'package:techtalk/presentation/pages/my_info/my_page/my_page_event.dart';
 import 'package:techtalk/presentation/widgets/common/chip/rounded_filled_chip.dart';
 
 ///
@@ -13,14 +13,12 @@ import 'package:techtalk/presentation/widgets/common/chip/rounded_filled_chip.da
 /// Expandable 로직을 적용하는 위젯
 ///
 
-class ExpandableWrappedListview extends HookWidget with MyPageWidgetEvent {
-  // ExpandableWrappedListview({Key? key, required List<String> items})  : super(key: key, aim = 0));
-
+class ExpandableWrappedListview extends HookWidget with MyPageEvent {
   ExpandableWrappedListview({super.key, required List<String> items})
       : itemCollection = items.map((e) => (text: e, key: GlobalKey())).toList();
 
   /// 현재 위젯의 notifier 변수
-  final ValueNotifier<Size> notifier = ValueNotifier(const Size(0, 0));
+  ValueNotifier<Size> notifier = ValueNotifier(const Size(0, 0));
 
   /// [Wrap] 위젯의 고정 값들
   final double rowHeight = 48;
@@ -48,14 +46,22 @@ class ExpandableWrappedListview extends HookWidget with MyPageWidgetEvent {
     /// 위젯이 렌더링되고 최초 1번 실행되는 이벤트
     /// 1) [Wrap] 위젯의 본 사이즈 계싼
     /// 2) [Wrap] 위젯의 자식 위젯들의 포지션 계산
-
     usePostFrameEffect(() {
       getWrapWidgetSize(context, notifier, originHeight);
       if (notifier.value.height < rowHeight) return;
       isOverflowed.value = true;
       getListItemPosition(
           itemCollection, firstRowElementY, lastRowElementY, spacing);
-    }, []);
+    }, [itemCollection]);
+
+    /// 아이템 정보가 변경되면 포지션 위치를 초기화
+    useEffect(() {
+      notifier = ValueNotifier(const Size(0, 0));
+      isOverflowed.value = false;
+      originHeight.value = 0;
+      firstRowElementY.value = 0;
+      lastRowElementY.value = 0;
+    }, [itemCollection]);
 
     return DeferredPointerHandler(
       child: Container(

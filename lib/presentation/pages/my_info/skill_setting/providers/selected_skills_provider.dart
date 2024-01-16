@@ -9,8 +9,8 @@ part 'selected_skills_provider.g.dart';
 class SelectedSkills extends _$SelectedSkills {
   @override
   List<SkillEntity> build() {
-    final userSkills = ref.read(userDataProvider).value!.skills;
-    return userSkills.toList();
+    final userSkills = ref.read(userDataProvider).value?.skills;
+    return userSkills?.toList() ?? [];
   }
 
   void add(SkillEntity item) {

@@ -21,7 +21,7 @@ mixin class JobGroupSettingState {
   /// 저장하기 버튼 활성화 여부
   ///
   bool isBottomFixedBtnActivate(WidgetRef ref) {
-    final selectedJobGroups = ref.read(selectedJobGroupsProvider);
+    final selectedJobGroups = ref.watch(selectedJobGroupsProvider);
 
     if (selectedJobGroups.isEmpty) {
       return false;

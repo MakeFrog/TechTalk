@@ -50,6 +50,7 @@ class Assets {
   static const String iconsCorrectIndicator =
       'assets/icons/correct_indicator.svg';
   static const String iconsDataStructure = 'assets/icons/data_structure.svg';
+  static const String iconsErrorIndicator = 'assets/icons/error_indicator.svg';
   static const String iconsExpansionArrowIndicator =
       'assets/icons/expansion_arrow_indicator.svg';
   static const String iconsGoogleLogo = 'assets/icons/google_logo.svg';

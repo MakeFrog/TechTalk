@@ -5,7 +5,7 @@ import 'package:techtalk/core/services/snack_bar_servbice.dart';
 import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/searched_skills_provider.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/selected_skills_provider.dart';
-import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/skill_input_provider.dart';
+import 'package:techtalk/presentation/providers/input/skill_text_field_controller_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 
 mixin class SkillSettingEvent {
@@ -15,7 +15,6 @@ mixin class SkillSettingEvent {
   ///
   void onFieldChanged(WidgetRef ref, {required String searchedTerm}) {
     ref.read(searchedSkillsProvider.notifier).updateSearchedList(searchedTerm);
-    ref.read(skillInputProvider.notifier).update(searchedTerm);
   }
 
   ///
@@ -28,8 +27,8 @@ mixin class SkillSettingEvent {
   ///
   /// 닉네임필드에 값이 clear 되었을 때
   ///
-  void onFieldCloseBtnTapped(WidgetRef ref) {
-    ref.read(skillInputProvider.notifier).clear();
+  void onSkillFieldClear(WidgetRef ref) {
+    ref.read(skillTextFieldControllerProvider).clear();
     ref.read(searchedSkillsProvider.notifier).clear();
   }
 
@@ -38,16 +37,19 @@ mixin class SkillSettingEvent {
   ///
   void onSearchedSkillTapped(WidgetRef ref,
       {required SkillEntity targetSkill}) {
+    ref.read(skillTextFieldControllerProvider).clear();
+    ref.read(searchedSkillsProvider.notifier).clear();
     ref.read(selectedSkillsProvider.notifier).add(targetSkill);
-    onFieldCloseBtnTapped(ref);
   }
 
   ///
-  /// 닉네임 유효성 검사
+  /// 스킬 검색 유효성 검사
   ///
   String? skillInputValidation(WidgetRef ref,
           {required String? searchedTerm}) =>
-      ref.read(skillInputProvider.notifier).skillInputValidation(searchedTerm);
+      ref
+          .read(skillTextFieldControllerProvider.notifier)
+          .skillInputValidation(searchedTerm);
 
   ///
   /// 변경된 직군 정보 저장

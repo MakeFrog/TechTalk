@@ -1,6 +1,6 @@
 part of '../my_page.dart';
 
-class _SettingCard extends ConsumerWidget with MyPageEvent {
+class _SettingCard extends ConsumerWidget with MyPageState, MyPageEvent {
   const _SettingCard({super.key});
 
   @override
@@ -26,12 +26,12 @@ class _SettingCard extends ConsumerWidget with MyPageEvent {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ref.watch(appVersionProvider).when(
-                    data: (versionInfo) => CardListTileButton(
-                        text: '현재 버전 ${versionInfo.versionCode}'),
-                    error: (e, _) => const EmptyBox(),
-                    loading: () => const CardListTileButton(text: '현재 버전'),
-                  ),
+              version(ref).when(
+                data: (versionInfo) => CardListTileButton(
+                    text: '현재 버전 ${versionInfo.versionCode}'),
+                error: (e, _) => const EmptyBox(),
+                loading: () => const CardListTileButton(text: '현재 버전'),
+              ),
               CardListTileButton(
                   onTap: onVisitCsPageTapped, text: '피드백 및 문의사항'),
               CardListTileButton(
