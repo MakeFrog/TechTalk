@@ -357,10 +357,6 @@
       "name": "CherryPy"
     },
     {
-      "id": "cherrypy",
-      "name": "CherryPy"
-    },
-    {
       "id": "caddy",
       "name": "Caddy"
     }
