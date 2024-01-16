@@ -19,8 +19,11 @@ class AppTheme {
           bodyColor: AppColor().black,
           displayColor: AppColor().black,
         ),
+    progressIndicatorTheme:
+        ProgressIndicatorThemeData(color: AppColor().brand2),
     filledButtonTheme: _FilledButtonTheme.light,
     inputDecorationTheme: _InputDecorationTheme.light,
+
     appBarTheme: _AppBarTheme.light,
     // 플랫폼별 라우팅 애니메이션 속성
     pageTransitionsTheme: const PageTransitionsTheme(

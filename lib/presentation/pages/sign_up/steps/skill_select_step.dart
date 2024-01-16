@@ -78,15 +78,17 @@ class _SelectedListViewSlider extends ConsumerWidget
   }
 }
 
-class _StepBtn extends ConsumerWidget with SignUpEvent {
+class _StepBtn extends ConsumerWidget with SignUpState, SignUpEvent {
   const _StepBtn({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FilledButton(
-      onPressed: () => onSignUpBtnTapped(
-        ref,
-      ),
+      onPressed: isSkillSelectionFilled(ref)
+          ? () => onSignUpBtnTapped(
+                ref,
+              )
+          : null,
       child: const Center(
         child: Text('시작하기'),
       ),

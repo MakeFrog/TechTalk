@@ -1,16 +1,10 @@
 part of '../my_page.dart';
 
-class _UserInfoCard extends ConsumerWidget with MyPageEvent {
+class _UserInfoCard extends ConsumerWidget with MyPageState, MyPageEvent {
   const _UserInfoCard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // return Container(
-    //   height: 20,
-    //   width: double.infinity,
-    //   color: Colors.black,
-    // );
-
     return Column(
       children: <Widget>[
         Row(
@@ -40,40 +34,44 @@ class _UserInfoCard extends ConsumerWidget with MyPageEvent {
             color: AppColor.of.white,
             borderRadius: BorderRadius.circular(16),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '관심 직군',
-                style: AppTextStyle.body3,
+          child: user(ref).when(
+            data: (user) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '관심 직군',
+                    style: AppTextStyle.body3,
+                  ),
+                  const Gap(8),
+                  ExpandableWrappedListview(
+                    items: user!.jobGroups.map((e) => e.name).toList(),
+                  ),
+                  const Gap(16),
+                  Text(
+                    '관심 주제',
+                    style: AppTextStyle.body3,
+                  ),
+                  const Gap(8),
+                  ExpandableWrappedListview(
+                    items: user.skills.map((e) => e.name).toList(),
+                  ),
+                ],
+              );
+            },
+            error: (e, _) => SizedBox(
+              height: 140,
+              child: Center(
+                child: Text(
+                  '데이터를 전달받지 못하였습니다.',
+                  style: AppTextStyle.title1,
+                ),
               ),
-              const Gap(8),
-
-              ExpandableWrappedListview(items: [
-                '서버 백엔드 개발자',
-                '크래스  개발자3',
-                'iOS 개발자',
-                '안드로이드21323423232 개발자',
-                '닷넷 개발자',
-                '슈퍼 개발자',
-              ]),
-
-              // SvgPicture.asset(
-              //   Assets.iconsRoundedMore,
-              // ),
-              const Gap(16),
-              Text(
-                '관심 주제',
-                style: AppTextStyle.body3,
-              ),
-              Gap(8),
-              ExpandableWrappedListview(items: [
-                'Flutter/Dart',
-                'Swift/iOS',
-                '자료구조',
-                '알고리즘',
-              ]),
-            ],
+            ),
+            loading: () => const SizedBox(
+              height: 140,
+              child: Center(child: CircularProgressIndicator()),
+            ),
           ),
         ),
       ],

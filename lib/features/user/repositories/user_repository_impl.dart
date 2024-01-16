@@ -46,14 +46,9 @@ final class UserRepositoryImpl implements UserRepository {
   @override
   Future<Result<void>> updateUser(UserEntity data) async {
     try {
-      final response = await _userRemoteDataSource.getUser();
-      final List<SkillEntity> skills = response.topicIds != null
-          ? response.topicIds!.map(_techSetRepository.getSkillById).toList()
-          : [];
+      await _userRemoteDataSource.updateUser(data);
 
-      final result = UserEntity.fromModel(response, skills);
-
-      return Result.success(result);
+      return Result.success(null);
     } on Exception catch (e) {
       return Result.failure(e);
     }

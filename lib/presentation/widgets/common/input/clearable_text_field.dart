@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:techtalk/core/core.dart';
+import 'package:techtalk/core/theme/extension/app_color.dart';
 
 class ClearableTextField extends HookWidget {
   const ClearableTextField({
@@ -71,6 +72,7 @@ class ClearableTextField extends HookWidget {
       enabled: enabled,
       obscureText: obscureText,
       style: style,
+      cursorColor: AppColor.of.brand2,
       inputFormatters: inputFormatters,
       textInputAction: textInputAction,
       keyboardType: keyboardType,

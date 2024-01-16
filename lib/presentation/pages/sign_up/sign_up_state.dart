@@ -72,4 +72,10 @@ mixin class SignUpState {
   ///
   String searchedTerm(WidgetRef ref) =>
       ref.watch(skillTextFieldControllerProvider).text;
+
+  ///
+  /// 선택된 스킬 존재 여부
+  ///
+  bool isSkillSelectionFilled(WidgetRef ref) =>
+      ref.watch(selectedSkillsProvider).isNotEmpty;
 }

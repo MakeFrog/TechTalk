@@ -55,10 +55,6 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
     final userModel = UserModel.fromEntity(user);
 
-    if (await isExistNickname(user.nickname!)) {
-      throw const AlreadyExistNicknameException();
-    }
-
     await FirestoreUsersRef.doc().update(
       userModel.toJson(),
     );
