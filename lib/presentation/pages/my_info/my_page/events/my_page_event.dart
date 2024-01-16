@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/profile_setting_type.enum.dart';
-import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 import 'package:techtalk/presentation/widgets/common/bottom_sheet/option_list_bottom_sheet.dart';
 
 mixin class MyPageEvent {
@@ -46,14 +45,13 @@ mixin class MyPageEvent {
             ProfileSettingType.branch(
               targetCategory: ProfileSettingType.getByIndex(index),
               profile: (_) {
-                final user = ref.read(userDataProvider).value;
-                ProfileSettingRoute(user!).go(context);
+                ProfileSettingRoute().go(context);
               },
               jobGroup: (_) {
-                // JobGroupSettingRoute().go(context);
+                JobGroupSettingRoute().go(context);
               },
               topic: (_) {
-                // SkillSettingRoute().go(context);
+                SkillSettingRoute().go(context);
               },
             );
           },

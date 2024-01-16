@@ -1,21 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/helper/string_extension.dart';
 
-part 'skill_input_provider.g.dart';
+part 'skill_text_field_controller_provider.g.dart';
 
 @riverpod
-class SkillInput extends _$SkillInput {
+class SkillTextFieldController extends _$SkillTextFieldController {
   @override
-  String build() {
-    return '';
-  }
-
-  void update(String input) {
-    state = input;
-  }
-
-  void clear() {
-    state = '';
+  Raw<TextEditingController> build() {
+    return TextEditingController();
   }
 
   String? skillInputValidation(String? input) {

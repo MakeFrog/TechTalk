@@ -39,10 +39,11 @@ class SkillSelectionScaffold extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
+        Container(
+          color: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: bottomFixedBtn,
-        ),
+        )
       ],
     );
   }

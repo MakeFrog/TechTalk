@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/job_group.enum.dart';
+import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/presentation/widgets/common/chip/closable_rect_filled_chip.dart';
 
 class SelectedJobGroupListViewDelegate extends SliverPersistentHeaderDelegate {
@@ -13,7 +14,7 @@ class SelectedJobGroupListViewDelegate extends SliverPersistentHeaderDelegate {
 
   final List<JobGroup> selectedJobGroups;
   final void Function(JobGroup) onTapItem;
-
+  final double expandedHeight = 68;
   @override
   Widget build(
     BuildContext context,
@@ -55,32 +56,27 @@ class SelectedJobGroupListViewDelegate extends SliverPersistentHeaderDelegate {
                 return Align(
                   heightFactor: animation.value,
                   child: Container(
-                    alignment: Alignment.center,
-                    height: selectedJobGroups.isNotEmpty ? 68 : 0,
-                    color: Colors.white,
+                    color: AppColor.of.white,
+                    height: selectedJobGroups.isNotEmpty ? expandedHeight : 0,
                     child: AnimatedBuilder(
                       animation: animationController,
                       builder: (BuildContext context, Widget? child) {
-                        return SizedBox(
-                          height: 36,
-                          child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            itemCount: selectedJobGroups.length,
-                            separatorBuilder: (context, index) => const Gap(8),
-                            itemBuilder: (context, index) {
-                              final item = selectedJobGroups[index];
-                              return Align(
-                                alignment: Alignment.topCenter,
-                                child: ClosableRectFilledChip(
-                                  label: item.name,
-                                  onTap: () {
-                                    onTapItem(item);
-                                  },
-                                ),
-                              );
-                            },
-                          ),
+                        return ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          itemCount: selectedJobGroups.length,
+                          separatorBuilder: (context, index) => const Gap(8),
+                          itemBuilder: (context, index) {
+                            final item = selectedJobGroups[index];
+                            return Align(
+                              child: ClosableRectFilledChip(
+                                label: item.name,
+                                onTap: () {
+                                  onTapItem(item);
+                                },
+                              ),
+                            );
+                          },
                         );
                       },
                     ),
@@ -95,7 +91,7 @@ class SelectedJobGroupListViewDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => selectedJobGroups.isNotEmpty ? 68 : 12;
+  double get maxExtent => selectedJobGroups.isNotEmpty ? expandedHeight : 12;
 
   @override
   double get minExtent => 0;

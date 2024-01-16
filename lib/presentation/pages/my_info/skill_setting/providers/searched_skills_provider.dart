@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
-import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/skill_input_provider.dart';
+import 'package:techtalk/presentation/providers/input/skill_text_field_controller_provider.dart';
 
 part 'searched_skills_provider.g.dart';
 
@@ -14,7 +14,7 @@ class SearchedSkills extends _$SearchedSkills {
 
   void updateSearchedList(String searchedTerm) {
     if (ref
-                .read(skillInputProvider.notifier)
+                .read(skillTextFieldControllerProvider.notifier)
                 .skillInputValidation(searchedTerm) !=
             null ||
         searchedTerm.replaceAll(' ', '').isEmpty) {

@@ -3,8 +3,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
+import 'package:techtalk/presentation/pages/sign_up/events/sign_up_event.dart';
 
-class SearchedSkillListView extends ConsumerWidget {
+class SearchedSkillListView extends ConsumerWidget with SignUpEvent {
   const SearchedSkillListView(
       {required this.items,
       required this.searchedTerm,
@@ -17,44 +18,49 @@ class SearchedSkillListView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ListView.builder(
-      itemCount: items.length,
-      itemExtent: 52,
-      itemBuilder: (context, index) {
-        final skill = items[index];
-
-        final separatedString = getProcessString(
-          ref,
-          skill: skill.name,
-          searchedTerm: searchedTerm,
-        );
-
-        return ListTile(
-          minVerticalPadding: 0,
-          title: Align(
-            alignment: Alignment.centerLeft,
-            child: Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: separatedString.$1,
-                  ),
-                  TextSpan(
-                    text: separatedString.$2,
-                    style: TextStyle(
-                      color: AppColor.of.gray4,
-                    ),
-                  ),
-                ],
-              ),
-              style: AppTextStyle.body2,
-            ),
-          ),
-          onTap: () {
-            onItemTapped(skill);
-          },
-        );
+    return GestureDetector(
+      onVerticalDragDown: (_) {
+        onSearchedListViewDrag(context);
       },
+      child: ListView.builder(
+        itemCount: items.length,
+        itemExtent: 52,
+        itemBuilder: (context, index) {
+          final skill = items[index];
+
+          final separatedString = getProcessString(
+            ref,
+            skill: skill.name,
+            searchedTerm: searchedTerm,
+          );
+
+          return ListTile(
+            minVerticalPadding: 0,
+            title: Align(
+              alignment: Alignment.centerLeft,
+              child: Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: separatedString.$1,
+                    ),
+                    TextSpan(
+                      text: separatedString.$2,
+                      style: TextStyle(
+                        color: AppColor.of.gray4,
+                      ),
+                    ),
+                  ],
+                ),
+                style: AppTextStyle.body2,
+              ),
+            ),
+            onTap: () {
+              onItemTapped(skill);
+            },
+          );
+        },
+      ),
     );
   }
 

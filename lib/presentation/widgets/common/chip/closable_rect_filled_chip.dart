@@ -10,9 +10,11 @@ class ClosableRectFilledChip extends StatelessWidget {
     super.key,
     required this.label,
     this.onTap,
+    this.height,
   });
 
   final String label;
+  final double? height;
   final VoidCallback? onTap;
 
   @override
@@ -24,7 +26,7 @@ class ClosableRectFilledChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         onTap: onTap,
         child: Container(
-          height: 32,
+          height: height ?? 36,
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Center(
             child: Row(

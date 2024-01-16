@@ -8,7 +8,7 @@ part 'selected_job_groups_provider.g.dart';
 class SelectedJobGroups extends _$SelectedJobGroups {
   @override
   List<JobGroup> build() {
-    final userJobGroups = ref.read(userDataProvider).value!.jobGroups;
+    final userJobGroups = ref.read(userDataProvider).value?.jobGroups ?? [];
 
     return userJobGroups.toList();
   }
