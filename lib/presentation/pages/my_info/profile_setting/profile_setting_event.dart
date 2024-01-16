@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -16,6 +17,9 @@ mixin class ProfileSettingEvent {
   ///
   void onProfileImgTapped(WidgetRef ref) async {
     await EasyLoading.show();
+    if (FocusScope.of(ref.context).hasFocus) {
+      FocusScope.of(ref.context).unfocus();
+    }
     unawaited(
       ref
           .read(pickedProfileImgProvider.notifier)
@@ -53,12 +57,15 @@ mixin class ProfileSettingEvent {
 
     final editedNickname = ref.read(nicknameInputProvider);
 
+    final prevNickname = ref.read(userDataProvider).value!.nickname;
+    final hasNicknameEdited = prevNickname != ref.read(nicknameInputProvider);
+
     final checkDuplicationRes =
         await checkIsNicknameIsDuplicated.call(editedNickname!);
 
     checkDuplicationRes.fold(
       onSuccess: (isDuplicated) {
-        if (isDuplicated) {
+        if (isDuplicated && hasNicknameEdited) {
           SnackBarService.showSnackBar('중복된 닉네임 입니다');
           EasyLoading.dismiss();
         } else {
