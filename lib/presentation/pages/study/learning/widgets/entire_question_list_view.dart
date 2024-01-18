@@ -85,7 +85,7 @@ class EntireQuestionListView extends HookConsumerWidget {
     Key key,
     WidgetRef ref,
     int index,
-    TopicQnaEntity question,
+    QnaEntity question,
     bool isSelected,
   ) {
     return Material(
