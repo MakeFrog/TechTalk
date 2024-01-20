@@ -8,12 +8,12 @@ class ChatProgressInfoEntity {
   int get completedQuestionCount => correctAnswerCount + incorrectAnswerCount;
 
   ChatProgress get progressState {
-    if (totalQuestionCount > completedQuestionCount) {
-      return ChatProgress.ongoing;
+    if (correctAnswerCount == 0 && incorrectAnswerCount == 0) {
+      return ChatProgress.initial;
     } else if (totalQuestionCount == completedQuestionCount) {
       return ChatProgress.completed;
-    } else if (correctAnswerCount == 0 && incorrectAnswerCount == 0) {
-      return ChatProgress.initial;
+    } else if (totalQuestionCount > completedQuestionCount) {
+      return ChatProgress.ongoing;
     } else {
       throw UnimplementedError('유효하지 않은 [progressState]값 입니다.');
     }

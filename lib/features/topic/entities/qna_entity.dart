@@ -1,10 +1,10 @@
-class TopicQnaEntity {
+class QnaEntity {
   final String id;
   final String question;
   final List<String> answers;
 
 //<editor-fold desc="Data Methods">
-  const TopicQnaEntity({
+  const QnaEntity({
     required this.id,
     required this.question,
     required this.answers,
@@ -13,7 +13,7 @@ class TopicQnaEntity {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is TopicQnaEntity &&
+      (other is QnaEntity &&
           runtimeType == other.runtimeType &&
           id == other.id &&
           question == other.question &&
@@ -31,12 +31,12 @@ class TopicQnaEntity {
         '}';
   }
 
-  TopicQnaEntity copyWith({
+  QnaEntity copyWith({
     String? id,
     String? question,
     List<String>? answers,
   }) {
-    return TopicQnaEntity(
+    return QnaEntity(
       id: id ?? this.id,
       question: question ?? this.question,
       answers: answers ?? this.answers,

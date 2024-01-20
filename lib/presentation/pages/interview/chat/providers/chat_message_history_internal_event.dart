@@ -8,19 +8,25 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
     required ChatMessageEntity message,
     void Function()? onDone,
   }) async {
-    await update(
-      (previous) => [
-        message,
-        ...previous,
-      ],
-    );
-    message.message.listen(
-      null,
-      onDone: () {
-        onDone?.call();
-        message.message.close();
-      },
-    );
+    try {
+      print('실행됨? aim');
+      await update(
+        (previous) => [
+          message,
+          ...previous,
+        ],
+      ).then((value) => print('우지랑이 : ${'우마이'}'));
+      message.message.listen(
+        null,
+        onDone: () {
+          print('실행됨? listen');
+          onDone?.call();
+          message.message.close();
+        },
+      );
+    } catch (e) {
+      print('먀ㅡㄴ');
+    }
   }
 
   ///
@@ -32,16 +38,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
       chatRoomId: ref.read(selectedChatRoomProvider).id,
     );
 
-    ref.invalidate(interviewRoomsProvider);
-  }
-
-  ///
-  /// 가장 마지막 질문 채팅 메세지를 반환
-  ///
-  QuestionChatMessageEntity _getLastQuestionChat() {
-    return state.requireValue
-            .firstWhere((chat) => chat is QuestionChatMessageEntity)
-        as QuestionChatMessageEntity;
+    // ref.invalidate(interviewRoomsProvider);
   }
 
   ///
@@ -72,17 +69,43 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   /// 처음으로 질문을 제시
   ///
   Future<void> _showIntroAndQuestionMessages() async {
-    final introMessage = await createIntroMessage();
-    await _showMessage(
+    final room = ref.read(selectedChatRoomProvider);
+    final nickname = ref.read(userDataProvider).requireValue!.nickname!;
+    final String message =
+        '반가워요! $nickname님. ${room.topics.first.text} 면접 질문을 드리겠습니다';
+    final introMessage = GuideChatMessageEntity(
+      message: message.convertToStreamText,
+      timestamp: DateTime.now(),
+    );
+
+    unawaited(_showMessage(
       message: introMessage,
       onDone: () async {
-        final questionMessage = await suggestNewQuestion();
+        final questionMessage = _getNewQuestion();
+        await _showMessage(message: questionMessage);
         await createChatRoomUseCase(
           room: ref.read(selectedChatRoomProvider),
           messages: [questionMessage, introMessage],
           qnas: ref.read(chatQnasProvider).requireValue,
         );
       },
+    ));
+  }
+
+  ///
+  /// 면접 질문 제시
+  ///
+  QuestionChatMessageEntity _getNewQuestion() {
+    final qna = ref
+        .read(chatQnasProvider)
+        .requireValue
+        .firstWhere((qna) => !qna.hasUserResponded);
+
+    final question = QuestionChatMessageEntity(
+      qnaId: qna.id,
+      message: qna.qna.question.convertToStreamText,
     );
+
+    return question;
   }
 }
