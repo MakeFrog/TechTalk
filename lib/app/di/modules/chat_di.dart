@@ -62,7 +62,6 @@ final class ChatDependencyInject extends FeatureDependencyInjection {
       )
       ..registerFactory(
         () => GetRandomQnasUseCase(
-          chatRepository,
           topicRepository,
         ),
       );

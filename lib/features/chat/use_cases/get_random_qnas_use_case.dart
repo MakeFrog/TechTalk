@@ -15,9 +15,8 @@ import 'package:techtalk/features/topic/repositories/topic_repository.dart';
 ///
 class GetRandomQnasUseCase
     extends BaseUseCase<ChatRoomEntity, Result<List<ChatQnaEntity>>> {
-  GetRandomQnasUseCase(this._chatRepository, this._topicRepository);
+  GetRandomQnasUseCase(this._topicRepository);
 
-  final ChatRepository _chatRepository;
   final TopicRepository _topicRepository;
 
   @override
@@ -26,14 +25,14 @@ class GetRandomQnasUseCase
       final returnedQnas = switch (room.type) {
         /// 주제별 면접
         InterviewType.singleTopic => () async {
-            final qna = await _chatRepository
-                .getChatQnAs(room)
+            final qna = await _topicRepository
+                .getTopicQnas(room.singleTopic.id)
                 .then((value) => value.getOrThrow());
 
             qna.extractFromFirstAndShuffle(
                 room.progressInfo.totalQuestionCount);
 
-            return qna;
+            return qna.map(ChatQnaEntity.fromQnaEntity).toList();
           },
 
         /// 실전 면접
@@ -67,10 +66,8 @@ class GetRandomQnasUseCase
           }
       };
 
-      print('우지랑이');
       return Result.success(await returnedQnas());
     } on Exception catch (e) {
-      print('뭐가 문제 : ${e}');
       return Result.failure(e);
     }
   }

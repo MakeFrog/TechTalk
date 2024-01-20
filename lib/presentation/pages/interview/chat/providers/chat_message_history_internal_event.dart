@@ -8,25 +8,19 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
     required ChatMessageEntity message,
     void Function()? onDone,
   }) async {
-    try {
-      print('실행됨? aim');
-      await update(
-        (previous) => [
-          message,
-          ...previous,
-        ],
-      ).then((value) => print('우지랑이 : ${'우마이'}'));
-      message.message.listen(
-        null,
-        onDone: () {
-          print('실행됨? listen');
-          onDone?.call();
-          message.message.close();
-        },
-      );
-    } catch (e) {
-      print('먀ㅡㄴ');
-    }
+    await update(
+      (previous) => [
+        message,
+        ...previous,
+      ],
+    );
+    message.message.listen(
+      null,
+      onDone: () {
+        onDone?.call();
+        message.message.close();
+      },
+    );
   }
 
   ///
