@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/entities/enums/interview_progress.enum.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
@@ -15,7 +16,7 @@ class InterviewProgressState extends _$InterviewProgressState {
     if (progressState.isCompleted) {
       return InterviewProgress.done;
     } else {
-      _listenStateBasedOnChatHistory();
+      handleStateBasedOnChatMessages();
       if (progressState.isInitial) return InterviewProgress.initial;
       if (progressState.isOngoing) return InterviewProgress.readyToAnswer;
     }
@@ -23,11 +24,19 @@ class InterviewProgressState extends _$InterviewProgressState {
     return InterviewProgress.readyToAnswer;
   }
 
-  void _listenStateBasedOnChatHistory() {
+  ///
+  /// 채팅 메세지 리스트를 listen하여
+  /// 채팅 인터뷰 진행 상태를 조건별로 업데이트
+  ///
+  void handleStateBasedOnChatMessages() {
     ref.listen(chatMessageHistoryProvider, (_, chatHistory) {
       final lastChat = chatHistory.value!.first;
       switch (lastChat.type) {
         case ChatType.guide:
+          if (ref.read(chatQnasProvider.notifier).isEveryQnaCompleted()) {
+            state = InterviewProgress.done;
+          }
+
         case ChatType.question:
           lastChat.message.listen(
             null,
@@ -40,25 +49,4 @@ class InterviewProgressState extends _$InterviewProgressState {
       }
     });
   }
-}
-
-enum InterviewProgress {
-  initial,
-  readyToAnswer,
-  interviewerReplying,
-  done;
-
-  String get fieldHintText => switch (this) {
-        InterviewProgress.initial => '잠시만 기다려주세요',
-        InterviewProgress.readyToAnswer => '답변을 입력해주세요',
-        InterviewProgress.interviewerReplying => '잠시만 기다려주세요',
-        InterviewProgress.done => '면접이 종료되었습니다',
-      };
-
-  bool get enableChat => switch (this) {
-        InterviewProgress.initial => false,
-        InterviewProgress.readyToAnswer => true,
-        InterviewProgress.interviewerReplying => false,
-        InterviewProgress.done => false,
-      };
 }
