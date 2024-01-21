@@ -1,6 +1,8 @@
 import 'package:techtalk/core/constants/interview_type.enum.dart';
+import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/core/helper/string_generator.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/data/models/chat_room_model.dart';
 import 'package:techtalk/features/chat/entities/chat_progress_info_entity.dart';
 import 'package:techtalk/features/chat/entities/interviewer_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
@@ -13,11 +15,30 @@ class ChatRoomEntity {
   final ChatProgressInfoEntity progressInfo;
   final String? lastChatMessage;
   final DateTime? lastChatDate;
+  final ChatRoomProgress progressState;
   final bool isTemporary;
 
   int get completedQuestionCount => progressInfo.completedQuestionCount;
-  ChatProgress get progressState => progressInfo.progressState;
-  ChatResult get passOrFail => progressInfo.chatResult;
+
+  ChatResult get chatResult {
+    if (progressState.isCompleted) {
+      if (progressInfo.correctAnswerCount >=
+          progressInfo.incorrectAnswerCount) {
+        return ChatResult.pass;
+      } else if (progressInfo.correctAnswerCount <
+          progressInfo.incorrectAnswerCount) {
+        return ChatResult.failed;
+      } else {
+        throw UnimplementedError('유효하지 않은 [passOrFail]값 입니다.');
+      }
+    } else {
+      throw UnimplementedError('진행도가 완료되지 않았습니다.');
+    }
+  }
+
+  ChatResult get passOrFail => chatResult;
+
+  TopicEntity get singleTopic => topics.first;
 
   factory ChatRoomEntity.random({
     required InterviewType type,
@@ -29,6 +50,7 @@ class ChatRoomEntity {
       type: type,
       id: StringGenerator.generateRandomString(),
       interviewer: InterviewerEntity.getRandomInterviewer(),
+      progressState: ChatRoomProgress.initial,
       topics: topics,
       progressInfo: ChatProgressInfoEntity.onInitial(
         totalQuestionCount: questionCount,
@@ -36,8 +58,37 @@ class ChatRoomEntity {
     );
   }
 
+  factory ChatRoomEntity.fromModel(ChatRoomModel roomModel) {
+    final topics = switch (roomModel.type) {
+      InterviewType.singleTopic => [
+          StoredTopics.getById(roomModel.topicIds.first)
+        ],
+      InterviewType.practical =>
+        roomModel.topicIds.map(StoredTopics.getById).toList()
+    };
+
+    final progress = roomModel.totalQuestionCount ==
+            roomModel.correctAnswerCount + roomModel.incorrectAnswerCount
+        ? ChatRoomProgress.completed
+        : ChatRoomProgress.ongoing;
+
+    return ChatRoomEntity(
+      type: roomModel.type,
+      id: roomModel.id,
+      interviewer: InterviewerEntity.getAvatarInfoById(roomModel.interviewerId),
+      topics: topics,
+      progressInfo: ChatProgressInfoEntity(
+        totalQuestionCount: roomModel.totalQuestionCount,
+        correctAnswerCount: roomModel.correctAnswerCount,
+        incorrectAnswerCount: roomModel.incorrectAnswerCount,
+      ),
+      progressState: progress,
+    );
+  }
+
 //<editor-fold desc="Data Methods">
   const ChatRoomEntity({
+    required this.progressState,
     required this.type,
     required this.id,
     required this.interviewer,
@@ -94,11 +145,13 @@ class ChatRoomEntity {
     ChatProgressInfoEntity? progressInfo,
     String? lastChatMessage,
     DateTime? lastChatDate,
+    ChatRoomProgress? chatProgressState,
     bool? isTemporary,
   }) {
     return ChatRoomEntity(
       id: id ?? this.id,
       type: type,
+      progressState: chatProgressState ?? this.progressState,
       interviewer: interviewer ?? this.interviewer,
       topics: topics ?? this.topics,
       progressInfo: progressInfo ?? this.progressInfo,

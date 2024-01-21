@@ -21,11 +21,16 @@ class ChatPage extends BasePage with ChatEvent {
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
     final tabController = useTabController(initialLength: 2);
-    final room = ref.watch(selectedChatRoomProvider);
 
-    switch (ref.watch(chatQnAsProvider(room))) {
+    // return _Scaffold(
+    //   chatTabView: const InterviewTabView(),
+    //   summaryTabView: const QnATabView(),
+    //   tabController: tabController,
+    // );
+
+    switch (ref.watch(chatQnasProvider)) {
       case AsyncData():
-        switch (ref.watch(chatMessageHistoryProvider(room))) {
+        switch (ref.watch(chatMessageHistoryProvider)) {
           case AsyncData():
             return _Scaffold(
               chatTabView: const InterviewTabView(),

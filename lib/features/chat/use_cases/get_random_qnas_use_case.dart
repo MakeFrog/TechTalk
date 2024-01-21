@@ -25,14 +25,14 @@ class GetRandomQnasUseCase
       final returnedQnas = switch (room.type) {
         /// 주제별 면접
         InterviewType.singleTopic => () async {
-            final qna = await _topicRepository
+            final qnas = await _topicRepository
                 .getTopicQnas(room.singleTopic.id)
                 .then((value) => value.getOrThrow());
 
-            qna.extractFromFirstAndShuffle(
+            final filteredQnas = qnas.extractFromFirstAndShuffle(
                 room.progressInfo.totalQuestionCount);
 
-            return qna.map(ChatQnaEntity.fromQnaEntity).toList();
+            return filteredQnas.map(ChatQnaEntity.fromQnaEntity).toList();
           },
 
         /// 실전 면접
@@ -50,9 +50,9 @@ class GetRandomQnasUseCase
                         (value) => value.getOrThrow(),
                       );
 
-              topicQnas.extractFromFirstAndShuffle(
+              final filteredTopics = topicQnas.extractFromFirstAndShuffle(
                   min(qnaCountPerTopic, remainingQnaCount));
-              resolvedQnas.addAll(topicQnas);
+              resolvedQnas.addAll(filteredTopics);
 
               remainingQnaCount -= qnaCountPerTopic;
             }

@@ -30,11 +30,10 @@ mixin class ChatEvent {
       );
     }
     textEditingController.clear();
-    final room = ref.read(selectedChatRoomProvider);
 
     await ref
-        .read(chatMessageHistoryProvider(room).notifier)
-        .addUserChatResponse(message);
+        .read(chatMessageHistoryProvider.notifier)
+        .proceedInterviewStep(message);
   }
 
   /// 앱바 뒤로 가기 버튼이 클릭 되었을 때

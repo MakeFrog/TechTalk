@@ -64,7 +64,7 @@ class TopicRepositoryImpl implements TopicRepository {
   }
 
   @override
-  Future<Result<List<TopicQnaEntity>>> getTopicQnas(
+  Future<Result<List<QnaEntity>>> getTopicQnas(
     String topicId,
   ) async {
     try {
@@ -82,7 +82,7 @@ class TopicRepositoryImpl implements TopicRepository {
   }
 
   @override
-  Future<Result<TopicQnaEntity>> getTopicQna(
+  Future<Result<QnaEntity>> getTopicQna(
     String topicId,
     String questionId,
   ) async {

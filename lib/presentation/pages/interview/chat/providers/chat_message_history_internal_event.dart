@@ -52,7 +52,8 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
     final targetIndex = chatList.indexWhere((chat) => chat == answeredChat);
     chatList[targetIndex] = resolvedAnsweredChat;
 
-    await update((previous) => chatList);
+    await update((_) => chatList);
+
     await ref.read(chatQnasProvider.notifier).updateState(resolvedAnsweredChat);
 
     return resolvedAnsweredChat;
@@ -65,41 +66,52 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   Future<void> _showIntroAndQuestionMessages() async {
     final room = ref.read(selectedChatRoomProvider);
     final nickname = ref.read(userDataProvider).requireValue!.nickname!;
-    final String message =
+    final String introMessage =
         '반가워요! $nickname님. ${room.topics.first.text} 면접 질문을 드리겠습니다';
-    final introMessage = GuideChatMessageEntity(
-      message: message.convertToStreamText,
-      timestamp: DateTime.now(),
+
+    final firstQna = _getNewQna();
+
+    final introChat = GuideChatMessageEntity.createStatic(
+      message: introMessage,
+      timestamp: DateTime.timestamp(),
     );
 
-    unawaited(_showMessage(
-      message: introMessage,
-      onDone: () async {
-        final questionMessage = _getNewQuestion();
-        await _showMessage(message: questionMessage);
-        await createChatRoomUseCase(
-          room: ref.read(selectedChatRoomProvider),
-          messages: [questionMessage, introMessage],
-          qnas: ref.read(chatQnasProvider).requireValue,
-        );
-      },
-    ));
+    final firstQuestionChat = QuestionChatMessageEntity.createStatic(
+      qnaId: firstQna.qna.id,
+      message: firstQna.qna.question,
+      timestamp: DateTime.timestamp(),
+    );
+
+    unawaited(
+      Future.wait(
+        [
+          createChatRoomUseCase(
+            room: ref.read(selectedChatRoomProvider),
+            messages: [firstQuestionChat, introChat],
+            qnas: ref.read(chatQnasProvider).requireValue,
+          ),
+          _showMessage(
+            message: introChat.overwriteToStream(),
+            onDone: () {
+              _showMessage(
+                message: firstQuestionChat.overwriteToStream(),
+              );
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   ///
-  /// 면접 질문 제시
+  /// 새로운 Qna 추출
   ///
-  QuestionChatMessageEntity _getNewQuestion() {
+  ChatQnaEntity _getNewQna() {
     final qna = ref
         .read(chatQnasProvider)
         .requireValue
         .firstWhere((qna) => !qna.hasUserResponded);
 
-    final question = QuestionChatMessageEntity(
-      qnaId: qna.id,
-      message: qna.qna.question.convertToStreamText,
-    );
-
-    return question;
+    return qna;
   }
 }

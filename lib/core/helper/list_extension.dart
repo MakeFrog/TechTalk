@@ -41,4 +41,15 @@ extension ListExtension<T> on List<T> {
     }
     return true;
   }
+
+  ///
+  /// 주어진 배열을 처음 원소를 시작 값으로
+  /// sublist 한 이후 shuffle한 값을 리턴
+  ///
+  List<T> extractFromFirstAndShuffle(int end) {
+    final filteredList = sublist(0, end);
+    filteredList.shuffle();
+
+    return filteredList;
+  }
 }

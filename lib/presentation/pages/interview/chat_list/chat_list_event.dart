@@ -20,7 +20,7 @@ mixin class ChatListEvent {
     required TopicEntity topic,
   }) {
     QuestionCountSelectPageRoute(
-      InterviewType.topic,
+      InterviewType.singleTopic,
       $extra: [topic],
     ).push(ref.context);
   }

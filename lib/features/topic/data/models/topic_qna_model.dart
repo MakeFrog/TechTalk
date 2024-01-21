@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:techtalk/features/topic/entities/topic_qna_entity.dart';
+import 'package:techtalk/features/topic/entities/qna_entity.dart';
 
 part 'topic_qna_model.g.dart';
 
@@ -16,8 +16,8 @@ class TopicQnaModel {
   final String question;
   final List<String> answers;
 
-  TopicQnaEntity toEntity() {
-    return TopicQnaEntity(
+  QnaEntity toEntity() {
+    return QnaEntity(
       id: id,
       question: question,
       answers: answers,

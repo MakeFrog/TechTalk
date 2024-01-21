@@ -40,9 +40,8 @@ extension StringExtensions on String {
   /// 검색일치 여부를 확인하기 위한
   /// 정제된 문자열로 변환하는 메소드
   ///
-  String get toSearchableStr => replaceAll(RegExp(r'[^a-zA-Z0-9 ]'), '')
-      .toLowerCase();
-
+  String get toSearchableStr =>
+      replaceAll(RegExp(r'[^a-zA-Z0-9 ]'), '').toLowerCase();
 
   ///
   /// 한국어 포함 여부

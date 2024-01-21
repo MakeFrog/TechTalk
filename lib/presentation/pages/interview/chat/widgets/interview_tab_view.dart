@@ -28,8 +28,7 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
             onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
             child: Consumer(
               builder: (context, ref, _) {
-                final chatListAsync =
-                    ref.watch(chatMessageHistoryProvider(room));
+                final chatListAsync = ref.watch(chatMessageHistoryProvider);
 
                 return switch (chatListAsync) {
                   AsyncData(:final value) => Align(
@@ -45,7 +44,7 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
                         itemBuilder: (context, index) => Bubble(
                           chat: value[index],
                           isLatestReceivedChatInEachSection: ref
-                              .read(chatMessageHistoryProvider(room).notifier)
+                              .read(chatMessageHistoryProvider.notifier)
                               .isLastReceivedChatInEachQuestion(index: index),
                           interviewer: room.interviewer,
                           onTapReport: value[index] is FeedbackChatMessageEntity
@@ -118,8 +117,7 @@ class _BottomInputField extends HookConsumerWidget with ChatEvent {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final room = ref.watch(selectedChatRoomProvider);
-    final interviewState = ref.watch(interviewProgressStateProvider(room));
+    final interviewState = ref.watch(interviewProgressStateProvider);
     final messageController = useTextEditingController();
     final message = useListenableSelector(
       messageController,

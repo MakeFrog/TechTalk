@@ -5,5 +5,5 @@ part 'selected_chat_room_provider.g.dart';
 
 @riverpod
 ChatRoomEntity selectedChatRoom(SelectedChatRoomRef ref) {
-  throw UnimplementedError();
+  throw UnimplementedError('Route Argument Has Not Passed');
 }

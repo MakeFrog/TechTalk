@@ -76,7 +76,7 @@ abstract class BasePage extends HookConsumerWidget {
       backgroundColor: screenBackgroundColor,
       bottomNavigationBar: buildBottomNavigationBar(context),
       floatingActionButtonLocation: floatingActionButtonLocation,
-      floatingActionButton: buildFloatingActionButton(context),
+      floatingActionButton: buildFloatingActionButton(ref),
     );
   }
 
@@ -94,7 +94,7 @@ abstract class BasePage extends HookConsumerWidget {
 
   /// 화면에 표시될 플로팅 액션 버튼을 구성하는 위젯을 반환
   @protected
-  Widget? buildFloatingActionButton(BuildContext context) => null;
+  Widget? buildFloatingActionButton(WidgetRef ref) => null;
 
   /// 뷰의 안전 영역 밖의 배경색을 설정
   @protected

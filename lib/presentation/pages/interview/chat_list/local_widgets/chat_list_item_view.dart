@@ -50,7 +50,6 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
               const SizedBox(
                 width: 16,
               ),
-
               SizedBox(
                 height: 64,
                 width: AppSize.to.rationWidth(174),
@@ -100,7 +99,8 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
                   Builder(
                     builder: (context) {
                       switch (item!.progressState) {
-                        case ChatProgress.ongoing:
+                        case ChatRoomProgress.initial ||
+                              ChatRoomProgress.ongoing:
                           return Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 8,
@@ -116,7 +116,7 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
                                   .copyWith(color: AppColor.of.gray6),
                             ),
                           );
-                        case ChatProgress.completed:
+                        case ChatRoomProgress.completed:
                           return PassFailIndicator(
                             status: item!.passOrFail,
                             text: item!.passOrFail.isPassed ? '합격' : '불합격',

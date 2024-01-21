@@ -22,7 +22,7 @@ abstract class ChatMessageEntity {
     required this.timestamp,
   }) : id = id ?? const Uuid().v1();
 
-//<editor-fold desc="Data Methods">
+  //<editor-fold desc="Data Methods">
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -52,6 +52,4 @@ abstract class ChatMessageEntity {
         ' isStreamApplied: $isStreamApplied,' +
         '}';
   }
-
-//</editor-fold>
 }

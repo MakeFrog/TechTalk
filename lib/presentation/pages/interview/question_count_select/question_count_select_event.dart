@@ -21,8 +21,11 @@ mixin class QuestionCountSelectEvent {
     final room = ChatRoomEntity.random(
       type: type,
       topics: topics,
-      questionCount: ref.read(selectedQuestionCountProvider),
+      questionCount: ref.read(selectedQuestionCountProvider) +
+          SelectedQuestionCount.defaultPlusCount,
     );
+
+    print('선택된 체팅방 정보 : ${room.progressState}');
 
     ChatPageRoute(room).go(ref.context);
 

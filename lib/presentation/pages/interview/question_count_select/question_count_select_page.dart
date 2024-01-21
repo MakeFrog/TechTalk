@@ -6,6 +6,7 @@ import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/presentation/pages/interview/question_count_select/providers/selected_question_count_provider.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_event.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
@@ -24,8 +25,8 @@ class QuestionCountSelectPage extends BasePage
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
-    final List<int> countOptions =
-        List.generate(9, (index) => index + 4); // 4 ~ 12
+    final List<int> countOptions = List.generate(
+        9, (index) => index + SelectedQuestionCount.defaultPlusCount); // 4 ~ 12
 
     return _Scaffold(
       introText: Text(

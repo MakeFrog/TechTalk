@@ -18,7 +18,7 @@ class PracticalInterviewCard extends ConsumerWidget with HomeEvent {
         color: AppColor.of.brand1,
         borderRadius: BorderRadius.circular(16),
         child: InkWell(
-          onTap: () => onTapPracticalInterview(ref),
+          onTap: () => onPracticalCardTapped(ref),
           child: Container(
             padding: const EdgeInsets.all(24),
             child: Column(

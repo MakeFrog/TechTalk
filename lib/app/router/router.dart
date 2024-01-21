@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/interview_type.enum.dart';
+import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
+import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
+import 'package:techtalk/presentation/pages/interview/topic_select/providers/interview_topic_select_route_arg.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/job_group_setting_page.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_setting_page.dart';
@@ -223,8 +226,9 @@ class InterviewTopicSelectRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return InterviewTopicSelectPage(
-      type: type,
+    return ProviderScope(
+      overrides: [interviewTopicSelectRouteArgProvider.overrideWithValue(type)],
+      child: const InterviewTopicSelectPage(),
     );
   }
 }
@@ -289,9 +293,11 @@ class ChatListPageRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ChatListPage(
-      type: type,
-      topicId: topicId,
+    final TopicEntity? topicOrNull = StoredTopics.getByIdOrNull(topicId);
+    final ChatListRouteArg routeArg = (topic: topicOrNull, interviewType: type);
+    return ProviderScope(
+      overrides: [chatListRouteArgProvider.overrideWithValue(routeArg)],
+      child: ChatListPage(),
     );
   }
 }
@@ -316,7 +322,7 @@ class ChatPageRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return ProviderScope(
       overrides: [
-        selectedChatRoomProvider.overrideWith((ref) => $extra),
+        selectedChatRoomProvider.overrideWithValue($extra),
       ],
       child: const ChatPage(),
     );

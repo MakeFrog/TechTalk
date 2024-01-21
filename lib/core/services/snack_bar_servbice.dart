@@ -9,6 +9,7 @@ abstract class SnackBarService {
   static void showSnackBar(String text) {
     ScaffoldMessenger.of(rootNavigatorKey.currentContext!)
         .hideCurrentSnackBar();
+    ScaffoldMessenger.of(rootNavigatorKey.currentContext!).clearSnackBars();
     ScaffoldMessenger.of(rootNavigatorKey.currentContext!).showSnackBar(
       SnackBar(
         duration: const Duration(milliseconds: 800),

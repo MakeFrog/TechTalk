@@ -28,7 +28,7 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
     TopicEntity? topic,
   ]) async {
     final snapshot = switch (type) {
-      InterviewType.topic => await FirestoreChatRoomRef.collection()
+      InterviewType.singleTopic => await FirestoreChatRoomRef.collection()
           .where('type', isEqualTo: type.name)
           .where('topic_ids', arrayContains: topic!.id)
           .get(),
@@ -59,36 +59,34 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
     String roomId, {
     required List<ChatMessageEntity> messages,
   }) async {
-    try {
-      await FirebaseFirestore.instance.runTransaction(
-        (transaction) async {
-          for (final message in messages) {
-            final messageModel = ChatMessageModel.fromEntity(message);
-            transaction.set(
-              FirestoreChatMessageRef.collection(roomId).doc(message.id),
-              messageModel,
-            );
+    await FirebaseFirestore.instance.runTransaction(
+      (transaction) async {
+        for (final message in messages) {
+          final messageModel = ChatMessageModel.fromEntity(message);
+          transaction.set(
+            FirestoreChatMessageRef.collection(roomId).doc(message.id),
+            messageModel,
+          );
 
-            if (message is AnswerChatMessageEntity) {
-              transaction
-                ..update(FirestoreChatRoomRef.doc(roomId), {
-                  if (message.answerState.isCorrect)
-                    'correct_answer_count': FieldValue.increment(1),
-                  if (message.answerState.isWrong)
-                    'incorrect_answer_count': FieldValue.increment(1),
-                })
-                ..update(
-                  FirestoreChatQnaRef.collection(roomId).doc(message.qnaId),
-                  {
-                    'message_id': message.id,
-                    'state': message.answerState.tag,
-                  },
-                );
-            }
+          if (message is AnswerChatMessageEntity) {
+            transaction
+              ..update(FirestoreChatRoomRef.doc(roomId), {
+                if (message.answerState.isCorrect)
+                  'correct_answer_count': FieldValue.increment(1),
+                if (message.answerState.isWrong)
+                  'incorrect_answer_count': FieldValue.increment(1),
+              })
+              ..update(
+                FirestoreChatQnaRef.collection(roomId).doc(message.qnaId),
+                {
+                  'message_id': message.id,
+                  'state': message.answerState.tag,
+                },
+              );
           }
-        },
-      );
-    } catch (e) {}
+        }
+      },
+    );
   }
 
   @override
