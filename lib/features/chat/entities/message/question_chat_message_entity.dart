@@ -1,4 +1,5 @@
 import 'package:rxdart/subjects.dart';
+import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
 class QuestionChatMessageEntity extends ChatMessageEntity {
@@ -31,4 +32,14 @@ class QuestionChatMessageEntity extends ChatMessageEntity {
         timestamp: timestamp,
         isStreamApplied: false,
       );
+
+  QuestionChatMessageEntity overwriteToStream() {
+    return QuestionChatMessageEntity(
+      id: id,
+      message: message.value.convertToStreamText,
+      timestamp: timestamp,
+      isStreamApplied: true,
+      qnaId: qnaId,
+    );
+  }
 }
