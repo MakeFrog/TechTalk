@@ -7,27 +7,35 @@ import 'package:techtalk/presentation/pages/interview/chat_list/providers/practi
 
 part 'interview_rooms_provider.g.dart';
 
-@Riverpod(dependencies: [chatListRouteArg])
+@Riverpod()
 class InterviewRooms extends _$InterviewRooms {
   @override
   FutureOr<List<ChatRoomEntity>> build() async {
-    final type = ref.read(chatListRouteArgProvider).interviewType;
-    final topic = ref.read(chatListRouteArgProvider).topic;
+    final passedArg = ref.read(chatListRouteArgProvider);
+
+    final type = passedArg.interviewType;
+    final topic = passedArg.topic;
 
     if (type.isPractical) {
-      return ref.read(practicalChatRoomListProvider.future);
+      final response = ref.read(practicalChatRoomListProvider);
+      return Future.value(response.value);
     } else {
       final response = await getChatRoomsUseCase(type, topic);
 
       return response.fold(
-        onSuccess: (chatList) {
-          return chatList;
-        },
+        onSuccess: (chatList) => chatList,
         onFailure: (e) {
           log(e.toString());
           throw e;
         },
       );
     }
+  }
+
+  void synchronizeRooms(ChatRoomEntity currentRoom) {
+    update((prev) {
+      prev.removeWhere((e) => e.id == currentRoom.id);
+      return [currentRoom, ...prev];
+    });
   }
 }

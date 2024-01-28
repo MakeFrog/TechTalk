@@ -6,7 +6,7 @@ part of 'interview_rooms_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$interviewRoomsHash() => r'b207156546eca144dd1f1d16b32c5ff3b406bfd7';
+String _$interviewRoomsHash() => r'ce16d3c2f6769888415852f68c63683567958ae9';
 
 /// See also [InterviewRooms].
 @ProviderFor(InterviewRooms)
@@ -17,11 +17,8 @@ final interviewRoomsProvider = AutoDisposeAsyncNotifierProvider<InterviewRooms,
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$interviewRoomsHash,
-  dependencies: <ProviderOrFamily>[chatListRouteArgProvider],
-  allTransitiveDependencies: <ProviderOrFamily>{
-    chatListRouteArgProvider,
-    ...?chatListRouteArgProvider.allTransitiveDependencies
-  },
+  dependencies: null,
+  allTransitiveDependencies: null,
 );
 
 typedef _$InterviewRooms = AutoDisposeAsyncNotifier<List<ChatRoomEntity>>;
