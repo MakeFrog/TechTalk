@@ -37,24 +37,26 @@ class GetRandomQnasUseCase
 
         /// 실전 면접
         InterviewType.practical => () async {
+            final shuffledTopics = room.topics.toList()..shuffle();
             final List<QnaEntity> resolvedQnas = [];
-            final topicCount = room.topics.length;
+            final topicCount = shuffledTopics.length;
             final qnaCount = room.progressInfo.totalQuestionCount;
             final qnaCountPerTopic = qnaCount ~/ topicCount;
-
             int remainingQnaCount = qnaCount;
 
-            for (final topic in room.topics) {
+            for (final topic in shuffledTopics) {
               final topicQnas =
                   await _topicRepository.getTopicQnas(topic.id).then(
                         (value) => value.getOrThrow(),
                       );
 
               final filteredTopics = topicQnas.extractFromFirstAndShuffle(
-                  min(qnaCountPerTopic, remainingQnaCount));
+                  shuffledTopics.last == topic
+                      ? max(qnaCountPerTopic, remainingQnaCount)
+                      : min(qnaCountPerTopic, remainingQnaCount));
               resolvedQnas.addAll(filteredTopics);
 
-              remainingQnaCount -= qnaCountPerTopic;
+              remainingQnaCount -= filteredTopics.length;
             }
 
             resolvedQnas.shuffle();
