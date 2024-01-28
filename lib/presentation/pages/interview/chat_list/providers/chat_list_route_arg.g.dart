@@ -6,7 +6,7 @@ part of 'chat_list_route_arg.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chatListRouteArgHash() => r'3817987cc14cdd3320370bec2f34cdb22ede8d27';
+String _$chatListRouteArgHash() => r'cf70aeff6cdf002fd4115a59ce74c6a863693fd7';
 
 /// See also [chatListRouteArg].
 @ProviderFor(chatListRouteArg)

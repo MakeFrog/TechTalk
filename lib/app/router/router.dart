@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/router/go_arg_route_data.dart';
 import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
-import 'package:techtalk/presentation/pages/interview/topic_select/providers/interview_topic_select_route_arg.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/job_group_setting_page.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_setting_page.dart';
@@ -20,7 +19,6 @@ import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_page.dart';
-import 'package:techtalk/presentation/pages/study/topic_select/providers/selected_study_topic_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/review_note_detail_page.dart';
 
 part 'router.g.dart';
@@ -183,7 +181,7 @@ class MainRoute extends GoRouteData {
   }
 }
 
-class StudyRoute extends GoRouteData {
+class StudyRoute extends GoArgRouteData<TopicEntity> {
   StudyRoute(this.$extra) : topicId = $extra.id;
 
   final String topicId;
@@ -194,13 +192,11 @@ class StudyRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ProviderScope(
-      overrides: [
-        selectedStudyTopicProvider.overrideWithValue($extra),
-      ],
-      child: const StudyLearningPage(),
-    );
+    return const StudyLearningPage();
   }
+
+  @override
+  TopicEntity get passedArg => $extra;
 }
 
 class WrongAnswerRoute extends GoRouteData {
@@ -216,8 +212,8 @@ class WrongAnswerRoute extends GoRouteData {
   }
 }
 
-class InterviewTopicSelectRoute extends GoRouteData {
-  const InterviewTopicSelectRoute(this.type);
+class InterviewTopicSelectRoute extends GoArgRouteData<InterviewType> {
+  InterviewTopicSelectRoute(this.type);
 
   static const String path = 'interview/:type';
   static const String name = 'topic select';
@@ -226,11 +222,11 @@ class InterviewTopicSelectRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ProviderScope(
-      overrides: [interviewTopicSelectRouteArgProvider.overrideWithValue(type)],
-      child: const InterviewTopicSelectPage(),
-    );
+    return InterviewTopicSelectPage();
   }
+
+  @override
+  InterviewType get passedArg => type;
 }
 
 class QuestionCountSelectPageRoute extends GoRouteData {
@@ -282,8 +278,8 @@ class SkillSettingRoute extends GoRouteData {
   }
 }
 
-class ChatListPageRoute extends GoRouteData {
-  const ChatListPageRoute(this.type, {this.topicId});
+class ChatListPageRoute extends GoArgRouteData<ChatListRouteArg> {
+  ChatListPageRoute(this.type, {this.topicId});
 
   static const String path = 'chats/:type';
   static const String name = 'chat list';
@@ -293,16 +289,15 @@ class ChatListPageRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final TopicEntity? topicOrNull = StoredTopics.getByIdOrNull(topicId);
-    final ChatListRouteArg routeArg = (topic: topicOrNull, interviewType: type);
-    return ProviderScope(
-      overrides: [chatListRouteArgProvider.overrideWithValue(routeArg)],
-      child: ChatListPage(),
-    );
+    return ChatListPage();
   }
+
+  @override
+  ChatListRouteArg get passedArg =>
+      (topic: StoredTopics.getByIdOrNull(topicId), interviewType: type);
 }
 
-class ChatPageRoute extends GoRouteData {
+class ChatPageRoute extends GoArgRouteData<ChatRoomEntity> {
   ChatPageRoute(
     this.$extra, {
     String? topicId,
@@ -320,11 +315,9 @@ class ChatPageRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ProviderScope(
-      overrides: [
-        selectedChatRoomProvider.overrideWithValue($extra),
-      ],
-      child: const ChatPage(),
-    );
+    return const ChatPage();
   }
+
+  @override
+  ChatRoomEntity get passedArg => $extra;
 }

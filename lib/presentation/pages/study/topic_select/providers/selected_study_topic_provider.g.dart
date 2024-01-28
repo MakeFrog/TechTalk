@@ -7,7 +7,7 @@ part of 'selected_study_topic_provider.dart';
 // **************************************************************************
 
 String _$selectedStudyTopicHash() =>
-    r'3cee5caaa7fc57c74889655e70d5ffe33e5aa0aa';
+    r'94f49d9a6dd8e45e6c0041d828c3831c5607ad15';
 
 /// See also [selectedStudyTopic].
 @ProviderFor(selectedStudyTopic)
