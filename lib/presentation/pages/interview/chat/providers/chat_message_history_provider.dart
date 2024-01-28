@@ -10,7 +10,7 @@ import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
 part 'chat_message_history_internal_event.dart';
 part 'chat_message_history_provider.g.dart';
 
-@Riverpod(dependencies: [selectedChatRoom, ChatQnas])
+@Riverpod(dependencies: [SelectedChatRoom, ChatQnas])
 class ChatMessageHistory extends _$ChatMessageHistory {
   @override
   FutureOr<List<ChatMessageEntity>> build() async {
@@ -50,7 +50,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   }
 
   ///
-  /// 유저 채팅 응답 추가
+  /// 1) 유저의 답변 채팅 메세지 추가
   ///
   Future<AnswerChatMessageEntity> addUserMessage(String message) async {
     final answeredQuestion = state.requireValue
@@ -78,6 +78,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   Future<void> handleFeedbackProgress(
       AnswerChatMessageEntity userAnswer) async {
     late AnswerChatMessageEntity resolvedUserAnswer;
+    late bool isAnswerCorrect;
     final feedbackChat = getAnswerFeedBackUseCase.call(
       (
         category: ref.read(selectedChatRoomProvider).topics.first.text,
@@ -85,6 +86,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           /// 2) 유저의 답변 정답 여부 확인
           resolvedUserAnswer =
               await _updateUserAnswerState(isCorrect: isCorrect);
+          isAnswerCorrect = isCorrect;
         },
         question: state.requireValue
             .firstWhere((chat) => chat.type.isQuestionMessage)
@@ -94,7 +96,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
         onFeedBackCompleted: (String feedback) async {
           /// 4) 피드백 채팅이 전달된 이후 가이드 채팅과 다음 질문 채팅을 전달
           final isCompleted =
-              ref.read(chatQnasProvider.notifier).isEveryQnaCompleted();
+              ref.read(selectedChatRoomProvider.notifier).isLastQuestion();
 
           final String guideMessage =
               isCompleted ? '면접이 종료 되었습니다' : '다음 질문을 드리겠습니다';
@@ -119,22 +121,30 @@ class ChatMessageHistory extends _$ChatMessageHistory {
                 timestamp: DateTime.now());
           }
 
-          await _uploadMessage([
-            if (!isCompleted) nextQuestionChat,
-            guideChat,
-            feedbackChat,
-            resolvedUserAnswer,
+          await Future.wait([
+            _uploadMessage([
+              if (!isCompleted) nextQuestionChat,
+              guideChat,
+              feedbackChat,
+              resolvedUserAnswer,
+            ]).then(
+              (_) => ref
+                  .read(selectedChatRoomProvider.notifier)
+                  .updateProgressInfo(
+                      isCorrect: isAnswerCorrect,
+                      lastChatMessage:
+                          isCompleted ? guideChat : nextQuestionChat),
+            ),
+            _showMessage(
+              message: guideChat.overwriteToStream(),
+              onDone: () async {
+                if (!isCompleted) {
+                  await _showMessage(
+                      message: nextQuestionChat.overwriteToStream());
+                }
+              },
+            )
           ]);
-
-          await _showMessage(
-            message: guideChat.overwriteToStream(),
-            onDone: () async {
-              if (!isCompleted) {
-                await _showMessage(
-                    message: nextQuestionChat.overwriteToStream());
-              }
-            },
-          );
         },
       ),
     );

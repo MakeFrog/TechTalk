@@ -63,11 +63,12 @@ mixin class ChatEvent {
     }
   }
 
-  Future<void> onTapReportButton(
+  Future<void> onReportBtnTapped(
     WidgetRef ref, {
-    required FeedbackChatMessageEntity feedback,
-    required AnswerChatMessageEntity answer,
+    required int index,
   }) async {
+    final chatMessages = ref.read(chatMessageHistoryProvider).requireValue;
+
     DialogService.show(
       dialog: AppDialog.dividedBtn(
         title: '신고',
@@ -76,7 +77,10 @@ mixin class ChatEvent {
         leftBtnContent: '취소',
         rightBtnContent: '확인',
         onRightBtnClicked: () async {
-          await reportChatUseCase(feedback, answer).then((value) {
+          await reportChatUseCase(
+            chatMessages[index] as FeedbackChatMessageEntity,
+            chatMessages[index + 1] as AnswerChatMessageEntity,
+          ).then((value) {
             value.fold(
               onSuccess: (value) {
                 ref.context.pop();

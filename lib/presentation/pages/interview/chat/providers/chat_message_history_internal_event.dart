@@ -31,8 +31,6 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
       messages: messages,
       chatRoomId: ref.read(selectedChatRoomProvider).id,
     );
-
-    // ref.invalidate(interviewRoomsProvider);
   }
 
   ///
@@ -89,6 +87,10 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
             room: ref.read(selectedChatRoomProvider),
             messages: [firstQuestionChat, introChat],
             qnas: ref.read(chatQnasProvider).requireValue,
+          ).then(
+            (_) => ref
+                .read(selectedChatRoomProvider.notifier)
+                .updateInitialInfo(firstQuestionChat),
           ),
           _showMessage(
             message: introChat.overwriteToStream(),

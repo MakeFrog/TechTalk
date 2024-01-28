@@ -7,6 +7,7 @@ import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view.dart';
+import 'package:techtalk/presentation/pages/interview/chat/widgets/qna_tab_view.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 
@@ -21,33 +22,9 @@ class ChatPage extends BasePage with ChatEvent {
 
     return _Scaffold(
       chatTabView: const InterviewTabView(),
-      summaryTabView: Container(),
+      summaryTabView: const QnATabView(),
       tabController: tabController,
     );
-
-    // switch (ref.watch(chatQnasProvider)) {
-    //   case AsyncData():
-    //     switch (ref.watch(chatMessageHistoryProvider)) {
-    //       case AsyncData():
-    //         return _Scaffold(
-    //           chatTabView: const InterviewTabView(),
-    //           summaryTabView: const QnATabView(),
-    //           tabController: tabController,
-    //         );
-    //       case AsyncError(:final error):
-    //         return Center(
-    //           child: Text('$error'),
-    //         );
-    //       default:
-    //         return Container();
-    //     }
-    //   case AsyncError(:final error):
-    //     return Center(
-    //       child: Text('$error'),
-    //     );
-    //   default:
-    //     return Container();
-    // }
   }
 
   @override

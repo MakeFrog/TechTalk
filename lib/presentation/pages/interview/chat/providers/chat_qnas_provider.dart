@@ -10,7 +10,7 @@ part 'chat_qnas_provider.g.dart';
 ///
 /// 채팅 Qna 리스트
 ///
-@Riverpod(dependencies: [selectedChatRoom])
+@Riverpod(dependencies: [SelectedChatRoom])
 class ChatQnas extends _$ChatQnas {
   @override
   FutureOr<List<ChatQnaEntity>> build() async {
@@ -47,7 +47,7 @@ class ChatQnas extends _$ChatQnas {
   }
 
   ///
-  /// 질문 완료 여부
+  /// 전체 qna 리스트 진행 완료 여부
   ///
   bool isEveryQnaCompleted() {
     return state.requireValue.every((e) => e.hasUserResponded);

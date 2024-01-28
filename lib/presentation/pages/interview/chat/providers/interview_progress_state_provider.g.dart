@@ -7,7 +7,7 @@ part of 'interview_progress_state_provider.dart';
 // **************************************************************************
 
 String _$interviewProgressStateHash() =>
-    r'75b01b54aa7a0c4b52e3c5a8f7820641e603e5b4';
+    r'ec42c94257b9529a2587345eb1346080443275eb';
 
 /// See also [InterviewProgressState].
 @ProviderFor(InterviewProgressState)
@@ -20,14 +20,11 @@ final interviewProgressStateProvider = AutoDisposeNotifierProvider<
       : _$interviewProgressStateHash,
   dependencies: <ProviderOrFamily>[
     selectedChatRoomProvider,
-    chatQnasProvider,
     chatMessageHistoryProvider
   ],
   allTransitiveDependencies: <ProviderOrFamily>{
     selectedChatRoomProvider,
     ...?selectedChatRoomProvider.allTransitiveDependencies,
-    chatQnasProvider,
-    ...?chatQnasProvider.allTransitiveDependencies,
     chatMessageHistoryProvider,
     ...?chatMessageHistoryProvider.allTransitiveDependencies
   },
