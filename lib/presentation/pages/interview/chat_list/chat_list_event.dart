@@ -20,13 +20,13 @@ mixin class ChatListEvent {
     required TopicEntity topic,
   }) {
     QuestionCountSelectPageRoute(
-      InterviewType.topic,
+      InterviewType.singleTopic,
       $extra: [topic],
     ).push(ref.context);
   }
 
   void routeToTopicSelectPage(WidgetRef ref) {
-    const InterviewTopicSelectRoute(
+    InterviewTopicSelectRoute(
       InterviewType.practical,
     ).push(ref.context);
   }

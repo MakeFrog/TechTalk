@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/qna_expansion_tile.dart';
 import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 import 'package:techtalk/presentation/widgets/common/box/skeleton_box.dart';
@@ -15,8 +14,8 @@ class QnATabView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
-    final room = ref.watch(selectedChatRoomProvider);
-    final completedQnAsAsync = ref.watch(chatQnAsProvider(room)).whenData(
+
+    final completedQnAsAsync = ref.watch(chatQnasProvider).whenData(
           (value) => [
             ...value.where(
               (e) => e.hasUserResponded,

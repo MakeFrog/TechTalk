@@ -1,6 +1,8 @@
 import 'package:techtalk/core/constants/interview_type.enum.dart';
+import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/core/helper/string_generator.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/data/models/chat_room_model.dart';
 import 'package:techtalk/features/chat/entities/chat_progress_info_entity.dart';
 import 'package:techtalk/features/chat/entities/interviewer_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
@@ -14,10 +16,55 @@ class ChatRoomEntity {
   final String? lastChatMessage;
   final DateTime? lastChatDate;
   final bool isTemporary;
+  final List<String>? qnaIds;
+
+  //<editor-fold desc="Data Methods">
+  const ChatRoomEntity({
+    required this.type,
+    required this.id,
+    required this.interviewer,
+    required this.topics,
+    required this.progressInfo,
+    this.qnaIds,
+    this.lastChatMessage,
+    this.lastChatDate,
+    this.isTemporary = false,
+  });
+
+  ChatRoomProgress get progressState {
+    final totalQnaCount = progressInfo.totalQuestionCount;
+    final completedCount = progressInfo.completedQuestionCount;
+
+    if (totalQnaCount == completedCount) {
+      return ChatRoomProgress.completed;
+    } else if (completedQuestionCount == 0 && lastChatMessage == null) {
+      return ChatRoomProgress.initial;
+    } else {
+      return ChatRoomProgress.ongoing;
+    }
+  }
 
   int get completedQuestionCount => progressInfo.completedQuestionCount;
-  ChatProgress get progressState => progressInfo.progressState;
-  ChatResult get passOrFail => progressInfo.chatResult;
+
+  ChatResult get chatResult {
+    if (progressState.isCompleted) {
+      if (progressInfo.correctAnswerCount >=
+          progressInfo.incorrectAnswerCount) {
+        return ChatResult.pass;
+      } else if (progressInfo.correctAnswerCount <
+          progressInfo.incorrectAnswerCount) {
+        return ChatResult.failed;
+      } else {
+        throw UnimplementedError('유효하지 않은 [passOrFail]값 입니다.');
+      }
+    } else {
+      throw UnimplementedError('진행도가 완료되지 않았습니다.');
+    }
+  }
+
+  ChatResult get passOrFail => chatResult;
+
+  TopicEntity get singleTopic => topics.first;
 
   factory ChatRoomEntity.random({
     required InterviewType type,
@@ -36,17 +83,32 @@ class ChatRoomEntity {
     );
   }
 
-//<editor-fold desc="Data Methods">
-  const ChatRoomEntity({
-    required this.type,
-    required this.id,
-    required this.interviewer,
-    required this.topics,
-    required this.progressInfo,
-    this.lastChatMessage,
-    this.lastChatDate,
-    this.isTemporary = false,
-  });
+  factory ChatRoomEntity.fromModel(ChatRoomModel roomModel) {
+    final topics = switch (roomModel.type) {
+      InterviewType.singleTopic => [
+          StoredTopics.getById(roomModel.topicIds.first)
+        ],
+      InterviewType.practical =>
+        roomModel.topicIds.map(StoredTopics.getById).toList()
+    };
+
+    final progress = roomModel.totalQuestionCount ==
+            roomModel.correctAnswerCount + roomModel.incorrectAnswerCount
+        ? ChatRoomProgress.completed
+        : ChatRoomProgress.ongoing;
+
+    return ChatRoomEntity(
+      type: roomModel.type,
+      id: roomModel.id,
+      interviewer: InterviewerEntity.getAvatarInfoById(roomModel.interviewerId),
+      topics: topics,
+      progressInfo: ChatProgressInfoEntity(
+        totalQuestionCount: roomModel.totalQuestionCount,
+        correctAnswerCount: roomModel.correctAnswerCount,
+        incorrectAnswerCount: roomModel.incorrectAnswerCount,
+      ),
+    );
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -94,13 +156,16 @@ class ChatRoomEntity {
     ChatProgressInfoEntity? progressInfo,
     String? lastChatMessage,
     DateTime? lastChatDate,
+    ChatRoomProgress? chatProgressState,
     bool? isTemporary,
+    List<String>? qnaIds,
   }) {
     return ChatRoomEntity(
       id: id ?? this.id,
       type: type,
       interviewer: interviewer ?? this.interviewer,
       topics: topics ?? this.topics,
+      qnaIds: qnaIds ?? this.qnaIds,
       progressInfo: progressInfo ?? this.progressInfo,
       lastChatMessage: lastChatMessage ?? this.lastChatMessage,
       lastChatDate: lastChatDate ?? this.lastChatDate,

@@ -3,7 +3,7 @@ import 'package:techtalk/features/wrong_answer_note/entities/wrong_answer_note_a
 
 class WrongAnswerNoteEntity {
   final String id;
-  final TopicQnaEntity question;
+  final QnaEntity question;
   final List<WrongAnswerNoteAnswerEntity> answers;
 
 //<editor-fold desc="Data Methods">
@@ -36,7 +36,7 @@ class WrongAnswerNoteEntity {
 
   WrongAnswerNoteEntity copyWith({
     String? id,
-    TopicQnaEntity? question,
+    QnaEntity? question,
     List<WrongAnswerNoteAnswerEntity>? answers,
   }) {
     return WrongAnswerNoteEntity(

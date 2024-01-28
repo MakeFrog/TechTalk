@@ -1,64 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/core/constants/interview_type.enum.dart';
+import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_event.dart';
+import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
-import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
+import 'package:techtalk/presentation/widgets/common/app_bar/animated_app_bar.dart';
 import 'package:techtalk/presentation/widgets/section/interview_topic_card.dart';
 
-class InterviewTopicSelectPage extends BasePage {
+class InterviewTopicSelectPage extends BasePage with InterviewTopicSelectState {
   const InterviewTopicSelectPage({
     super.key,
-    required this.type,
   });
-
-  final InterviewType type;
-
-  @override
-  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
-      const BackButtonAppBar();
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
-    final selectedTopicState = useState<List<TopicEntity>>([]);
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
+        controller: scrollController(ref),
+        shrinkWrap: true,
         children: <Widget>[
           const Gap(20),
           Text(
             'AI 면접을 진행할\n주제를 알려주세요',
             style: AppTextStyle.headline1,
           ),
-          _TopicListView(
-            type: type,
-            selectedTopicState: selectedTopicState,
-          ),
-          _NextButton(
-            type: type,
-            selectedTopics: selectedTopicState.value,
-          ),
+          const Gap(24),
+          _TopicListView(),
+          const Gap(52),
         ],
       ),
     );
   }
+
+  @override
+  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) {
+    return AnimatedAppBar(
+      title: '면접 주제',
+      scrollController: scrollController(ref),
+      opacityPosition: 86,
+    );
+  }
+
+  @override
+  Widget? buildFloatingActionButton(WidgetRef ref) {
+    return const _NextButton();
+  }
+
+  @override
+  FloatingActionButtonLocation? get floatingActionButtonLocation =>
+      FloatingActionButtonLocation.centerDocked;
 }
 
-class _TopicListView extends ConsumerWidget with InterviewTopicSelectEvent {
+class _TopicListView extends ConsumerWidget
+    with InterviewTopicSelectState, InterviewTopicSelectEvent {
   _TopicListView({
     Key? key,
-    required this.type,
-    required this.selectedTopicState,
   }) : super(key: key);
-
-  final InterviewType type;
-  final ValueNotifier<List<TopicEntity>> selectedTopicState;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -68,60 +69,54 @@ class _TopicListView extends ConsumerWidget with InterviewTopicSelectEvent {
       mainAxisSpacing: 12,
     );
 
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.only(top: 24, bottom: 16),
-        child: Consumer(
-          builder: (context, ref, child) {
-            final topicList = getTopicsUseCase().getOrThrow();
+    return Container(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: Consumer(
+        builder: (context, ref, child) {
+          final topicList = getTopicsUseCase().getOrThrow();
+          return GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            gridDelegate: gridDelegate,
+            itemCount: StoredTopics.list.length,
+            itemBuilder: (context, index) {
+              final topic = topicList[index];
+              final isSelected = selectedTopics(ref).contains(topic);
 
-            return GridView.builder(
-              gridDelegate: gridDelegate,
-              itemCount: topicList.length,
-              itemBuilder: (context, index) {
-                final topic = topicList[index];
-                final isSelected = selectedTopicState.value.contains(topic);
-
-                return InterviewTopicCard(
+              return InterviewTopicCard(
+                topic: topic,
+                isSelected: isSelected,
+                onTap: () => onTopicItemTapped(
+                  ref,
                   topic: topic,
-                  isSelected: isSelected,
-                  onTap: () => onTapTopic(
-                    type,
-                    selectedTopicState,
-                    topic,
-                  ),
-                );
-              },
-            );
-          },
-        ),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }
 }
 
-class _NextButton extends ConsumerWidget with InterviewTopicSelectEvent {
+class _NextButton extends ConsumerWidget
+    with InterviewTopicSelectState, InterviewTopicSelectEvent {
   const _NextButton({
     Key? key,
-    required this.type,
-    required this.selectedTopics,
   }) : super(key: key);
-
-  final InterviewType type;
-  final List<TopicEntity> selectedTopics;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FilledButton(
-      onPressed: selectedTopics.isNotEmpty
-          ? () => routeToQuestionCountSelect(
-                ref,
-                type: type,
-                topic: selectedTopics,
-              )
-          : null,
-      child: const Center(
-        child: Text('다음'),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      height: 56,
+      child: FilledButton(
+        onPressed: isStepBtnActivate(ref)
+            ? () => routeToQuestionCountSelect(ref)
+            : null,
+        child: const Center(
+          child: Text('다음'),
+        ),
       ),
     );
   }

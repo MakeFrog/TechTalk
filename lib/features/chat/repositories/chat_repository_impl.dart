@@ -2,8 +2,6 @@ import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
-import 'package:techtalk/features/chat/entities/chat_progress_info_entity.dart';
-import 'package:techtalk/features/chat/entities/interviewer_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 final class ChatRepositoryImpl implements ChatRepository {
@@ -17,7 +15,7 @@ final class ChatRepositoryImpl implements ChatRepository {
   ) {
     final List<TopicEntity> topics = [];
     switch (type) {
-      case InterviewType.topic:
+      case InterviewType.singleTopic:
         topics.add(topicRepository.getTopic(topicIds.first).getOrThrow());
       case InterviewType.practical:
         for (final String topicId in topicIds) {
@@ -40,7 +38,7 @@ final class ChatRepositoryImpl implements ChatRepository {
     await _remoteDataSource.createChatMessages(room.id, messages: messages);
 
     final rooms = await switch (room.type) {
-      InterviewType.topic => getChatRooms(room.type, room.topics.single),
+      InterviewType.singleTopic => getChatRooms(room.type, room.topics.single),
       InterviewType.practical => getChatRooms(room.type),
     }
         .then((value) => value.getOrThrow());
@@ -71,18 +69,7 @@ final class ChatRepositoryImpl implements ChatRepository {
         );
 
         rooms.add(
-          ChatRoomEntity(
-            type: roomModel.type,
-            id: roomModel.id,
-            interviewer:
-                InterviewerEntity.getAvatarInfoById(roomModel.interviewerId),
-            topics: _getChatRoomTopics(type, roomModel.topicIds),
-            progressInfo: ChatProgressInfoEntity(
-              totalQuestionCount: roomModel.totalQuestionCount,
-              correctAnswerCount: roomModel.correctAnswerCount,
-              incorrectAnswerCount: roomModel.incorrectAnswerCount,
-            ),
-          ).copyWith(
+          ChatRoomEntity.fromModel(roomModel).copyWith(
             lastChatMessage: messageResponse?.message,
             lastChatDate: messageResponse?.timestamp,
           ),
@@ -103,20 +90,7 @@ final class ChatRepositoryImpl implements ChatRepository {
   Future<Result<ChatRoomEntity>> getChatRoom(String roomId) async {
     final roomModel = await _remoteDataSource.getChatRoom(roomId);
 
-    return Result.success(
-      ChatRoomEntity(
-        type: roomModel.type,
-        id: roomModel.id,
-        interviewer:
-            InterviewerEntity.getAvatarInfoById(roomModel.interviewerId),
-        topics: _getChatRoomTopics(roomModel.type, roomModel.topicIds),
-        progressInfo: ChatProgressInfoEntity(
-          totalQuestionCount: roomModel.totalQuestionCount,
-          correctAnswerCount: roomModel.correctAnswerCount,
-          incorrectAnswerCount: roomModel.incorrectAnswerCount,
-        ),
-      ),
-    );
+    return Result.success(ChatRoomEntity.fromModel(roomModel));
   }
 
   @override
@@ -198,8 +172,8 @@ final class ChatRepositoryImpl implements ChatRepository {
       qnas.add(
         ChatQnaEntity(
           id: element.id,
-          question: question,
-          answer: answer,
+          qna: question,
+          message: answer,
         ),
       );
     });

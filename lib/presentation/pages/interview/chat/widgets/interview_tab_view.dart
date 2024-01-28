@@ -5,20 +5,19 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
-import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/entities/enums/interview_progress.enum.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
+import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/bubble.dart';
 
-class InterviewTabView extends HookConsumerWidget with ChatEvent {
+class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
   const InterviewTabView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
-    final room = ref.watch(selectedChatRoomProvider);
+
     final chatScrollController = useScrollController();
 
     return Column(
@@ -28,11 +27,10 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
             onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
             child: Consumer(
               builder: (context, ref, _) {
-                final chatListAsync =
-                    ref.watch(chatMessageHistoryProvider(room));
-
-                return switch (chatListAsync) {
-                  AsyncData(:final value) => Align(
+                return chatAsyncAdapterValue(ref).when(
+                  data: (_) {
+                    final chatMessages = chatMessageHistory(ref);
+                    return Align(
                       alignment: Alignment.topCenter,
                       child: ListView.separated(
                         controller: chatScrollController,
@@ -41,64 +39,27 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
                         padding: const EdgeInsets.only(top: 24, bottom: 20) +
                             const EdgeInsets.symmetric(horizontal: 12),
                         separatorBuilder: (_, __) => const Gap(8),
-                        itemCount: value.length,
+                        itemCount: chatMessages.length,
                         itemBuilder: (context, index) => Bubble(
-                          chat: value[index],
+                          chat: chatMessages[index],
                           isLatestReceivedChatInEachSection: ref
-                              .read(chatMessageHistoryProvider(room).notifier)
+                              .read(chatMessageHistoryProvider.notifier)
                               .isLastReceivedChatInEachQuestion(index: index),
-                          interviewer: room.interviewer,
-                          onTapReport: value[index] is FeedbackChatMessageEntity
-                              ? () => onTapReportButton(
-                                    ref,
-                                    feedback: value[index]
-                                        as FeedbackChatMessageEntity,
-                                    answer: value[index + 1]
-                                        as AnswerChatMessageEntity,
-                                  )
-                              : null,
+                          interviewer: interviewer(ref),
+                          onReportBtnTapped: () {
+                            onReportBtnTapped(ref, index: index);
+                          },
                         ),
                       ),
-                    ),
-                  AsyncError(error: final e) => Center(
-                      child: Text('채팅 내역을 불러오지 못했습니다[$e]'),
-                    ),
-                  _ => const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                };
-
-                // return chatListAsync.when(
-                //   data: (chatList) {
-                //     return Align(
-                //       alignment: Alignment.topCenter,
-                //       child: ListView.separated(
-                //         controller: chatScrollController,
-                //         shrinkWrap: true,
-                //         reverse: true,
-                //         padding: const EdgeInsets.only(top: 24, bottom: 20) +
-                //             const EdgeInsets.symmetric(horizontal: 12),
-                //         separatorBuilder: (_, __) => const Gap(8),
-                //         itemCount: chatList.length,
-                //         itemBuilder: (context, index) {
-                //           return Bubble(
-                //             chat: chatList[index],
-                //             isLatestReceivedChatInEachSection: ref
-                //                 .read(cchatMessageHistoryProviderroom).notifier)
-                //                 .isLastReceivedChatInEachQuestion(index: index),
-                //             interviewer: room.interviewerInfo,
-                //           );
-                //         },
-                //       ),
-                //     );
-                //   },
-                //   error: (e, _) => Center(
-                //     child: Text('채팅 내역을 불러오지 못했습니다[$e]'),
-                //   ),
-                //   loading: () => const Center(
-                //     child: CircularProgressIndicator(),
-                //   ),
-                // );
+                    );
+                  },
+                  error: (e, __) => Center(
+                    child: Text('채팅 내역을 불러오지 못했습니다[$e]'),
+                  ),
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
               },
             ),
           ),
@@ -111,21 +72,13 @@ class InterviewTabView extends HookConsumerWidget with ChatEvent {
   }
 }
 
-class _BottomInputField extends HookConsumerWidget with ChatEvent {
+class _BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
   const _BottomInputField({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final room = ref.watch(selectedChatRoomProvider);
-    final interviewState = ref.watch(interviewProgressStateProvider(room));
-    final messageController = useTextEditingController();
-    final message = useListenableSelector(
-      messageController,
-      () => messageController.text,
-    );
-
     return SafeArea(
       child: Container(
         color: AppColor.of.white,
@@ -135,14 +88,31 @@ class _BottomInputField extends HookConsumerWidget with ChatEvent {
           vertical: 8,
           horizontal: 16,
         ),
-        child: Stack(
+        child: chatAsyncAdapterValue(ref).when(
+          data: (_) => _buildTextField(progressState(ref)),
+          error: (_, __) => _buildTextField(InterviewProgress.error),
+          loading: () => _buildTextField(InterviewProgress.initial),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(InterviewProgress progressState) {
+    return HookBuilder(
+      builder: (context) {
+        final messageController = useTextEditingController();
+        final message = useListenableSelector(
+          messageController,
+          () => messageController.text,
+        );
+        return Stack(
           children: [
             TextField(
               controller: messageController,
               maxLines: null,
               textAlignVertical: TextAlignVertical.top,
               decoration: InputDecoration(
-                enabled: interviewState.enableChat,
+                enabled: progressState.enableChat,
                 fillColor: AppColor.of.background1,
                 border: OutlineInputBorder(
                   borderSide: BorderSide.none,
@@ -153,7 +123,7 @@ class _BottomInputField extends HookConsumerWidget with ChatEvent {
                   left: 16,
                   top: 18,
                 ),
-                hintText: interviewState.fieldHintText,
+                hintText: progressState.fieldHintText,
               ),
             ),
             Positioned(
@@ -171,7 +141,7 @@ class _BottomInputField extends HookConsumerWidget with ChatEvent {
                         BlendMode.srcIn,
                       ),
                     ),
-                    onPressed: interviewState.enableChat
+                    onPressed: progressState.enableChat
                         ? () {
                             onChatFieldSubmitted(
                               ref,
@@ -184,8 +154,8 @@ class _BottomInputField extends HookConsumerWidget with ChatEvent {
               ),
             ),
           ],
-        ),
-      ),
+        );
+      },
     );
   }
 }

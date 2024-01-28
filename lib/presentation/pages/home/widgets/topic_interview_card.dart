@@ -35,7 +35,7 @@ class TopicInterviewCard extends StatelessWidget with HomeEvent {
                     style: AppTextStyle.headline2,
                   ),
                 ),
-                Gap(48),
+                const Gap(48),
                 GestureDetector(
                   onTap: onTapNewTopicInterview,
                   child: FaIcon(
@@ -46,7 +46,7 @@ class TopicInterviewCard extends StatelessWidget with HomeEvent {
                 ),
               ],
             ),
-            Gap(12),
+            const Gap(12),
             // TODO : 면접을 하나라도 진행하면 텍스트 대신 해당 면접 표시
             Text(
               '하나의 주제를 선택해 집중 공략해 보세요!',

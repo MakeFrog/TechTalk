@@ -4,35 +4,26 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
-import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_event.dart';
+import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/local_widgets/chat_list_item_view.dart';
-import 'package:techtalk/presentation/pages/interview/chat_list/providers/interview_rooms_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 
-class ChatListPage extends BasePage with ChatListEvent {
+class ChatListPage extends BasePage with ChatListState, ChatListEvent {
   ChatListPage({
     Key? key,
-    required this.type,
-    String? topicId,
-  })  : topic = topicId != null ? getTopicUseCase(topicId).getOrThrow() : null,
-        super(key: key);
-
-  final InterviewType type;
-  final TopicEntity? topic;
+  }) : super(key: key);
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
-    final roomsAsync = ref.watch(interviewRoomsProvider(type, topic?.id));
-
-    return roomsAsync.when(
+    return chatRoomsAsync(ref).when(
       data: (chatList) {
         return ListView.builder(
           itemCount: chatList.length,
           itemBuilder: (context, index) {
             return ChatListItemView.create(
-              type,
+              selectedInterviewType(ref),
               chatList[index],
             );
           },
@@ -51,16 +42,16 @@ class ChatListPage extends BasePage with ChatListEvent {
   }
 
   @override
-  Widget? buildFloatingActionButton(BuildContext context) {
+  Widget? buildFloatingActionButton(WidgetRef ref) {
     return Consumer(
       builder: (context, ref, child) {
         return MaterialButton(
           onPressed: () {
-            switch (type) {
-              case InterviewType.topic:
+            switch (selectedInterviewType(ref)) {
+              case InterviewType.singleTopic:
                 routeToQuestionCountSelectPage(
                   ref,
-                  topic: topic!,
+                  topic: selectedTopic(ref)!,
                 );
               case InterviewType.practical:
                 routeToTopicSelectPage(ref);
@@ -85,8 +76,8 @@ class ChatListPage extends BasePage with ChatListEvent {
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
       BackButtonAppBar(
-        title: switch (type) {
-          InterviewType.topic => topic?.text,
+        title: switch (selectedInterviewType(ref)) {
+          InterviewType.singleTopic => selectedTopic(ref)?.text,
           InterviewType.practical => '실전 면접',
         },
       );

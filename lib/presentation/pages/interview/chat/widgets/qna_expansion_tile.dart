@@ -31,7 +31,7 @@ class QnAExpansionTile extends HookWidget {
             children: [
               /// CORRECT WRONG INDICATOR
               SvgPicture.asset(
-                item.answer!.answerState.isCorrect
+                item.message!.answerState.isCorrect
                     ? Assets.iconsCorrectIndicator
                     : Assets.iconsWrongIndicator,
               ),
@@ -48,7 +48,7 @@ class QnAExpansionTile extends HookWidget {
 
           /// QUESTION
           Text(
-            item.question.question,
+            item.qna.question,
             textAlign: TextAlign.start,
             style: AppTextStyle.title1,
           ),
@@ -68,7 +68,7 @@ class QnAExpansionTile extends HookWidget {
 
             /// USER ANSWER RESPONSE
             BulletText(
-              item.answer!.message.value,
+              item.message!.message.value,
               style: AppTextStyle.alert2,
             ),
             const Gap(18),
@@ -80,11 +80,11 @@ class QnAExpansionTile extends HookWidget {
 
             /// LIST OF IDEAL ANSWER
             ...List.generate(
-              item.question.answers.length,
+              item.qna.answers.length,
               (index) => Padding(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: BulletText(
-                  item.question.answers[index],
+                  item.qna.answers[index],
                   style: AppTextStyle.alert2,
                 ),
               ),

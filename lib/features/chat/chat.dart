@@ -8,14 +8,15 @@ import 'package:techtalk/features/chat/use_cases/get_chat_message_history_use_ca
 import 'package:techtalk/features/chat/use_cases/get_chat_qnas_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/get_chat_room_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/get_chat_rooms_use_case.dart';
+import 'package:techtalk/features/chat/use_cases/get_random_qnas_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/report_chat_use_case.dart';
 
 export 'chat.dart';
 export 'entities/chat_qna_entity.dart';
 export 'entities/chat_room_entity.dart';
 export 'entities/enums/answer_state.enum.dart';
-export 'entities/enums/chat_progress.enum.dart';
 export 'entities/enums/chat_result.enum.dart';
+export 'entities/enums/chat_room_progress.enum.dart';
 export 'entities/enums/chat_type.enum.dart';
 export 'entities/enums/feedback_progress.dart';
 export 'entities/message/answer_chat_message_entity.dart';
@@ -42,3 +43,4 @@ final getChatRoomUseCase = locator<GetChatRoomUseCase>();
 final getChatRoomsUseCase = locator<GetChatRoomsUseCase>();
 final getChatQnasUseCase = locator<GetChatQnasUseCase>();
 final reportChatUseCase = locator<ReportChatUseCase>();
+final getRandomQnaUseCase = locator<GetRandomQnasUseCase>();

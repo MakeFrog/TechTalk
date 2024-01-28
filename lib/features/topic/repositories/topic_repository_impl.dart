@@ -64,7 +64,7 @@ class TopicRepositoryImpl implements TopicRepository {
   }
 
   @override
-  Future<Result<List<TopicQnaEntity>>> getTopicQnas(
+  Future<Result<List<QnaEntity>>> getTopicQnas(
     String topicId,
   ) async {
     try {
@@ -82,22 +82,19 @@ class TopicRepositoryImpl implements TopicRepository {
   }
 
   @override
-  Future<Result<TopicQnaEntity>> getTopicQna(
+  Future<Result<QnaEntity>> getTopicQna(
     String topicId,
     String questionId,
   ) async {
     try {
-      final questionModel = await _localDataSource.getQna(
-            topicId,
-            questionId,
-          ) ??
-          await _remoteDataSource.getQna(
-            topicId,
-            questionId,
-          );
+      final questionModel = await _remoteDataSource.getQna(
+        topicId,
+        questionId,
+      );
 
       return Result.success(questionModel.toEntity());
     } on Exception catch (e) {
+      print('-> $e -> ${e.runtimeType}');
       return Result.failure(
         NoTopicQuestionException(topicId),
       );

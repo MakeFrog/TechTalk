@@ -1,77 +1,42 @@
-import 'dart:math';
+import 'dart:developer' as dev;
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/core/constants/interview_type.enum.dart';
-import 'package:techtalk/core/helper/string_extension.dart';
+import 'package:techtalk/core/services/snack_bar_servbice.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 
 part 'chat_qnas_provider.g.dart';
 
-@riverpod
-class ChatQnAs extends _$ChatQnAs {
-  Future<List<ChatQnaEntity>> _getRandomQnas() async {
-    final List<TopicQnaEntity> resolvedQnas = [];
-    switch (room.type) {
-      case InterviewType.topic:
-        final qnas = await getTopicQnasUseCase(room.topics.first.id).then(
-          (value) => value.getOrThrow(),
-        )
-          ..shuffle();
-        resolvedQnas.addAll(
-          qnas.sublist(0, room.progressInfo.totalQuestionCount),
-        );
-      case InterviewType.practical:
-        final topicCount = room.topics.length;
-        final qnaCount = room.progressInfo.totalQuestionCount;
-        final qnaCountPerTopic = qnaCount ~/ topicCount;
-
-        int remainingQnaCount = qnaCount;
-        for (final topic in room.topics) {
-          final qnas = await getTopicQnasUseCase(topic.id).then(
-            (value) => value.getOrThrow(),
-          )
-            ..shuffle();
-          resolvedQnas.addAll(
-            qnas.sublist(0, min(qnaCountPerTopic, remainingQnaCount)),
-          );
-          remainingQnaCount -= qnaCountPerTopic;
-        }
-        resolvedQnas.shuffle();
-    }
-
-    return resolvedQnas
-        .map(
-          (e) => ChatQnaEntity(
-            id: e.id,
-            question: e,
-          ),
-        )
-        .toList();
-  }
-
+///
+/// 채팅 Qna 리스트
+///
+@Riverpod(dependencies: [SelectedChatRoom])
+class ChatQnas extends _$ChatQnas {
   @override
-  FutureOr<List<ChatQnaEntity>> build(ChatRoomEntity room) async {
-    final qnas = await getChatQnasUseCase(room);
-    return qnas.fold(
-      onSuccess: (value) async {
-        if (value.isEmpty) {
-          return _getRandomQnas();
-        } else {
-          return value;
-        }
-      },
-      onFailure: (e) async {
-        return _getRandomQnas();
-      },
-    );
+  FutureOr<List<ChatQnaEntity>> build() async {
+    final room = ref.read(selectedChatRoomProvider);
+
+    if (room.progressState.isInitial) {
+      final response = await getRandomQnaUseCase.call(room);
+      return response.fold(
+        onSuccess: (randomQnas) => randomQnas,
+        onFailure: (e) => _onError(e),
+      );
+    } else {
+      final response = await getChatQnasUseCase.call(room);
+      return response.fold(
+        onSuccess: (qnas) => qnas,
+        onFailure: (e) => _onError(e),
+      );
+    }
   }
 
+  ///
+  /// qna 상태 업데이트
+  ///
   Future<void> updateState(AnswerChatMessageEntity message) async {
     final qnas = state.requireValue;
-    final targetQnaIndex = qnas.indexWhere(
-      (element) => element.id == message.qnaId,
-    );
+    final targetQnaIndex = qnas.indexWhere((e) => e.id == message.qnaId);
     final resolvedQna = qnas[targetQnaIndex].copyWith(
       answer: message,
     );
@@ -81,22 +46,16 @@ class ChatQnAs extends _$ChatQnAs {
     });
   }
 
-  QuestionChatMessageEntity createQuestionChat({
-    bool isStream = true,
-  }) {
-    final qna = state.requireValue.firstWhere((qna) => !qna.hasUserResponded);
+  ///
+  /// 전체 qna 리스트 진행 완료 여부
+  ///
+  bool isEveryQnaCompleted() {
+    return state.requireValue.every((e) => e.hasUserResponded);
+  }
 
-    if (isStream) {
-      return QuestionChatMessageEntity(
-        qnaId: qna.id,
-        message: qna.question.question.convertToStreamText,
-      );
-    } else {
-      return QuestionChatMessageEntity.createStatic(
-        qnaId: qna.id,
-        message: qna.question.question,
-        timestamp: DateTime.now(),
-      );
-    }
+  _onError(Exception e) {
+    dev.log('$e');
+    SnackBarService.showSnackBar('문답 목록을 가져오는데 실패하였습니다');
+    throw e;
   }
 }

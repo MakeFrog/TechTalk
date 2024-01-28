@@ -7,10 +7,10 @@ abstract interface class TopicRepository {
   Result<TopicEntity> getTopic(String id);
   Result<List<TopicCategoryEntity>> getTopicCategories();
   Result<TopicCategoryEntity> getTopicCategory(String id);
-  Future<Result<List<TopicQnaEntity>>> getTopicQnas(
+  Future<Result<List<QnaEntity>>> getTopicQnas(
     String topicId,
   );
-  Future<Result<TopicQnaEntity>> getTopicQna(
+  Future<Result<QnaEntity>> getTopicQna(
     String topicId,
     String questionId,
   );

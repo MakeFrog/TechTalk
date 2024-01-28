@@ -1,33 +1,41 @@
 import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_route_arg.dart';
+import 'package:techtalk/presentation/pages/interview/chat_list/providers/practical_chat_room_list_provider.dart';
 
 part 'interview_rooms_provider.g.dart';
 
 @Riverpod()
 class InterviewRooms extends _$InterviewRooms {
   @override
-  FutureOr<List<ChatRoomEntity>> build(
-    InterviewType type, [
-    String? topicId,
-  ]) async {
-    final topic = switch (type) {
-      InterviewType.topic => getTopicUseCase(topicId!).getOrThrow(),
-      InterviewType.practical => null,
-    };
-    final response = await getChatRoomsUseCase(type, topic);
+  FutureOr<List<ChatRoomEntity>> build() async {
+    final passedArg = ref.read(chatListRouteArgProvider);
 
-    return response.fold(
-      onSuccess: (chatList) {
-        return chatList;
-      },
-      onFailure: (e) {
-        log(e.toString());
-        throw e;
-      },
-    );
+    final type = passedArg.interviewType;
+    final topic = passedArg.topic;
+
+    if (type.isPractical) {
+      final response = ref.read(practicalChatRoomListProvider);
+      return Future.value(response.value);
+    } else {
+      final response = await getChatRoomsUseCase(type, topic);
+
+      return response.fold(
+        onSuccess: (chatList) => chatList,
+        onFailure: (e) {
+          log(e.toString());
+          throw e;
+        },
+      );
+    }
+  }
+
+  void synchronizeRooms(ChatRoomEntity currentRoom) {
+    update((prev) {
+      prev.removeWhere((e) => e.id == currentRoom.id);
+      return [currentRoom, ...prev];
+    });
   }
 }
