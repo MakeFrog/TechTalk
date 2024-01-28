@@ -7,7 +7,6 @@ import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/local_widgets/chat_list_item_view.dart';
-import 'package:techtalk/presentation/pages/interview/chat_list/providers/interview_rooms_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 
@@ -18,9 +17,7 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
-    final roomsAsync = ref.watch(interviewRoomsProvider);
-
-    return roomsAsync.when(
+    return chatRoomsAsync(ref).when(
       data: (chatList) {
         return ListView.builder(
           itemCount: chatList.length,

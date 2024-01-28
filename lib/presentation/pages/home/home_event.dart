@@ -17,6 +17,9 @@ mixin class HomeEvent {
 
     final chatRooms = await ref.read(practicalChatRoomListProvider.future);
 
+    // locator.registerLazySingleton(() =>
+    //     ChatListRouteArgument(topic: null, type: InterviewType.practical));
+
     if (chatRooms.isEmpty) {
       InterviewTopicSelectRoute(InterviewType.practical).push(ref.context);
     } else {
@@ -27,7 +30,7 @@ mixin class HomeEvent {
   }
 
   void onTapNewTopicInterview() {
-    const InterviewTopicSelectRoute(InterviewType.singleTopic)
+    InterviewTopicSelectRoute(InterviewType.singleTopic)
         .push(rootNavigatorKey.currentContext!);
   }
 

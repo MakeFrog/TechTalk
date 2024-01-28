@@ -15,8 +15,34 @@ class ChatRoomEntity {
   final ChatProgressInfoEntity progressInfo;
   final String? lastChatMessage;
   final DateTime? lastChatDate;
-  final ChatRoomProgress progressState;
   final bool isTemporary;
+  final List<String>? qnaIds;
+
+  //<editor-fold desc="Data Methods">
+  const ChatRoomEntity({
+    required this.type,
+    required this.id,
+    required this.interviewer,
+    required this.topics,
+    required this.progressInfo,
+    this.qnaIds,
+    this.lastChatMessage,
+    this.lastChatDate,
+    this.isTemporary = false,
+  });
+
+  ChatRoomProgress get progressState {
+    final totalQnaCount = progressInfo.totalQuestionCount;
+    final completedCount = progressInfo.completedQuestionCount;
+
+    if (totalQnaCount == completedCount) {
+      return ChatRoomProgress.completed;
+    } else if (completedQuestionCount == 0 && lastChatMessage == null) {
+      return ChatRoomProgress.initial;
+    } else {
+      return ChatRoomProgress.ongoing;
+    }
+  }
 
   int get completedQuestionCount => progressInfo.completedQuestionCount;
 
@@ -50,7 +76,6 @@ class ChatRoomEntity {
       type: type,
       id: StringGenerator.generateRandomString(),
       interviewer: InterviewerEntity.getRandomInterviewer(),
-      progressState: ChatRoomProgress.initial,
       topics: topics,
       progressInfo: ChatProgressInfoEntity.onInitial(
         totalQuestionCount: questionCount,
@@ -82,22 +107,8 @@ class ChatRoomEntity {
         correctAnswerCount: roomModel.correctAnswerCount,
         incorrectAnswerCount: roomModel.incorrectAnswerCount,
       ),
-      progressState: progress,
     );
   }
-
-//<editor-fold desc="Data Methods">
-  const ChatRoomEntity({
-    required this.progressState,
-    required this.type,
-    required this.id,
-    required this.interviewer,
-    required this.topics,
-    required this.progressInfo,
-    this.lastChatMessage,
-    this.lastChatDate,
-    this.isTemporary = false,
-  });
 
   @override
   bool operator ==(Object other) =>
@@ -147,13 +158,14 @@ class ChatRoomEntity {
     DateTime? lastChatDate,
     ChatRoomProgress? chatProgressState,
     bool? isTemporary,
+    List<String>? qnaIds,
   }) {
     return ChatRoomEntity(
       id: id ?? this.id,
       type: type,
-      progressState: chatProgressState ?? this.progressState,
       interviewer: interviewer ?? this.interviewer,
       topics: topics ?? this.topics,
+      qnaIds: qnaIds ?? this.qnaIds,
       progressInfo: progressInfo ?? this.progressInfo,
       lastChatMessage: lastChatMessage ?? this.lastChatMessage,
       lastChatDate: lastChatDate ?? this.lastChatDate,

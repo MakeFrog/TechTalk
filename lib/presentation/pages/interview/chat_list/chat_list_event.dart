@@ -26,7 +26,7 @@ mixin class ChatListEvent {
   }
 
   void routeToTopicSelectPage(WidgetRef ref) {
-    const InterviewTopicSelectRoute(
+    InterviewTopicSelectRoute(
       InterviewType.practical,
     ).push(ref.context);
   }

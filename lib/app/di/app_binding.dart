@@ -9,6 +9,20 @@ import 'package:techtalk/app/di/modules/wrong_answer_note_di.dart';
 
 final locator = GetIt.I;
 
+// 안전하게 등록된 인스턴스를 해제하는 메소드
+void safeUnregister<T extends Object>() {
+  if (locator.isRegistered<T>()) {
+    locator.unregister<T>();
+  }
+}
+
+// 안전하게 Factory 싱글톤 등록하는 메소드
+void safeRegisterSingleton<T extends Object>(FactoryFunc<T> factoryFunc) {
+  if (!locator.isRegistered<T>()) {
+    locator.registerLazySingleton<T>(factoryFunc);
+  }
+}
+
 final class AppBinder {
   AppBinder._();
 

@@ -18,7 +18,7 @@ class Bubble extends StatelessWidget {
     required this.chat,
     required this.isLatestReceivedChatInEachSection,
     required this.interviewer,
-    this.onTapReport,
+    required this.onReportBtnTapped,
   }) : super(key: key);
 
   /// 채팅 정보
@@ -30,7 +30,7 @@ class Bubble extends StatelessWidget {
   /// '받은' 채팅중 가장 최신 상태 여부 (문제 섹션 단위)
   final bool isLatestReceivedChatInEachSection;
 
-  final VoidCallback? onTapReport;
+  final VoidCallback onReportBtnTapped;
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +133,7 @@ class Bubble extends StatelessWidget {
                               return IconFlashAreaButton.assetIcon(
                                 iconPath: Assets.iconsWarning,
                                 size: 10,
-                                onIconTapped: onTapReport ?? () {},
+                                onIconTapped: onReportBtnTapped,
                               );
                             },
                           ),

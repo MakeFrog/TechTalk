@@ -7,7 +7,7 @@ import 'package:techtalk/features/chat/chat.dart';
 
 part 'practical_chat_room_list_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class PracticalChatRoomList extends _$PracticalChatRoomList {
   @override
   FutureOr<List<ChatRoomEntity>> build() async {

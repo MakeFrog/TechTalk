@@ -87,17 +87,14 @@ class TopicRepositoryImpl implements TopicRepository {
     String questionId,
   ) async {
     try {
-      final questionModel = await _localDataSource.getQna(
-            topicId,
-            questionId,
-          ) ??
-          await _remoteDataSource.getQna(
-            topicId,
-            questionId,
-          );
+      final questionModel = await _remoteDataSource.getQna(
+        topicId,
+        questionId,
+      );
 
       return Result.success(questionModel.toEntity());
     } on Exception catch (e) {
+      print('-> $e -> ${e.runtimeType}');
       return Result.failure(
         NoTopicQuestionException(topicId),
       );
