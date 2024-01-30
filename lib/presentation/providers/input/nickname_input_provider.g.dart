@@ -6,7 +6,7 @@ part of 'nickname_input_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$nicknameInputHash() => r'8af1b542a7cba31f367519e3ece10883a984ef03';
+String _$nicknameInputHash() => r'dff2221c672a1b270e641834bc5b2192e8dbcefc';
 
 /// See also [NicknameInput].
 @ProviderFor(NicknameInput)
@@ -17,10 +17,10 @@ final nicknameInputProvider =
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$nicknameInputHash,
-  dependencies: <ProviderOrFamily>[userDataProvider],
+  dependencies: <ProviderOrFamily>[userInfoProvider],
   allTransitiveDependencies: <ProviderOrFamily>{
-    userDataProvider,
-    ...?userDataProvider.allTransitiveDependencies
+    userInfoProvider,
+    ...?userInfoProvider.allTransitiveDependencies
   },
 );
 

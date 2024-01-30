@@ -4,7 +4,7 @@ import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/providers/user/auth/is_user_authorized_provider.dart';
-import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 mixin class SplashEvent {
   /// 초기화 실행중인지 여부
@@ -29,7 +29,7 @@ mixin class SplashEvent {
       return;
     }
 
-    await ref.read(userDataProvider.future).then(
+    await ref.read(userInfoProvider.future).then(
       (userData) {
         if (userData == null) {
           const SignUpRoute().go(ref.context);

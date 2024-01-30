@@ -1,17 +1,17 @@
 import 'package:korean_profanity_filter/korean_profanity_filter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/helper/validation_extension.dart';
-import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 part 'nickname_input_provider.g.dart';
 
 @Riverpod(
-  dependencies: [UserData],
+  dependencies: [UserInfo],
 )
 class NicknameInput extends _$NicknameInput {
   @override
   String? build() {
-    final userNickname = ref.watch(userDataProvider).value?.nickname;
+    final userNickname = ref.watch(userInfoProvider).value?.nickname;
 
     return userNickname;
   }

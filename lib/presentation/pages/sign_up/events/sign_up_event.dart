@@ -15,7 +15,7 @@ import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_contr
 import 'package:techtalk/presentation/providers/input/nickname_input_provider.dart';
 import 'package:techtalk/presentation/providers/input/skill_text_field_controller_provider.dart';
 import 'package:techtalk/presentation/providers/user/auth/user_auth_provider.dart';
-import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 part 'job_group_step_event.p.dart';
 part 'nickname_step_event.p.dart';
@@ -42,9 +42,10 @@ mixin class SignUpEvent {
         jobGroups: ref.read(selectedJobGroupsProvider),
         skills: ref.read(selectedSkillsProvider),
         lastLoginDate: DateTime.now(),
+        recordedTopicIds: [],
       );
 
-      await ref.read(userDataProvider.notifier).createData(userData).then(
+      await ref.read(userInfoProvider.notifier).createData(userData).then(
         (_) {
           const MainRoute().go(ref.context);
         },
