@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/topic/topic.dart';
-import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 part 'user_topics_provider.g.dart';
 
@@ -8,7 +8,7 @@ part 'user_topics_provider.g.dart';
 class UserTopics extends _$UserTopics {
   @override
   List<TopicEntity> build() {
-    final userData = ref.watch(userDataProvider).requireValue;
+    final userData = ref.watch(userInfoProvider).requireValue;
     if (userData == null) throw Exception('유저 데이터가 존재하지 않음');
 
     final topics = getTopicsUseCase().getOrThrow();

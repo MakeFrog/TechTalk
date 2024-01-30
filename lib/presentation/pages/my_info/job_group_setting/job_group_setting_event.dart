@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/core/services/snack_bar_servbice.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/provider/selected_job_groups_provider.dart';
-import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 mixin class JobGroupSettingEvent {
   ///
@@ -33,11 +33,11 @@ mixin class JobGroupSettingEvent {
     EasyLoading.show();
     final selectedJogGroups = ref.watch(selectedJobGroupsProvider);
     final user = ref
-        .read(userDataProvider)
+        .read(userInfoProvider)
         .value!
         .copyWith(jobGroups: selectedJogGroups);
 
-    ref.read(userDataProvider.notifier).updateData(user).whenComplete(() {
+    ref.read(userInfoProvider.notifier).updateData(user).whenComplete(() {
       EasyLoading.dismiss();
       ref.context.pop();
       SnackBarService.showSnackBar('직군 정보가 변경되었습니다');

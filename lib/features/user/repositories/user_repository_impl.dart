@@ -31,8 +31,8 @@ final class UserRepositoryImpl implements UserRepository {
   Future<Result<UserEntity>> getUser([String? uid]) async {
     try {
       final response = await _userRemoteDataSource.getUser();
-      final List<SkillEntity> skills = response.topicIds != null
-          ? response.topicIds!.map(_techSetRepository.getSkillById).toList()
+      final List<SkillEntity> skills = response.techSkills != null
+          ? response.techSkills!.map(_techSetRepository.getSkillById).toList()
           : [];
 
       final result = UserEntity.fromModel(response, skills);

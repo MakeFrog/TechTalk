@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/services/snack_bar_servbice.dart';
 import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
-import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 part 'selected_skills_provider.g.dart';
 
@@ -9,7 +9,7 @@ part 'selected_skills_provider.g.dart';
 class SelectedSkills extends _$SelectedSkills {
   @override
   List<SkillEntity> build() {
-    final userSkills = ref.read(userDataProvider).value?.skills;
+    final userSkills = ref.read(userInfoProvider).value?.skills;
     return userSkills?.toList() ?? [];
   }
 

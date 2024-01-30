@@ -12,7 +12,8 @@ class UserModel {
     this.profileImgUrl,
     this.nickname,
     this.jobGroupIds,
-    this.topicIds,
+    this.recordedTopicIds,
+    this.techSkills,
     DateTime? lastLoginDate,
   }) : lastLoginDate = DateTime.now();
 
@@ -28,8 +29,11 @@ class UserModel {
   /// 유저 관심 직군 ID 목록
   final List<String>? jobGroupIds;
 
-  /// 유저가 준비하고 있는 기술면접 주제 ID 목록
-  final List<String>? topicIds;
+  /// 유저의 관심 테크 스킬 목록
+  final List<String>? techSkills;
+
+  /// 한번이라도 면접을 진행한 면접 주제
+  final List<String>? recordedTopicIds;
 
   /// 마지막 로그인 시간
   @TimeStampConverter()
@@ -40,8 +44,9 @@ class UserModel {
       uid: entity.uid,
       profileImgUrl: entity.profileImgUrl,
       nickname: entity.nickname,
+      recordedTopicIds: entity.recordedTopicIds.map((e) => e.id).toList(),
       jobGroupIds: entity.jobGroups.map((e) => e.id).toList(),
-      topicIds: entity.skills.map((e) => e.id).toList(),
+      techSkills: entity.skills.map((e) => e.id).toList(),
     );
   }
 

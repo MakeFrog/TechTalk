@@ -13,7 +13,10 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       jobGroupIds: (json['job_group_ids'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
-      topicIds: (json['topic_ids'] as List<dynamic>?)
+      recordedTopicIds: (json['recorded_topic_ids'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      techSkills: (json['tech_skills'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
       lastLoginDate: _$JsonConverterFromJson<Timestamp, DateTime>(
@@ -25,7 +28,8 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'profile_img_url': instance.profileImgUrl,
       'nickname': instance.nickname,
       'job_group_ids': instance.jobGroupIds,
-      'topic_ids': instance.topicIds,
+      'tech_skills': instance.techSkills,
+      'recorded_topic_ids': instance.recordedTopicIds,
       'last_login_date':
           const TimeStampConverter().toJson(instance.lastLoginDate),
     };

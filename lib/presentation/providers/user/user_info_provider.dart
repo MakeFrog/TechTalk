@@ -1,14 +1,16 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/core/helper/list_extension.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/services/toast_service.dart';
+import 'package:techtalk/features/topic/entities/topic_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/providers/user/auth/user_auth_provider.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-part 'user_data_provider.g.dart';
+part 'user_info_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-class UserData extends _$UserData {
+class UserInfo extends _$UserInfo {
   @override
   FutureOr<UserEntity?> build() async {
     final userAuth = ref.watch(userAuthProvider);
@@ -59,6 +61,30 @@ class UserData extends _$UserData {
         throw e;
       },
     );
+  }
+
+  Future<void> updateTopicRecordsOnCondition(List<TopicEntity> topics) async {
+    final currentRecords = state.requireValue!.recordedTopicIds;
+    final updatedTopicRecords = currentRecords.toCombinedSetList(topics);
+
+    if (!updatedTopicRecords.isElementEquals(currentRecords)) {
+      final updatedUserInfo =
+          state.requireValue!.copyWith(recordedTopicIds: updatedTopicRecords);
+
+      final response = await updateUserUseCase(updatedUserInfo);
+      response.fold(
+        onSuccess: (userInfo) {
+          state = AsyncData(updatedUserInfo);
+        },
+        onFailure: (e) {
+          ToastService.show(
+            NormalToast(message: '$e'),
+          );
+
+          throw e;
+        },
+      );
+    }
   }
 
   Future<void> deleteData() async {
