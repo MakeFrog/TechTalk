@@ -81,4 +81,7 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
           InterviewType.practical => '실전 면접',
         },
       );
+
+  @override
+  bool get setBottomSafeArea => false;
 }

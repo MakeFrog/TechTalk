@@ -33,7 +33,7 @@ class ChatRoomItemView extends StatelessWidget with ChatListEvent {
     if (isLoaded) {
       return MaterialButton(
         padding: const EdgeInsets.symmetric(horizontal: 16) +
-            const EdgeInsets.only(top: 24, bottom: 16),
+            EdgeInsets.only(top: 24, bottom: item!.type.isPractical ? 16 : 24),
         onPressed: () {
           routeToChatPage(
             context,
