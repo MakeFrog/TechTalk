@@ -15,7 +15,6 @@ class InterviewProgressState extends _$InterviewProgressState {
     if (roomProgress.isCompleted) return InterviewProgress.done;
 
     listenMessageChanges();
-    print('우산');
 
     if (roomProgress.isOngoing) {
       return InterviewProgress.readyToAnswer;

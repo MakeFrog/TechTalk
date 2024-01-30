@@ -6,7 +6,7 @@ import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_state.dart';
-import 'package:techtalk/presentation/pages/interview/chat_list/local_widgets/chat_list_item_view.dart';
+import 'package:techtalk/presentation/pages/interview/chat_list/local_widgets/chat_room_item_view.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 
@@ -22,7 +22,7 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
         return ListView.builder(
           itemCount: chatList.length,
           itemBuilder: (context, index) {
-            return ChatListItemView.create(
+            return ChatRoomItemView.create(
               selectedInterviewType(ref),
               chatList[index],
             );
@@ -34,7 +34,7 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
         return ListView.builder(
           itemCount: 5,
           itemBuilder: (context, index) {
-            return ChatListItemView.createSkeleton();
+            return ChatRoomItemView.createSkeleton();
           },
         );
       },
