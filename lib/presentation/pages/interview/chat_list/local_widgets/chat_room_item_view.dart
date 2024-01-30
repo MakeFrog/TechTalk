@@ -33,7 +33,7 @@ class ChatRoomItemView extends StatelessWidget with ChatListEvent {
     if (isLoaded) {
       return MaterialButton(
         padding: const EdgeInsets.symmetric(horizontal: 16) +
-            EdgeInsets.only(top: 24, bottom: item!.type.isPractical ? 16 : 24),
+            const EdgeInsets.only(top: 24, bottom: 24),
         onPressed: () {
           routeToChatPage(
             context,
@@ -101,6 +101,7 @@ class ChatRoomItemView extends StatelessWidget with ChatListEvent {
               const Spacer(),
 
               Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   // LAST CHAT DATE
                   Text(
@@ -137,6 +138,69 @@ class ChatRoomItemView extends StatelessWidget with ChatListEvent {
         ),
       );
     } else {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16) +
+            const EdgeInsets.only(top: 24, bottom: 24),
+        child: SizedBox(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              // CHARACTER IMAGE
+              ClipOvalCircleAvatar.createSkeleton(
+                size: 64,
+              ),
+              const Gap(16),
+              SizedBox(
+                width: AppSize.to.ratioWidth(174),
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // CHARACTER NAME
+                    SkeletonBox(
+                      height: 18,
+                      width: 106,
+                      padding: EdgeInsets.symmetric(vertical: 2),
+                    ),
+                    Gap(9),
+
+                    /// LAST CHAT MESSAGE or TOPIC CHIP LIST
+                    SkeletonBox(
+                      height: 13,
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 2),
+                    ),
+                    SkeletonBox(
+                      height: 13,
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 2),
+                    ),
+                  ],
+                ),
+              ),
+
+              const Spacer(),
+
+              const Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  // LAST CHAT DATE
+                  SkeletonBox(
+                    height: 13,
+                    width: 50,
+                    padding: EdgeInsets.symmetric(vertical: 4),
+                  ),
+
+                  // PROGRESS INDICATOR
+                  SkeletonBox(
+                    height: 26,
+                    width: 47,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
       return Container(
         height: 112,
         padding: const EdgeInsets.symmetric(horizontal: 16),
