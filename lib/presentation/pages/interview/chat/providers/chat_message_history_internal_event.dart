@@ -63,7 +63,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   ///
   Future<void> _showIntroAndQuestionMessages() async {
     final room = ref.read(selectedChatRoomProvider);
-    final nickname = ref.read(userDataProvider).requireValue!.nickname!;
+    final nickname = ref.read(userInfoProvider).requireValue!.nickname!;
     final String introMessage =
         '반가워요! $nickname님. ${room.topics.first.text} 면접 질문을 드리겠습니다';
 
@@ -88,9 +88,14 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
             messages: [firstQuestionChat, introChat],
             qnas: ref.read(chatQnasProvider).requireValue,
           ).then(
-            (_) => ref
-                .read(selectedChatRoomProvider.notifier)
-                .updateInitialInfo(firstQuestionChat),
+            (_) {
+              ref
+                  .read(selectedChatRoomProvider.notifier)
+                  .updateInitialInfo(firstQuestionChat);
+              ref
+                  .read(userInfoProvider.notifier)
+                  .updateTopicRecordsOnCondition(room.topics);
+            },
           ),
           _showMessage(
             message: introChat.overwriteToStream(),
