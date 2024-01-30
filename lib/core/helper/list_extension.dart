@@ -52,4 +52,14 @@ extension ListExtension<T> on List<T> {
 
     return filteredList;
   }
+
+  ///
+  /// 기존 배열에 중복되지 않는 요소들만 추가
+  ///
+  List<T> toCombinedSetList(List<T> elements) {
+    addAll(elements);
+    final uniqueElements = toSet().toList();
+
+    return uniqueElements;
+  }
 }
