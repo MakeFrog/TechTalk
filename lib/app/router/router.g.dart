@@ -127,14 +127,12 @@ RouteBase get $mainRoute => GoRouteData.$route(
         GoRouteData.$route(
           path: 'chats/:type',
           name: 'chat list',
-          factory: $ChatListPageRouteExtension._fromState,
-          routes: [
-            GoRouteData.$route(
-              path: ':roomId',
-              name: 'chat',
-              factory: $ChatPageRouteExtension._fromState,
-            ),
-          ],
+          factory: $ChatListRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: ':roomId',
+          name: 'chat',
+          factory: $ChatPageRouteExtension._fromState,
         ),
       ],
     );
@@ -207,7 +205,7 @@ extension $QuestionCountSelectPageRouteExtension
 
 extension $ProfileSettingRouteExtension on ProfileSettingRoute {
   static ProfileSettingRoute _fromState(GoRouterState state) =>
-      ProfileSettingRoute();
+      const ProfileSettingRoute();
 
   String get location => GoRouteData.$location(
         '/profile-setting',
@@ -301,10 +299,11 @@ extension $WrongAnswerRouteExtension on WrongAnswerRoute {
       context.replace(location, extra: $extra);
 }
 
-extension $ChatListPageRouteExtension on ChatListPageRoute {
-  static ChatListPageRoute _fromState(GoRouterState state) => ChatListPageRoute(
+extension $ChatListRouteExtension on ChatListRoute {
+  static ChatListRoute _fromState(GoRouterState state) => ChatListRoute(
         _$InterviewTypeEnumMap._$fromName(state.pathParameters['type']!),
         topicId: state.uri.queryParameters['topic-id'],
+        $extra: state.extra as List<ChatRoomEntity>?,
       );
 
   String get location => GoRouteData.$location(
@@ -314,14 +313,16 @@ extension $ChatListPageRouteExtension on ChatListPageRoute {
         },
       );
 
-  void go(BuildContext context) => context.go(location);
+  void go(BuildContext context) => context.go(location, extra: $extra);
 
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
 
   void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
+      context.pushReplacement(location, extra: $extra);
 
-  void replace(BuildContext context) => context.replace(location);
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
 }
 
 extension $ChatPageRouteExtension on ChatPageRoute {
@@ -331,7 +332,7 @@ extension $ChatPageRouteExtension on ChatPageRoute {
       );
 
   String get location => GoRouteData.$location(
-        '/chats/${Uri.encodeComponent(_$InterviewTypeEnumMap[type]!)}/${Uri.encodeComponent(roomId)}',
+        '/${Uri.encodeComponent(roomId)}',
         queryParams: {
           if (topicId != null) 'topic-id': topicId,
         },

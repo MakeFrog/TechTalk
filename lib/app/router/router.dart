@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/app/router/go_arg_route_data.dart';
 import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
@@ -23,10 +22,23 @@ import 'package:techtalk/presentation/pages/wrong_answer_note/review_note_detail
 
 part 'router.g.dart';
 
+///
+/// 부모 라우트가 [$extra]로 argument를 전달하고 있고
+/// 자식 라우트도 동일하게 [$extra]로 argument을 전달하는 상황일 때
+/// 부모 [$extra]값이 자식[$extra]를 덮어쓰는 고질적인 이슈가 존재.
+///
+/// 해당 이슈: https://github.com/flutter/flutter/issues/106121
+///
+/// 1년 반이 더 지난 이슈지만 Flutter tream에서 해결의지 크게 없어보임.
+/// 이를 우회회할 수 있는 방법은 라우트를 부모와 자식으로 구분하지 않는 것인데,
+/// 이렇게 되면 route path경로를 유동적으로 설정하지 못한다는 문제점이 발생.
+/// 다만 현재 딥링크 및 관련 경로를 확실히 설정해야되는 기능이 없으므로 이렇게 우회하여 argument 전달 로직을 실행하고 있음.
+///
+
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
 GoRouter appRouter(WidgetRef ref) => GoRouter(
-      debugLogDiagnostics: false,
+      debugLogDiagnostics: true,
       navigatorKey: rootNavigatorKey,
       initialLocation: SplashRoute.path,
       routes: $appRoutes,
@@ -123,6 +135,7 @@ class SignUpRoute extends GoRouteData {
         ),
       ],
     ),
+
     TypedGoRoute<ProfileSettingRoute>(
       path: ProfileSettingRoute.name,
       name: ProfileSettingRoute.name,
@@ -143,15 +156,17 @@ class SignUpRoute extends GoRouteData {
       path: WrongAnswerRoute.path,
       name: WrongAnswerRoute.name,
     ),
-    TypedGoRoute<ChatListPageRoute>(
-      path: ChatListPageRoute.path,
-      name: ChatListPageRoute.name,
-      routes: [
-        TypedGoRoute<ChatPageRoute>(
-          path: ChatPageRoute.path,
-          name: ChatPageRoute.name,
-        ),
-      ],
+    TypedGoRoute<ChatListRoute>(
+      path: ChatListRoute.path,
+      name: ChatListRoute.name,
+    ),
+
+    /// NOTE
+    /// [ChatListRoute] 하위에 있는 라우팅이지만
+    /// 중복 $extra 설정이 안되는 이슈가 있어서 하위 라우팅을 설정을 배제
+    TypedGoRoute<ChatPageRoute>(
+      path: ChatPageRoute.path,
+      name: ChatPageRoute.name,
     ),
   ],
 )
@@ -160,11 +175,6 @@ class MainRoute extends GoRouteData {
 
   static const String path = '/';
   static const String name = 'main';
-
-  // @override
-  // Widget build(BuildContext context, GoRouterState state) {
-  //   return const MainPage();
-  // }
 
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) {
@@ -181,7 +191,7 @@ class MainRoute extends GoRouteData {
   }
 }
 
-class StudyRoute extends GoArgRouteData<TopicEntity> {
+class StudyRoute extends GoRouteData {
   StudyRoute(this.$extra) : topicId = $extra.id;
 
   final String topicId;
@@ -189,14 +199,13 @@ class StudyRoute extends GoArgRouteData<TopicEntity> {
 
   static const String path = 'study/:topicId';
   static const String name = 'study';
+  static late TopicEntity arg;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
+    arg = $extra;
     return const StudyLearningPage();
   }
-
-  @override
-  TopicEntity get passedArg => $extra;
 }
 
 class WrongAnswerRoute extends GoRouteData {
@@ -212,21 +221,20 @@ class WrongAnswerRoute extends GoRouteData {
   }
 }
 
-class InterviewTopicSelectRoute extends GoArgRouteData<InterviewType> {
+class InterviewTopicSelectRoute extends GoRouteData {
   InterviewTopicSelectRoute(this.type);
 
   static const String path = 'interview/:type';
   static const String name = 'topic select';
+  static late InterviewType arg;
 
   final InterviewType type;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return InterviewTopicSelectPage();
+    arg = type;
+    return const InterviewTopicSelectPage();
   }
-
-  @override
-  InterviewType get passedArg => type;
 }
 
 class QuestionCountSelectPageRoute extends GoRouteData {
@@ -252,11 +260,13 @@ class QuestionCountSelectPageRoute extends GoRouteData {
 }
 
 class ProfileSettingRoute extends GoRouteData {
+  const ProfileSettingRoute();
+
   static const String name = 'profile-setting';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ProfileSettingPage();
+    return const ProfileSettingPage();
   }
 }
 
@@ -278,26 +288,35 @@ class SkillSettingRoute extends GoRouteData {
   }
 }
 
-class ChatListPageRoute extends GoArgRouteData<ChatListRouteArg> {
-  ChatListPageRoute(this.type, {this.topicId});
+@immutable
+class ChatListRoute extends GoRouteData {
+  const ChatListRoute(
+    this.type, {
+    this.topicId,
+    this.$extra,
+  });
 
   static const String path = 'chats/:type';
   static const String name = 'chat list';
+  static late ChatListRouteArg arg;
 
   final InterviewType type;
+  final List<ChatRoomEntity>? $extra;
   final String? topicId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
+    arg = (
+      topic: StoredTopics.getByIdOrNull(topicId),
+      interviewType: type,
+      chatRooms: $extra
+    );
     return ChatListPage();
   }
-
-  @override
-  ChatListRouteArg get passedArg =>
-      (topic: StoredTopics.getByIdOrNull(topicId), interviewType: type);
 }
 
-class ChatPageRoute extends GoArgRouteData<ChatRoomEntity> {
+@immutable
+class ChatPageRoute extends GoRouteData {
   ChatPageRoute(
     this.$extra, {
     String? topicId,
@@ -307,6 +326,7 @@ class ChatPageRoute extends GoArgRouteData<ChatRoomEntity> {
 
   static const String path = ':roomId';
   static const String name = 'chat';
+  static late ChatRoomEntity arg;
 
   final InterviewType type;
   final String? topicId;
@@ -315,9 +335,7 @@ class ChatPageRoute extends GoArgRouteData<ChatRoomEntity> {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
+    arg = $extra;
     return const ChatPage();
   }
-
-  @override
-  ChatRoomEntity get passedArg => $extra;
 }
