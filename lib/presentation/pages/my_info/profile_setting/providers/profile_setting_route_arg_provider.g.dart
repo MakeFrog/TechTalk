@@ -7,7 +7,7 @@ part of 'profile_setting_route_arg_provider.dart';
 // **************************************************************************
 
 String _$profileSettingRouteArgHash() =>
-    r'83983567ae0b288492ba557b9bd6d17ad2e1612a';
+    r'6f39d845f969de096d9f48055b415270d893a297';
 
 /// See also [profileSettingRouteArg].
 @ProviderFor(profileSettingRouteArg)

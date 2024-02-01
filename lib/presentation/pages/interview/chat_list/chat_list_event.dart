@@ -11,7 +11,7 @@ mixin class ChatListEvent {
     BuildContext context, {
     required ChatRoomEntity room,
   }) {
-    ChatPageRoute(room).go(context);
+    ChatPageRoute(room).push(context);
   }
 
   /// 면접 질문 갯수 선택 페이지로 이동

@@ -20,22 +20,29 @@ class UserEntity {
   /// 유저의 관심 테크 스킬 ID 목록
   final List<SkillEntity> skills;
 
-  /// 한번이라도 면접을 진행한 면접 주제
-  final List<TopicEntity> recordedTopicIds;
+  /// 면접을 진행한 면접 주제
+  final List<TopicEntity> recordedTopics;
 
+  /// 실실전 면접 기록 존재 여부;
+  final bool hasPracticalInterviewRecord;
+
+  /// 마지막 접속 일자
   final DateTime lastLoginDate;
 
   const UserEntity({
     required this.uid,
     this.profileImgUrl,
     this.nickname,
-    required this.recordedTopicIds,
+    required this.hasPracticalInterviewRecord,
+    required this.recordedTopics,
     required this.lastLoginDate,
     required this.jobGroups,
     required this.skills,
   });
 
-  factory UserEntity.fromModel(UserModel model, List<SkillEntity> skills) {
+  factory UserEntity.fromModel(UserModel model,
+      {required List<SkillEntity> skills,
+      required bool hasPracticalInterviewRecord}) {
     return UserEntity(
       uid: model.uid,
       nickname: model.nickname,
@@ -43,9 +50,10 @@ class UserEntity {
       jobGroups: model.jobGroupIds != null
           ? model.jobGroupIds!.map(JobGroup.getById).toList()
           : [],
-      recordedTopicIds: model.recordedTopicIds != null
+      recordedTopics: model.recordedTopicIds != null
           ? model.recordedTopicIds!.map(StoredTopics.getById).toList()
           : [],
+      hasPracticalInterviewRecord: hasPracticalInterviewRecord,
       skills: skills,
       lastLoginDate: model.lastLoginDate,
     );
@@ -64,14 +72,17 @@ class UserEntity {
     List<TopicEntity>? recordedTopicIds,
     List<SkillEntity>? skills,
     DateTime? lastLoginDate,
+    bool? hasPracticalInterviewRecord,
   }) {
     return UserEntity(
       uid: uid ?? this.uid,
       profileImgUrl: profileImgUrl ?? this.profileImgUrl,
       nickname: nickname ?? this.nickname,
-      recordedTopicIds: recordedTopicIds ?? this.recordedTopicIds,
+      recordedTopics: recordedTopicIds ?? this.recordedTopics,
       jobGroups: jobGroups ?? this.jobGroups,
       skills: skills ?? this.skills,
+      hasPracticalInterviewRecord:
+          hasPracticalInterviewRecord ?? this.hasPracticalInterviewRecord,
       lastLoginDate: lastLoginDate ?? this.lastLoginDate,
     );
   }

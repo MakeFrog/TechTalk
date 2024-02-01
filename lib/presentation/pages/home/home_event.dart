@@ -6,6 +6,7 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/practical_chat_room_list_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 mixin class HomeEvent {
   ///
@@ -15,15 +16,22 @@ mixin class HomeEvent {
   Future<void> onPracticalCardTapped(WidgetRef ref) async {
     await EasyLoading.show();
 
-    final chatRooms = await ref.read(practicalChatRoomListProvider.future);
+    final hasNotPracticalInterviewRecord =
+        !ref.read(userInfoProvider).requireValue!.hasPracticalInterviewRecord;
 
-    // locator.registerLazySingleton(() =>
-    //     ChatListRouteArgument(topic: null, type: InterviewType.practical));
-
-    if (chatRooms.isEmpty) {
-      InterviewTopicSelectRoute(InterviewType.practical).push(ref.context);
+    if (hasNotPracticalInterviewRecord) {
+      final chatRooms = await ref.read(practicalChatRoomListProvider.future);
+      if (chatRooms.isEmpty) {
+        InterviewTopicSelectRoute(InterviewType.practical).push(ref.context);
+      } else {
+        ChatListRoute(InterviewType.practical, $extra: chatRooms)
+            .push(ref.context);
+        unawaited(ref
+            .read(userInfoProvider.notifier)
+            .storeUserPracticalRecordExistInfo());
+      }
     } else {
-      ChatListPageRoute(InterviewType.practical).push(ref.context);
+      ChatListRoute(InterviewType.practical).push(ref.context);
     }
 
     unawaited(EasyLoading.dismiss());

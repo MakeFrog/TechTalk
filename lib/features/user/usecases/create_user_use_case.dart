@@ -13,6 +13,7 @@ final class CreateUserUseCase extends BaseUseCase<UserEntity, Result<void>> {
 
   @override
   Future<Result<void>> call(UserEntity data) async {
+    await _userRepository.storeUserLocalInfo(data);
     return _userRepository.createUser(data);
   }
 }

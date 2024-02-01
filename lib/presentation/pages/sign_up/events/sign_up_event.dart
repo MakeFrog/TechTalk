@@ -42,7 +42,8 @@ mixin class SignUpEvent {
         jobGroups: ref.read(selectedJobGroupsProvider),
         skills: ref.read(selectedSkillsProvider),
         lastLoginDate: DateTime.now(),
-        recordedTopicIds: [],
+        recordedTopics: [],
+        hasPracticalInterviewRecord: false,
       );
 
       await ref.read(userInfoProvider.notifier).createData(userData).then(

@@ -6,7 +6,7 @@ part of 'selected_chat_room_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$selectedChatRoomHash() => r'444fac5a5fe51e466c90f5df773e2c8de425d05a';
+String _$selectedChatRoomHash() => r'7c4ab1c078486a153e485184af0ae8cae7f2db5f';
 
 /// See also [SelectedChatRoom].
 @ProviderFor(SelectedChatRoom)

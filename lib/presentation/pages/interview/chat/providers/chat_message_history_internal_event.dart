@@ -95,6 +95,9 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
               ref
                   .read(userInfoProvider.notifier)
                   .updateTopicRecordsOnCondition(room.topics);
+              ref
+                  .read(userInfoProvider.notifier)
+                  .storeUserPracticalRecordExistInfo();
             },
           ),
           _showMessage(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/helper/list_extension.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
@@ -64,7 +66,7 @@ class UserInfo extends _$UserInfo {
   }
 
   Future<void> updateTopicRecordsOnCondition(List<TopicEntity> topics) async {
-    final currentRecords = state.requireValue!.recordedTopicIds;
+    final currentRecords = state.requireValue!.recordedTopics;
     final updatedTopicRecords = currentRecords.toCombinedSetList(topics);
 
     if (!updatedTopicRecords.isElementEquals(currentRecords)) {
@@ -85,6 +87,28 @@ class UserInfo extends _$UserInfo {
         },
       );
     }
+  }
+
+  ///
+  /// 실전 면접 기록 존재 여부 값을 로컬에 저장
+  ///
+  Future<void> storeUserPracticalRecordExistInfo() async {
+    final user = state.requireValue!;
+
+    if (user.hasPracticalInterviewRecord == true) return;
+
+    final updateUser = user.copyWith(hasPracticalInterviewRecord: true);
+    await update((_) => updateUser);
+    final response = await storeUserLocalInfo.call(updateUser);
+
+    response.fold(
+      onSuccess: (_) {
+        log('유저 로컬 정보 업데이트 성공');
+      },
+      onFailure: (e) {
+        log('유저 로컬 정보 업데이트 실패');
+      },
+    );
   }
 
   Future<void> deleteData() async {

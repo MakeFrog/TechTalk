@@ -14,4 +14,7 @@ abstract interface class UserRepository {
 
   /// 닉네임 중복 여부
   Future<Result<bool>> isNicknameDuplicated(String nickname);
+
+  /// 면접 기록 존재 여부 필드 값 업데이트
+  Future<Result<void>> storeUserLocalInfo(UserEntity user);
 }

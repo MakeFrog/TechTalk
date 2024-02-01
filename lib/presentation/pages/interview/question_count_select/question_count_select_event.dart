@@ -25,8 +25,6 @@ mixin class QuestionCountSelectEvent {
           SelectedQuestionCount.defaultPlusCount,
     );
 
-    print('선택된 체팅방 정보 : ${room.progressState}');
-
     ChatPageRoute(room).go(ref.context);
 
     await EasyLoading.dismiss();

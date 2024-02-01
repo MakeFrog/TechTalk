@@ -44,7 +44,7 @@ class UserModel {
       uid: entity.uid,
       profileImgUrl: entity.profileImgUrl,
       nickname: entity.nickname,
-      recordedTopicIds: entity.recordedTopicIds.map((e) => e.id).toList(),
+      recordedTopicIds: entity.recordedTopics.map((e) => e.id).toList(),
       jobGroupIds: entity.jobGroups.map((e) => e.id).toList(),
       techSkills: entity.skills.map((e) => e.id).toList(),
     );
