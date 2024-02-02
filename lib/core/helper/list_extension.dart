@@ -54,12 +54,13 @@ extension ListExtension<T> on List<T> {
   }
 
   ///
-  /// 기존 배열에 중복되지 않는 요소들만 추가
+  /// 기존 배열에 중복되지 않는 요소들만 추가한 리스트를 리턴
   ///
   List<T> toCombinedSetList(List<T> elements) {
-    addAll(elements);
-    final uniqueElements = toSet().toList();
+    final prevList = toList();
+    prevList.addAll(elements);
+    final setList = prevList.toSet();
 
-    return uniqueElements;
+    return setList.toList();
   }
 }

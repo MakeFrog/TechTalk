@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:collection/collection.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 ///
@@ -32,9 +33,13 @@ class StoredTopics {
 
   static TopicEntity? getByIdOrNull(String? id) {
     if (id == null) return null;
-    return list.firstWhere(
+
+    return list.firstWhereOrNull(
       (topic) => topic.id == id,
-      orElse: () => throw Exception('Unexpected Topic Id Value'),
     );
+  }
+
+  static bool contains(String id) {
+    return list.firstWhereOrNull((e) => e.id == id) != null ? true : false;
   }
 }

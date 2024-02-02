@@ -1,5 +1,6 @@
 import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
+import 'package:techtalk/core/helper/list_extension.dart';
 import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
 import 'package:techtalk/features/topic/entities/topic_entity.dart';
 import 'package:techtalk/features/user/data/models/user_model.dart';
@@ -57,6 +58,22 @@ class UserEntity {
       skills: skills,
       lastLoginDate: model.lastLoginDate,
     );
+  }
+
+  /// 면접 기록이 있는 주제와 관심 스킬과 연관돤 면접 주제
+  List<TopicEntity> get targetedTopics {
+    final List<TopicEntity> skillRelatedTopics = [];
+
+    for (var skill in skills) {
+      final relatedTopic = StoredTopics.getByIdOrNull(skill.id);
+      if (relatedTopic != null) {
+        skillRelatedTopics.add(relatedTopic);
+      }
+    }
+
+    final combinedTopics = skillRelatedTopics.toCombinedSetList(recordedTopics);
+
+    return combinedTopics;
   }
 
   @override
