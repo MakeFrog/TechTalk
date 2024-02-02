@@ -67,7 +67,9 @@ class UserInfo extends _$UserInfo {
 
   Future<void> updateTopicRecordsOnCondition(List<TopicEntity> topics) async {
     final currentRecords = state.requireValue!.recordedTopics;
-    final updatedTopicRecords = currentRecords.toCombinedSetList(topics);
+
+    final updatedTopicRecords =
+        state.requireValue!.recordedTopics.toCombinedSetList(topics).toList();
 
     if (!updatedTopicRecords.isElementEquals(currentRecords)) {
       final updatedUserInfo =
@@ -77,6 +79,7 @@ class UserInfo extends _$UserInfo {
       response.fold(
         onSuccess: (userInfo) {
           state = AsyncData(updatedUserInfo);
+          log('유저 면접 기록 업데이트 성공');
         },
         onFailure: (e) {
           ToastService.show(
