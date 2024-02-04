@@ -30,7 +30,6 @@ class CheerUpMessageCard extends HookWidget {
 
     return Container(
       clipBehavior: Clip.antiAlias,
-      margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
