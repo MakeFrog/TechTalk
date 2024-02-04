@@ -32,7 +32,9 @@ part 'router.g.dart';
 /// 1년 반이 더 지난 이슈지만 Flutter tream에서 해결의지 크게 없어보임.
 /// 이를 우회회할 수 있는 방법은 라우트를 부모와 자식으로 구분하지 않는 것인데,
 /// 이렇게 되면 route path경로를 유동적으로 설정하지 못한다는 문제점이 발생.
-/// 다만 현재 딥링크 및 관련 경로를 확실히 설정해야되는 기능이 없으므로 이렇게 우회하여 argument 전달 로직을 실행하고 있음.
+/// 이러한 이유로 [ChatListRoute] 라우트 모듈의 경우 [$extra]를 통해 인자를 전달 받지 않고
+/// Route 모듈의 전역변수 값을 외부에서 업데이트하여 필요한 섹션에 인자를 전달하는 중
+///
 ///
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -135,7 +137,6 @@ class SignUpRoute extends GoRouteData {
         ),
       ],
     ),
-
     TypedGoRoute<ProfileSettingRoute>(
       path: ProfileSettingRoute.name,
       name: ProfileSettingRoute.name,
@@ -159,14 +160,15 @@ class SignUpRoute extends GoRouteData {
     TypedGoRoute<ChatListRoute>(
       path: ChatListRoute.path,
       name: ChatListRoute.name,
-    ),
-
-    /// NOTE
-    /// [ChatListRoute] 하위에 있는 라우팅이지만
-    /// 중복 $extra 설정이 안되는 이슈가 있어서 하위 라우팅을 설정을 배제
-    TypedGoRoute<ChatPageRoute>(
-      path: ChatPageRoute.path,
-      name: ChatPageRoute.name,
+      routes: [
+        /// NOTE
+        /// [ChatListRoute] 하위에 있는 라우팅이지만
+        /// 중복 $extra 설정이 안되는 이슈가 있어서 하위 라우팅을 설정을 배제
+        TypedGoRoute<ChatPageRoute>(
+          path: ChatPageRoute.path,
+          name: ChatPageRoute.name,
+        ),
+      ],
     ),
   ],
 )
@@ -317,25 +319,17 @@ class ChatListRoute extends GoRouteData {
 
 @immutable
 class ChatPageRoute extends GoRouteData {
-  ChatPageRoute(
-    this.$extra, {
-    String? topicId,
-  })  : type = $extra.type,
-        topicId = topicId ?? $extra.topics.singleOrNull?.id,
-        roomId = $extra.id;
+  const ChatPageRoute({required this.type, required this.roomId});
 
   static const String path = ':roomId';
   static const String name = 'chat';
   static late ChatRoomEntity arg;
 
   final InterviewType type;
-  final String? topicId;
   final String roomId;
-  final ChatRoomEntity $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    arg = $extra;
     return const ChatPage();
   }
 }

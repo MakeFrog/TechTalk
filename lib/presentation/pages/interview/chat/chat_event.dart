@@ -49,9 +49,8 @@ mixin class ChatEvent {
           leftBtnContent: '취소',
           rightBtnContent: '확인',
           onRightBtnClicked: () {
-            ref.context
-              ..pop()
-              ..pop();
+            ref.context.pop();
+            ref.context.pop();
           },
           onLeftBtnClicked: () {
             ref.context.pop();

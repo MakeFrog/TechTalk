@@ -128,11 +128,13 @@ RouteBase get $mainRoute => GoRouteData.$route(
           path: 'chats/:type',
           name: 'chat list',
           factory: $ChatListRouteExtension._fromState,
-        ),
-        GoRouteData.$route(
-          path: ':roomId',
-          name: 'chat',
-          factory: $ChatPageRouteExtension._fromState,
+          routes: [
+            GoRouteData.$route(
+              path: ':roomId',
+              name: 'chat',
+              factory: $ChatPageRouteExtension._fromState,
+            ),
+          ],
         ),
       ],
     );
@@ -327,27 +329,22 @@ extension $ChatListRouteExtension on ChatListRoute {
 
 extension $ChatPageRouteExtension on ChatPageRoute {
   static ChatPageRoute _fromState(GoRouterState state) => ChatPageRoute(
-        topicId: state.uri.queryParameters['topic-id'],
-        state.extra as ChatRoomEntity,
+        type: _$InterviewTypeEnumMap._$fromName(state.pathParameters['type']!),
+        roomId: state.pathParameters['roomId']!,
       );
 
   String get location => GoRouteData.$location(
-        '/${Uri.encodeComponent(roomId)}',
-        queryParams: {
-          if (topicId != null) 'topic-id': topicId,
-        },
+        '/chats/${Uri.encodeComponent(_$InterviewTypeEnumMap[type]!)}/${Uri.encodeComponent(roomId)}',
       );
 
-  void go(BuildContext context) => context.go(location, extra: $extra);
+  void go(BuildContext context) => context.go(location);
 
-  Future<T?> push<T>(BuildContext context) =>
-      context.push<T>(location, extra: $extra);
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
   void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location, extra: $extra);
+      context.pushReplacement(location);
 
-  void replace(BuildContext context) =>
-      context.replace(location, extra: $extra);
+  void replace(BuildContext context) => context.replace(location);
 }
 
 extension<T extends Enum> on Map<T, String> {

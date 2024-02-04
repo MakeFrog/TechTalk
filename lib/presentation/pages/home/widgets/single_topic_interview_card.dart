@@ -116,10 +116,8 @@ class SingleTopicInterviewCard extends ConsumerWidget
                   foregroundColor: AppColor.of.gray4,
                 ),
                 onPressed: () {
-                  onSingleTopicItemTapped(
-                    ref,
-                    topic: topic,
-                  );
+                  routeToChatListPage(context,
+                      type: InterviewType.singleTopic, topicId: topic.id);
                 },
                 child: Text(
                   '면접 보기',
