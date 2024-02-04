@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/practical_chat_room_list_provider.dart';
 
@@ -24,7 +25,8 @@ class InterviewRooms extends _$InterviewRooms {
         return ref.watch(practicalChatRoomListProvider.future);
       }
     } else {
-      final response = await getChatRoomsUseCase(type, topic);
+      final response = await getChatRoomsUseCase(
+          type, topic ?? ref.read(selectedChatRoomProvider).singleTopic);
 
       return response.fold(
         onSuccess: (chatList) => chatList,

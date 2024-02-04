@@ -6,7 +6,7 @@ part of 'interview_rooms_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$interviewRoomsHash() => r'0d39c6524c8ff32629bc5f372165ad41eb2fabd9';
+String _$interviewRoomsHash() => r'39a28bc05f1a92ce82607b5d748da84d06b61655';
 
 /// See also [InterviewRooms].
 @ProviderFor(InterviewRooms)
