@@ -17,7 +17,6 @@ mixin class ChatListState {
   /// 선택된 면접 주제
   ///
   TopicEntity? selectedTopic(WidgetRef ref) =>
-      // locator<ChatListRouteArgument>().topic;
       ref.watch(chatListRouteArgProvider).topic;
 
   ///

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/app/environment/environment.enum.dart';
+import 'package:techtalk/app/local_storage/app_local.dart';
 
 class Flavor {
   Flavor._();
@@ -34,6 +35,9 @@ class Flavor {
     // ChatGPTCompletions.instance.initialize(apiKey: env.openApiKey);
 
     final option = env.firebaseOption;
+
+    /// LocalStorage Hive 초기화
+    AppLocal.initHive();
 
     /// FireBase 초기화
     await Firebase.initializeApp(

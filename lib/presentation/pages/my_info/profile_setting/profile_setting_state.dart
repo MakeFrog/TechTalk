@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/features/user/entities/user_entity.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/providers/picked_profile_img.dart';
 import 'package:techtalk/presentation/providers/input/nickname_input_provider.dart';
-import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 mixin class ProfileSettingState {
   ///
@@ -15,10 +15,10 @@ mixin class ProfileSettingState {
   ///
   /// 유저 정보
   ///
-  UserEntity user(WidgetRef ref) => ref.watch(userDataProvider).value!;
+  UserEntity user(WidgetRef ref) => ref.watch(userInfoProvider).value!;
 
   AsyncValue<UserEntity?> userAsync(WidgetRef ref) =>
-      ref.watch(userDataProvider);
+      ref.watch(userInfoProvider);
 
   ///
   /// 닉네임
@@ -35,7 +35,7 @@ mixin class ProfileSettingState {
   /// 닉네임 변경 여부
   ///
   bool hasNicknameEdited(WidgetRef ref) {
-    final prevNickname = ref.watch(userDataProvider).value!.nickname;
+    final prevNickname = ref.watch(userInfoProvider).value!.nickname;
     return prevNickname != ref.watch(nicknameInputProvider);
   }
 }

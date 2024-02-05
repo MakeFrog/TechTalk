@@ -15,7 +15,6 @@ class InterviewProgressState extends _$InterviewProgressState {
     if (roomProgress.isCompleted) return InterviewProgress.done;
 
     listenMessageChanges();
-    print('우산');
 
     if (roomProgress.isOngoing) {
       return InterviewProgress.readyToAnswer;
@@ -31,6 +30,7 @@ class InterviewProgressState extends _$InterviewProgressState {
   void listenMessageChanges() {
     ref.listen(chatMessageHistoryProvider, (prev, chatHistory) {
       if (chatHistory.value == null) return;
+
       final lastChat = chatHistory.value!.first;
 
       switch (lastChat.type) {
@@ -46,6 +46,11 @@ class InterviewProgressState extends _$InterviewProgressState {
               state = InterviewProgress.readyToAnswer;
             },
           );
+
+        case ChatType.feedback:
+          if (ref.read(selectedChatRoomProvider.notifier).isLastQuestion()) {
+            state = InterviewProgress.done;
+          }
         default:
           state = InterviewProgress.interviewerReplying;
       }

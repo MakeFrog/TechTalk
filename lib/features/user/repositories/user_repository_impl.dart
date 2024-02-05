@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/tech_set_repository.dart';
+import 'package:techtalk/features/user/data/local/user_local_data_source.dart';
 import 'package:techtalk/features/user/data/remote/user_remote_data_source.dart';
 import 'package:techtalk/features/user/entities/user_entity.dart';
 import 'package:techtalk/features/user/repositories/user_repository.dart';
@@ -10,10 +11,12 @@ import 'package:techtalk/features/user/repositories/user_repository.dart';
 final class UserRepositoryImpl implements UserRepository {
   const UserRepositoryImpl(
     this._userRemoteDataSource,
+    this._userLocalDataSource,
     this._techSetRepository,
   );
 
   final UserRemoteDataSource _userRemoteDataSource;
+  final UserLocalDataSource _userLocalDataSource;
   final TechSetRepository _techSetRepository;
 
   @override
@@ -31,11 +34,16 @@ final class UserRepositoryImpl implements UserRepository {
   Future<Result<UserEntity>> getUser([String? uid]) async {
     try {
       final response = await _userRemoteDataSource.getUser();
-      final List<SkillEntity> skills = response.topicIds != null
-          ? response.topicIds!.map(_techSetRepository.getSkillById).toList()
+      final List<SkillEntity> skills = response.techSkills != null
+          ? response.techSkills!.map(_techSetRepository.getSkillById).toList()
           : [];
 
-      final result = UserEntity.fromModel(response, skills);
+      final hasPracticalInterviewRecord =
+          _userLocalDataSource.hasPracticalInterviewRecord();
+
+      final result = UserEntity.fromModel(response,
+          skills: skills,
+          hasPracticalInterviewRecord: hasPracticalInterviewRecord);
 
       return Result.success(result);
     } on Exception catch (e) {
@@ -81,6 +89,16 @@ final class UserRepositoryImpl implements UserRepository {
     try {
       final response = await _userRemoteDataSource.isExistNickname(nickname);
 
+      return Result.success(response);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<void>> storeUserLocalInfo(UserEntity user) async {
+    try {
+      final response = await _userLocalDataSource.storeUserLocalInfo(user);
       return Result.success(response);
     } on Exception catch (e) {
       return Result.failure(e);

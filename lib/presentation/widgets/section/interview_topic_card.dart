@@ -26,6 +26,8 @@ class InterviewTopicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double skillImgSize = 72;
+
     return Material(
       color: isSelected
           ? AppColor.of.brand2.withOpacity(0.07)
@@ -46,17 +48,24 @@ class InterviewTopicCard extends StatelessWidget {
               ? Column(
                   children: [
                     Expanded(
-                      child: Image.asset(
-                        topic!.imageUrl!,
-                        color: isSelected
-                            ? AppColor.of.brand2.withOpacity(0.07)
-                            : null,
-                        colorBlendMode: BlendMode.srcATop,
-                        errorBuilder: (_, __, ___) => Center(
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white,
+                      child: SizedBox(
+                        height: skillImgSize,
+                        width: skillImgSize,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(skillImgSize / 2),
+                          child: Image.asset(
+                            topic!.imageUrl!,
+                            color: isSelected
+                                ? AppColor.of.brand2.withOpacity(0.07)
+                                : null,
+                            colorBlendMode: BlendMode.srcATop,
+                            errorBuilder: (_, __, ___) => Center(
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                           ),
                         ),

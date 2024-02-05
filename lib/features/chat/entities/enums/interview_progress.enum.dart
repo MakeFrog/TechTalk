@@ -20,4 +20,12 @@ enum InterviewProgress {
         InterviewProgress.done => false,
         InterviewProgress.error => false,
       };
+
+  bool get isDoneOrError {
+    if (this == InterviewProgress.done || this == InterviewProgress.done) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

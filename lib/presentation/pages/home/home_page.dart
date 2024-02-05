@@ -6,27 +6,36 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/presentation/pages/home/widgets/cheer_up_message_card.dart';
+import 'package:techtalk/presentation/pages/home/widgets/home_state.dart';
 import 'package:techtalk/presentation/pages/home/widgets/practical_interview_card.dart';
-import 'package:techtalk/presentation/pages/home/widgets/topic_interview_card.dart';
+import 'package:techtalk/presentation/pages/home/widgets/single_topic_interview_card.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 
-class HomePage extends BasePage {
+class HomePage extends BasePage with HomeState {
   const HomePage({super.key});
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
 
-    return ListView(
-      physics: const ScrollPhysics(),
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      children: const [
-        CheerUpMessageCard(),
-        Gap(16),
-        PracticalInterviewCard(),
-        Gap(16),
-        TopicInterviewCard(),
-      ],
+    return asyncValue(ref).when(
+      data: (_) {
+        return ListView(
+          physics: const ScrollPhysics(),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          children: const [
+            CheerUpMessageCard(),
+            Gap(16),
+            PracticalInterviewCard(),
+            Gap(16),
+            SingleTopicInterviewCard(),
+          ],
+        );
+      },
+      error: (e, __) => const Text('error on homepage'),
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 

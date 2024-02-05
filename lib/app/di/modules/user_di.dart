@@ -1,18 +1,26 @@
 import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/app/di/feature_di_interface.dart';
+import 'package:techtalk/app/local_storage/app_local.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
+import 'package:techtalk/features/user/data/local/user_local_data_source.dart';
+import 'package:techtalk/features/user/data/local/user_local_data_source_impl.dart';
 import 'package:techtalk/features/user/data/remote/user_remote_data_source_impl.dart';
 import 'package:techtalk/features/user/repositories/user_repository_impl.dart';
 import 'package:techtalk/features/user/usecases/check_nickname_duplication.dart';
 import 'package:techtalk/features/user/usecases/edit_user_profile_use_case.dart';
+import 'package:techtalk/features/user/usecases/sotre_user_local_info_use_case.dart';
 import 'package:techtalk/features/user/user.dart';
 
 final class UserDependencyInjection extends FeatureDependencyInjection {
   @override
   void dataSources() {
-    locator.registerLazySingleton<UserRemoteDataSource>(
-      UserRemoteDataSourceImpl.new,
-    );
+    locator
+      ..registerLazySingleton<UserRemoteDataSource>(
+        UserRemoteDataSourceImpl.new,
+      )
+      ..registerLazySingleton<UserLocalDataSource>(
+        () => UserLocalDataSourceImpl(AppLocal.userBox),
+      );
   }
 
   @override
@@ -20,6 +28,7 @@ final class UserDependencyInjection extends FeatureDependencyInjection {
     locator.registerLazySingleton<UserRepository>(
       () => UserRepositoryImpl(
         userRemoteDataSource,
+        userLocalDataSource,
         techSetRepository,
       ),
     );
@@ -53,6 +62,9 @@ final class UserDependencyInjection extends FeatureDependencyInjection {
       )
       ..registerFactory(
         () => CheckNicknameDuplication(userRepository),
+      )
+      ..registerFactory(
+        () => StoreUserLocalInfoUseCase(userRepository),
       );
   }
 }

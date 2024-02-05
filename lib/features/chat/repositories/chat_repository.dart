@@ -1,6 +1,7 @@
 import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/entities/chat_history_collection_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 abstract interface class ChatRepository {
@@ -25,7 +26,8 @@ abstract interface class ChatRepository {
   });
 
   /// 채팅 메세지 리스트 호출
-  Future<Result<List<ChatMessageEntity>>> getChatMessageHistory(String roomId);
+  Future<Result<ChatHistoryCollectionEntity>> getChatMessageHistory(
+      String roomId);
 
   /// 채팅 메세지  호출
   Future<Result<ChatMessageEntity>> getChatMessage(

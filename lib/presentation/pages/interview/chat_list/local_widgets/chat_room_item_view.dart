@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/helper/date_time_extension.dart';
 import 'package:techtalk/core/services/size_service.dart';
@@ -8,20 +9,21 @@ import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_event.dart';
 import 'package:techtalk/presentation/widgets/common/avatar/clip_oval_circle_avatar.dart';
 import 'package:techtalk/presentation/widgets/common/box/skeleton_box.dart';
+import 'package:techtalk/presentation/widgets/common/chip/normal_rounded_chip.dart';
 import 'package:techtalk/presentation/widgets/common/indicator/pass_fail_indicator.dart';
 
-class ChatListItemView extends StatelessWidget with ChatListEvent {
-  const ChatListItemView({
+class ChatRoomItemView extends StatelessWidget with ChatListEvent {
+  const ChatRoomItemView({
     Key? key,
     required this.item,
     required this.isLoaded,
   }) : super(key: key);
 
-  factory ChatListItemView.create(InterviewType type, ChatRoomEntity item) =>
-      ChatListItemView(item: item, isLoaded: true);
+  factory ChatRoomItemView.create(InterviewType type, ChatRoomEntity item) =>
+      ChatRoomItemView(item: item, isLoaded: true);
 
-  factory ChatListItemView.createSkeleton() =>
-      const ChatListItemView(item: null, isLoaded: false);
+  factory ChatRoomItemView.createSkeleton() =>
+      const ChatRoomItemView(item: null, isLoaded: false);
 
   final ChatRoomEntity? item;
   final bool isLoaded;
@@ -30,8 +32,8 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
   Widget build(BuildContext context) {
     if (isLoaded) {
       return MaterialButton(
-        height: 112,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16) +
+            const EdgeInsets.only(top: 24, bottom: 24),
         onPressed: () {
           routeToChatPage(
             context,
@@ -39,8 +41,8 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
           );
         },
         child: SizedBox(
-          height: 64,
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               // CHARACTER IMAGE
               ClipOvalCircleAvatar.create(
@@ -51,10 +53,9 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
                 width: 16,
               ),
               SizedBox(
-                height: 64,
-                width: AppSize.to.rationWidth(174),
-                child: Stack(
-                  // crossAxisAlignment: CrossAxisAlignment.start,
+                width: AppSize.to.ratioWidth(174),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // CHARACTER NAME
                     Text(
@@ -63,30 +64,44 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
+                    const Gap(9),
 
-                    /// LAST CHAT MESSAGE
-                    Positioned(
-                      bottom: 0,
-                      child: SizedBox(
-                        height: (AppTextStyle.alert2.height! *
-                                AppTextStyle.alert2.fontSize!) *
-                            2,
-                        width: AppSize.to.rationWidth(174),
-                        child: Text(
-                          item!.lastChatMessage ?? '',
-                          style: AppTextStyle.alert2,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
+                    /// LAST CHAT MESSAGE or TOPIC CHIP LIST
+                    Builder(
+                      builder: (context) {
+                        if (item!.type.isPractical) {
+                          return Wrap(
+                            children: [
+                              ...List.generate(
+                                item!.topics.length,
+                                (index) => NormalRoundedChip(
+                                  margin: const EdgeInsets.only(
+                                    bottom: 6,
+                                    right: 6,
+                                  ),
+                                  text: item!.topics[index].text,
+                                ),
+                              )
+                            ],
+                          );
+                        } else {
+                          return Text(
+                            item!.lastChatMessage ?? '',
+                            style: AppTextStyle.alert2,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          );
+                        }
+                      },
                     ),
                   ],
                 ),
               ),
 
               const Spacer(),
+
               Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   // LAST CHAT DATE
                   Text(
@@ -95,27 +110,17 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
                       color: AppColor.of.gray3,
                     ),
                   ),
+                  const Gap(9),
                   // PROGRESS INDICATOR
                   Builder(
                     builder: (context) {
                       switch (item!.progressState) {
                         case ChatRoomProgress.initial ||
                               ChatRoomProgress.ongoing:
-                          return Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColor.of.background1,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              '${item!.completedQuestionCount}/${item!.progressInfo.totalQuestionCount}',
-                              style: AppTextStyle.alert1
-                                  .copyWith(color: AppColor.of.gray6),
-                            ),
-                          );
+                          return NormalRoundedChip(
+                              text:
+                                  '${item!.completedQuestionCount}/${item!.progressInfo.totalQuestionCount}');
+
                         case ChatRoomProgress.completed:
                           return PassFailIndicator(
                             status: item!.passOrFail,
@@ -133,67 +138,50 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
         ),
       );
     } else {
-      return Container(
-        height: 112,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        alignment: Alignment.center,
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16) +
+            const EdgeInsets.only(top: 24, bottom: 24),
         child: SizedBox(
-          height: 64,
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               // CHARACTER IMAGE
               ClipOvalCircleAvatar.createSkeleton(
                 size: 64,
               ),
-              const SizedBox(
-                width: 16,
-              ),
-
+              const Gap(16),
               SizedBox(
-                height: 64,
-                width: AppSize.to.rationWidth(174),
-                child: Stack(
-                  // crossAxisAlignment: CrossAxisAlignment.start,
+                width: AppSize.to.ratioWidth(174),
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // CHARACTER NAME
-                    const SkeletonBox(
+                    SkeletonBox(
                       height: 18,
                       width: 106,
                       padding: EdgeInsets.symmetric(vertical: 2),
                     ),
+                    Gap(9),
 
-                    /// LAST CHAT MESSAGE
-                    Positioned(
-                      bottom: 0,
-                      child: SizedBox(
-                        height: (AppTextStyle.alert2.height! *
-                                AppTextStyle.alert2.fontSize!) *
-                            2,
-                        width: AppSize.to.rationWidth(174),
-                        child: const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            SkeletonBox(
-                              height: 13,
-                              width: double.infinity,
-                              padding: EdgeInsets.symmetric(vertical: 2),
-                            ),
-                            SkeletonBox(
-                              height: 13,
-                              width: double.infinity,
-                              padding: EdgeInsets.symmetric(vertical: 2),
-                            ),
-                          ],
-                        ),
-                      ),
+                    /// LAST CHAT MESSAGE or TOPIC CHIP LIST
+                    SkeletonBox(
+                      height: 13,
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 2),
+                    ),
+                    SkeletonBox(
+                      height: 13,
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 2),
                     ),
                   ],
                 ),
               ),
 
               const Spacer(),
+
               const Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   // LAST CHAT DATE
                   SkeletonBox(
@@ -201,11 +189,12 @@ class ChatListItemView extends StatelessWidget with ChatListEvent {
                     width: 50,
                     padding: EdgeInsets.symmetric(vertical: 4),
                   ),
+
+                  // PROGRESS INDICATOR
                   SkeletonBox(
                     height: 26,
                     width: 47,
                   ),
-                  // PROGRESS INDICATOR
                 ],
               ),
             ],

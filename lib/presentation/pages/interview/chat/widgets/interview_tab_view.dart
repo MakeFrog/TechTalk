@@ -101,6 +101,7 @@ class _BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
     return HookBuilder(
       builder: (context) {
         final messageController = useTextEditingController();
+
         final message = useListenableSelector(
           messageController,
           () => messageController.text,
@@ -112,7 +113,7 @@ class _BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
               maxLines: null,
               textAlignVertical: TextAlignVertical.top,
               decoration: InputDecoration(
-                enabled: progressState.enableChat,
+                enabled: !progressState.isDoneOrError,
                 fillColor: AppColor.of.background1,
                 border: OutlineInputBorder(
                   borderSide: BorderSide.none,
@@ -135,20 +136,20 @@ class _BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                     icon: SvgPicture.asset(
                       Assets.iconsSend,
                       colorFilter: ColorFilter.mode(
-                        message.isNotEmpty
+                        message.isNotEmpty && progressState.enableChat
                             ? AppColor.of.blue2
                             : AppColor.of.gray3,
                         BlendMode.srcIn,
                       ),
                     ),
-                    onPressed: progressState.enableChat
+                    onPressed: message.isNotEmpty && progressState.enableChat
                         ? () {
                             onChatFieldSubmitted(
                               ref,
                               textEditingController: messageController,
                             );
                           }
-                        : null,
+                        : onChatFieldSubmittedOnWaitingState,
                   );
                 },
               ),

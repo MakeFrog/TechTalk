@@ -7,7 +7,7 @@ part of 'interview_progress_state_provider.dart';
 // **************************************************************************
 
 String _$interviewProgressStateHash() =>
-    r'ec42c94257b9529a2587345eb1346080443275eb';
+    r'94683deb3efab9fa54fbd0f85f2fa87bf031b16f';
 
 /// See also [InterviewProgressState].
 @ProviderFor(InterviewProgressState)

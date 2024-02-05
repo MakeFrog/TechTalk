@@ -28,9 +28,6 @@ class ChatPage extends BasePage with ChatEvent {
   }
 
   @override
-  bool get preventSwipeBack => true;
-
-  @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) {
     final firstTopic = ref.watch(selectedChatRoomProvider).topics.first.text;
     final otherTopicCount =

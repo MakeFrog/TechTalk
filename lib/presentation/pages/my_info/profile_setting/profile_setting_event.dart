@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/core/services/snack_bar_servbice.dart';
+import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/providers/picked_profile_img.dart';
 import 'package:techtalk/presentation/providers/input/nickname_input_provider.dart';
-import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 mixin class ProfileSettingEvent {
   ///
@@ -57,7 +57,7 @@ mixin class ProfileSettingEvent {
 
     final editedNickname = ref.read(nicknameInputProvider);
 
-    final prevNickname = ref.read(userDataProvider).value!.nickname;
+    final prevNickname = ref.read(userInfoProvider).value!.nickname;
     final hasNicknameEdited = prevNickname != ref.read(nicknameInputProvider);
 
     final checkDuplicationRes =
@@ -83,14 +83,14 @@ mixin class ProfileSettingEvent {
     final profileImgFile = ref.read(pickedProfileImgProvider);
 
     final user =
-        ref.read(userDataProvider).value!.copyWith(nickname: editedNickname);
+        ref.read(userInfoProvider).value!.copyWith(nickname: editedNickname);
 
     final response = await editUserProfileUseCase
         .call((user: user, imageFile: profileImgFile));
 
     response.fold(
       onSuccess: (userRes) {
-        ref.read(userDataProvider.notifier).edit(userRes);
+        ref.read(userInfoProvider.notifier).edit(userRes);
         _dismissLoadingAndShowMessage(ref, '프로필 정보를 업데이트 했습니다');
       },
       onFailure: (e) {

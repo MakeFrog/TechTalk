@@ -1,7 +1,9 @@
 import 'package:techtalk/core/constants/interview_type.enum.dart';
+import 'package:techtalk/core/helper/list_extension.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data/remote/chat_remote_data_source.dart';
+import 'package:techtalk/features/chat/entities/chat_history_collection_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 final class ChatRepositoryImpl implements ChatRepository {
@@ -111,16 +113,24 @@ final class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<Result<List<ChatMessageEntity>>> getChatMessageHistory(
+  Future<Result<ChatHistoryCollectionEntity>> getChatMessageHistory(
     String roomId,
   ) async {
     try {
       final messageModels =
           await _remoteDataSource.getChatMessageHistory(roomId);
 
-      return Result.success([
-        ...messageModels.map((e) => e.toEntity()),
-      ]);
+      final List<String> qnaInOrder = [];
+
+      final response = messageModels.map((e) {
+        if (ChatType.getTypeById(e.type).isSentMessage) {
+          qnaInOrder.addFirst(e.qnaId!);
+        }
+        return e.toEntity();
+      }).toList();
+
+      return Result.success(ChatHistoryCollectionEntity(
+          chatHistories: response, progressQnaIds: qnaInOrder));
     } on Exception catch (e) {
       return Result.failure(e);
     }

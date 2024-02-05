@@ -5,7 +5,7 @@ import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/searched_skills_provider.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/selected_skills_provider.dart';
 import 'package:techtalk/presentation/providers/input/skill_text_field_controller_provider.dart';
-import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 mixin class SkillSettingState {
   ///
@@ -36,7 +36,7 @@ mixin class SkillSettingState {
       return false;
     }
 
-    final userSkills = ref.read(userDataProvider).value!.skills;
+    final userSkills = ref.read(userInfoProvider).value!.skills;
 
     return !selectedSkills.isElementEquals(userSkills);
   }

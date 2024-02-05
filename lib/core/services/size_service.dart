@@ -11,7 +11,7 @@ class AppSize {
 
   // 비율로 처리했을 때 높이 넓이. (375 * 812) 기준
   double ratioHeight(double givenHeight) => (givenHeight / 375) * 375;
-  double rationWidth(double givenWidth) => (givenWidth / 812) * 812;
+  double ratioWidth(double givenWidth) => (givenWidth / 812) * 812;
 
   // 초기화 구문
   void init(BuildContext context) {

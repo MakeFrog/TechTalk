@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/core/constants/stored_topic.dart';
+import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
-import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 part 'chat_message_history_internal_event.dart';
 part 'chat_message_history_provider.g.dart';
@@ -23,8 +25,11 @@ class ChatMessageHistory extends _$ChatMessageHistory {
       ChatRoomProgress.ongoing || ChatRoomProgress.completed => () async {
           final response = await getChatMessageHistoryUseCase(room.id);
           return response.fold(
-            onSuccess: (chatList) {
-              return chatList;
+            onSuccess: (chatCollection) {
+              ref
+                  .read(chatQnasProvider.notifier)
+                  .arrangeQnasInOrder(chatCollection.progressQnaIds);
+              return chatCollection.chatHistories;
             },
             onFailure: (e) {
               log(e.toString());
@@ -61,7 +66,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
       qnaId: answeredQuestion.qnaId,
     );
 
-    await _showMessage(
+    await showMessage(
       message: answerChat,
     );
 
@@ -98,28 +103,32 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           final isCompleted =
               ref.read(selectedChatRoomProvider.notifier).isLastQuestion();
 
-          final String guideMessage =
-              isCompleted ? '면접이 종료 되었습니다' : '다음 질문을 드리겠습니다';
+          String guideMessage = isCompleted ? '면접이 종료 되었습니다' : '다음 질문을 드리겠습니다';
 
           final feedbackChat = FeedbackChatMessageEntity.createStatic(
             message: feedback,
             timestamp: DateTime.now(),
           );
 
-          final guideChat = GuideChatMessageEntity.createStatic(
-            message: guideMessage,
-            timestamp: DateTime.timestamp(),
-          );
-
           late QuestionChatMessageEntity nextQuestionChat;
 
           if (!isCompleted) {
             final qna = _getNewQna();
+
+            if (ref.read(selectedChatRoomProvider).type.isPractical) {
+              guideMessage =
+                  '다음 ${StoredTopics.getById(qna.id.getFirstPartOfSpliited).text} 질문을 드리겠습니다.';
+            }
             nextQuestionChat = QuestionChatMessageEntity.createStatic(
                 qnaId: qna.qna.id,
                 message: qna.qna.question,
                 timestamp: DateTime.now());
           }
+
+          final guideChat = GuideChatMessageEntity.createStatic(
+            message: guideMessage,
+            timestamp: DateTime.timestamp(),
+          );
 
           await Future.wait([
             _uploadMessage([
@@ -135,11 +144,11 @@ class ChatMessageHistory extends _$ChatMessageHistory {
                       lastChatMessage:
                           isCompleted ? guideChat : nextQuestionChat),
             ),
-            _showMessage(
+            showMessage(
               message: guideChat.overwriteToStream(),
               onDone: () async {
                 if (!isCompleted) {
-                  await _showMessage(
+                  await showMessage(
                       message: nextQuestionChat.overwriteToStream());
                 }
               },
@@ -150,7 +159,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
     );
 
     /// 3) 유저 답변에 대한 피드백 채팅 전달
-    await _showMessage(
+    await showMessage(
       message: FeedbackChatMessageEntity(
         message: feedbackChat,
       ),

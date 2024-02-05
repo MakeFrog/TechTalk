@@ -7,12 +7,12 @@ part of 'practical_chat_room_list_provider.dart';
 // **************************************************************************
 
 String _$practicalChatRoomListHash() =>
-    r'cc6fed3f8b961731b205e50d658428cafed5a929';
+    r'773cc9d729ca5f1ccac1ed0a6d5b4d02a6f8cc5d';
 
 /// See also [PracticalChatRoomList].
 @ProviderFor(PracticalChatRoomList)
-final practicalChatRoomListProvider =
-    AsyncNotifierProvider<PracticalChatRoomList, List<ChatRoomEntity>>.internal(
+final practicalChatRoomListProvider = AutoDisposeAsyncNotifierProvider<
+    PracticalChatRoomList, List<ChatRoomEntity>>.internal(
   PracticalChatRoomList.new,
   name: r'practicalChatRoomListProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +22,7 @@ final practicalChatRoomListProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$PracticalChatRoomList = AsyncNotifier<List<ChatRoomEntity>>;
+typedef _$PracticalChatRoomList
+    = AutoDisposeAsyncNotifier<List<ChatRoomEntity>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

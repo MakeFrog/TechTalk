@@ -57,8 +57,9 @@ class PickedProfileImg extends _$PickedProfileImg {
         );
       } else {
         log(e.toString());
-        ToastService.show(const CustomToast(
-            message: '사진첩에서 정상적으로 이미지를 불러오지 못했어요. 다시 시도해주세요'));
+        ToastService.show(
+          const CustomToast(message: '사진첩에서 정상적으로 이미지를 불러오지 못했어요. 다시 시도해주세요'),
+        );
       }
     }
   }

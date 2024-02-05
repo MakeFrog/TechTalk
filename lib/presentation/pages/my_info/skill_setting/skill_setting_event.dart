@@ -1,12 +1,12 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/core/services/snack_bar_servbice.dart';
+import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/searched_skills_provider.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/selected_skills_provider.dart';
 import 'package:techtalk/presentation/providers/input/skill_text_field_controller_provider.dart';
-import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 mixin class SkillSettingEvent {
   ///
@@ -58,8 +58,8 @@ mixin class SkillSettingEvent {
     EasyLoading.show();
     final selectedSkills = ref.watch(selectedSkillsProvider);
     final user =
-        ref.read(userDataProvider).value!.copyWith(skills: selectedSkills);
-    ref.read(userDataProvider.notifier).updateData(user).whenComplete(() {
+        ref.read(userInfoProvider).value!.copyWith(skills: selectedSkills);
+    ref.read(userInfoProvider.notifier).updateData(user).whenComplete(() {
       EasyLoading.dismiss();
       ref.context.pop();
       SnackBarService.showSnackBar('스킬 정보가 변경되었습니다');

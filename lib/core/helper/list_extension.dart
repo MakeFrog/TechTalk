@@ -52,4 +52,22 @@ extension ListExtension<T> on List<T> {
 
     return filteredList;
   }
+
+  ///
+  /// 기존 배열에 중복되지 않는 요소들만 추가한 리스트를 리턴
+  ///
+  List<T> toCombinedSetList(List<T> elements) {
+    final prevList = toList();
+    prevList.addAll(elements);
+    final setList = prevList.toSet();
+
+    return setList.toList();
+  }
+
+  ///
+  /// 배열에 첫 번째 공간에 원소를 추가하는 메소드
+  ///
+  void addFirst(T element) {
+    insert(0, element);
+  }
 }

@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/constants/job_group.enum.dart';
-import 'package:techtalk/presentation/providers/user/user_data_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 part 'selected_job_groups_provider.g.dart';
 
@@ -8,7 +8,7 @@ part 'selected_job_groups_provider.g.dart';
 class SelectedJobGroups extends _$SelectedJobGroups {
   @override
   List<JobGroup> build() {
-    final userJobGroups = ref.read(userDataProvider).value?.jobGroups ?? [];
+    final userJobGroups = ref.read(userInfoProvider).value?.jobGroups ?? [];
 
     return userJobGroups.toList();
   }

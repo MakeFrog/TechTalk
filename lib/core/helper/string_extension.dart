@@ -64,4 +64,21 @@ extension StringExtensions on String {
     return (firstCharCode >= 65 && firstCharCode <= 90) ||
         (firstCharCode >= 97 && firstCharCode <= 122);
   }
+
+  ///
+  /// '-' 문자열을 기준으로 주어진 문자여을 나누고
+  /// 나누어진 첫 번째 부분의 문자열을 리턴하는 메소드
+  /// ex) 'swift-32' -> 'swift'
+  ///
+  String get getFirstPartOfSpliited {
+    List<String> parts = split('-');
+    return parts[0];
+  }
+
+  ///
+  /// 문자열에 완전히 비어 있는지 확인하는 메소드
+  ///
+  bool get isNotEntirelyEmpty {
+    return isNotEmpty && this != '';
+  }
 }
