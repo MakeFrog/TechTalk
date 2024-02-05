@@ -4,7 +4,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   ///
   /// 채팅 메세지 상태 업데이트
   ///
-  Future<void> _showMessage({
+  Future<void> showMessage({
     required ChatMessageEntity message,
     void Function()? onDone,
   }) async {
@@ -66,7 +66,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
     final nickname = ref.read(userInfoProvider).requireValue!.nickname!;
     final firstQna = _getNewQna();
     final String introMessage =
-        '반가워요! $nickname님. ${room.type.isSingleTopic ? '${room.topics.first.text} 면접 질문을 드리겠습니다.' : '먼저 ${StoredTopics.getById(firstQna.id.getFirstPartOfSpliited).id} 질문을 드리겠습니다.'}';
+        '반가워요! $nickname님. ${room.type.isSingleTopic ? '${room.topics.first.text} 면접 질문을 드리겠습니다.' : '먼저 ${StoredTopics.getById(firstQna.id.getFirstPartOfSpliited).text} 질문을 드리겠습니다.'}';
 
     final introChat = GuideChatMessageEntity.createStatic(
       message: introMessage,
@@ -99,10 +99,10 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
                   .storeUserPracticalRecordExistInfo();
             },
           ),
-          _showMessage(
+          showMessage(
             message: introChat.overwriteToStream(),
             onDone: () {
-              _showMessage(
+              showMessage(
                 message: firstQuestionChat.overwriteToStream(),
               );
             },

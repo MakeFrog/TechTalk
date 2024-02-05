@@ -5,7 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/job_group.enum.dart';
-import 'package:techtalk/core/services/snack_bar_servbice.dart';
+import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/provider/selected_job_groups_provider.dart';

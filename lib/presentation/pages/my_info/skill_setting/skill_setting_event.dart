@@ -1,7 +1,7 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/core/services/snack_bar_servbice.dart';
+import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/searched_skills_provider.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/selected_skills_provider.dart';

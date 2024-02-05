@@ -66,7 +66,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
       qnaId: answeredQuestion.qnaId,
     );
 
-    await _showMessage(
+    await showMessage(
       message: answerChat,
     );
 
@@ -116,7 +116,8 @@ class ChatMessageHistory extends _$ChatMessageHistory {
             final qna = _getNewQna();
 
             if (ref.read(selectedChatRoomProvider).type.isPractical) {
-              guideMessage = '다음 ${qna.id} 질문을 드리겠습니다.';
+              guideMessage =
+                  '다음 ${StoredTopics.getById(qna.id.getFirstPartOfSpliited).text} 질문을 드리겠습니다.';
             }
             nextQuestionChat = QuestionChatMessageEntity.createStatic(
                 qnaId: qna.qna.id,
@@ -143,11 +144,11 @@ class ChatMessageHistory extends _$ChatMessageHistory {
                       lastChatMessage:
                           isCompleted ? guideChat : nextQuestionChat),
             ),
-            _showMessage(
+            showMessage(
               message: guideChat.overwriteToStream(),
               onDone: () async {
                 if (!isCompleted) {
-                  await _showMessage(
+                  await showMessage(
                       message: nextQuestionChat.overwriteToStream());
                 }
               },
@@ -158,7 +159,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
     );
 
     /// 3) 유저 답변에 대한 피드백 채팅 전달
-    await _showMessage(
+    await showMessage(
       message: FeedbackChatMessageEntity(
         message: feedbackChat,
       ),

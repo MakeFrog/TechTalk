@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
+import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_event.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_state.dart';
+import 'package:techtalk/presentation/pages/interview/topic_select/providers/selected_interview_topics_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/animated_app_bar.dart';
 import 'package:techtalk/presentation/widgets/section/interview_topic_card.dart';
@@ -28,6 +30,16 @@ class InterviewTopicSelectPage extends BasePage with InterviewTopicSelectState {
             'AI 면접을 진행할\n주제를 알려주세요',
             style: AppTextStyle.headline1,
           ),
+          if (interviewType(ref).isPractical)
+            Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: Text(
+                '최대 ${SelectedInterviewTopics.limitCount}개까지 선택할 수 있어요',
+                style: AppTextStyle.body1.copyWith(
+                  color: AppColor.of.gray4,
+                ),
+              ),
+            ),
           const Gap(24),
           _TopicListView(),
           const Gap(52),

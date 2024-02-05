@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/core/services/snack_bar_servbice.dart';
+import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/providers/picked_profile_img.dart';
 import 'package:techtalk/presentation/providers/input/nickname_input_provider.dart';

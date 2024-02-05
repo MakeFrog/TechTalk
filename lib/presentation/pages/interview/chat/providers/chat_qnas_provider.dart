@@ -1,7 +1,7 @@
 import 'dart:developer' as dev;
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/core/services/snack_bar_servbice.dart';
+import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 

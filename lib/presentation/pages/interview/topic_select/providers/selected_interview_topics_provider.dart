@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/core/services/snack_bar_servbice.dart';
+import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/topic/entities/topic_entity.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/providers/interview_topic_select_route_arg.dart';
 

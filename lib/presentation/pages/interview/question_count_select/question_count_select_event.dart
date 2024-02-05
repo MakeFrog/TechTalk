@@ -26,7 +26,7 @@ mixin class QuestionCountSelectEvent {
     );
 
     ChatPageRoute.arg = room;
-    ChatPageRoute(type: room.type, roomId: room.id).go(ref.context);
+    ChatPageRoute(roomId: room.id, type: room.type).go(ref.context);
 
     await EasyLoading.dismiss();
   }

@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
-import 'package:techtalk/core/services/toast_service.dart';
+import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
 mixin class ChatEvent {
@@ -25,9 +24,7 @@ mixin class ChatEvent {
   }) async {
     final message = textEditingController.text;
     if (message.isEmpty) {
-      return ToastService.show(
-        NormalToast(message: '답변을 입력해 주세요'),
-      );
+      return SnackBarService.showSnackBar('답변을 입력해 주세요');
     }
     textEditingController.clear();
 
@@ -36,6 +33,9 @@ mixin class ChatEvent {
         .proceedInterviewStep(message);
   }
 
+  void onChatFieldSubmittedOnWaitingState() {
+    SnackBarService.showSnackBar('면접관의 응답이 마무리된 이후 답변을 전송해주세요.');
+  }
   /// 앱바 뒤로 가기 버튼이 클릭 되었을 때
   void onAppbarBackBtnTapped(WidgetRef ref) {
     final room = ref.read(selectedChatRoomProvider);

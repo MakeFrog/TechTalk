@@ -74,4 +74,11 @@ extension StringExtensions on String {
     List<String> parts = split('-');
     return parts[0];
   }
+
+  ///
+  /// 문자열에 완전히 비어 있는지 확인하는 메소드
+  ///
+  bool get isNotEntirelyEmpty {
+    return isNotEmpty && this != '';
+  }
 }

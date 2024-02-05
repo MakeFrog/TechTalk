@@ -12,7 +12,7 @@ mixin class ChatListEvent {
     required ChatRoomEntity room,
   }) {
     ChatPageRoute.arg = room;
-    ChatPageRoute(type: room.type, roomId: room.id).push(context);
+    ChatPageRoute(roomId: room.id, type: room.type).push(context);
   }
 
   /// 면접 질문 갯수 선택 페이지로 이동
