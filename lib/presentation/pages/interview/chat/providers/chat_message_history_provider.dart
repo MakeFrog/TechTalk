@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/core/constants/stored_topic.dart';
+import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
@@ -98,28 +100,32 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           final isCompleted =
               ref.read(selectedChatRoomProvider.notifier).isLastQuestion();
 
-          final String guideMessage =
-              isCompleted ? '면접이 종료 되었습니다' : '다음 질문을 드리겠습니다';
+          String guideMessage = isCompleted ? '면접이 종료 되었습니다' : '다음 질문을 드리겠습니다';
 
           final feedbackChat = FeedbackChatMessageEntity.createStatic(
             message: feedback,
             timestamp: DateTime.now(),
           );
 
-          final guideChat = GuideChatMessageEntity.createStatic(
-            message: guideMessage,
-            timestamp: DateTime.timestamp(),
-          );
-
           late QuestionChatMessageEntity nextQuestionChat;
 
           if (!isCompleted) {
             final qna = _getNewQna();
+
+            if (ref.read(selectedChatRoomProvider).type.isPractical) {
+              guideMessage =
+                  '다음 ${StoredTopics.getById(qna.id.getFirstPartOfSpliited).text} 질문을 드리겠습니다.';
+            }
             nextQuestionChat = QuestionChatMessageEntity.createStatic(
                 qnaId: qna.qna.id,
                 message: qna.qna.question,
                 timestamp: DateTime.now());
           }
+
+          final guideChat = GuideChatMessageEntity.createStatic(
+            message: guideMessage,
+            timestamp: DateTime.timestamp(),
+          );
 
           await Future.wait([
             _uploadMessage([

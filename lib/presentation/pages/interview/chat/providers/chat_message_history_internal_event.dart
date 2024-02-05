@@ -64,10 +64,9 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   Future<void> _showIntroAndQuestionMessages() async {
     final room = ref.read(selectedChatRoomProvider);
     final nickname = ref.read(userInfoProvider).requireValue!.nickname!;
-    final String introMessage =
-        '반가워요! $nickname님. ${room.topics.first.text} 면접 질문을 드리겠습니다';
-
     final firstQna = _getNewQna();
+    final String introMessage =
+        '반가워요! $nickname님. ${room.type.isSingleTopic ? '${room.topics.first.text} 면접 질문을 드리겠습니다.' : '먼저 ${StoredTopics.getById(firstQna.id.getFirstPartOfSpliited).text} 질문을 드리겠습니다.'}';
 
     final introChat = GuideChatMessageEntity.createStatic(
       message: introMessage,
