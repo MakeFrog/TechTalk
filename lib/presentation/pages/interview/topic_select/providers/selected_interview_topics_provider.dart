@@ -5,7 +5,7 @@ import 'package:techtalk/presentation/pages/interview/topic_select/providers/int
 
 part 'selected_interview_topics_provider.g.dart';
 
-@Riverpod(dependencies: [interviewTopicSelectRouteArg])
+@Riverpod()
 class SelectedInterviewTopics extends _$SelectedInterviewTopics {
   @override
   List<TopicEntity> build() {
@@ -15,7 +15,7 @@ class SelectedInterviewTopics extends _$SelectedInterviewTopics {
   static const limitCount = 3;
 
   void toggleOrRemove(TopicEntity targetTopic) {
-    final interviewTopic = ref.read(interviewTopicSelectRouteArgProvider);
+    final interviewTopic = ref.watch(interviewTopicSelectRouteArgProvider);
 
     if (state.contains(targetTopic)) {
       final removedTopics = state..remove(targetTopic);

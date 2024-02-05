@@ -63,4 +63,11 @@ extension ListExtension<T> on List<T> {
 
     return setList.toList();
   }
+
+  ///
+  /// 배열에 첫 번째 공간에 원소를 추가하는 메소드
+  ///
+  void addFirst(T element) {
+    insert(0, element);
+  }
 }

@@ -25,8 +25,11 @@ class ChatMessageHistory extends _$ChatMessageHistory {
       ChatRoomProgress.ongoing || ChatRoomProgress.completed => () async {
           final response = await getChatMessageHistoryUseCase(room.id);
           return response.fold(
-            onSuccess: (chatList) {
-              return chatList;
+            onSuccess: (chatCollection) {
+              ref
+                  .read(chatQnasProvider.notifier)
+                  .arrangeQnasInOrder(chatCollection.progressQnaIds);
+              return chatCollection.chatHistories;
             },
             onFailure: (e) {
               log(e.toString());
@@ -113,8 +116,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
             final qna = _getNewQna();
 
             if (ref.read(selectedChatRoomProvider).type.isPractical) {
-              guideMessage =
-                  '다음 ${StoredTopics.getById(qna.id.getFirstPartOfSpliited).text} 질문을 드리겠습니다.';
+              guideMessage = '다음 ${qna.id} 질문을 드리겠습니다.';
             }
             nextQuestionChat = QuestionChatMessageEntity.createStatic(
                 qnaId: qna.qna.id,

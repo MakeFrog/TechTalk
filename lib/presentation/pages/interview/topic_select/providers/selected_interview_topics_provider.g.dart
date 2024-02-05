@@ -7,7 +7,7 @@ part of 'selected_interview_topics_provider.dart';
 // **************************************************************************
 
 String _$selectedInterviewTopicsHash() =>
-    r'c4458459f6b58c247e5f2baaa87aafa12b794a73';
+    r'35aecbfaa3f6f69b3dd603a872557b4bb7cbc74e';
 
 /// See also [SelectedInterviewTopics].
 @ProviderFor(SelectedInterviewTopics)
@@ -18,11 +18,8 @@ final selectedInterviewTopicsProvider = AutoDisposeNotifierProvider<
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$selectedInterviewTopicsHash,
-  dependencies: <ProviderOrFamily>[interviewTopicSelectRouteArgProvider],
-  allTransitiveDependencies: <ProviderOrFamily>{
-    interviewTopicSelectRouteArgProvider,
-    ...?interviewTopicSelectRouteArgProvider.allTransitiveDependencies
-  },
+  dependencies: null,
+  allTransitiveDependencies: null,
 );
 
 typedef _$SelectedInterviewTopics = AutoDisposeNotifier<List<TopicEntity>>;

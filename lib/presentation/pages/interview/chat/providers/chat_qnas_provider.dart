@@ -42,7 +42,8 @@ class ChatQnas extends _$ChatQnas {
     );
 
     await update((previous) {
-      return [...previous]..[targetQnaIndex] = resolvedQna;
+      previous.removeAt(targetQnaIndex);
+      return [...previous, resolvedQna];
     });
   }
 
@@ -57,5 +58,14 @@ class ChatQnas extends _$ChatQnas {
     dev.log('$e');
     SnackBarService.showSnackBar('문답 목록을 가져오는데 실패하였습니다');
     throw e;
+  }
+
+  ///
+  /// 기존 Qna 응답 순서별로 qna 목록을 정렬
+  ///
+  void arrangeQnasInOrder(List<String> prevQnaIdsInOrder) {
+    state.requireValue.sort((a, b) => prevQnaIdsInOrder
+        .indexOf(a.id)
+        .compareTo(prevQnaIdsInOrder.indexOf(b.id)));
   }
 }
