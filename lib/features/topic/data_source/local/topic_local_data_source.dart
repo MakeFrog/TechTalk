@@ -1,3 +1,4 @@
+import 'package:techtalk/features/topic/data_source/local/boxes/qna_list_box.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 abstract interface class TopicLocalDataSource {
@@ -8,4 +9,9 @@ abstract interface class TopicLocalDataSource {
     String topicId,
     String questionId,
   );
+
+  QnaListBox? loadQnas(String topicId);
+
+  Future<void> storeQnas(
+      {required String topicId, required List<TopicQnaModel> qnas});
 }

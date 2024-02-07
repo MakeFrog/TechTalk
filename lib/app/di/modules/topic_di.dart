@@ -1,5 +1,6 @@
 import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/app/di/feature_di_interface.dart';
+import 'package:techtalk/app/local_storage/app_local.dart';
 import 'package:techtalk/features/topic/data_source/local/topic_local_data_source_impl.dart';
 import 'package:techtalk/features/topic/data_source/remote/topic_remote_data_source_impl.dart';
 import 'package:techtalk/features/topic/repositories/topic_repository_impl.dart';
@@ -10,7 +11,7 @@ final class TopicDependencyInjection extends FeatureDependencyInjection {
   void dataSources() {
     locator
       ..registerLazySingleton<TopicLocalDataSource>(
-        TopicLocalDataSourceImpl.new,
+        () => TopicLocalDataSourceImpl(AppLocal.qnasBox),
       )
       ..registerLazySingleton<TopicRemoteDataSource>(
         TopicRemoteDataSourceImpl.new,
