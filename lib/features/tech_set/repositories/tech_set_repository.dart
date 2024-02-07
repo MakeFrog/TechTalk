@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/tech_set/data/models/job_model.dart';
-import 'package:techtalk/features/tech_set/entities/skill_collection_entity.dart';
-import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
+import 'package:techtalk/features/tech_set/data_source/remote/models/job_model.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skill_collection_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skill_entity.dart';
 
 abstract interface class TechSetRepository {
   List<Job> getJobs();

@@ -1,7 +1,7 @@
 import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/entities/chat_history_collection_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/chat_history_collection_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 abstract interface class ChatRepository {

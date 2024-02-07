@@ -6,7 +6,7 @@ import 'package:techtalk/core/helper/list_extension.dart';
 import 'package:techtalk/core/utils/base/base_use_case.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/topic/entities/qna_entity.dart';
+import 'package:techtalk/features/topic/repositories/entities/qna_entity.dart';
 import 'package:techtalk/features/topic/repositories/topic_repository.dart';
 
 ///

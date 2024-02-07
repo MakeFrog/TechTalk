@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/features/topic/entities/topic_entity.dart';
-import 'package:techtalk/features/user/entities/user_entity.dart';
+import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 mixin class HomeState {
