@@ -26,26 +26,6 @@ class TopicRepositoryImpl implements TopicRepository {
   }
 
   @override
-  Result<List<TopicEntity>> getTopics() {
-    try {
-      return Result.success(_cachedTopics!);
-    } on Exception catch (e) {
-      return Result.failure(e);
-    }
-  }
-
-  @override
-  Result<TopicEntity> getTopic(String id) {
-    try {
-      return Result.success(
-        _cachedTopics!.firstWhere((element) => element.id == id),
-      );
-    } on Exception catch (e) {
-      return Result.failure(e);
-    }
-  }
-
-  @override
   Result<List<TopicCategoryEntity>> getTopicCategories() {
     try {
       return Result.success(_cachedTopicCategories!);
@@ -69,19 +49,26 @@ class TopicRepositoryImpl implements TopicRepository {
   Future<Result<List<QnaEntity>>> getTopicQnas(
     String topicId,
   ) async {
-    final targetTopic = StoredTopics.getById(topicId);
-    final localResponse = _localDataSource.loadQnas(topicId);
+    try {
+      final targetTopic = StoredTopics.getById(topicId);
+      final localResponse = _localDataSource.loadQnas(topicId);
 
-    if (localResponse != null &&
-        localResponse.updatedAt.isAfterOrSameAs(targetTopic.updatedAt)) {
-      return Result.success(
-        localResponse.qnas.map((e) => e.toEntity()).toList(),
-      );
-    } else {
-      final remoteResponse = await _remoteDataSource.getQnas(topicId);
-      await _localDataSource.storeQnas(topicId: topicId, qnas: remoteResponse);
-      return Result.success(
-        remoteResponse.map((e) => e.toEntity()).toList(),
+      if (localResponse != null &&
+          localResponse.updatedAt.isAfterOrSameAs(targetTopic.updatedAt)) {
+        return Result.success(
+          localResponse.items.map((e) => e.toEntity()).toList(),
+        );
+      } else {
+        final remoteResponse = await _remoteDataSource.getQnas(topicId);
+        await _localDataSource.storeQnas(
+            topicId: topicId, qnas: remoteResponse);
+        return Result.success(
+          remoteResponse.map((e) => e.toEntity()).toList(),
+        );
+      }
+    } on Exception catch (e) {
+      return Result.failure(
+        NoTopicQuestionException(topicId),
       );
     }
   }
@@ -92,12 +79,19 @@ class TopicRepositoryImpl implements TopicRepository {
     String questionId,
   ) async {
     try {
-      final questionModel = await _remoteDataSource.getQna(
-        topicId,
-        questionId,
-      );
+      final localResponse =
+          _localDataSource.loadSingleQna(topicId: topicId, qnaId: questionId);
 
-      return Result.success(questionModel.toEntity());
+      if (localResponse != null) {
+        return Result.success(localResponse.toEntity());
+      } else {
+        final remoteResponse =
+            await _remoteDataSource.getQna(topicId, questionId);
+
+        return Result.success(
+          remoteResponse.toEntity(),
+        );
+      }
     } on Exception catch (e) {
       return Result.failure(
         NoTopicQuestionException(topicId),

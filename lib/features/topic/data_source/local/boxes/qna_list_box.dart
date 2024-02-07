@@ -10,12 +10,17 @@ class QnaListBox extends HiveObject {
   final DateTime updatedAt;
 
   @HiveField(1)
-  final List<QnaBox> qnas;
+  final List<QnaBox> items;
 
-  QnaListBox({required this.updatedAt, required this.qnas});
+  QnaListBox({required this.updatedAt, required this.items});
 
   factory QnaListBox.fromModel(List<TopicQnaModel> entity) => QnaListBox(
         updatedAt: DateTime.now(),
-        qnas: entity.map(QnaBox.fromModel).toList(),
+        items: entity.map(QnaBox.fromModel).toList(),
+      );
+
+  QnaListBox addItemFromModel(TopicQnaModel entity) => QnaListBox(
+        updatedAt: updatedAt,
+        items: [...items, QnaBox.fromModel(entity)],
       );
 }

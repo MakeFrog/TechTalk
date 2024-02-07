@@ -11,23 +11,23 @@ final class ChatRepositoryImpl implements ChatRepository {
 
   final ChatRemoteDataSource _remoteDataSource;
 
-  List<TopicEntity> _getChatRoomTopics(
-    InterviewType type,
-    List<String> topicIds,
-  ) {
-    final List<TopicEntity> topics = [];
-    switch (type) {
-      case InterviewType.singleTopic:
-        topics.add(topicRepository.getTopic(topicIds.first).getOrThrow());
-      case InterviewType.practical:
-        for (final String topicId in topicIds) {
-          final topic = topicRepository.getTopic(topicId).getOrThrow();
-          topics.add(topic);
-        }
-    }
-
-    return topics;
-  }
+  // List<TopicEntity> _getChatRoomTopics(
+  //   InterviewType type,
+  //   List<String> topicIds,
+  // ) {
+  //   final List<TopicEntity> topics = [];
+  //   switch (type) {
+  //     case InterviewType.singleTopic:
+  //       topics.add(topicRepository.getTopic(topicIds.first).getOrThrow());
+  //     case InterviewType.practical:
+  //       for (final String topicId in topicIds) {
+  //         final topic = topicRepository.getTopic(topicId).getOrThrow();
+  //         topics.add(topic);
+  //       }
+  //   }
+  //
+  //   return topics;
+  // }
 
   @override
   Future<Result<void>> createChatRoom({

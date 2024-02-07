@@ -18,7 +18,7 @@ class QnaListBoxAdapter extends TypeAdapter<QnaListBox> {
     };
     return QnaListBox(
       updatedAt: fields[0] as DateTime,
-      qnas: (fields[1] as List).cast<QnaBox>(),
+      items: (fields[1] as List).cast<QnaBox>(),
     );
   }
 
@@ -29,7 +29,7 @@ class QnaListBoxAdapter extends TypeAdapter<QnaListBox> {
       ..writeByte(0)
       ..write(obj.updatedAt)
       ..writeByte(1)
-      ..write(obj.qnas);
+      ..write(obj.items);
   }
 
   @override

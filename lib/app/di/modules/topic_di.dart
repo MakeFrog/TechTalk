@@ -32,17 +32,10 @@ final class TopicDependencyInjection extends FeatureDependencyInjection {
   void useCases() {
     locator
       ..registerFactory(
-        () => GetTopicsUseCase(
-          topicRepository,
-        ),
+        GetTopicsUseCase.new,
       )
       ..registerFactory(
         () => GetCategorizedTopicsUseCase(
-          topicRepository,
-        ),
-      )
-      ..registerFactory(
-        () => GetTopicUseCase(
           topicRepository,
         ),
       )

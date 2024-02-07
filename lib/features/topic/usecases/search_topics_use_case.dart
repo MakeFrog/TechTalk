@@ -1,22 +1,24 @@
+import 'dart:async';
+
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 final class SearchTopicsUseCase {
   SearchTopicsUseCase();
 
-  Result<List<TopicEntity>> call(String keyword) {
+  FutureOr<Result<List<TopicEntity>>> call(String keyword) async {
     if (keyword.isEmpty) {
       return Result.success([]);
     }
 
-    final topics = getTopicsUseCase(includeUnavailable: true).getOrThrow();
+    final topics = await getTopicsUseCase(includeUnavailable: true);
 
     return Result.success([
-      ...topics.where(
-        (e) => e.text.toLowerCase().startsWith(
-              keyword.toLowerCase(),
-            ),
-      ),
+      ...topics.getOrThrow().where(
+            (e) => e.text.toLowerCase().startsWith(
+                  keyword.toLowerCase(),
+                ),
+          ),
     ]);
   }
 }
