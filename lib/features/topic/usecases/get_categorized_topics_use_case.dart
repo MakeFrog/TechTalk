@@ -1,3 +1,4 @@
+import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
@@ -10,7 +11,7 @@ final class GetCategorizedTopicsUseCase {
 
   Result<CategorizedTopics> call() {
     try {
-      final topics = _topicRepository.getTopics().getOrThrow()
+      final topics = StoredTopics.list
         ..sort(
           (a, b) => a.categoryId.compareTo(b.categoryId),
         );

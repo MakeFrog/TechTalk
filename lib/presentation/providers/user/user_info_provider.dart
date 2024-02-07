@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/helper/list_extension.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/services/toast_service.dart';
-import 'package:techtalk/features/topic/entities/topic_entity.dart';
+import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/providers/user/auth/user_auth_provider.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';

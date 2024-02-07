@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skill_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/tech_set_repository.dart';
-import 'package:techtalk/features/user/data/local/user_local_data_source.dart';
-import 'package:techtalk/features/user/data/remote/user_remote_data_source.dart';
-import 'package:techtalk/features/user/entities/user_entity.dart';
+import 'package:techtalk/features/user/data_source/local/user_local_data_source.dart';
+import 'package:techtalk/features/user/data_source/remote/user_remote_data_source.dart';
+import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
 import 'package:techtalk/features/user/repositories/user_repository.dart';
 
 final class UserRepositoryImpl implements UserRepository {

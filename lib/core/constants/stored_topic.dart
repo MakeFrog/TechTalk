@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:collection/collection.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
@@ -10,17 +8,13 @@ import 'package:techtalk/features/topic/topic.dart';
 class StoredTopics {
   static final List<TopicEntity> list = [];
 
-  static Future<void> initializeTopics() async {
-    final response = getTopicsUseCase.call();
-
-    response.fold(
-      onSuccess: (topics) {
-        list.addAll(topics);
-      },
-      onFailure: (e) {
-        log(e.toString());
-      },
-    );
+  static Future<void> initialize() async {
+    try {
+      final List<TopicModel> response = await topicRemoteDataSource.getTopics();
+      list.addAll(response.map((e) => e.toEntity()).toList());
+    } on Exception catch (e) {
+      throw '면접 주제 호출 실패';
+    }
   }
 
   /// 특정 면접 주제 entity를 id 값을 기반으로 리턴

@@ -1,3 +1,5 @@
+import 'package:techtalk/core/constants/stored_topic.dart';
+import 'package:techtalk/core/helper/date_time_extension.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/topic/topic.dart';
@@ -21,26 +23,6 @@ class TopicRepositoryImpl implements TopicRepository {
 
     final categoryModels = await _localDataSource.getTopicCategories();
     _cachedTopicCategories ??= categoryModels.map((e) => e.toEntity()).toList();
-  }
-
-  @override
-  Result<List<TopicEntity>> getTopics() {
-    try {
-      return Result.success(_cachedTopics!);
-    } on Exception catch (e) {
-      return Result.failure(e);
-    }
-  }
-
-  @override
-  Result<TopicEntity> getTopic(String id) {
-    try {
-      return Result.success(
-        _cachedTopics!.firstWhere((element) => element.id == id),
-      );
-    } on Exception catch (e) {
-      return Result.failure(e);
-    }
   }
 
   @override
@@ -68,12 +50,22 @@ class TopicRepositoryImpl implements TopicRepository {
     String topicId,
   ) async {
     try {
-      final questionsModel = await _localDataSource.getQnas(topicId) ??
-          await _remoteDataSource.getQnas(topicId);
+      final targetTopic = StoredTopics.getById(topicId);
+      final localResponse = _localDataSource.loadQnas(topicId);
 
-      return Result.success(
-        questionsModel.map((e) => e.toEntity()).toList(),
-      );
+      if (localResponse != null &&
+          localResponse.updatedAt.isAfterOrSameAs(targetTopic.updatedAt)) {
+        return Result.success(
+          localResponse.items.map((e) => e.toEntity()).toList(),
+        );
+      } else {
+        final remoteResponse = await _remoteDataSource.getQnas(topicId);
+        await _localDataSource.storeQnas(
+            topicId: topicId, qnas: remoteResponse);
+        return Result.success(
+          remoteResponse.map((e) => e.toEntity()).toList(),
+        );
+      }
     } on Exception catch (e) {
       return Result.failure(
         NoTopicQuestionException(topicId),
@@ -87,14 +79,20 @@ class TopicRepositoryImpl implements TopicRepository {
     String questionId,
   ) async {
     try {
-      final questionModel = await _remoteDataSource.getQna(
-        topicId,
-        questionId,
-      );
+      final localResponse =
+          _localDataSource.loadSingleQna(topicId: topicId, qnaId: questionId);
 
-      return Result.success(questionModel.toEntity());
+      if (localResponse != null) {
+        return Result.success(localResponse.toEntity());
+      } else {
+        final remoteResponse =
+            await _remoteDataSource.getQna(topicId, questionId);
+
+        return Result.success(
+          remoteResponse.toEntity(),
+        );
+      }
     } on Exception catch (e) {
-      print('-> $e -> ${e.runtimeType}');
       return Result.failure(
         NoTopicQuestionException(topicId),
       );

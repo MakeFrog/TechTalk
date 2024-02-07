@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/job_group.enum.dart';
-import 'package:techtalk/features/tech_set/data/models/job_model.dart';
-import 'package:techtalk/features/tech_set/entities/skill_entity.dart';
+import 'package:techtalk/features/tech_set/data_source/remote/models/job_model.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skill_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/provider/selected_job_groups_provider.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/searched_skills_provider.dart';

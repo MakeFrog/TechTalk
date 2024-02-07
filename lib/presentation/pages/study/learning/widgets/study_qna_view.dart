@@ -6,7 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/topic/entities/qna_entity.dart';
+import 'package:techtalk/features/topic/repositories/entities/qna_entity.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_question_controller.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_questions_provider.dart';

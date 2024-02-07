@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/features/chat/entities/enums/interview_progress.enum.dart';
-import 'package:techtalk/features/chat/entities/interviewer_entity.dart';
-import 'package:techtalk/features/chat/entities/message/chat_message_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/chat_message_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/interviewer_entity.dart';
+import 'package:techtalk/features/chat/repositories/enums/interview_progress.enum.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_async_adapter_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';

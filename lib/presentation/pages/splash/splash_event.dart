@@ -2,7 +2,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
-import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/providers/user/auth/is_user_authorized_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
@@ -14,8 +13,7 @@ mixin class SplashEvent {
 
   /// 면접 주제 등 초기 호출 후 재사용할 데이터를 초기화한다.
   Future<void> initStaticData(WidgetRef ref) async {
-    await topicRepository.initStaticData();
-    await StoredTopics.initializeTopics();
+    await StoredTopics.initialize();
     await techSetRepository.initSkills();
   }
 
