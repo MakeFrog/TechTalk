@@ -1,3 +1,5 @@
+import 'package:techtalk/core/constants/stored_topic.dart';
+import 'package:techtalk/core/helper/date_time_extension.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/topic/topic.dart';
@@ -67,16 +69,19 @@ class TopicRepositoryImpl implements TopicRepository {
   Future<Result<List<QnaEntity>>> getTopicQnas(
     String topicId,
   ) async {
-    try {
-      final questionsModel = await _localDataSource.getQnas(topicId) ??
-          await _remoteDataSource.getQnas(topicId);
+    final targetTopic = StoredTopics.getById(topicId);
+    final localResponse = _localDataSource.loadQnas(topicId);
 
+    if (localResponse != null &&
+        localResponse.updatedAt.isAfterOrSameAs(targetTopic.updatedAt)) {
       return Result.success(
-        questionsModel.map((e) => e.toEntity()).toList(),
+        localResponse.qnas.map((e) => e.toEntity()).toList(),
       );
-    } on Exception catch (e) {
-      return Result.failure(
-        NoTopicQuestionException(topicId),
+    } else {
+      final remoteResponse = await _remoteDataSource.getQnas(topicId);
+      await _localDataSource.storeQnas(topicId: topicId, qnas: remoteResponse);
+      return Result.success(
+        remoteResponse.map((e) => e.toEntity()).toList(),
       );
     }
   }
@@ -94,7 +99,6 @@ class TopicRepositoryImpl implements TopicRepository {
 
       return Result.success(questionModel.toEntity());
     } on Exception catch (e) {
-      print('-> $e -> ${e.runtimeType}');
       return Result.failure(
         NoTopicQuestionException(topicId),
       );

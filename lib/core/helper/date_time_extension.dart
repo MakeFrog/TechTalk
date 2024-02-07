@@ -7,4 +7,11 @@ extension KoreaDateTimeExt on DateTime {
   String get formatyyMMdd {
     return DateFormat('yy.MM.dd').format(this);
   }
+
+  ///
+  /// 주어진 dateTime 비교되는 dateTime과 동일하거나 이후인지 판단하는 메소드
+  ///
+  bool isAfterOrSameAs(DateTime other) {
+    return isAfter(other) || isAtSameMomentAs(other);
+  }
 }
