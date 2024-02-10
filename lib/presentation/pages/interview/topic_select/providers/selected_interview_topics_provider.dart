@@ -5,7 +5,7 @@ import 'package:techtalk/presentation/pages/interview/topic_select/providers/int
 
 part 'selected_interview_topics_provider.g.dart';
 
-@Riverpod()
+@riverpod
 class SelectedInterviewTopics extends _$SelectedInterviewTopics {
   @override
   List<TopicEntity> build() {

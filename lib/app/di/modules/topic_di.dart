@@ -40,9 +40,6 @@ final class TopicDependencyInjection extends FeatureDependencyInjection {
         ),
       )
       ..registerFactory(
-        SearchTopicsUseCase.new,
-      )
-      ..registerFactory(
         () => GetTopicQnasUseCase(
           topicRepository,
         ),

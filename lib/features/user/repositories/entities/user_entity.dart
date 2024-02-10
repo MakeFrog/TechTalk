@@ -24,7 +24,7 @@ class UserEntity {
   /// 면접을 진행한 면접 주제
   final List<TopicEntity> recordedTopics;
 
-  /// 실실전 면접 기록 존재 여부;
+  /// 실전 면접 기록 존재 여부;
   final bool hasPracticalInterviewRecord;
 
   /// 마지막 접속 일자

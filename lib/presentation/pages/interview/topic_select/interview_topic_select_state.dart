@@ -5,6 +5,7 @@ import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart'
 import 'package:techtalk/presentation/pages/interview/topic_select/providers/interview_topic_select_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/providers/interview_topic_select_scroll_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/providers/selected_interview_topics_provider.dart';
+import 'package:techtalk/presentation/providers/topic/sorted_topics_provider.dart';
 
 mixin class InterviewTopicSelectState {
   ///
@@ -18,6 +19,11 @@ mixin class InterviewTopicSelectState {
   ///
   InterviewType interviewType(WidgetRef ref) =>
       ref.watch(interviewTopicSelectRouteArgProvider);
+
+  ///
+  /// 면접 주제 리스트
+  ///
+  List<TopicEntity> topics(WidgetRef ref) => ref.watch(sortedTopicsProvider);
 
   ///
   /// 버튼 활성화 여부

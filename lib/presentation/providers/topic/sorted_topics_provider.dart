@@ -16,8 +16,7 @@ part 'sorted_topics_provider.g.dart';
 class SortedTopics extends _$SortedTopics {
   @override
   List<TopicEntity> build() {
-    // final availableTopics = StoredTopics.list.where((e) => e.isAvailable);
-    final availableTopics = StoredTopics.list;
+    final availableTopics = StoredTopics.list.where((e) => e.isAvailable);
     final storedTopicsByUser = ref
         .read(userInfoProvider)
         .requireValue!

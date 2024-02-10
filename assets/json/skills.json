@@ -363,6 +363,10 @@
   ],
   "d": [
     {
+      "id": "data-structure",
+      "name": "Data Structure"
+    },
+    {
       "id": "dart",
       "name": "Dart"
     },
@@ -1700,6 +1704,10 @@
     }
   ],
   "o": [
+    {
+      "id": "operation_system",
+      "name": "operation_system"
+    },
     {
       "id": "oauth",
       "name": "OAuth"

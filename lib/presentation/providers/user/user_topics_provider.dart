@@ -11,7 +11,7 @@ class UserTopics extends _$UserTopics {
     final userData = ref.watch(userInfoProvider).requireValue;
     if (userData == null) throw Exception('유저 데이터가 존재하지 않음');
 
-    final topics = getTopicsUseCase().getOrThrow();
+    final topics = getTopicsUseCase.call();
 
     final userTopicIds = userData.skills;
     final topicIds = [...topics.map((e) => e.id)];

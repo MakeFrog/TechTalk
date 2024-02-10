@@ -11,7 +11,7 @@ import 'package:techtalk/presentation/pages/study/learning/providers/study_answe
 import 'package:techtalk/presentation/pages/study/learning/providers/study_question_controller.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_questions_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_event.dart';
-import 'package:techtalk/presentation/pages/study/topic_select/providers/selected_study_topic_provider.dart';
+import 'package:techtalk/presentation/pages/study/topic_selection/providers/selected_study_topic_provider.dart';
 
 class StudyQnaView extends ConsumerWidget with StudyLearningEvent {
   const StudyQnaView({

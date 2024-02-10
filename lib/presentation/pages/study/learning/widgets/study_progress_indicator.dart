@@ -4,7 +4,7 @@ import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/current_study_question_index_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_questions_provider.dart';
-import 'package:techtalk/presentation/pages/study/topic_select/providers/selected_study_topic_provider.dart';
+import 'package:techtalk/presentation/pages/study/topic_selection/providers/selected_study_topic_provider.dart';
 
 class StudyProgressIndicator extends ConsumerWidget {
   const StudyProgressIndicator({

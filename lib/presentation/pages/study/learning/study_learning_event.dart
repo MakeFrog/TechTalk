@@ -4,7 +4,7 @@ import 'package:techtalk/presentation/pages/study/learning/providers/current_stu
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_question_controller.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/entire_question_list_view.dart';
-import 'package:techtalk/presentation/pages/study/topic_select/providers/selected_study_topic_provider.dart';
+import 'package:techtalk/presentation/pages/study/topic_selection/providers/selected_study_topic_provider.dart';
 
 mixin class StudyLearningEvent {
   void onToggleAnswerBlur(WidgetRef ref) {

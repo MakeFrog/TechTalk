@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_event.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_state.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/providers/selected_interview_topics_provider.dart';
@@ -85,19 +83,17 @@ class _TopicListView extends ConsumerWidget
       padding: const EdgeInsets.only(bottom: 24),
       child: Consumer(
         builder: (context, ref, child) {
-          final topicList = getTopicsUseCase().getOrThrow();
           return GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             gridDelegate: gridDelegate,
-            itemCount: StoredTopics.list.length,
+            itemCount: topics(ref).length,
             itemBuilder: (context, index) {
-              final topic = topicList[index];
-              final isSelected = selectedTopics(ref).contains(topic);
+              final topic = topics(ref)[index];
 
               return InterviewTopicCard(
-                topic: topic,
-                isSelected: isSelected,
+                topic: topics(ref)[index],
+                isSelected: selectedTopics(ref).contains(topic),
                 onTap: () => onTopicItemTapped(
                   ref,
                   topic: topic,
