@@ -2,6 +2,7 @@ class TopicEntity {
   final String id;
   final String text;
   final String? imageUrl;
+  final List<String> skillIds;
   final String categoryId;
   final bool isAvailable;
   final DateTime updatedAt;
@@ -11,6 +12,7 @@ class TopicEntity {
     required this.id,
     required this.text,
     this.imageUrl,
+    required this.skillIds,
     required this.categoryId,
     required this.isAvailable,
     required this.updatedAt,
@@ -56,6 +58,7 @@ class TopicEntity {
     String? categoryId,
     bool? isAvailable,
     DateTime? updatedAt,
+    List<String>? skillIds,
   }) {
     return TopicEntity(
       id: id ?? this.id,
@@ -64,6 +67,7 @@ class TopicEntity {
       categoryId: categoryId ?? this.categoryId,
       isAvailable: isAvailable ?? this.isAvailable,
       updatedAt: updatedAt ?? this.updatedAt,
+      skillIds: skillIds ?? this.skillIds,
     );
   }
 

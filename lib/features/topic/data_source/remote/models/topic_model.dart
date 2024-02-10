@@ -12,12 +12,14 @@ class TopicModel {
     required this.categoryId,
     required this.name,
     this.imagePath,
+    required this.skillIds,
     required this.isAvailable,
     required this.updatedAt,
   });
 
   final String id;
   final String categoryId;
+  final List<String> skillIds;
   final String name;
   final String? imagePath;
   final bool isAvailable;
@@ -29,6 +31,7 @@ class TopicModel {
       id: id,
       categoryId: categoryId,
       text: name,
+      skillIds: skillIds,
       imageUrl: imagePath,
       isAvailable: isAvailable,
       updatedAt: updatedAt,
