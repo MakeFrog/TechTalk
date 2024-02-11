@@ -54,6 +54,11 @@ class FetchSkillsFailedException extends CustomException {
       : super('000004', '테크 스킬 목록을 불러오는데 실패하였습니다');
 }
 
+class WrongAnswerUpdateFailedException extends CustomException {
+  const WrongAnswerUpdateFailedException()
+      : super('000005', '오답노트 정보를 업데이트하는데 실패하였습니다.');
+}
+
 class ImgStoreFailedException extends CustomException {
   const ImgStoreFailedException() : super('400001', '이미지 저장에 실패하였습니다.');
 }

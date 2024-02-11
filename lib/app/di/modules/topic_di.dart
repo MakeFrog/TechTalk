@@ -5,6 +5,7 @@ import 'package:techtalk/features/topic/data_source/local/topic_local_data_sourc
 import 'package:techtalk/features/topic/data_source/remote/topic_remote_data_source_impl.dart';
 import 'package:techtalk/features/topic/repositories/topic_repository_impl.dart';
 import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/features/topic/usecases/update_wrong_answer_use_case.dart';
 
 final class TopicDependencyInjection extends FeatureDependencyInjection {
   @override
@@ -43,6 +44,9 @@ final class TopicDependencyInjection extends FeatureDependencyInjection {
         () => GetTopicQnasUseCase(
           topicRepository,
         ),
+      )
+      ..registerFactory(
+        () => UpdateWrongAnswerUseCase(topicRepository),
       );
   }
 }

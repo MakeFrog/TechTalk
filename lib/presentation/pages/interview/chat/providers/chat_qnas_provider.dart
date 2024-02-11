@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'dart:developer' as dev;
+import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 
 part 'chat_qnas_provider.g.dart';
@@ -41,10 +44,17 @@ class ChatQnas extends _$ChatQnas {
       answer: message,
     );
 
-    await update((previous) {
-      previous.removeAt(targetQnaIndex);
-      return [...previous, resolvedQna];
-    });
+    unawaited(
+      Future.wait(
+        [
+          update((previous) {
+            previous.removeAt(targetQnaIndex);
+            return [...previous, resolvedQna];
+          }),
+          _updateWrongAnswer(resolvedQna),
+        ],
+      ),
+    );
   }
 
   ///
@@ -67,5 +77,22 @@ class ChatQnas extends _$ChatQnas {
     state.requireValue.sort((a, b) => prevQnaIdsInOrder
         .indexOf(a.id)
         .compareTo(prevQnaIdsInOrder.indexOf(b.id)));
+  }
+
+  ///
+  /// 오답노트 기록 업데이트
+  ///
+  Future<void> _updateWrongAnswer(ChatQnaEntity qna) async {
+    if (qna.message!.answerState.isWrong) {
+      final response = await updateWrongAnswerUSeCase.call(qna);
+      response.fold(
+        onSuccess: (_) {
+          log('오답 노트 업데이트 성공');
+        },
+        onFailure: (e) {
+          log('오답 노트 업데이트 실패 : $e');
+        },
+      );
+    }
   }
 }
