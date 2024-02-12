@@ -39,6 +39,29 @@ class NoQnAsException extends CustomException {
       : super('200004', '$topic 주제의 면접 문답 데이터가 없습니다.');
 }
 
+class TopicInitialFailed extends CustomException {
+  const TopicInitialFailed() : super('200005', '면접 주제 초기화 동작에 실패하였습니다.');
+}
+
+class ChatMessageFetchedFailedException extends CustomException {
+  const ChatMessageFetchedFailedException()
+      : super('300001', '채팅 기록을 가져오는데 실패하였습니다.');
+}
+
+class ChatRoomsFetchedFailedException extends CustomException {
+  const ChatRoomsFetchedFailedException()
+      : super('300002', '채팅방 목록을 가져오는데 실패하였습니다.');
+}
+
+class ChatRoomCreationFailedException extends CustomException {
+  const ChatRoomCreationFailedException()
+      : super('300003', '채팅방을 생성하는데 실패하였습니다.');
+}
+
+class ChatReportFailed extends CustomException {
+  const ChatReportFailed() : super('300004', '면접 이슈를 리포트하는 과정에서 오류가 발생하였습니다.');
+}
+
 class NoInterviewQuestionException extends CustomException {
   const NoInterviewQuestionException(String topic)
       : super('000002', '$topic 주제의 면접 질문이 없습니다.');
@@ -59,10 +82,20 @@ class WrongAnswerUpdateFailedException extends CustomException {
       : super('000005', '오답노트 정보를 업데이트하는데 실패하였습니다.');
 }
 
+class WrongAnswerFetchFailedException extends CustomException {
+  const WrongAnswerFetchFailedException()
+      : super('000006', '오답노트 목록을 가져오는데 실패하였습니다.');
+}
+
 class ImgStoreFailedException extends CustomException {
   const ImgStoreFailedException() : super('400001', '이미지 저장에 실패하였습니다.');
 }
 
 class MappingFailedException extends CustomException {
   const MappingFailedException() : super('400002', '데이터 호출에 실패하였습니다.');
+}
+
+class VersionInfoFetchedFailedException extends CustomException {
+  const VersionInfoFetchedFailedException()
+      : super('500001', '앱 버전 정보를 가져오는데 실패하였습니다.');
 }
