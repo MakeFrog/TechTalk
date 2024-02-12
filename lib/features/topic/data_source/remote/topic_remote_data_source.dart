@@ -12,8 +12,13 @@ abstract interface class TopicRemoteDataSource {
   );
 
   ///
-  /// 오답 문답 데이터 추가 및 업데이트
+  /// 오답 데이터 추가 및 업데이트
   ///
   Future<void> updateWrongAnswer(
       {required WrongAnswerModel wrongAnswer, required String topicId});
+
+  ///
+  /// 오답 목록 호출
+  ///
+  Future<List<WrongAnswerModel>> getWrongAnswers(String topicId);
 }

@@ -70,4 +70,14 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
       },
     );
   }
+
+  @override
+  Future<List<WrongAnswerModel>> getWrongAnswers(String topicId) async {
+    final collectionRef = FirestoreTopicWrongAnswerRef.subCollection(
+        topicId, FirebaseAuth.instance.currentUser!.uid);
+
+    final snapshot = await collectionRef.get();
+
+    return snapshot.docs.map((e) => e.data()).toList();
+  }
 }
