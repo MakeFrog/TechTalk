@@ -7,6 +7,7 @@ import 'package:techtalk/core/theme/extension/app_text_style.dart';
 part 'components/app_bar_theme.dart';
 part 'components/filled_button_theme.dart';
 part 'components/input_decoration_theme.dart';
+part 'components/outlined_button_theme.dart';
 
 class AppTheme {
   static final ThemeData light = ThemeData(
@@ -22,6 +23,7 @@ class AppTheme {
     progressIndicatorTheme:
         ProgressIndicatorThemeData(color: AppColor().brand2),
     filledButtonTheme: _FilledButtonTheme.light,
+    outlinedButtonTheme: _OutlinedButtonTheme.light,
     inputDecorationTheme: _InputDecorationTheme.light,
 
     appBarTheme: _AppBarTheme.light,
