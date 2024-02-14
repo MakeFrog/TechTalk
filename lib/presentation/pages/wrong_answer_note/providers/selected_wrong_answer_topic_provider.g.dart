@@ -7,12 +7,12 @@ part of 'selected_wrong_answer_topic_provider.dart';
 // **************************************************************************
 
 String _$selectedWrongAnswerTopicHash() =>
-    r'a872fc9c66efb83aa224122867dc82b283ea2f32';
+    r'67b1816185a217f62126a8740db1792cd645ce62';
 
 /// See also [SelectedWrongAnswerTopic].
 @ProviderFor(SelectedWrongAnswerTopic)
-final selectedWrongAnswerTopicProvider =
-    AutoDisposeNotifierProvider<SelectedWrongAnswerTopic, TopicEntity>.internal(
+final selectedWrongAnswerTopicProvider = AutoDisposeNotifierProvider<
+    SelectedWrongAnswerTopic, TopicEntity?>.internal(
   SelectedWrongAnswerTopic.new,
   name: r'selectedWrongAnswerTopicProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +22,6 @@ final selectedWrongAnswerTopicProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$SelectedWrongAnswerTopic = AutoDisposeNotifier<TopicEntity>;
+typedef _$SelectedWrongAnswerTopic = AutoDisposeNotifier<TopicEntity?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

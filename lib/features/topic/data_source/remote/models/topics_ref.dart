@@ -50,11 +50,15 @@ abstract class FirestoreTopicWrongAnswerRef {
             toFirestore: (value, options) => value.toJson(),
           );
 
-  static DocumentReference<WrongAnswerModel> doc(
+  static CollectionReference<WrongAnswerModel> subCollection(
     String topicId,
-    String id,
+    String userId,
   ) =>
-      FirestoreTopicsRef.doc(topicId).collection(name).doc(id).withConverter(
+      FirestoreTopicsRef.doc(topicId)
+          .collection(name)
+          .doc(userId)
+          .collection(subCollectionName)
+          .withConverter(
             fromFirestore: WrongAnswerModel.fromFirestore,
             toFirestore: (value, options) => value.toJson(),
           );

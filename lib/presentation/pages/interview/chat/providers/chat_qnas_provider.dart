@@ -7,6 +7,7 @@ import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
+import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answers_provider.dart';
 
 part 'chat_qnas_provider.g.dart';
 
@@ -88,6 +89,7 @@ class ChatQnas extends _$ChatQnas {
       response.fold(
         onSuccess: (_) {
           log('오답 노트 업데이트 성공');
+          ref.invalidate(wrongAnswersProvider);
         },
         onFailure: (e) {
           log('오답 노트 업데이트 실패 : $e');
