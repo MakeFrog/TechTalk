@@ -12,7 +12,7 @@ import 'package:techtalk/features/topic/repositories/entities/qna_entity.dart';
 import 'package:techtalk/features/wrong_answer_note/wrong_answer_note.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/selected_wrong_answer_topic_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_blur_provider.dart';
-import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_questions_provider.dart';
+import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answers_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/review_note_detail_event.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
@@ -55,7 +55,7 @@ class _AppBar extends StatelessWidget
       titleSpacing: 0,
       title: Consumer(
         builder: (_, ref, __) {
-          final topicName = ref.watch(selectedWrongAnswerTopicProvider).text;
+          final topicName = ref.watch(selectedWrongAnswerTopicProvider)!.text;
 
           return Text(topicName);
         },
@@ -97,7 +97,7 @@ class _Body extends HookConsumerWidget with ReviewNoteDetailEvent {
     final pageController = usePageController(initialPage: page);
     final selectedTopic = ref.watch(selectedWrongAnswerTopicProvider);
     final questions =
-        ref.watch(wrongAnswerQuestionsProvider(selectedTopic.id)).requireValue;
+        ref.watch(wrongAnswersProvider(selectedTopic!.id)).requireValue;
 
     return SafeArea(
       child: Column(
@@ -114,7 +114,7 @@ class _Body extends HookConsumerWidget with ReviewNoteDetailEvent {
                     id: 'id',
                     question: QnaEntity(
                       id: '',
-                      question: questions[index].question.question,
+                      question: questions[index].qna.question,
                       answers: [
                         'test',
                       ],
