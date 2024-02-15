@@ -8,8 +8,8 @@ import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_note_scroll_controller.dart';
-import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_note_state.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_note_event.dart';
+import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_note_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/indicator/exception_indicator.dart';
 
@@ -43,17 +43,15 @@ class WrongAnswerNotePage extends BasePage
           itemBuilder: (_, index) {
             final item = wrongAnswers[index];
             return InkWell(
-              onTap: () => onTapQuestion(index),
+              onTap: () => routeToDetail(index),
               child: Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 24,
                 ),
-                child: Container(
-                  child: Text(
-                    item.qna.question,
-                    style: AppTextStyle.body1,
-                  ),
+                child: Text(
+                  item.qna.question,
+                  style: AppTextStyle.body1,
                 ),
               ),
             );

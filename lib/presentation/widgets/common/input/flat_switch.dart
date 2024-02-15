@@ -28,7 +28,7 @@ class FlatSwitch extends StatelessWidget {
           color: value ? AppColor.of.brand3 : AppColor.of.gray2,
           borderRadius: BorderRadius.circular(11),
         ),
-        padding: EdgeInsets.all(3),
+        padding: const EdgeInsets.all(3),
         child: AnimatedAlign(
           duration: _switchAnimationDuration,
           curve: _switchAnimationCurve,
