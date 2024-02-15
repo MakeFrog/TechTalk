@@ -6,6 +6,8 @@ import 'package:techtalk/features/topic/usecases/get_categorized_topics_use_case
 import 'package:techtalk/features/topic/usecases/get_topic_qna_use_case.dart';
 import 'package:techtalk/features/topic/usecases/get_topic_qnas_use_case.dart';
 import 'package:techtalk/features/topic/usecases/get_topics_use_case.dart';
+import 'package:techtalk/features/topic/usecases/get_wrong_answers_use_case.dart';
+import 'package:techtalk/features/topic/usecases/update_wrong_answer_use_case.dart';
 
 export 'data_source/local/topic_local_data_source.dart';
 export 'data_source/remote/models/topic_category_model.dart';
@@ -26,6 +28,8 @@ final topicRemoteDataSource = locator<TopicRemoteDataSource>();
 final topicRepository = locator<TopicRepository>();
 final getTopicsUseCase = locator<GetTopicsUseCase>();
 final getCategorizedTopicsUseCase = locator<GetCategorizedTopicsUseCase>();
+final updateWrongAnswerUSeCase = locator<UpdateWrongAnswerUseCase>();
+final getWrongAnswersUseCase = locator<GetWrongAnswersUseCase>();
 
 final getTopicQnasUseCase = locator<GetTopicQnasUseCase>();
 final getTopicQnaUseCase = locator<GetTopicQnaUseCase>();

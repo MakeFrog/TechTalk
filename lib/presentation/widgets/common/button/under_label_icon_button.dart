@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/presentation/widgets/common/button/icon_flash_area_button.dart';
 
 class UnderLabelIconButton extends StatelessWidget {
   const UnderLabelIconButton({
@@ -20,23 +20,19 @@ class UnderLabelIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: isActive ? onTap : null,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset(
-            icon,
-            width: 24,
-            height: 24,
-            colorFilter: isActive
-                ? null
-                : ColorFilter.mode(
-                    AppColor.of.gray2,
-                    BlendMode.srcATop,
-                  ),
+          IconFlashAreaButton.assetIcon(
+            iconPath: icon,
+            size: 24,
+            activatedColor: AppColor.of.gray4,
+            enabledColor: AppColor.of.gray2,
+            onIconTapped: isActive ? onTap : null,
           ),
-          Gap(12),
+          const Gap(12),
           Text(
             label,
             style: AppTextStyle.alert1.copyWith(

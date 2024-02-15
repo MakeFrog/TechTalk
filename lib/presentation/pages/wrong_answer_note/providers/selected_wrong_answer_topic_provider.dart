@@ -1,17 +1,18 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/topic/topic.dart';
-import 'package:techtalk/presentation/providers/user/user_topics_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 part 'selected_wrong_answer_topic_provider.g.dart';
 
 @riverpod
 class SelectedWrongAnswerTopic extends _$SelectedWrongAnswerTopic {
   @override
-  TopicEntity build() {
-    final userTopics = ref.watch(userTopicsProvider);
+  TopicEntity? build() {
+    final targetTopics =
+        ref.watch(userInfoProvider).requireValue?.targetedTopics;
 
-    return userTopics.where((element) => element.isAvailable).first;
+    return targetTopics?.first;
   }
 
-  void update(TopicEntity value) => state = value;
+  void updateTopic(TopicEntity value) => state = value;
 }

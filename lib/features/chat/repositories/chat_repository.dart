@@ -29,12 +29,6 @@ abstract interface class ChatRepository {
   Future<Result<ChatHistoryCollectionEntity>> getChatMessageHistory(
       String roomId);
 
-  /// 채팅 메세지  호출
-  Future<Result<ChatMessageEntity>> getChatMessage(
-    String roomId,
-    String chatId,
-  );
-
   Future<Result<List<ChatQnaEntity>>> getChatQnAs(ChatRoomEntity room);
 
   Future<Result<void>> reportFeedback(

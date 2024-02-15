@@ -1,5 +1,6 @@
 import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/helper/list_extension.dart';
+import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data_source/remote/chat_remote_data_source.dart';
@@ -84,7 +85,7 @@ final class ChatRepositoryImpl implements ChatRepository {
 
       return Result.success(rooms);
     } on Exception catch (e) {
-      return Result.failure(e);
+      return Result.failure(const ChatRoomsFetchedFailedException());
     }
   }
 
@@ -108,7 +109,7 @@ final class ChatRepositoryImpl implements ChatRepository {
         ),
       );
     } on Exception catch (e) {
-      return Result.failure(e);
+      return Result.failure(const ChatRoomCreationFailedException());
     }
   }
 
@@ -132,24 +133,7 @@ final class ChatRepositoryImpl implements ChatRepository {
       return Result.success(ChatHistoryCollectionEntity(
           chatHistories: response, progressQnaIds: qnaInOrder));
     } on Exception catch (e) {
-      return Result.failure(e);
-    }
-  }
-
-  @override
-  Future<Result<ChatMessageEntity>> getChatMessage(
-    String roomId,
-    String chatId,
-  ) async {
-    try {
-      final messageModel = await _remoteDataSource.getChatMessage(
-        roomId,
-        chatId,
-      );
-
-      return Result.success(messageModel.toEntity());
-    } on Exception catch (e) {
-      return Result.failure(e);
+      return Result.failure(const ChatMessageFetchedFailedException());
     }
   }
 
@@ -204,7 +188,7 @@ final class ChatRepositoryImpl implements ChatRepository {
         ),
       );
     } on Exception catch (e) {
-      return Result.failure(e);
+      return Result.failure(const ChatReportFailed());
     }
   }
 }

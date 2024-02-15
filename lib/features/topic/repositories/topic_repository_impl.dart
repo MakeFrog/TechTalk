@@ -1,7 +1,11 @@
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/core/helper/date_time_extension.dart';
+import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/utils/result.dart';
+import 'package:techtalk/features/chat/repositories/entities/chat_qna_entity.dart';
+import 'package:techtalk/features/topic/data_source/remote/models/wrong_answer_model.dart';
+import 'package:techtalk/features/topic/repositories/entities/wrong_answer_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 class TopicRepositoryImpl implements TopicRepository {
@@ -30,18 +34,7 @@ class TopicRepositoryImpl implements TopicRepository {
     try {
       return Result.success(_cachedTopicCategories!);
     } on Exception catch (e) {
-      return Result.failure(e);
-    }
-  }
-
-  @override
-  Result<TopicCategoryEntity> getTopicCategory(String id) {
-    try {
-      return Result.success(
-        _cachedTopicCategories!.firstWhere((element) => element.id == id),
-      );
-    } on Exception catch (e) {
-      return Result.failure(e);
+      return Result.failure(const TopicInitialFailed());
     }
   }
 
@@ -96,6 +89,35 @@ class TopicRepositoryImpl implements TopicRepository {
       return Result.failure(
         NoTopicQuestionException(topicId),
       );
+    }
+  }
+
+  @override
+  Future<Result<void>> updateWrongAnswer(ChatQnaEntity chatQna) async {
+    try {
+      await _remoteDataSource.updateWrongAnswer(
+        wrongAnswer: WrongAnswerModel.fromEntity(chatQna),
+        topicId: chatQna.id.getFirstPartOfSpliited,
+      );
+      return Result.success(null);
+    } on Exception catch (e) {
+      return Result.failure(const WrongAnswerUpdateFailedException());
+    }
+  }
+
+  @override
+  Future<Result<List<WrongAnswerEntity>>> getWrongAnswers(
+      String topicId) async {
+    try {
+      final response = await _remoteDataSource.getWrongAnswers(topicId);
+      final futureResults = response.map((e) async {
+        final qnaResponse = await getTopicQna(topicId, e.id);
+        return e.toEntity(qnaResponse.getOrThrow());
+      }).toList();
+
+      return Result.success(await Future.wait(futureResults));
+    } on Exception catch (e) {
+      return Result.failure(const WrongAnswerUpdateFailedException());
     }
   }
 }

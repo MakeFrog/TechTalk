@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:techtalk/features/topic/data_source/remote/models/topics_ref.dart';
+import 'package:techtalk/features/topic/data_source/remote/models/wrong_answer_model.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
@@ -37,5 +40,44 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
     }
 
     return snapshot.data()!;
+  }
+
+  @override
+  Future<void> updateWrongAnswer(
+      {required WrongAnswerModel wrongAnswer, required String topicId}) async {
+    await FirebaseFirestore.instance.runTransaction(
+      (transaction) async {
+        final docRef = FirestoreTopicWrongAnswerRef.subCollectionDoc(
+            topicId, wrongAnswer.id, FirebaseAuth.instance.currentUser!.uid);
+
+        final prevDoc = await docRef.get();
+
+        if (prevDoc.exists) {
+          transaction.update(docRef, {
+            FirestoreTopicWrongAnswerRef.wrongAnswerCountField:
+                FieldValue.increment(1),
+            FirestoreTopicWrongAnswerRef.updatedAtField:
+                FieldValue.serverTimestamp(),
+            FirestoreTopicWrongAnswerRef.userAnswerField:
+                wrongAnswer.userAnswer,
+          });
+        } else {
+          transaction.set(
+            docRef,
+            wrongAnswer,
+          );
+        }
+      },
+    );
+  }
+
+  @override
+  Future<List<WrongAnswerModel>> getWrongAnswers(String topicId) async {
+    final collectionRef = FirestoreTopicWrongAnswerRef.subCollection(
+        topicId, FirebaseAuth.instance.currentUser!.uid);
+
+    final snapshot = await collectionRef.get();
+
+    return snapshot.docs.map((e) => e.data()).toList();
   }
 }
