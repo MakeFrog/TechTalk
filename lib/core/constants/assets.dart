@@ -65,6 +65,8 @@ class Assets {
   static const String iconsPlusThick = 'assets/icons/plus_thick.svg';
   static const String iconsRoundBlueCircle =
       'assets/icons/round_blue_circle.svg';
+  static const String iconsRoundedBlueExclamation =
+      'assets/icons/rounded_blue_exclamation.svg';
   static const String iconsRoundedCamera = 'assets/icons/rounded_camera.svg';
   static const String iconsRoundedCheck = 'assets/icons/rounded_check.svg';
   static const String iconsRoundedCheckSmallBlue =

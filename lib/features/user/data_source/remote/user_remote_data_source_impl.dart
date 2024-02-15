@@ -17,7 +17,7 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         .count()
         .get();
 
-    return nicknameCount.count > 0;
+    return (nicknameCount.count ?? 0) > 0;
   }
 
   @override
