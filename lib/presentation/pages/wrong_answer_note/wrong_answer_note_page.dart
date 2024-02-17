@@ -33,7 +33,7 @@ class WrongAnswerNotePage extends BasePage
 
         return ListView.separated(
           controller: scrollController(ref),
-          padding: const EdgeInsets.only(bottom: 24),
+          padding: const EdgeInsets.only(bottom: 120),
           itemCount: wrongAnswers.length,
           separatorBuilder: (context, index) => Divider(
             height: 0.5,
