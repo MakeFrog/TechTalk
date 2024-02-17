@@ -14,7 +14,7 @@ class _FloatingActionButton extends ConsumerWidget
         builder: (context) {
           final currentPage = useListenableSelector(
             pageController(ref),
-            () => pageController(ref).page?.round() ?? 0,
+            () => pageController(ref).page?.round() ?? WrongAnswerRoute.arg,
           );
 
           return Row(
