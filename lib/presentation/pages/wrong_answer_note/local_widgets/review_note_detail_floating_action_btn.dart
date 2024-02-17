@@ -1,4 +1,4 @@
-part of '../review_note_detail_page.dart';
+part of '../wrong_answer_detail_page.dart';
 
 class _FloatingActionButton extends ConsumerWidget
     with WrongAnswerNoteState, WrongAnswerNoteEvent {
