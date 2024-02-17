@@ -1,4 +1,4 @@
-part of '../review_note_detail_page.dart';
+part of '../wrong_answer_detail_page.dart';
 
 class _FloatingActionButton extends ConsumerWidget
     with WrongAnswerNoteState, WrongAnswerNoteEvent {
@@ -14,7 +14,7 @@ class _FloatingActionButton extends ConsumerWidget
         builder: (context) {
           final currentPage = useListenableSelector(
             pageController(ref),
-            () => pageController(ref).page?.round() ?? 0,
+            () => pageController(ref).page?.round() ?? WrongAnswerRoute.arg,
           );
 
           return Row(

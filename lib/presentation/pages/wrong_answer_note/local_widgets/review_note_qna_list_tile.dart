@@ -1,4 +1,4 @@
-part of '../review_note_detail_page.dart';
+part of '../wrong_answer_detail_page.dart';
 
 class _QnaListTile extends HookWidget {
   const _QnaListTile(this.wrongAnswer, {super.key});

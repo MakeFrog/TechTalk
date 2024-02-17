@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
@@ -20,9 +21,9 @@ part 'local_widgets/review_note_detail_app_bar.dart';
 part 'local_widgets/review_note_detail_floating_action_btn.dart';
 part 'local_widgets/review_note_qna_list_tile.dart';
 
-class ReviewNoteDetailPage extends BasePage
+class WrongAnswerDetailPage extends BasePage
     with WrongAnswerNoteState, WrongAnswerNoteEvent {
-  const ReviewNoteDetailPage({
+  const WrongAnswerDetailPage({
     super.key,
   });
 

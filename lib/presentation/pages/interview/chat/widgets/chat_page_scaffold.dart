@@ -29,27 +29,32 @@ class _Scaffold extends StatelessWidget {
                   ),
                 ),
               ),
-              child: TabBar(
-                controller: tabController,
-                tabs: const [
-                  Tab(
-                    text: '면접',
-                  ),
-                  Tab(
-                    text: '문답',
-                  ),
-                ],
-                indicator: UnderlineTabIndicator(
-                  borderSide: BorderSide(width: 2, color: AppColor.of.black),
-                  insets: EdgeInsets.symmetric(
-                    horizontal: AppSize.to.screenWidth / 4.2,
-                  ),
-                ),
-                labelColor: AppColor.of.black,
-                unselectedLabelColor: AppColor.of.gray3,
-                indicatorColor: AppColor.of.black,
-                labelStyle: AppTextStyle.title3,
-                unselectedLabelStyle: AppTextStyle.body2,
+              child: Builder(
+                builder: (context) {
+                  return TabBar(
+                    controller: tabController,
+                    tabs: const [
+                      Tab(
+                        text: '면접',
+                      ),
+                      Tab(
+                        text: '문답',
+                      ),
+                    ],
+                    indicator: UnderlineTabIndicator(
+                      borderSide:
+                          BorderSide(width: 2, color: AppColor.of.black),
+                      insets: EdgeInsets.symmetric(
+                        horizontal: AppSize.to.screenWidth / 4.2,
+                      ),
+                    ),
+                    labelColor: AppColor.of.black,
+                    unselectedLabelColor: AppColor.of.gray3,
+                    indicatorColor: AppColor.of.black,
+                    labelStyle: AppTextStyle.title3,
+                    unselectedLabelStyle: AppTextStyle.body2,
+                  );
+                },
               ),
             ),
           ],

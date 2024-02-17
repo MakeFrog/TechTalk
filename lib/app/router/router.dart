@@ -18,7 +18,7 @@ import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
 import 'package:techtalk/presentation/pages/study/learning/study_learning_page.dart';
-import 'package:techtalk/presentation/pages/wrong_answer_note/review_note_detail_page.dart';
+import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_detail_page.dart';
 
 part 'router.g.dart';
 
@@ -221,7 +221,7 @@ class WrongAnswerRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     arg = index;
-    return const ReviewNoteDetailPage();
+    return const WrongAnswerDetailPage();
   }
 }
 
