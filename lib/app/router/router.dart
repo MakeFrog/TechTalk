@@ -96,7 +96,7 @@ class SignInRoute extends GoRouteData {
           child: child,
         );
       },
-      child: const SignInPage(),
+      child: SignInPage(),
     );
   }
 }
@@ -188,7 +188,7 @@ class MainRoute extends GoRouteData {
           child: child,
         );
       },
-      child: const MainPage(),
+      child: MainPage(),
     );
   }
 }
@@ -211,17 +211,15 @@ class StudyRoute extends GoRouteData {
 }
 
 class WrongAnswerRoute extends GoRouteData {
-  const WrongAnswerRoute(this.index);
+  const WrongAnswerRoute(this.$extra);
 
-  final int index;
-  static const String path = 'wrong-answer/:index';
+  final int? $extra;
+  static const String path = 'wrong-answer';
   static const String name = 'wrong answer';
-  static late int arg;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    arg = index;
-    return const ReviewNoteDetailPage();
+    return ReviewNoteDetailPage(page: $extra ?? 0);
   }
 }
 

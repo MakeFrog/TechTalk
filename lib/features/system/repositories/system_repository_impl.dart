@@ -1,4 +1,3 @@
-import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/system/data_source/remote/system_remote_data_source.dart';
 import 'package:techtalk/features/system/repositories/entities/version_entity.dart';
@@ -16,7 +15,7 @@ class SystemRepositoryImpl implements SystemRepository {
       final result = response.toEntity();
       return Result.success(result);
     } on Exception catch (e) {
-      return Result.failure(const VersionInfoFetchedFailedException());
+      return Result.failure(e);
     }
   }
 }

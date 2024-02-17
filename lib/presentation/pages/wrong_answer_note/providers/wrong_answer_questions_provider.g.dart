@@ -1,12 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'wrong_answers_provider.dart';
+part of 'wrong_answer_questions_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$wrongAnswersHash() => r'2eb9dfea4fa2caf504886effdeb2f3bf964557ca';
+String _$wrongAnswerQuestionsHash() =>
+    r'318c446038daf5a0ed0db0dc16438b06079110ee';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,36 +30,37 @@ class _SystemHash {
   }
 }
 
-abstract class _$WrongAnswers
-    extends BuildlessAsyncNotifier<List<WrongAnswerEntity>> {
+abstract class _$WrongAnswerQuestions
+    extends BuildlessAsyncNotifier<List<WrongAnswerNoteEntity>> {
   late final String topicId;
 
-  FutureOr<List<WrongAnswerEntity>> build(
+  FutureOr<List<WrongAnswerNoteEntity>> build(
     String topicId,
   );
 }
 
-/// See also [WrongAnswers].
-@ProviderFor(WrongAnswers)
-const wrongAnswersProvider = WrongAnswersFamily();
+/// See also [WrongAnswerQuestions].
+@ProviderFor(WrongAnswerQuestions)
+const wrongAnswerQuestionsProvider = WrongAnswerQuestionsFamily();
 
-/// See also [WrongAnswers].
-class WrongAnswersFamily extends Family<AsyncValue<List<WrongAnswerEntity>>> {
-  /// See also [WrongAnswers].
-  const WrongAnswersFamily();
+/// See also [WrongAnswerQuestions].
+class WrongAnswerQuestionsFamily
+    extends Family<AsyncValue<List<WrongAnswerNoteEntity>>> {
+  /// See also [WrongAnswerQuestions].
+  const WrongAnswerQuestionsFamily();
 
-  /// See also [WrongAnswers].
-  WrongAnswersProvider call(
+  /// See also [WrongAnswerQuestions].
+  WrongAnswerQuestionsProvider call(
     String topicId,
   ) {
-    return WrongAnswersProvider(
+    return WrongAnswerQuestionsProvider(
       topicId,
     );
   }
 
   @override
-  WrongAnswersProvider getProviderOverride(
-    covariant WrongAnswersProvider provider,
+  WrongAnswerQuestionsProvider getProviderOverride(
+    covariant WrongAnswerQuestionsProvider provider,
   ) {
     return call(
       provider.topicId,
@@ -77,30 +79,30 @@ class WrongAnswersFamily extends Family<AsyncValue<List<WrongAnswerEntity>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'wrongAnswersProvider';
+  String? get name => r'wrongAnswerQuestionsProvider';
 }
 
-/// See also [WrongAnswers].
-class WrongAnswersProvider
-    extends AsyncNotifierProviderImpl<WrongAnswers, List<WrongAnswerEntity>> {
-  /// See also [WrongAnswers].
-  WrongAnswersProvider(
+/// See also [WrongAnswerQuestions].
+class WrongAnswerQuestionsProvider extends AsyncNotifierProviderImpl<
+    WrongAnswerQuestions, List<WrongAnswerNoteEntity>> {
+  /// See also [WrongAnswerQuestions].
+  WrongAnswerQuestionsProvider(
     String topicId,
   ) : this._internal(
-          () => WrongAnswers()..topicId = topicId,
-          from: wrongAnswersProvider,
-          name: r'wrongAnswersProvider',
+          () => WrongAnswerQuestions()..topicId = topicId,
+          from: wrongAnswerQuestionsProvider,
+          name: r'wrongAnswerQuestionsProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$wrongAnswersHash,
-          dependencies: WrongAnswersFamily._dependencies,
+                  : _$wrongAnswerQuestionsHash,
+          dependencies: WrongAnswerQuestionsFamily._dependencies,
           allTransitiveDependencies:
-              WrongAnswersFamily._allTransitiveDependencies,
+              WrongAnswerQuestionsFamily._allTransitiveDependencies,
           topicId: topicId,
         );
 
-  WrongAnswersProvider._internal(
+  WrongAnswerQuestionsProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -113,8 +115,8 @@ class WrongAnswersProvider
   final String topicId;
 
   @override
-  FutureOr<List<WrongAnswerEntity>> runNotifierBuild(
-    covariant WrongAnswers notifier,
+  FutureOr<List<WrongAnswerNoteEntity>> runNotifierBuild(
+    covariant WrongAnswerQuestions notifier,
   ) {
     return notifier.build(
       topicId,
@@ -122,10 +124,10 @@ class WrongAnswersProvider
   }
 
   @override
-  Override overrideWith(WrongAnswers Function() create) {
+  Override overrideWith(WrongAnswerQuestions Function() create) {
     return ProviderOverride(
       origin: this,
-      override: WrongAnswersProvider._internal(
+      override: WrongAnswerQuestionsProvider._internal(
         () => create()..topicId = topicId,
         from: from,
         name: null,
@@ -138,14 +140,14 @@ class WrongAnswersProvider
   }
 
   @override
-  AsyncNotifierProviderElement<WrongAnswers, List<WrongAnswerEntity>>
-      createElement() {
-    return _WrongAnswersProviderElement(this);
+  AsyncNotifierProviderElement<WrongAnswerQuestions,
+      List<WrongAnswerNoteEntity>> createElement() {
+    return _WrongAnswerQuestionsProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is WrongAnswersProvider && other.topicId == topicId;
+    return other is WrongAnswerQuestionsProvider && other.topicId == topicId;
   }
 
   @override
@@ -157,18 +159,19 @@ class WrongAnswersProvider
   }
 }
 
-mixin WrongAnswersRef on AsyncNotifierProviderRef<List<WrongAnswerEntity>> {
+mixin WrongAnswerQuestionsRef
+    on AsyncNotifierProviderRef<List<WrongAnswerNoteEntity>> {
   /// The parameter `topicId` of this provider.
   String get topicId;
 }
 
-class _WrongAnswersProviderElement
-    extends AsyncNotifierProviderElement<WrongAnswers, List<WrongAnswerEntity>>
-    with WrongAnswersRef {
-  _WrongAnswersProviderElement(super.provider);
+class _WrongAnswerQuestionsProviderElement extends AsyncNotifierProviderElement<
+    WrongAnswerQuestions,
+    List<WrongAnswerNoteEntity>> with WrongAnswerQuestionsRef {
+  _WrongAnswerQuestionsProviderElement(super.provider);
 
   @override
-  String get topicId => (origin as WrongAnswersProvider).topicId;
+  String get topicId => (origin as WrongAnswerQuestionsProvider).topicId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

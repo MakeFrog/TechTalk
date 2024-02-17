@@ -14,8 +14,7 @@ class IconFlashAreaButton extends StatelessWidget {
     super.key,
     this.icon,
     this.iconPath,
-    this.activatedColor = Colors.white,
-    this.enabledColor = Colors.grey,
+    this.color = Colors.white,
     required this.size,
     required this.onTap,
   });
@@ -23,25 +22,19 @@ class IconFlashAreaButton extends StatelessWidget {
   final String? iconPath;
   final IconData? icon;
   final double size;
-  final Color? activatedColor;
-  final Color? enabledColor;
-
-  final VoidCallback? onTap;
+  final Color? color;
+  final VoidCallback onTap;
 
   // Assets Icon 포맷
   factory IconFlashAreaButton.assetIcon({
     required String iconPath,
     required double size,
-    Color? activatedColor,
-    Color? enabledColor,
-    required VoidCallback? onIconTapped,
+    required VoidCallback onIconTapped,
   }) =>
       IconFlashAreaButton(
         iconPath: iconPath,
         size: size,
         onTap: onIconTapped,
-        activatedColor: activatedColor,
-        enabledColor: enabledColor,
       );
 
   // Flutter Package Icon 포맷
@@ -49,13 +42,13 @@ class IconFlashAreaButton extends StatelessWidget {
     Color? color = Colors.white,
     required IconData icon,
     required double size,
-    required VoidCallback? onIconTapped,
+    required VoidCallback onIconTapped,
   }) =>
       IconFlashAreaButton(
         icon: icon,
         size: size,
         onTap: onIconTapped,
-        activatedColor: color,
+        color: color,
       );
 
   @override
@@ -71,30 +64,24 @@ class IconFlashAreaButton extends StatelessWidget {
                     iconPath!,
                     height: size,
                     width: size,
-                    colorFilter: ColorFilter.mode(
-                        onTap != null ? activatedColor! : enabledColor!,
-                        BlendMode.srcIn),
                   )
                 : Icon(
                     icon,
                     size: size,
-                    color: activatedColor,
+                    color: color,
                   ),
           ),
           Positioned.fromRect(
             rect: Rect.fromPoints(
                 Offset(-size, -size), Offset(size * 2, size * 2)),
-            child: IgnorePointer(
-              ignoring: onTap == null,
-              child: DeferPointer(
-                child: MaterialButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  onPressed: onTap,
-                  child: Container(
-                    alignment: Alignment.center,
-                  ),
+            child: DeferPointer(
+              child: MaterialButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                onPressed: onTap,
+                child: Container(
+                  alignment: Alignment.center,
                 ),
               ),
             ),

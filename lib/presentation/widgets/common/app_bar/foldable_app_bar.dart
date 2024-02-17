@@ -5,14 +5,12 @@ import 'package:techtalk/core/theme/extension/app_text_style.dart';
 class FoldableAppBar extends HookWidget implements PreferredSizeWidget {
   const FoldableAppBar({
     super.key,
-    double? height,
     required this.title,
     required this.scrollController,
     required this.animatedPosition,
-  }) : height = height ?? 56;
+  });
 
   final String title;
-  final double height;
   final ScrollController scrollController;
   final double animatedPosition;
 
@@ -38,7 +36,7 @@ class FoldableAppBar extends HookWidget implements PreferredSizeWidget {
             }
           });
           return AnimatedContainer(
-            height: isFold.value ? 0 : height,
+            height: isFold.value ? 0 : 56,
             duration: const Duration(milliseconds: 200),
             child: AnimatedOpacity(
               opacity: isFold.value ? 0 : 1,
@@ -62,5 +60,5 @@ class FoldableAppBar extends HookWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(height);
+  Size get preferredSize => const Size.fromHeight(56);
 }
