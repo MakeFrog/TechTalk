@@ -26,6 +26,8 @@ class SortedTopics extends _$SortedTopics {
         )
         .toList();
 
+    storedTopicsByUser.removeWhere((e) => e == null);
+
     final storedList = availableTopics
         .where(storedTopicsByUser.contains)
         .followedBy(

@@ -9,9 +9,9 @@ class SelectedWrongAnswerTopic extends _$SelectedWrongAnswerTopic {
   @override
   TopicEntity? build() {
     final targetTopics =
-        ref.watch(userInfoProvider).requireValue?.targetedTopics;
+        ref.watch(userInfoProvider).requireValue!.targetedTopics;
 
-    return targetTopics?.first;
+    return targetTopics.isNotEmpty ? targetTopics.first : null;
   }
 
   void updateTopic(TopicEntity value) => state = value;

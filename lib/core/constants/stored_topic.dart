@@ -25,8 +25,8 @@ class StoredTopics {
     );
   }
 
-  static TopicEntity getBySkillId(String id) {
-    return list.firstWhere((topic) => topic.skillIds.contains(id));
+  static TopicEntity? getBySkillId(String id) {
+    return list.firstWhereOrNull((topic) => topic.skillIds.contains(id));
   }
 
   static TopicEntity? getByIdOrNull(String? id) {
