@@ -86,7 +86,9 @@ class IconFlashAreaButton extends StatelessWidget {
           ),
           Positioned.fromRect(
             rect: Rect.fromPoints(
-                Offset(-size, -size), Offset(size * 2, size * 2)),
+              Offset(-size, -size),
+              Offset(size * 2, size * 2),
+            ),
             child: IgnorePointer(
               ignoring: onTap == null,
               child: DeferPointer(

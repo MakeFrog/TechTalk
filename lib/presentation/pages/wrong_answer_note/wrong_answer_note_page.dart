@@ -23,37 +23,39 @@ class WrongAnswerNotePage extends BasePage
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
-    useAutomaticKeepAlive();
-
     return wrongAnswersAsync(ref).when(
       data: (wrongAnswers) {
         if (wrongAnswers.isEmpty) {
           return const _EmptyListPlaceholder();
         }
 
-        return ListView.separated(
-          controller: scrollController(ref),
-          padding: const EdgeInsets.only(bottom: 120),
-          itemCount: wrongAnswers.length,
-          separatorBuilder: (context, index) => Divider(
-            height: 0.5,
-            thickness: 0.5,
-            color: AppColor.of.gray2,
-          ),
-          itemBuilder: (_, index) {
-            final item = wrongAnswers[index];
-            return InkWell(
-              onTap: () => routeToDetail(index),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 24,
-                ),
-                child: Text(
-                  item.qna.question,
-                  style: AppTextStyle.body1,
-                ),
+        return Builder(
+          builder: (context) {
+            return ListView.separated(
+              controller: scrollController(ref),
+              padding: const EdgeInsets.only(bottom: 120),
+              itemCount: wrongAnswers.length,
+              separatorBuilder: (context, index) => Divider(
+                height: 0.5,
+                thickness: 0.5,
+                color: AppColor.of.gray2,
               ),
+              itemBuilder: (_, index) {
+                final item = wrongAnswers[index];
+                return InkWell(
+                  onTap: () => routeToDetail(index),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 24,
+                    ),
+                    child: Text(
+                      item.qna.question,
+                      style: AppTextStyle.body1,
+                    ),
+                  ),
+                );
+              },
             );
           },
         );

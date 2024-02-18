@@ -330,11 +330,6 @@ class ChatPageRoute extends GoRouteData {
   final InterviewType type;
   final String roomId;
 
-  // @override
-  // Widget build(BuildContext context, GoRouterState state) {
-  //   return const ChatPage();
-  // }
-
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) {
     return CustomTransitionPage(
