@@ -26,6 +26,7 @@ mixin class WrongAnswerNoteState {
   ///
   AsyncValue<List<WrongAnswerEntity>> wrongAnswersAsync(WidgetRef ref) {
     final selectedTopicId = ref.watch(selectedWrongAnswerTopicProvider)?.id;
+
     if (selectedTopicId == null) return const AsyncData([]);
     return ref.watch(wrongAnswersProvider(selectedTopicId));
   }

@@ -49,6 +49,9 @@ class _EmptyListPlaceholder extends ConsumerWidget
               }
             },
           ),
+          SizedBox(
+            height: AppSize.to.ratioHeight(60),
+          ),
         ],
       ),
     );
