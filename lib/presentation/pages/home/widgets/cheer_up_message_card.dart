@@ -107,7 +107,7 @@ class CheerUpMessageCard extends HookWidget {
                     ref.watch(userInfoProvider).valueOrNull?.nickname;
 
                 return Text(
-                  '${userName ?? ''}님!\n테크톡이 항상 응원해요!',
+                  '${userName ?? '익명'}님!\n테크톡이 항상 응원해요!',
                   style: AppTextStyle.headline2,
                 );
               },
