@@ -7,7 +7,7 @@ abstract interface class UserRepository {
   Future<Result<void>> createUser(UserEntity data);
   Future<Result<UserEntity>> getUser([String? uid]);
   Future<Result<void>> updateUser(UserEntity data);
-  Future<Result<void>> deleteUser();
+  Future<Result<void>> quitUser(UserEntity user);
 
   /// storage에 이미지 파일을 업로드하고 url를 리턴
   Future<Result<String>> uploadImgFileAndGetUrl(File imageFile);

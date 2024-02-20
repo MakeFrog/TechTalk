@@ -9,7 +9,6 @@ import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/home/home_event.dart';
 import 'package:techtalk/presentation/pages/home/widgets/home_state.dart';
-import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 class SingleTopicInterviewCard extends ConsumerWidget
     with HomeState, HomeEvent {
@@ -41,7 +40,7 @@ class SingleTopicInterviewCard extends ConsumerWidget
                   SvgPicture.asset(Assets.iconsRoundBlueCircle),
                 ],
               ),
-              if (targetedTopics(ref).isEmpty)
+              if (user(ref)?.recordedTopics.isEmpty ?? true)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                   child: Text(
@@ -63,15 +62,14 @@ class SingleTopicInterviewCard extends ConsumerWidget
   Widget _buildTopics() {
     return Consumer(
       builder: (context, ref, child) {
-        final userTopics = ref.watch(userInfoProvider);
-        return Column(
-          children: [
-            ...userTopics.requireValue!.targetedTopics
-                .where((element) => element.isAvailable)
-                .map(
-                  _buildTopic,
-                ),
-          ],
+        return ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: targetedTopics(ref).length,
+          itemBuilder: (context, index) {
+            final topic = targetedTopics(ref)[index];
+            return _buildTopic(topic);
+          },
         );
       },
     );

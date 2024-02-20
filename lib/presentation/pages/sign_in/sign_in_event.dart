@@ -10,7 +10,7 @@ import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 mixin class SignInEvent {
   /// 유저 데이터 존재 여부에 따라 라우팅을 분기한다.
   Future<void> _routeByUserData(WidgetRef ref) async {
-    return ref.read(userInfoProvider.future).then(
+    return ref.watch(userInfoProvider.future).then(
       (userData) async {
         if (userData != null) {
           const MainRoute().go(ref.context);
@@ -27,13 +27,13 @@ mixin class SignInEvent {
     required UserAccountProvider provider,
   }) async {
     try {
-      await EasyLoading.show()
-          .then(
-            (_) => ref.read(userAuthProvider.notifier).signInOAuth(provider),
-          )
-          .then(
-            (_) => _routeByUserData(ref),
-          );
+      await EasyLoading.show().then(
+        (_) {
+          return ref.read(userAuthProvider.notifier).signInOAuth(provider);
+        },
+      ).then(
+        (_) => _routeByUserData(ref),
+      );
     } finally {
       await EasyLoading.dismiss();
     }

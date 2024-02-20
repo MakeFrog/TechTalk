@@ -6,6 +6,7 @@ import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_event.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:techtalk/presentation/widgets/common/button/apple_sign_in_button.dart';
 import 'package:techtalk/presentation/widgets/common/button/google_sign_in_button.dart';
 
@@ -57,7 +58,10 @@ class _Body extends ConsumerWidget with SignInEvent {
             ),
             const Gap(8),
             AppleSignInButton(
-              onTap: () async => onTapSignInWithApple(ref),
+              onTap: () {
+                print(ref.exists(userInfoProvider));
+                print(ref.read(userInfoProvider));
+              },
             ),
             const Gap(48),
           ],

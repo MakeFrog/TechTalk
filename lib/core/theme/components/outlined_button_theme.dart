@@ -8,6 +8,7 @@ abstract class _OutlinedButtonTheme {
       foregroundColor: AppColor().brand3,
       disabledForegroundColor: AppColor().blue1,
       elevation: 0,
+      side: BorderSide(color: AppColor().gray2),
       padding: const EdgeInsets.symmetric(
         horizontal: 36,
         vertical: 18,

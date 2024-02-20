@@ -15,6 +15,7 @@ class CardListTileButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        color: AppColor.of.white,
         height: 44,
         width: double.infinity,
         alignment: Alignment.centerLeft,

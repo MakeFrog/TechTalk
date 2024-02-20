@@ -63,8 +63,4 @@ class PickedProfileImg extends _$PickedProfileImg {
       }
     }
   }
-
-  ///
-  ///
-  ///
 }

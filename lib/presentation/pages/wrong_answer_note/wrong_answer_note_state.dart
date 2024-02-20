@@ -6,14 +6,14 @@ import 'package:techtalk/presentation/pages/wrong_answer_note/providers/review_n
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/selected_wrong_answer_topic_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_note_scroll_controller.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answers_provider.dart';
-import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_topics_provider.dart';
 
 mixin class WrongAnswerNoteState {
   ///
   /// 유저 정보에 기록된 면접 주제 목록
   ///
   List<TopicEntity> userTopicRecords(WidgetRef ref) =>
-      ref.watch(userInfoProvider).requireValue!.targetedTopics;
+      ref.watch(userTopicsProvider);
 
   ///
   /// 선택된 면접 주제
