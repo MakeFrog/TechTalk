@@ -53,7 +53,7 @@ final class UserDependencyInjection extends FeatureDependencyInjection {
         ),
       )
       ..registerFactory(
-        () => DeleteUserUseCase(
+        () => ResignUserInfoUseCase(
           userRepository,
         ),
       )
