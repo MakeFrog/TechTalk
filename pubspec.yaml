@@ -53,7 +53,7 @@ dependencies:
   firebase_storage: ^11.0.14
   firebase_crashlytics: ^3.0.15
   firebase_analytics: ^10.4.2
-
+  sign_in_with_apple: ^5.0.0
 #  firebase_core: ^2.4.1
 #  firebase_auth: ^4.15.3
 #
@@ -70,6 +70,7 @@ dependencies:
   path_provider: ^2.1.1
 
   # Utils
+  crypto: ^3.0.3
   async: ^2.11.0
   flutter_dotenv: ^5.0.2
   intl: ^0.18.1
