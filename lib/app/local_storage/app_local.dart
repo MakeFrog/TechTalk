@@ -25,4 +25,9 @@ abstract class AppLocal {
     userBox = await Hive.openBox<UserBox>(userBoxName);
     qnasBox = await Hive.openBox<QnaListBox>(qnasBoxName);
   }
+
+  static void clearCache() {
+    userBox.clear();
+    qnasBox.clear();
+  }
 }

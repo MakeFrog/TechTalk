@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/local_storage/app_local.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/profile_setting_type.enum.dart';
 import 'package:techtalk/core/helper/global_event_key.dart';
+import 'package:techtalk/core/services/dialog_service.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
+import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_blur_provider.dart';
+import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
+import 'package:techtalk/presentation/providers/user/auth/user_auth_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:techtalk/presentation/widgets/common/bottom_sheet/option_list_bottom_sheet.dart';
+import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
 mixin class MyPageEvent {
   ///
@@ -18,14 +26,41 @@ mixin class MyPageEvent {
   void onVisitCsPageTapped() {}
 
   ///
-  /// 로그아웃
+  /// 로그아웃 버튼이 클릭 되었을 때
   ///
-  void onLogOutBtnTapped() {}
+  void onLogOutBtnTapped(WidgetRef ref) {
+    DialogService.show(
+        dialog: AppDialog.dividedBtn(
+      title: '로그아웃',
+      subTitle: '정말 로그아웃 하시겠습니까?',
+      leftBtnContent: '취소',
+      rightBtnContent: '로그아웃',
+      onRightBtnClicked: () {
+        _clearKeepAliveModules(ref);
+
+        const SignInRoute().go(ref.context);
+      },
+      onLeftBtnClicked: ref.context.pop,
+    ));
+  }
 
   ///
   /// 회원탈퇴
   ///
   void onWithdrawalBtnTapped() {}
+
+  ///
+  /// Keep Alive 인스턴스 + 로컬 캐시 삭제
+  ///
+  void _clearKeepAliveModules(WidgetRef ref) {
+    AppLocal.clearCache();
+
+    ref.read(userAuthProvider.notifier).signOut();
+    ref.invalidate(userInfoProvider);
+    ref.invalidate(mainBottomNavigationProvider);
+    ref.invalidate(studyAnswerBlurProvider);
+    ref.invalidate(wrongAnswerBlurProvider);
+  }
 
   ///
   /// 설정 bottom sheet 모달창 노출
