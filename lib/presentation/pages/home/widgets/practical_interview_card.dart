@@ -37,14 +37,16 @@ class PracticalInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
                   ),
                   GestureDetector(
                     onTap: () {
-                      routeToTopicSelectPage(context,
-                          type: InterviewType.practical);
+                      routeToTopicSelectPage(
+                        context,
+                        type: InterviewType.practical,
+                      );
                     },
                     child: SvgPicture.asset(Assets.iconsRoundBlueCircle),
                   ),
                 ],
               ),
-              if (targetedTopics(ref).isEmpty)
+              if (user(ref)?.hasPracticalInterviewRecord ?? false)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                   child: Text(

@@ -18,7 +18,7 @@ class HomePage extends BasePage with HomeState {
   Widget buildPage(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
 
-    return asyncValue(ref).when(
+    return userAsync(ref).when(
       data: (_) {
         return ListView(
           physics: const ScrollPhysics(),

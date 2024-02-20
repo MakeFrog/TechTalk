@@ -40,7 +40,7 @@ class SingleTopicInterviewCard extends ConsumerWidget
                   SvgPicture.asset(Assets.iconsRoundBlueCircle),
                 ],
               ),
-              if (targetedTopics(ref).isEmpty)
+              if (user(ref)?.recordedTopics.isEmpty ?? true)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                   child: Text(

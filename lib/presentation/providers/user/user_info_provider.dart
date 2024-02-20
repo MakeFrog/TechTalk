@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/helper/list_extension.dart';
-import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/services/toast_service.dart';
 import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
 import 'package:techtalk/features/user/user.dart';
@@ -17,12 +16,16 @@ class UserInfo extends _$UserInfo {
   FutureOr<UserEntity?> build() async {
     final userAuth = ref.watch(userAuthProvider);
 
-    if (userAuth == null) throw const UnAuthorizedException();
+    if (userAuth == null) {
+      throw Exception('유저 인증 정보가 존재하지 않습니다(로그아웃 이후 다시 로그인 시도할 경우 정상적인 시도입니다)');
+    }
 
     final userData = await getUserUseCase();
 
     return userData.fold(
-      onSuccess: (value) => value,
+      onSuccess: (value) {
+        return value;
+      },
       onFailure: (e) => null,
     );
   }

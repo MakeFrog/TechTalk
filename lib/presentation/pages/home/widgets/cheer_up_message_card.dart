@@ -6,9 +6,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/core.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
+import 'package:techtalk/presentation/pages/home/widgets/home_state.dart';
 
-class CheerUpMessageCard extends HookWidget {
+class CheerUpMessageCard extends HookWidget with HomeState {
   const CheerUpMessageCard({super.key});
 
   @override
@@ -103,11 +103,8 @@ class CheerUpMessageCard extends HookWidget {
             padding: const EdgeInsets.all(24),
             child: Consumer(
               builder: (context, ref, child) {
-                final userName =
-                    ref.watch(userInfoProvider).valueOrNull?.nickname;
-
                 return Text(
-                  '${userName ?? '익명'}님!\n테크톡이 항상 응원해요!',
+                  '${user(ref)?.nickname ?? '익명'}님!\n테크톡이 항상 응원해요!',
                   style: AppTextStyle.headline2,
                 );
               },

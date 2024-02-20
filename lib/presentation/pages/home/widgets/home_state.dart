@@ -12,8 +12,13 @@ mixin class HomeState {
       ref.watch(userTopicsProvider);
 
   ///
-  /// 홈 페이지에서 사용되는 비동기 값, 유저 엔티티 정보
+  /// 유저 엔티티 정보
   ///
-  AsyncValue<UserEntity?> asyncValue(WidgetRef ref) =>
+  AsyncValue<UserEntity?> userAsync(WidgetRef ref) =>
       ref.watch(userInfoProvider);
+
+  ///
+  /// 유저 엔티티 정보
+  ///
+  UserEntity? user(WidgetRef ref) => ref.watch(userInfoProvider).requireValue;
 }

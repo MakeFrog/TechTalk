@@ -6,7 +6,7 @@ part of 'user_info_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userInfoHash() => r'c39e1cd40a682d477e1511632f358c01a3dddeef';
+String _$userInfoHash() => r'3879bcff65f96356bd3db88c8f810c879d19d4da';
 
 /// See also [UserInfo].
 @ProviderFor(UserInfo)
@@ -15,8 +15,11 @@ final userInfoProvider = AsyncNotifierProvider<UserInfo, UserEntity?>.internal(
   name: r'userInfoProvider',
   debugGetCreateSourceHash:
       const bool.fromEnvironment('dart.vm.product') ? null : _$userInfoHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[userAuthProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    userAuthProvider,
+    ...?userAuthProvider.allTransitiveDependencies
+  },
 );
 
 typedef _$UserInfo = AsyncNotifier<UserEntity?>;
