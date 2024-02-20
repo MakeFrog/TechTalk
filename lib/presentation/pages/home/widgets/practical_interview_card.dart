@@ -46,7 +46,7 @@ class PracticalInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
                   ),
                 ],
               ),
-              if (user(ref)?.hasPracticalInterviewRecord ?? false)
+              if (!(user(ref)?.hasPracticalInterviewRecord ?? false))
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                   child: Text(

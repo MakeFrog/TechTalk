@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/features/user/data_source/remote/models/fire_storage_user_ref.dart';
@@ -61,7 +62,12 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }
 
   @override
-  Future<void> deleteUser() async {
+  Future<void> resign(UserModel user) async {
+    final prevData = await FirestoreUsersRef.doc().get();
+    await FirestoreUsersRef.doc(
+            'WITHDRAWN-${FirebaseAuth.instance.currentUser?.uid}')
+        .set(prevData.data()!);
+
     await FirestoreUsersRef.doc().delete();
   }
 

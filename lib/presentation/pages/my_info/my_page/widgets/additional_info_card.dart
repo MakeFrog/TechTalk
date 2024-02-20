@@ -32,7 +32,9 @@ class _AdditionalInfoCard extends ConsumerWidget with MyPageEvent {
                   },
                   text: '로그아웃'),
               CardListTileButton(
-                onTap: onWithdrawalBtnTapped,
+                onTap: (){
+                  onResignBtnTapped(ref);
+                },
                 text: '회원 탈퇴',
                 textColor: AppColor.of.gray2,
               ),

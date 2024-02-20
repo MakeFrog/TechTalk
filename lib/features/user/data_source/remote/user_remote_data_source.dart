@@ -16,8 +16,10 @@ abstract interface class UserRemoteDataSource {
   /// 조회된 데이터를 반환한다.
   Future<UserModel> getUser([String? uid]);
 
-  /// 현재 로그인되어있는 유저 데이터를 삭제한다.
-  Future<void> deleteUser();
+  ///
+  /// 회원탈퇴
+  ///
+  Future<void> resign(UserModel user);
 
   Future<bool> isExistNickname(String nickname);
 

@@ -117,9 +117,12 @@ class UserInfo extends _$UserInfo {
     );
   }
 
-  Future<void> deleteData() async {
-    final deleteUserData = await deleteUserUseCase();
-    deleteUserData.fold(
+  ///
+  /// 회원탈퇴
+  ///
+  Future<void> resign() async {
+    final response = await resignUserInfoUseCase(state.requireValue!);
+    response.fold(
       onSuccess: (value) {
         ref.invalidateSelf();
       },
