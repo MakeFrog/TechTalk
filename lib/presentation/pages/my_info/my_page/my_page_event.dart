@@ -30,24 +30,33 @@ mixin class MyPageEvent {
   ///
   void onLogOutBtnTapped(WidgetRef ref) {
     DialogService.show(
-        dialog: AppDialog.dividedBtn(
-      title: '로그아웃',
-      subTitle: '정말 로그아웃 하시겠습니까?',
-      leftBtnContent: '취소',
-      rightBtnContent: '로그아웃',
-      onRightBtnClicked: () {
-        _clearKeepAliveModules(ref);
+      dialog: AppDialog.dividedBtn(
+        title: '로그아웃',
+        subTitle: '정말 로그아웃 하시겠습니까?',
+        leftBtnContent: '취소',
+        rightBtnContent: '로그아웃',
+        onRightBtnClicked: () {
+          _clearKeepAliveModules(ref);
 
-        const SignInRoute().go(ref.context);
-      },
-      onLeftBtnClicked: ref.context.pop,
-    ));
+          const SignInRoute().go(ref.context);
+        },
+        onLeftBtnClicked: ref.context.pop,
+      ),
+    );
   }
 
   ///
   /// 회원탈퇴
   ///
-  void onWithdrawalBtnTapped() {}
+  void onWithdrawalBtnTapped() {
+    // DialogService.show(
+    //   dialog: NewAppDialog.d(
+    //     title: '로그아웃',
+    //     subTitle: '정말 로그아웃 하시겠습니까?',
+    //     onBtnClicked: () {},
+    //   ),
+    // );
+  }
 
   ///
   /// Keep Alive 인스턴스 + 로컬 캐시 삭제
