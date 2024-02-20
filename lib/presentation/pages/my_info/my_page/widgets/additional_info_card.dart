@@ -1,10 +1,10 @@
 part of '../my_page.dart';
 
-class _AdditionalInfoCard extends StatelessWidget with MyPageEvent {
+class _AdditionalInfoCard extends ConsumerWidget with MyPageEvent {
   const _AdditionalInfoCard({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -26,7 +26,11 @@ class _AdditionalInfoCard extends StatelessWidget with MyPageEvent {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CardListTileButton(onTap: onLogOutBtnTapped, text: '로그아웃'),
+              CardListTileButton(
+                  onTap: () {
+                    onLogOutBtnTapped(ref);
+                  },
+                  text: '로그아웃'),
               CardListTileButton(
                 onTap: onWithdrawalBtnTapped,
                 text: '회원 탈퇴',
