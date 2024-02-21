@@ -34,7 +34,7 @@ mixin class WrongAnswerNoteEvent {
   /// 주제 선택 페이지로 이동
   ///
   void routeToTopicSelection(WidgetRef ref, {required InterviewType type}) {
-    InterviewTopicSelectRoute(InterviewType.practical).push(ref.context);
+    InterviewTopicSelectRoute(type).push(ref.context);
   }
 
   ///

@@ -21,4 +21,14 @@ abstract interface class TopicRemoteDataSource {
   /// 오답 목록 호출
   ///
   Future<List<WrongAnswerModel>> getWrongAnswers(String topicId);
+
+  ///
+  /// 임시
+  ///
+  Future<void> removeQuestions(String topicId);
+
+  ///
+  /// 임시
+  ///
+  Future<void> addQuestions(String topicId);
 }

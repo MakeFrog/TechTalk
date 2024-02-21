@@ -12,7 +12,7 @@ import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 part 'chat_message_history_internal_event.dart';
 part 'chat_message_history_provider.g.dart';
 
-@Riverpod(dependencies: [SelectedChatRoom, ChatQnas])
+@riverpod
 class ChatMessageHistory extends _$ChatMessageHistory {
   @override
   FutureOr<List<ChatMessageEntity>> build() async {

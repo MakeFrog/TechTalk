@@ -32,7 +32,7 @@ class InterviewTopicSelectPage extends BasePage with InterviewTopicSelectState {
             Padding(
               padding: const EdgeInsets.only(top: 12),
               child: Text(
-                '최대 ${SelectedInterviewTopics.limitCount}개까지 선택할 수 있어요',
+                '최대 ${SelectedInterviewTopics.limitCount + 1}개까지 선택할 수 있어요',
                 style: AppTextStyle.body1.copyWith(
                   color: AppColor.of.gray4,
                 ),

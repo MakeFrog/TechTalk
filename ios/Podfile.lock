@@ -7,7 +7,7 @@ PODS:
   - AppAuth/Core (1.6.2)
   - AppAuth/ExternalUserAgent (1.6.2):
     - AppAuth/Core
-  - cloud_firestore (4.15.4):
+  - cloud_firestore (4.15.5):
     - Firebase/Firestore (= 10.20.0)
     - firebase_core
     - Flutter
@@ -31,7 +31,7 @@ PODS:
   - Firebase/Storage (10.20.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 10.20.0)
-  - firebase_analytics (10.8.5):
+  - firebase_analytics (10.8.6):
     - Firebase/Analytics (= 10.20.0)
     - firebase_core
     - Flutter
@@ -42,11 +42,11 @@ PODS:
   - firebase_core (2.25.4):
     - Firebase/CoreOnly (= 10.20.0)
     - Flutter
-  - firebase_crashlytics (3.4.14):
+  - firebase_crashlytics (3.4.15):
     - Firebase/Crashlytics (= 10.20.0)
     - firebase_core
     - Flutter
-  - firebase_storage (11.6.5):
+  - firebase_storage (11.6.6):
     - Firebase/Storage (= 10.20.0)
     - firebase_core
     - Flutter
@@ -313,13 +313,13 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   app_settings: 017320c6a680cdc94c799949d95b84cb69389ebc
   AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
-  cloud_firestore: ba576bee785a05ff952e4da7fa4e23c196917436
+  cloud_firestore: ecf08badc10198974885617f14819201d9a42575
   Firebase: 10c8cb12fb7ad2ae0c09ffc86cd9c1ab392a0031
-  firebase_analytics: 2e82fd84ce13f8321aa7b99336d6ee0e6cc7b984
+  firebase_analytics: 9c600045bfb4d16dd78593d18f32c99bb77e5001
   firebase_auth: 29a10d4129d53aa690c10dbd838ed1a059ef0c9b
   firebase_core: a46c312d8bae4defa3d009b2aa7b5b413aeb394e
-  firebase_crashlytics: 3d12285fcbd865d576b9965bd4090cd8b68e11fd
-  firebase_storage: 5007be227e54a46f260b6040a23b4fdc8ca1c5c5
+  firebase_crashlytics: 3054fbdd2b4a4a91f25a15e57c9f1bd2a9ed81ae
+  firebase_storage: 7ea4707a0331c7ec427a780731f5bf723a7293ea
   FirebaseAnalytics: a2731bf3670747ce8f65368b118d18aa8e368246
   FirebaseAppCheckInterop: 69fc7d8f6a1cbfa973efb8d1723651de30d12525
   FirebaseAuth: 9c5c400d2c3055d8ae3a0284944c86fa95d48dac
@@ -341,7 +341,7 @@ SPEC CHECKSUMS:
   FirebaseStorage: 8505bae8ac6662474b5b50e07759fb2765c15746
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   fluttertoast: 31b00dabfa7fb7bacd9e7dbee580d7a2ff4bf265
-  google_sign_in_ios: 1bfaf6607b44cd1b24c4d4bc39719870440f9ce1
+  google_sign_in_ios: 989eea5abe94af62050782714daf920be883d4a2
   GoogleAppMeasurement: bb3c564c3efb933136af0e94899e0a46167466a8
   GoogleDataTransport: 57c22343ab29bc686febbf7cbb13bad167c2d8fe
   GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842

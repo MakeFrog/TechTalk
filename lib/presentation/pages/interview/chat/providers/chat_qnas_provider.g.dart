@@ -6,7 +6,7 @@ part of 'chat_qnas_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chatQnasHash() => r'd35e0605499742f79b3fd984238ec440825e8ab0';
+String _$chatQnasHash() => r'86186fa8bf929c12acf3d6e74ca14624c0dcf7ef';
 
 ///
 /// 채팅 Qna 리스트
@@ -20,11 +20,8 @@ final chatQnasProvider =
   name: r'chatQnasProvider',
   debugGetCreateSourceHash:
       const bool.fromEnvironment('dart.vm.product') ? null : _$chatQnasHash,
-  dependencies: <ProviderOrFamily>[selectedChatRoomProvider],
-  allTransitiveDependencies: <ProviderOrFamily>{
-    selectedChatRoomProvider,
-    ...?selectedChatRoomProvider.allTransitiveDependencies
-  },
+  dependencies: null,
+  allTransitiveDependencies: null,
 );
 
 typedef _$ChatQnas = AutoDisposeAsyncNotifier<List<ChatQnaEntity>>;

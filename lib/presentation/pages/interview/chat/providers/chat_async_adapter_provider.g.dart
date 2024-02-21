@@ -6,7 +6,7 @@ part of 'chat_async_adapter_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chatAsyncAdapterHash() => r'aedc70ed2d6fc2e3da6caef9e0aca3f708fa347c';
+String _$chatAsyncAdapterHash() => r'bc78b693c3ca783b370cea8fa2bd20ec0e326df8';
 
 ///
 /// [chatQnasProvider][chatMessageHistoryProvider]
@@ -23,16 +23,8 @@ final chatAsyncAdapterProvider =
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$chatAsyncAdapterHash,
-  dependencies: <ProviderOrFamily>[
-    chatQnasProvider,
-    chatMessageHistoryProvider
-  ],
-  allTransitiveDependencies: <ProviderOrFamily>{
-    chatQnasProvider,
-    ...?chatQnasProvider.allTransitiveDependencies,
-    chatMessageHistoryProvider,
-    ...?chatMessageHistoryProvider.allTransitiveDependencies
-  },
+  dependencies: null,
+  allTransitiveDependencies: null,
 );
 
 typedef _$ChatAsyncAdapter = AutoDisposeNotifier<AsyncValue>;

@@ -30,6 +30,7 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
     log('Subject : ${param.category}\n Question : ${param.question}\n UserAnswer : ${param.userAnswer} / ${streamedFeedbackResponse.hasValue}');
 
     String response = '';
+    // enum Role { system, user, assistant, function }
     OpenAI.instance
         .onChatCompletionSSE(
       request: ChatCompleteText(

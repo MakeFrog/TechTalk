@@ -129,4 +129,10 @@ class Assets {
   static const String staatlichesStaatlichesRegular =
       'assets/fonts/staatliches/Staatliches-Regular.ttf';
   static const String techTalk = '.env';
+  static const String topicsAndroid = 'assets/topics/android.json';
+  static const String topicsDataStructure = 'assets/topics/dataStructure.json';
+  static const String topicsFlutter = 'assets/topics/flutter.json';
+  static const String topicsReact = 'assets/topics/react.json';
+  static const String topicsSpring = 'assets/topics/spring.json';
+  static const String topicsSwift = 'assets/topics/swift.json';
 }

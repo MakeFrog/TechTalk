@@ -29,6 +29,7 @@ mixin class SplashEvent {
 
     await ref.read(userInfoProvider.future).then(
       (userData) {
+        print('움튼 : ${userData}');
         if (userData == null) {
           const SignUpRoute().go(ref.context);
         } else {

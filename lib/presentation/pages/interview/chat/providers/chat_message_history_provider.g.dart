@@ -7,7 +7,7 @@ part of 'chat_message_history_provider.dart';
 // **************************************************************************
 
 String _$chatMessageHistoryHash() =>
-    r'6b7a2cbb63891d60f8b8a35f2d7ac9de89ccedfe';
+    r'98224e9396cf178dbec9ffcc2f92909bff3ab801';
 
 /// See also [ChatMessageHistory].
 @ProviderFor(ChatMessageHistory)
@@ -18,13 +18,8 @@ final chatMessageHistoryProvider = AutoDisposeAsyncNotifierProvider<
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$chatMessageHistoryHash,
-  dependencies: <ProviderOrFamily>[selectedChatRoomProvider, chatQnasProvider],
-  allTransitiveDependencies: <ProviderOrFamily>{
-    selectedChatRoomProvider,
-    ...?selectedChatRoomProvider.allTransitiveDependencies,
-    chatQnasProvider,
-    ...?chatQnasProvider.allTransitiveDependencies
-  },
+  dependencies: null,
+  allTransitiveDependencies: null,
 );
 
 typedef _$ChatMessageHistory

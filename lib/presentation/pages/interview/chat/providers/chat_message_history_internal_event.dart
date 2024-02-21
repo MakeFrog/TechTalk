@@ -8,6 +8,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
     required ChatMessageEntity message,
     void Function()? onDone,
   }) async {
+    print('움튼');
     await update(
       (previous) => [
         message,
@@ -63,7 +64,8 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   ///
   Future<void> _showIntroAndQuestionMessages() async {
     final room = ref.read(selectedChatRoomProvider);
-    final nickname = ref.read(userInfoProvider).requireValue!.nickname!;
+
+    final nickname = ref.watch(userInfoProvider).requireValue!.nickname!;
     final firstQna = _getNewQna();
     final String introMessage =
         '반가워요! $nickname님. ${room.type.isSingleTopic ? '${room.topics.first.text} 면접 질문을 드리겠습니다.' : '먼저 ${StoredTopics.getById(firstQna.id.getFirstPartOfSpliited).text} 질문을 드리겠습니다.'}';

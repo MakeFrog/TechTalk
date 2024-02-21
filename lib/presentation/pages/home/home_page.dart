@@ -24,6 +24,18 @@ class HomePage extends BasePage with HomeState {
           physics: const ScrollPhysics(),
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           children: const [
+            // IconButton(
+            //   onPressed: () {
+            //     try {
+            //       // topicRemoteDataSource.removeQuestions('spring');
+            //       topicRemoteDataSource.addQuestions('spring');
+            //       print('성공');
+            //     } catch (e) {
+            //       print('실패');
+            //     }
+            //   },
+            //   icon: Icon(Icons.ac_unit),
+            // ),
             CheerUpMessageCard(),
             Gap(16),
             PracticalInterviewCard(),

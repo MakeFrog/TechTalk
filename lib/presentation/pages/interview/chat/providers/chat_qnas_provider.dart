@@ -14,7 +14,7 @@ part 'chat_qnas_provider.g.dart';
 ///
 /// 채팅 Qna 리스트
 ///
-@Riverpod(dependencies: [SelectedChatRoom])
+@riverpod
 class ChatQnas extends _$ChatQnas {
   @override
   FutureOr<List<ChatQnaEntity>> build() async {

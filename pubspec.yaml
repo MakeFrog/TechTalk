@@ -122,6 +122,8 @@ flutter:
     - assets/logo/
     - assets/character/
     - assets/json/
+    - assets/topics/
+
 
   fonts:
     - family: pretendard

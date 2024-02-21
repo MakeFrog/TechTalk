@@ -11,7 +11,7 @@ part 'chat_async_adapter_provider.g.dart';
 /// [ChatPage] 위젯에서 사용됨.
 ///
 
-@Riverpod(dependencies: [ChatQnas, ChatMessageHistory])
+@riverpod
 class ChatAsyncAdapter extends _$ChatAsyncAdapter {
   @override
   AsyncValue build() {
