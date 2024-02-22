@@ -114,6 +114,7 @@ class _BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
               controller: messageController,
               maxLines: null,
               textAlignVertical: TextAlignVertical.top,
+              cursorColor: AppColor.of.brand2,
               decoration: InputDecoration(
                 enabled: !progressState.isDoneOrError,
                 fillColor: AppColor.of.background1,
@@ -136,13 +137,10 @@ class _BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                 builder: (context, ref, _) {
                   return IconButton(
                     icon: SvgPicture.asset(
-                      Assets.iconsSend,
-                      colorFilter: ColorFilter.mode(
-                        message.isNotEmpty && progressState.enableChat
-                            ? AppColor.of.blue2
-                            : AppColor.of.gray3,
-                        BlendMode.srcIn,
-                      ),
+                      /// NOTE : SVG 패키지 문제가 있어 colorFilter를 사용하지 않고 아이콘 자체를 반환
+                      message.isNotEmpty && progressState.enableChat
+                          ? Assets.iconsSendActivate
+                          : Assets.iconsSend,
                     ),
                     onPressed: message.isNotEmpty && progressState.enableChat
                         ? () {
