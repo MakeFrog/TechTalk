@@ -8,7 +8,6 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
     required ChatMessageEntity message,
     void Function()? onDone,
   }) async {
-    print('움튼');
     await update(
       (previous) => [
         message,
@@ -20,6 +19,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
       onDone: () {
         onDone?.call();
         message.message.close();
+        message.isStreamApplied = false;
       },
     );
   }

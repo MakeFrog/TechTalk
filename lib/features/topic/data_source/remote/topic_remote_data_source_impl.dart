@@ -114,10 +114,6 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
           .doc(e['id']);
 
       await ref.set(e);
-
-      // await FirestoreTopicQuestionsRef.collection(topicId).doc(e['id']).set(e);
     }
-
-    print('움튼 : ${jsonData}');
   }
 }

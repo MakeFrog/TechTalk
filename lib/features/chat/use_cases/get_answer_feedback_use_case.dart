@@ -70,6 +70,7 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
         /// 1) 정답 여부 확인
         /// 2) 응답 텍스트 포맷
         /// 3) 스트림 값 삽입
+
         response += it.choices?.last.message?.content ?? '';
         setCorrectnessIfNeeded(response, param.checkAnswer);
         streamedFeedbackResponse.add(formatResponse(response));
@@ -80,6 +81,7 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
         /// 2) 응답 진행 상태 초기화
         /// 3) 완료 콜백 메소드 실행
         state = FeedbackProgress.init;
+        streamedFeedbackResponse.close();
         param.onFeedBackCompleted(
           formatResponse(streamedFeedbackResponse.value),
         );
