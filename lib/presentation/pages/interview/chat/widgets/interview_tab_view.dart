@@ -29,28 +29,30 @@ class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
               builder: (context, ref, _) {
                 return chatAsyncAdapterValue(ref).when(
                   data: (_) {
-                    final chatMessages = chatMessageHistory(ref);
                     return Align(
                       alignment: Alignment.topCenter,
                       child: ListView.separated(
-                        controller: chatScrollController,
-                        shrinkWrap: true,
-                        reverse: true,
-                        padding: const EdgeInsets.only(top: 24, bottom: 20) +
-                            const EdgeInsets.symmetric(horizontal: 12),
-                        separatorBuilder: (_, __) => const Gap(8),
-                        itemCount: chatMessages.length,
-                        itemBuilder: (context, index) => Bubble(
-                          chat: chatMessages[index],
-                          isLatestReceivedChatInEachSection: ref
-                              .read(chatMessageHistoryProvider.notifier)
-                              .isLastReceivedChatInEachQuestion(index: index),
-                          interviewer: interviewer(ref),
-                          onReportBtnTapped: () {
-                            onReportBtnTapped(ref, index: index);
-                          },
-                        ),
-                      ),
+                          controller: chatScrollController,
+                          shrinkWrap: true,
+                          reverse: true,
+                          padding: const EdgeInsets.only(top: 24, bottom: 20) +
+                              const EdgeInsets.symmetric(horizontal: 12),
+                          separatorBuilder: (_, __) => const Gap(8),
+                          itemCount: ref.watch(chatMessageHistoryProvider
+                              .select((value) => value.value?.length ?? 0)),
+                          itemBuilder: (context, index) {
+                            return Bubble(
+                              chat: chatMessageHistory(ref)[index],
+                              isLatestReceivedChatInEachSection: ref
+                                  .watch(chatMessageHistoryProvider.notifier)
+                                  .isLastReceivedChatInEachQuestion(
+                                      index: index),
+                              interviewer: interviewer(ref),
+                              onReportBtnTapped: () {
+                                onReportBtnTapped(ref, index: index);
+                              },
+                            );
+                          }),
                     );
                   },
                   error: (e, __) => Center(
