@@ -20,7 +20,6 @@ class _Scaffold extends StatelessWidget {
           clipBehavior: Clip.none,
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
@@ -32,6 +31,7 @@ class _Scaffold extends StatelessWidget {
               child: Builder(
                 builder: (context) {
                   return TabBar(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     controller: tabController,
                     tabs: const [
                       Tab(
@@ -48,6 +48,8 @@ class _Scaffold extends StatelessWidget {
                         horizontal: AppSize.to.screenWidth / 4.2,
                       ),
                     ),
+                    overlayColor:
+                        MaterialStateProperty.all<Color>(Colors.grey.shade200),
                     labelColor: AppColor.of.black,
                     unselectedLabelColor: AppColor.of.gray3,
                     indicatorColor: AppColor.of.black,
