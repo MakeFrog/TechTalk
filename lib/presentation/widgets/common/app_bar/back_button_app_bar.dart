@@ -16,6 +16,8 @@ class BackButtonAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onBackBtnTapped;
   final List<Widget>? actions;
 
+  static const double appbarHeight = 56;
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -29,6 +31,7 @@ class BackButtonAppBar extends StatelessWidget implements PreferredSizeWidget {
         title ?? '',
         style: AppTextStyle.headline2,
       ),
+      toolbarHeight: appbarHeight,
       leading: AppBackButton(
         onBackBtnTapped: onBackBtnTapped ?? context.pop,
       ),

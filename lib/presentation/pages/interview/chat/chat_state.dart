@@ -1,9 +1,10 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/features/chat/repositories/entities/chat_message_entity.dart';
+import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/interviewer_entity.dart';
 import 'package:techtalk/features/chat/repositories/enums/interview_progress.enum.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_async_adapter_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 
@@ -37,4 +38,16 @@ mixin class ChatState {
   ///
   InterviewProgress progressState(WidgetRef ref) =>
       ref.watch(interviewProgressStateProvider);
+
+  ///
+  /// 답변이 완료되는 문답 목록
+  ///
+  AsyncValue<List<ChatQnaEntity>> completedQnaListAsync(WidgetRef ref) =>
+      ref.watch(chatQnasProvider).whenData(
+            (value) => [
+              ...value.where(
+                (e) => e.hasUserResponded,
+              ),
+            ],
+          );
 }

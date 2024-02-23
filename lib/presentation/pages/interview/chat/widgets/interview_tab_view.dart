@@ -10,6 +10,7 @@ import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/bubble.dart';
+import 'package:techtalk/presentation/widgets/common/indicator/exception_indicator.dart';
 
 class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
   const InterviewTabView({Key? key}) : super(key: key);
@@ -55,12 +56,12 @@ class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
                           }),
                     );
                   },
-                  error: (e, __) => Center(
-                    child: Text('채팅 내역을 불러오지 못했습니다[$e]'),
+                  error: (e, __) => const Center(
+                    child: ExceptionIndicator(
+                        subTitle: '다시 시도해주세요', title: '채팅 내역을 불러오지 못했어요.'),
                   ),
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
                 );
               },
             ),
