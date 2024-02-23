@@ -97,4 +97,11 @@ class ChatQnas extends _$ChatQnas {
       );
     }
   }
+
+  ///
+  /// id값으로 Qna객체 반환
+  ///
+  ChatQnaEntity getQnaById(String qnaId) {
+    return state.requireValue.firstWhere((e) => e.id == qnaId);
+  }
 }

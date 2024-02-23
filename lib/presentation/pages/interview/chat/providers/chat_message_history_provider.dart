@@ -3,7 +3,9 @@ import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
+import 'package:techtalk/core/helper/list_extension.dart';
 import 'package:techtalk/core/helper/string_extension.dart';
+import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
@@ -33,6 +35,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
             },
             onFailure: (e) {
               log(e.toString());
+
               throw e;
             },
           );
@@ -84,9 +87,13 @@ class ChatMessageHistory extends _$ChatMessageHistory {
       AnswerChatMessageEntity userAnswer) async {
     late AnswerChatMessageEntity resolvedUserAnswer;
     late bool isAnswerCorrect;
-    final feedbackChat = getAnswerFeedBackUseCase.call(
+    final room = ref.read(selectedChatRoomProvider);
+    final qna =
+        ref.read(chatQnasProvider.notifier).getQnaById(userAnswer.qnaId);
+    /*final feedbackChat*/
+    final response = getAnswerFeedBackUseCase.call(
       (
-        category: ref.read(selectedChatRoomProvider).topics.first.text,
+        qna: qna,
         checkAnswer: ({required isCorrect}) async {
           /// 2) 유저의 답변 정답 여부 확인
           resolvedUserAnswer =
@@ -112,10 +119,15 @@ class ChatMessageHistory extends _$ChatMessageHistory {
 
           late QuestionChatMessageEntity nextQuestionChat;
 
+          final guideChat = GuideChatMessageEntity.createStatic(
+            message: guideMessage,
+            timestamp: DateTime.now(),
+          );
+
           if (!isCompleted) {
             final qna = _getNewQna();
 
-            if (ref.read(selectedChatRoomProvider).type.isPractical) {
+            if (room.type.isPractical) {
               guideMessage =
                   '다음 ${StoredTopics.getById(qna.id.getFirstPartOfSpliited).text} 질문을 드리겠습니다.';
             }
@@ -124,11 +136,6 @@ class ChatMessageHistory extends _$ChatMessageHistory {
                 message: qna.qna.question,
                 timestamp: DateTime.now());
           }
-
-          final guideChat = GuideChatMessageEntity.createStatic(
-            message: guideMessage,
-            timestamp: DateTime.timestamp(),
-          );
 
           await Future.wait([
             _uploadMessage([
@@ -158,11 +165,20 @@ class ChatMessageHistory extends _$ChatMessageHistory {
       ),
     );
 
-    /// 3) 유저 답변에 대한 피드백 채팅 전달
-    await showMessage(
-      message: FeedbackChatMessageEntity(
-        message: feedbackChat,
-      ),
+    await response.fold(
+      onSuccess: (feedbackStreamedChat) async {
+        /// 3) 유저 답변에 대한 피드백 채팅 전달
+        await showMessage(
+          message: FeedbackChatMessageEntity(
+            message: feedbackStreamedChat,
+          ),
+        );
+      },
+      onFailure: (e) {
+        _rollbackToPreviousChatStep();
+        SnackBarService.showSnackBar(
+            '정답 여부를 판별하는 과정에서 오류가 발생했습니다. 잠시후 다시 시도해주세요.');
+      },
     );
   }
 

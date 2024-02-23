@@ -125,4 +125,18 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
 
     return qna;
   }
+
+  ///
+  /// 가장 최근 유저가 질문에 답변하기 이전의 채팅 상태로 롤백
+  ///
+  void _rollbackToPreviousChatStep() {
+    final chatList = state.requireValue;
+
+    final targetIndex =
+        chatList.firstIndexWhereOrNull((chat) => chat.type.isQuestionMessage);
+
+    update((previous) {
+      return [...chatList.sublist(targetIndex!, chatList.length - 1)];
+    });
+  }
 }
