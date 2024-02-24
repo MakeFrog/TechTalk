@@ -7,8 +7,9 @@ class _EmptyListPlaceholder extends ConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: ListView(
+        shrinkWrap: true,
+        physics: const ScrollPhysics(),
         children: [
           ExceptionIndicator(
             title: '아직 오답 문제가 없어요.',
@@ -19,17 +20,31 @@ class _EmptyListPlaceholder extends ConsumerWidget
           Builder(
             builder: (context) {
               if (userTopicRecords(ref).isNotEmpty) {
-                return FilledButton(
-                  onPressed: () {
-                    routeToSingleSubjectQuestionCount(ref);
-                  },
-                  child: const Text('면접보기'),
+                return Center(
+                  child: FilledButton(
+                    style: FilledButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 34,
+                        vertical: 14,
+                      ),
+                    ),
+                    onPressed: () {
+                      routeToSingleSubjectQuestionCount(ref);
+                    },
+                    child: const Text('면접보기'),
+                  ),
                 );
               } else {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     FilledButton(
+                      style: FilledButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 34,
+                          vertical: 14,
+                        ),
+                      ),
                       onPressed: () {
                         routeToTopicSelection(ref,
                             type: InterviewType.singleTopic);
@@ -38,6 +53,12 @@ class _EmptyListPlaceholder extends ConsumerWidget
                     ),
                     const Gap(8),
                     OutlinedButton(
+                      style: FilledButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 34,
+                          vertical: 14,
+                        ),
+                      ),
                       onPressed: () {
                         routeToTopicSelection(ref,
                             type: InterviewType.practical);
@@ -48,9 +69,6 @@ class _EmptyListPlaceholder extends ConsumerWidget
                 );
               }
             },
-          ),
-          SizedBox(
-            height: AppSize.to.ratioHeight(60),
           ),
         ],
       ),
