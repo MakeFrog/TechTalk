@@ -20,6 +20,7 @@ class AppTheme {
           bodyColor: AppColor().black,
           displayColor: AppColor().black,
         ),
+
     progressIndicatorTheme:
         ProgressIndicatorThemeData(color: AppColor().brand2),
     filledButtonTheme: _FilledButtonTheme.light,

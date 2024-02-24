@@ -12,7 +12,7 @@ import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_blur_provider.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
-import 'package:techtalk/presentation/providers/user/auth/user_auth_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_auth_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:techtalk/presentation/widgets/common/bottom_sheet/option_list_bottom_sheet.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';

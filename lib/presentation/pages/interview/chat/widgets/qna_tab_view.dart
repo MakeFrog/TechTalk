@@ -6,6 +6,7 @@ import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/qna_expansion_tile.dart';
+import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 import 'package:techtalk/presentation/widgets/common/indicator/exception_indicator.dart';
 
 class QnATabView extends HookConsumerWidget with ChatState {
@@ -20,28 +21,22 @@ class QnATabView extends HookConsumerWidget with ChatState {
       shrinkWrap: true,
       children: <Widget>[
         /// Q@A LENGTH INDICATOR
-        // Container(
-        //   alignment: Alignment.centerRight,
-        //   padding: const EdgeInsets.only(right: 16, top: 16, bottom: 4),
-        //   child: completedQnaListAsync(ref).when(
-        //     data: (qnaList) {
-        //       return Text(
-        //         '${qnaList.length}개의 문답',
-        //         style: AppTextStyle.alert2.copyWith(
-        //           color: AppColor.of.gray3,
-        //         ),
-        //       );
-        //     },
-        //     error: (_, __) => const EmptyBox(),
-        //     loading: () => const SkeletonBox(
-        //       height: 13,
-        //       width: 32,
-        //       padding: EdgeInsets.symmetric(
-        //         vertical: 2,
-        //       ),
-        //     ),
-        //   ),
-        // ),
+        Container(
+          alignment: Alignment.centerRight,
+          padding: const EdgeInsets.only(right: 16, top: 16, bottom: 4),
+          child: completedQnaListAsync(ref).when(
+            data: (qnaList) {
+              return Text(
+                '${qnaList.length}개의 문답',
+                style: AppTextStyle.alert2.copyWith(
+                  color: AppColor.of.gray3,
+                ),
+              );
+            },
+            error: (_, __) => const EmptyBox(),
+            loading: () => const EmptyBox(),
+          ),
+        ),
 
         /// Q@A LIST
         completedQnaListAsync(ref).when(

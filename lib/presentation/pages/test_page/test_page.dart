@@ -1,66 +1,80 @@
+import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/presentation/widgets/base/base_page.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class TestPage extends BasePage {
+//
+// final listAimProvider = StateProvider<List<String>>((_) {
+//   return List.generate(5, (_) => Faker().person.firstName());
+// });
+
+part 'test_page.g.dart';
+
+@riverpod
+class ListAim extends _$ListAim {
+  @override
+  List<String> build() {
+    return List.generate(5, (_) => Faker().person.firstName());
+  }
+
+  void aimUpdate() {
+    state = [...state, Faker().person.firstName()];
+  }
+}
+
+final indexProvider = Provider<int>((_) {
+  return 0;
+});
+
+class TestPage extends ConsumerWidget {
   const TestPage({Key? key}) : super(key: key);
 
   @override
-  void onInit(WidgetRef? ref) {
-    print("화면이 초기화 됨");
-  }
-
-  @override
-  void onDispose(WidgetRef? ref) {
-    print("화면이 없어짐");
-  }
-
-  @override
-  Color? get screenBackgroundColor => Colors.red;
-
-  @override
-  Widget buildPage(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    print("...page build...");
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          '페이지 테스트',
-        ),
-      ),
-      body: SizedBox(
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                // const ChatPageRoute(
-                //   progressState: InterviewProgressState.initial,
-                //   roomId: 'RWNSK@32ASDF3',
-                //   topic: Topic.swift,
-                // ).go(ref.context);
-              },
-              child: const Text(
-                '면접 입장',
-              ),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // const ChatPageRoute(
-                //   progressState: InterviewProgressState.ongoing,
-                //   roomId: 'RWNSK@32ASDF3',
-                //   topic: Topic.swift,
-                // ).push(ref.context);
-              },
-              child: const Text(
-                '진행중인 면접 입장',
-              ),
-            ),
-          ],
-        ),
+      appBar: AppBar(),
+      body: const _ListView(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          ref.read(listAimProvider.notifier).aimUpdate();
+        },
       ),
     );
+  }
+}
+
+class _ListView extends ConsumerWidget {
+  const _ListView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ListView.builder(
+        itemCount: ref.watch(listAimProvider.select((value) => value.length)),
+        itemBuilder: (_, index) {
+          return ProviderScope(
+              overrides: [indexProvider.overrideWith((ref) => index)],
+              child: const _ListItem());
+        });
+  }
+}
+
+class _ListItem extends ConsumerWidget {
+  const _ListItem();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final index = ref.read(indexProvider);
+    final item = ref.watch(listAimProvider)[index];
+    print("...list item build...$item");
+    return ElevatedButton(
+        onPressed: () {
+          final list = ref.read(listAimProvider);
+
+          // int index = ref.watch(listAimProvider).indexWhere((element) => element==item);
+          list[index] = Faker().person.firstName();
+          ref.watch(listAimProvider.notifier).state = [...list];
+        },
+        child: Text(item));
   }
 }
