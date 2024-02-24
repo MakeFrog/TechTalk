@@ -5,7 +5,7 @@ import 'package:techtalk/core/helper/list_extension.dart';
 import 'package:techtalk/core/services/toast_service.dart';
 import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
 import 'package:techtalk/features/user/user.dart';
-import 'package:techtalk/presentation/providers/user/auth/user_auth_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_auth_provider.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 part 'user_info_provider.g.dart';

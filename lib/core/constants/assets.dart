@@ -91,6 +91,7 @@ class Assets {
   static const String iconsSearch = 'assets/icons/search.svg';
   static const String iconsSearchThick = 'assets/icons/search_thick.svg';
   static const String iconsSend = 'assets/icons/send.svg';
+  static const String iconsSendActivate = 'assets/icons/send_activate.svg';
   static const String iconsStudy = 'assets/icons/study.svg';
   static const String iconsTalker = 'assets/icons/talker.svg';
   static const String iconsUser = 'assets/icons/user.svg';

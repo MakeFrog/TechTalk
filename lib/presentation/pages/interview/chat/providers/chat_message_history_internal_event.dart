@@ -8,7 +8,6 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
     required ChatMessageEntity message,
     void Function()? onDone,
   }) async {
-    print('움튼');
     await update(
       (previous) => [
         message,
@@ -20,6 +19,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
       onDone: () {
         onDone?.call();
         message.message.close();
+        message.isStreamApplied = false;
       },
     );
   }
@@ -124,5 +124,19 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
         .firstWhere((qna) => !qna.hasUserResponded);
 
     return qna;
+  }
+
+  ///
+  /// 가장 최근 유저가 질문에 답변하기 이전의 채팅 상태로 롤백
+  ///
+  void _rollbackToPreviousChatStep() {
+    final chatList = state.requireValue;
+
+    final targetIndex =
+        chatList.firstIndexWhereOrNull((chat) => chat.type.isQuestionMessage);
+
+    update((previous) {
+      return [...chatList.sublist(targetIndex!, chatList.length - 1)];
+    });
   }
 }

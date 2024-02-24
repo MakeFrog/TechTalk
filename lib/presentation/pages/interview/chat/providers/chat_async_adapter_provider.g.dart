@@ -6,7 +6,7 @@ part of 'chat_async_adapter_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chatAsyncAdapterHash() => r'bc78b693c3ca783b370cea8fa2bd20ec0e326df8';
+String _$chatAsyncAdapterHash() => r'8ed2774012a905f885ba38bb6b0919d5effaf8cc';
 
 ///
 /// [chatQnasProvider][chatMessageHistoryProvider]

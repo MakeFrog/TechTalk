@@ -10,6 +10,7 @@ import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/bubble.dart';
+import 'package:techtalk/presentation/widgets/common/indicator/exception_indicator.dart';
 
 class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
   const InterviewTabView({Key? key}) : super(key: key);
@@ -29,36 +30,38 @@ class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
               builder: (context, ref, _) {
                 return chatAsyncAdapterValue(ref).when(
                   data: (_) {
-                    final chatMessages = chatMessageHistory(ref);
                     return Align(
                       alignment: Alignment.topCenter,
                       child: ListView.separated(
-                        controller: chatScrollController,
-                        shrinkWrap: true,
-                        reverse: true,
-                        padding: const EdgeInsets.only(top: 24, bottom: 20) +
-                            const EdgeInsets.symmetric(horizontal: 12),
-                        separatorBuilder: (_, __) => const Gap(8),
-                        itemCount: chatMessages.length,
-                        itemBuilder: (context, index) => Bubble(
-                          chat: chatMessages[index],
-                          isLatestReceivedChatInEachSection: ref
-                              .read(chatMessageHistoryProvider.notifier)
-                              .isLastReceivedChatInEachQuestion(index: index),
-                          interviewer: interviewer(ref),
-                          onReportBtnTapped: () {
-                            onReportBtnTapped(ref, index: index);
-                          },
-                        ),
-                      ),
+                          controller: chatScrollController,
+                          shrinkWrap: true,
+                          reverse: true,
+                          padding: const EdgeInsets.only(top: 24, bottom: 20) +
+                              const EdgeInsets.symmetric(horizontal: 12),
+                          separatorBuilder: (_, __) => const Gap(8),
+                          itemCount: ref.watch(chatMessageHistoryProvider
+                              .select((value) => value.value?.length ?? 0)),
+                          itemBuilder: (context, index) {
+                            return Bubble(
+                              chat: chatMessageHistory(ref)[index],
+                              isLatestReceivedChatInEachSection: ref
+                                  .watch(chatMessageHistoryProvider.notifier)
+                                  .isLastReceivedChatInEachQuestion(
+                                      index: index),
+                              interviewer: interviewer(ref),
+                              onReportBtnTapped: () {
+                                onReportBtnTapped(ref, index: index);
+                              },
+                            );
+                          }),
                     );
                   },
-                  error: (e, __) => Center(
-                    child: Text('채팅 내역을 불러오지 못했습니다[$e]'),
+                  error: (e, __) => const Center(
+                    child: ExceptionIndicator(
+                        subTitle: '다시 시도해주세요', title: '채팅 내역을 불러오지 못했어요.'),
                   ),
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
                 );
               },
             ),
@@ -112,6 +115,7 @@ class _BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
               controller: messageController,
               maxLines: null,
               textAlignVertical: TextAlignVertical.top,
+              cursorColor: AppColor.of.brand2,
               decoration: InputDecoration(
                 enabled: !progressState.isDoneOrError,
                 fillColor: AppColor.of.background1,
@@ -134,13 +138,10 @@ class _BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                 builder: (context, ref, _) {
                   return IconButton(
                     icon: SvgPicture.asset(
-                      Assets.iconsSend,
-                      colorFilter: ColorFilter.mode(
-                        message.isNotEmpty && progressState.enableChat
-                            ? AppColor.of.blue2
-                            : AppColor.of.gray3,
-                        BlendMode.srcIn,
-                      ),
+                      /// NOTE : SVG 패키지 문제가 있어 colorFilter를 사용하지 않고 아이콘 자체를 반환
+                      message.isNotEmpty && progressState.enableChat
+                          ? Assets.iconsSendActivate
+                          : Assets.iconsSend,
                     ),
                     onPressed: message.isNotEmpty && progressState.enableChat
                         ? () {

@@ -86,6 +86,7 @@ dependencies:
   lorem_ipsum_generator: ^0.0.1 # 랜던 텍스트 generator(삭제 예정)
   app_settings: ^5.1.1 # Device Setting Route
   korean_profanity_filter: ^1.0.0 # 비속어 욕설 필터링
+  faker: ^2.1.0
 
   # 앱 정보
   package_info_plus: ^5.0.1 # 현재 앱 버전 정보

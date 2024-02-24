@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/interviewer_entity.dart';
 import 'package:techtalk/presentation/widgets/common/avatar/clip_oval_circle_avatar.dart';
-import 'package:techtalk/presentation/widgets/common/button/icon_flash_area_button.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class Bubble extends StatelessWidget {
@@ -63,46 +61,7 @@ class Bubble extends StatelessWidget {
               constraints: const BoxConstraints(maxWidth: 250),
               child: Builder(
                 builder: (BuildContext context) {
-                  Widget chat;
-                  if (item.isStreamApplied) {
-                    /// STREAMED MESSAGE
-                    chat = HookBuilder(
-                      builder: (context) {
-                        useAutomaticKeepAlive();
-
-                        return StreamBuilder<String>(
-                          stream: item.message.stream,
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              /// LOADING INDICATOR
-                              return SizedBox(
-                                height: 17,
-                                width: 17,
-                                child: CircularProgressIndicator(
-                                  color: AppColor.of.gray3,
-                                  strokeWidth: 2,
-                                ),
-                              );
-                            }
-
-                            return Text(
-                              snapshot.requireData,
-                              style: AppTextStyle.alert2,
-                            );
-                          },
-                        );
-                      },
-                    );
-                  } else {
-                    /// STATIC MESSAGE
-                    chat = Text(
-                      item.message.valueOrNull ?? '  ',
-                      style: AppTextStyle.alert2,
-                    );
-                  }
-
-                  chat = Container(
+                  return Container(
                     padding: const EdgeInsets.symmetric(
                       vertical: 10,
                       horizontal: 14,
@@ -111,37 +70,55 @@ class Bubble extends StatelessWidget {
                       color: AppColor.of.blue1,
                       borderRadius: radiusOnCase,
                     ),
-                    child: chat,
-                  );
+                    child: Builder(
+                      builder: (BuildContext context) {
+                        if (item.isStreamApplied) {
+                          /// STREAMED MESSAGE
+                          return HookBuilder(
+                            builder: (context) {
+                              useAutomaticKeepAlive();
 
-                  if (item is FeedbackChatMessageEntity) {
-                    return Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Flexible(
-                          child: chat,
-                        ),
-                        Gap(5),
-                        Container(
-                          padding: EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            color: AppColor.of.red1,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Consumer(
-                            builder: (context, ref, child) {
-                              return IconFlashAreaButton.assetIcon(
-                                iconPath: Assets.iconsWarning,
-                                size: 10,
-                                onIconTapped: onReportBtnTapped,
+                              return StreamBuilder<String>(
+                                stream: item.message.stream,
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return SizedBox(
+                                      height: 17,
+                                      width: 17,
+                                      child: CircularProgressIndicator(
+                                        color: AppColor.of.gray3,
+                                        strokeWidth: 2,
+                                      ),
+                                    );
+                                  }
+
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.none) {
+                                    return Text(
+                                      '오류가 발생했어요',
+                                      style: AppTextStyle.alert2,
+                                    );
+                                  }
+
+                                  return Text(
+                                    snapshot.requireData,
+                                    style: AppTextStyle.alert2,
+                                  );
+                                },
                               );
                             },
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-                  return chat;
+                          );
+                        } else {
+                          /// STATIC MESSAGE
+                          return Text(
+                            item.message.valueOrNull ?? '알 수 없는 메세지 입니다',
+                            style: AppTextStyle.alert2,
+                          );
+                        }
+                      },
+                    ),
+                  );
                 },
               ),
             ),

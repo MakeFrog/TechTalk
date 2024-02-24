@@ -4,7 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/core.dart';
-import 'package:techtalk/presentation/providers/user/auth/user_auth_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_auth_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 mixin class SignInEvent {
