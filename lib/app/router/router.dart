@@ -17,7 +17,7 @@ import 'package:techtalk/presentation/pages/my_info/skill_setting/skill_setting_
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
-import 'package:techtalk/presentation/pages/study/learning/study_learning_page.dart';
+import 'package:techtalk/presentation/pages/study/learning/learning_detail_page.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_detail_page.dart';
 
 part 'router.g.dart';
@@ -206,7 +206,7 @@ class StudyRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     arg = $extra;
-    return const StudyLearningPage();
+    return const LearningDetailPage();
   }
 }
 

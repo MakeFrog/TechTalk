@@ -7,11 +7,12 @@ import 'package:techtalk/core/helper/hook_helper.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/topic/topic.dart';
-import 'package:techtalk/presentation/pages/study/learning/providers/current_study_question_index_provider.dart';
-import 'package:techtalk/presentation/pages/study/learning/providers/study_questions_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/current_study_qna_index_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/widgets/learning_detail_state.dart';
 import 'package:techtalk/presentation/widgets/common/button/app_back_button.dart';
 
-class EntireQuestionListView extends HookConsumerWidget {
+class EntireQuestionListView extends HookConsumerWidget
+    with LearningDetailState {
   const EntireQuestionListView({
     super.key,
     required this.topic,
@@ -21,11 +22,10 @@ class EntireQuestionListView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final questions = ref.watch(studyQuestionsProvider(topic.id)).requireValue;
-    final currentIndex = ref.watch(currentStudyQuestionIndexProvider);
+    final currentIndex = ref.watch(currentStudyQnaIndexProvider);
 
     final itemKeys = List.generate(
-      questions.length,
+      qnas(ref).length,
       (index) => GlobalKey(),
     );
     final scrollController = useScrollController();
@@ -52,15 +52,15 @@ class EntireQuestionListView extends HookConsumerWidget {
         ),
         child: Column(
           children: [
-            ...questions.mapIndexed((index, e) {
+            ...qnas(ref).mapIndexed((index, e) {
               final item = _buildQuestion(
                 itemKeys[index],
                 ref,
                 index,
-                questions[index],
+                qnas(ref)[index],
                 index == currentIndex,
               );
-              if (index != questions.length - 1) {
+              if (index != qnas(ref).length - 1) {
                 return Column(
                   children: [
                     item,

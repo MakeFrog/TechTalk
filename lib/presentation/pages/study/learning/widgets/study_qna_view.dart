@@ -7,30 +7,25 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/topic/repositories/entities/qna_entity.dart';
+import 'package:techtalk/presentation/pages/study/learning/learning_detail_event.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
-import 'package:techtalk/presentation/pages/study/learning/providers/study_question_controller.dart';
-import 'package:techtalk/presentation/pages/study/learning/providers/study_questions_provider.dart';
-import 'package:techtalk/presentation/pages/study/learning/study_learning_event.dart';
-import 'package:techtalk/presentation/pages/study/topic_selection/providers/selected_study_topic_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/widgets/learning_detail_state.dart';
 
-class StudyQnaView extends ConsumerWidget with StudyLearningEvent {
+class StudyQnaView extends ConsumerWidget
+    with LearningDetailState, LearningDetailEvent {
   const StudyQnaView({
     super.key,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final topic = ref.watch(selectedStudyTopicProvider);
-    final controller = ref.watch(studyQuestionControllerProvider);
-    final questions = ref.watch(studyQuestionsProvider(topic.id)).requireValue;
-
     return Expanded(
       child: PageView.builder(
-        controller: controller,
+        controller: controller(ref),
         onPageChanged: (value) => onQuestionPageChanged(ref),
-        itemCount: questions.length,
+        itemCount: qnas(ref).length,
         itemBuilder: (context, index) => _StudyQna(
-          question: questions[index],
+          question: qnas(ref)[index],
         ),
       ),
     );

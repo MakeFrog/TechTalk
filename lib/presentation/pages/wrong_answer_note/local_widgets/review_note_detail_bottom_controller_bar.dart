@@ -1,8 +1,8 @@
 part of '../wrong_answer_detail_page.dart';
 
-class _FloatingActionButton extends ConsumerWidget
+class _BottomControllerBar extends ConsumerWidget
     with WrongAnswerNoteState, WrongAnswerNoteEvent {
-  const _FloatingActionButton({super.key});
+  const _BottomControllerBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
