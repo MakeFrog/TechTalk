@@ -39,7 +39,7 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
         await FirestoreTopicQuestionsRef.doc(topicId, questionId).get();
 
     if (!snapshot.exists) {
-      throw Exception();
+      throw Exception('문답이 존재하지 않습니다');
     }
 
     return snapshot.data()!;
@@ -77,11 +77,14 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
   @override
   Future<List<WrongAnswerModel>> getWrongAnswers(String topicId) async {
     final collectionRef = FirestoreTopicWrongAnswerRef.subCollection(
-        topicId, FirebaseAuth.instance.currentUser!.uid);
+            topicId, FirebaseAuth.instance.currentUser!.uid)
+        .orderBy('updated_at', descending: true);
 
     final snapshot = await collectionRef.get();
 
-    return snapshot.docs.map((e) => e.data()).toList();
+    final result = snapshot.docs.map((e) => e.data()).toList();
+
+    return result;
   }
 
   ///임시
