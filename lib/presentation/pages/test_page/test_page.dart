@@ -34,7 +34,22 @@ class TestPage extends ConsumerWidget {
     print("...page build...");
     return Scaffold(
       appBar: AppBar(),
-      body: const _ListView(),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: Container(
+              color: Colors.red,
+              child: Text('9a'),
+            ),
+          ),
+          const TextField(),
+          Container(
+            height: 100,
+            width: 100,
+            color: Colors.blue,
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           ref.read(listAimProvider.notifier).aimUpdate();

@@ -48,15 +48,15 @@ class InterviewTopicCard extends StatelessWidget {
               ? Column(
                   children: [
                     Expanded(
-                      child: Container(
-                        height: skillImgSize,
-                        width: skillImgSize,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(skillImgSize / 2),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(skillImgSize / 2),
+                        child: Container(
+                          height: skillImgSize,
+                          width: skillImgSize,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
                           child: Image.asset(
                             topic!.imageUrl!,
                             color: isSelected

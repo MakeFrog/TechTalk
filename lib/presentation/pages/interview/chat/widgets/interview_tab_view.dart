@@ -82,20 +82,18 @@ class _BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SafeArea(
-      child: Container(
-        color: AppColor.of.white,
-        constraints: const BoxConstraints(minHeight: 48, maxHeight: 240),
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(
-          vertical: 8,
-          horizontal: 16,
-        ),
-        child: chatAsyncAdapterValue(ref).when(
-          data: (_) => _buildTextField(progressState(ref)),
-          error: (_, __) => _buildTextField(InterviewProgress.error),
-          loading: () => _buildTextField(InterviewProgress.initial),
-        ),
+    return Container(
+      color: AppColor.of.white,
+      constraints: const BoxConstraints(minHeight: 48, maxHeight: 240),
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(
+        vertical: 8,
+        horizontal: 16,
+      ),
+      child: chatAsyncAdapterValue(ref).when(
+        data: (_) => _buildTextField(progressState(ref)),
+        error: (_, __) => _buildTextField(InterviewProgress.error),
+        loading: () => _buildTextField(InterviewProgress.initial),
       ),
     );
   }

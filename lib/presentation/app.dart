@@ -2,13 +2,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/environment/flavor.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/app_theme.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
+
+import 'widgets/common/layout/responsive_layout.dart';
 
 class ProviderLogger extends ProviderObserver {
   @override
@@ -77,8 +78,7 @@ class App extends ConsumerWidget {
         builder: (context, child) {
           AppColor.init(context);
           AppSize.to.init(context);
-
-          return FToastBuilder()(
+          return ResponsiveLayoutBuilder(
             context,
             child,
           );
