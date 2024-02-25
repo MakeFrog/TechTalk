@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -52,6 +53,7 @@ class _Body extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final mainTabController = usePageController();
     ref.listen(mainBottomNavigationProvider, (_, next) {
+      HapticFeedback.lightImpact();
       mainTabController.jumpToPage(next.index);
     });
     final currentTab = ref.watch(mainBottomNavigationProvider).index;

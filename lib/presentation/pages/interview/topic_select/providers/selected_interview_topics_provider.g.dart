@@ -7,7 +7,7 @@ part of 'selected_interview_topics_provider.dart';
 // **************************************************************************
 
 String _$selectedInterviewTopicsHash() =>
-    r'876a0afcfffa28616694a5d51dffe2613e7db317';
+    r'78775d4b2b6d5fd561b73628b19e4aeabd35e4aa';
 
 /// See also [SelectedInterviewTopics].
 @ProviderFor(SelectedInterviewTopics)
