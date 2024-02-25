@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/repositories/enums/interview_progress.enum.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
@@ -35,9 +36,22 @@ mixin class ChatEvent {
         .proceedInterviewStep(message);
   }
 
-  void onChatFieldSubmittedOnWaitingState() {
+  void onChatFieldSubmittedOnWaitingState(InterviewProgress progressState) {
     unawaited(HapticFeedback.vibrate());
-    SnackBarService.showSnackBar('면접관의 응답이 마무리된 이후 답변을 전송해주세요.');
+    late String message;
+
+    if (progressState.isDone) {
+      message = '종료된 면접입니다.';
+    }
+
+    if (progressState.isError) {
+      message = '오류가 발생하여 답변을 전송할 수 없습니다';
+    }
+    if (progressState.isInterviewerReplying) {
+      message = '면접관의 응답이 마무리된 이후 답변을 전송해주세요.';
+    }
+
+    return SnackBarService.showSnackBar(message);
   }
 
   /// 앱바 뒤로 가기 버튼이 클릭 되었을 때

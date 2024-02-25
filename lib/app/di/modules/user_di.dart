@@ -2,6 +2,7 @@ import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/app/di/feature_di_interface.dart';
 import 'package:techtalk/app/local_storage/app_local.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/user/data_source/local/user_local_data_source.dart';
 import 'package:techtalk/features/user/data_source/local/user_local_data_source_impl.dart';
 import 'package:techtalk/features/user/data_source/remote/user_remote_data_source_impl.dart';
@@ -55,6 +56,7 @@ final class UserDependencyInjection extends FeatureDependencyInjection {
       ..registerFactory(
         () => ResignUserInfoUseCase(
           userRepository,
+          topicRepository,
         ),
       )
       ..registerFactory(

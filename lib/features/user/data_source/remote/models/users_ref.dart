@@ -4,6 +4,7 @@ import 'package:techtalk/features/user/data_source/remote/models/user_model.dart
 
 abstract class FirestoreUsersRef {
   static const String name = 'Users';
+  static const String subCollectionName = 'Chats';
   static String get _userUid => FirebaseAuth.instance.currentUser!.uid;
 
   static CollectionReference<UserModel> collection() =>
@@ -20,6 +21,12 @@ abstract class FirestoreUsersRef {
             fromFirestore: UserModel.fromFirestore,
             toFirestore: (value, _) => value.toJson(),
           );
+
+  static CollectionReference chatSubCollection([String? id]) =>
+      FirebaseFirestore.instance
+          .collection(name)
+          .doc(id ?? _userUid)
+          .collection(subCollectionName);
 
   static Future<bool> isExist([String? uid]) async =>
       (await FirestoreUsersRef.doc(uid ?? _userUid).get()).exists;

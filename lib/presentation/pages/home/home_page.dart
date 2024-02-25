@@ -28,7 +28,9 @@ class HomePage extends BasePage with HomeState {
             //   onPressed: () {
             //     try {
             //       // topicRemoteDataSource.removeQuestions('spring');
-            //       topicRemoteDataSource.addQuestions('spring');
+            //       // topicRemoteDataSource.addQuestions('spring');
+            //       userRemoteDataSource.resign(UserModel.fromEntity(
+            //           ref.read(userInfoProvider).requireValue!));
             //       print('성공');
             //     } catch (e) {
             //       print('실패');
