@@ -22,10 +22,17 @@ enum InterviewProgress {
       };
 
   bool get isDoneOrError {
-    if (this == InterviewProgress.done || this == InterviewProgress.done) {
+    if (this == InterviewProgress.done || this == InterviewProgress.error) {
       return true;
     } else {
       return false;
     }
   }
+
+  bool get isDone => this == InterviewProgress.done;
+
+  bool get isInterviewerReplying =>
+      this == InterviewProgress.interviewerReplying;
+
+  bool get isError => this == InterviewProgress.error;
 }

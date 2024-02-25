@@ -148,7 +148,9 @@ class _BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                               textEditingController: messageController,
                             );
                           }
-                        : onChatFieldSubmittedOnWaitingState,
+                        : (){
+                      onChatFieldSubmittedOnWaitingState(progressState);
+                    },
                   );
                 },
               ),
