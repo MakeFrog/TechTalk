@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -56,10 +58,11 @@ class _Body extends ConsumerWidget with SignInEvent {
               onTap: () async => onTapSignInWithGoogle(ref),
             ),
             const Gap(8),
-            AppleSignInButton(
-              onTap: () async => onTapSignInWithApple(ref),
-            ),
-            const Gap(48),
+            if (Platform.isIOS)
+              AppleSignInButton(
+                onTap: () async => onTapSignInWithApple(ref),
+              ),
+            Gap(Platform.isIOS ? 48 : 24),
           ],
         ),
       ),
