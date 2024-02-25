@@ -12,28 +12,31 @@ class _AppBar extends ConsumerWidget
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return BackButtonAppBar(
-      title: selectedTopic(ref)!.text,
-      actions: [
-        Text(
-          '답안 가리기',
-          style: AppTextStyle.alert1.copyWith(
-            color: AppColor.of.gray3,
+    return GestureDetector(
+      onTap: () => onHideAnswerSwitchTapped(ref),
+      child: BackButtonAppBar(
+        title: selectedTopic(ref)!.text,
+        actions: [
+          Text(
+            '답안 가리기',
+            style: AppTextStyle.alert1.copyWith(
+              color: AppColor.of.gray3,
+            ),
           ),
-        ),
-        const Gap(8),
-        Consumer(
-          builder: (context, ref, child) {
-            final isBlurAnswer = ref.watch(wrongAnswerBlurProvider);
+          const Gap(8),
+          Consumer(
+            builder: (context, ref, child) {
+              final isBlurAnswer = ref.watch(wrongAnswerBlurProvider);
 
-            return FlatSwitch(
-              value: isBlurAnswer,
-              onTap: (_) => onHideAnswerSwitchTapped(ref),
-            );
-          },
-        ),
-        const Gap(16),
-      ],
+              return FlatSwitch(
+                value: isBlurAnswer,
+                onTap: (_) => onHideAnswerSwitchTapped(ref),
+              );
+            },
+          ),
+          const Gap(16),
+        ],
+      ),
     );
   }
 }
