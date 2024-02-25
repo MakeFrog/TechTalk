@@ -110,8 +110,6 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           final isCompleted =
               ref.read(selectedChatRoomProvider.notifier).isLastQuestion();
 
-          String guideMessage = isCompleted ? '면접이 종료 되었습니다' : '다음 질문을 드리겠습니다';
-
           final feedbackChat = FeedbackChatMessageEntity.createStatic(
             message: feedback,
             timestamp: DateTime.now(),
@@ -119,49 +117,57 @@ class ChatMessageHistory extends _$ChatMessageHistory {
 
           late QuestionChatMessageEntity nextQuestionChat;
           late GuideChatMessageEntity guideChat;
+          late String guideMessage;
+          late ChatQnaEntity newQna;
 
           if (!isCompleted) {
-            final qna = _getNewQna();
+            newQna = _getNewQna();
+            guideMessage =
+                '다음 ${room.type.isPractical ? StoredTopics.getById(newQna.id.getFirstPartOfSpliited).text : ''} 질문을 드리겠습니다.';
+          } else {
+            guideMessage = '면접이 종료 되었습니다.';
+          }
 
-            if (room.type.isPractical) {
-              guideMessage =
-                  '다음 ${StoredTopics.getById(qna.id.getFirstPartOfSpliited).text} 질문을 드리겠습니다.';
-            }
-            guideChat = GuideChatMessageEntity.createStatic(
-              message: guideMessage,
-              timestamp: DateTime.now(),
-            );
+          /// NOTE : 순서 주의
+          guideChat = GuideChatMessageEntity.createStatic(
+            message: guideMessage,
+            timestamp: DateTime.now(),
+          );
+
+          if (!isCompleted) {
             nextQuestionChat = QuestionChatMessageEntity.createStatic(
-              qnaId: qna.qna.id,
-              message: qna.qna.question,
+              qnaId: newQna.qna.id,
+              message: newQna.qna.question,
               timestamp: DateTime.now(),
             );
           }
 
-          await Future.wait([
-            _uploadMessage([
-              if (!isCompleted) nextQuestionChat,
-              guideChat,
-              feedbackChat,
-              resolvedUserAnswer,
-            ]).then(
-              (_) => ref
-                  .read(selectedChatRoomProvider.notifier)
-                  .updateProgressInfo(
-                      isCorrect: isAnswerCorrect,
-                      lastChatMessage:
-                          isCompleted ? guideChat : nextQuestionChat),
-            ),
-            showMessage(
-              message: guideChat.overwriteToStream(),
-              onDone: () async {
-                if (!isCompleted) {
-                  await showMessage(
-                      message: nextQuestionChat.overwriteToStream());
-                }
-              },
-            )
-          ]);
+          await Future.wait(
+            [
+              _uploadMessage([
+                if (!isCompleted) nextQuestionChat,
+                guideChat,
+                feedbackChat,
+                resolvedUserAnswer,
+              ]).then(
+                (_) => ref
+                    .read(selectedChatRoomProvider.notifier)
+                    .updateProgressInfo(
+                        isCorrect: isAnswerCorrect,
+                        lastChatMessage:
+                            isCompleted ? guideChat : nextQuestionChat),
+              ),
+              showMessage(
+                message: guideChat.overwriteToStream(),
+                onDone: () async {
+                  if (!isCompleted) {
+                    await showMessage(
+                        message: nextQuestionChat.overwriteToStream());
+                  }
+                },
+              )
+            ],
+          );
         },
       ),
     );
