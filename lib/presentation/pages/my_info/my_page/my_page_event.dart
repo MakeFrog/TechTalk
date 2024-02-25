@@ -38,6 +38,7 @@ mixin class MyPageEvent {
         subTitle: '정말 로그아웃 하시겠습니까?',
         leftBtnContent: '취소',
         rightBtnContent: '로그아웃',
+        showContentImg: false,
         onRightBtnClicked: () {
           _clearKeepAliveModules(ref);
 
@@ -58,6 +59,7 @@ mixin class MyPageEvent {
         subTitle: '정말 회원탈퇴 하시겠습니까?',
         leftBtnContent: '취소',
         rightBtnContent: '확인',
+        showContentImg: false,
         onRightBtnClicked: () {
           ref.context.pop();
           _showResignRemindDialog(ref);
@@ -67,13 +69,15 @@ mixin class MyPageEvent {
     );
   }
 
+  ///
+  /// 회원탈퇴 경고 다이어로그
+  ///
   Future<void> _showResignRemindDialog(WidgetRef ref) async {
     DialogService.show(
       dialog: AppDialog.dividedBtn(
         title: '경고',
         subTitle: '회원탈퇴 시 모든 정보가 삭제되며 복구가 어렵습니다. 그래도 탈퇴 하시겠습니까?',
         leftBtnContent: '취소',
-        showContentImg: false,
         rightBtnContent: '회원탈퇴',
         onRightBtnClicked: () async {
           await EasyLoading.show();

@@ -2,20 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/core/core.dart';
+import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_qna_entity.dart';
+import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/widgets/common/text/bullet_text.dart';
 import 'package:techtalk/presentation/widgets/common/tile/flexible_expansion_tile.dart';
 
-class QnAExpansionTile extends HookWidget {
+class QnAExpansionTile extends HookConsumerWidget with ChatState {
   const QnAExpansionTile(this.item, {Key? key}) : super(key: key);
 
   final ChatQnaEntity item;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isOpen = useState<bool>(false);
 
     return FlexibleExpansionTile(
@@ -48,7 +52,7 @@ class QnAExpansionTile extends HookWidget {
 
           /// QUESTION
           Text(
-            '${item.qna.id}:    ${item.qna.question}',
+            '${room(ref).type.isPractical ? '${StoredTopics.getById(item.qna.id.getFirstPartOfSpliited).text} : ' : ''}${item.qna.question}',
             textAlign: TextAlign.start,
             style: AppTextStyle.title1,
           ),

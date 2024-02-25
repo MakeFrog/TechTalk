@@ -1,7 +1,7 @@
-part of '../wrong_answer_detail_page.dart';
+part of '../learning_detail_page.dart';
 
 class _AppBar extends ConsumerWidget
-    with WrongAnswerNoteState, WrongAnswerNoteEvent
+    with LearningDetailEvent
     implements PreferredSizeWidget {
   const _AppBar({
     super.key,
@@ -13,9 +13,9 @@ class _AppBar extends ConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () => onHideAnswerSwitchTapped(ref),
+      onTap: () => onToggleAnswerBlur(ref),
       child: BackButtonAppBar(
-        title: selectedTopic(ref)!.text,
+        title: ref.watch(selectedStudyTopicProvider).text,
         actions: [
           Text(
             '답안 가리기',
@@ -25,14 +25,10 @@ class _AppBar extends ConsumerWidget
           ),
           const Gap(8),
           Consumer(
-            builder: (context, ref, child) {
-              final isBlurAnswer = ref.watch(wrongAnswerBlurProvider);
-
-              return FlatSwitch(
-                value: isBlurAnswer,
-                onTap: (_) => onHideAnswerSwitchTapped(ref),
-              );
-            },
+            builder: (context, ref, child) => FlatSwitch(
+              value: ref.watch(studyAnswerBlurProvider),
+              onTap: (_) => onToggleAnswerBlur(ref),
+            ),
           ),
           const Gap(16),
         ],

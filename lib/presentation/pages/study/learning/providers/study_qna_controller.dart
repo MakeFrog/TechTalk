@@ -3,10 +3,10 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/helper/riverpod_extension.dart';
 
-part 'study_question_controller.g.dart';
+part 'study_qna_controller.g.dart';
 
 @riverpod
-class StudyQuestionController extends _$StudyQuestionController {
+class StudyQnaController extends _$StudyQnaController {
   final _qnaAnimationDuration = 400.ms;
   final _qnaAnimationCurves = Curves.easeOutQuint;
 

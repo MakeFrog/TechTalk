@@ -9,15 +9,15 @@ import 'package:techtalk/presentation/pages/interview/chat/widgets/qna_expansion
 import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 import 'package:techtalk/presentation/widgets/common/indicator/exception_indicator.dart';
 
-class QnATabView extends HookConsumerWidget with ChatState {
-  const QnATabView({Key? key}) : super(key: key);
+class QnaTabView extends HookConsumerWidget with ChatState {
+  const QnaTabView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
 
     return ListView(
-      physics: const BouncingScrollPhysics(),
+      physics: const ScrollPhysics(),
       shrinkWrap: true,
       children: <Widget>[
         /// Q@A LENGTH INDICATOR

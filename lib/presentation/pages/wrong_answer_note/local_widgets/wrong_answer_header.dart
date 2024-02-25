@@ -64,7 +64,7 @@ class _WrongAnswerHeader extends HookWidget
                         child: SizedBox(
                           height: 32,
                           child: ListView.separated(
-                            padding: const EdgeInsets.only(left: 12),
+                            padding: const EdgeInsets.only(left: 12, right: 24),
                             scrollDirection: Axis.horizontal,
                             itemCount: userTopicRecords(ref).length,
                             separatorBuilder: (context, index) => const Gap(8),

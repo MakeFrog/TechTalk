@@ -5,7 +5,6 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/constants/interview_type.enum.dart';
-import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_note_scroll_controller.dart';
@@ -30,33 +29,29 @@ class WrongAnswerNotePage extends BasePage
           return const _EmptyListPlaceholder();
         }
 
-        return Builder(
-          builder: (context) {
-            return ListView.separated(
-              controller: scrollController(ref),
-              padding: const EdgeInsets.only(bottom: 120),
-              itemCount: wrongAnswers.length,
-              separatorBuilder: (context, index) => Divider(
-                height: 0.5,
-                thickness: 0.5,
-                color: AppColor.of.gray2,
+        return ListView.separated(
+          controller: scrollController(ref),
+          padding: const EdgeInsets.only(bottom: 120),
+          itemCount: wrongAnswers.length,
+          separatorBuilder: (context, index) => Divider(
+            height: 0.5,
+            thickness: 0.5,
+            color: AppColor.of.gray2,
+          ),
+          itemBuilder: (_, index) {
+            final item = wrongAnswers[index];
+            return InkWell(
+              onTap: () => routeToDetail(index),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 24,
+                ),
+                child: Text(
+                  item.qna.question,
+                  style: AppTextStyle.body1,
+                ),
               ),
-              itemBuilder: (_, index) {
-                final item = wrongAnswers[index];
-                return InkWell(
-                  onTap: () => routeToDetail(index),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 24,
-                    ),
-                    child: Text(
-                      item.qna.question,
-                      style: AppTextStyle.body1,
-                    ),
-                  ),
-                );
-              },
             );
           },
         );

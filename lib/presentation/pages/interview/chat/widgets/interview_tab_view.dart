@@ -143,7 +143,7 @@ class _BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                           ? Assets.iconsSendActivate
                           : Assets.iconsSend,
                     ),
-                    onPressed: message.isNotEmpty && progressState.enableChat
+                    onPressed: progressState.enableChat
                         ? () {
                             onChatFieldSubmitted(
                               ref,

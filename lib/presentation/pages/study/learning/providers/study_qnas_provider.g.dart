@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'study_questions_provider.dart';
+part of 'study_qnas_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$studyQuestionsHash() => r'26dbd9f92a911b50b519a950c5be910286e56411';
+String _$studyQnasHash() => r'74c8ed4640bcbff51e51b30129be15986ceffe2b';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,7 +29,7 @@ class _SystemHash {
   }
 }
 
-abstract class _$StudyQuestions
+abstract class _$StudyQnas
     extends BuildlessAutoDisposeAsyncNotifier<List<QnaEntity>> {
   late final String topicId;
 
@@ -38,27 +38,27 @@ abstract class _$StudyQuestions
   );
 }
 
-/// See also [StudyQuestions].
-@ProviderFor(StudyQuestions)
-const studyQuestionsProvider = StudyQuestionsFamily();
+/// See also [StudyQnas].
+@ProviderFor(StudyQnas)
+const studyQnasProvider = StudyQnasFamily();
 
-/// See also [StudyQuestions].
-class StudyQuestionsFamily extends Family<AsyncValue<List<QnaEntity>>> {
-  /// See also [StudyQuestions].
-  const StudyQuestionsFamily();
+/// See also [StudyQnas].
+class StudyQnasFamily extends Family<AsyncValue<List<QnaEntity>>> {
+  /// See also [StudyQnas].
+  const StudyQnasFamily();
 
-  /// See also [StudyQuestions].
-  StudyQuestionsProvider call(
+  /// See also [StudyQnas].
+  StudyQnasProvider call(
     String topicId,
   ) {
-    return StudyQuestionsProvider(
+    return StudyQnasProvider(
       topicId,
     );
   }
 
   @override
-  StudyQuestionsProvider getProviderOverride(
-    covariant StudyQuestionsProvider provider,
+  StudyQnasProvider getProviderOverride(
+    covariant StudyQnasProvider provider,
   ) {
     return call(
       provider.topicId,
@@ -77,30 +77,29 @@ class StudyQuestionsFamily extends Family<AsyncValue<List<QnaEntity>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'studyQuestionsProvider';
+  String? get name => r'studyQnasProvider';
 }
 
-/// See also [StudyQuestions].
-class StudyQuestionsProvider extends AutoDisposeAsyncNotifierProviderImpl<
-    StudyQuestions, List<QnaEntity>> {
-  /// See also [StudyQuestions].
-  StudyQuestionsProvider(
+/// See also [StudyQnas].
+class StudyQnasProvider
+    extends AutoDisposeAsyncNotifierProviderImpl<StudyQnas, List<QnaEntity>> {
+  /// See also [StudyQnas].
+  StudyQnasProvider(
     String topicId,
   ) : this._internal(
-          () => StudyQuestions()..topicId = topicId,
-          from: studyQuestionsProvider,
-          name: r'studyQuestionsProvider',
+          () => StudyQnas()..topicId = topicId,
+          from: studyQnasProvider,
+          name: r'studyQnasProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$studyQuestionsHash,
-          dependencies: StudyQuestionsFamily._dependencies,
-          allTransitiveDependencies:
-              StudyQuestionsFamily._allTransitiveDependencies,
+                  : _$studyQnasHash,
+          dependencies: StudyQnasFamily._dependencies,
+          allTransitiveDependencies: StudyQnasFamily._allTransitiveDependencies,
           topicId: topicId,
         );
 
-  StudyQuestionsProvider._internal(
+  StudyQnasProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -114,7 +113,7 @@ class StudyQuestionsProvider extends AutoDisposeAsyncNotifierProviderImpl<
 
   @override
   FutureOr<List<QnaEntity>> runNotifierBuild(
-    covariant StudyQuestions notifier,
+    covariant StudyQnas notifier,
   ) {
     return notifier.build(
       topicId,
@@ -122,10 +121,10 @@ class StudyQuestionsProvider extends AutoDisposeAsyncNotifierProviderImpl<
   }
 
   @override
-  Override overrideWith(StudyQuestions Function() create) {
+  Override overrideWith(StudyQnas Function() create) {
     return ProviderOverride(
       origin: this,
-      override: StudyQuestionsProvider._internal(
+      override: StudyQnasProvider._internal(
         () => create()..topicId = topicId,
         from: from,
         name: null,
@@ -138,14 +137,14 @@ class StudyQuestionsProvider extends AutoDisposeAsyncNotifierProviderImpl<
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<StudyQuestions, List<QnaEntity>>
+  AutoDisposeAsyncNotifierProviderElement<StudyQnas, List<QnaEntity>>
       createElement() {
-    return _StudyQuestionsProviderElement(this);
+    return _StudyQnasProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is StudyQuestionsProvider && other.topicId == topicId;
+    return other is StudyQnasProvider && other.topicId == topicId;
   }
 
   @override
@@ -157,19 +156,18 @@ class StudyQuestionsProvider extends AutoDisposeAsyncNotifierProviderImpl<
   }
 }
 
-mixin StudyQuestionsRef
-    on AutoDisposeAsyncNotifierProviderRef<List<QnaEntity>> {
+mixin StudyQnasRef on AutoDisposeAsyncNotifierProviderRef<List<QnaEntity>> {
   /// The parameter `topicId` of this provider.
   String get topicId;
 }
 
-class _StudyQuestionsProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<StudyQuestions,
-        List<QnaEntity>> with StudyQuestionsRef {
-  _StudyQuestionsProviderElement(super.provider);
+class _StudyQnasProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<StudyQnas, List<QnaEntity>>
+    with StudyQnasRef {
+  _StudyQnasProviderElement(super.provider);
 
   @override
-  String get topicId => (origin as StudyQuestionsProvider).topicId;
+  String get topicId => (origin as StudyQnasProvider).topicId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

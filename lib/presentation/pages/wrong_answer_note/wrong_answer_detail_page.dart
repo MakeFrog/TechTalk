@@ -18,7 +18,7 @@ import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 part 'local_widgets/review_note_detail_app_bar.dart';
-part 'local_widgets/review_note_detail_floating_action_btn.dart';
+part 'local_widgets/review_note_detail_bottom_controller_bar.dart';
 part 'local_widgets/review_note_qna_list_tile.dart';
 
 class WrongAnswerDetailPage extends BasePage
@@ -53,6 +53,6 @@ class WrongAnswerDetailPage extends BasePage
 
   @override
   Widget? buildFloatingActionButton(WidgetRef ref) {
-    return const _FloatingActionButton();
+    return const _BottomControllerBar();
   }
 }

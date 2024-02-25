@@ -1,13 +1,13 @@
 [
   {
-    "id": "dataStructure-1",
+    "id": "spring-1",
     "question": "WAS(Web Application Server)와 WS(Web Server)의 차이를 설명해주세요.",
     "answers": [
       "WAS(Web Application Server)은 비즈니스 로직을 넣을 수 있고, Tomcat, PHP, ASP, .NET 등이 있습니다. 반면에 WS(Web Server)는 비즈니스 로직을 넣을 수 없고, Nginx, Apache 등이 있습니다."
     ]
   },
   {
-    "id": "dataStructure-2",
+    "id": "spring-2",
     "question": "Spring Framework에 대해 설명해주세요.",
     "answers": [
       "스프링 프레임워크는 자바 개발을 편리하게 해주는 오픈소스 프레임워크입니다.",
@@ -15,42 +15,42 @@
     ]
   },
   {
-    "id": "dataStructure-3",
+    "id": "spring-3",
     "question": "@RequestBody, @RequestParam, @ModelAttribute의 차이를 설명해주세요.",
     "answers": [
       "@RequestBody는 HTTP 요청의 Body를 Java 객체로 변환해주는 역할을 하고, @RequestParam은 HTTP 요청 파라미터를 받는 역할을 합니다. @ModelAttribute는 HTTP 요청 파라미터의 값을 객체의 속성에 바인딩하여 사용합니다."
     ]
   },
   {
-    "id": "dataStructure-4",
+    "id": "spring-4",
     "question": "Spring Boot와 Spring Framework의 차이점을 설명해주세요.",
     "answers": [
       "Spring Framework는 개발자가 프로젝트 초기 설정을 직접 해야하지만, Spring Boot는 설정의 많은 부분을 자동화하여 사용자가 편리하게 스프링을 활용할 수 있습니다. Spring Boot는 내장된 톰캣을 제공하여 서버를 쉽게 실행할 수 있습니다."
     ]
   },
   {
-    "id": "dataStructure-5",
+    "id": "spring-5",
     "question": "Spring MVC에 대해 설명해주세요.",
     "answers": [
       "Spring MVC는 Model, View, Controller로 구성된 웹 애플리케이션 개발을 위한 프레임워크입니다. 각각의 역할은 Model은 데이터를 관리하고 비즈니스 로직을 처리, View는 결과를 출력하고 사용자와 상호작용, Controller는 클라이언트의 요청을 처리하고 Model과 View를 연결합니다."
     ]
   },
   {
-    "id": "dataStructure-6",
+    "id": "spring-6",
     "question": "MVC는 어떠한 흐름으로 요청을 처리하는지 설명해주세요.",
     "answers": [
       "클라이언트의 요청은 DispatcherServlet이 받아서 HandlerMapping을 통해 어떤 컨트롤러가 처리할지 결정하고, HandlerAdapter는 해당 컨트롤러를 호출합니다. 컨트롤러는 비즈니스 로직을 처리하고 뷰의 이름을 반환하며, DispatcherServlet은 ViewResolver를 통해 적절한 뷰를 찾아 사용자에게 반환합니다."
     ]
   },
   {
-    "id": "dataStructure-7",
+    "id": "spring-7",
     "question": "제어의 역전(IoC, Inversion of Control)에 대해 아는대로 설명해주세요.",
     "answers": [
       "제어의 역전은 모든 객체에 대한 제어권을 개발자가 아닌 컨테이너에게 넘기는 것을 의미합니다. 스프링에서는 IoC 컨테이너가 객체의 생성과 관리를 담당하여 개발자는 필요한 객체를 컨테이너로부터 얻어올 수 있습니다."
     ]
   },
   {
-    "id": "dataStructure-8",
+    "id": "spring-8",
     "question": "스프링에서 빈(Bean)을 등록하는 방법에 대해 말해보세요",
     "answers": [
       "직관적인 방법으로 @Component 어노테이션을 사용하는 것입니다. @Controller, @Service, @Repository는 모두 @Component를 포함하고 있습니다",
@@ -58,7 +58,7 @@
     ]
   },
   {
-    "id": "dataStructure-9",
+    "id": "spring-9",
     "question": "스프링 빈의 라이프사이클은 어떻게 관리되는지 설명해주세요.",
     "answers": [
       "스프링 빈의 라이프사이클은 스프링 IoC 컨테이너 생성 → 스프링 빈 생성 → 의존관계 주입 → 초기화 콜백 메소드 호출 → 사용 → 소멸 전 콜백 메소드 호출 → 스프링 종료 순서로 진행됩니다.",
@@ -66,7 +66,7 @@
     ]
   },
   {
-    "id": "dataStructure-10",
+    "id": "spring-10",
     "question": "의존성 주입(DI, Dependency Injection)에 대해 설명해주세요.",
     "answers": [
       "의존성 주입은 필요한 객체를 직접 생성하는 것이 아닌 외부로부터 객체를 받아서 사용하는 것입니다.이를 통해 객체간의 결합도를 줄이고 코드의 재사용성을 높일 수 있습니다.",
@@ -74,7 +74,7 @@
     ]
   },
   {
-    "id": "dataStructure-11",
+    "id": "spring-11",
     "question": "Spring Filter와 Interceptor에 대해 설명하고, 사용 예시를 설명해주세요.",
     "answers": [
       "필터는 말 그대로 요청과 응답을 거른뒤 정제하는 역할을 합니다.",
@@ -84,14 +84,14 @@
     ]
   },
   {
-    "id": "dataStructure-12",
+    "id": "spring-12",
     "question": "관점지향 프로그래밍(AOP, Aspect Oriented Programming)는 무엇이고, 언제 사용할 수 있을까요?",
     "answers": [
       "AOP는 핵심 비즈니스 로직에 있는 공통 관심사항을 분리하여 모듈화하는 프로그래밍 기법입니다. 여러 모듈에서 공통으로 사용하는 기능을 분리하여 관리할 수 있으며, 트랜잭션 처리, 로깅, 보안 등에서 사용할 수 있습니다."
     ]
   },
   {
-    "id": "dataStructure-13",
+    "id": "spring-13",
     "question": "Lombok 라이브러리에 대해 알고 있나요? 알고 있다면 롬복이 만드는 메소드들이 생성되는 시점은 언제인가요?",
     "answers": [
       "Lombok은 메소드를 컴파일 하는 과정에 개입해서 추가적인 코드를 만들어냅니다.",
@@ -99,7 +99,7 @@
     ]
   },
   {
-    "id": "dataStructure-14",
+    "id": "spring-14",
     "question": "서블릿(Servlet)에 대해 설명해주세요.",
     "answers": [
       "클라이언트의 요청을 처리하고, 그 결과를 반환하는 Servlet 클래스의 구현 규칙을 지킨 자바 웹 프로그래밍 기술입니다.",
@@ -107,70 +107,70 @@
     ]
   },
   {
-    "id": "dataStructure-15",
+    "id": "spring-15",
     "question": "VO와 BO, DAO, DTO에 대해 설명해주세요.",
     "answers": [
       "DAO(Data Access Object)는 DB의 데이터에 접근을 위한 객체를 말하며, BO(Business Object)는 여러 DAO를 활용해 비즈니스 로직을 처리하는 객체를 말합니다. DTO(Data Transfer Object)는 각 계층간의 데이터 교환을 위한 객체를 말하고, VO (Value Object)는 실제 데이터만을 저장하는 객체를 말합니다."
     ]
   },
   {
-    "id": "dataStructure-16",
+    "id": "spring-16",
     "question": "대용량 트래픽에서 장애가 발생하면 어떻게 대응할 것인가요?",
     "answers": [
       "대용량 트래픽에서 장애가 발생하면 스케일 업을 통해 하드웨어 스펙을 향상시키거나, 스케일 아웃을 통해 서버를 여러 대 추가하여 시스템을 증가시킬 수 있습니다."
     ]
   },
   {
-    "id": "dataStructure-17",
+    "id": "spring-17",
     "question": "Spring의 싱글톤 패턴에 대해 설명해주세요.",
     "answers": [
       "스프링에서 bean 생성시 별다른 설정이 없으면 default로 싱글톤이 적용됩니다. 스프링은 컨테이너를 통해 직접 싱글톤 객체를 생성하고 관리하는데, 요청이 들어올 때마다 매번 객체를 생성하지 않고, 이미 만들어진 객체를 공유하기 때문에 효율적인 사용이 가능합니다."
     ]
   },
   {
-    "id": "dataStructure-18",
+    "id": "spring-18",
     "question": "Spring의 스코프 프로토 타입 빈에 대해 설명해주세요.",
     "answers": [
       "프로토타입 빈은 싱글톤(default bean) 빈과는 달리 컨테이너에게 빈을 요청할 때마다 매번 새로운 객체를 생성하여 반환해줍니다. 빈의 scope 설정은 @Scope 어노테이션으로 설정하며, 프로토타입 scope로 설정하려면 @Scope(\"prototype\")와 같이 문자열로 지정해줍니다."
     ]
   },
   {
-    "id": "dataStructure-19",
+    "id": "spring-19",
     "question": "@Transactional의 동작 원리에 대해 설명해주세요.",
     "answers": [
       "@Transactional을 메소드 또는 클래스에 명시하면, AOP를 통해 Target이 상속하고 있는 인터페이스 또는 Target 객체를 상속한 Proxy 객체가 생성되며, Proxy 객체의 메소드를 호출하면 Target 메소드 전 후로 트랜잭션 처리를 수행합니다."
     ]
   },
   {
-    "id": "dataStructure-20",
+    "id": "spring-20",
     "question": "@Transactional를 스프링 Bean의 메소드 A에 적용하였고, 해당 Bean의 메소드 B가 호출되었을 때, B 메소드 내부에서 A 메소드를 호출하면 어떤 요청 흐름이 발생하는지 설명해주세요.",
     "answers": [
       "프록시는 클라이언트가 타겟 객체를 호출하는 과정에만 동작하며, 타겟 객체의 메소드가 자기 자신의 다른 메소드를 호출할 때는 프록시가 동작하지 않습니다. 따라서 A 메소드는 프록시로 감싸진 메소드가 아니므로 트랜잭션이 적용되지 않은 일반 코드가 수행됩니다."
     ]
   },
   {
-    "id": "dataStructure-21",
+    "id": "spring-21",
     "question": "A 라는 Service 객체의 메소드가 존재하고, 그 메소드 내부에서 로컬 트랜잭션 3개(다른 Service 객체의 트랜잭션 메소드를 호출했다는 의미)가 존재한다고 할 때, @Transactional을 A 메소드에 적용하면 어떤 요청 흐름이 발생하는지 설명해주세요.",
     "answers": [
       "트랜잭션 전파 수준에 따라 달라지는데, 만약 기본 옵션인 Required를 가져간다면 로컬 트랜잭션 3개가 모두 부모 트랜잭션인 A에 합류하여 수행됩니다. 그래서 부모 트랜잭션이나 로컬 트랜잭션 3개나 모두 같은 트랜잭션이므로 어느 하나의 로직에서 문제가 발생하면 전부 롤백이 됩니다."
     ]
   },
   {
-    "id": "dataStructure-22",
+    "id": "spring-22",
     "question": "@Transactional에 readOnly 속성을 사용하는 이유에 대해서 설명해주세요.",
     "answers": [
       "@Transactional에 readOnly 속성을 사용하는 이유는 트랜잭션 안에서 수정/삭제 작업이 아닌 ReadOnly 목적인 경우에 주로 사용되며, 영속성 컨텍스트에서 엔티티를 관리 할 필요가 없기 때문에 readOnly를 추가하는 것으로 메모리 성능을 높일 수 있고, 데이터 변경 불가능 로직임을 코드로 표시할 수 있어 가독성이 높아진다는 장점이 있습니다."
     ]
   },
   {
-    "id": "dataStructure-23",
+    "id": "spring-23",
     "question": "JPA N + 1 문제와 발생하는 이유 그리고 해결하는 방법을 설명해주세요.",
     "answers": [
       "N+1 문제는 1번의 쿼리를 날렸을 때 의도하지 않은 N번의 쿼리가 추가적으로 실행되는 것을 의미합니다. 발생하는 이유는 연관관계를 가진 엔티티를 조회할 때 한 쪽 테이블만 조회하고 연결된 다른 테이블은 따로 조회하기 때문입니다. 이를 해결하기 위해 가장 많이 사용되는 방법은 Fetch Join을 사용하는 것입니다. Fetch Join을 사용하면 미리 두 테이블을 Join하여 한 번에 모든 데이터를 가져오기 때문에 N+1문제를 애초에 막을 수 있습니다."
     ]
   },
   {
-    "id": "dataStructure-24",
+    "id": "spring-24",
     "question": "JPA와 같은 ORM을 사용하면서 쿼리가 복잡해지는 경우에는 어떻게 해결하는게 좋을까요?",
     "answers": [
       "JPA 자체는 정적인 상황에서 사용하는 것을 권장하기 때문에 복잡한 쿼리와 동적인 쿼리에 대한 문제가 발생하게 됩니다. 그럴 때는 JPQL과 Querydsl을 사용하는 것이 좋습니다."
