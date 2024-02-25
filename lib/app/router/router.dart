@@ -352,4 +352,9 @@ class ChatPageRoute extends GoRouteData {
       child: const ChatPage(),
     );
   }
+
+  /// NOTE: $extra 이슈로 직접 업데이트
+  void updateArg({required ChatRoomEntity room}) {
+    arg = room;
+  }
 }

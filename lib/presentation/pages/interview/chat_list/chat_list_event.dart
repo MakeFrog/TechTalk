@@ -11,8 +11,9 @@ mixin class ChatListEvent {
     BuildContext context, {
     required ChatRoomEntity room,
   }) {
-    ChatPageRoute.arg = room;
-    ChatPageRoute(roomId: room.id, type: room.type).push(context);
+    final route = ChatPageRoute(roomId: room.id, type: room.type);
+    route.updateArg(room: room);
+    route.push(context);
   }
 
   /// 면접 질문 갯수 선택 페이지로 이동
