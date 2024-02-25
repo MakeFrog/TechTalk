@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
@@ -24,6 +25,7 @@ mixin class ChatEvent {
   }) async {
     final message = textEditingController.text;
     if (message.isEmpty) {
+      unawaited(HapticFeedback.vibrate());
       return SnackBarService.showSnackBar('답변을 입력해 주세요');
     }
     textEditingController.clear();
@@ -34,6 +36,7 @@ mixin class ChatEvent {
   }
 
   void onChatFieldSubmittedOnWaitingState() {
+    unawaited(HapticFeedback.vibrate());
     SnackBarService.showSnackBar('면접관의 응답이 마무리된 이후 답변을 전송해주세요.');
   }
 

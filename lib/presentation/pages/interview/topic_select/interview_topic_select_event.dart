@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/features/topic/topic.dart';
@@ -12,6 +13,7 @@ mixin class InterviewTopicSelectEvent {
     WidgetRef ref, {
     required TopicEntity topic,
   }) {
+    HapticFeedback.lightImpact();
     ref.read(selectedInterviewTopicsProvider.notifier).toggleOrRemove(topic);
   }
 

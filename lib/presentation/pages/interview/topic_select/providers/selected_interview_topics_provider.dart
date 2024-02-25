@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
@@ -21,6 +22,7 @@ class SelectedInterviewTopics extends _$SelectedInterviewTopics {
       final removedTopics = state..remove(targetTopic);
       state = [...removedTopics];
     } else if (interviewTopic.isPractical && state.length > limitCount) {
+      HapticFeedback.vibrate();
       SnackBarService.showSnackBar('최대 4개까지 선택 가능합니다');
     } else if (interviewTopic.isSingleTopic) {
       state = [targetTopic];
