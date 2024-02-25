@@ -8,6 +8,7 @@ import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_route_arg.dart';
+import 'package:techtalk/presentation/pages/interview/question_count_select/providers/select_question_count_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
@@ -242,24 +243,25 @@ class InterviewTopicSelectRoute extends GoRouteData {
 }
 
 class QuestionCountSelectPageRoute extends GoRouteData {
-  QuestionCountSelectPageRoute(
-    this.type, {
-    required this.$extra,
-  }) : topicId = $extra.singleOrNull?.id ?? $extra.map((e) => e.id).toString();
+  QuestionCountSelectPageRoute(this.type, this.topicId);
 
   static const String path = ':topicId';
   static const String name = 'question count select';
 
-  final InterviewType type;
   final String topicId;
-  final List<TopicEntity> $extra;
+  final InterviewType type;
+
+  static late SelectQuestionCountRouteArg arg;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return QuestionCountSelectPage(
-      type: type,
-      topics: $extra,
-    );
+    return const QuestionCountSelectPage();
+  }
+
+  /// NOTE: $extra 이슈로 직접 업데이트
+  void updateArg(
+      {required InterviewType type, required List<TopicEntity> topics}) {
+    arg = (topics: topics, type: type);
   }
 }
 

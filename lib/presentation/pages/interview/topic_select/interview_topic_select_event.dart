@@ -25,7 +25,13 @@ mixin class InterviewTopicSelectEvent {
   ) {
     final interviewType = ref.read(interviewTopicSelectRouteArgProvider);
     final selectedTopics = ref.read(selectedInterviewTopicsProvider);
-    QuestionCountSelectPageRoute(interviewType, $extra: selectedTopics)
-        .push(ref.context);
+    final route = QuestionCountSelectPageRoute(
+      interviewType,
+      selectedTopics.singleOrNull?.id ??
+          selectedTopics.map((e) => e.id).toString(),
+    );
+
+    route.updateArg(type: interviewType, topics: selectedTopics);
+    route.push(ref.context);
   }
 }

@@ -2,10 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
-import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/providers/selected_question_count_provider.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_event.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_state.dart';
@@ -16,12 +14,7 @@ class QuestionCountSelectPage extends BasePage
     with QuestionCountSelectState, QuestionCountSelectEvent {
   const QuestionCountSelectPage({
     Key? key,
-    required this.type,
-    required this.topics,
   }) : super(key: key);
-
-  final InterviewType type;
-  final List<TopicEntity> topics;
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
@@ -66,8 +59,8 @@ class QuestionCountSelectPage extends BasePage
       child: FilledButton(
         onPressed: () => routeToChatPage(
           ref,
-          type: type,
-          topics: topics,
+          type: arg(ref).type,
+          topics: arg(ref).topics,
         ),
         child: const Center(
           child: Text('시작하기'),

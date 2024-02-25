@@ -23,11 +23,13 @@ mixin class WrongAnswerNoteEvent {
   ///
   void routeToSingleSubjectQuestionCount(WidgetRef ref) {
     final selectedTopic = ref.read(selectedWrongAnswerTopicProvider);
+    const type = InterviewType.singleTopic;
 
-    QuestionCountSelectPageRoute(
-      InterviewType.singleTopic,
-      $extra: [selectedTopic!],
-    ).push(ref.context);
+    final route = QuestionCountSelectPageRoute(type, selectedTopic!.id);
+
+    route.updateArg(type: type, topics: [selectedTopic]);
+
+    route.push(ref.context);
   }
 
   ///
