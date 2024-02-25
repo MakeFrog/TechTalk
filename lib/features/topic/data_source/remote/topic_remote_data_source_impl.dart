@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/topic/data_source/remote/models/topics_ref.dart';
 import 'package:techtalk/features/topic/data_source/remote/models/wrong_answer_model.dart';
 import 'package:techtalk/features/topic/topic.dart';
@@ -117,6 +118,22 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
           .doc(e['id']);
 
       await ref.set(e);
+    }
+  }
+
+  @override
+  Future<void> deleteUserWrongAnswers() async {
+    for (var topic in StoredTopics.list) {
+      final ref = FirestoreTopicWrongAnswerRef.subCollection(
+        topic.id,
+        FirebaseAuth.instance.currentUser!.uid,
+      );
+
+      final docRef = await ref.get();
+
+      for (var doc in docRef.docs) {
+        await ref.doc(doc.id).delete();
+      }
     }
   }
 }

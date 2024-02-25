@@ -26,4 +26,9 @@ abstract interface class TopicRepository {
   /// 오답 노트 목록 호출
   ///
   Future<Result<List<WrongAnswerEntity>>> getWrongAnswers(String topicId);
+
+  ///
+  /// 오답 노트 목록 제거
+  ///
+  Future<Result<void>> deleteUserWrongAnswers();
 }

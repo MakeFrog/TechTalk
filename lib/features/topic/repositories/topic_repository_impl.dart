@@ -120,4 +120,14 @@ class TopicRepositoryImpl implements TopicRepository {
       return Result.failure(const WrongAnswerUpdateFailedException());
     }
   }
+
+  @override
+  Future<Result<void>> deleteUserWrongAnswers() async {
+    try {
+      final response = await _remoteDataSource.deleteUserWrongAnswers();
+      return Result.success(response);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
 }
