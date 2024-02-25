@@ -118,11 +118,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           );
 
           late QuestionChatMessageEntity nextQuestionChat;
-
-          final guideChat = GuideChatMessageEntity.createStatic(
-            message: guideMessage,
-            timestamp: DateTime.now(),
-          );
+          late GuideChatMessageEntity guideChat;
 
           if (!isCompleted) {
             final qna = _getNewQna();
@@ -131,10 +127,15 @@ class ChatMessageHistory extends _$ChatMessageHistory {
               guideMessage =
                   '다음 ${StoredTopics.getById(qna.id.getFirstPartOfSpliited).text} 질문을 드리겠습니다.';
             }
+            guideChat = GuideChatMessageEntity.createStatic(
+              message: guideMessage,
+              timestamp: DateTime.now(),
+            );
             nextQuestionChat = QuestionChatMessageEntity.createStatic(
-                qnaId: qna.qna.id,
-                message: qna.qna.question,
-                timestamp: DateTime.now());
+              qnaId: qna.qna.id,
+              message: qna.qna.question,
+              timestamp: DateTime.now(),
+            );
           }
 
           await Future.wait([

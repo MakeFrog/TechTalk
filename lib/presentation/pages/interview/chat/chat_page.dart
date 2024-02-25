@@ -22,7 +22,7 @@ class ChatPage extends BasePage with ChatEvent {
 
     return _Scaffold(
       chatTabView: const InterviewTabView(),
-      summaryTabView: const QnATabView(),
+      summaryTabView: const QnaTabView(),
       tabController: tabController,
     );
   }

@@ -161,7 +161,9 @@ class Bubble extends StatelessWidget {
                           style: AppTextStyle.alert1
                               .copyWith(color: AppColor.of.blue2),
                         ),
-                        const Gap(2),
+                        const SizedBox(
+                          width: 2,
+                        ),
                         SvgPicture.asset(Assets.iconsRoundedCheckSmallBlue),
                       ],
                     );
@@ -173,7 +175,9 @@ class Bubble extends StatelessWidget {
                           style: AppTextStyle.alert1
                               .copyWith(color: AppColor.of.red2),
                         ),
-                        const Gap(2),
+                        const SizedBox(
+                          width: 2,
+                        ),
                         SvgPicture.asset(Assets.iconsRoundedCloseSmallRed),
                       ],
                     );

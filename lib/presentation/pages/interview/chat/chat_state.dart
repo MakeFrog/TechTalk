@@ -34,6 +34,11 @@ mixin class ChatState {
       ref.watch(chatMessageHistoryProvider).requireValue;
 
   ///
+  /// 채팅방
+  ///
+  ChatRoomEntity room(WidgetRef ref) => ref.watch(selectedChatRoomProvider);
+
+  ///
   /// 인터뷰 진행 상태
   ///
   InterviewProgress progressState(WidgetRef ref) =>
