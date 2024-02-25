@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class ResponsiveLayoutBuilder extends StatelessWidget {
   const ResponsiveLayoutBuilder(this.context, this.child, {super.key});
@@ -10,15 +8,9 @@ class ResponsiveLayoutBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.portraitUp,
-    ]);
-
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         if (constraints.maxWidth > 600) {
-          EasyLoading.init()(context, child);
           // 태블릿 디바이스일 경우
           return Stack(
             children: [
@@ -34,10 +26,9 @@ class ResponsiveLayoutBuilder extends StatelessWidget {
               ),
             ],
           );
-        } else {
-          // 태블릿 디바이스가 아닐 경우
-          return EasyLoading.init()(context, child); // Easy 로딩 컨텐츠스트 초기화
         }
+
+        return child!;
       },
     );
   }
