@@ -22,6 +22,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
     final getChatList = switch (room.progressState) {
       ChatRoomProgress.initial => () async {
           await _showIntroAndQuestionMessages();
+
           return <ChatMessageEntity>[];
         },
       ChatRoomProgress.ongoing || ChatRoomProgress.completed => () async {

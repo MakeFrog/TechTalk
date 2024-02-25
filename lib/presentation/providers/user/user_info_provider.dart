@@ -103,9 +103,9 @@ class UserInfo extends _$UserInfo {
 
     if (user.hasPracticalInterviewRecord == true) return;
 
-    final updateUser = user.copyWith(hasPracticalInterviewRecord: true);
-    await update((_) => updateUser);
-    final response = await storeUserLocalInfo.call(updateUser);
+    final updatedUser = user.copyWith(hasPracticalInterviewRecord: true);
+    await update((_) => updatedUser);
+    final response = await storeUserLocalInfo.call(updatedUser);
 
     response.fold(
       onSuccess: (_) {

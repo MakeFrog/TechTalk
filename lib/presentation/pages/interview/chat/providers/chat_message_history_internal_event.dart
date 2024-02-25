@@ -93,12 +93,6 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
               ref
                   .read(selectedChatRoomProvider.notifier)
                   .updateInitialInfo(firstQuestionChat);
-              ref
-                  .read(userInfoProvider.notifier)
-                  .updateTopicRecordsOnCondition(room.topics);
-              ref
-                  .read(userInfoProvider.notifier)
-                  .storeUserPracticalRecordExistInfo();
             },
           ),
           showMessage(
@@ -106,6 +100,16 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
             onDone: () {
               showMessage(
                 message: firstQuestionChat.overwriteToStream(),
+                onDone: () {
+                  ref
+                      .read(userInfoProvider.notifier)
+                      .updateTopicRecordsOnCondition(room.topics);
+                  if (room.type.isPractical) {
+                    ref
+                        .read(userInfoProvider.notifier)
+                        .storeUserPracticalRecordExistInfo();
+                  }
+                },
               );
             },
           ),
