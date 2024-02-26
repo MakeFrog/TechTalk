@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:techtalk/core/services/size_service.dart';
 
 class SkillSelectionScaffold extends StatelessWidget {
   const SkillSelectionScaffold(
@@ -41,6 +42,7 @@ class SkillSelectionScaffold extends StatelessWidget {
         ),
         Container(
           color: Colors.white,
+          margin: EdgeInsets.only(bottom: AppSize.to.bottomInset == 0 ? 16 : 0),
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: bottomFixedBtn,
         )

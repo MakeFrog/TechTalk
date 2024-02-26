@@ -32,6 +32,9 @@ class SignUpPage extends BasePage with SignUpState {
   @override
   bool get resizeToAvoidBottomInset => false;
 
+  // @override
+  // bool get setBottomSafeArea => false;
+
   @override
   PreferredSizeWidget buildAppBar(BuildContext context, WidgetRef ref) =>
       const _AppBar();

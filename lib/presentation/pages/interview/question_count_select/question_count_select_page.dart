@@ -50,10 +50,13 @@ class QuestionCountSelectPage extends BasePage
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
       const BackButtonAppBar();
+  @override
+  bool get wrapWithSafeArea => false;
 
   @override
   Widget? buildFloatingActionButton(WidgetRef ref) {
     return Container(
+      margin: EdgeInsets.only(bottom: AppSize.to.bottomInset == 0 ? 16 : 0),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       height: 56,
       child: FilledButton(
@@ -68,6 +71,9 @@ class QuestionCountSelectPage extends BasePage
       ),
     );
   }
+
+  @override
+  bool get setBottomSafeArea => false;
 
   @override
   FloatingActionButtonLocation? get floatingActionButtonLocation =>

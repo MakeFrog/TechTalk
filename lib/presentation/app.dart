@@ -79,6 +79,7 @@ class App extends ConsumerWidget {
         builder: (context, child) {
           AppColor.init(context);
           AppSize.to.init(context);
+
           return ResponsiveLayoutBuilder(
             context,
             FToastBuilder()(

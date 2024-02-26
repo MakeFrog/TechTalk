@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ResponsiveLayoutBuilder extends StatelessWidget {
   const ResponsiveLayoutBuilder(this.context, this.child, {super.key});
@@ -8,6 +9,10 @@ class ResponsiveLayoutBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.portraitUp,
+    ]);
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         if (constraints.maxWidth > 600) {

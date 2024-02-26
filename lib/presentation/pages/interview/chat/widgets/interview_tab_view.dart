@@ -22,6 +22,7 @@ class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
     final chatScrollController = useScrollController();
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Expanded(
           child: GestureDetector(
@@ -148,9 +149,9 @@ class _BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                               textEditingController: messageController,
                             );
                           }
-                        : (){
-                      onChatFieldSubmittedOnWaitingState(progressState);
-                    },
+                        : () {
+                            onChatFieldSubmittedOnWaitingState(progressState);
+                          },
                   );
                 },
               ),

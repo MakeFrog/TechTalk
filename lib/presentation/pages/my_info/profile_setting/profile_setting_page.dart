@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
+import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_setting_event.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_setting_state.dart';
