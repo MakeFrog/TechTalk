@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "680296657690",
+    "firebase_url": "https://techtalk-prod-32-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "techtalk-prod-32",
     "storage_bucket": "techtalk-prod-32.appspot.com"
   },
@@ -14,7 +15,23 @@
       },
       "oauth_client": [
         {
-          "client_id": "680296657690-dc1q33b3ud7qc8bge8sja31eo88dp1cn.apps.googleusercontent.com",
+          "client_id": "680296657690-oom34dnujr0kr4liiv1tk49te53kufr5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techtalk",
+            "certificate_hash": "3c0e8650ad48d501202192f7adf67a8e3f17a726"
+          }
+        },
+        {
+          "client_id": "680296657690-qgtmhdkgto8e9kbemlmgh5kr05h3114r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techtalk",
+            "certificate_hash": "5bc69b22590eaac27328581f5c9bbbc7922ccaf8"
+          }
+        },
+        {
+          "client_id": "680296657690-ci97ant29vucvg7ffh4ocsq1vo8ki2hp.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,7 +44,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "680296657690-dc1q33b3ud7qc8bge8sja31eo88dp1cn.apps.googleusercontent.com",
+              "client_id": "680296657690-ci97ant29vucvg7ffh4ocsq1vo8ki2hp.apps.googleusercontent.com",
               "client_type": 3
             },
             {

@@ -13,6 +13,7 @@ class StoredTopics {
       final List<TopicModel> response = await topicRemoteDataSource.getTopics();
       list.addAll(response.map((e) => e.toEntity()).toList());
     } on Exception catch (e) {
+      print('아지랑이 : ${e}');
       throw '면접 주제 호출 실패';
     }
   }

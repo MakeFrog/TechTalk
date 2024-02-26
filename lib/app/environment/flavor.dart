@@ -32,7 +32,6 @@ class Flavor {
       baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 5)),
       enableLog: true,
     );
-    // ChatGPTCompletions.instance.initialize(apiKey: env.openApiKey);
 
     final option = env.firebaseOption;
 

@@ -97,6 +97,7 @@ class Assets {
   static const String iconsUser = 'assets/icons/user.svg';
   static const String iconsWarning = 'assets/icons/warning.svg';
   static const String iconsWrongIndicator = 'assets/icons/wrong_indicator.svg';
+  static const String imagesAppIcon = 'assets/images/app_icon.png';
   static const String imagesAvatar1 = 'assets/images/avatar_1.png';
   static const String imagesBlankProfile = 'assets/images/blank_profile.png';
   static const String imagesSparkle = 'assets/images/sparkle.svg';

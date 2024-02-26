@@ -50,7 +50,6 @@ class SingleTopicInterviewCard extends ConsumerWidget
                     ),
                   ),
                 ),
-              const Gap(12),
               _buildTopics(),
             ],
           ),
