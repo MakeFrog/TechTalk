@@ -95,6 +95,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
     final response = getAnswerFeedBackUseCase.call(
       (
         qna: qna,
+        userName: ref.read(userInfoProvider).requireValue!.nickname!,
         checkAnswer: ({required isCorrect}) async {
           /// 2) 유저의 답변 정답 여부 확인
           resolvedUserAnswer =
