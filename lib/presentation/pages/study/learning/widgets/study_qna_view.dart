@@ -20,12 +20,15 @@ class StudyQnaView extends ConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Expanded(
-      child: PageView.builder(
-        controller: controller(ref),
-        onPageChanged: (value) => onQuestionPageChanged(ref),
-        itemCount: qnas(ref).length,
-        itemBuilder: (context, index) => _StudyQna(
-          question: qnas(ref)[index],
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 82),
+        child: PageView.builder(
+          controller: controller(ref),
+          onPageChanged: (value) => onQuestionPageChanged(ref),
+          itemCount: qnas(ref).length,
+          itemBuilder: (context, index) => _StudyQna(
+            question: qnas(ref)[index],
+          ),
         ),
       ),
     );
