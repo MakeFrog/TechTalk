@@ -73,6 +73,7 @@ class _SelectedListViewSlider extends ConsumerWidget
         onTapItem: (index) {
           onSkillChipTapped(ref, index: index);
         },
+        scrollController: selectedSkillScrollController(ref),
       ),
     );
   }

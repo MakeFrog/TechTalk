@@ -114,7 +114,6 @@ class _BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
               controller: messageController,
               maxLines: null,
               textAlignVertical: TextAlignVertical.top,
-              cursorColor: AppColor.of.brand2,
               decoration: InputDecoration(
                 enabled: !progressState.isDoneOrError,
                 fillColor: AppColor.of.background1,

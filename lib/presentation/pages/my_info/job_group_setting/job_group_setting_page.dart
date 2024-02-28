@@ -16,15 +16,21 @@ class JobGroupSettingPage extends BasePage
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
     return JobGroupSelectionScaffold(
-      introTextView: const SignUpStepIntroMessage(
-        title: '관심있는 직군을\n알려주세요.',
-        subTitle: '1개 이상 선택해 주세요.',
+      introTextView: GestureDetector(
+        onTap: () {
+          print(selectedGroupScrollController(ref).position.maxScrollExtent);
+        },
+        child: const SignUpStepIntroMessage(
+          title: '관심있는 직군을\n알려주세요.',
+          subTitle: '1개 이상 선택해 주세요.',
+        ),
       ),
       selectedJogGroupSlider: SelectedJobGroupListViewDelegate(
         selectedJobGroups: selectedJobGroups(ref),
         onTapItem: (item) {
           onJogGroupChipTapped(ref, item: item);
         },
+        scrollController: selectedGroupScrollController(ref),
       ),
       totalJobGroupListView: JobGroupSliverListView(
         selectedJobGroups: selectedJobGroups(ref),

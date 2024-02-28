@@ -23,6 +23,7 @@ class JobGroupSelectStep extends HookConsumerWidget
         onTapItem: (item) {
           onJobGroupItemTapped(ref, item: item);
         },
+        scrollController: selectedJobGroupScrollController(ref),
       ),
       totalJobGroupListView: JobGroupSliverListView(
         selectedJobGroups: selectedJobGroups(ref),

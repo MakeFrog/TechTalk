@@ -44,6 +44,7 @@ class PickedProfileImg extends _$PickedProfileImg {
             title: '권한 허용',
             subTitle: '사진첩 접근 권한을 허용해주셔야 프로필 이미지를 변경할 수 있습니다.',
             leftBtnContent: '취소',
+            showContentImg: false,
             rightBtnContent: '설정하기',
             onRightBtnClicked: () async {
               rootNavigatorKey.currentContext?.pop();

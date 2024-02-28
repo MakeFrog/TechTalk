@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skill_entity.dart';
@@ -13,12 +15,21 @@ class SelectedSkills extends _$SelectedSkills {
     return userSkills?.toList() ?? [];
   }
 
-  void add(SkillEntity item) {
+  void add(SkillEntity item, ScrollController scrollController) {
     if (state.contains(item)) {
       SnackBarService.showSnackBar('이미 선택된 기술입니다.');
       return;
     }
     state = [...state, item];
+    SchedulerBinding.instance.addPostFrameCallback(
+      (_) {
+        scrollController.animateTo(
+          scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 260),
+          curve: Curves.fastOutSlowIn,
+        );
+      },
+    );
   }
 
   void removeAt(int index) {

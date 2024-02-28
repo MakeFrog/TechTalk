@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
@@ -14,6 +15,8 @@ import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/sele
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_controller.dart';
 import 'package:techtalk/presentation/providers/input/nickname_input_provider.dart';
 import 'package:techtalk/presentation/providers/input/skill_text_field_controller_provider.dart';
+import 'package:techtalk/presentation/providers/scroll/selected_job_group_scroll_controller.dart';
+import 'package:techtalk/presentation/providers/scroll/selected_skill_scroll_controller.dart';
 import 'package:techtalk/presentation/providers/user/user_auth_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
