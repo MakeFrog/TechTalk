@@ -2,11 +2,10 @@ import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/helper/list_extension.dart';
-import 'package:techtalk/core/services/toast_service.dart';
+import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/providers/user/user_auth_provider.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
 
 part 'user_info_provider.g.dart';
 
@@ -39,9 +38,7 @@ class UserInfo extends _$UserInfo {
         await future;
       },
       onFailure: (e) {
-        ToastService.show(
-          NormalToast(message: '$e'),
-        );
+        SnackBarService.showSnackBar('$e');
 
         throw e;
       },
@@ -59,9 +56,7 @@ class UserInfo extends _$UserInfo {
         state = AsyncData(data);
       },
       onFailure: (e) {
-        ToastService.show(
-          NormalToast(message: '$e'),
-        );
+        SnackBarService.showSnackBar('$e');
 
         throw e;
       },
@@ -85,9 +80,7 @@ class UserInfo extends _$UserInfo {
           log('유저 면접 기록 업데이트 성공');
         },
         onFailure: (e) {
-          ToastService.show(
-            NormalToast(message: '$e'),
-          );
+          SnackBarService.showSnackBar('$e');
 
           throw e;
         },
@@ -127,9 +120,7 @@ class UserInfo extends _$UserInfo {
         ref.invalidateSelf();
       },
       onFailure: (e) {
-        ToastService.show(
-          NormalToast(message: '$e'),
-        );
+        SnackBarService.showSnackBar('$e');
 
         throw e;
       },

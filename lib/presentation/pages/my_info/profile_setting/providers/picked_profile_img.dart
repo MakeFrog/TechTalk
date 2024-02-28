@@ -9,8 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
-import 'package:techtalk/core/services/toast_service.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
+import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
 part 'picked_profile_img.g.dart';
@@ -58,9 +57,7 @@ class PickedProfileImg extends _$PickedProfileImg {
         );
       } else {
         log(e.toString());
-        ToastService.show(
-          const CustomToast(message: '사진첩에서 정상적으로 이미지를 불러오지 못했어요. 다시 시도해주세요'),
-        );
+        SnackBarService.showSnackBar('사진첩에서 정상적으로 이미지를 불러오지 못했어요. 다시 시도해주세요');
       }
     }
   }

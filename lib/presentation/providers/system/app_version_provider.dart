@@ -1,7 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/core/services/toast_service.dart';
+import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/system/system.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
 
 part 'app_version_provider.g.dart';
 
@@ -19,7 +18,7 @@ class AppVersion extends _$AppVersion {
         return versionInfo;
       },
       onFailure: (e) {
-        ToastService.show(NormalToast(message: '앱의 버전 정보를 가져오는데 실패하였습니다.'));
+        SnackBarService.showSnackBar('앱의 버전 정보를 가져오는데 실패하였습니다.');
         throw e;
       },
     );
