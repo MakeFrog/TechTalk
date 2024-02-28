@@ -1,5 +1,6 @@
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/core/core.dart';
@@ -118,6 +119,7 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
         isCorrect: true,
       );
     }
+    HapticFeedback.lightImpact();
   }
 
   /// 응답값 포맷

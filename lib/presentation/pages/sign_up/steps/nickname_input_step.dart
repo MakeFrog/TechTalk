@@ -28,17 +28,28 @@ class NicknameInputStep extends StatelessWidget {
   }
 }
 
-class _SearchBar extends ConsumerWidget with SignUpEvent {
+class _SearchBar extends ConsumerWidget with SignUpState, SignUpEvent {
   const _SearchBar(this.formKey, {super.key});
 
   final GlobalKey<FormState> formKey;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final TextEditingController controller = TextEditingController();
+    if (userDisplayName(ref) != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        controller.text = userDisplayName(ref)!;
+        ref
+            .read(nicknameInputProvider.notifier)
+            .onInputChanged(userDisplayName(ref));
+      });
+    }
+
     return Form(
       key: formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: ClearableTextField(
+        controller: controller,
         textInputAction: TextInputAction.done,
         validator: (input) => nicknameValidation(ref, input: input),
         inputDecoration: InputDecoration(

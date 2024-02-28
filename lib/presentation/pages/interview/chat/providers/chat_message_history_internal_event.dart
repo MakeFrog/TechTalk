@@ -8,6 +8,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
     required ChatMessageEntity message,
     void Function()? onDone,
   }) async {
+    unawaited(HapticFeedback.lightImpact());
     await update(
       (previous) => [
         message,

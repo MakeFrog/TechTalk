@@ -32,28 +32,35 @@ class TestPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     print("...page build...");
-    return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: Container(
-              color: Colors.red,
-              child: Text('9a'),
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (_) {
+        print('아지랑이');
+      },
+      child: Scaffold(
+        appBar: AppBar(),
+        body: Column(
+          children: <Widget>[
+            Expanded(
+              child: Container(
+                color: Colors.red,
+                child: Text('9a'),
+              ),
             ),
-          ),
-          const TextField(),
-          Container(
-            height: 100,
-            width: 100,
-            color: Colors.blue,
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ref.read(listAimProvider.notifier).aimUpdate();
-        },
+            const TextField(),
+            Container(
+              height: 100,
+              width: 100,
+              color: Colors.blue,
+            ),
+          ],
+        ),
+        bottomSheet: Container(
+          padding: EdgeInsets.zero,
+          height: 20,
+          color: Colors.red,
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }

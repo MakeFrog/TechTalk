@@ -8,7 +8,7 @@ class _BottomControllerBar extends ConsumerWidget
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       color: Colors.white,
-      height: 70,
+      height: 72,
       width: double.infinity,
       child: HookBuilder(
         builder: (context) {

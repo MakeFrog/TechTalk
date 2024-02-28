@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_event.dart';
@@ -116,6 +117,7 @@ class _NextButton extends ConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
+      margin: EdgeInsets.only(bottom: AppSize.to.bottomInset == 0 ? 16 : 0),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       height: 56,
       child: FilledButton(

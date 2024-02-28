@@ -20,7 +20,7 @@ class ProviderLogger extends ProviderObserver {
     Object? newValue,
     ProviderContainer container,
   ) {
-    log(''' 
+    log('''
 {
   "provider": "${provider.name ?? provider.runtimeType}",
   "newValue": "$newValue"

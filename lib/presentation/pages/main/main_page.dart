@@ -58,18 +58,24 @@ class _Body extends HookConsumerWidget {
     });
     final currentTab = ref.watch(mainBottomNavigationProvider).index;
 
-    return PageView(
-      controller: mainTabController,
-      physics: const NeverScrollableScrollPhysics(),
-      children: [
-        ..._screens.mapIndexed(
-          (index, e) => e
-              .animate(
-                target: currentTab == index ? 1 : 0,
-              )
-              .fade(duration: 200.ms),
-        ),
-      ],
+    return NavigatorPopHandler(
+      enabled: true,
+      onPop: () {
+        print('아지랑이들');
+      },
+      child: PageView(
+        controller: mainTabController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          ..._screens.mapIndexed(
+            (index, e) => e
+                .animate(
+                  target: currentTab == index ? 1 : 0,
+                )
+                .fade(duration: 200.ms),
+          ),
+        ],
+      ),
     );
   }
 }

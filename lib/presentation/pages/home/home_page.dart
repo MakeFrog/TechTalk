@@ -52,6 +52,15 @@ class HomePage extends BasePage with HomeState {
   }
 
   @override
+  bool get canPop => false;
+
+  @override
+  void onWillPop(WidgetRef ref) {
+    super.onWillPop(ref);
+    print('아지랑이랑');
+  }
+
+  @override
   Color? get screenBackgroundColor => AppColor.of.background1;
 
   @override

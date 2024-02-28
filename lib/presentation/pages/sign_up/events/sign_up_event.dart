@@ -58,4 +58,10 @@ mixin class SignUpEvent {
       await EasyLoading.dismiss();
     }
   }
+
+  ///
+  /// 유저 auth 이름
+  ///
+  String? userDisplayName(WidgetRef ref) =>
+      ref.watch(userAuthProvider)?.displayName;
 }
