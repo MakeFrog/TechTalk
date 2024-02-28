@@ -19,38 +19,22 @@ class MainPage extends BasePage {
   const MainPage({super.key});
 
   @override
-  bool get wrapWithSafeArea => false;
-
-  @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
-    return const _Body();
-  }
+    const _pages = [
+      HomePage(
+        key: ValueKey(MainNavigationTab.home),
+      ),
+      StudyTopicSelectionPage(
+        key: ValueKey(MainNavigationTab.study),
+      ),
+      WrongAnswerNotePage(
+        key: ValueKey(MainNavigationTab.note),
+      ),
+      MyPage(
+        key: ValueKey(MainNavigationTab.myInfo),
+      )
+    ];
 
-  @override
-  Widget buildBottomNavigationBar(BuildContext context) =>
-      const _BottomNavigationBar();
-}
-
-class _Body extends HookConsumerWidget {
-  const _Body({super.key});
-
-  static const _screens = [
-    HomePage(
-      key: ValueKey(MainNavigationTab.home),
-    ),
-    StudyTopicSelectionPage(
-      key: ValueKey(MainNavigationTab.study),
-    ),
-    WrongAnswerNotePage(
-      key: ValueKey(MainNavigationTab.note),
-    ),
-    MyPage(
-      key: ValueKey(MainNavigationTab.myInfo),
-    )
-  ];
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
     final mainTabController = usePageController();
     ref.listen(mainBottomNavigationProvider, (_, next) {
       HapticFeedback.lightImpact();
@@ -58,26 +42,36 @@ class _Body extends HookConsumerWidget {
     });
     final currentTab = ref.watch(mainBottomNavigationProvider).index;
 
-    return NavigatorPopHandler(
-      enabled: true,
-      onPop: () {
-        print('아지랑이들');
-      },
-      child: PageView(
-        controller: mainTabController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: [
-          ..._screens.mapIndexed(
-            (index, e) => e
-                .animate(
-                  target: currentTab == index ? 1 : 0,
-                )
-                .fade(duration: 200.ms),
-          ),
-        ],
-      ),
+    return PageView(
+      controller: mainTabController,
+      physics: const NeverScrollableScrollPhysics(),
+      children: [
+        ..._pages.mapIndexed(
+          (index, e) => e
+              .animate(
+                target: currentTab == index ? 1 : 0,
+              )
+              .fade(duration: 200.ms),
+        ),
+      ],
     );
   }
+
+  @override
+  Color? get unSafeAreaColor => AppColor.of.background1;
+
+  @override
+  bool get setTopSafeArea => false;
+
+  @override
+  bool get setBottomSafeArea => false;
+
+  @override
+  bool get canPop => false;
+
+  @override
+  Widget buildBottomNavigationBar(BuildContext context) =>
+      const _BottomNavigationBar();
 }
 
 class _BottomNavigationBar extends ConsumerWidget with MainEvent {
