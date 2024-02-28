@@ -6,7 +6,7 @@ part of 'picked_profile_img.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$pickedProfileImgHash() => r'20373b5d4794be52deae2df26bb4b6e31a3ebd3b';
+String _$pickedProfileImgHash() => r'702d89eb280935405cee6624b599f54947c49d7f';
 
 ///
 /// 로컬에서 불러온 파일 이미지를 관리하는 프로바이더
