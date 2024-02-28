@@ -1,9 +1,11 @@
 class VersionEntity {
   final String versionCode;
+  final String notification;
   final bool isSystemAvailable;
 
   const VersionEntity({
     required this.versionCode,
+    required this.notification,
     required this.isSystemAvailable,
   });
 
@@ -26,13 +28,12 @@ class VersionEntity {
         '}';
   }
 
-  VersionEntity copyWith({
-    String? versionCode,
-    bool? isSystemAvailable,
-  }) {
+  VersionEntity copyWith(
+      {String? versionCode, bool? isSystemAvailable, String? notification}) {
     return VersionEntity(
       versionCode: versionCode ?? this.versionCode,
       isSystemAvailable: isSystemAvailable ?? this.isSystemAvailable,
+      notification: notification ?? this.notification,
     );
   }
 }

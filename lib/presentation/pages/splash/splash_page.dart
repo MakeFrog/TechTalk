@@ -16,7 +16,7 @@ class SplashPage extends BasePage with SplashEvent {
       () async {
         if (!SplashEvent.isInitializing) {
           SplashEvent.isInitializing = true;
-          await initStaticData(ref);
+
           await routeByUserAuthAndData(ref);
         }
       },

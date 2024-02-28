@@ -99,3 +99,24 @@ class VersionInfoFetchedFailedException extends CustomException {
   const VersionInfoFetchedFailedException()
       : super('500001', '앱 버전 정보를 가져오는데 실패하였습니다.');
 }
+
+class SystemNotAvailableWithNotification extends CustomException {
+  const SystemNotAvailableWithNotification()
+      : super('500002', '시스템 사용불가 / 공지 메세지');
+}
+
+class SystemOnMaintenanceException extends CustomException {
+  const SystemOnMaintenanceException() : super('500003', '점검');
+}
+
+class SystemNeedUpdateException extends CustomException {
+  const SystemNeedUpdateException() : super('500005', '업데이트 필요');
+}
+
+class SystemNetworkUnstable extends CustomException {
+  const SystemNetworkUnstable() : super('500006', '네트워크 불안정');
+}
+
+class SystemSomethingWrongException extends CustomException {
+  const SystemSomethingWrongException() : super('500007', '알 수 없는 오류');
+}
