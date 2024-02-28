@@ -362,7 +362,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"$PODS_ROOT/FirebaseCrashlytics/upload-symbols\" --flutter-project \"$PROJECT_DIR/firebase_app_id_file.json\" ";
+			shellScript = "\"$PODS_ROOT/FirebaseCrashlytics/upload-symbols\" --flutter-project \"$PROJECT_DIR/firebase_app_id_file.json\" \n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -626,7 +626,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = YD8Z9K9UT3;
 				ENABLE_BITCODE = NO;
-				FLUTTER_TARGET = lib/app/entrypoints/main_proddart;
+				FLUTTER_TARGET = lib/app/entrypoints/main_prod.dart;
 				GOOGLE_SCHEME = "com.googleusercontent.apps.680296657690-p43ha52vgppgbf76dmgq7tmepnu270pj";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -870,7 +870,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = YD8Z9K9UT3;
 				ENABLE_BITCODE = NO;
-				FLUTTER_TARGET = lib/app/entrypoints/main_proddart;
+				FLUTTER_TARGET = lib/app/entrypoints/main_prod.dart;
 				GOOGLE_SCHEME = "com.googleusercontent.apps.680296657690-p43ha52vgppgbf76dmgq7tmepnu270pj";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -363,8 +363,12 @@
   ],
   "d": [
     {
-      "id": "data-structure",
-      "name": "Data Structure"
+      "id": "database",
+      "name": "Data base(데이터베이스)"
+    },
+    {
+      "id": "dataStructure",
+      "name": "Data Structure(자료구조)"
     },
     {
       "id": "dart",
@@ -1679,8 +1683,8 @@
       "name": "NSwag"
     },
     {
-      "id": "networkx",
-      "name": "NetworkX"
+      "id": "network",
+      "name": "Network(네트워크)"
     },
     {
       "id": "ninject",
@@ -1705,8 +1709,8 @@
   ],
   "o": [
     {
-      "id": "operation_system",
-      "name": "operation_system"
+      "id": "operationSystem",
+      "name": "Operation System(운영체제)"
     },
     {
       "id": "oauth",

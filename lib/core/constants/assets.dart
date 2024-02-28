@@ -105,15 +105,21 @@ class Assets {
   static const String imagesTopicAndroid = 'assets/images/topic_android.png';
   static const String imagesTopicDataStructure =
       'assets/images/topic_data_structure.png';
+  static const String imagesTopicDatabase = 'assets/images/topic_database.png';
   static const String imagesTopicFlutter = 'assets/images/topic_flutter.png';
   static const String imagesTopicIos = 'assets/images/topic_ios.png';
   static const String imagesTopicJava = 'assets/images/topic_java.png';
+  static const String imagesTopicJavascript =
+      'assets/images/topic_javascript.png';
   static const String imagesTopicNestJs = 'assets/images/topic_nest_js.png';
+  static const String imagesTopicNetwork = 'assets/images/topic_network.png';
   static const String imagesTopicOperatingSystem =
       'assets/images/topic_operating_system.png';
   static const String imagesTopicReact = 'assets/images/topic_react.png';
   static const String imagesTopicSpring = 'assets/images/topic_spring.png';
   static const String imagesTopicSwift = 'assets/images/topic_swift.png';
+  static const String imagesTopicWebFrontend =
+      'assets/images/topic_webFrontend.png';
   static const String imagesWelcomeTechtalk =
       'assets/images/welcome_techtalk.svg';
   static const String jsonSkills = 'assets/json/skills.json';
@@ -133,8 +139,15 @@ class Assets {
   static const String techTalk = '.env';
   static const String topicsAndroid = 'assets/topics/android.json';
   static const String topicsDataStructure = 'assets/topics/dataStructure.json';
+  static const String topicsDatabase = 'assets/topics/database.json';
   static const String topicsFlutter = 'assets/topics/flutter.json';
+  static const String topicsJava = 'assets/topics/java.json';
+  static const String topicsJavascript = 'assets/topics/javascript.json';
+  static const String topicsNetwork = 'assets/topics/network.json';
+  static const String topicsOperatingSystem =
+      'assets/topics/operatingSystem.json';
   static const String topicsReact = 'assets/topics/react.json';
   static const String topicsSpring = 'assets/topics/spring.json';
-  static const String topicsSwift = 'assets/topics/swift.json';
+  static const String topicsSwift = 'assets/topics/ios.json';
+  static const String topicsWebFrontend = 'assets/topics/webFrontend.json';
 }

@@ -23,7 +23,6 @@ class UserAuth extends _$UserAuth {
         state = value.user;
       },
       onFailure: (e) {
-        print('오류 : ${e}');
         ToastService.show(
           NormalToast(message: '$e'),
         );
