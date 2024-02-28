@@ -150,9 +150,11 @@ class AppDialog extends Dialog {
               padding: const EdgeInsets.symmetric(horizontal: 8) +
                   const EdgeInsets.only(top: 16),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   if (isDividedBtnFormat)
                     Expanded(
+                      flex: 1,
                       child: Row(
                         children: [
                           Expanded(
@@ -179,17 +181,18 @@ class AppDialog extends Dialog {
                     ),
                   if (isDividedBtnFormat) const Gap(8),
                   Expanded(
+                    flex: isDividedBtnFormat ? 1 : 0,
                     child: FilledButton(
                       onPressed: onBtnClicked,
                       style: FilledButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: isDividedBtnFormat ? 16 : 32,
                           vertical: 13,
                         ),
                       ),
                       child: Text(btnText!),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
