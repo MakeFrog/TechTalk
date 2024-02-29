@@ -25,7 +25,9 @@ class UserInfo extends _$UserInfo {
       onSuccess: (value) {
         return value;
       },
-      onFailure: (e) => null,
+      onFailure: (e) {
+        return null;
+      },
     );
   }
 

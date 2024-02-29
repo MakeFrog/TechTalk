@@ -17,13 +17,18 @@ class NicknameInputStep extends StatelessWidget {
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
 
-    return _Scaffold(
-      introText: const SignUpStepIntroMessage(
-        title: '안녕하세요. 테크톡으로\n면접을 준비해볼까요?',
-        subTitle: '먼저 사용할 닉네임이 필요해요.',
-      ),
-      searchBar: _SearchBar(formKey),
-      bottomFixedBtn: _StepBtn(formKey),
+    return HookBuilder(
+      builder: (context) {
+        useAutomaticKeepAlive();
+        return _Scaffold(
+          introText: const SignUpStepIntroMessage(
+            title: '안녕하세요. 테크톡으로\n면접을 준비해볼까요?',
+            subTitle: '먼저 사용할 닉네임이 필요해요.',
+          ),
+          searchBar: _SearchBar(formKey),
+          bottomFixedBtn: _StepBtn(formKey),
+        );
+      },
     );
   }
 }

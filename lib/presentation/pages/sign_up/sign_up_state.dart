@@ -30,16 +30,6 @@ mixin class SignUpState {
       ref.watch(signUpTopicsProvider);
 
   ///
-  /// 닉네임 유효성 여부
-  ///
-  bool isNicknameConditionFilled(WidgetRef ref) {
-    final nicknameValidation =
-        ref.read(nicknameInputProvider.notifier).nickNameValidation();
-
-    return nicknameValidation == null ? true : false;
-  }
-
-  ///
   /// 선택된 직군
   ///
   List<JobGroup> selectedJobGroups(WidgetRef ref) =>

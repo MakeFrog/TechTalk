@@ -40,6 +40,7 @@ mixin class SignUpEvent {
       await EasyLoading.show();
 
       final userData = UserEntity(
+        profileImgUrl: ref.read(userAuthProvider)?.photoURL,
         uid: ref.read(userAuthProvider)!.uid,
         nickname: ref.read(nicknameInputProvider),
         jobGroups: ref.read(selectedJobGroupsProvider),
@@ -48,6 +49,8 @@ mixin class SignUpEvent {
         recordedTopics: [],
         hasPracticalInterviewRecord: false,
       );
+
+      print('아무튼 : ${userData.nickname}');
 
       await ref.read(userInfoProvider.notifier).createData(userData).then(
         (_) {
