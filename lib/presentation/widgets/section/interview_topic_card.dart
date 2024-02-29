@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/topic/topic.dart';
@@ -26,7 +27,7 @@ class InterviewTopicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double skillImgSize = 72;
+    final double _topicImgSize = AppSize.to.ratioHeight(72);
 
     return Material(
       color: isSelected
@@ -42,48 +43,41 @@ class InterviewTopicCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: isLoaded ? onTap : null,
-        child: Padding(
-          padding: const EdgeInsets.all(28),
-          child: isLoaded
-              ? Column(
-                  children: [
-                    Expanded(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(skillImgSize / 2),
-                        child: Container(
-                          height: skillImgSize,
-                          width: skillImgSize,
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Image.asset(
-                            topic!.imageUrl!,
-                            color: isSelected
-                                ? AppColor.of.brand2.withOpacity(0.07)
-                                : null,
-                            colorBlendMode: BlendMode.srcATop,
-                            errorBuilder: (_, __, ___) => Center(
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white,
-                                ),
-                              ),
+        child: isLoaded
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: _topicImgSize,
+                    width: _topicImgSize,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(_topicImgSize / 2),
+                      child: Image.asset(
+                        topic!.imageUrl!,
+                        fit: BoxFit.cover,
+                        color: isSelected
+                            ? AppColor.of.brand2.withOpacity(0.07)
+                            : null,
+                        colorBlendMode: BlendMode.srcATop,
+                        errorBuilder: (_, __, ___) => Center(
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
                             ),
                           ),
                         ),
                       ),
                     ),
-                    const Gap(16),
-                    Text(
-                      topic!.text,
-                      style: AppTextStyle.headline3,
-                    ),
-                  ],
-                )
-              : const EmptyBox(),
-        ),
+                  ),
+                  const Gap(16),
+                  Text(
+                    topic!.text,
+                    style: AppTextStyle.headline3,
+                  ),
+                ],
+              )
+            : const EmptyBox(),
       ),
     );
   }

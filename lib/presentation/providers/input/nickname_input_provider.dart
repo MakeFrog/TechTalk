@@ -5,9 +5,7 @@ import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 part 'nickname_input_provider.g.dart';
 
-@Riverpod(
-  dependencies: [UserInfo],
-)
+@riverpod
 class NicknameInput extends _$NicknameInput {
   @override
   String? build() {

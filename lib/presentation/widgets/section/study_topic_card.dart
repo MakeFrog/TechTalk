@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/topic/topic.dart';
@@ -15,6 +16,8 @@ class StudyTopicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double _topicImgSize = AppSize.to.ratioWidth(72);
+
     return Material(
       clipBehavior: Clip.antiAlias,
       color: AppColor.of.background1,
@@ -30,22 +33,24 @@ class StudyTopicCard extends StatelessWidget {
                 child: Text(
                   topic.text,
                   style: AppTextStyle.headline3,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               Align(
                 alignment: Alignment.centerRight,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(72),
-                  child: Image.asset(
-                    topic.imageUrl!,
-                    width: 72,
-                    height: 72,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      width: 72,
-                      height: 72,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
+                child: SizedBox(
+                  width: _topicImgSize,
+                  height: _topicImgSize,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(_topicImgSize / 2),
+                    child: Image.asset(
+                      topic.imageUrl!,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
                       ),
                     ),
                   ),

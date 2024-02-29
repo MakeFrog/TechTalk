@@ -12,6 +12,8 @@ import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_contr
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_topics_provider.dart';
 import 'package:techtalk/presentation/providers/input/nickname_input_provider.dart';
 import 'package:techtalk/presentation/providers/input/skill_text_field_controller_provider.dart';
+import 'package:techtalk/presentation/providers/scroll/selected_job_group_scroll_controller.dart';
+import 'package:techtalk/presentation/providers/scroll/selected_skill_scroll_controller.dart';
 
 mixin class SignUpState {
   PageController signUpStepController(WidgetRef ref) =>
@@ -26,16 +28,6 @@ mixin class SignUpState {
 
   List<TopicEntity> signUpTopics(WidgetRef ref) =>
       ref.watch(signUpTopicsProvider);
-
-  ///
-  /// 닉네임 유효성 여부
-  ///
-  bool isNicknameConditionFilled(WidgetRef ref) {
-    final nicknameValidation =
-        ref.read(nicknameInputProvider.notifier).nickNameValidation();
-
-    return nicknameValidation == null ? true : false;
-  }
 
   ///
   /// 선택된 직군
@@ -78,4 +70,16 @@ mixin class SignUpState {
   ///
   bool isSkillSelectionFilled(WidgetRef ref) =>
       ref.watch(selectedSkillsProvider).isNotEmpty;
+
+  ///
+  /// 선택된 직군 슬라이더 스크롤 컨트롤러
+  ///
+  ScrollController selectedJobGroupScrollController(WidgetRef ref) =>
+      ref.watch(selectedJobGroupScrollControllerProvider);
+
+  ///
+  /// 선택된 직군 슬라이더 스크롤 컨트롤러
+  ///
+  ScrollController selectedSkillScrollController(WidgetRef ref) =>
+      ref.watch(selectedSkillScrollControllerProvider);
 }

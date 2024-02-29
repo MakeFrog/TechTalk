@@ -1,9 +1,12 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/provider/selected_job_groups_provider.dart';
+import 'package:techtalk/presentation/providers/scroll/selected_job_group_scroll_controller.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 mixin class JobGroupSettingEvent {
@@ -17,6 +20,19 @@ mixin class JobGroupSettingEvent {
     } else {
       ref.read(selectedJobGroupsProvider.notifier).add(item);
     }
+
+    SchedulerBinding.instance.addPostFrameCallback(
+      (_) {
+        ref.read(selectedJobGroupScrollControllerProvider).animateTo(
+              ref
+                  .read(selectedJobGroupScrollControllerProvider)
+                  .position
+                  .maxScrollExtent,
+              duration: const Duration(milliseconds: 260),
+              curve: Curves.fastOutSlowIn,
+            );
+      },
+    );
   }
 
   ///

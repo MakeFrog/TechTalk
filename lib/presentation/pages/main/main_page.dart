@@ -13,44 +13,29 @@ import 'package:techtalk/presentation/pages/my_info/my_page/my_page.dart';
 import 'package:techtalk/presentation/pages/study/topic_selection/study_topic_selection_page.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_note_page.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
+import 'package:techtalk/presentation/providers/system/detect_network_connectivity_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 
 class MainPage extends BasePage {
   const MainPage({super.key});
 
   @override
-  bool get wrapWithSafeArea => false;
-
-  @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
-    return const _Body();
-  }
+    const _pages = [
+      HomePage(
+        key: ValueKey(MainNavigationTab.home),
+      ),
+      StudyTopicSelectionPage(
+        key: ValueKey(MainNavigationTab.study),
+      ),
+      WrongAnswerNotePage(
+        key: ValueKey(MainNavigationTab.note),
+      ),
+      MyPage(
+        key: ValueKey(MainNavigationTab.myInfo),
+      )
+    ];
 
-  @override
-  Widget buildBottomNavigationBar(BuildContext context) =>
-      const _BottomNavigationBar();
-}
-
-class _Body extends HookConsumerWidget {
-  const _Body({super.key});
-
-  static const _screens = [
-    HomePage(
-      key: ValueKey(MainNavigationTab.home),
-    ),
-    StudyTopicSelectionPage(
-      key: ValueKey(MainNavigationTab.study),
-    ),
-    WrongAnswerNotePage(
-      key: ValueKey(MainNavigationTab.note),
-    ),
-    MyPage(
-      key: ValueKey(MainNavigationTab.myInfo),
-    )
-  ];
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
     final mainTabController = usePageController();
     ref.listen(mainBottomNavigationProvider, (_, next) {
       HapticFeedback.lightImpact();
@@ -62,7 +47,7 @@ class _Body extends HookConsumerWidget {
       controller: mainTabController,
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        ..._screens.mapIndexed(
+        ..._pages.mapIndexed(
           (index, e) => e
               .animate(
                 target: currentTab == index ? 1 : 0,
@@ -72,6 +57,30 @@ class _Body extends HookConsumerWidget {
       ],
     );
   }
+
+  @override
+  void onInit(WidgetRef ref) {
+    super.onInit(ref);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(detectNetworkConnectivityProvider);
+    });
+  }
+
+  @override
+  Color? get unSafeAreaColor => AppColor.of.background1;
+
+  @override
+  bool get setTopSafeArea => false;
+
+  @override
+  bool get setBottomSafeArea => false;
+
+  @override
+  bool get canPop => false;
+
+  @override
+  Widget buildBottomNavigationBar(BuildContext context) =>
+      const _BottomNavigationBar();
 }
 
 class _BottomNavigationBar extends ConsumerWidget with MainEvent {

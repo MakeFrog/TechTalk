@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/presentation/pages/sign_up/events/sign_up_event.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_state.dart';
@@ -13,6 +14,7 @@ class SkillSelectStep extends HookConsumerWidget with SignUpState, SignUpEvent {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useAutomaticKeepAlive();
     return SkillSelectionScaffold(
       introTextView: const SignUpStepIntroMessage(
         title: '준비하고 있는 기술면접\n주제를 알려주세요!',
@@ -73,6 +75,7 @@ class _SelectedListViewSlider extends ConsumerWidget
         onTapItem: (index) {
           onSkillChipTapped(ref, index: index);
         },
+        scrollController: selectedSkillScrollController(ref),
       ),
     );
   }

@@ -17,28 +17,44 @@ class NicknameInputStep extends StatelessWidget {
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
 
-    return _Scaffold(
-      introText: const SignUpStepIntroMessage(
-        title: '안녕하세요. 테크톡으로\n면접을 준비해볼까요?',
-        subTitle: '먼저 사용할 닉네임이 필요해요.',
-      ),
-      searchBar: _SearchBar(formKey),
-      bottomFixedBtn: _StepBtn(formKey),
+    return HookBuilder(
+      builder: (context) {
+        useAutomaticKeepAlive();
+        return _Scaffold(
+          introText: const SignUpStepIntroMessage(
+            title: '안녕하세요. 테크톡으로\n면접을 준비해볼까요?',
+            subTitle: '먼저 사용할 닉네임이 필요해요.',
+          ),
+          searchBar: _SearchBar(formKey),
+          bottomFixedBtn: _StepBtn(formKey),
+        );
+      },
     );
   }
 }
 
-class _SearchBar extends ConsumerWidget with SignUpEvent {
+class _SearchBar extends ConsumerWidget with SignUpState, SignUpEvent {
   const _SearchBar(this.formKey, {super.key});
 
   final GlobalKey<FormState> formKey;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final TextEditingController controller = TextEditingController();
+    if (userDisplayName(ref) != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        controller.text = userDisplayName(ref)!;
+        ref
+            .read(nicknameInputProvider.notifier)
+            .onInputChanged(userDisplayName(ref));
+      });
+    }
+
     return Form(
       key: formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: ClearableTextField(
+        controller: controller,
         textInputAction: TextInputAction.done,
         validator: (input) => nicknameValidation(ref, input: input),
         inputDecoration: InputDecoration(

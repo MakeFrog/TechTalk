@@ -13,6 +13,7 @@ class SystemRepositoryImpl implements SystemRepository {
   Future<Result<VersionEntity>> getVersionInfo() async {
     try {
       final response = await _remoteDataSource.getVersionInfo();
+
       final result = response.toEntity();
       return Result.success(result);
     } on Exception catch (e) {

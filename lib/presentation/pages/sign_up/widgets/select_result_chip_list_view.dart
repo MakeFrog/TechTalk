@@ -6,10 +6,12 @@ class SelectResultChipListView extends StatelessWidget {
   const SelectResultChipListView({
     super.key,
     required this.itemList,
+    required this.scrollController,
     this.onTapItem,
   });
 
   final List<String> itemList;
+  final ScrollController scrollController;
   final void Function(int index)? onTapItem;
 
   @override
@@ -17,6 +19,7 @@ class SelectResultChipListView extends StatelessWidget {
     return SizedBox(
       height: 36,
       child: ListView.separated(
+        controller: scrollController,
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         itemCount: itemList.length,

@@ -6,7 +6,7 @@ part of 'nickname_input_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$nicknameInputHash() => r'dff2221c672a1b270e641834bc5b2192e8dbcefc';
+String _$nicknameInputHash() => r'f591c18f7866edaf875bc89b315b1bfbfdeb6695';
 
 /// See also [NicknameInput].
 @ProviderFor(NicknameInput)
@@ -17,11 +17,8 @@ final nicknameInputProvider =
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$nicknameInputHash,
-  dependencies: <ProviderOrFamily>[userInfoProvider],
-  allTransitiveDependencies: <ProviderOrFamily>{
-    userInfoProvider,
-    ...?userInfoProvider.allTransitiveDependencies
-  },
+  dependencies: null,
+  allTransitiveDependencies: null,
 );
 
 typedef _$NicknameInput = AutoDisposeNotifier<String?>;

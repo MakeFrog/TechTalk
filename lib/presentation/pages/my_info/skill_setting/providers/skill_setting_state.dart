@@ -5,6 +5,7 @@ import 'package:techtalk/features/tech_set/repositories/entities/skill_entity.da
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/searched_skills_provider.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/selected_skills_provider.dart';
 import 'package:techtalk/presentation/providers/input/skill_text_field_controller_provider.dart';
+import 'package:techtalk/presentation/providers/scroll/selected_skill_scroll_controller.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 mixin class SkillSettingState {
@@ -46,4 +47,10 @@ mixin class SkillSettingState {
   ///
   TextEditingController skillTextFieldController(WidgetRef ref) =>
       ref.watch(skillTextFieldControllerProvider);
+
+  ///
+  /// 선택된 스킬 슬라이더 스크롤 컨트롤러
+  ///
+  ScrollController selectedSkillScrollController(WidgetRef ref) =>
+      ref.watch(selectedSkillScrollControllerProvider);
 }

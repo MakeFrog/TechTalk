@@ -11,6 +11,19 @@ extension JobGroupStepEvent on SignUpEvent {
     } else {
       ref.read(selectedJobGroupsProvider.notifier).add(item);
     }
+
+    SchedulerBinding.instance.addPostFrameCallback(
+      (_) {
+        ref.read(selectedJobGroupScrollControllerProvider).animateTo(
+              ref
+                  .read(selectedJobGroupScrollControllerProvider)
+                  .position
+                  .maxScrollExtent,
+              duration: const Duration(milliseconds: 260),
+              curve: Curves.fastOutSlowIn,
+            );
+      },
+    );
   }
 
   ///

@@ -1,4 +1,3 @@
-import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -44,10 +43,10 @@ abstract class BasePage extends HookConsumerWidget {
     /// [preventSwipeBack]의 속성 값은 통해
     /// 플랫폼별 Swipe Back 제스쳐 작동 여부를 설정할 수 있음.
     ///
-    return ConditionalWillPopScope(
-      shouldAddCallback: preventSwipeBack,
-      onWillPop: () async {
-        return false;
+    return PopScope(
+      canPop: canPop,
+      onPopInvoked: (_) async {
+        onWillPop(ref);
       },
       child: GestureDetector(
         onTap: !preventAutoUnfocus
@@ -75,6 +74,7 @@ abstract class BasePage extends HookConsumerWidget {
       body: buildPage(context, ref),
       backgroundColor: screenBackgroundColor,
       bottomNavigationBar: buildBottomNavigationBar(context),
+      bottomSheet: buildBottomSheet(ref),
       floatingActionButtonLocation: floatingActionButtonLocation,
       floatingActionButton: buildFloatingActionButton(ref),
     );
@@ -83,6 +83,9 @@ abstract class BasePage extends HookConsumerWidget {
   /// 하단 네비게이션 바를 구성하는 위젯을 반환
   @protected
   Widget? buildBottomNavigationBar(BuildContext context) => null;
+
+  @protected
+  Widget? buildBottomSheet(WidgetRef ref) => null;
 
   /// 화면 페이지의 본문을 구성하는 위젯을 반환
   @protected
@@ -114,7 +117,7 @@ abstract class BasePage extends HookConsumerWidget {
 
   /// Swipe Back 제스처 동작을 막는지 여부를 설정
   @protected
-  bool get preventSwipeBack => false;
+  bool get canPop => true;
 
   /// 화면의 배경색을 설정
   @protected
@@ -159,4 +162,8 @@ abstract class BasePage extends HookConsumerWidget {
   /// 페이지 해제 시 호출
   @protected
   void onDispose(WidgetRef ref) {}
+
+  /// will pop시
+  @protected
+  void onWillPop(WidgetRef ref) {}
 }

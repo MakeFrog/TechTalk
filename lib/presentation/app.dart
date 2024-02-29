@@ -20,7 +20,7 @@ class ProviderLogger extends ProviderObserver {
     Object? newValue,
     ProviderContainer container,
   ) {
-    log(''' 
+    log('''
 {
   "provider": "${provider.name ?? provider.runtimeType}",
   "newValue": "$newValue"
@@ -79,13 +79,9 @@ class App extends ConsumerWidget {
         builder: (context, child) {
           AppColor.init(context);
           AppSize.to.init(context);
-
-          return ResponsiveLayoutBuilder(
+          return FToastBuilder()(
             context,
-            FToastBuilder()(
-              context,
-              child,
-            ),
+            ResponsiveLayoutBuilder(context, child),
           );
         },
       ),

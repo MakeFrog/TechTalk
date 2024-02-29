@@ -10,11 +10,13 @@ class SelectedJobGroupListViewDelegate extends SliverPersistentHeaderDelegate {
   SelectedJobGroupListViewDelegate({
     required this.selectedJobGroups,
     required this.onTapItem,
+    required this.scrollController,
   });
 
   final List<JobGroup> selectedJobGroups;
   final void Function(JobGroup) onTapItem;
   final double expandedHeight = 68;
+  final ScrollController scrollController;
   @override
   Widget build(
     BuildContext context,
@@ -62,6 +64,7 @@ class SelectedJobGroupListViewDelegate extends SliverPersistentHeaderDelegate {
                       animation: animationController,
                       builder: (BuildContext context, Widget? child) {
                         return ListView.separated(
+                          controller: scrollController,
                           scrollDirection: Axis.horizontal,
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           itemCount: selectedJobGroups.length,

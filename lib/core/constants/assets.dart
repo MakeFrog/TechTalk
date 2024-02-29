@@ -141,6 +141,7 @@ class Assets {
   static const String topicsDataStructure = 'assets/topics/dataStructure.json';
   static const String topicsDatabase = 'assets/topics/database.json';
   static const String topicsFlutter = 'assets/topics/flutter.json';
+  static const String topicsIos = 'assets/topics/ios.json';
   static const String topicsJava = 'assets/topics/java.json';
   static const String topicsJavascript = 'assets/topics/javascript.json';
   static const String topicsNetwork = 'assets/topics/network.json';
@@ -148,6 +149,5 @@ class Assets {
       'assets/topics/operatingSystem.json';
   static const String topicsReact = 'assets/topics/react.json';
   static const String topicsSpring = 'assets/topics/spring.json';
-  static const String topicsSwift = 'assets/topics/ios.json';
   static const String topicsWebFrontend = 'assets/topics/webFrontend.json';
 }

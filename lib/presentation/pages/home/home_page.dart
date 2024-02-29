@@ -27,7 +27,8 @@ class HomePage extends BasePage with HomeState {
             // IconButton(
             //   onPressed: () {
             //     try {
-            //       topicRemoteDataSource.removeQuestions('flutter');
+            //       ref.watch(detectNetworkConnectivityProvider);
+            //       // topicRemoteDataSource.removeQuestions('flutter');
             //       // topicRemoteDataSource.addQuestions('flutter');
             //       print('성공');
             //     } catch (e) {
@@ -49,6 +50,15 @@ class HomePage extends BasePage with HomeState {
         child: CircularProgressIndicator(),
       ),
     );
+  }
+
+  @override
+  bool get canPop => false;
+
+  @override
+  void onWillPop(WidgetRef ref) {
+    super.onWillPop(ref);
+    print('아지랑이랑');
   }
 
   @override

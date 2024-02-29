@@ -1,9 +1,10 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/core.dart';
-import 'package:techtalk/core/services/toast_service.dart';
+import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/auth/auth.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
 
 part 'user_auth_provider.g.dart';
 
@@ -23,9 +24,7 @@ class UserAuth extends _$UserAuth {
         state = value.user;
       },
       onFailure: (e) {
-        ToastService.show(
-          NormalToast(message: '$e'),
-        );
+        log('$e');
       },
     );
   }
@@ -36,9 +35,7 @@ class UserAuth extends _$UserAuth {
     result.fold(
       onSuccess: (value) => ref.invalidateSelf(),
       onFailure: (e) {
-        ToastService.show(
-          NormalToast(message: '$e'),
-        );
+        SnackBarService.showSnackBar('$e');
       },
     );
   }

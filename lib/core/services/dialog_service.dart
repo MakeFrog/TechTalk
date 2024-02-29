@@ -12,4 +12,15 @@ class DialogService {
       builder: (_) => dialog,
     );
   }
+
+  static Future<void> asyncShow({
+    required Dialog dialog,
+  }) {
+    return Future.value(
+      showDialog(
+        context: rootNavigatorKey.currentContext!,
+        builder: (_) => dialog,
+      ),
+    );
+  }
 }

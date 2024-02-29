@@ -6,12 +6,21 @@ part 'version_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class VersionModel {
-  VersionModel({required this.isSystemAvailable, required this.versionCode});
+  VersionModel({
+    required this.isSystemAvailable,
+    required this.needUpdate,
+    required this.versionCode,
+    required this.notification,
+  });
 
   final bool isSystemAvailable;
+  final bool needUpdate;
   final String versionCode;
+  final String notification;
 
   VersionEntity toEntity() => VersionEntity(
+        needUpdate: needUpdate,
+        notification: notification,
         versionCode: versionCode,
         isSystemAvailable: isSystemAvailable,
       );

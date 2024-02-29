@@ -25,7 +25,9 @@ extension SkillStepEvent on SignUpEvent {
       {required SkillEntity targetSkill}) {
     ref.read(searchedSkillsProvider.notifier).clear();
     ref.read(skillTextFieldControllerProvider).clear();
-    ref.read(selectedSkillsProvider.notifier).add(targetSkill);
+    ref
+        .read(selectedSkillsProvider.notifier)
+        .add(targetSkill, ref.read(selectedSkillScrollControllerProvider));
   }
 
   ///

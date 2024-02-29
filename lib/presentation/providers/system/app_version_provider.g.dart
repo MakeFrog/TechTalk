@@ -6,7 +6,7 @@ part of 'app_version_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appVersionHash() => r'18a0744807f5f4ef118d98bf3412d193af157ba7';
+String _$appVersionHash() => r'335be4412f9320026843107d59006d6be62592ca';
 
 ///
 /// 앱의 버전 정보를 관리하는 provider

@@ -12,7 +12,7 @@ class _BottomControllerBar extends ConsumerWidget
         data: (_) {
           return Container(
             color: Colors.white,
-            height: 70,
+            height: 72,
             width: double.infinity,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
