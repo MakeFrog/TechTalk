@@ -2,11 +2,13 @@ class VersionEntity {
   final String versionCode;
   final String notification;
   final bool isSystemAvailable;
+  final bool needUpdate;
 
   const VersionEntity({
     required this.versionCode,
     required this.notification,
     required this.isSystemAvailable,
+    required this.needUpdate,
   });
 
   @override
@@ -29,11 +31,15 @@ class VersionEntity {
   }
 
   VersionEntity copyWith(
-      {String? versionCode, bool? isSystemAvailable, String? notification}) {
+      {String? versionCode,
+      bool? isSystemAvailable,
+      String? notification,
+      bool? needUpdate}) {
     return VersionEntity(
       versionCode: versionCode ?? this.versionCode,
       isSystemAvailable: isSystemAvailable ?? this.isSystemAvailable,
       notification: notification ?? this.notification,
+      needUpdate: needUpdate ?? this.needUpdate,
     );
   }
 }

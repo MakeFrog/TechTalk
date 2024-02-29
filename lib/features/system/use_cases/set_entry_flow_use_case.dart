@@ -28,7 +28,7 @@ class SetEntryFlowUseCase extends BaseNoParamUseCase<Result<void>> {
     final connectivityResult = await Connectivity().checkConnectivity();
 
     return versionInfo.fold(
-      onSuccess: (version) {
+      onSuccess: (version) async {
         final serverVersionCode = Version.parse(version.versionCode);
         final appVersionCode = Version.parse(packageInfo.version);
 
@@ -46,8 +46,12 @@ class SetEntryFlowUseCase extends BaseNoParamUseCase<Result<void>> {
         /// 조건: 서버 버전이 현재 앱 버전보다 높다면
         /// 앱 업데이트 모달 노출
         if (serverVersionCode > appVersionCode) {
-          showNeedUpdateModal();
-          return Result.failure(const SystemNeedUpdateException());
+          if (version.needUpdate) {
+            showNeedUpdateModal();
+            return Result.failure(const SystemNeedUpdateException());
+          } else {
+            await showUpdateIsAvailable();
+          }
         }
 
         return Result.success(null);
@@ -64,6 +68,40 @@ class SetEntryFlowUseCase extends BaseNoParamUseCase<Result<void>> {
         somethingIsWrongModal();
         return Result.failure(const SystemSomethingWrongException());
       },
+    );
+  }
+
+  Future<void> showUpdateIsAvailable() async {
+    await DialogService.asyncShow(
+      dialog: AppDialog.dividedBtn(
+        title: '업데이트 안내',
+        subTitle: '테크톡이 업데이트 되었습니다!',
+        description: '최신 기능을 이용하기 위해 업데이트를 진행해주세요',
+        leftBtnContent: '다음에',
+        rightBtnContent: '확인',
+        showContentImg: true,
+        onLeftBtnClicked: () async {
+          rootNavigatorKey.currentContext!.pop();
+        },
+        onRightBtnClicked: () async {
+          rootNavigatorKey.currentContext!.pop();
+          if (Platform.isIOS) {
+            await launchUrl(
+              Uri.parse(
+                'https://apps.apple.com/kr/app/%EC%88%9C%EC%82%AD/id1671820197',
+              ),
+              mode: LaunchMode.externalApplication,
+            );
+          } else if (Platform.isAndroid) {
+            await launchUrl(
+              Uri.parse(
+                'https://play.google.com/store/apps/details?id=com.soon_sak',
+              ),
+              mode: LaunchMode.externalApplication,
+            );
+          }
+        },
+      ),
     );
   }
 
