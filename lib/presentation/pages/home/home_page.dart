@@ -27,7 +27,8 @@ class HomePage extends BasePage with HomeState {
             // IconButton(
             //   onPressed: () {
             //     try {
-            //       topicRemoteDataSource.removeQuestions('flutter');
+            //       ref.watch(detectNetworkConnectivityProvider);
+            //       // topicRemoteDataSource.removeQuestions('flutter');
             //       // topicRemoteDataSource.addQuestions('flutter');
             //       print('성공');
             //     } catch (e) {
