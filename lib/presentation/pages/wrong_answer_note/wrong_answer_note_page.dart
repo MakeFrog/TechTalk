@@ -41,7 +41,7 @@ class WrongAnswerNotePage extends BasePage
           itemBuilder: (_, index) {
             final item = wrongAnswers[index];
             return InkWell(
-              onTap: () => routeToDetail(index),
+              onTap: () => routeToDetail(ref, page: index),
               child: Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,

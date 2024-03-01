@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/app/local_storage/app_local.dart';
+import 'package:techtalk/app/module/app_local.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/profile_setting_type.enum.dart';
 import 'package:techtalk/core/helper/global_event_key.dart';
@@ -16,17 +16,29 @@ import 'package:techtalk/presentation/providers/user/user_auth_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:techtalk/presentation/widgets/common/bottom_sheet/option_list_bottom_sheet.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 mixin class MyPageEvent {
   ///
   /// 개인정보 및 약관 사이트로 이동
   ///
-  void onVisitPolicyPageBtnTapped() {}
+  Future<void> onVisitPolicyPageBtnTapped() async {
+    await launchUrl(
+      Uri.parse(
+          'https://puzzle-heather-876.notion.site/649ad84bc43a4223bf2517342c89114e?pvs=25'),
+      mode: LaunchMode.externalApplication,
+    );
+  }
 
   ///
   /// 피드백 및 문의사항 페이지로 이동
   ///
-  void onVisitCsPageTapped() {}
+  Future<void> onVisitCsPageTapped() async {
+    await launchUrl(
+      Uri.parse('http://pf.kakao.com/_YWxoaG/chat'),
+      mode: LaunchMode.externalApplication,
+    );
+  }
 
   ///
   /// 로그아웃 버튼이 클릭 되었을 때

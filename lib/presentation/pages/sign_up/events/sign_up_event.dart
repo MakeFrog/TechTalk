@@ -48,6 +48,7 @@ mixin class SignUpEvent {
         lastLoginDate: DateTime.now(),
         recordedTopics: [],
         hasPracticalInterviewRecord: false,
+        email: ref.read(userAuthProvider)?.email,
       );
 
       print('아무튼 : ${userData.nickname}');

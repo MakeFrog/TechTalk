@@ -1,10 +1,11 @@
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/app/environment/environment.enum.dart';
-import 'package:techtalk/app/local_storage/app_local.dart';
+import 'package:techtalk/app/module/app_local.dart';
 
 class Flavor {
   Flavor._();
@@ -13,6 +14,7 @@ class Flavor {
   static late Environment _env;
 
   static Flavor get instance => _instance;
+
   static Environment get env => _env;
 
   static void initialize(Environment type) {
@@ -44,7 +46,13 @@ class Flavor {
       options: option,
     );
 
-    // // 앱 DI 실행
-    AppBinder.init();
+    /// 앱 DI 실행
+    await AppBinder.init();
+
+    await FirebaseAnalytics.instance
+        .setAnalyticsCollectionEnabled(_env == Environment.prod ? true : false);
+    if (_env == Environment.prod) {
+      await FirebaseAnalytics.instance.logAppOpen();
+    }
   }
 }
