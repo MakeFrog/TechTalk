@@ -15,7 +15,7 @@ class UserTopics extends _$UserTopics {
     final List<TopicEntity> skillRelatedTopics = [];
 
     for (var skill in userInfo.skills) {
-      final relatedTopic = StoredTopics.getByIdOrNull(skill.id);
+      final relatedTopic = StoredTopics.getBySkillId(skill.id);
       if (relatedTopic != null) {
         skillRelatedTopics.add(relatedTopic);
       }
