@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
@@ -109,6 +110,16 @@ class ChatMessageHistory extends _$ChatMessageHistory {
             .value,
         userAnswer: userAnswer.message.value,
         onFeedBackCompleted: (String feedback) async {
+          unawaited(
+            FirebaseAnalytics.instance.logEvent(
+              name: 'Question Answered',
+              parameters: {
+                'qna_id': resolvedUserAnswer.qnaId,
+                'is_correct': isAnswerCorrect.toString(),
+              },
+            ),
+          );
+
           /// 4) 피드백 채팅이 전달된 이후 가이드 채팅과 다음 질문 채팅을 전달
           final isCompleted =
               ref.read(selectedChatRoomProvider.notifier).isLastQuestion();

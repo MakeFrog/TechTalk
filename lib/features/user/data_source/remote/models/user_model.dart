@@ -9,6 +9,8 @@ part 'user_model.g.dart';
 class UserModel {
   UserModel({
     required this.uid,
+    this.loginCount,
+    this.email,
     this.profileImgUrl,
     this.nickname,
     this.jobGroupIds,
@@ -19,6 +21,9 @@ class UserModel {
 
   /// 유저 UID
   final String uid;
+
+  /// 유저 email
+  final String? email;
 
   /// 유저 프로필 이미지 URL
   final String? profileImgUrl;
@@ -35,6 +40,9 @@ class UserModel {
   /// 한번이라도 면접을 진행한 면접 주제
   final List<String>? recordedTopicIds;
 
+  /// 접속 횟수
+  final int? loginCount;
+
   /// 마지막 로그인 시간
   @TimeStampConverter()
   final DateTime lastLoginDate;
@@ -47,6 +55,7 @@ class UserModel {
       recordedTopicIds: entity.recordedTopics.map((e) => e.id).toList(),
       jobGroupIds: entity.jobGroups.map((e) => e.id).toList(),
       techSkills: entity.skills.map((e) => e.id).toList(),
+      email: entity.email,
     );
   }
 

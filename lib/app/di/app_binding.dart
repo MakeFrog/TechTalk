@@ -30,7 +30,7 @@ final class AppBinder {
   /// 아래 메소드에서 처리합
   static void _initTopPriority() {}
 
-  static void init() {
+  static Future<void> init() async {
     _initTopPriority();
 
     for (final di in [

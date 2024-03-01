@@ -33,7 +33,7 @@ class MainPage extends BasePage {
       ),
       MyPage(
         key: ValueKey(MainNavigationTab.myInfo),
-      )
+      ),
     ];
 
     final mainTabController = usePageController();

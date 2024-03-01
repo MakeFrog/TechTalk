@@ -14,6 +14,9 @@ class UserEntity {
   /// 유저 닉네임
   final String? nickname;
 
+  /// 유저 이메일
+  final String? email;
+
   /// 유저 관심 직군 ID 목록
   final List<JobGroup> jobGroups;
 
@@ -33,6 +36,7 @@ class UserEntity {
     required this.uid,
     this.profileImgUrl,
     this.nickname,
+    this.email,
     required this.hasPracticalInterviewRecord,
     required this.recordedTopics,
     required this.lastLoginDate,
@@ -56,6 +60,7 @@ class UserEntity {
       hasPracticalInterviewRecord: hasPracticalInterviewRecord,
       skills: skills,
       lastLoginDate: model.lastLoginDate,
+      email: model.email,
     );
   }
 
@@ -72,9 +77,11 @@ class UserEntity {
     List<TopicEntity>? recordedTopicIds,
     List<SkillEntity>? skills,
     DateTime? lastLoginDate,
+    String? email,
     bool? hasPracticalInterviewRecord,
   }) {
     return UserEntity(
+      email: email ?? this.email,
       uid: uid ?? this.uid,
       profileImgUrl: profileImgUrl ?? this.profileImgUrl,
       nickname: nickname ?? this.nickname,
