@@ -88,14 +88,14 @@ class SetEntryFlowUseCase extends BaseNoParamUseCase<Result<void>> {
           if (Platform.isIOS) {
             await launchUrl(
               Uri.parse(
-                'https://apps.apple.com/kr/app/%EC%88%9C%EC%82%AD/id1671820197',
+                'https://apps.apple.com/kr/app/id6478161786',
               ),
               mode: LaunchMode.externalApplication,
             );
           } else if (Platform.isAndroid) {
             await launchUrl(
               Uri.parse(
-                'https://play.google.com/store/apps/details?id=com.soon_sak',
+                'https://play.google.com/store/apps/details?id=com.techtalk',
               ),
               mode: LaunchMode.externalApplication,
             );
