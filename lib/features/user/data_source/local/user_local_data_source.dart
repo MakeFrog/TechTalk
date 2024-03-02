@@ -1,3 +1,4 @@
+import 'package:techtalk/features/user/data_source/local/boxes/user_box.dart';
 import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
 
 abstract interface class UserLocalDataSource {
@@ -10,4 +11,14 @@ abstract interface class UserLocalDataSource {
   /// 유저의 로컬 정보 업데이트
   ///
   Future<void> storeUserLocalInfo(UserEntity user);
+
+  ///
+  /// 유저 로컬 데이터 로드
+  ///
+  UserBox loadUserLocalInfo();
+
+  ///
+  /// 유저 앱 평가 요청 가능 상태를 비활성화
+  ///
+  Future<void> disableReviewAvailableState();
 }

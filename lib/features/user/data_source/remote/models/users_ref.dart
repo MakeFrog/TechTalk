@@ -5,6 +5,9 @@ import 'package:techtalk/features/user/data_source/remote/models/user_model.dart
 abstract class FirestoreUsersRef {
   static const String name = 'Users';
   static const String subCollectionName = 'Chats';
+  static const String lastLoginDateField = 'last_login_date';
+  static const String completedInterviewCountField =
+      'completed_interview_count';
   static String get _userUid => FirebaseAuth.instance.currentUser!.uid;
 
   static CollectionReference<UserModel> collection() =>
