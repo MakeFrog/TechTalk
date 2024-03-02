@@ -1,7 +1,12 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/enums/interview_progress.enum.dart';
+import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
@@ -37,9 +42,20 @@ class InterviewProgressState extends _$InterviewProgressState {
 
       switch (lastChat.type) {
         case ChatType.guide:
-          if (ref.read(selectedChatRoomProvider).progressState.isCompleted) {
-            state = InterviewProgress.done;
-          }
+          lastChat.message.listen(
+            null,
+            onDone: () {
+              if (ref
+                  .read(selectedChatRoomProvider)
+                  .progressState
+                  .isCompleted) {
+                Future.wait([
+                  _setAnalytics(),
+                  _increaseCompletedCountAndAlertAppReview(),
+                ]);
+              }
+            },
+          );
 
         case ChatType.question:
           lastChat.message.listen(
@@ -51,27 +67,61 @@ class InterviewProgressState extends _$InterviewProgressState {
 
         case ChatType.feedback:
           if (ref.read(selectedChatRoomProvider.notifier).isLastQuestion()) {
-            FirebaseAnalytics.instance.logEvent(
-              name: 'Interview Completed',
-              parameters: {
-                'user_id': ref.read(userInfoProvider).requireValue?.uid,
-                'user_name': ref.read(userInfoProvider).requireValue?.nickname,
-                'topics': ref
-                    .read(selectedChatRoomProvider)
-                    .topics
-                    .map((e) => e.text)
-                    .join(', '),
-                'interview_type': ref.read(selectedChatRoomProvider).type.name,
-                'passOrFail':
-                    ref.read(selectedChatRoomProvider).passOrFail.name,
-              },
-            );
-
             state = InterviewProgress.done;
           }
         default:
           state = InterviewProgress.interviewerReplying;
       }
     });
+  }
+
+  ///
+  /// 인터뷰가 종료되었을 때
+  ///
+  Future<void> _setAnalytics() async {
+    unawaited(FirebaseAnalytics.instance.logEvent(
+      name: 'Interview Completed',
+      parameters: {
+        'user_id': ref.read(userInfoProvider).requireValue?.uid,
+        'user_name': ref.read(userInfoProvider).requireValue?.nickname,
+        'topics': ref
+            .read(selectedChatRoomProvider)
+            .topics
+            .map((e) => e.text)
+            .join(', '),
+        'interview_type': ref.read(selectedChatRoomProvider).type.name,
+        'passOrFail': ref.read(selectedChatRoomProvider).passOrFail.name,
+      },
+    ));
+  }
+
+  ///
+  /// 완료된 면접 개수 필드값 업데이트 및
+  /// 조건에 따른 앱 리뷰 노티
+  ///
+  Future<void> _increaseCompletedCountAndAlertAppReview() async {
+    final response = await increaseCompletedInterviewCountUseCase.call();
+
+    unawaited(
+      response.fold(
+        onSuccess: (increasedCount) async {
+          if (ref
+              .read(userInfoProvider)
+              .requireValue!
+              .isReviewRequestAvailable) {
+            if (increasedCount == 2 || increasedCount == 12) {
+              final InAppReview inAppReview = InAppReview.instance;
+
+              if (await inAppReview.isAvailable()) {
+                unawaited(inAppReview.requestReview());
+              }
+            }
+          }
+        },
+        onFailure: (e) {
+          log('완료된 면접 개수 증가 로직 실패 : $e');
+        },
+      ),
+    );
   }
 }

@@ -49,9 +49,10 @@ mixin class SignUpEvent {
         recordedTopics: [],
         hasPracticalInterviewRecord: false,
         email: ref.read(userAuthProvider)?.email,
+        completedInterviewCount: 0,
+        isReviewRequestAvailable: true,
+        signUpDate: DateTime.now(),
       );
-
-      print('아무튼 : ${userData.nickname}');
 
       await ref.read(userInfoProvider.notifier).createData(userData).then(
         (_) {

@@ -9,6 +9,7 @@ import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/enums/interview_progress.enum.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
@@ -24,6 +25,14 @@ mixin class ChatEvent {
     WidgetRef ref, {
     required TextEditingController textEditingController,
   }) async {
+    unawaited(
+      ref.read(chatScrollControllerProvider).animateTo(
+            0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          ),
+    );
+
     final message = textEditingController.text;
     if (message.isEmpty) {
       unawaited(HapticFeedback.vibrate());
@@ -105,7 +114,7 @@ mixin class ChatEvent {
                 ref.context.pop();
                 ScaffoldMessenger.of(ref.context).showSnackBar(
                   const SnackBar(
-                    content: Text('신고해주셔서 감사합니다.'),
+                    content: Text('피드백 주셔서 감사합니다.'),
                   ),
                 );
               },

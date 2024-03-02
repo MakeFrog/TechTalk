@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,8 +17,8 @@ final class SystemRemoteDataSourceImpl implements SystemRemoteDataSource {
 
       return versionRef.data()!;
     } catch (e) {
-      print('아릴리릴랑이 : ${e}');
-      throw 'asdf';
+      log('버전 정보 호출 실패 : ${e}');
+      rethrow;
     }
   }
 }

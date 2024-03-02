@@ -34,17 +34,17 @@ final class UserRepositoryImpl implements UserRepository {
   @override
   Future<Result<UserEntity>> getUser([String? uid]) async {
     try {
-      final response = await _userRemoteDataSource.getUser();
-      final List<SkillEntity> skills = response.techSkills != null
-          ? response.techSkills!.map(_techSetRepository.getSkillById).toList()
+      final remoteRes = await _userRemoteDataSource.getUser();
+      final localRes = _userLocalDataSource.loadUserLocalInfo();
+      final List<SkillEntity> skills = remoteRes.techSkills != null
+          ? remoteRes.techSkills!.map(_techSetRepository.getSkillById).toList()
           : [];
 
-      final hasPracticalInterviewRecord =
-          _userLocalDataSource.hasPracticalInterviewRecord();
-
-      final result = UserEntity.fromModel(response,
-          skills: skills,
-          hasPracticalInterviewRecord: hasPracticalInterviewRecord);
+      final result = UserEntity.fromModel(
+        remoteRes,
+        skills: skills,
+        box: localRes,
+      );
 
       return Result.success(result);
     } on Exception catch (e) {
@@ -102,6 +102,37 @@ final class UserRepositoryImpl implements UserRepository {
   Future<Result<void>> storeUserLocalInfo(UserEntity user) async {
     try {
       final response = await _userLocalDataSource.storeUserLocalInfo(user);
+      return Result.success(response);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<int>> increaseCompletedInterviewCount() async {
+    try {
+      final response =
+          await _userRemoteDataSource.increaseCompletedInterviewCount();
+      return Result.success(response);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<void>> updateLastLoginDate() async {
+    try {
+      final response = await _userRemoteDataSource.updateLastLoginDate();
+      return Result.success(response);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<void>> disableReviewAvailableState() async {
+    try {
+      final response = await _userLocalDataSource.disableReviewAvailableState();
       return Result.success(response);
     } on Exception catch (e) {
       return Result.failure(e);
