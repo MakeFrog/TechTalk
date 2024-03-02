@@ -41,7 +41,7 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     final snapshot = await FirestoreUsersRef.doc(uid).get();
 
     await FirestoreUsersRef.doc(uid).update({
-      'last_login_date': FieldValue.serverTimestamp(),
+      FirestoreUsersRef.lastLoginDateField: FieldValue.serverTimestamp(),
     });
 
     return snapshot.data()!;
@@ -89,5 +89,31 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     } else {
       throw const ImgStoreFailedException();
     }
+  }
+
+  @override
+  Future<int> increaseCompletedInterviewCount() async {
+    if (!await FirestoreUsersRef.isExist()) {
+      throw const NoUserDataException();
+    }
+
+    final snapshot = await FirestoreUsersRef.doc().get();
+
+    await FirestoreUsersRef.doc().update({
+      FirestoreUsersRef.completedInterviewCountField: FieldValue.increment(1),
+    });
+
+    return (snapshot.data()?.completedInterviewCount ?? 0) + 1;
+  }
+
+  @override
+  Future<void> updateLastLoginDate() async {
+    if (!await FirestoreUsersRef.isExist()) {
+      throw const NoUserDataException();
+    }
+
+    await FirestoreUsersRef.doc().update({
+      FirestoreUsersRef.lastLoginDateField: FieldValue.serverTimestamp(),
+    });
   }
 }

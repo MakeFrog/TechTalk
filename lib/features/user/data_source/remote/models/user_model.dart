@@ -9,12 +9,14 @@ part 'user_model.g.dart';
 class UserModel {
   UserModel({
     required this.uid,
+    required this.signUpDate,
     this.loginCount,
     this.email,
     this.profileImgUrl,
     this.nickname,
     this.jobGroupIds,
     this.recordedTopicIds,
+    this.completedInterviewCount,
     this.techSkills,
     DateTime? lastLoginDate,
   }) : lastLoginDate = DateTime.now();
@@ -43,6 +45,13 @@ class UserModel {
   /// 접속 횟수
   final int? loginCount;
 
+  /// 완료된 면접 개수
+  final int? completedInterviewCount;
+
+  /// 가입 날짜
+  @TimeStampConverter()
+  final DateTime signUpDate;
+
   /// 마지막 로그인 시간
   @TimeStampConverter()
   final DateTime lastLoginDate;
@@ -56,6 +65,7 @@ class UserModel {
       jobGroupIds: entity.jobGroups.map((e) => e.id).toList(),
       techSkills: entity.skills.map((e) => e.id).toList(),
       email: entity.email,
+      signUpDate: entity.signUpDate,
     );
   }
 

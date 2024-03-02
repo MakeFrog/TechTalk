@@ -17,4 +17,19 @@ abstract interface class UserRepository {
 
   /// 면접 기록 존재 여부 필드 값 업데이트
   Future<Result<void>> storeUserLocalInfo(UserEntity user);
+
+  ///
+  /// 마지막 접속 일자 갱신
+  ///
+  Future<Result<void>> updateLastLoginDate();
+
+  ///
+  /// 완료된 면접 개수 필드 증가 및 값 리턴
+  ///
+  Future<Result<int>> increaseCompletedInterviewCount();
+
+  ///
+  /// 유저 앱 평가 요청 가능 상태를 비활성화
+  ///
+  Future<Result<void>> disableReviewAvailableState();
 }

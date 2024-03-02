@@ -19,7 +19,22 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
   @override
   Future<void> storeUserLocalInfo(UserEntity user) async {
     final userLocalInfo = localUser?.copyWith(
-            hasPracticalInterviewRecord: user.hasPracticalInterviewRecord) ??
+          hasPracticalInterviewRecord: user.hasPracticalInterviewRecord,
+        ) ??
+        UserBox.defaultValue();
+    return box.put(AppLocal.userBoxName, userLocalInfo);
+  }
+
+  @override
+  UserBox loadUserLocalInfo() {
+    return localUser ?? UserBox.defaultValue();
+  }
+
+  @override
+  Future<void> disableReviewAvailableState() {
+    final userLocalInfo = localUser?.copyWith(
+          isReviewRequestAvailable: false,
+        ) ??
         UserBox.defaultValue();
     return box.put(AppLocal.userBoxName, userLocalInfo);
   }

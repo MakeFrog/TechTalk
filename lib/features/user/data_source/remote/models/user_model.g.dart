@@ -8,6 +8,9 @@ part of 'user_model.dart';
 
 UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       uid: json['uid'] as String,
+      signUpDate: const TimeStampConverter()
+          .fromJson(json['sign_up_date'] as Timestamp),
+      loginCount: json['login_count'] as int?,
       email: json['email'] as String?,
       profileImgUrl: json['profile_img_url'] as String?,
       nickname: json['nickname'] as String?,
@@ -17,6 +20,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       recordedTopicIds: (json['recorded_topic_ids'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
+      completedInterviewCount: json['completed_interview_count'] as int?,
       techSkills: (json['tech_skills'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
@@ -32,6 +36,9 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'job_group_ids': instance.jobGroupIds,
       'tech_skills': instance.techSkills,
       'recorded_topic_ids': instance.recordedTopicIds,
+      'login_count': instance.loginCount,
+      'completed_interview_count': instance.completedInterviewCount,
+      'sign_up_date': const TimeStampConverter().toJson(instance.signUpDate),
       'last_login_date':
           const TimeStampConverter().toJson(instance.lastLoginDate),
     };

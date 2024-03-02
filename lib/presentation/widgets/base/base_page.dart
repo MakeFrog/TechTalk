@@ -13,10 +13,13 @@ abstract class BasePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     /// 페이지의 초기화 및 해제를 처리
-    useEffect(() {
-      onInit(ref);
-      return () => onDispose(ref);
-    });
+    useEffect(
+      () {
+        onInit(ref);
+        return () => onDispose(ref);
+      },
+      [],
+    );
 
     /// 앱의 라이플 사이클 변화를 처리
     useOnAppLifecycleStateChange((previousState, state) {

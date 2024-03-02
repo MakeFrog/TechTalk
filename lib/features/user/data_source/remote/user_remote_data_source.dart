@@ -25,4 +25,14 @@ abstract interface class UserRemoteDataSource {
 
   /// storage에 이미지 파일을 업로드하고 url를 리턴
   Future<String> uploadImgFileAndGetUrl(File imageFile);
+
+  ///
+  /// 마지막 접속 일자 갱신
+  ///
+  Future<void> updateLastLoginDate();
+
+  ///
+  /// 완료된 면접 개수 필드 증가 및 값 리턴
+  ///
+  Future<int> increaseCompletedInterviewCount();
 }

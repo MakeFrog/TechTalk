@@ -2,6 +2,7 @@ import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skill_entity.dart';
 import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
+import 'package:techtalk/features/user/data_source/local/boxes/user_box.dart';
 import 'package:techtalk/features/user/data_source/remote/models/user_model.dart';
 
 class UserEntity {
@@ -29,14 +30,26 @@ class UserEntity {
   /// 실전 면접 기록 존재 여부;
   final bool hasPracticalInterviewRecord;
 
+  /// 완료된 면접 개수
+  final int completedInterviewCount;
+
   /// 마지막 접속 일자
   final DateTime lastLoginDate;
+
+  /// 가입 일자
+  final DateTime signUpDate;
+
+  /// 앱 리뷰 가능 여부
+  final bool isReviewRequestAvailable;
 
   const UserEntity({
     required this.uid,
     this.profileImgUrl,
     this.nickname,
     this.email,
+    required this.signUpDate,
+    required this.completedInterviewCount,
+    required this.isReviewRequestAvailable,
     required this.hasPracticalInterviewRecord,
     required this.recordedTopics,
     required this.lastLoginDate,
@@ -44,9 +57,11 @@ class UserEntity {
     required this.skills,
   });
 
-  factory UserEntity.fromModel(UserModel model,
-      {required List<SkillEntity> skills,
-      required bool hasPracticalInterviewRecord}) {
+  factory UserEntity.fromModel(
+    UserModel model, {
+    required List<SkillEntity> skills,
+    required UserBox box,
+  }) {
     return UserEntity(
       uid: model.uid,
       nickname: model.nickname,
@@ -57,40 +72,46 @@ class UserEntity {
       recordedTopics: model.recordedTopicIds != null
           ? model.recordedTopicIds!.map(StoredTopics.getById).toList()
           : [],
-      hasPracticalInterviewRecord: hasPracticalInterviewRecord,
+      hasPracticalInterviewRecord: box.hasPracticalInterviewRecord,
       skills: skills,
       lastLoginDate: model.lastLoginDate,
       email: model.email,
+      completedInterviewCount: model.completedInterviewCount ?? 0,
+      isReviewRequestAvailable: box.isReviewRequestAvailable,
+      signUpDate: model.signUpDate,
     );
-  }
-
-  @override
-  String toString() {
-    return 'UserEntity{uid: $uid, profileImgUrl: $profileImgUrl, nickname: $nickname, jobGroups: $jobGroups, skills: $skills, lastLoginDate: $lastLoginDate}';
   }
 
   UserEntity copyWith({
     String? uid,
     String? profileImgUrl,
     String? nickname,
-    List<JobGroup>? jobGroups,
-    List<TopicEntity>? recordedTopicIds,
-    List<SkillEntity>? skills,
-    DateTime? lastLoginDate,
     String? email,
+    List<JobGroup>? jobGroups,
+    List<SkillEntity>? skills,
+    List<TopicEntity>? recordedTopics,
     bool? hasPracticalInterviewRecord,
+    int? completedInterviewCount,
+    DateTime? lastLoginDate,
+    DateTime? signUpDate,
+    bool? isReviewRequestAvailable,
   }) {
     return UserEntity(
-      email: email ?? this.email,
       uid: uid ?? this.uid,
       profileImgUrl: profileImgUrl ?? this.profileImgUrl,
       nickname: nickname ?? this.nickname,
-      recordedTopics: recordedTopicIds ?? this.recordedTopics,
+      email: email ?? this.email,
       jobGroups: jobGroups ?? this.jobGroups,
       skills: skills ?? this.skills,
+      recordedTopics: recordedTopics ?? this.recordedTopics,
       hasPracticalInterviewRecord:
           hasPracticalInterviewRecord ?? this.hasPracticalInterviewRecord,
+      completedInterviewCount:
+          completedInterviewCount ?? this.completedInterviewCount,
       lastLoginDate: lastLoginDate ?? this.lastLoginDate,
+      signUpDate: signUpDate ?? this.signUpDate,
+      isReviewRequestAvailable:
+          isReviewRequestAvailable ?? this.isReviewRequestAvailable,
     );
   }
 }

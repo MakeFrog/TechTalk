@@ -87,6 +87,8 @@ dependencies:
   app_settings: ^5.1.1 # Device Setting Route
   korean_profanity_filter: ^1.0.0 # 비속어 욕설 필터링
   icons_launcher: ^2.1.7 # 앱 아이콘
+  in_app_review: ^2.0.8 # 인앱 리뷰
+
 
   # 앱 정보
   package_info_plus: ^5.0.1 # 현재 앱 버전 정보

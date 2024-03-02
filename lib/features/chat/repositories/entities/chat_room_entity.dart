@@ -58,7 +58,7 @@ class ChatRoomEntity {
         throw UnimplementedError('유효하지 않은 [passOrFail]값 입니다.');
       }
     } else {
-      throw UnimplementedError('진행도가 완료되지 않았습니다.');
+      throw UnimplementedError('진행도가 완료되지 않았습니다 : $progressState');
     }
   }
 

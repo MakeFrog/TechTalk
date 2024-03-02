@@ -36,6 +36,7 @@ class _SettingCard extends ConsumerWidget with MyPageState, MyPageEvent {
                   onTap: onVisitCsPageTapped, text: '피드백 및 문의사항'),
               CardListTileButton(
                   onTap: onVisitPolicyPageBtnTapped, text: '개인정보 및 약관'),
+              CardListTileButton(onTap: onRateAppTapped, text: '앱 평가하기'),
             ],
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/interviewer_entity.dart';
@@ -5,6 +6,7 @@ import 'package:techtalk/features/chat/repositories/enums/interview_progress.enu
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_async_adapter_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 
@@ -55,4 +57,10 @@ mixin class ChatState {
               ),
             ],
           );
+
+  ///
+  /// 채팅 스크롤 컨트롤러
+  ///
+  ScrollController chatScrollController(WidgetRef ref) =>
+      ref.watch(chatScrollControllerProvider);
 }

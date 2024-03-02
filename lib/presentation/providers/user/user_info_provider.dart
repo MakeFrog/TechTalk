@@ -73,7 +73,7 @@ class UserInfo extends _$UserInfo {
 
     if (!updatedTopicRecords.isElementEquals(currentRecords)) {
       final updatedUserInfo =
-          state.requireValue!.copyWith(recordedTopicIds: updatedTopicRecords);
+          state.requireValue!.copyWith(recordedTopics: updatedTopicRecords);
 
       final response = await updateUserUseCase(updatedUserInfo);
       response.fold(
