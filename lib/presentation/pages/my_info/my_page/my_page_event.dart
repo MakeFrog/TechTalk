@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:techtalk/app/module/app_local.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/profile_setting_type.enum.dart';
@@ -38,6 +39,14 @@ mixin class MyPageEvent {
       Uri.parse('http://pf.kakao.com/_YWxoaG/chat'),
       mode: LaunchMode.externalApplication,
     );
+  }
+
+  ///
+  /// 앱 평가하기. 스토어 페이지로 이동
+  ///
+  Future<void> onRateAppTapped() async {
+    final InAppReview inAppReview = InAppReview.instance;
+    await inAppReview.openStoreListing(appStoreId: '6478161786');
   }
 
   ///
