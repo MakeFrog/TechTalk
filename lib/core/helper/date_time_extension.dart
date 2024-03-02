@@ -14,4 +14,17 @@ extension KoreaDateTimeExt on DateTime {
   bool isAfterOrSameAs(DateTime other) {
     return isAfter(other) || isAtSameMomentAs(other);
   }
+
+  ///
+  /// 주어진 datetime이 한달 이상 지났느지 확인하는 메소드
+  ///
+  bool get isOneMonthOrMorePassedFromNow {
+    DateTime now = DateTime.now();
+
+    Duration difference = now.difference(this);
+
+    double differenceInMonths = difference.inDays / 30;
+
+    return differenceInMonths >= 1;
+  }
 }
