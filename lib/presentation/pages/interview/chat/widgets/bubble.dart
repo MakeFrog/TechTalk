@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/interviewer_entity.dart';
 import 'package:techtalk/presentation/widgets/common/avatar/clip_oval_circle_avatar.dart';
+import 'package:techtalk/presentation/widgets/common/button/icon_flash_area_button.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class Bubble extends StatelessWidget {
@@ -122,6 +124,30 @@ class Bubble extends StatelessWidget {
                 },
               ),
             ),
+            if (item is FeedbackChatMessageEntity && item.message.isClosed)
+              Row(
+                children: [
+                  const Gap(5),
+                  Container(
+                    padding: const EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                      color: AppColor.of.red1,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Consumer(
+                      builder: (context, ref, child) {
+                        return IconFlashAreaButton.assetIcon(
+                          iconPath: Assets.iconsWarning,
+                          size: 10,
+                          onIconTapped: onReportBtnTapped,
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              )
+            else
+              EmptyBox(),
           ],
         ),
       );

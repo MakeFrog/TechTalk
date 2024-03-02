@@ -19,8 +19,6 @@ class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
 
-    final chatScrollController = useScrollController();
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -34,7 +32,7 @@ class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
                     return Align(
                       alignment: Alignment.topCenter,
                       child: ListView.separated(
-                          controller: chatScrollController,
+                          controller: chatScrollController(ref),
                           shrinkWrap: true,
                           reverse: true,
                           padding: const EdgeInsets.only(top: 24, bottom: 20) +
