@@ -4,9 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/practical_chat_room_list_provider.dart';
+import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_auth_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_topics_provider.dart';
 
 mixin class HomeEvent {
   ///
@@ -53,5 +57,17 @@ mixin class HomeEvent {
       List<ChatRoomEntity>? rooms,
       String? topicId}) {
     ChatListRoute(type, topicId: topicId, $extra: rooms).push(context);
+  }
+
+  ///
+  /// 재시도 버튼이 클릭 되었을 때
+  ///
+  void onRetryBtnTapped(WidgetRef ref) {
+    StoredTopics.initialize();
+    ref.invalidate(userAuthProvider);
+    ref.invalidate(userInfoProvider);
+    ref.invalidate(mainBottomNavigationProvider);
+    ref.invalidate(userTopicsProvider);
+    SplashRoute().go(ref.context);
   }
 }

@@ -5,13 +5,15 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/presentation/pages/home/home_event.dart';
 import 'package:techtalk/presentation/pages/home/widgets/cheer_up_message_card.dart';
 import 'package:techtalk/presentation/pages/home/widgets/home_state.dart';
 import 'package:techtalk/presentation/pages/home/widgets/practical_interview_card.dart';
 import 'package:techtalk/presentation/pages/home/widgets/single_topic_interview_card.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
+import 'package:techtalk/presentation/widgets/common/common.dart';
 
-class HomePage extends BasePage with HomeState {
+class HomePage extends BasePage with HomeState, HomeEvent {
   const HomePage({super.key});
 
   @override
@@ -32,7 +34,27 @@ class HomePage extends BasePage with HomeState {
           ],
         );
       },
-      error: (e, __) => const Text('error on homepage'),
+      error: (e, __) => Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const ExceptionIndicator(
+              title: '오류 발생',
+              subTitle: '예상하지 못한 오류가 발생했습니다.\n다시 시도해주세요',
+            ),
+            FilledButton(
+              onPressed: () => onRetryBtnTapped(ref),
+              style: FilledButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 34,
+                  vertical: 14,
+                ),
+              ),
+              child: const Text('재시도'),
+            )
+          ],
+        ),
+      ),
       loading: () => const Center(
         child: CircularProgressIndicator(),
       ),

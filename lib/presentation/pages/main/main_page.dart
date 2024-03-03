@@ -36,10 +36,12 @@ class MainPage extends BasePage with MainEvent {
     ];
 
     final mainTabController = usePageController();
+
     ref.listen(mainBottomNavigationProvider, (_, next) {
       HapticFeedback.lightImpact();
       mainTabController.jumpToPage(next.index);
     });
+
     final currentTab = ref.watch(mainBottomNavigationProvider).index;
 
     return PageView(
