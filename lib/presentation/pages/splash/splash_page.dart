@@ -10,11 +10,7 @@ class SplashPage extends BasePage with SplashEvent {
 
   @override
   void onInit(WidgetRef ref) {
-    if (!SplashEvent.isInitializing) {
-      SplashEvent.isInitializing = true;
-
-      routeByUserAuthAndData(ref);
-    }
+    routeByUserAuthAndData(ref);
   }
 
   @override
