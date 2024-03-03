@@ -19,28 +19,6 @@ class TopicRepositoryImpl implements TopicRepository {
   final TopicLocalDataSource _localDataSource;
   final TopicRemoteDataSource _remoteDataSource;
 
-  List<TopicEntity>? _cachedTopics;
-  List<TopicCategoryEntity>? _cachedTopicCategories;
-
-  @override
-  Future<void> initStaticData() async {
-    final topicModels = await _remoteDataSource.getTopics();
-    _cachedTopics ??= topicModels.map((e) => e.toEntity()).toList();
-
-    final categoryModels = await _localDataSource.getTopicCategories();
-    _cachedTopicCategories ??= categoryModels.map((e) => e.toEntity()).toList();
-  }
-
-  @override
-  Result<List<TopicCategoryEntity>> getTopicCategories() {
-    try {
-      return Result.success(_cachedTopicCategories!);
-    } on Exception catch (e) {
-      log('getTopicCategories : $e');
-      return Result.failure(const TopicInitialFailed());
-    }
-  }
-
   @override
   Future<Result<List<QnaEntity>>> getTopicQnas(
     String topicId,

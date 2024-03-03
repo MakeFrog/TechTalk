@@ -3,21 +3,24 @@ import 'package:techtalk/features/topic/data_source/local/boxes/qna_list_box.dar
 import 'package:techtalk/features/topic/topic.dart';
 
 abstract interface class TopicLocalDataSource {
+  ///
+  /// 면접 주제 카테고리 데이터 호출
+  ///
   Future<List<TopicCategoryModel>> getTopicCategories();
-  Future<List<TopicQnaModel>?> getQnas(String topicId);
 
-  Future<TopicQnaModel?> getQna(
-    String topicId,
-    String questionId,
-  );
-
-  /// Qna 목록 호출
+  ///
+  /// 문답 목록 호출
+  ///
   QnaListBox? loadQnas(String topicId);
 
-  /// 단일 Qna 호출
+  ///
+  /// 단일 문답 호출
+  ///
   QnaBox? loadSingleQna({required String topicId, required String qnaId});
 
-  /// Qna 목록 저장
+  ///
+  /// 문답 목록 저장
+  ///
   Future<void> storeQnas(
       {required String topicId, required List<TopicQnaModel> qnas});
 }

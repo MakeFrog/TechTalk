@@ -2,10 +2,19 @@ import 'package:techtalk/features/topic/data_source/remote/models/wrong_answer_m
 import 'package:techtalk/features/topic/topic.dart';
 
 abstract interface class TopicRemoteDataSource {
+  ///
+  /// 면접 주제 리스트 호출
+  ///
   Future<List<TopicModel>> getTopics();
 
+  ///
+  /// 문답 리스트 호출
+  ///
   Future<List<TopicQnaModel>> getQnas(String topicId);
 
+  ///
+  /// 단일 문답 호출
+  ///
   Future<TopicQnaModel> getQna(
     String topicId,
     String questionId,
