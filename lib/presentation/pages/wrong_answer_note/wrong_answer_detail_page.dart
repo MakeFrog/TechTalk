@@ -6,15 +6,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
-import 'package:techtalk/app/style/app_color.dart';
-import 'package:techtalk/app/style/app_text_style.dart';
-import 'package:techtalk/core/constants/assets.dart';
-import 'package:techtalk/features/topic/repositories/entities/wrong_answer_entity.dart';
+import 'package:techtalk/app/style/index.dart';
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_note_event.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_note_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
-import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 part 'local_widgets/review_note_detail_app_bar.dart';

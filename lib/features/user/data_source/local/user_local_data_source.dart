@@ -1,5 +1,4 @@
-import 'package:techtalk/features/user/data_source/local/boxes/user_box.dart';
-import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
+import 'package:techtalk/features/user/user.dart';
 
 abstract interface class UserLocalDataSource {
   ///

@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/features/topic/repositories/entities/wrong_answer_entity.dart';
-import 'package:techtalk/features/topic/repositories/topic_repository.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 final class GetWrongAnswersUseCase
     extends BaseUseCase<String, Result<List<WrongAnswerEntity>>> {

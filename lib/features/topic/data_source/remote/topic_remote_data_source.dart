@@ -1,4 +1,3 @@
-import 'package:techtalk/features/topic/data_source/remote/models/wrong_answer_model.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 abstract interface class TopicRemoteDataSource {

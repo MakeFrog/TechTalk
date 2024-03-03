@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/features/tech_set/repositories/enums/job.enum.dart';
+import 'package:techtalk/features/tech_set/tech_set.dart';
 
 part 'sign_up_jobs_provider.g.dart';
 

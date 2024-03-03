@@ -1,8 +1,5 @@
-import 'package:techtalk/core/modules/base_use_case/base_no_future_use_case.dart';
-import 'package:techtalk/core/modules/error_handling/result.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skill_collection_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skill_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/tech_set_repository.dart';
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/tech_set/tech_set.dart';
 
 class GetSearchedSkills
     extends BaseNoFutureUseCase<String, Result<List<SkillEntity>>> {

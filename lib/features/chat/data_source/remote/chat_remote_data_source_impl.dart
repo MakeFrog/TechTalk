@@ -1,11 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/data_source/remote/chat_ref.dart';
-import 'package:techtalk/features/chat/data_source/remote/chat_remote_data_source.dart';
-import 'package:techtalk/features/chat/data_source/remote/models/chat_model.dart';
-import 'package:techtalk/features/chat/data_source/remote/models/chat_qna_model.dart';
-import 'package:techtalk/features/chat/data_source/remote/models/chat_room_model.dart';
-import 'package:techtalk/features/chat/repositories/enums/interview_type.enum.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {

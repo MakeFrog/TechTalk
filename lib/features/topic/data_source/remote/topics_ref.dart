@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:techtalk/features/topic/data_source/remote/models/wrong_answer_model.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 abstract class FirestoreTopicsRef {

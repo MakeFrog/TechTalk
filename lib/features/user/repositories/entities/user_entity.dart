@@ -1,9 +1,7 @@
-import 'package:techtalk/core/constants/job_group.enum.dart';
-import 'package:techtalk/core/constants/stored_topic.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skill_entity.dart';
-import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
-import 'package:techtalk/features/user/data_source/local/boxes/user_box.dart';
-import 'package:techtalk/features/user/data_source/remote/models/user_model.dart';
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/tech_set/tech_set.dart';
+import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/features/user/user.dart';
 
 class UserEntity {
   /// 유저 UID

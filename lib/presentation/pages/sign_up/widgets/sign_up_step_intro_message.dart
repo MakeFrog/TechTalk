@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:techtalk/app/style/app_color.dart';
-import 'package:techtalk/app/style/app_text_style.dart';
+import 'package:techtalk/app/style/index.dart';
 
 /// 회원가입 단계를 설명하는 제목과 부제목 위젯
 class SignUpStepIntroMessage extends StatelessWidget {

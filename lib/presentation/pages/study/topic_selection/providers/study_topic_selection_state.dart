@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/study/topic_selection/providers/study_topic_selection_scroll_controller.dart';
 import 'package:techtalk/presentation/providers/topic/sorted_topics_provider.dart';
 

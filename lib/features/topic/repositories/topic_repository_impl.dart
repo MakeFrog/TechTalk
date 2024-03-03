@@ -1,13 +1,7 @@
 import 'dart:developer';
 
-import 'package:techtalk/core/constants/stored_topic.dart';
-import 'package:techtalk/core/helper/date_time_extension.dart';
-import 'package:techtalk/core/helper/string_extension.dart';
-import 'package:techtalk/core/modules/error_handling/result.dart';
-import 'package:techtalk/core/modules/exceptions/custom_exception.dart';
-import 'package:techtalk/features/chat/repositories/entities/chat_qna_entity.dart';
-import 'package:techtalk/features/topic/data_source/remote/models/wrong_answer_model.dart';
-import 'package:techtalk/features/topic/repositories/entities/wrong_answer_entity.dart';
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 class TopicRepositoryImpl implements TopicRepository {

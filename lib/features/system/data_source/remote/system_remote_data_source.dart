@@ -1,4 +1,4 @@
-import 'package:techtalk/features/system/data_source/remote/models/version_model.dart';
+import 'package:techtalk/features/system/system.dart';
 
 abstract interface class SystemRemoteDataSource {
   ///

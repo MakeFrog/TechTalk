@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:techtalk/app/style/app_text_style.dart';
+import 'package:techtalk/app/style/index.dart';
 
 class AppleSignInButton extends StatelessWidget {
   const AppleSignInButton({

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/features/topic/repositories/entities/qna_entity.dart';
-import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/current_study_qna_index_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_qna_controller.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_qnas_provider.dart';

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:techtalk/features/user/data_source/remote/models/user_model.dart';
 import 'package:techtalk/features/user/user.dart';
 
 abstract interface class UserRemoteDataSource {

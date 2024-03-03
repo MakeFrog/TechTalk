@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/core/constants/job_group.enum.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 part 'selected_job_groups_provider.g.dart';

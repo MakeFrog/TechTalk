@@ -1,8 +1,4 @@
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/data_source/remote/models/chat_model.dart';
-import 'package:techtalk/features/chat/data_source/remote/models/chat_qna_model.dart';
-import 'package:techtalk/features/chat/data_source/remote/models/chat_room_model.dart';
-import 'package:techtalk/features/chat/repositories/enums/interview_type.enum.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 abstract interface class ChatRemoteDataSource {

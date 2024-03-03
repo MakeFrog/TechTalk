@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
-import 'package:techtalk/features/topic/repositories/entities/wrong_answer_entity.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/review_note_detail_page_controller.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/selected_wrong_answer_topic_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_note_scroll_controller.dart';
-import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answers_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_topics_provider.dart';
+
+import 'providers/wrong_answers_provider.dart';
 
 mixin class WrongAnswerNoteState {
   ///

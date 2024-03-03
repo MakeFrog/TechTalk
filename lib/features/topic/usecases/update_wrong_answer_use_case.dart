@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/topic/repositories/topic_repository.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 final class UpdateWrongAnswerUseCase
     extends BaseUseCase<ChatQnaEntity, Result<void>> {

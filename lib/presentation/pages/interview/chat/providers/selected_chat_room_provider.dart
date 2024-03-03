@@ -1,7 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/repositories/entities/chat_progress_info_entity.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/interview_rooms_provider.dart';
 
 part 'selected_chat_room_provider.g.dart';

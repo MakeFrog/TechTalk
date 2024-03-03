@@ -5,9 +5,7 @@ import 'package:techtalk/core/helper/list_extension.dart';
 import 'package:techtalk/core/modules/base_use_case/base_use_case.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/repositories/enums/interview_type.enum.dart';
-import 'package:techtalk/features/topic/repositories/entities/qna_entity.dart';
-import 'package:techtalk/features/topic/repositories/topic_repository.dart';
+import 'package:techtalk/features/topic/topic.dart';
 
 ///
 /// 랜덤 Qna 목록을 호출하는 UseCase

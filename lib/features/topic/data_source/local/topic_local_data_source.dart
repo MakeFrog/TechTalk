@@ -1,5 +1,3 @@
-import 'package:techtalk/features/topic/data_source/local/boxes/qna_box.dart';
-import 'package:techtalk/features/topic/data_source/local/boxes/qna_list_box.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 abstract interface class TopicLocalDataSource {

@@ -2,10 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:techtalk/core/modules/exceptions/custom_exception.dart';
-import 'package:techtalk/features/user/data_source/remote/fire_storage_user_ref.dart';
-import 'package:techtalk/features/user/data_source/remote/models/user_model.dart';
-import 'package:techtalk/features/user/data_source/remote/users_ref.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/user/user.dart';
 
 final class UserRemoteDataSourceImpl implements UserRemoteDataSource {

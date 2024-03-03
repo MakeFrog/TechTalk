@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/app/style/app_color.dart';
-import 'package:techtalk/app/style/app_text_style.dart';
-import 'package:techtalk/core/constants/assets.dart';
+import 'package:techtalk/app/style/index.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/study/learning/learning_detail_event.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/learning_detail_state.dart';
@@ -11,8 +10,6 @@ import 'package:techtalk/presentation/pages/study/learning/widgets/study_progres
 import 'package:techtalk/presentation/pages/study/learning/widgets/study_qna_view.dart';
 import 'package:techtalk/presentation/pages/study/topic_selection/providers/selected_study_topic_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
-import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
-import 'package:techtalk/presentation/widgets/common/button/icon_flash_area_button.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 part 'widgets/learning_detail_bottom_controller_bar.dart';

@@ -1,10 +1,6 @@
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/core/helper/string_generator.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/data_source/remote/models/chat_room_model.dart';
-import 'package:techtalk/features/chat/repositories/entities/chat_progress_info_entity.dart';
-import 'package:techtalk/features/chat/repositories/enums/interview_type.enum.dart';
-import 'package:techtalk/features/chat/repositories/enums/interviewer_type.enum.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 class ChatRoomEntity {

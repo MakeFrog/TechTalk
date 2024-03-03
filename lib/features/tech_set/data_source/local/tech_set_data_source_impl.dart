@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/features/tech_set/repositories/enums/job.enum.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 final class TechSetLocalDataSourceImpl implements TechSetLocalDataSource {

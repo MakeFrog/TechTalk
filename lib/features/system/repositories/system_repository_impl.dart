@@ -1,8 +1,5 @@
-import 'package:techtalk/core/modules/error_handling/result.dart';
-import 'package:techtalk/core/modules/exceptions/custom_exception.dart';
-import 'package:techtalk/features/system/data_source/remote/system_remote_data_source.dart';
-import 'package:techtalk/features/system/repositories/entities/version_entity.dart';
-import 'package:techtalk/features/system/repositories/system_repository.dart';
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/system/system.dart';
 
 class SystemRepositoryImpl implements SystemRepository {
   SystemRepositoryImpl(this._remoteDataSource);

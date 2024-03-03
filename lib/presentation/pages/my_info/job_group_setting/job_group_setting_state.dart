@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/core/constants/job_group.enum.dart';
-import 'package:techtalk/core/helper/list_extension.dart';
-import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/provider/selected_job_groups_provider.dart';
 import 'package:techtalk/presentation/providers/scroll/selected_job_group_scroll_controller.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';

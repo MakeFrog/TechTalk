@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:techtalk/core/constants/stored_topic.dart';
-import 'package:techtalk/features/topic/data_source/remote/models/wrong_answer_model.dart';
-import 'package:techtalk/features/topic/data_source/remote/topics_ref.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {

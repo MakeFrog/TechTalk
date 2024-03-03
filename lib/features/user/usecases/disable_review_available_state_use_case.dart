@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/features/user/repositories/user_repository.dart';
+import 'package:techtalk/features/user/user.dart';
 
 class DisableReviewAvailableStateUseCase
     extends BaseNoParamUseCase<Result<void>> {

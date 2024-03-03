@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/app/style/app_color.dart';
-import 'package:techtalk/app/style/app_text_style.dart';
-import 'package:techtalk/core/services/size_service.dart';
+import 'package:techtalk/app/style/index.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_event.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_state.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/providers/selected_interview_topics_provider.dart';
