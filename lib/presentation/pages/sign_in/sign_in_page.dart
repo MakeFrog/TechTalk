@@ -5,12 +5,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
+import 'package:techtalk/core/constants/user_account_provider.enum.dart';
 import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_event.dart';
+import 'package:techtalk/presentation/pages/sign_in/widgets/apple_sign_in_button.dart';
+import 'package:techtalk/presentation/pages/sign_in/widgets/google_sign_in_button.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
-import 'package:techtalk/presentation/widgets/common/button/apple_sign_in_button.dart';
-import 'package:techtalk/presentation/widgets/common/button/google_sign_in_button.dart';
 
 class SignInPage extends BasePage with SignInEvent {
   const SignInPage({super.key});
@@ -44,12 +45,18 @@ class SignInPage extends BasePage with SignInEvent {
           ),
           const Spacer(),
           GoogleSignInButton(
-            onTap: () async => onTapSignInWithGoogle(ref),
+            onTap: () async => onSocialSignInBtnTapped(
+              ref,
+              socialAccountProvider: UserAccountProvider.google,
+            ),
           ),
           Gap(AppSize.to.ratioHeight(8)),
           if (Platform.isIOS)
             AppleSignInButton(
-              onTap: () async => onTapSignInWithApple(ref),
+              onTap: () async => onSocialSignInBtnTapped(
+                ref,
+                socialAccountProvider: UserAccountProvider.apple,
+              ),
             ),
           Gap(
             AppSize.to.ratioHeight(
