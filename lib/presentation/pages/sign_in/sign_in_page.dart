@@ -5,66 +5,62 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
-import 'package:techtalk/core/theme/extension/app_color.dart';
+import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_event.dart';
+import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/button/apple_sign_in_button.dart';
 import 'package:techtalk/presentation/widgets/common/button/google_sign_in_button.dart';
 
-class SignInPage extends StatelessWidget {
+class SignInPage extends BasePage with SignInEvent {
   const SignInPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.of.white,
-      body: const _Body(),
-    );
-  }
-}
-
-class _Body extends ConsumerWidget with SignInEvent {
-  const _Body({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Spacer(),
-            SvgPicture.asset(
-              Assets.logoTechTalkLogo,
-              width: 114,
+  Widget buildPage(BuildContext context, WidgetRef ref) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Spacer(),
+          SvgPicture.asset(
+            Assets.iconsTechTalkLogo,
+            width: 114,
+          ),
+          Gap(
+            AppSize.to.ratioHeight(8),
+          ),
+          Center(
+            child: Text(
+              'AI 면접관과 준비하는\n개발 면접',
+              textAlign: TextAlign.center,
+              style: AppTextStyle.pretendardBoldStyle(24, 33),
             ),
-            const Gap(8),
-            Center(
-              child: Text(
-                'AI 면접관과 준비하는 개발 면접',
-                style: AppTextStyle.pretendardBoldStyle(24, 33),
-              ),
+          ),
+          Gap(AppSize.to.ratioHeight(70)),
+          SvgPicture.asset(
+            Assets.imagesWelcomeTechtalk,
+            height: AppSize.to.ratioWidth(270),
+          ),
+          const Spacer(),
+          GoogleSignInButton(
+            onTap: () async => onTapSignInWithGoogle(ref),
+          ),
+          Gap(AppSize.to.ratioHeight(8)),
+          if (Platform.isIOS)
+            AppleSignInButton(
+              onTap: () async => onTapSignInWithApple(ref),
             ),
-            const Gap(70),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
-              child: SvgPicture.asset(
-                Assets.imagesWelcomeTechtalk,
-              ),
+          Gap(
+            AppSize.to.ratioHeight(
+              Platform.isIOS
+                  ? AppSize.to.screenWidth <= 320
+                      ? 24
+                      : 48
+                  : 24,
             ),
-            const Spacer(),
-            GoogleSignInButton(
-              onTap: () async => onTapSignInWithGoogle(ref),
-            ),
-            const Gap(8),
-            if (Platform.isIOS)
-              AppleSignInButton(
-                onTap: () async => onTapSignInWithApple(ref),
-              ),
-            Gap(Platform.isIOS ? 48 : 24),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
