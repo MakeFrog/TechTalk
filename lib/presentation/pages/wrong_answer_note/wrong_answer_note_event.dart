@@ -9,6 +9,9 @@ import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_an
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 mixin class WrongAnswerNoteEvent {
+  ///
+  /// 오답노트 면접 주제 chip이 클릭 되었을 때
+  ///
   void onTapTopicChip(WidgetRef ref, TopicEntity topic) {
     ref.read(selectedWrongAnswerTopicProvider.notifier).updateTopic(topic);
   }
