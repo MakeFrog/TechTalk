@@ -1,5 +1,5 @@
-import 'package:techtalk/core/models/exception/custom_exception.dart';
-import 'package:techtalk/core/utils/result.dart';
+import 'package:techtalk/core/modules/error_handling/result.dart';
+import 'package:techtalk/core/modules/exceptions/custom_exception.dart';
 import 'package:techtalk/features/system/data_source/remote/system_remote_data_source.dart';
 import 'package:techtalk/features/system/repositories/entities/version_entity.dart';
 import 'package:techtalk/features/system/repositories/system_repository.dart';

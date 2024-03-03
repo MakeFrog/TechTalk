@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:techtalk/core/theme/extension/app_color.dart';
-import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/app/style/app_color.dart';
+import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/presentation/widgets/common/button/app_back_button.dart';
 
 class BackButtonAppBar extends StatelessWidget implements PreferredSizeWidget {

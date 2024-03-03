@@ -2,10 +2,7 @@ import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:techtalk/core/constants/stored_topic.dart';
-import 'package:techtalk/core/core.dart';
-import 'package:techtalk/core/helper/string_extension.dart';
-import 'package:techtalk/core/utils/base/base_no_future_use_case.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
 class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,

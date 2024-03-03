@@ -7,9 +7,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/environment/flavor.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/app/style/app_color.dart';
+import 'package:techtalk/app/style/app_theme.dart';
 import 'package:techtalk/core/services/size_service.dart';
-import 'package:techtalk/core/theme/app_theme.dart';
-import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/presentation/widgets/common/layout/responsive_layout.dart';
 
 class ProviderLogger extends ProviderObserver {
@@ -21,7 +21,7 @@ class ProviderLogger extends ProviderObserver {
     ProviderContainer container,
   ) {
     log('''
-{
+{ 
   "provider": "${provider.name ?? provider.runtimeType}",
   "newValue": "$newValue"
 }''');

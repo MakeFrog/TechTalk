@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/constants/assets.dart';
-import 'package:techtalk/core/theme/extension/app_text_style.dart';
 
 class ExceptionIndicator extends StatelessWidget {
   const ExceptionIndicator(

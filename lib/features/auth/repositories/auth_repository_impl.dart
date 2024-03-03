@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:techtalk/core/core.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/auth/data_source/remote/auth_remote_data_source.dart';
 import 'package:techtalk/features/auth/repositories/auth_repository.dart';
+
+import 'entities/user_account_provider.enum.dart';
 
 final class AuthRepositoryImpl implements AuthRepository {
   const AuthRepositoryImpl(

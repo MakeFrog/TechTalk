@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
-import 'package:techtalk/core/core.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/topic/data_source/local/boxes/qna_box.dart';
 import 'package:techtalk/features/topic/data_source/local/boxes/qna_list_box.dart';
 import 'package:techtalk/features/topic/topic.dart';

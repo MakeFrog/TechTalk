@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:techtalk/core/utils/time_stamp_converter.dart';
+import 'package:techtalk/core/modules/converter/time_stamp_converter.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
 part 'chat_model.g.dart';

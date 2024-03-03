@@ -1,6 +1,6 @@
 import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/material.dart';
-import 'package:techtalk/core/theme/extension/app_color.dart';
+import 'package:techtalk/app/style/app_color.dart';
 
 ///
 /// 앱의 화면 페이지를 생성하는 유틸리티 클래스

@@ -2,13 +2,13 @@ import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:techtalk/core/theme/extension/app_color.dart';
-import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/app/style/app_color.dart';
+import 'package:techtalk/app/style/app_text_style.dart';
 
-part 'components/app_bar_theme.dart';
-part 'components/filled_button_theme.dart';
-part 'components/input_decoration_theme.dart';
-part 'components/outlined_button_theme.dart';
+part 'themes/app_bar_theme.dart';
+part 'themes/filled_button_theme.dart';
+part 'themes/input_decoration_theme.dart';
+part 'themes/outlined_button_theme.dart';
 
 class AppTheme {
   static final ThemeData light = ThemeData(

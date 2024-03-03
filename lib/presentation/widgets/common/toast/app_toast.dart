@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:techtalk/core/theme/extension/app_color.dart';
-import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/app/style/app_color.dart';
+import 'package:techtalk/app/style/app_text_style.dart';
 
 final TextStyle _baseTextStyle = AppTextStyle.pretendardStyle(
   12,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/core/theme/extension/app_color.dart';
+import 'package:techtalk/app/style/app_color.dart';
 
 ///
 /// 앱의 화면 페이지를 생성하는 유틸리티 클래스

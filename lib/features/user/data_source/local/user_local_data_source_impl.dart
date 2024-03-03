@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:techtalk/app/module/app_local.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/user/data_source/local/boxes/user_box.dart';
 import 'package:techtalk/features/user/data_source/local/user_local_data_source.dart';
 import 'package:techtalk/features/user/repositories/entities/user_entity.dart';

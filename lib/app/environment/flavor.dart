@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/app/environment/environment.enum.dart';
-import 'package:techtalk/app/module/app_local.dart';
+import 'package:techtalk/core/modules/local/app_local.dart';
 
 class Flavor {
   Flavor._();

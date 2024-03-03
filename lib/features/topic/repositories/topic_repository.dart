@@ -1,4 +1,4 @@
-import 'package:techtalk/core/utils/result.dart';
+import 'package:techtalk/core/modules/error_handling/result.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_qna_entity.dart';
 import 'package:techtalk/features/topic/repositories/entities/wrong_answer_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
