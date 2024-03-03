@@ -1,7 +1,6 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
-import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/providers/selected_question_count_provider.dart';

@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/core/services/dialog_service.dart';
-import 'package:techtalk/core/services/snack_bar_service.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/repositories/enums/interview_progress.enum.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
@@ -45,6 +43,9 @@ mixin class ChatEvent {
         .proceedInterviewStep(message);
   }
 
+  ///
+  /// 채팅 전송이 불가능할 상태일 때 전송 버튼이 클릭 되었을 때
+  ///
   void onChatFieldSubmittedOnWaitingState(InterviewProgress progressState) {
     unawaited(HapticFeedback.vibrate());
     late String message;
@@ -63,7 +64,9 @@ mixin class ChatEvent {
     return SnackBarService.showSnackBar(message);
   }
 
+  ///
   /// 앱바 뒤로 가기 버튼이 클릭 되었을 때
+  ///
   void onAppbarBackBtnTapped(WidgetRef ref) {
     final room = ref.read(selectedChatRoomProvider);
 
@@ -90,6 +93,9 @@ mixin class ChatEvent {
     }
   }
 
+  ///
+  /// 리포트 버튼이 클릭 되었을 때
+  ///
   Future<void> onReportBtnTapped(
     WidgetRef ref, {
     required int index,
@@ -106,8 +112,8 @@ mixin class ChatEvent {
         showContentImg: false,
         onRightBtnClicked: () async {
           await reportChatUseCase(
-            chatMessages[index] as FeedbackChatMessageEntity,
-            chatMessages[index + 1] as AnswerChatMessageEntity,
+            chatMessages[index] as FeedbackChatEntity,
+            chatMessages[index + 1] as AnswerChatEntity,
           ).then((value) {
             value.fold(
               onSuccess: (value) {

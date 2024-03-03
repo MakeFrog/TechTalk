@@ -5,7 +5,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   /// 채팅 메세지 상태 업데이트
   ///
   Future<void> showMessage({
-    required ChatMessageEntity message,
+    required BaseChatEntity message,
     void Function()? onDone,
   }) async {
     unawaited(HapticFeedback.lightImpact());
@@ -28,7 +28,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   ///
   /// 채팅 메세지 데이터를 서버에 업로드
   ///
-  Future<void> _uploadMessage(List<ChatMessageEntity> messages) async {
+  Future<void> _uploadMessage(List<BaseChatEntity> messages) async {
     await createChatMessagesUseCase(
       messages: messages,
       chatRoomId: ref.read(selectedChatRoomProvider).id,
@@ -39,13 +39,13 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   /// 유저 답변 메세지 정답 여부를 확인하고
   /// 상태를 업데이트
   ///
-  Future<AnswerChatMessageEntity> _updateUserAnswerState({
+  Future<AnswerChatEntity> _updateUserAnswerState({
     required bool isCorrect,
   }) async {
     final chatList = state.requireValue.toList();
 
     final answeredChat = chatList.firstWhere((chat) => chat.type.isSentMessage)
-        as AnswerChatMessageEntity;
+        as AnswerChatEntity;
     final resolvedAnsweredChat = answeredChat.copyWith(
       answerState: isCorrect ? AnswerState.correct : AnswerState.wrong,
     );
@@ -69,14 +69,14 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
     final nickname = ref.watch(userInfoProvider).requireValue!.nickname!;
     final firstQna = _getNewQna();
     final String introMessage =
-        '반가워요! $nickname님. ${room.type.isSingleTopic ? '${room.topics.first.text} 면접 질문을 드리겠습니다.' : '먼저 ${StoredTopics.getById(firstQna.id.getFirstPartOfSpliited).text} 질문을 드리겠습니다.'}';
+        '반가워요! $nickname님. ${room.type.isSingleTopic ? '${room.topics.first.text} 면접 질문을 드리겠습니다.' : '먼저 ${StoredTopics.getById(firstQna.qna.id.getFirstPartOfSpliited).text} 질문을 드리겠습니다.'}';
 
-    final introChat = GuideChatMessageEntity.createStatic(
+    final introChat = GuideChatEntity.createStatic(
       message: introMessage,
       timestamp: DateTime.timestamp(),
     );
 
-    final firstQuestionChat = QuestionChatMessageEntity.createStatic(
+    final firstQuestionChat = QuestionChatEntity.createStatic(
       qnaId: firstQna.qna.id,
       message: firstQna.qna.question,
       timestamp: DateTime.timestamp(),

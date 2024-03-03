@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:techtalk/core/utils/base/base_use_case.dart';
-import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
-import 'package:techtalk/features/user/repositories/user_repository.dart';
-import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_setting_page.dart';
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/user/user.dart';
 
 ///
 /// 유저 정보를 수정하는 useCase

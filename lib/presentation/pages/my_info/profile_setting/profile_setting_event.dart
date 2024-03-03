@@ -79,6 +79,9 @@ mixin class ProfileSettingEvent {
     );
   }
 
+  ///
+  /// 프로필 정보 저장
+  ///
   Future<void> _saveProfileInfo(WidgetRef ref, String editedNickname) async {
     final profileImgFile = ref.read(pickedProfileImgProvider);
 
@@ -100,6 +103,9 @@ mixin class ProfileSettingEvent {
     );
   }
 
+  ///
+  /// easy loading 해제 및 완료 snackbar 노출
+  ///
   void _dismissLoadingAndShowMessage(WidgetRef ref, String message) {
     EasyLoading.dismiss();
     ref.context.pop();

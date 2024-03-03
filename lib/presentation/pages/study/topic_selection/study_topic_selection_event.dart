@@ -5,6 +5,9 @@ import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 mixin class StudyTopicSelectionEvent {
+  ///
+  /// 면접 주제 카드가 클릭 되었을 때
+  ///
   void onTapCard(
     WidgetRef ref, {
     required TopicEntity topic,

@@ -1,7 +1,7 @@
 import 'package:techtalk/features/chat/chat.dart';
 
 class ChatHistoryCollectionEntity {
-  final List<ChatMessageEntity> chatHistories;
+  final List<BaseChatEntity> chatHistories;
   final List<String> progressQnaIds;
 
   ChatHistoryCollectionEntity(

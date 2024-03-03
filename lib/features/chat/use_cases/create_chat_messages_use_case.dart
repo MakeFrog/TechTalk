@@ -1,4 +1,4 @@
-import 'package:techtalk/core/utils/result.dart';
+import 'package:techtalk/core/modules/error_handling/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
 ///
@@ -12,9 +12,9 @@ final class CreateChatMessagesUseCase {
 
   Future<Result<void>> call({
     required String chatRoomId,
-    required List<ChatMessageEntity> messages,
+    required List<BaseChatEntity> messages,
   }) {
-    return _repository.createChatMessages(
+    return _repository.uploadChats(
       chatRoomId,
       messages: messages,
     );

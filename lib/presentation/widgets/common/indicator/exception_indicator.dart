@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/constants/assets.dart';
-import 'package:techtalk/core/theme/extension/app_text_style.dart';
 
 class ExceptionIndicator extends StatelessWidget {
   const ExceptionIndicator(
@@ -33,9 +33,12 @@ class ExceptionIndicator extends StatelessWidget {
             TextSpan(
               children: <TextSpan>[
                 if (errorCode != null) TextSpan(text: '[${errorCode!}] '),
-                TextSpan(text: subTitle),
+                TextSpan(
+                  text: subTitle,
+                ),
               ],
             ),
+            textAlign: TextAlign.center,
           ),
           const Gap(16),
           SvgPicture.asset(

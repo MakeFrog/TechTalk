@@ -5,7 +5,6 @@ import 'package:techtalk/app/di/modules/system_di.dart';
 import 'package:techtalk/app/di/modules/tech_set_di.dart';
 import 'package:techtalk/app/di/modules/topic_di.dart';
 import 'package:techtalk/app/di/modules/user_di.dart';
-import 'package:techtalk/app/di/modules/wrong_answer_note_di.dart';
 
 final locator = GetIt.I;
 
@@ -41,7 +40,6 @@ final class AppBinder {
       UserDependencyInjection(),
       JobDependencyInjection(),
       ChatDependencyInject(),
-      WrongAnswerNoteDependencyInjection(),
       TopicDependencyInjection(),
     ]) {
       di.init();

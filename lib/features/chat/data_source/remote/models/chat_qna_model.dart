@@ -20,7 +20,7 @@ class ChatQnaModel {
 
   factory ChatQnaModel.fromEntity(ChatQnaEntity entity) {
     return ChatQnaModel(
-      id: entity.id,
+      id: entity.qna.id,
       messageId: entity.message?.id,
       state: entity.message?.answerState.tag,
     );

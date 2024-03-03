@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/core/core.dart';
-import 'package:techtalk/core/theme/extension/app_color.dart';
-import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/app/style/index.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/my_info/my_page/my_page_event.dart';
 import 'package:techtalk/presentation/pages/my_info/my_page/my_page_state.dart';
 import 'package:techtalk/presentation/pages/my_info/my_page/widgets/card_list_tile_button.dart';
 import 'package:techtalk/presentation/pages/my_info/my_page/widgets/expandable_wrapped_list_view.dart';
-import 'package:techtalk/presentation/providers/system/app_version_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 import 'package:techtalk/presentation/widgets/common/button/icon_flash_area_button.dart';

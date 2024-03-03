@@ -8,8 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/router/router.dart';
-import 'package:techtalk/core/services/dialog_service.dart';
-import 'package:techtalk/core/services/snack_bar_service.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
 part 'picked_profile_img.g.dart';

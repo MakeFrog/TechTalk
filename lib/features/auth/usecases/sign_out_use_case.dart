@@ -1,14 +1,14 @@
-import 'package:techtalk/core/utils/result.dart';
+import 'dart:async';
+
+import 'package:techtalk/core/modules/base_use_case/base_no_param_use_case.dart';
+import 'package:techtalk/core/modules/error_handling/result.dart';
 import 'package:techtalk/features/auth/auth.dart';
 
-final class SignOutUseCase {
-  const SignOutUseCase(
-    this._authRepository,
-  );
+final class SignOutUseCase extends BaseNoParamUseCase<Result<void>> {
+  SignOutUseCase(this._authRepository);
 
   final AuthRepository _authRepository;
 
-  Future<Result<void>> call() async {
-    return _authRepository.signOut();
-  }
+  @override
+  FutureOr<Result<void>> call() async => _authRepository.signOutOauth();
 }

@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:techtalk/core/core.dart';
-import 'package:techtalk/features/auth/data_source/remote/auth_remote_data_source.dart';
-import 'package:techtalk/features/auth/repositories/auth_repository.dart';
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/auth/auth.dart';
 
 final class AuthRepositoryImpl implements AuthRepository {
   const AuthRepositoryImpl(
@@ -27,7 +26,7 @@ final class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Result<void>> signOut() async {
+  Future<Result<void>> signOutOauth() async {
     try {
       return Result.success(
         await _authRemoteDataSource.signOut(),

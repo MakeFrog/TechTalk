@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
+import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/providers/picked_profile_img.dart';
 import 'package:techtalk/presentation/providers/input/nickname_input_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';

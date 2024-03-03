@@ -3,14 +3,9 @@ import 'dart:developer';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/services.dart';
-import 'package:in_app_review/in_app_review.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/core/constants/stored_topic.dart';
-import 'package:techtalk/core/helper/list_extension.dart';
-import 'package:techtalk/core/helper/string_extension.dart';
-import 'package:techtalk/core/services/snack_bar_service.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
@@ -21,13 +16,13 @@ part 'chat_message_history_provider.g.dart';
 @riverpod
 class ChatMessageHistory extends _$ChatMessageHistory {
   @override
-  FutureOr<List<ChatMessageEntity>> build() async {
+  FutureOr<List<BaseChatEntity>> build() async {
     final room = ref.read(selectedChatRoomProvider);
     final getChatList = switch (room.progressState) {
       ChatRoomProgress.initial => () async {
           await _showIntroAndQuestionMessages();
 
-          return <ChatMessageEntity>[];
+          return <BaseChatEntity>[];
         },
       ChatRoomProgress.ongoing || ChatRoomProgress.completed => () async {
           final response = await getChatMessageHistoryUseCase(room.id);
@@ -65,11 +60,10 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   ///
   /// 1) 유저의 답변 채팅 메세지 추가
   ///
-  Future<AnswerChatMessageEntity> addUserMessage(String message) async {
+  Future<AnswerChatEntity> addUserMessage(String message) async {
     final answeredQuestion = state.requireValue
-            .firstWhere((chat) => chat is QuestionChatMessageEntity)
-        as QuestionChatMessageEntity;
-    final answerChat = AnswerChatMessageEntity.initial(
+        .firstWhere((chat) => chat is QuestionChatEntity) as QuestionChatEntity;
+    final answerChat = AnswerChatEntity.initial(
       message: message,
       qnaId: answeredQuestion.qnaId,
     );
@@ -88,9 +82,8 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   /// 3) 유저 답변에 대한 피드백 채팅 전달
   /// 4) 피드백 채팅이 전달된 이후 가이드 채팅과 다음 질문 채팅을 전달
   ///
-  Future<void> handleFeedbackProgress(
-      AnswerChatMessageEntity userAnswer) async {
-    late AnswerChatMessageEntity resolvedUserAnswer;
+  Future<void> handleFeedbackProgress(AnswerChatEntity userAnswer) async {
+    late AnswerChatEntity resolvedUserAnswer;
     late bool isAnswerCorrect;
     final room = ref.read(selectedChatRoomProvider);
     final qna =
@@ -126,32 +119,32 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           final isCompleted =
               ref.read(selectedChatRoomProvider.notifier).isLastQuestion();
 
-          final feedbackChat = FeedbackChatMessageEntity.createStatic(
+          final feedbackChat = FeedbackChatEntity.createStatic(
             message: feedback,
             timestamp: DateTime.now(),
           );
 
-          late QuestionChatMessageEntity nextQuestionChat;
-          late GuideChatMessageEntity guideChat;
+          late QuestionChatEntity nextQuestionChat;
+          late GuideChatEntity guideChat;
           late String guideMessage;
           late ChatQnaEntity newQna;
 
           if (!isCompleted) {
             newQna = _getNewQna();
             guideMessage =
-                '다음 ${room.type.isPractical ? StoredTopics.getById(newQna.id.getFirstPartOfSpliited).text : ''} 질문을 드리겠습니다.';
+                '다음 ${room.type.isPractical ? StoredTopics.getById(newQna.qna.id.getFirstPartOfSpliited).text : ''} 질문을 드리겠습니다.';
           } else {
             guideMessage = '면접이 종료 되었습니다.';
           }
 
           /// NOTE : 순서 주의
-          guideChat = GuideChatMessageEntity.createStatic(
+          guideChat = GuideChatEntity.createStatic(
             message: guideMessage,
             timestamp: DateTime.now(),
           );
 
           if (!isCompleted) {
-            nextQuestionChat = QuestionChatMessageEntity.createStatic(
+            nextQuestionChat = QuestionChatEntity.createStatic(
               qnaId: newQna.qna.id,
               message: newQna.qna.question,
               timestamp: DateTime.now(),
@@ -192,7 +185,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
       onSuccess: (feedbackStreamedChat) async {
         /// 3) 유저 답변에 대한 피드백 채팅 전달
         await showMessage(
-          message: FeedbackChatMessageEntity(
+          message: FeedbackChatEntity(
             message: feedbackStreamedChat,
           ),
         );
@@ -210,8 +203,8 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   /// 하나의 질문 단위로 섹션이 구분
   ///
   /// ex)
-  /// [ReceivedChatEntity](N) - [ReceivedChatEntity](Y) - [AnswerChatMessageEntity]
-  /// [ReceivedChatEntity](N) - [ReceivedChatEntity](Y) - [AnswerChatMessageEntity] - [ReceivedChatEntity](N) - [ReceivedChatEntity](Y)
+  /// [ReceivedChatEntity](N) - [ReceivedChatEntity](Y) - [AnswerChatEntity]
+  /// [ReceivedChatEntity](N) - [ReceivedChatEntity](Y) - [AnswerChatEntity] - [ReceivedChatEntity](N) - [ReceivedChatEntity](Y)
   ///
   bool isLastReceivedChatInEachQuestion({required int index}) {
     final chatList = state.requireValue;

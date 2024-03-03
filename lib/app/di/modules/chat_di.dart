@@ -35,11 +35,6 @@ final class ChatDependencyInject extends FeatureDependencyInjection {
         ),
       )
       ..registerFactory(
-        () => GetChatRoomUseCase(
-          chatRepository,
-        ),
-      )
-      ..registerFactory(
         () => GetChatMessageHistoryUseCase(
           chatRepository,
         ),
@@ -49,7 +44,7 @@ final class ChatDependencyInject extends FeatureDependencyInjection {
           chatRepository,
         ),
       )
-      ..registerFactory(() => GetAnswerFeedbackUseCase())
+      ..registerFactory(() => SetAiFeedbackUseCase())
       ..registerFactory(
         () => CreateChatMessagesUseCase(
           chatRepository,

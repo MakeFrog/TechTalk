@@ -1,6 +1,6 @@
 import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/app/di/feature_di_interface.dart';
-import 'package:techtalk/app/module/app_local.dart';
+import 'package:techtalk/core/modules/local/app_local.dart';
 import 'package:techtalk/features/topic/data_source/local/topic_local_data_source_impl.dart';
 import 'package:techtalk/features/topic/data_source/remote/topic_remote_data_source_impl.dart';
 import 'package:techtalk/features/topic/repositories/topic_repository_impl.dart';
@@ -33,14 +33,6 @@ final class TopicDependencyInjection extends FeatureDependencyInjection {
   @override
   void useCases() {
     locator
-      ..registerFactory(
-        GetTopicsUseCase.new,
-      )
-      ..registerFactory(
-        () => GetCategorizedTopicsUseCase(
-          topicRepository,
-        ),
-      )
       ..registerFactory(
         () => GetTopicQnasUseCase(
           topicRepository,

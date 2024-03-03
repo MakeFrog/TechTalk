@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:techtalk/core/utils/time_stamp_converter.dart';
+import 'package:techtalk/core/modules/converter/time_stamp_converter.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 part 'topic_model.g.dart';

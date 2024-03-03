@@ -1,4 +1,4 @@
-import 'package:techtalk/core/utils/result.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 final class GetTopicQnasUseCase {

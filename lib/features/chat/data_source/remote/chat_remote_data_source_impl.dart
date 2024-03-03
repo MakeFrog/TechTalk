@@ -1,11 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/data_source/remote/chat_remote_data_source.dart';
-import 'package:techtalk/features/chat/data_source/remote/models/chat_message_model.dart';
-import 'package:techtalk/features/chat/data_source/remote/models/chat_qna_model.dart';
-import 'package:techtalk/features/chat/data_source/remote/models/chat_ref.dart';
-import 'package:techtalk/features/chat/data_source/remote/models/chat_room_model.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
@@ -18,7 +12,6 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
       throw Exception('이미 채팅방이 존재합니다.');
     }
 
-    // 채팅방 데이터 저장
     await roomDoc.set(ChatRoomModel.fromEntity(room));
   }
 
@@ -29,11 +22,11 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   ]) async {
     final snapshot = switch (type) {
       InterviewType.singleTopic => await FirestoreChatRoomRef.collection()
-          .where('type', isEqualTo: type.name)
-          .where('topic_ids', arrayContains: topic!.id)
+          .where(FirestoreChatRoomRef.typeField, isEqualTo: type.name)
+          .where(FirestoreChatRoomRef.topicIdsField, arrayContains: topic!.id)
           .get(),
       InterviewType.practical => await FirestoreChatRoomRef.collection()
-          .where('type', isEqualTo: type.name)
+          .where(FirestoreChatRoomRef.typeField, isEqualTo: type.name)
           .get()
     };
 
@@ -55,32 +48,34 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }
 
   @override
-  Future<void> createChatMessages(
+  Future<void> uploadChats(
     String roomId, {
-    required List<ChatMessageEntity> messages,
+    required List<BaseChatEntity> messages,
   }) async {
     await FirebaseFirestore.instance.runTransaction(
       (transaction) async {
         for (final message in messages) {
-          final messageModel = ChatMessageModel.fromEntity(message);
+          final messageModel = ChatModel.fromEntity(message);
           transaction.set(
             FirestoreChatMessageRef.collection(roomId).doc(message.id),
             messageModel,
           );
 
-          if (message is AnswerChatMessageEntity) {
+          if (message is AnswerChatEntity) {
             transaction
               ..update(FirestoreChatRoomRef.doc(roomId), {
                 if (message.answerState.isCorrect)
-                  'correct_answer_count': FieldValue.increment(1),
+                  FirestoreChatRoomRef.correctAnswerCount:
+                      FieldValue.increment(1),
                 if (message.answerState.isWrong)
-                  'incorrect_answer_count': FieldValue.increment(1),
+                  FirestoreChatRoomRef.incorrectAnswerCount:
+                      FieldValue.increment(1),
               })
               ..update(
                 FirestoreChatQnaRef.collection(roomId).doc(message.qnaId),
                 {
-                  'message_id': message.id,
-                  'state': message.answerState.tag,
+                  FirestoreChatQnaRef.messageIdField: message.id,
+                  FirestoreChatQnaRef.stateField: message.answerState.tag,
                 },
               );
           }
@@ -90,7 +85,7 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }
 
   @override
-  Future<List<ChatMessageModel>> getChatMessageHistory(String roomId) async {
+  Future<List<ChatModel>> getChatHistory(String roomId) async {
     final snapshot = await FirestoreChatMessageRef.collection(roomId)
         .orderBy('timestamp', descending: true)
         .get();
@@ -101,7 +96,7 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }
 
   @override
-  Future<ChatMessageModel> getChatMessage(
+  Future<ChatModel> getChat(
     String roomId,
     String chatId,
   ) async {
@@ -111,7 +106,7 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }
 
   @override
-  Future<ChatMessageModel?> getLastChatMessage(String roomId) async {
+  Future<ChatModel?> getLastChat(String roomId) async {
     final snapshot = await FirestoreChatMessageRef.collection(roomId)
         .orderBy('timestamp', descending: true)
         .get();
@@ -126,15 +121,13 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   @override
   Future<void> createChatQnas(
     String roomId, {
-    required List<ChatQnaEntity> qnas,
+    required List<ChatQnaEntity> chatQnas,
   }) async {
     final roomModel = await getChatRoom(roomId);
 
-    // 만들어진 채팅방 문서에 질문 리스트 추가
-    // 트랜잭션을 사용해 한번에 처리
     await FirebaseFirestore.instance.runTransaction((transaction) async {
-      for (final qna in qnas) {
-        final qnaDoc = FirestoreChatQnaRef.doc(roomModel.id, qna.id);
+      for (final chatQna in chatQnas) {
+        final qnaDoc = FirestoreChatQnaRef.doc(roomModel.id, chatQna.qna.id);
         transaction.set(
           qnaDoc,
           ChatQnaModel(
@@ -155,9 +148,9 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }
 
   @override
-  Future<void> createReport(
-    FeedbackChatMessageEntity feedback,
-    AnswerChatMessageEntity answer,
+  Future<void> uploadChatIssueReport(
+    FeedbackChatEntity feedback,
+    AnswerChatEntity answer,
   ) async {
     final docRef = FirebaseFirestore.instance
         .collection('Reports')
@@ -167,8 +160,8 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
 
     await docRef.set({
       'id': docRef.id,
-      'feedback': ChatMessageModel.fromEntity(feedback).toJson(),
-      'answer': ChatMessageModel.fromEntity(answer).toJson(),
+      'feedback': ChatModel.fromEntity(feedback).toJson(),
+      'answer': ChatModel.fromEntity(answer).toJson(),
       'created_at': FieldValue.serverTimestamp(),
     });
   }

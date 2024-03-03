@@ -1,4 +1,4 @@
-import 'package:techtalk/core/utils/result.dart';
+import 'package:techtalk/core/modules/error_handling/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
 final class GetChatQnasUseCase {
@@ -6,6 +6,6 @@ final class GetChatQnasUseCase {
 
   final ChatRepository _chatRepository;
   Future<Result<List<ChatQnaEntity>>> call(ChatRoomEntity room) async {
-    return _chatRepository.getChatQnAs(room);
+    return _chatRepository.getChatQnas(room);
   }
 }

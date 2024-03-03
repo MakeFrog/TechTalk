@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/repositories/enums/interview_type.enum.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';

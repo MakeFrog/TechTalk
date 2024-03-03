@@ -1,7 +1,5 @@
-import 'package:techtalk/core/utils/base/base_no_param_use_case.dart';
-import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/system/repositories/entities/version_entity.dart';
-import 'package:techtalk/features/system/repositories/system_repository.dart';
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/system/system.dart';
 
 class GetVersionInfoUseCase extends BaseNoParamUseCase<Result<VersionEntity>> {
   GetVersionInfoUseCase(this._repository);

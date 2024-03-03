@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/core/theme/extension/app_color.dart';
-import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/app/style/app_color.dart';
+import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skill_entity.dart';
 import 'package:techtalk/presentation/pages/sign_up/events/sign_up_event.dart';
 

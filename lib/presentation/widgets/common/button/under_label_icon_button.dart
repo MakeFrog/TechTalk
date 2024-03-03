@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:techtalk/core/theme/extension/app_color.dart';
-import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/app/style/app_color.dart';
+import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/presentation/widgets/common/button/icon_flash_area_button.dart';
 
 class UnderLabelIconButton extends StatelessWidget {

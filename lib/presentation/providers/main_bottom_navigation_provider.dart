@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/core/core.dart';
+import 'package:techtalk/core/index.dart';
 
 part 'main_bottom_navigation_provider.g.dart';
 

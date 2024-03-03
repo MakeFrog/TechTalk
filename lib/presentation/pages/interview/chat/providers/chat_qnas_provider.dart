@@ -38,11 +38,11 @@ class ChatQnas extends _$ChatQnas {
   ///
   /// qna 상태 업데이트
   ///
-  Future<void> updateState(AnswerChatMessageEntity message) async {
+  Future<void> updateState(AnswerChatEntity message) async {
     final qnas = state.requireValue;
-    final targetQnaIndex = qnas.indexWhere((e) => e.id == message.qnaId);
+    final targetQnaIndex = qnas.indexWhere((e) => e.qna.id == message.qnaId);
     final resolvedQna = qnas[targetQnaIndex].copyWith(
-      answer: message,
+      message: message,
     );
 
     unawaited(
@@ -76,8 +76,8 @@ class ChatQnas extends _$ChatQnas {
   ///
   void arrangeQnasInOrder(List<String> prevQnaIdsInOrder) {
     state.requireValue.sort((a, b) => prevQnaIdsInOrder
-        .indexOf(a.id)
-        .compareTo(prevQnaIdsInOrder.indexOf(b.id)));
+        .indexOf(a.qna.id)
+        .compareTo(prevQnaIdsInOrder.indexOf(b.qna.id)));
   }
 
   ///
@@ -102,6 +102,6 @@ class ChatQnas extends _$ChatQnas {
   /// id값으로 Qna객체 반환
   ///
   ChatQnaEntity getQnaById(String qnaId) {
-    return state.requireValue.firstWhere((e) => e.id == qnaId);
+    return state.requireValue.firstWhere((e) => e.qna.id == qnaId);
   }
 }

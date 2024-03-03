@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/core/constants/assets.dart';
-import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/services/size_service.dart';
-import 'package:techtalk/core/theme/extension/app_color.dart';
+import 'package:techtalk/features/chat/repositories/enums/interview_type.enum.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_state.dart';

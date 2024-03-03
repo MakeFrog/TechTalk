@@ -3,7 +3,6 @@ class QnaEntity {
   final String question;
   final List<String> answers;
 
-//<editor-fold desc="Data Methods">
   const QnaEntity({
     required this.id,
     required this.question,

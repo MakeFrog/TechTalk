@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/repositories/entities/interviewer_entity.dart';
-import 'package:techtalk/features/chat/repositories/enums/interview_progress.enum.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_async_adapter_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
@@ -14,7 +12,7 @@ mixin class ChatState {
   ///
   /// 채팅 목록
   ///
-  AsyncValue<List<ChatMessageEntity>> messageHistoryAsync(WidgetRef ref) =>
+  AsyncValue<List<BaseChatEntity>> messageHistoryAsync(WidgetRef ref) =>
       ref.watch(chatMessageHistoryProvider);
 
   ///
@@ -32,7 +30,7 @@ mixin class ChatState {
   ///
   /// 채팅 메세지 기록
   ///
-  List<ChatMessageEntity> chatMessageHistory(WidgetRef ref) =>
+  List<BaseChatEntity> chatMessageHistory(WidgetRef ref) =>
       ref.watch(chatMessageHistoryProvider).requireValue;
 
   ///

@@ -1,8 +1,7 @@
 import 'dart:async';
 
-import 'package:techtalk/core/core.dart';
-import 'package:techtalk/core/utils/base/base_no_param_use_case.dart';
-import 'package:techtalk/features/user/repositories/user_repository.dart';
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/user/user.dart';
 
 final class IncreaseCompletedInterviewCountUseCase
     extends BaseNoParamUseCase<Result<int>> {

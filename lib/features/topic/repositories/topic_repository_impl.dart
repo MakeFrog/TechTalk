@@ -1,11 +1,7 @@
-import 'package:techtalk/core/constants/stored_topic.dart';
-import 'package:techtalk/core/helper/date_time_extension.dart';
-import 'package:techtalk/core/helper/string_extension.dart';
-import 'package:techtalk/core/models/exception/custom_exception.dart';
-import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/chat/repositories/entities/chat_qna_entity.dart';
-import 'package:techtalk/features/topic/data_source/remote/models/wrong_answer_model.dart';
-import 'package:techtalk/features/topic/repositories/entities/wrong_answer_entity.dart';
+import 'dart:developer';
+
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 class TopicRepositoryImpl implements TopicRepository {
@@ -16,27 +12,6 @@ class TopicRepositoryImpl implements TopicRepository {
 
   final TopicLocalDataSource _localDataSource;
   final TopicRemoteDataSource _remoteDataSource;
-
-  List<TopicEntity>? _cachedTopics;
-  List<TopicCategoryEntity>? _cachedTopicCategories;
-
-  @override
-  Future<void> initStaticData() async {
-    final topicModels = await _remoteDataSource.getTopics();
-    _cachedTopics ??= topicModels.map((e) => e.toEntity()).toList();
-
-    final categoryModels = await _localDataSource.getTopicCategories();
-    _cachedTopicCategories ??= categoryModels.map((e) => e.toEntity()).toList();
-  }
-
-  @override
-  Result<List<TopicCategoryEntity>> getTopicCategories() {
-    try {
-      return Result.success(_cachedTopicCategories!);
-    } on Exception catch (e) {
-      return Result.failure(const TopicInitialFailed());
-    }
-  }
 
   @override
   Future<Result<List<QnaEntity>>> getTopicQnas(
@@ -60,6 +35,7 @@ class TopicRepositoryImpl implements TopicRepository {
         );
       }
     } on Exception catch (e) {
+      log('getTopicQnas : $e');
       return Result.failure(
         NoTopicQuestionException(topicId),
       );
@@ -86,6 +62,7 @@ class TopicRepositoryImpl implements TopicRepository {
         );
       }
     } on Exception catch (e) {
+      log('getTopicQna : $e');
       return Result.failure(
         NoTopicQuestionException(topicId),
       );
@@ -97,10 +74,11 @@ class TopicRepositoryImpl implements TopicRepository {
     try {
       await _remoteDataSource.updateWrongAnswer(
         wrongAnswer: WrongAnswerModel.fromEntity(chatQna),
-        topicId: chatQna.id.getFirstPartOfSpliited,
+        topicId: chatQna.qna.id.getFirstPartOfSpliited,
       );
       return Result.success(null);
     } on Exception catch (e) {
+      log('updateWrongAnswer : $e');
       return Result.failure(const WrongAnswerUpdateFailedException());
     }
   }
@@ -117,6 +95,7 @@ class TopicRepositoryImpl implements TopicRepository {
 
       return Result.success(await Future.wait(futureResults));
     } on Exception catch (e) {
+      log('getWrongAnswers : $e');
       return Result.failure(const WrongAnswerUpdateFailedException());
     }
   }
@@ -127,6 +106,7 @@ class TopicRepositoryImpl implements TopicRepository {
       final response = await _remoteDataSource.deleteUserWrongAnswers();
       return Result.success(response);
     } on Exception catch (e) {
+      log('deleteUserWrongAnswers : $e');
       return Result.failure(e);
     }
   }

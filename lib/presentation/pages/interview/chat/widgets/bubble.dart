@@ -3,13 +3,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/core/constants/assets.dart';
-import 'package:techtalk/core/theme/extension/app_color.dart';
-import 'package:techtalk/core/theme/extension/app_text_style.dart';
+import 'package:techtalk/app/style/index.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/repositories/entities/interviewer_entity.dart';
-import 'package:techtalk/presentation/widgets/common/avatar/clip_oval_circle_avatar.dart';
-import 'package:techtalk/presentation/widgets/common/button/icon_flash_area_button.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 class Bubble extends StatelessWidget {
@@ -22,7 +18,7 @@ class Bubble extends StatelessWidget {
   }) : super(key: key);
 
   /// 채팅 정보
-  final ChatMessageEntity chat;
+  final BaseChatEntity chat;
 
   /// 아바타
   final InterviewerEntity interviewer;
@@ -60,7 +56,7 @@ class Bubble extends StatelessWidget {
                       bottom: 8,
                     )
                   : null,
-              constraints: const BoxConstraints(maxWidth: 250),
+              constraints: BoxConstraints(maxWidth: AppSize.to.ratioWidth(250)),
               child: Builder(
                 builder: (BuildContext context) {
                   return Container(
@@ -124,7 +120,7 @@ class Bubble extends StatelessWidget {
                 },
               ),
             ),
-            if (item is FeedbackChatMessageEntity && item.message.isClosed)
+            if (item is FeedbackChatEntity && item.message.isClosed)
               Row(
                 children: [
                   const Gap(5),
@@ -153,14 +149,14 @@ class Bubble extends StatelessWidget {
       );
     } else {
       /// SENT CHAT
-      final item = chat as AnswerChatMessageEntity;
+      final item = chat as AnswerChatEntity;
       return Align(
         alignment: Alignment.centerRight,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Container(
-              constraints: const BoxConstraints(maxWidth: 250),
+              constraints: BoxConstraints(maxWidth: AppSize.to.ratioWidth(250)),
               decoration: BoxDecoration(
                 color: AppColor.of.background1,
                 borderRadius: radiusOnCase,

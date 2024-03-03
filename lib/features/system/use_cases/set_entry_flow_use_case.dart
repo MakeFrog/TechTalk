@@ -6,12 +6,9 @@ import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:techtalk/app/router/router.dart';
-import 'package:techtalk/core/models/exception/custom_exception.dart';
-import 'package:techtalk/core/services/dialog_service.dart';
-import 'package:techtalk/core/utils/base/base_no_param_use_case.dart';
-import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/system/repositories/system_repository.dart';
-import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/system/system.dart';
+import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SetEntryFlowUseCase extends BaseNoParamUseCase<Result<void>> {

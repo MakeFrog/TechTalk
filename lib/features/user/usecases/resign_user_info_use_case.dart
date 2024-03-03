@@ -1,8 +1,7 @@
 import 'dart:async';
 
-import 'package:techtalk/core/utils/base/base_use_case.dart';
-import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/topic/repositories/topic_repository.dart';
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/user/user.dart';
 
 final class ResignUserInfoUseCase
@@ -17,6 +16,6 @@ final class ResignUserInfoUseCase
     final topicRes = await _topicRepository.deleteUserWrongAnswers();
     topicRes.getOrThrow();
 
-    return _userRepository.quitUser(request);
+    return _userRepository.deleteUser(request);
   }
 }

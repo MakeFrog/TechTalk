@@ -7,7 +7,7 @@ part of 'detect_network_connectivity_provider.dart';
 // **************************************************************************
 
 String _$detectNetworkConnectivityHash() =>
-    r'401057fd0d3b83780534cce6192e51d72151c2ee';
+    r'6dacc2c3ce2532d50fcd27ecbf10f6cdbeb2ede5';
 
 /// See also [DetectNetworkConnectivity].
 @ProviderFor(DetectNetworkConnectivity)

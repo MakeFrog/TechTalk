@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
-import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
+import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_topics_provider.dart';
 

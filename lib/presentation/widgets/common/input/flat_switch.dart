@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:techtalk/core/theme/extension/app_color.dart';
+import 'package:techtalk/app/style/app_color.dart';
 
 final _switchAnimationDuration = 200.ms;
 const _switchAnimationCurve = Curves.bounceInOut;

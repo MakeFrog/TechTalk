@@ -1,7 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/repositories/entities/chat_progress_info_entity.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/interview_rooms_provider.dart';
 
 part 'selected_chat_room_provider.g.dart';
@@ -16,7 +15,7 @@ class SelectedChatRoom extends _$SelectedChatRoom {
   ///
   /// 초기 채팅방 정보 업데이트
   ///
-  void updateInitialInfo(ChatMessageEntity lastChat) {
+  void updateInitialInfo(BaseChatEntity lastChat) {
     final updatedRoom = state.copyWith(
       lastChatDate: lastChat.timestamp,
       lastChatMessage: lastChat.message.value,
@@ -31,7 +30,7 @@ class SelectedChatRoom extends _$SelectedChatRoom {
   /// 채팅 진행상태 정보 업데이트
   ///
   void updateProgressInfo(
-      {required bool isCorrect, required ChatMessageEntity lastChatMessage}) {
+      {required bool isCorrect, required BaseChatEntity lastChatMessage}) {
     late ChatProgressInfoEntity updatedProgressInfo = switch (isCorrect) {
       true => state.progressInfo.copyWith(
           correctAnswerCount: state.progressInfo.correctAnswerCount + 1),

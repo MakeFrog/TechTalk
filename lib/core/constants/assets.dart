@@ -94,6 +94,7 @@ class Assets {
   static const String iconsSendActivate = 'assets/icons/send_activate.svg';
   static const String iconsStudy = 'assets/icons/study.svg';
   static const String iconsTalker = 'assets/icons/talker.svg';
+  static const String iconsTechTalkLogo = 'assets/icons/tech_talk_logo.svg';
   static const String iconsUser = 'assets/icons/user.svg';
   static const String iconsWarning = 'assets/icons/warning.svg';
   static const String iconsWrongIndicator = 'assets/icons/wrong_indicator.svg';
@@ -125,7 +126,6 @@ class Assets {
   static const String jsonSkills = 'assets/json/skills.json';
   static const String jsonTopicCategoriesData =
       'assets/json/topic_categories_data.json';
-  static const String logoTechTalkLogo = 'assets/logo/tech_talk_logo.svg';
   static const String pretendardPretendardBold =
       'assets/fonts/pretendard/Pretendard-Bold.otf';
   static const String pretendardPretendardMedium =
@@ -134,20 +134,5 @@ class Assets {
       'assets/fonts/pretendard/Pretendard-Regular.otf';
   static const String pretendardPretendardSemiBold =
       'assets/fonts/pretendard/Pretendard-SemiBold.otf';
-  static const String staatlichesStaatlichesRegular =
-      'assets/fonts/staatliches/Staatliches-Regular.ttf';
   static const String techTalk = '.env';
-  static const String topicsAndroid = 'assets/topics/android.json';
-  static const String topicsDataStructure = 'assets/topics/dataStructure.json';
-  static const String topicsDatabase = 'assets/topics/database.json';
-  static const String topicsFlutter = 'assets/topics/flutter.json';
-  static const String topicsIos = 'assets/topics/ios.json';
-  static const String topicsJava = 'assets/topics/java.json';
-  static const String topicsJavascript = 'assets/topics/javascript.json';
-  static const String topicsNetwork = 'assets/topics/network.json';
-  static const String topicsOperatingSystem =
-      'assets/topics/operatingSystem.json';
-  static const String topicsReact = 'assets/topics/react.json';
-  static const String topicsSpring = 'assets/topics/spring.json';
-  static const String topicsWebFrontend = 'assets/topics/webFrontend.json';
 }

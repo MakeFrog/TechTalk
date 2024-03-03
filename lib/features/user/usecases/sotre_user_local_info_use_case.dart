@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:techtalk/core/utils/base/base_use_case.dart';
-import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
-import 'package:techtalk/features/user/repositories/user_repository.dart';
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/user/user.dart';
 
 final class StoreUserLocalInfoUseCase
     extends BaseUseCase<UserEntity, Result<void>> {
   StoreUserLocalInfoUseCase(this._repository);
+
   final UserRepository _repository;
 
   @override

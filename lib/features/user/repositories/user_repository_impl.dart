@@ -1,13 +1,8 @@
 import 'dart:io';
 
-import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skill_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/tech_set_repository.dart';
-import 'package:techtalk/features/user/data_source/local/user_local_data_source.dart';
-import 'package:techtalk/features/user/data_source/remote/models/user_model.dart';
-import 'package:techtalk/features/user/data_source/remote/user_remote_data_source.dart';
-import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
-import 'package:techtalk/features/user/repositories/user_repository.dart';
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/tech_set/tech_set.dart';
+import 'package:techtalk/features/user/user.dart';
 
 final class UserRepositoryImpl implements UserRepository {
   const UserRepositoryImpl(
@@ -64,10 +59,10 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<void>> quitUser(UserEntity user) async {
+  Future<Result<void>> deleteUser(UserEntity user) async {
     try {
       return Result.success(
-        await _userRemoteDataSource.resign(
+        await _userRemoteDataSource.deleteUser(
           UserModel.fromEntity(user),
         ),
       );

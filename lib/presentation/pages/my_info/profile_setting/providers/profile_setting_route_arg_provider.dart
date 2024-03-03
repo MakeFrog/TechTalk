@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
+import 'package:techtalk/features/user/user.dart';
 
 part 'profile_setting_route_arg_provider.g.dart';
 
