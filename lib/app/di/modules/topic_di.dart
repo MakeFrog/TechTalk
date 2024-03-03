@@ -34,14 +34,6 @@ final class TopicDependencyInjection extends FeatureDependencyInjection {
   void useCases() {
     locator
       ..registerFactory(
-        GetTopicsUseCase.new,
-      )
-      ..registerFactory(
-        () => GetCategorizedTopicsUseCase(
-          topicRepository,
-        ),
-      )
-      ..registerFactory(
         () => GetTopicQnasUseCase(
           topicRepository,
         ),
