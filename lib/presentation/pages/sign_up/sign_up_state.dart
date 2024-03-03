@@ -2,31 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
-import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/provider/selected_job_groups_provider.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/searched_skills_provider.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/selected_skills_provider.dart';
-import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_jobs_provider.dart';
 import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_controller.dart';
-import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_topics_provider.dart';
-import 'package:techtalk/presentation/providers/input/nickname_input_provider.dart';
 import 'package:techtalk/presentation/providers/input/skill_text_field_controller_provider.dart';
 import 'package:techtalk/presentation/providers/scroll/selected_job_group_scroll_controller.dart';
 import 'package:techtalk/presentation/providers/scroll/selected_skill_scroll_controller.dart';
+import 'package:techtalk/presentation/providers/user/user_auth_provider.dart';
 
 mixin class SignUpState {
+  ///
+  /// 페이지 컨트롤러
+  ///
   PageController signUpStepController(WidgetRef ref) =>
       ref.watch(signUpStepControllerProvider);
 
-  String? signUpNickname(WidgetRef ref) => ref.watch(nicknameInputProvider);
-
-  String? signUpNicknameValidation(WidgetRef ref) =>
-      ref.watch(nicknameInputProvider);
-
-  List<Job> signUpJobs(WidgetRef ref) => ref.watch(signUpJobsProvider);
-
-  List<TopicEntity> signUpTopics(WidgetRef ref) =>
-      ref.watch(signUpTopicsProvider);
+  ///
+  /// 유저 auth 이름
+  ///
+  String? userDisplayName(WidgetRef ref) =>
+      ref.watch(userAuthProvider)?.displayName;
 
   ///
   /// 선택된 직군
