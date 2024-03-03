@@ -1,11 +1,11 @@
 import 'dart:math';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/helper/list_extension.dart';
 import 'package:techtalk/core/utils/base/base_use_case.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/repositories/enums/interview_type.enum.dart';
 import 'package:techtalk/features/topic/repositories/entities/qna_entity.dart';
 import 'package:techtalk/features/topic/repositories/topic_repository.dart';
 

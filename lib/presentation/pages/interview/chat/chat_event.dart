@@ -106,8 +106,8 @@ mixin class ChatEvent {
         showContentImg: false,
         onRightBtnClicked: () async {
           await reportChatUseCase(
-            chatMessages[index] as FeedbackChatMessageEntity,
-            chatMessages[index + 1] as AnswerChatMessageEntity,
+            chatMessages[index] as FeedbackChatEntity,
+            chatMessages[index + 1] as AnswerChatEntity,
           ).then((value) {
             value.fold(
               onSuccess: (value) {

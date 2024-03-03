@@ -1,10 +1,10 @@
-import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/helper/list_extension.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/utils/result.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data_source/remote/chat_remote_data_source.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_history_collection_entity.dart';
+import 'package:techtalk/features/chat/repositories/enums/interview_type.enum.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 final class ChatRepositoryImpl implements ChatRepository {
@@ -12,33 +12,15 @@ final class ChatRepositoryImpl implements ChatRepository {
 
   final ChatRemoteDataSource _remoteDataSource;
 
-  // List<TopicEntity> _getChatRoomTopics(
-  //   InterviewType type,
-  //   List<String> topicIds,
-  // ) {
-  //   final List<TopicEntity> topics = [];
-  //   switch (type) {
-  //     case InterviewType.singleTopic:
-  //       topics.add(topicRepository.getTopic(topicIds.first).getOrThrow());
-  //     case InterviewType.practical:
-  //       for (final String topicId in topicIds) {
-  //         final topic = topicRepository.getTopic(topicId).getOrThrow();
-  //         topics.add(topic);
-  //       }
-  //   }
-  //
-  //   return topics;
-  // }
-
   @override
   Future<Result<void>> createChatRoom({
     required ChatRoomEntity room,
     required List<ChatQnaEntity> qnas,
-    required List<ChatMessageEntity> messages,
+    required List<BaseChatEntity> messages,
   }) async {
     await _remoteDataSource.createChatRoom(room);
-    await _remoteDataSource.createChatQnas(room.id, qnas: qnas);
-    await _remoteDataSource.createChatMessages(room.id, messages: messages);
+    await _remoteDataSource.createChatQnas(room.id, chatQnas: qnas);
+    await _remoteDataSource.uploadChats(room.id, messages: messages);
 
     final rooms = await switch (room.type) {
       InterviewType.singleTopic => getChatRooms(room.type, room.topics.single),
@@ -67,7 +49,7 @@ final class ChatRepositoryImpl implements ChatRepository {
       final roomModels = await _remoteDataSource.getChatRooms(type, topic);
       final rooms = <ChatRoomEntity>[];
       await Future.forEach(roomModels, (roomModel) async {
-        final messageResponse = await _remoteDataSource.getLastChatMessage(
+        final messageResponse = await _remoteDataSource.getLastChat(
           roomModel.id,
         );
 
@@ -97,13 +79,13 @@ final class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<Result<void>> createChatMessages(
+  Future<Result<void>> uploadChats(
     String roomId, {
-    required List<ChatMessageEntity> messages,
+    required List<BaseChatEntity> messages,
   }) async {
     try {
       return Result.success(
-        await _remoteDataSource.createChatMessages(
+        await _remoteDataSource.uploadChats(
           roomId,
           messages: messages,
         ),
@@ -114,12 +96,11 @@ final class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<Result<ChatHistoryCollectionEntity>> getChatMessageHistory(
+  Future<Result<ChatHistoryCollectionEntity>> getChatHistory(
     String roomId,
   ) async {
     try {
-      final messageModels =
-          await _remoteDataSource.getChatMessageHistory(roomId);
+      final messageModels = await _remoteDataSource.getChatHistory(roomId);
 
       final List<String> qnaInOrder = [];
 
@@ -138,7 +119,7 @@ final class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<Result<List<ChatQnaEntity>>> getChatQnAs(ChatRoomEntity room) async {
+  Future<Result<List<ChatQnaEntity>>> getChatQnas(ChatRoomEntity room) async {
     final roomQnAs = await _remoteDataSource.getChatQnas(room.id);
 
     final qnas = <ChatQnaEntity>[];
@@ -152,20 +133,19 @@ final class ChatRepositoryImpl implements ChatRepository {
           .then((value) => value.getOrThrow());
 
       // 응답 id가 있으면 응답 데이터 조회
-      final AnswerChatMessageEntity? answer;
+      final AnswerChatEntity? answer;
       if (element.messageId != null) {
-        final messageModel = await _remoteDataSource.getChatMessage(
+        final messageModel = await _remoteDataSource.getChat(
           room.id,
           element.messageId!,
         );
-        answer = messageModel.toEntity() as AnswerChatMessageEntity;
+        answer = messageModel.toEntity() as AnswerChatEntity;
       } else {
         answer = null;
       }
 
       qnas.add(
         ChatQnaEntity(
-          id: element.id,
           qna: question,
           message: answer,
         ),
@@ -176,13 +156,13 @@ final class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<Result<void>> reportFeedback(
-    FeedbackChatMessageEntity feedback,
-    AnswerChatMessageEntity answer,
+  Future<Result<void>> uploadChatIssueReport(
+    FeedbackChatEntity feedback,
+    AnswerChatEntity answer,
   ) async {
     try {
       return Result.success(
-        await _remoteDataSource.createReport(
+        await _remoteDataSource.uploadChatIssueReport(
           feedback,
           answer,
         ),

@@ -23,7 +23,7 @@ class WrongAnswerModel {
   });
 
   factory WrongAnswerModel.fromEntity(ChatQnaEntity entity) => WrongAnswerModel(
-        id: entity.id,
+        id: entity.qna.id,
         updatedAt: DateTime.now(),
         userAnswer: entity.message!.message.value,
         wrongAnswerCount: 1,

@@ -7,9 +7,9 @@ class ReportChatUseCase {
   final ChatRepository _repository;
 
   Future<Result<void>> call(
-    FeedbackChatMessageEntity feedback,
-    AnswerChatMessageEntity answer,
+    FeedbackChatEntity feedback,
+    AnswerChatEntity answer,
   ) async {
-    return _repository.reportFeedback(feedback, answer);
+    return _repository.uploadChatIssueReport(feedback, answer);
   }
 }

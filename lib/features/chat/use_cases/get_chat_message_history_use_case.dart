@@ -11,6 +11,6 @@ class GetChatMessageHistoryUseCase
 
   @override
   Future<Result<ChatHistoryCollectionEntity>> call(String roomId) async {
-    return _repository.getChatMessageHistory(roomId);
+    return _repository.getChatHistory(roomId);
   }
 }

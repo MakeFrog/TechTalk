@@ -5,10 +5,6 @@ class ChatProgressInfoEntity {
 
   int get completedQuestionCount => correctAnswerCount + incorrectAnswerCount;
 
-  // ChatProgress get progressState {
-  //
-  // }
-
   factory ChatProgressInfoEntity.onInitial({
     required int totalQuestionCount,
   }) =>
@@ -60,6 +56,4 @@ class ChatProgressInfoEntity {
       incorrectAnswerCount: incorrectAnswerCount ?? this.incorrectAnswerCount,
     );
   }
-
-//</editor-fold>
 }

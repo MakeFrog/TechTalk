@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/core/constants/interview_type.enum.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/repositories/enums/interview_type.enum.dart';
 
 part 'practical_chat_room_list_provider.g.dart';
 

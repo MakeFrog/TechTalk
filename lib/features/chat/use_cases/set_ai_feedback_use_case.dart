@@ -8,16 +8,12 @@ import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/core/utils/base/base_no_future_use_case.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
-class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
-    GetQuestionFeedbackParam, Result<BehaviorSubject<String>>> {
-  // ##########  State  ##############
-
+class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
+    Result<BehaviorSubject<String>>> {
   ///
   /// 피드백 진행 상태
   ///
   FeedbackProgress state = FeedbackProgress.init;
-
-  // ##########  Intent  ##############
 
   ///
   /// 면접 질문에 대한 유저의 응답의 정답여부를 확인
@@ -138,7 +134,7 @@ class GetAnswerFeedbackUseCase extends BaseNoFutureUseCase<
   }
 }
 
-/// [GetAnswerFeedbackUseCase] 파라미터
+/// [SetAiFeedbackUseCase] 파라미터
 typedef GetQuestionFeedbackParam = ({
   ChatQnaEntity qna,
   String question,

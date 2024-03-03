@@ -8,7 +8,7 @@ final class CreateChatRoomUseCase {
   Future<Result<void>> call({
     required ChatRoomEntity room,
     required List<ChatQnaEntity> qnas,
-    required List<ChatMessageEntity> messages,
+    required List<BaseChatEntity> messages,
   }) async {
     return _chatRepository.createChatRoom(
       room: room,

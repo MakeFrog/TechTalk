@@ -1,8 +1,8 @@
 import 'package:rxdart/subjects.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
-class FeedbackChatMessageEntity extends ChatMessageEntity {
-  FeedbackChatMessageEntity({
+class FeedbackChatEntity extends BaseChatEntity {
+  FeedbackChatEntity({
     super.id,
     required super.message,
     super.isStreamApplied = true,
@@ -12,12 +12,12 @@ class FeedbackChatMessageEntity extends ChatMessageEntity {
           timestamp: timestamp ?? DateTime.now(),
         );
 
-  factory FeedbackChatMessageEntity.createStatic({
+  factory FeedbackChatEntity.createStatic({
     String? id,
     required String message,
     required DateTime timestamp,
   }) =>
-      FeedbackChatMessageEntity(
+      FeedbackChatEntity(
         id: id,
         message: BehaviorSubject.seeded(message)..close(),
         timestamp: timestamp,

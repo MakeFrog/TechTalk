@@ -2,44 +2,34 @@ import 'package:rxdart/subjects.dart';
 import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
-class QuestionChatMessageEntity extends ChatMessageEntity {
-  final String qnaId;
-
-  QuestionChatMessageEntity({
+class GuideChatEntity extends BaseChatEntity {
+  GuideChatEntity({
     super.id,
-    required this.qnaId,
     required super.message,
     super.isStreamApplied = true,
     DateTime? timestamp,
   }) : super(
-          type: ChatType.question,
+          type: ChatType.guide,
           timestamp: timestamp ?? DateTime.now(),
         );
 
-  ///
-  /// 스트림 상태 적용 X (정적)
-  ///
-  factory QuestionChatMessageEntity.createStatic({
+  factory GuideChatEntity.createStatic({
     String? id,
-    required String qnaId,
     required String message,
     required DateTime timestamp,
   }) =>
-      QuestionChatMessageEntity(
+      GuideChatEntity(
         id: id,
-        qnaId: qnaId,
         message: BehaviorSubject.seeded(message)..close(),
-        timestamp: timestamp,
         isStreamApplied: false,
+        timestamp: timestamp,
       );
 
-  QuestionChatMessageEntity overwriteToStream() {
-    return QuestionChatMessageEntity(
+  GuideChatEntity overwriteToStream() {
+    return GuideChatEntity(
       id: id,
       message: message.value.convertToStreamText,
       timestamp: timestamp,
-      isStreamApplied: true,
-      qnaId: qnaId,
     );
   }
 }

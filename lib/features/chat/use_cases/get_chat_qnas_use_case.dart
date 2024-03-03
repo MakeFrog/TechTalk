@@ -6,6 +6,6 @@ final class GetChatQnasUseCase {
 
   final ChatRepository _chatRepository;
   Future<Result<List<ChatQnaEntity>>> call(ChatRoomEntity room) async {
-    return _chatRepository.getChatQnAs(room);
+    return _chatRepository.getChatQnas(room);
   }
 }

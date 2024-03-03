@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/core/helper/date_time_extension.dart';
 import 'package:techtalk/core/helper/string_extension.dart';
@@ -34,6 +36,7 @@ class TopicRepositoryImpl implements TopicRepository {
     try {
       return Result.success(_cachedTopicCategories!);
     } on Exception catch (e) {
+      log('getTopicCategories : $e');
       return Result.failure(const TopicInitialFailed());
     }
   }
@@ -60,6 +63,7 @@ class TopicRepositoryImpl implements TopicRepository {
         );
       }
     } on Exception catch (e) {
+      log('getTopicQnas : $e');
       return Result.failure(
         NoTopicQuestionException(topicId),
       );
@@ -86,6 +90,7 @@ class TopicRepositoryImpl implements TopicRepository {
         );
       }
     } on Exception catch (e) {
+      log('getTopicQna : $e');
       return Result.failure(
         NoTopicQuestionException(topicId),
       );
@@ -97,10 +102,11 @@ class TopicRepositoryImpl implements TopicRepository {
     try {
       await _remoteDataSource.updateWrongAnswer(
         wrongAnswer: WrongAnswerModel.fromEntity(chatQna),
-        topicId: chatQna.id.getFirstPartOfSpliited,
+        topicId: chatQna.qna.id.getFirstPartOfSpliited,
       );
       return Result.success(null);
     } on Exception catch (e) {
+      log('updateWrongAnswer : $e');
       return Result.failure(const WrongAnswerUpdateFailedException());
     }
   }
@@ -117,6 +123,7 @@ class TopicRepositoryImpl implements TopicRepository {
 
       return Result.success(await Future.wait(futureResults));
     } on Exception catch (e) {
+      log('getWrongAnswers : $e');
       return Result.failure(const WrongAnswerUpdateFailedException());
     }
   }
@@ -127,6 +134,7 @@ class TopicRepositoryImpl implements TopicRepository {
       final response = await _remoteDataSource.deleteUserWrongAnswers();
       return Result.success(response);
     } on Exception catch (e) {
+      log('deleteUserWrongAnswers : $e');
       return Result.failure(e);
     }
   }
