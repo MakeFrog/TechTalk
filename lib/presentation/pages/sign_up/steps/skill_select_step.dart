@@ -18,7 +18,7 @@ class SkillSelectStep extends HookConsumerWidget with SignUpState, SignUpEvent {
     return SkillSelectionScaffold(
       introTextView: const SignUpStepIntroMessage(
         title: '준비하고 있는 기술면접\n주제를 알려주세요!',
-        subTitle: '영어로 검색해주세요',
+        subTitle: '영어로 검색해 주세요.',
       ),
       selectedSkillSlider: const _SelectedListViewSlider(),
       searchBar: const _SearchBar(),

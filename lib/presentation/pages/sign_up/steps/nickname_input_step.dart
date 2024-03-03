@@ -22,7 +22,7 @@ class NicknameInputStep extends StatelessWidget {
         useAutomaticKeepAlive();
         return _Scaffold(
           introText: const SignUpStepIntroMessage(
-            title: '안녕하세요. 테크톡으로\n면접을 준비해볼까요?',
+            title: '안녕하세요. 테크톡으로\n면접을 준비해 볼까요?',
             subTitle: '먼저 사용할 닉네임이 필요해요.',
           ),
           searchBar: _SearchBar(formKey),

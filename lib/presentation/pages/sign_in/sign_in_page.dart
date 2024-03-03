@@ -42,7 +42,7 @@ class _Body extends ConsumerWidget with SignInEvent {
             const Gap(8),
             Center(
               child: Text(
-                'AI 면접관과 톡톡!',
+                'AI 면접관과 준비하는 개발 면접',
                 style: AppTextStyle.pretendardBoldStyle(24, 33),
               ),
             ),
