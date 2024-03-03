@@ -21,24 +21,21 @@ dependencies:
   cupertino_will_pop_scope: ^1.2.1  #pop scope (스와이프 백 제스쳐 지원)
   flutter_svg: ^2.0.5 # SVG 아이콘
   flutter_easyloading: ^3.0.5 # 로딩 UI 처리 관련
-  fluttertoast: ^8.2.2
+  fluttertoast: ^8.2.2 # 토스트
   flutter_chat_bubble: ^2.0.2 # 말풍선
-  font_awesome_flutter: ^10.5.0
-  flutter_hooks: ^0.20.1
-  smooth_page_indicator: ^1.1.0
-  animations: ^2.0.8
-  flutter_animate: ^4.2.0+1
-  cached_network_image: ^3.3.0
+  font_awesome_flutter: ^10.5.0 # 아이콘
+  smooth_page_indicator: ^1.1.0 # pageview 인디케이터
+  flutter_animate: ^4.2.0+1 # 간편 애니메이션 메소드 지원
+  cached_network_image: ^3.3.0 # 네트워크 이미지 캐싱
   defer_pointer: ^0.0.2 # Overflow 영역에도 터치를 보장할 수 있도록 도와주는 패키지
+  gap: ^3.0.1 # 간격 위젯
 
   # 상태관리
   provider: ^6.0.5
   hooks_riverpod: ^2.4.0
   riverpod_annotation: ^2.1.5
   rxdart: ^0.27.7
-
-  # Auth
-  google_sign_in: ^6.2.1
+  flutter_hooks: ^0.20.1
 
   # 라우팅
   go_router: ^13.1.0
@@ -53,50 +50,45 @@ dependencies:
   firebase_storage: ^11.0.14
   firebase_crashlytics: ^3.0.15
   firebase_analytics: ^10.8.7
+
+  # Auth
   sign_in_with_apple: ^5.0.0
-#  firebase_core: ^2.4.1
-#  firebase_auth: ^4.15.3
-#
-#  cloud_firestore: ^4.13.6
-#  firebase_storage: ^11.0.14
+  google_sign_in: ^6.2.1
 
   # 네트워크
   dio: ^5.0.3
-  retrofit: ^4.0.1
+
 
   # 로컬 데이터베이스
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   path_provider: ^2.1.1
 
-  # Utils
-  crypto: ^3.0.3
-  async: ^2.11.0
-  flutter_dotenv: ^5.0.2
-  intl: ^0.18.1
-  change_app_package_name: ^1.1.0
-  freezed_annotation: ^2.4.1
-  copy_with_extension: ^5.0.4 # Entity CopyWith 메소드 Generator
+  # 모델링
   json_serializable: ^6.7.1
   json_annotation: ^4.8.1
-  logger: ^2.0.2+1
-  uuid: ^4.1.0
-  image_picker: ^1.0.5
+
+
+  # Utils
+  crypto: ^3.0.3 # 해슁
+  async: ^2.11.0 # 비동기 처리
+  flutter_dotenv: ^5.0.2 # dotnev
+  intl: ^0.18.1 # 포맷팅
+  uuid: ^4.1.0 # uuid 제너레이터
+  image_picker: ^1.0.5 # 갤러리 접근
   single_import_generator: ^1.0.0 # barrel file generator
   lorem_ipsum_generator: ^0.0.1 # 랜던 텍스트 generator(삭제 예정)
   app_settings: ^5.1.1 # Device Setting Route
   korean_profanity_filter: ^1.0.0 # 비속어 욕설 필터링
   icons_launcher: ^2.1.7 # 앱 아이콘
   in_app_review: ^2.0.8 # 인앱 리뷰
-
+  url_launcher: ^6.2.5 # url 런쳐
+  connectivity_plus: ^5.0.2 # 네트워크 연결 상태 관리
 
   # 앱 정보
   package_info_plus: ^5.0.1 # 현재 앱 버전 정보
   pub_semver: ^2.1.4 # 주부수 버전 비교 연산
-  collection: ^1.17.1
-  gap: ^3.0.1
-  connectivity_plus: ^5.0.2 # 네트워크 연결 상태 관리
-  url_launcher: ^6.2.5
+
 
 dev_dependencies:
   flutter_lints: ^2.0.1
@@ -107,7 +99,6 @@ dev_dependencies:
   custom_lint: ^0.5.3
   riverpod_lint: ^2.1.0
   retrofit_generator: ^7.0.8
-  copy_with_extension_gen: ^5.0.4 # Entity CopyWith 메소드 Generator
   freezed: ^2.4.3
   analyzer: ^6.4.1
   hive_generator: ^2.0.1
@@ -120,13 +111,11 @@ flutter:
     - assets/
     - assets/fonts/
     - assets/fonts/pretendard/
-    - assets/fonts/staatliches/
     - assets/icons/
     - assets/images/
-    - assets/logo/
     - assets/character/
     - assets/json/
-    - assets/topics/
+
 
 
   fonts:
@@ -140,7 +129,3 @@ flutter:
           weight: 600
         - asset: assets/fonts/pretendard/Pretendard-Bold.otf
           weight: 800
-    - family: staatliches
-      fonts:
-        - asset: assets/fonts/staatliches/Staatliches-Regular.ttf
-          weight: 400

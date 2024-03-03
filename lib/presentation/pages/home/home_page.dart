@@ -24,19 +24,6 @@ class HomePage extends BasePage with HomeState {
           physics: const ScrollPhysics(),
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           children: const [
-            // IconButton(
-            //   onPressed: () {
-            //     try {
-            //       ref.watch(detectNetworkConnectivityProvider);
-            //       // topicRemoteDataSource.removeQuestions('flutter');
-            //       // topicRemoteDataSource.addQuestions('flutter');
-            //       print('성공');
-            //     } catch (e) {
-            //       print('실패');
-            //     }
-            //   },
-            //   icon: Icon(Icons.ac_unit),
-            // ),
             CheerUpMessageCard(),
             Gap(16),
             PracticalInterviewCard(),
@@ -66,7 +53,7 @@ class HomePage extends BasePage with HomeState {
       AppBar(
         backgroundColor: AppColor.of.background1,
         title: SvgPicture.asset(
-          Assets.logoTechTalkLogo,
+          Assets.iconsTechTalkLogo,
           height: 26,
         ),
       );

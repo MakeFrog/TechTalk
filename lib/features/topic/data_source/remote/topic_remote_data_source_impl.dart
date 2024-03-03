@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/topic/data_source/remote/models/topics_ref.dart';
 import 'package:techtalk/features/topic/data_source/remote/models/wrong_answer_model.dart';
@@ -88,39 +85,6 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
     return result;
   }
 
-  ///임시
-  Future<void> removeQuestions(String topicId) async {
-    final ref = FirestoreTopicQuestionsRef.collection(topicId);
-
-    // Get all documents in the subcollection
-    QuerySnapshot querySnapshot = await ref.get();
-
-    // Delete each document in the subcollection
-    for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
-      await ref.doc(documentSnapshot.id).delete();
-    }
-  }
-
-  @override
-  Future<void> addQuestions(String topicId) async {
-    // final ref = FirestoreTopicQuestionsRef.collection(topicId);
-    // JSON 파일 읽기
-    String jsonString =
-        await rootBundle.loadString('assets/topics/$topicId.json');
-
-    List<dynamic> jsonData = json.decode(jsonString);
-
-    for (var e in jsonData) {
-      final ref = FirebaseFirestore.instance
-          .collection('Topics')
-          .doc(topicId)
-          .collection('Questions')
-          .doc(e['id']);
-
-      await ref.set(e);
-    }
-  }
-
   @override
   Future<void> deleteUserWrongAnswers() async {
     for (var topic in StoredTopics.list) {
@@ -137,3 +101,37 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
     }
   }
 }
+
+///임시
+// Future<void> removeQuestions(String topicId) async {
+//   final ref = FirestoreTopicQuestionsRef.collection(topicId);
+//
+//   // Get all documents in the subcollection
+//   QuerySnapshot querySnapshot = await ref.get();
+//
+//   // Delete each document in the subcollection
+//   for (DocumentSnapshot documentSnapshot in querySnapshot.docs) {
+//     await ref.doc(documentSnapshot.id).delete();
+//   }
+// }
+//
+// @override
+// Future<void> addQuestions(String topicId) async {
+//   // final ref = FirestoreTopicQuestionsRef.collection(topicId);
+//   // JSON 파일 읽기
+//   String jsonString =
+//       await rootBundle.loadString('assets/topics/$topicId.json');
+//
+//   List<dynamic> jsonData = json.decode(jsonString);
+//
+//   for (var e in jsonData) {
+//     final ref = FirebaseFirestore.instance
+//         .collection('Topics')
+//         .doc(topicId)
+//         .collection('Questions')
+//         .doc(e['id']);
+//
+//     await ref.set(e);
+//   }
+// }
+//
