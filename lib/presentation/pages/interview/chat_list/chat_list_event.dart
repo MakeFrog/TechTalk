@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/repositories/enums/interview_type.enum.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 mixin class ChatListEvent {
@@ -32,6 +31,9 @@ mixin class ChatListEvent {
     route.push(ref.context);
   }
 
+  ///
+  /// 면접 주제 페이지로 이동
+  ///
   void routeToTopicSelectPage(WidgetRef ref) {
     InterviewTopicSelectRoute(
       InterviewType.practical,

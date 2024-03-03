@@ -100,7 +100,6 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
   }
 }
 
-///임시
 // Future<void> removeQuestions(String topicId) async {
 //   final ref = FirestoreTopicQuestionsRef.collection(topicId);
 //
@@ -118,7 +117,7 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
 //   // final ref = FirestoreTopicQuestionsRef.collection(topicId);
 //   // JSON 파일 읽기
 //   String jsonString =
-//       await rootBundle.loadString('assets/topics/$topicId.json');
+//   await rootBundle.loadString('assets/json/$topicId.json');
 //
 //   List<dynamic> jsonData = json.decode(jsonString);
 //
@@ -132,4 +131,3 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
 //     await ref.set(e);
 //   }
 // }
-//

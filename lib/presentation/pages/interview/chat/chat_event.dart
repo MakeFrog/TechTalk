@@ -43,6 +43,9 @@ mixin class ChatEvent {
         .proceedInterviewStep(message);
   }
 
+  ///
+  /// 채팅 전송이 불가능할 상태일 때 전송 버튼이 클릭 되었을 때
+  ///
   void onChatFieldSubmittedOnWaitingState(InterviewProgress progressState) {
     unawaited(HapticFeedback.vibrate());
     late String message;
@@ -61,7 +64,9 @@ mixin class ChatEvent {
     return SnackBarService.showSnackBar(message);
   }
 
+  ///
   /// 앱바 뒤로 가기 버튼이 클릭 되었을 때
+  ///
   void onAppbarBackBtnTapped(WidgetRef ref) {
     final room = ref.read(selectedChatRoomProvider);
 
@@ -88,6 +93,9 @@ mixin class ChatEvent {
     }
   }
 
+  ///
+  /// 리포트 버튼이 클릭 되었을 때
+  ///
   Future<void> onReportBtnTapped(
     WidgetRef ref, {
     required int index,
