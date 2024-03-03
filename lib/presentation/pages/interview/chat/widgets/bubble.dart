@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
+import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/core/theme/extension/app_color.dart';
 import 'package:techtalk/core/theme/extension/app_text_style.dart';
 import 'package:techtalk/features/chat/chat.dart';
@@ -60,7 +61,7 @@ class Bubble extends StatelessWidget {
                       bottom: 8,
                     )
                   : null,
-              constraints: const BoxConstraints(maxWidth: 250),
+              constraints: BoxConstraints(maxWidth: AppSize.to.ratioWidth(250)),
               child: Builder(
                 builder: (BuildContext context) {
                   return Container(
@@ -160,7 +161,7 @@ class Bubble extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Container(
-              constraints: const BoxConstraints(maxWidth: 250),
+              constraints: BoxConstraints(maxWidth: AppSize.to.ratioWidth(250)),
               decoration: BoxDecoration(
                 color: AppColor.of.background1,
                 borderRadius: radiusOnCase,
