@@ -21,7 +21,7 @@ final class TechSetLocalDataSourceImpl implements TechSetLocalDataSource {
 
     jsonData.forEach((key, value) {
       convertedData[key] = List<Map<String, String>>.from(
-        value.map(Map<String, String>.from),
+        value.map((item) => Map<String, String>.from(item)),
       );
     });
 

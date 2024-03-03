@@ -64,10 +64,10 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<void>> quitUser(UserEntity user) async {
+  Future<Result<void>> deleteUser(UserEntity user) async {
     try {
       return Result.success(
-        await _userRemoteDataSource.resign(
+        await _userRemoteDataSource.deleteUser(
           UserModel.fromEntity(user),
         ),
       );

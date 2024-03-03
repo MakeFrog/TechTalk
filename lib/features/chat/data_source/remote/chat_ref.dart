@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/features/chat/data_source/remote/models/chat_model.dart';
 import 'package:techtalk/features/chat/data_source/remote/models/chat_qna_model.dart';
 import 'package:techtalk/features/chat/data_source/remote/models/chat_room_model.dart';
-import 'package:techtalk/features/user/data_source/remote/models/users_ref.dart';
+import 'package:techtalk/features/user/data_source/remote/users_ref.dart';
 
 abstract class FirestoreChatRoomRef {
   static const String name = 'Chats';

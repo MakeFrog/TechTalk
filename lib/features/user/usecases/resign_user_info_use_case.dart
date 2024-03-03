@@ -17,6 +17,6 @@ final class ResignUserInfoUseCase
     final topicRes = await _topicRepository.deleteUserWrongAnswers();
     topicRes.getOrThrow();
 
-    return _userRepository.quitUser(request);
+    return _userRepository.deleteUser(request);
   }
 }

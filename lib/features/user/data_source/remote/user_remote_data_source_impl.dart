@@ -3,21 +3,20 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:techtalk/core/models/exception/custom_exception.dart';
-import 'package:techtalk/features/user/data_source/remote/models/fire_storage_user_ref.dart';
+import 'package:techtalk/features/user/data_source/remote/fire_storage_user_ref.dart';
 import 'package:techtalk/features/user/data_source/remote/models/user_model.dart';
-import 'package:techtalk/features/user/data_source/remote/models/users_ref.dart';
+import 'package:techtalk/features/user/data_source/remote/users_ref.dart';
 import 'package:techtalk/features/user/user.dart';
 
 final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   Future<bool> isExistNickname(
     String nickname,
   ) async {
-    final nicknameCount = await FirestoreUsersRef.collection()
+    final docRef = await FirestoreUsersRef.collection()
         .where('nickname', isEqualTo: nickname)
-        .count()
         .get();
 
-    return (nicknameCount.count ?? 0) > 0;
+    return docRef.docs.isNotEmpty;
   }
 
   @override
@@ -61,7 +60,7 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }
 
   @override
-  Future<void> resign(UserModel user) async {
+  Future<void> deleteUser(UserModel user) async {
     final prevData = await FirestoreUsersRef.doc().get();
 
     await FirestoreUsersRef.doc('WITHDRAWN-${user.uid}').set(prevData.data()!);
