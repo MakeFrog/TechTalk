@@ -33,9 +33,12 @@ class ExceptionIndicator extends StatelessWidget {
             TextSpan(
               children: <TextSpan>[
                 if (errorCode != null) TextSpan(text: '[${errorCode!}] '),
-                TextSpan(text: subTitle),
+                TextSpan(
+                  text: subTitle,
+                ),
               ],
             ),
+            textAlign: TextAlign.center,
           ),
           const Gap(16),
           SvgPicture.asset(
