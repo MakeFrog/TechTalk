@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/tech_set/data_source/remote/models/job_model.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skill_collection_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skill_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/enums/job.enum.dart';
 
 abstract interface class TechSetRepository {
+  /// 개발 직군 리스트 호출
   List<Job> getJobs();
 
   /// 스킬 리스트 초기화

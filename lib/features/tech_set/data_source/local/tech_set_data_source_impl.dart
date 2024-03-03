@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:techtalk/core/core.dart';
-import 'package:techtalk/features/tech_set/data_source/remote/models/job_model.dart';
+import 'package:techtalk/features/tech_set/repositories/enums/job.enum.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 final class TechSetLocalDataSourceImpl implements TechSetLocalDataSource {
@@ -21,7 +21,7 @@ final class TechSetLocalDataSourceImpl implements TechSetLocalDataSource {
 
     jsonData.forEach((key, value) {
       convertedData[key] = List<Map<String, String>>.from(
-        value.map((item) => Map<String, String>.from(item)),
+        value.map(Map<String, String>.from),
       );
     });
 

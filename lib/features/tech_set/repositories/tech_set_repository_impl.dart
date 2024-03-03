@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:techtalk/core/models/exception/custom_exception.dart';
 import 'package:techtalk/core/utils/result.dart';
-import 'package:techtalk/features/tech_set/data_source/remote/models/job_model.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skill_collection_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skill_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/enums/job.enum.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 final class TechSetRepositoryImpl implements TechSetRepository {
