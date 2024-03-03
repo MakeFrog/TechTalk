@@ -27,7 +27,7 @@ final class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Result<void>> signOut() async {
+  Future<Result<void>> signOutOauth() async {
     try {
       return Result.success(
         await _authRemoteDataSource.signOut(),
