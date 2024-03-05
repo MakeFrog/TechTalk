@@ -62,5 +62,4 @@ mixin class SignUpEvent {
       await EasyLoading.dismiss();
     }
   }
-
 }

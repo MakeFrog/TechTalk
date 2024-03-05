@@ -48,7 +48,6 @@ class DetectNetworkConnectivity extends _$DetectNetworkConnectivity {
             },
           ),
         );
-        SnackBarService.showSnackBar('네트워크 상태를 추적해주세요');
       }
     });
   }

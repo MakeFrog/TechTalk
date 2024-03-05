@@ -90,6 +90,11 @@ class UserInfo extends _$UserInfo {
     }
   }
 
+  void increaseCompletedInterviewCount(int count) {
+    state =
+        AsyncData(state.requireValue!.copyWith(completedInterviewCount: count));
+  }
+
   ///
   /// 실전 면접 기록 존재 여부 값을 로컬에 저장
   ///

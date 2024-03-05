@@ -38,6 +38,7 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
     await FirestoreUsersRef.doc(uid).update({
       FirestoreUsersRef.lastLoginDateField: FieldValue.serverTimestamp(),
+      FirestoreUsersRef.loginCountField: FieldValue.increment(1),
     });
 
     return snapshot.data()!;
@@ -52,7 +53,7 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     final userModel = UserModel.fromEntity(user);
 
     await FirestoreUsersRef.doc().update(
-      userModel.toJson(),
+      userModel.updatedFieldToJson(),
     );
   }
 

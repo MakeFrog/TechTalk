@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/auth/auth.dart';
-import 'package:techtalk/features/auth/repositories/entities/user_account_provider.enum.dart';
 
 part 'user_auth_provider.g.dart';
 
@@ -24,7 +23,7 @@ class UserAuth extends _$UserAuth {
         state = value.user;
       },
       onFailure: (e) {
-        log('$e');
+        log('에임 $e');
       },
     );
   }

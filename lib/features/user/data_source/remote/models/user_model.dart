@@ -10,6 +10,7 @@ class UserModel {
   UserModel({
     required this.uid,
     required this.signUpDate,
+    required this.lastLoginDate,
     this.loginCount,
     this.email,
     this.profileImgUrl,
@@ -18,8 +19,7 @@ class UserModel {
     this.recordedTopicIds,
     this.completedInterviewCount,
     this.techSkills,
-    DateTime? lastLoginDate,
-  }) : lastLoginDate = DateTime.now();
+  });
 
   /// 유저 UID
   final String uid;
@@ -66,6 +66,8 @@ class UserModel {
       techSkills: entity.skills.map((e) => e.id).toList(),
       email: entity.email,
       signUpDate: entity.signUpDate,
+      lastLoginDate: entity.lastLoginDate,
+      completedInterviewCount: entity.completedInterviewCount,
     );
   }
 
@@ -80,4 +82,13 @@ class UserModel {
   }
 
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
+
+  Map<String, dynamic> updatedFieldToJson() => {
+        'profile_img_url': profileImgUrl,
+        'nickname': nickname,
+        'job_group_ids': jobGroupIds,
+        'tech_skills': techSkills,
+        'recorded_topic_ids': recordedTopicIds,
+        'completed_interview_count': completedInterviewCount,
+      };
 }

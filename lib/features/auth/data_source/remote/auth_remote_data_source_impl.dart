@@ -56,6 +56,7 @@ final class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       return _firebaseAuth.signInWithCredential(credential);
     } catch (error) {
+      print('아지랑이: ${error}');
       throw Exception('google sign in canceled');
     }
   }

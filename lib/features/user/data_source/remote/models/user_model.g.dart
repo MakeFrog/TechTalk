@@ -10,6 +10,8 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       uid: json['uid'] as String,
       signUpDate: const TimeStampConverter()
           .fromJson(json['sign_up_date'] as Timestamp),
+      lastLoginDate: const TimeStampConverter()
+          .fromJson(json['last_login_date'] as Timestamp),
       loginCount: json['login_count'] as int?,
       email: json['email'] as String?,
       profileImgUrl: json['profile_img_url'] as String?,
@@ -24,8 +26,6 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       techSkills: (json['tech_skills'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
-      lastLoginDate: _$JsonConverterFromJson<Timestamp, DateTime>(
-          json['last_login_date'], const TimeStampConverter().fromJson),
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -42,9 +42,3 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'last_login_date':
           const TimeStampConverter().toJson(instance.lastLoginDate),
     };
-
-Value? _$JsonConverterFromJson<Json, Value>(
-  Object? json,
-  Value? Function(Json json) fromJson,
-) =>
-    json == null ? null : fromJson(json as Json);

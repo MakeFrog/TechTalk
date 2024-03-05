@@ -61,7 +61,10 @@ class _SearchBar extends ConsumerWidget with SignUpState, SignUpEvent {
           hintText: '닉네임을 입력해 주세요',
           errorStyle: AppTextStyle.alert2.copyWith(),
         ),
-        onClear: () => onNicknameFieldClear(ref),
+        onClear: () {
+          controller.clear();
+          onNicknameFieldClear(ref);
+        },
         onChanged: (value) => onNicknameFieldChanged(
           ref,
           input: value,

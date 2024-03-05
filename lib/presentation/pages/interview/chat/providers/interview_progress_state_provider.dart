@@ -104,6 +104,10 @@ class InterviewProgressState extends _$InterviewProgressState {
     unawaited(
       response.fold(
         onSuccess: (increasedCount) async {
+          print('증가된 카운트 : ${increasedCount}');
+          ref
+              .read(userInfoProvider.notifier)
+              .increaseCompletedInterviewCount(increasedCount);
           if (ref
               .read(userInfoProvider)
               .requireValue!

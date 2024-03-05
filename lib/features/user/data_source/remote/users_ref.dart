@@ -6,6 +6,7 @@ abstract class FirestoreUsersRef {
   static const String name = 'Users';
   static const String subCollectionName = 'Chats';
   static const String lastLoginDateField = 'last_login_date';
+  static const String loginCountField = 'login_count';
   static const String completedInterviewCountField =
       'completed_interview_count';
   static String get _userUid => FirebaseAuth.instance.currentUser!.uid;
