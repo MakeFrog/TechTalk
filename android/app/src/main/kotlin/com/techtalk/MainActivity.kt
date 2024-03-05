@@ -1,4 +1,4 @@
-package com.techtalk
+package com.techtalk.ai
 
 import io.flutter.embedding.android.FlutterActivity
 

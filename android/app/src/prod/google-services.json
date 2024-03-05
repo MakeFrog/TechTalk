@@ -57,6 +57,66 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:680296657690:android:d95abb26097ee96283b2a3",
+        "android_client_info": {
+          "package_name": "com.techtalk.ai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "680296657690-96l7tuedipajr5bl6gqab891d5bergcr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techtalk.ai",
+            "certificate_hash": "3c0e8650ad48d501202192f7adf67a8e3f17a726"
+          }
+        },
+        {
+          "client_id": "680296657690-falghd3innaau878dqh05maptseiu7t0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techtalk.ai",
+            "certificate_hash": "77986d017edc380530787a5ba5e6439036b6fcd8"
+          }
+        },
+        {
+          "client_id": "680296657690-gf25fr0gpqp3b6jccfi2nsu4tje4ttsd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techtalk.ai",
+            "certificate_hash": "5bc69b22590eaac27328581f5c9bbbc7922ccaf8"
+          }
+        },
+        {
+          "client_id": "680296657690-ci97ant29vucvg7ffh4ocsq1vo8ki2hp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkdyfM52GUctCRly8NtSjFoqNEkmUl_Rk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "680296657690-ci97ant29vucvg7ffh4ocsq1vo8ki2hp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "680296657690-76j1j7dh9526444md9ngqjn0u7fkuf2d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.techtalkkk"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
