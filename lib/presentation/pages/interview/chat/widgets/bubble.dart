@@ -21,7 +21,7 @@ class Bubble extends StatelessWidget {
   final BaseChatEntity chat;
 
   /// 아바타
-  final InterviewerEntity interviewer;
+  final Interviewer interviewer;
 
   /// '받은' 채팅중 가장 최신 상태 여부 (문제 섹션 단위)
   final bool isLatestReceivedChatInEachSection;

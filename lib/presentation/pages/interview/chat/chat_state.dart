@@ -18,7 +18,7 @@ mixin class ChatState {
   ///
   /// 면접과 정보
   ///
-  InterviewerEntity interviewer(WidgetRef ref) =>
+  Interviewer interviewer(WidgetRef ref) =>
       ref.read(selectedChatRoomProvider).interviewer;
 
   ///

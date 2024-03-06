@@ -6,7 +6,7 @@ import 'package:techtalk/features/topic/topic.dart';
 class ChatRoomEntity {
   final InterviewType type;
   final String id;
-  final InterviewerEntity interviewer;
+  final Interviewer interviewer;
   final List<TopicEntity> topics;
   final ChatProgressInfoEntity progressInfo;
   final String? lastChatMessage;
@@ -70,7 +70,7 @@ class ChatRoomEntity {
       isTemporary: true,
       type: type,
       id: StringGenerator.generateRandomString(),
-      interviewer: InterviewerEntity.getRandomInterviewer(),
+      interviewer: Interviewer.getRandomInterviewer(),
       topics: topics,
       progressInfo: ChatProgressInfoEntity.onInitial(
         totalQuestionCount: questionCount,
@@ -95,7 +95,7 @@ class ChatRoomEntity {
     return ChatRoomEntity(
       type: roomModel.type,
       id: roomModel.id,
-      interviewer: InterviewerEntity.getAvatarInfoById(roomModel.interviewerId),
+      interviewer: Interviewer.getAvatarInfoById(roomModel.interviewerId),
       topics: topics,
       progressInfo: ChatProgressInfoEntity(
         totalQuestionCount: roomModel.totalQuestionCount,
@@ -146,7 +146,7 @@ class ChatRoomEntity {
 
   ChatRoomEntity copyWith({
     String? id,
-    InterviewerEntity? interviewer,
+    Interviewer? interviewer,
     List<TopicEntity>? topics,
     ChatProgressInfoEntity? progressInfo,
     String? lastChatMessage,
