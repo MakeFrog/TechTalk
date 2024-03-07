@@ -92,7 +92,7 @@ class SetEntryFlowUseCase extends BaseNoParamUseCase<Result<void>> {
           } else if (Platform.isAndroid) {
             await launchUrl(
               Uri.parse(
-                'https://play.google.com/store/apps/details?id=com.techtalk',
+                'https://play.google.com/store/apps/details?id=com.techtalk.ai',
               ),
               mode: LaunchMode.externalApplication,
             );
