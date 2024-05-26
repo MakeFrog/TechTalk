@@ -101,7 +101,7 @@ class Bubble extends StatelessWidget {
 
                                   return Text(
                                     snapshot.requireData,
-                                    style: AppTextStyle.alert2,
+                                    style: AppTextStyle.body2,
                                   );
                                 },
                               );
@@ -111,7 +111,7 @@ class Bubble extends StatelessWidget {
                           /// STATIC MESSAGE
                           return Text(
                             item.message.valueOrNull ?? '알 수 없는 메세지 입니다',
-                            style: AppTextStyle.alert2,
+                            style: AppTextStyle.body2,
                           );
                         }
                       },
@@ -143,7 +143,7 @@ class Bubble extends StatelessWidget {
                 ],
               )
             else
-              EmptyBox(),
+              const EmptyBox(),
           ],
         ),
       );
@@ -166,7 +166,7 @@ class Bubble extends StatelessWidget {
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
                 child: Text(
                   item.message.value,
-                  style: AppTextStyle.alert2.copyWith(color: AppColor.of.black),
+                  style: AppTextStyle.body2.copyWith(color: AppColor.of.black),
                 ),
               ),
             ),

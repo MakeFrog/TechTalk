@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/presentation/pages/sign_up/events/sign_up_event.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_state.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_intro_message.dart';
+import 'package:techtalk/presentation/widgets/common/gesture/animated_scale_tap.dart';
 import 'package:techtalk/presentation/widgets/section/job_group_selection_scaffold.dart';
 import 'package:techtalk/presentation/widgets/section/job_group_sliver_list_view.dart';
 import 'package:techtalk/presentation/widgets/section/selected_job_group_list_view_delegate.dart';
@@ -33,12 +34,16 @@ class JobGroupSelectStep extends HookConsumerWidget
           onJobGroupItemTapped(ref, item: item);
         },
       ),
-      bottomFixedBtn: FilledButton(
-        onPressed: isJobGroupSelectionFilled(ref)
-            ? () => onJobGroupStepBtnTapped(ref)
-            : null,
-        child: const Center(
-          child: Text('다음'),
+      bottomFixedBtn: AnimatedScaleTap(
+        borderRadius: BorderRadius.circular(16),
+        disableScaleAnimation: !isJobGroupSelectionFilled(ref),
+        child: FilledButton(
+          onPressed: isJobGroupSelectionFilled(ref)
+              ? () => onJobGroupStepBtnTapped(ref)
+              : null,
+          child: const Center(
+            child: Text('다음'),
+          ),
         ),
       ),
     );

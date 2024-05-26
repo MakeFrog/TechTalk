@@ -5,6 +5,7 @@ import 'package:techtalk/presentation/pages/sign_up/events/sign_up_event.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_state.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/select_result_chip_list_view.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_intro_message.dart';
+import 'package:techtalk/presentation/widgets/common/gesture/animated_scale_tap.dart';
 import 'package:techtalk/presentation/widgets/common/input/clearable_text_field.dart';
 import 'package:techtalk/presentation/widgets/section/searched_skill_list_view.dart';
 import 'package:techtalk/presentation/widgets/section/skill_selection_scaffold.dart';
@@ -86,14 +87,18 @@ class _StepBtn extends ConsumerWidget with SignUpState, SignUpEvent {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FilledButton(
-      onPressed: isSkillSelectionFilled(ref)
-          ? () => onSignUpBtnTapped(
-                ref,
-              )
-          : null,
-      child: const Center(
-        child: Text('시작하기'),
+    return AnimatedScaleTap(
+      borderRadius: BorderRadius.circular(16),
+      disableScaleAnimation: !isSkillSelectionFilled(ref),
+      child: FilledButton(
+        onPressed: isSkillSelectionFilled(ref)
+            ? () => onSignUpBtnTapped(
+                  ref,
+                )
+            : null,
+        child: const Center(
+          child: Text('시작하기'),
+        ),
       ),
     );
   }

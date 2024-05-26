@@ -20,16 +20,20 @@ class _SaveButton extends HookConsumerWidget
           (hasProfileImgEdited(ref) || hasNicknameEdited(ref));
     });
 
-    return Padding(
-      padding: EdgeInsets.only(bottom: AppSize.to.bottomInset == 0 ? 16 : 0),
-      child: FilledButton(
-        onPressed: isBtnActivate.value
-            ? () {
-                onSaveBtnTapped(ref);
-              }
-            : null,
-        child: const Center(
-          child: Text('저장하기'),
+    return AnimatedScaleTap(
+      disableScaleAnimation: !isBtnActivate.value,
+      borderRadius: BorderRadius.circular(16),
+      child: Padding(
+        padding: EdgeInsets.only(bottom: AppSize.to.bottomInset == 0 ? 16 : 0),
+        child: FilledButton(
+          onPressed: isBtnActivate.value
+              ? () {
+                  onSaveBtnTapped(ref);
+                }
+              : null,
+          child: const Center(
+            child: Text('저장하기'),
+          ),
         ),
       ),
     );

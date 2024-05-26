@@ -6,6 +6,7 @@ import 'package:techtalk/presentation/pages/sign_up/widgets/select_result_chip_l
 import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_intro_message.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
+import 'package:techtalk/presentation/widgets/common/gesture/animated_scale_tap.dart';
 import 'package:techtalk/presentation/widgets/common/input/clearable_text_field.dart';
 import 'package:techtalk/presentation/widgets/section/searched_skill_list_view.dart';
 import 'package:techtalk/presentation/widgets/section/skill_selection_scaffold.dart';
@@ -73,14 +74,18 @@ class _SaveBtn extends ConsumerWidget
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FilledButton(
-      onPressed: isBottomFixedBtnActivate(ref)
-          ? () {
-              onSaveBtnTapped(ref);
-            }
-          : null,
-      child: const Center(
-        child: Text('저장하기'),
+    return AnimatedScaleTap(
+      disableScaleAnimation: !isBottomFixedBtnActivate(ref),
+      borderRadius: BorderRadius.circular(16),
+      child: FilledButton(
+        onPressed: isBottomFixedBtnActivate(ref)
+            ? () {
+                onSaveBtnTapped(ref);
+              }
+            : null,
+        child: const Center(
+          child: Text('저장하기'),
+        ),
       ),
     );
   }

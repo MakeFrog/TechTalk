@@ -9,6 +9,7 @@ import 'package:techtalk/presentation/pages/sign_up/sign_up_state.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_intro_message.dart';
 import 'package:techtalk/presentation/providers/input/nickname_input_provider.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
+import 'package:techtalk/presentation/widgets/common/gesture/animated_scale_tap.dart';
 
 class NicknameInputStep extends StatelessWidget {
   const NicknameInputStep({super.key});
@@ -120,11 +121,15 @@ class _StepBtn extends HookConsumerWidget with SignUpState, SignUpEvent {
       isBtnActivate.value = formKey.currentState!.validate();
     });
 
-    return FilledButton(
-      onPressed:
-          isBtnActivate.value ? () => onNicknameStepBtnTapped(ref) : null,
-      child: const Center(
-        child: Text('다음'),
+    return AnimatedScaleTap(
+      borderRadius: BorderRadius.circular(16),
+      disableScaleAnimation: !isBtnActivate.value,
+      child: FilledButton(
+        onPressed:
+            isBtnActivate.value ? () => onNicknameStepBtnTapped(ref) : null,
+        child: const Center(
+          child: Text('다음'),
+        ),
       ),
     );
   }
