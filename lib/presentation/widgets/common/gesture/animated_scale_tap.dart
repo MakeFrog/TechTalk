@@ -67,12 +67,14 @@ class _AnimatedScaleTapState extends State<AnimatedScaleTap>
   Widget build(BuildContext context) {
     GlobalKey touchKey = GlobalKey();
     return Listener(
-      behavior: HitTestBehavior.opaque,
+      key: touchKey,
+      behavior: HitTestBehavior.translucent,
       onPointerMove: (details) {
         if (widget.disableScaleAnimation) return;
         if (touchKey.currentContext == null ||
             touchKey.currentContext?.size == null) return;
         if (!isCallBackAvailable) return;
+
         if (touchKey.currentContext!.size!.width < details.localPosition.dx ||
             details.localPosition.dx < 0 ||
             touchKey.currentContext!.size!.height < details.localPosition.dy ||
