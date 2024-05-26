@@ -4,7 +4,7 @@ abstract class AppTextStyle {
   static TextStyle pretendardStyle(double size, double? height) => TextStyle(
         fontFamily: 'pretendard',
         leadingDistribution: TextLeadingDistribution.even,
-        letterSpacing: -0.02,
+        letterSpacing: -0.02 / 100 * size,
         fontSize: size,
         height: height == null ? null : height / size,
       );

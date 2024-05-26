@@ -10,6 +10,7 @@ import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_an
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_note_event.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_note_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
+import 'package:techtalk/presentation/widgets/common/gesture/animated_scale_tap.dart';
 import 'package:techtalk/presentation/widgets/common/indicator/exception_indicator.dart';
 
 part 'local_widgets/wrong_answer_empty_list_placeholder.dart';
