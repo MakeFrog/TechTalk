@@ -9,6 +9,7 @@ class AnimatedScaleTap extends StatefulWidget {
   final Widget child;
   final double begin, end;
   final Color? overlayColor;
+  final GlobalKey? nestedButtonKey;
   final Duration beginDuration, endDuration;
   final Duration awaitDuration;
   final bool disableScaleAnimation;
@@ -20,6 +21,7 @@ class AnimatedScaleTap extends StatefulWidget {
     required this.child,
     this.borderRadius = BorderRadius.zero,
     this.boxShadow,
+    this.nestedButtonKey,
     this.onTap,
     this.disableScaleAnimation = false,
     this.begin = 1.0,
@@ -66,29 +68,8 @@ class _AnimatedScaleTapState extends State<AnimatedScaleTap>
   @override
   Widget build(BuildContext context) {
     GlobalKey touchKey = GlobalKey();
-    return Listener(
-      key: touchKey,
-      behavior: HitTestBehavior.translucent,
-      onPointerMove: (details) {
-        if (widget.disableScaleAnimation) return;
-        if (touchKey.currentContext == null ||
-            touchKey.currentContext?.size == null) return;
-        if (!isCallBackAvailable) return;
-
-        if (touchKey.currentContext!.size!.width < details.localPosition.dx ||
-            details.localPosition.dx < 0 ||
-            touchKey.currentContext!.size!.height < details.localPosition.dy ||
-            details.localPosition.dy < 0) {
-          _controller.forward();
-          isCallBackAvailable = false;
-        }
-      },
-      onPointerDown: (c) async {
-        if (widget.disableScaleAnimation) return;
-        isCallBackAvailable = true;
-        _controller.reverse();
-      },
-      onPointerUp: (c) async {
+    return GestureDetector(
+      onTap: () async {
         if (widget.disableScaleAnimation) return;
         await Future.delayed(widget.awaitDuration);
         if (isCallBackAvailable) {
@@ -99,38 +80,143 @@ class _AnimatedScaleTapState extends State<AnimatedScaleTap>
         isCallBackAvailable = false;
         await _controller.forward();
       },
-      child: ScaleTransition(
-        scale: _animation,
-        child: Container(
-          margin: widget.margin,
-          decoration: BoxDecoration(
-            boxShadow: widget.boxShadow,
-          ),
-          child: ClipRRect(
-            borderRadius: widget.borderRadius,
-            child: Stack(
-              children: [
-                widget.child,
-                Positioned.fill(
-                  child: IgnorePointer(
-                    child: AnimatedBuilder(
-                      animation: _animation,
-                      builder: (_, __) {
-                        // Material Design, 12% overlay
-                        const maxOpacity = 0.12;
-                        final opacity = maxOpacity *
-                            (1.0 - (_animation.value - 0.965) / (1.0 - 0.965));
-                        return Container(
-                          color:
-                              (widget.overlayColor ?? const Color(0xFF939BAC))
-                                  .withOpacity(opacity.clamp(0.0, maxOpacity)),
-                          // _animation.value > 0.982
-                        );
-                      },
+      child: Listener(
+        key: touchKey,
+        behavior: HitTestBehavior.translucent,
+        onPointerMove: (details) {
+          if (widget.disableScaleAnimation) return;
+          if (touchKey.currentContext == null ||
+              touchKey.currentContext?.size == null) return;
+          if (!isCallBackAvailable) return;
+
+          if (touchKey.currentContext!.size!.width < details.localPosition.dx ||
+              details.localPosition.dx < 0 ||
+              touchKey.currentContext!.size!.height <
+                  details.localPosition.dy ||
+              details.localPosition.dy < 0) {
+            _controller.forward();
+            isCallBackAvailable = false;
+          }
+        },
+        onPointerDown: (c) async {
+          if (widget.disableScaleAnimation) return;
+          isCallBackAvailable = true;
+          _controller.reverse();
+        },
+        onPointerUp: (c) async {
+          if (isCallBackAvailable == true) {
+            await Future.delayed(widget.awaitDuration);
+            await _controller.forward();
+          }
+        },
+        child: ScaleTransition(
+          scale: _animation,
+          child: Container(
+            margin: widget.margin,
+            decoration: BoxDecoration(
+              boxShadow: widget.boxShadow,
+            ),
+            child: ClipRRect(
+              borderRadius: widget.borderRadius,
+              child: Stack(
+                children: [
+                  widget.child,
+                  Positioned.fill(
+                    child: IgnorePointer(
+                      child: AnimatedBuilder(
+                        animation: _animation,
+                        builder: (_, __) {
+                          // Material Design, 12% overlay
+                          const maxOpacity = 0.12;
+                          final opacity = maxOpacity *
+                              (1.0 -
+                                  (_animation.value - 0.965) / (1.0 - 0.965));
+                          return Container(
+                            color: (widget.overlayColor ??
+                                    const Color(0xFF939BAC))
+                                .withOpacity(opacity.clamp(0.0, maxOpacity)),
+                            // _animation.value > 0.982
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    return GestureDetector(
+      child: Listener(
+        key: touchKey,
+        behavior: HitTestBehavior.translucent,
+        onPointerMove: (details) {
+          if (widget.disableScaleAnimation) return;
+          if (touchKey.currentContext == null ||
+              touchKey.currentContext?.size == null) return;
+          if (!isCallBackAvailable) return;
+
+          if (touchKey.currentContext!.size!.width < details.localPosition.dx ||
+              details.localPosition.dx < 0 ||
+              touchKey.currentContext!.size!.height <
+                  details.localPosition.dy ||
+              details.localPosition.dy < 0) {
+            _controller.forward();
+            isCallBackAvailable = false;
+          }
+        },
+        onPointerDown: (c) async {
+          if (widget.disableScaleAnimation) return;
+          isCallBackAvailable = true;
+          _controller.reverse();
+        },
+        onPointerUp: (c) async {
+          if (widget.disableScaleAnimation) return;
+          await Future.delayed(widget.awaitDuration);
+          if (isCallBackAvailable) {
+            if (widget.onTap != null) {
+              widget.onTap!();
+            }
+          }
+          isCallBackAvailable = false;
+          await _controller.forward();
+        },
+        child: ScaleTransition(
+          scale: _animation,
+          child: Container(
+            margin: widget.margin,
+            decoration: BoxDecoration(
+              boxShadow: widget.boxShadow,
+            ),
+            child: ClipRRect(
+              borderRadius: widget.borderRadius,
+              child: Stack(
+                children: [
+                  widget.child,
+                  Positioned.fill(
+                    child: IgnorePointer(
+                      child: AnimatedBuilder(
+                        animation: _animation,
+                        builder: (_, __) {
+                          // Material Design, 12% overlay
+                          const maxOpacity = 0.12;
+                          final opacity = maxOpacity *
+                              (1.0 -
+                                  (_animation.value - 0.965) / (1.0 - 0.965));
+                          return Container(
+                            color: (widget.overlayColor ??
+                                    const Color(0xFF939BAC))
+                                .withOpacity(opacity.clamp(0.0, maxOpacity)),
+                            // _animation.value > 0.982
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
