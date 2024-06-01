@@ -16,46 +16,51 @@ class SingleTopicInterviewCard extends ConsumerWidget
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: AppColor.of.white,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 24),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    '주제별 면접',
-                    style: AppTextStyle.headline2,
-                  ),
-                ),
-                GestureDetector(
-                    onTap: () {
-                      routeToTopicSelectPage(context,
-                          type: InterviewType.singleTopic);
-                    },
-                    child: SvgPicture.asset(Assets.iconsRoundBlueCircle)),
-              ],
-            ),
-          ),
-          if (user(ref)?.recordedTopics.isEmpty ?? true)
+    return GestureDetector(
+      onTap: () {
+        routeToTopicSelectPage(context, type: InterviewType.singleTopic);
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: AppColor.of.white,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 12, left: 24),
-              child: Text(
-                '하나의 주제를 선택해 집중 공략해 보세요!',
-                style: AppTextStyle.body1.copyWith(
-                  color: AppColor.of.gray3,
-                ),
+              padding: const EdgeInsets.only(left: 24),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      '주제별 면접',
+                      style: AppTextStyle.headline2,
+                    ),
+                  ),
+                  GestureDetector(
+                      onTap: () {
+                        routeToTopicSelectPage(context,
+                            type: InterviewType.singleTopic);
+                      },
+                      child: SvgPicture.asset(Assets.iconsRoundBlueCircle)),
+                ],
               ),
             ),
-          _buildTopics(),
-        ],
+            if (user(ref)?.recordedTopics.isEmpty ?? true)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12, left: 24),
+                child: Text(
+                  '하나의 주제를 선택해 집중 공략해 보세요!',
+                  style: AppTextStyle.body1.copyWith(
+                    color: AppColor.of.gray3,
+                  ),
+                ),
+              ),
+            _buildTopics(),
+          ],
+        ),
       ),
     );
   }

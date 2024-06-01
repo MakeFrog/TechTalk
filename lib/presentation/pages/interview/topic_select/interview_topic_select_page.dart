@@ -8,6 +8,7 @@ import 'package:techtalk/presentation/pages/interview/topic_select/interview_top
 import 'package:techtalk/presentation/pages/interview/topic_select/providers/selected_interview_topics_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/animated_app_bar.dart';
+import 'package:techtalk/presentation/widgets/common/gesture/animated_scale_tap.dart';
 import 'package:techtalk/presentation/widgets/section/interview_topic_card.dart';
 
 class InterviewTopicSelectPage extends BasePage with InterviewTopicSelectState {
@@ -119,12 +120,17 @@ class _NextButton extends ConsumerWidget
       margin: EdgeInsets.only(bottom: AppSize.to.bottomInset == 0 ? 16 : 0),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       height: 56,
-      child: FilledButton(
-        onPressed: isStepBtnActivate(ref)
-            ? () => routeToQuestionCountSelect(ref)
-            : null,
-        child: const Center(
-          child: Text('다음'),
+      child: AnimatedScaleTap(
+        child: FilledButton(
+          onPressed: isStepBtnActivate(ref)
+              ? () async {
+                  await Future.delayed(const Duration(milliseconds: 300));
+                  routeToQuestionCountSelect(ref);
+                }
+              : null,
+          child: const Center(
+            child: Text('다음'),
+          ),
         ),
       ),
     );

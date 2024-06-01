@@ -9,6 +9,7 @@ import 'package:techtalk/presentation/pages/interview/question_count_select/ques
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
+import 'package:techtalk/presentation/widgets/common/gesture/animated_scale_tap.dart';
 
 class QuestionCountSelectPage extends BasePage
     with QuestionCountSelectState, QuestionCountSelectEvent {
@@ -55,18 +56,20 @@ class QuestionCountSelectPage extends BasePage
 
   @override
   Widget? buildFloatingActionButton(WidgetRef ref) {
-    return Container(
-      margin: EdgeInsets.only(bottom: AppSize.to.bottomInset == 0 ? 16 : 0),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      height: 56,
-      child: FilledButton(
-        onPressed: () => routeToChatPage(
-          ref,
-          type: arg(ref).type,
-          topics: arg(ref).topics,
-        ),
-        child: const Center(
-          child: Text('시작하기'),
+    return AnimatedScaleTap(
+      child: Container(
+        margin: EdgeInsets.only(bottom: AppSize.to.bottomInset == 0 ? 16 : 0),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        height: 56,
+        child: FilledButton(
+          onPressed: () => routeToChatPage(
+            ref,
+            type: arg(ref).type,
+            topics: arg(ref).topics,
+          ),
+          child: const Center(
+            child: Text('시작하기'),
+          ),
         ),
       ),
     );

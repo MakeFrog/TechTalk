@@ -29,55 +29,58 @@ class InterviewTopicCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final double _topicImgSize = AppSize.to.ratioHeight(72);
 
-    return Material(
-      color: isSelected
-          ? AppColor.of.brand2.withOpacity(0.07)
-          : AppColor.of.background1,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: BorderSide(
-          width: 3,
-          color: isSelected ? AppColor.of.brand2 : Colors.transparent,
+    return SizedBox(
+      width: double.infinity,
+      child: Material(
+        color: isSelected
+            ? AppColor.of.brand2.withOpacity(0.07)
+            : AppColor.of.background1,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(
+            width: 3,
+            color: isSelected ? AppColor.of.brand2 : Colors.transparent,
+          ),
         ),
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: isLoaded ? onTap : null,
-        child: isLoaded
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: _topicImgSize,
-                    width: _topicImgSize,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(_topicImgSize / 2),
-                      child: Image.asset(
-                        topic!.imageUrl!,
-                        fit: BoxFit.cover,
-                        color: isSelected
-                            ? AppColor.of.brand2.withOpacity(0.07)
-                            : null,
-                        colorBlendMode: BlendMode.srcATop,
-                        errorBuilder: (_, __, ___) => Center(
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: isLoaded ? onTap : null,
+          child: isLoaded
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: _topicImgSize,
+                      width: _topicImgSize,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(_topicImgSize / 2),
+                        child: Image.asset(
+                          topic!.imageUrl!,
+                          fit: BoxFit.cover,
+                          color: isSelected
+                              ? AppColor.of.brand2.withOpacity(0.07)
+                              : null,
+                          colorBlendMode: BlendMode.srcATop,
+                          errorBuilder: (_, __, ___) => Center(
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  const Gap(16),
-                  Text(
-                    topic!.text,
-                    style: AppTextStyle.headline3,
-                  ),
-                ],
-              )
-            : const EmptyBox(),
+                    const Gap(16),
+                    Text(
+                      topic!.text,
+                      style: AppTextStyle.headline3,
+                    ),
+                  ],
+                )
+              : const EmptyBox(),
+        ),
       ),
     );
   }
