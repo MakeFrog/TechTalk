@@ -16,7 +16,6 @@ class GoogleSignInButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedScaleTap(
       borderRadius: BorderRadius.circular(16),
-      onTap: onTap,
       child: FilledButton(
         style: FilledButton.styleFrom(
           backgroundColor: const Color(0xFFF6F6F9),
@@ -24,7 +23,7 @@ class GoogleSignInButton extends StatelessWidget {
           textStyle: AppTextStyle.body1,
           padding: EdgeInsets.zero,
         ),
-        onPressed: () {},
+        onPressed: onTap,
         child: Stack(
           clipBehavior: Clip.none,
           children: [

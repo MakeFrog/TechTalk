@@ -45,11 +45,6 @@ class ChatPage extends BasePage with ChatEvent {
   @override
   bool get canPop => false;
 
-  @override
-  void onWillPop(WidgetRef ref) {
-    onAppbarBackBtnTapped(ref);
-  }
-
   static const double tabBarHeight = 48;
 
   static double tabViewHeight = AppSize.to.screenHeight -
