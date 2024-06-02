@@ -15,7 +15,6 @@ class AppleSignInButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedScaleTap(
       borderRadius: BorderRadius.circular(16),
-      onTap: onTap,
       child: FilledButton(
         style: FilledButton.styleFrom(
           backgroundColor: const Color(0xFF09090B),
@@ -23,7 +22,7 @@ class AppleSignInButton extends StatelessWidget {
           textStyle: AppTextStyle.body1,
           padding: EdgeInsets.zero,
         ),
-        onPressed: () {},
+        onPressed: onTap,
         child: const Stack(
           clipBehavior: Clip.none,
           children: [
