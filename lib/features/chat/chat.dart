@@ -8,7 +8,7 @@ import 'package:techtalk/features/chat/use_cases/get_chat_qnas_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/get_chat_rooms_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/get_random_qnas_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/report_chat_use_case.dart';
-import 'package:techtalk/features/chat/use_cases/set_ai_feedback_use_case.dart';
+import 'package:techtalk/features/chat/use_cases/set_gemini_ai_feedback_use_case.dart';
 
 export 'chat.dart';
 export 'data_source/remote/chat_ref.dart';
@@ -48,7 +48,7 @@ export 'use_cases/set_ai_feedback_use_case.dart';
 final chatRemoteDataSource = locator<ChatRemoteDataSource>();
 final chatRepository = locator<ChatRepository>();
 final getChatMessageHistoryUseCase = locator<GetChatMessageHistoryUseCase>();
-final getAnswerFeedBackUseCase = locator<SetAiFeedbackUseCase>();
+final getAnswerFeedBackUseCase = locator<SetGeminiAiFeedbackUseCase>();
 final createChatMessagesUseCase = locator<CreateChatMessagesUseCase>();
 final createChatRoomUseCase = locator<CreateChatRoomUseCase>();
 final getChatRoomsUseCase = locator<GetChatRoomsUseCase>();
