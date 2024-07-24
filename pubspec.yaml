@@ -73,7 +73,7 @@ dependencies:
   crypto: ^3.0.3 # 해슁
   async: ^2.11.0 # 비동기 처리
   flutter_dotenv: ^5.0.2 # dotnev
-  intl: ^0.18.1 # 포맷팅
+  intl: ^0.19.0 # 포맷팅
   uuid: ^4.1.0 # uuid 제너레이터
   image_picker: ^1.0.5 # 갤러리 접근
   single_import_generator: ^1.0.0 # barrel file generator
@@ -84,6 +84,7 @@ dependencies:
   in_app_review: ^2.0.8 # 인앱 리뷰
   url_launcher: ^6.2.5 # url 런쳐
   connectivity_plus: ^5.0.2 # 네트워크 연결 상태 관리
+  easy_localization: ^3.0.0 # 다국어 지원
 
   # 앱 정보
   package_info_plus: ^5.0.1 # 현재 앱 버전 정보
@@ -115,6 +116,7 @@ flutter:
     - assets/images/
     - assets/character/
     - assets/json/
+    - assets/translations/
 
 
 

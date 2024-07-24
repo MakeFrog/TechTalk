@@ -5,6 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/localization_utils.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/presentation/pages/home/home_page.dart';
@@ -110,7 +111,7 @@ class _BottomNavigationBar extends ConsumerWidget with MainEvent {
       items: [
         ...MainNavigationTab.values.mapIndexed(
           (index, e) => BottomNavigationBarItem(
-            label: e.label,
+            label: LocalizationUtils.localizeNoContext(context, e.jsonKey),
             icon: SvgPicture.asset(
               e.iconPath,
               colorFilter: ColorFilter.mode(

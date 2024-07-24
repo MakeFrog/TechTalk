@@ -1,0 +1,194 @@
+{
+    "common": {
+        "emptyName": "Anonymous",
+        "next": "Next",
+        "close": "Close",
+        "save": "Save",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "responseResult": {
+            "pass": "Pass",
+            "fail": "Fail",
+            "correct": "Correct",
+            "incorrect": "Incorrect"
+        },
+        "interviewTerms": {
+            "practicalInterview": "Practical Interview",
+            "topicInterview": "Topic Interview",
+            "interview": "Interview",
+            "qa": "Q&A",
+            "interviewer": "{ } Interviewer",
+            "interestedJobPositions": "Interested Job Positions",
+            "interestedTopics": "Interested Topics",
+            "goToInterview": "Go to Interview",
+            "startInterview": "Start Interview"
+        },
+        "interestedJobPositions": {
+            "android": "Android",
+            "dataStructure": "Data Structure",
+            "database": "Database",
+            "flutterDart": "Flutter/Dart",
+            "swiftIos": "Swift/iOS",
+            "java": "Java",
+            "javascript": "Javascript",
+            "network": "Network",
+            "operatingSystem": "Operating System",
+            "react": "React",
+            "spring": "Spring"
+        },
+        "studyOrMistakeNote": {
+            "previous": "Previous",
+            "all": "All"
+        },
+        "interestedTopics": {
+            "webFrontend": "Web Frontend",
+            "softwareEngineer": "Software Engineer",
+            "webDeveloper": "Web Developer",
+            "serverBackEndDeveloper": "Server/Back-end Developer",
+            "frontEndDeveloper": "Front-end Developer",
+            "javaDeveloper": "Java Developer",
+            "cCppDeveloper": "C, C++ Developer",
+            "pythonDeveloper": "Python Developer",
+            "machineLearningEngineer": "Machine Learning Engineer",
+            "systemNetworkAdministrator": "System/Network Administrator",
+            "androidDeveloper": "Android Developer",
+            "dataEngineer": "Data Engineer",
+            "devOpsDeveloper": "DevOps Developer",
+            "iosDeveloper": "iOS Developer",
+            "embeddedDeveloper": "Embedded Developer",
+            "technicalSupport": "Technical Support",
+            "developmentManager": "Development Manager",
+            "dataScientist": "Data Scientist",
+            "qaTestEngineer": "QA/Test Engineer",
+            "hardwareEngineer": "Hardware Engineer",
+            "bigDataEngineer": "Big Data Engineer",
+            "securityEngineer": "Security Engineer",
+            "productManager": "Product Manager",
+            "crossPlatformAppDeveloper": "Cross-platform App Developer",
+            "dba": "DBA",
+            "dotNetDeveloper": ".NET Developer",
+            "phpDeveloper": "PHP Developer",
+            "audioVideoEngineer": "Audio/Video Engineer",
+            "webPublisher": "Web Publisher",
+            "erpSpecialist": "ERP Specialist",
+            "graphicsEngineer": "Graphics Engineer",
+            "vrEngineer": "VR Engineer",
+            "biEngineer": "BI Engineer",
+            "rubyOnRailsDeveloper": "Ruby on Rails Developer"
+        }
+    },
+    "home": {
+        "cheerUpMessage": "{nickname}, \nTechtalk always cheers you on!",
+        "practicalInterview": "Practical Interview",
+        "practicalInterviewDesc": "Choose multiple topics and practice for the real interview!",
+        "topicInterview": "Topic Interview",
+        "topicInterviewDesc": "Choose one topic to focus on and strategize your approach!",
+        "takeInterview": "Take Interview"
+    },
+    "gnb": {
+        "home": "Home",
+        "learning": "Learning",
+        "mistakeNote": "Mistake Note",
+        "myInfo": "My Info"
+    },
+    "onboarding": {
+        "login": {
+            "talkTalkWithAiInterviewer": "Talk Talk with AI Interviewer!",
+            "signUpWithGoogle": "Sign up with Google",
+            "signUpWithApple": "Sign up with Apple"
+        },
+        "nickname": {
+            "greeting": "Hello! Shall we prepare for the interview with Techtalk?",
+            "needNickname": "First, you need a nickname.",
+            "enterNickname": "Please enter your nickname",
+            "nicknameAvailable": "The nickname is available.",
+            "nicknameTaken": "This nickname is already taken.",
+            "profanityNotAllowed": "You cannot use offensive or profane words.",
+            "nicknameLength": "Nicknames must be between 2 and 10 characters.",
+            "invalidNickname": "This nickname cannot be used.",
+            "noSpacesAllowed": "Nicknames cannot contain spaces."
+        }
+    },
+    "jobSelection": {
+        "promptJobPositions": "Let me know the job positions you are interested in.",
+        "selectOneOrMore": "Please select one or more."
+    },
+    "techSelection": {
+        "promptTechInterviewTopics": "Let me know the technical interview topics you are preparing for!",
+        "searchInEnglish": "Please search in English.",
+        "selectOneOrMore": "Please select one or more.",
+        "searchTechnologies": "Search for technologies you are interested in",
+        "searchInKorean": "Please search for skills in English.",
+        "noSearchResults": "Sorry, there are no search results for the requested topics."
+    },
+    "interview": {
+        "hello": "Hello, {}! Techtalk always cheers you on!",
+        "multipleTopics": "Choose multiple topics and practice for the real interview!",
+        "focusOnOneTopic": "Choose one topic to focus on and strategize your approach!",
+        "selectInterviewTopic": "Please suggest topics for AI interview",
+        "chooseNumberOfQuestions": "Please choose the number of interview questions",
+        "startInterview": "Start Interview",
+        "maxFourQuestions": "You can choose up to 4 interview questions",
+        "interviewer": "{ } Interviewer",
+        "waitPlease": "Please wait a moment.",
+        "provideAnswer": "Please provide your answer",
+        "notification": "Notification",
+        "confirmEndInterview": "Are you sure you want to end the interview?",
+        "continueLater": "You can continue the interview later."
+    },
+    "qa": {
+        "numberOfQa": "{ } Q&A",
+        "swiftAndTwoOthers": "Swift and 2 others",
+        "noCompletedQa": "There are no completed question and answer items.",
+        "answerInterviewQuestions": "Please answer the interview questions!",
+        "myAnswer": "My Answer",
+        "modelAnswer": "Model Answer"
+    },
+    "learning": {
+        "hideAnswers": "Hide the Answers",
+        "oneOutOfFifty": "1/50 Questions",
+        "previous": "Previous",
+        "all": "All",
+        "next": "Next"
+    },
+    "mistakeNote": {
+        "noMistakeRecords": "There are no incorrect answers recorded yet.",
+        "letsHaveInterview": "Let's have a { } interview!",
+        "wrongManyTimes": "Wrong many times"
+    },
+    "myInfo": {
+        "stayStrong": "Stay strong today!",
+        "developer": "{ } Developer",
+        "settings": {
+            "settings": "Settings",
+            "currentVersion": "Current Version { }",
+            "feedbackAndInquiries": "Feedback and Inquiries",
+            "privacyAndTerms": "Privacy and Terms",
+            "rateApp": "Rate the App"
+        },
+        "others": {
+            "others": "Others",
+            "logout": "Logout",
+            "deleteAccount": "Delete Account"
+        },
+        "editMyInfo": {
+            "editMyInfo": "Edit My Info",
+            "profile": "Profile",
+            "topicsUpdated": "Topics have been updated.",
+            "noSearchResults": "No search results found.",
+            "jobPositionsUpdated": "Job positions have been updated.",
+            "profileUpdated": "Profile information has been updated."
+        },
+        "deleteAccount": {
+            "confirmDeleteAccount": "Are you sure you want to delete your account?"
+        },
+        "logout": {
+            "confirmLogout": "Are you sure you want to log out?"
+        }
+    },
+    "errors": {
+        "photoUploadError": "Failed to load the image from the photo album.",
+        "errorOccurred": "An error occurred.",
+        "networkUnstable": "[401] The network connection is unstable. Please check it and try again."
+    }
+}

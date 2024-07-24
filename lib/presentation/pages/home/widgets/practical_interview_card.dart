@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
@@ -27,7 +29,9 @@ class PracticalInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
               children: [
                 Expanded(
                   child: Text(
-                    '실전형 면접',
+                    context.tr(
+                      LocaleKeys.home_practicalInterview,
+                    ),
                     style: AppTextStyle.headline2.copyWith(
                       color: AppColor.of.brand3,
                     ),
@@ -48,7 +52,9 @@ class PracticalInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
               Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: Text(
-                  '여러 주제를 선택해 실전 연습을 해보세요!',
+                  context.tr(
+                    LocaleKeys.home_practicalInterviewDesc,
+                  ),
                   style: AppTextStyle.body1.copyWith(
                     color: AppColor.of.gray3,
                   ),

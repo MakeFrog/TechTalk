@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
@@ -31,16 +33,21 @@ class SingleTopicInterviewCard extends ConsumerWidget
               children: [
                 Expanded(
                   child: Text(
-                    '주제별 면접',
+                    context.tr(
+                      LocaleKeys.home_topicInterview,
+                    ),
                     style: AppTextStyle.headline2,
                   ),
                 ),
                 GestureDetector(
-                    onTap: () {
-                      routeToTopicSelectPage(context,
-                          type: InterviewType.singleTopic);
-                    },
-                    child: SvgPicture.asset(Assets.iconsRoundBlueCircle)),
+                  onTap: () {
+                    routeToTopicSelectPage(
+                      context,
+                      type: InterviewType.singleTopic,
+                    );
+                  },
+                  child: SvgPicture.asset(Assets.iconsRoundBlueCircle),
+                ),
               ],
             ),
           ),
@@ -48,7 +55,9 @@ class SingleTopicInterviewCard extends ConsumerWidget
             Padding(
               padding: const EdgeInsets.only(bottom: 12, left: 24),
               child: Text(
-                '하나의 주제를 선택해 집중 공략해 보세요!',
+                context.tr(
+                  LocaleKeys.home_topicInterviewDesc,
+                ),
                 style: AppTextStyle.body1.copyWith(
                   color: AppColor.of.gray3,
                 ),
@@ -83,8 +92,11 @@ class SingleTopicInterviewCard extends ConsumerWidget
       builder: (context, ref, _) {
         return AnimatedScaleTap(
           onTap: () {
-            routeToChatListPage(context,
-                type: InterviewType.singleTopic, topicId: topic.id);
+            routeToChatListPage(
+              context,
+              type: InterviewType.singleTopic,
+              topicId: topic.id,
+            );
           },
           borderRadius: BorderRadius.circular(16),
           child: Container(
@@ -125,7 +137,7 @@ class SingleTopicInterviewCard extends ConsumerWidget
                   ),
                   onPressed: () {},
                   child: Text(
-                    '면접 보기',
+                    context.tr(LocaleKeys.home_takeInterview),
                     style: AppTextStyle.body1,
                   ),
                 ),

@@ -1,0 +1,194 @@
+{
+    "common": {
+        "emptyName": "익명",
+        "next": "다음",
+        "close": "닫기",
+        "save": "저장하기",
+        "cancel": "취소",
+        "confirm": "확인",
+        "responseResult": {
+            "pass": "합격",
+            "fail": "불합격",
+            "correct": "정답",
+            "incorrect": "오답"
+        },
+        "interviewTerms": {
+            "practicalInterview": "실전형 면접",
+            "topicInterview": "주제별 면접",
+            "interview": "면접",
+            "qa": "문답",
+            "interviewer": "{ } 면접관",
+            "interestedJobPositions": "관심 직군",
+            "interestedTopics": "관심 주제",
+            "goToInterview": "면접 보기",
+            "startInterview": "면접 보기"
+        },
+        "interestedJobPositions": {
+            "android": "android",
+            "dataStructure": "자료구조",
+            "database": "database",
+            "flutterDart": "Flutter/Dart",
+            "swiftIos": "Swift/iOS",
+            "java": "java",
+            "javascript": "javascript",
+            "network": "네트워크",
+            "operatingSystem": "운영체제",
+            "react": "react",
+            "spring": "spring"
+        },
+        "studyOrMistakeNote": {
+            "previous": "이전 문항",
+            "all": "전체 문항"
+        },
+        "interestedTopics": {
+            "webFrontend": "웹 프론트엔드",
+            "softwareEngineer": "소프트웨어 엔지니어",
+            "webDeveloper": "웹 개발자",
+            "serverBackEndDeveloper": "서버 개발자",
+            "frontEndDeveloper": "프론트엔드 개발자",
+            "javaDeveloper": "자바 개발자",
+            "cCppDeveloper": "C, C++ 개발자",
+            "pythonDeveloper": "파이썬 개발자",
+            "machineLearningEngineer": "머신러닝 엔지니어",
+            "systemNetworkAdministrator": "시스템, 네트워크 관리자",
+            "androidDeveloper": "안드로이드 개발자",
+            "dataEngineer": "데이터 엔지니어",
+            "devOpsDeveloper": "DevOps 개발자",
+            "iosDeveloper": "iOS 개발자",
+            "embeddedDeveloper": "임베디드 개발자",
+            "technicalSupport": "기술지원",
+            "developmentManager": "개발 매니저",
+            "dataScientist": "데이터 사이언티스트",
+            "qaTestEngineer": "QA, 테스트 엔지니어",
+            "hardwareEngineer": "하드웨어 엔지니어",
+            "bigDataEngineer": "빅데이터 엔지니어",
+            "securityEngineer": "보안 엔지니어",
+            "productManager": "프로덕트 매니저",
+            "crossPlatformAppDeveloper": "크로스플랫폼 앱 개발자",
+            "dba": "DBA",
+            "dotNetDeveloper": ".NET 개발자",
+            "phpDeveloper": "PHP 개발자",
+            "audioVideoEngineer": "영상, 음성 엔지니어",
+            "webPublisher": "웹 퍼블리셔",
+            "erpSpecialist": "ERP 전문가",
+            "graphicsEngineer": "그래픽스 엔지니어",
+            "vrEngineer": "VR 엔지니어",
+            "biEngineer": "BI 엔지니어",
+            "rubyOnRailsDeveloper": "로비온레일즈 개발자"
+        }
+    },
+    "home": {
+        "cheerUpMessage": "{nickname}님! \n테크톡이 항상 응원해요!",
+        "practicalInterview": "실전형 면접",
+        "practicalInterviewDesc": "여러 주제를 선택해 실전 연습을 해보세요!",
+        "topicInterview": "주제별 면접",
+        "topicInterviewDesc": "하나의 주제를 선택해 집중 공략해 보세요!",
+        "takeInterview": "면접 보기"
+    },
+    "gnb": {
+        "home": "홈",
+        "learning": "학습",
+        "mistakeNote": "오답노트",
+        "myInfo": "내 정보"
+    },
+    "onboarding": {
+        "login": {
+            "talkTalkWithAiInterviewer": "AI 면접관과 톡톡!",
+            "signUpWithGoogle": "Google로 시작하기",
+            "signUpWithApple": "Apple로 시작하기"
+        },
+        "nickname": {
+            "greeting": "안녕하세요. 테크톡으로 면접을 준비해볼까요?",
+            "needNickname": "먼저 사용할 닉네임이 필요해요.",
+            "enterNickname": "닉네임을 입력해 주세요",
+            "nicknameAvailable": "사용가능한 닉네임입니다.",
+            "nicknameTaken": "중복된 닉네임입니다.",
+            "profanityNotAllowed": "비속어, 욕설 단어는 사용할 수 없습니다",
+            "nicknameLength": "닉네임은 2에서 10글자 사이여야 합니다.",
+            "invalidNickname": "사용할 수 없는 닉네임 입니다.",
+            "noSpacesAllowed": "닉네임에는 공백을 사용할 수 없습니다."
+        }
+    },
+    "jobSelection": {
+        "promptJobPositions": "관심있는 직군을 알려주세요.",
+        "selectOneOrMore": "1개 이상 선택해주세요"
+    },
+    "techSelection": {
+        "promptTechInterviewTopics": "준비하고 있는 기술면접 주제를 알려주세요!",
+        "searchInEnglish": "영어로 검색해주세요.",
+        "selectOneOrMore": "1개 이상 선택해 주세요.",
+        "searchTechnologies": "관심 기술을 검색해 주세요",
+        "searchInKorean": "영어로 스킬을 검색해주세요.",
+        "noSearchResults": "검색된 기술면접 주제가 없습니다."
+    },
+    "interview": {
+        "hello": "Hello, {}! 테크톡이 항상 응원해요",
+        "multipleTopics": "여러 주제를 선택해 실전 연습을 해보세요!",
+        "focusOnOneTopic": "하나의 주제를 선택해 집중 공략해 보세요!",
+        "selectInterviewTopic": "AI 면접을 진행할 주제를 알려주세요",
+        "chooseNumberOfQuestions": "면접 질문 개수를 선택해주세요",
+        "startInterview": "면접 시작하기",
+        "maxFourQuestions": "최대 4개까지 선택할 수 있어요",
+        "interviewer": "{ } 면접관",
+        "waitPlease": "잠시만 기다려주세요.",
+        "provideAnswer": "답변을 입력해 주세요",
+        "notification": "알림",
+        "confirmEndInterview": "정말 면접을 종료하시겠어요?",
+        "continueLater": "나중에 면접을 이어서 진행할 수 있습니다"
+    },
+    "qa": {
+        "numberOfQa": "{ }개의 문답",
+        "swiftAndTwoOthers": "Swift 외 2",
+        "noCompletedQa": "완료된 문답 항목이 없습니다.",
+        "answerInterviewQuestions": "면접 질문에 답해보세요!",
+        "myAnswer": "내 답변",
+        "modelAnswer": "모범 답변"
+    },
+    "learning": {
+        "hideAnswers": "답안 가리기",
+        "oneOutOfFifty": "1 / 50 문항",
+        "previous": "이전 문항",
+        "all": "전체 문항",
+        "next": "다음 문항"
+    },
+    "mistakeNote": {
+        "noMistakeRecords": "아직 오답 기록이 없어요.",
+        "letsHaveInterview": "Let's have a { } interview!",
+        "wrongManyTimes": "여러 번 틀린 문제"
+    },
+    "myInfo": {
+        "stayStrong": "오늘도 열공하세요.",
+        "developer": "{ } 개발자",
+        "settings": {
+            "settings": "설정",
+            "currentVersion": "현재 버전 { }",
+            "feedbackAndInquiries": "피드백 및 문의사항",
+            "privacyAndTerms": "개인정보 및 약관",
+            "rateApp": "앱 평가하기"
+        },
+        "others": {
+            "others": "기타",
+            "logout": "로그아웃",
+            "deleteAccount": "회원탈퇴"
+        },
+        "editMyInfo": {
+            "editMyInfo": "내 정보 수정",
+            "profile": "프로필",
+            "topicsUpdated": "스킬 정보가 변경되었습니다.",
+            "noSearchResults": "검색된 결과가 없습니다.",
+            "jobPositionsUpdated": "직군 정보가 변경되었습니다.",
+            "profileUpdated": "프로필 정보를 업데이트 했습니다."
+        },
+        "deleteAccount": {
+            "confirmDeleteAccount": "정말 회원탈퇴 하시겠습니까?"
+        },
+        "logout": {
+            "confirmLogout": "정말 로그아웃 하시겠습니까?"
+        }
+    },
+    "errors": {
+        "photoUploadError": "사진첩에서 정상적으로 이미지를 불러오지 못했습니다.",
+        "errorOccurred": "오류가 발생했어요",
+        "networkUnstable": "[401] 네트워크 상태가 불안정해요"
+    }
+}

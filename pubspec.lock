@@ -377,6 +377,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.1"
+  easy_localization:
+    dependency: "direct main"
+    description:
+      name: easy_localization
+      sha256: fa59bcdbbb911a764aa6acf96bbb6fa7a5cf8234354fc45ec1a43a0349ef0201
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.7"
+  easy_logger:
+    dependency: transitive
+    description:
+      name: easy_logger
+      sha256: c764a6e024846f33405a2342caf91c62e357c24b02c04dbc712ef232bf30ffb7
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   equatable:
     dependency: transitive
     description:
@@ -622,6 +638,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  flutter_localizations:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -972,10 +993,10 @@ packages:
     dependency: "direct main"
     description:
       name: intl
-      sha256: "3bc132a9dbce73a7e4a21a17d06e1878839ffbf975568bc875c60537824b0c4d"
+      sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
       url: "https://pub.dev"
     source: hosted
-    version: "0.18.1"
+    version: "0.19.0"
   io:
     dependency: transitive
     description:
@@ -1344,6 +1365,62 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.27.7"
+  shared_preferences:
+    dependency: transitive
+    description:
+      name: shared_preferences
+      sha256: d3bbe5553a986e83980916ded2f0b435ef2e1893dfaa29d5a7a790d0eca12180
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.3"
+  shared_preferences_android:
+    dependency: transitive
+    description:
+      name: shared_preferences_android
+      sha256: "93d0ec9dd902d85f326068e6a899487d1f65ffcd5798721a95330b26c8131577"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.3"
+  shared_preferences_foundation:
+    dependency: transitive
+    description:
+      name: shared_preferences_foundation
+      sha256: "0a8a893bf4fd1152f93fec03a415d11c27c74454d96e2318a7ac38dd18683ab7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.4.0"
+  shared_preferences_linux:
+    dependency: transitive
+    description:
+      name: shared_preferences_linux
+      sha256: "9f2cbcf46d4270ea8be39fa156d86379077c8a5228d9dfdb1164ae0bb93f1faa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.2"
+  shared_preferences_platform_interface:
+    dependency: transitive
+    description:
+      name: shared_preferences_platform_interface
+      sha256: "22e2ecac9419b4246d7c22bfbbda589e3acf5c0351137d87dd2939d984d37c3b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.2"
+  shared_preferences_web:
+    dependency: transitive
+    description:
+      name: shared_preferences_web
+      sha256: "7b15ffb9387ea3e237bb7a66b8a23d2147663d391cafc5c8f37b2e7b4bde5d21"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.2"
+  shared_preferences_windows:
+    dependency: transitive
+    description:
+      name: shared_preferences_windows
+      sha256: "841ad54f3c8381c480d0c9b508b89a34036f512482c407e6df7a9c4aa2ef8f59"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.2"
   shelf:
     dependency: transitive
     description:
@@ -1774,5 +1851,5 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.3.0 <4.0.0"
-  flutter: ">=3.19.0"
+  dart: ">=3.4.0 <4.0.0"
+  flutter: ">=3.22.0"

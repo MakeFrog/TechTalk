@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/environment/flavor.dart';
+import 'package:techtalk/app/localization/localization_enum.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_theme.dart';
@@ -35,13 +37,19 @@ class ProviderLogger extends ProviderObserver {
 
 Future<void> runFlavoredApp() async {
   await Flavor.instance.setup();
+  await EasyLocalization.ensureInitialized(); // EasyLocalization 초기화
 
   return runApp(
     ProviderScope(
       observers: [
         ProviderLogger(),
       ],
-      child: App(),
+      child: EasyLocalization(
+        supportedLocales: Localization.values.map((e) => e.locale).toList(),
+        path: 'assets/translations',
+        fallbackLocale: Localization.en.locale,
+        child: App(),
+      ),
     ),
   );
 }
@@ -69,6 +77,9 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       routerConfig: appRouter(ref),
       debugShowCheckedModeBanner: false,
       title: '테크톡',
