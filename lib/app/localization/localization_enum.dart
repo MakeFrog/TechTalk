@@ -7,4 +7,12 @@ enum Localization {
   final Locale locale;
 
   const Localization({required this.locale});
+
+  static Localization getMatchedLocalization(String code) {
+    if (code == Localization.kr.locale.languageCode) {
+      return Localization.kr;
+    } else {
+      return Localization.en;
+    }
+  }
 }
