@@ -38,7 +38,7 @@ class Flavor {
     final option = env.firebaseOption;
 
     /// LocalStorage Hive 초기화
-    AppLocal.initHive();
+    await AppLocal.initHive();
 
     /// FireBase 초기화
     await Firebase.initializeApp(
