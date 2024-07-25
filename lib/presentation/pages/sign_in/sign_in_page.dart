@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/auth/repositories/entities/user_account_provider.enum.dart';
@@ -32,7 +34,7 @@ class SignInPage extends BasePage with SignInEvent {
           ),
           Center(
             child: Text(
-              'AI 면접관과 준비하는\n개발 면접',
+              tr(LocaleKeys.onboarding_login_talkTalkWithAiInterviewer),
               textAlign: TextAlign.center,
               style: AppTextStyle.pretendardBoldStyle(24, 33),
             ),

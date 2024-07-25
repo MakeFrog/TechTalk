@@ -51,7 +51,7 @@ class _WrongAnswerHeader extends HookWidget
                           height: 56,
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            '오답노트',
+                            tr(LocaleKeys.gnb_mistakeNote),
                             style: AppTextStyle.headline2,
                             textAlign: TextAlign.start,
                           ),

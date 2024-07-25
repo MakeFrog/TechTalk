@@ -9,7 +9,7 @@ class _AdditionalInfoCard extends ConsumerWidget with MyPageEvent {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          '기타',
+          tr(LocaleKeys.myInfo_others_others),
           style: AppTextStyle.title1,
         ),
         const Gap(8),
@@ -27,15 +27,16 @@ class _AdditionalInfoCard extends ConsumerWidget with MyPageEvent {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CardListTileButton(
-                  onTap: () {
-                    onLogOutBtnTapped(ref);
-                  },
-                  text: '로그아웃'),
+                onTap: () {
+                  onLogOutBtnTapped(ref);
+                },
+                text: tr(LocaleKeys.myInfo_others_logout),
+              ),
               CardListTileButton(
-                onTap: (){
+                onTap: () {
                   onResignBtnTapped(ref);
                 },
-                text: '회원 탈퇴',
+                text: tr(LocaleKeys.myInfo_others_deleteAccount),
                 textColor: AppColor.of.gray2,
               ),
             ],

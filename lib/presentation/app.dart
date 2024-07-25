@@ -37,7 +37,7 @@ class ProviderLogger extends ProviderObserver {
 
 Future<void> runFlavoredApp() async {
   await Flavor.instance.setup();
-  await EasyLocalization.ensureInitialized(); // EasyLocalization 초기화
+  await EasyLocalization.ensureInitialized();
 
   return runApp(
     ProviderScope(
@@ -45,6 +45,7 @@ Future<void> runFlavoredApp() async {
         ProviderLogger(),
       ],
       child: EasyLocalization(
+        // startLocale: locale,
         supportedLocales: Localization.values.map((e) => e.locale).toList(),
         path: 'assets/translations',
         fallbackLocale: Localization.en.locale,

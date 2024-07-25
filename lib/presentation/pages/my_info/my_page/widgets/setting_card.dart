@@ -9,7 +9,7 @@ class _SettingCard extends ConsumerWidget with MyPageState, MyPageEvent {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          '설정',
+          tr(LocaleKeys.myInfo_settings_settings),
           style: AppTextStyle.title1,
         ),
         const Gap(8),
@@ -28,15 +28,24 @@ class _SettingCard extends ConsumerWidget with MyPageState, MyPageEvent {
             children: [
               version(ref).when(
                 data: (versionInfo) => CardListTileButton(
-                    text: '현재 버전 ${versionInfo.versionCode}'),
+                  text:
+                      '${tr(LocaleKeys.myInfo_settings_currentVersion)} ${versionInfo.versionCode}',
+                ),
                 error: (e, _) => const EmptyBox(),
                 loading: () => const CardListTileButton(text: '현재 버전'),
               ),
               CardListTileButton(
-                  onTap: onVisitCsPageTapped, text: '피드백 및 문의사항'),
+                onTap: onVisitCsPageTapped,
+                text: tr(LocaleKeys.myInfo_settings_feedbackAndInquiries),
+              ),
               CardListTileButton(
-                  onTap: onVisitPolicyPageBtnTapped, text: '개인정보 및 약관'),
-              CardListTileButton(onTap: onRateAppTapped, text: '앱 평가하기'),
+                onTap: onVisitPolicyPageBtnTapped,
+                text: tr(LocaleKeys.myInfo_settings_privacyAndTerms),
+              ),
+              CardListTileButton(
+                onTap: onRateAppTapped,
+                text: tr(LocaleKeys.myInfo_settings_rateApp),
+              ),
             ],
           ),
         ),

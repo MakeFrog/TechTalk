@@ -32,11 +32,11 @@ class DetectNetworkConnectivity extends _$DetectNetworkConnectivity {
       if (result == ConnectivityResult.none) {
         DialogService.show(
           dialog: AppDialog.dividedBtn(
-            title: '네트워크 불안정',
-            subTitle: 'Wi-Fi 또는 데이터를 활성화 해주세요.',
-            leftBtnContent: '취소',
+            title: 'undefined.networkUnstable',
+            subTitle: 'undefined.enableWiFiOrData',
+            leftBtnContent: 'common.cancel',
             showContentImg: false,
-            rightBtnContent: '설정하기',
+            rightBtnContent: 'undefined.setUp',
             onRightBtnClicked: () async {
               rootNavigatorKey.currentContext?.pop();
               await AppSettings.openAppSettings(

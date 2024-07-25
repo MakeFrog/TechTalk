@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
+
 const _greetings = [
   '좋은 결과 있기를 기도하겠습니다!',
   '노력한만큼 좋은 결과가 있을거에요!',
@@ -7,5 +10,10 @@ const _greetings = [
 ];
 
 String greetingToInterviewee(String nickname) {
-  return '반가워요! $nickname님. ${_greetings[Random().nextInt(2)]}';
+  return '${tr(
+    LocaleKeys.undefined_greetingMessage,
+    namedArgs: {
+      'nickname': nickname,
+    },
+  )} ${_greetings[Random().nextInt(2)]}';
 }

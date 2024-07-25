@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/presentation/widgets/common/gesture/animated_scale_tap.dart';
 
@@ -24,16 +26,18 @@ class AppleSignInButton extends StatelessWidget {
           padding: EdgeInsets.zero,
         ),
         onPressed: () {},
-        child: const Stack(
+        child: Stack(
           clipBehavior: Clip.none,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 18),
+              padding: const EdgeInsets.symmetric(vertical: 18),
               child: Center(
-                child: Text('Apple로 시작하기'),
+                child: Text(
+                  tr(LocaleKeys.onboarding_login_signUpWithApple),
+                ),
               ),
             ),
-            Positioned(
+            const Positioned(
               left: 24,
               top: 0,
               bottom: 0,

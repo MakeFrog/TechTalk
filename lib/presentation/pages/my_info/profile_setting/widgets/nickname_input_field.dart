@@ -16,7 +16,7 @@ class _NicknameInputField extends ConsumerWidget
         validator: (input) => nicknameValidation(ref, input: input),
         initialValue: nickname(ref),
         inputDecoration: InputDecoration(
-          hintText: '닉네임을 입력해 주세요',
+          hintText: tr(LocaleKeys.onboarding_nickname_needNickname),
           errorStyle: AppTextStyle.alert2.copyWith(),
         ),
         onClear: () {

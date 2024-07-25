@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
+import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
@@ -131,10 +134,18 @@ class ChatMessageHistory extends _$ChatMessageHistory {
 
           if (!isCompleted) {
             newQna = _getNewQna();
-            guideMessage =
-                '다음 ${room.type.isPractical ? StoredTopics.getById(newQna.qna.id.getFirstPartOfSpliited).text : ''} 질문을 드리겠습니다.';
+            guideMessage = rootNavigatorKey.currentContext!.tr(
+              LocaleKeys.undefined_next_question_prompt,
+              namedArgs: {
+                'topic': room.type.isPractical
+                    ? StoredTopics.getById(newQna.qna.id.getFirstPartOfSpliited)
+                        .text
+                    : '',
+              },
+            );
           } else {
-            guideMessage = '면접이 종료 되었습니다.';
+            guideMessage = rootNavigatorKey.currentContext!
+                .tr(LocaleKeys.undefined_interview_ended);
           }
 
           /// NOTE : 순서 주의
@@ -162,16 +173,18 @@ class ChatMessageHistory extends _$ChatMessageHistory {
                 (_) => ref
                     .read(selectedChatRoomProvider.notifier)
                     .updateProgressInfo(
-                        isCorrect: isAnswerCorrect,
-                        lastChatMessage:
-                            isCompleted ? guideChat : nextQuestionChat),
+                      isCorrect: isAnswerCorrect,
+                      lastChatMessage:
+                          isCompleted ? guideChat : nextQuestionChat,
+                    ),
               ),
               showMessage(
                 message: guideChat.overwriteToStream(),
                 onDone: () async {
                   if (!isCompleted) {
                     await showMessage(
-                        message: nextQuestionChat.overwriteToStream());
+                      message: nextQuestionChat.overwriteToStream(),
+                    );
                   }
                 },
               ),
