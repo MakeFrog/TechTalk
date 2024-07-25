@@ -118,7 +118,7 @@ mixin class MyPageEvent {
   /// Keep Alive 인스턴스 + 로컬 캐시 삭제
   ///
   void _clearKeepAliveModules(WidgetRef ref) {
-    AppLocal.clearCache();
+    AppLocal.clearAllLocalStorage();
 
     ref.read(userAuthProvider.notifier).signOut();
     ref.invalidate(userInfoProvider);
