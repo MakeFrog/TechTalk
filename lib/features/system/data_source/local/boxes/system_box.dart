@@ -11,7 +11,7 @@ part 'system_box.g.dart';
 class SystemBox extends HiveObject {
   /// 유저의 locale
   @HiveField(0)
-  final String localeCode;
+  final String languageCode;
 
-  SystemBox({required this.localeCode});
+  SystemBox({required this.languageCode});
 }

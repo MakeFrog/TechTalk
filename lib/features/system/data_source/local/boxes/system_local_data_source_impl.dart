@@ -15,11 +15,11 @@ final class SystemLocalDataSourceImpl implements SystemLocalDataSource {
     final systemBox = box.get(AppLocal.systemBoxName);
     if (systemBox == null) return null;
 
-    return systemBox.localeCode;
+    return systemBox.languageCode;
   }
 
   @override
   Future<void> storeLocaleCode(String code) async {
-    await box.put(AppLocal.systemBoxName, SystemBox(localeCode: code));
+    await box.put(AppLocal.systemBoxName, SystemBox(languageCode: code));
   }
 }

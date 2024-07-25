@@ -13,6 +13,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       lastLoginDate: const TimeStampConverter()
           .fromJson(json['last_login_date'] as Timestamp),
       loginCount: json['login_count'] as int?,
+      locale: json['locale'] as String?,
       email: json['email'] as String?,
       profileImgUrl: json['profile_img_url'] as String?,
       nickname: json['nickname'] as String?,
@@ -30,6 +31,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'uid': instance.uid,
+      'locale': instance.locale,
       'email': instance.email,
       'profile_img_url': instance.profileImgUrl,
       'nickname': instance.nickname,

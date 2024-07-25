@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:techtalk/app/router/router.dart';
@@ -17,13 +19,20 @@ abstract final class AppLocale {
     /// 이런 경우는 거의 발생하지 않겠지만.. 혹시 모를 안전장치
     if (rootNavigatorKey.currentContext == null) {
       final languageCode =
-          AppLocal.systemBox.get(AppLocal.systemBox)?.localeCode ??
+          AppLocal.systemBox.get(AppLocal.systemBox)?.languageCode ??
               Localization.en.locale.languageCode;
 
       return Localization.getMatchedLocalization(languageCode).locale;
     }
 
     return rootNavigatorKey.currentContext!.locale;
+  }
+
+  ///
+  /// locale 정보 반환 메소드
+  ///
+  static String getLocaleName() {
+    return Platform.localeName;
   }
 
   bool get isKo => currentLocal.languageCode == 'ko';

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/modules/converter/time_stamp_converter.dart';
 import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
 
@@ -12,6 +13,7 @@ class UserModel {
     required this.signUpDate,
     required this.lastLoginDate,
     this.loginCount,
+    this.locale,
     this.email,
     this.profileImgUrl,
     this.nickname,
@@ -23,6 +25,9 @@ class UserModel {
 
   /// 유저 UID
   final String uid;
+
+  /// Locale
+  final String? locale;
 
   /// 유저 email
   final String? email;
@@ -59,6 +64,7 @@ class UserModel {
   factory UserModel.fromEntity(UserEntity entity) {
     return UserModel(
       uid: entity.uid,
+      locale: AppLocale.getLocaleName(),
       profileImgUrl: entity.profileImgUrl,
       nickname: entity.nickname,
       recordedTopicIds: entity.recordedTopics.map((e) => e.id).toList(),
@@ -88,6 +94,7 @@ class UserModel {
         'nickname': nickname,
         'job_group_ids': jobGroupIds,
         'tech_skills': techSkills,
+        'locale_code': locale,
         'recorded_topic_ids': recordedTopicIds,
         'completed_interview_count': completedInterviewCount,
       };
