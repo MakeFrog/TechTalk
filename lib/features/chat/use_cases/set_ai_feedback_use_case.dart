@@ -1,7 +1,9 @@
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
@@ -31,28 +33,41 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
           messages: [
             Messages(
               role: Role.system,
-              content: '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다.'
-                  '실제로 대화하는 것 처럼 자연스럽게 답변해주세요.',
+              content: tr(LocaleKeys.undefined_interview_prompt),
             ),
             Messages(
-                role: Role.system,
-                content:
-                    '지원자의 이름은 \'${param.userName}\'입니다. 유저를 지칭할 항상 닉네임으로 불러주세요.'),
+              role: Role.system,
+              content: tr(
+                LocaleKeys.undefined_user_name_prompt,
+                namedArgs: {'nickname': param.userName},
+              ),
+            ),
             Messages(
-                role: Role.system,
-                content:
-                    '${StoredTopics.getById(param.qna.qna.id.getFirstPartOfSpliited)}와 관련된 질문입니다. '
-                    '제시된 질문은 ${param.question} 입니다. '
-                    '모범답안은 다음과 같습니다. ${param.qna.qna.answers.map((str) => '-$str').join(' ')}'),
+              role: Role.system,
+              content: tr(
+                LocaleKeys.undefined_model_answer_prompt,
+                namedArgs: {
+                  'relatedAnswer':
+                      '${StoredTopics.getById(param.qna.qna.id.getFirstPartOfSpliited)}',
+                  'question': param.question,
+                  'modelAnswer':
+                      param.qna.qna.answers.map((str) => '-$str').join(' '),
+                },
+              ),
+            ),
             Messages(
               role: Role.user,
               content: param.userAnswer,
             ),
             Messages(
               role: Role.system,
-              content:
-                  '${param.userName}님은 질문에 "${param.userAnswer}"라고 답변하였습니다. '
-                  '제시된 모범답안을 참고해서 정답 여부를 판별하고 ${param.userName}님이 적합하게 답변했으면 "[c]"를, 반대로 오답이라면 "[w]"라는 태그 단어를 문장 맨 앞에 붙여서 정답 여부를 표시해주고 이유도 100글자 이내로 간략하게 설명해주세요.',
+              content: tr(
+                LocaleKeys.undefined_user_answer_prompt,
+                namedArgs: {
+                  'nickname': param.userName,
+                  'answer': param.userAnswer,
+                },
+              ),
             ),
           ],
           maxToken: 300,

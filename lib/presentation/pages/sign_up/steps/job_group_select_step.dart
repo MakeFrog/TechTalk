@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/presentation/pages/sign_up/events/sign_up_event.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_state.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_intro_message.dart';
@@ -17,9 +19,9 @@ class JobGroupSelectStep extends HookConsumerWidget
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
     return JobGroupSelectionScaffold(
-      introTextView: const SignUpStepIntroMessage(
-        title: '관심있는 직군을\n알려주세요.',
-        subTitle: '1개 이상 선택해 주세요.',
+      introTextView: SignUpStepIntroMessage(
+        title: tr(LocaleKeys.jobSelection_promptJobPositions),
+        subTitle: tr(LocaleKeys.jobSelection_selectOneOrMore),
       ),
       selectedJogGroupSlider: SelectedJobGroupListViewDelegate(
         selectedJobGroups: selectedJobGroups(ref),
@@ -41,8 +43,8 @@ class JobGroupSelectStep extends HookConsumerWidget
           onPressed: isJobGroupSelectionFilled(ref)
               ? () => onJobGroupStepBtnTapped(ref)
               : null,
-          child: const Center(
-            child: Text('다음'),
+          child: Center(
+            child: Text(tr(LocaleKeys.common_next)),
           ),
         ),
       ),

@@ -1,8 +1,10 @@
 import 'package:collection/collection.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/topic/topic.dart';
@@ -41,7 +43,7 @@ class EntireQuestionListView extends HookConsumerWidget
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: const AppBackButton(),
-        title: const Text('전체 문항'),
+        title: Text(tr(LocaleKeys.learning_all)),
         titleSpacing: 0,
       ),
       body: SingleChildScrollView(

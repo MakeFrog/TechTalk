@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/providers/selected_question_count_provider.dart';
@@ -23,7 +25,9 @@ class QuestionCountSelectPage extends BasePage
 
     return _Scaffold(
       introText: Text(
-        '면접 질문 개수를\n선택해주세요',
+        tr(LocaleKeys.interview_chooseNumberOfQuestions),
+        
+
         style: AppTextStyle.headline1,
       ),
       questionCountPicker: CupertinoPicker.builder(
@@ -65,8 +69,8 @@ class QuestionCountSelectPage extends BasePage
           type: arg(ref).type,
           topics: arg(ref).topics,
         ),
-        child: const Center(
-          child: Text('시작하기'),
+        child: Center(
+          child: Text(tr(LocaleKeys.common_start)),
         ),
       ),
     );

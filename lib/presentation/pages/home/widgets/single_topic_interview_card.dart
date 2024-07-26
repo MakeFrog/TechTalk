@@ -33,9 +33,7 @@ class SingleTopicInterviewCard extends ConsumerWidget
               children: [
                 Expanded(
                   child: Text(
-                    context.tr(
-                      LocaleKeys.home_topicInterview,
-                    ),
+                    tr(LocaleKeys.home_topicInterview),
                     style: AppTextStyle.headline2,
                   ),
                 ),
@@ -55,9 +53,7 @@ class SingleTopicInterviewCard extends ConsumerWidget
             Padding(
               padding: const EdgeInsets.only(bottom: 12, left: 24),
               child: Text(
-                context.tr(
-                  LocaleKeys.home_topicInterviewDesc,
-                ),
+                tr(LocaleKeys.home_topicInterviewDesc),
                 style: AppTextStyle.body1.copyWith(
                   color: AppColor.of.gray3,
                 ),
@@ -137,7 +133,7 @@ class SingleTopicInterviewCard extends ConsumerWidget
                   ),
                   onPressed: () {},
                   child: Text(
-                    context.tr(LocaleKeys.home_takeInterview),
+                    tr(LocaleKeys.home_takeInterview),
                     style: AppTextStyle.body1,
                   ),
                 ),

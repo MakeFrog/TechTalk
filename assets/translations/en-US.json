@@ -4,8 +4,10 @@
         "next": "Next",
         "close": "Close",
         "save": "Save",
+        "start": "Start",
         "cancel": "Cancel",
         "confirm": "Confirm",
+        "notice": "Notice",
         "responseResult": {
             "pass": "Pass",
             "fail": "Fail",
@@ -78,27 +80,27 @@
         }
     },
     "home": {
-        "cheerUpMessage": "{nickname}, \nTechtalk always cheers you on!",
+        "cheerUpMessage": "Hello, {nickname}!\nWe always cheers you on!",
         "practicalInterview": "Practical Interview",
-        "practicalInterviewDesc": "Choose multiple topics and practice for the real interview!",
+        "practicalInterviewDesc": "Choose multiple topics and\npractice for the real interview!",
         "topicInterview": "Topic Interview",
-        "topicInterviewDesc": "Choose one topic to focus on and strategize your approach!",
+        "topicInterviewDesc": "Choose one topic to focus on\nand strategize your approach!",
         "takeInterview": "Take Interview"
     },
     "gnb": {
         "home": "Home",
         "learning": "Learning",
         "mistakeNote": "Mistake Note",
-        "myInfo": "My Info"
+        "myInfo": "My"
     },
     "onboarding": {
         "login": {
-            "talkTalkWithAiInterviewer": "Talk Talk with AI Interviewer!",
+            "talkTalkWithAiInterviewer": "Talk Talk with \nAI Interviewer!",
             "signUpWithGoogle": "Sign up with Google",
             "signUpWithApple": "Sign up with Apple"
         },
         "nickname": {
-            "greeting": "Hello! Shall we prepare for the interview with Techtalk?",
+            "greeting": "Hello! Shall we prepare for\nthe interview with Techtalk?",
             "needNickname": "First, you need a nickname.",
             "enterNickname": "Please enter your nickname",
             "nicknameAvailable": "The nickname is available.",
@@ -110,22 +112,22 @@
         }
     },
     "jobSelection": {
-        "promptJobPositions": "Let me know the job positions you are interested in.",
+        "promptJobPositions": "Let me know the job positions\nyou are interested in.",
         "selectOneOrMore": "Please select one or more."
     },
     "techSelection": {
-        "promptTechInterviewTopics": "Let me know the technical interview topics you are preparing for!",
+        "promptTechInterviewTopics": "Let me know\nthe technical interview topics you are preparing for!",
         "searchInEnglish": "Please search in English.",
         "selectOneOrMore": "Please select one or more.",
-        "searchTechnologies": "Search for technologies you are interested in",
+        "searchTechnologies": "Search for technologies",
         "searchInKorean": "Please search for skills in English.",
         "noSearchResults": "Sorry, there are no search results for the requested topics."
     },
     "interview": {
-        "hello": "Hello, {}! Techtalk always cheers you on!",
+        "hello": "Hello, {}! We always cheers you on!",
         "multipleTopics": "Choose multiple topics and practice for the real interview!",
         "focusOnOneTopic": "Choose one topic to focus on and strategize your approach!",
-        "selectInterviewTopic": "Please suggest topics for AI interview",
+        "selectInterviewTopic": "Please suggest topics for\nAI interview",
         "chooseNumberOfQuestions": "Please choose the number of interview questions",
         "startInterview": "Start Interview",
         "maxFourQuestions": "You can choose up to 4 interview questions",
@@ -134,12 +136,13 @@
         "provideAnswer": "Please provide your answer",
         "notification": "Notification",
         "confirmEndInterview": "Are you sure you want to end the interview?",
-        "continueLater": "You can continue the interview later."
+        "continueLater": "You can continue the interview later.",
+        "interviewEnded": "The interview has ended"
     },
     "qa": {
-        "numberOfQa": "{ } Q&A",
+        "numberOfQa": "Q&A",
         "swiftAndTwoOthers": "Swift and 2 others",
-        "noCompletedQa": "There are no completed question and answer items.",
+        "noCompletedQa": "There are no completed question and answer items.\nPlease answer the interview questions!",
         "answerInterviewQuestions": "Please answer the interview questions!",
         "myAnswer": "My Answer",
         "modelAnswer": "Model Answer"
@@ -152,16 +155,16 @@
         "next": "Next"
     },
     "mistakeNote": {
-        "noMistakeRecords": "There are no incorrect answers recorded yet.",
-        "letsHaveInterview": "Let's have a { } interview!",
+        "noMistakeRecords": "There are no incorrect\nanswers recorded yet.",
+        "letsHaveInterview": "Let's have a {tech} interview!",
         "wrongManyTimes": "Wrong many times"
     },
     "myInfo": {
-        "stayStrong": "Stay strong today!",
+        "stayStrong": "Stay strong today.",
         "developer": "{ } Developer",
         "settings": {
             "settings": "Settings",
-            "currentVersion": "Current Version { }",
+            "currentVersion": "Current Version",
             "feedbackAndInquiries": "Feedback and Inquiries",
             "privacyAndTerms": "Privacy and Terms",
             "rateApp": "Rate the App"
@@ -187,8 +190,48 @@
         }
     },
     "errors": {
+        "error": "error",
         "photoUploadError": "Failed to load the image from the photo album.",
         "errorOccurred": "An error occurred.",
-        "networkUnstable": "[401] The network connection is unstable. Please check it and try again."
+        "networkUnstable": "[401] The network connection is unstable. Please check it and try again.",
+        "unexpectedErrorOccurred": "An unexpected error occurred",
+        "unknownErrorOccurred": "An unknown error has occurred.",
+        "setUp": "Set Up"
+    },
+    "undefined": {
+        "serviceLimitedForMaintenance": "Service is limited due to system maintenance",
+        "maintenanceNotice": "Maintenance Notice",
+        "temporaryServiceRestriction": "Temporary Service Restriction",
+        "networkUnstable": "Network Unstable",
+        "enableWiFiOrData": "Please enable Wi-Fi or data.",
+        "updateNotice": "Update Notice",
+        "techtalkUpdated": "TechTalk has been updated!",
+        "pleaseUpdateForLatestFeatures": "Please update to enjoy the latest features",
+        "later": "Later",
+        "update": "Update",
+        "question": "Question",
+        "questionNumber": "Question{questionNumber}",
+        "interviewTopic": "Interview Topic",
+        "report": "Report",
+        "weirdResponse": "Is the interviewer's response weird?",
+        "helpImproveAccuracy": "Please help us improve accuracy by reporting the interviewer's response. Thank you.",
+        "thankYouForFeedback": "Thank you for your feedback.",
+        "errorOccurredPleaseTryAgain": "An error occurred. Please try again.",
+        "interview_prompt": "Ask the interview question and check if the user's answer is correct. You are the interviewer, and the user is the applicant. Please respond naturally as if you are having a real conversation.",
+        "user_name_prompt": "The applicant's name is {nickname}. Always refer to the user by their nickname.",
+        "model_answer_prompt": "This question is related to {relatedAnswer}. The given question is {question}. The model answer is as follows: {modelAnswer}",
+        "user_answer_prompt": "{nickname} answered the question with {answer}. Based on the provided model answer, determine whether the answer is correct. If {nickname}'s answer is correct, prepend the sentence with \"[c]\"; if incorrect, prepend with \"[w]\". Also, briefly explain the reason within 100 characters.",
+        "next_question_prompt": "I will ask the next {topic} question.",
+        "interview_ended": "The interview has ended.",
+        "and": "and",
+        "realWorldInterview": "Practical Interview",
+        "failedToLoadWrongAnswerNotes": "Failed to load the wrong answer notes.",
+        "greetingMessageSingleTopic": "Nice to meet you! {nickname}. I will ask you a {topic} interview question.",
+        "greetingMessageMultipleTopics": "Nice to meet you! {nickname}. First, I will ask you a {firstTopic} question.",
+        "greetingMessage": "Nice to meet you, {nickname}.",
+        "greetingWithNickname": "{nickname}!\n",
+        "warning": "Warning",
+        "resignWarning": "All information will be deleted and cannot be recovered. Are you sure you want to resign?",
+        "resignSuccess": "Resignation completed successfully."
     }
 }

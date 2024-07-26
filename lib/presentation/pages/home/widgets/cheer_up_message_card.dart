@@ -106,10 +106,11 @@ class CheerUpMessageCard extends HookWidget with HomeState {
             child: Consumer(
               builder: (context, ref, child) {
                 return Text(
-                  context.tr(
+                  tr(
                     LocaleKeys.home_cheerUpMessage,
                     namedArgs: {
-                      'nickname': user(ref)?.nickname ?? LocaleKeys.common_emptyName,
+                      'nickname':
+                          user(ref)?.nickname ?? LocaleKeys.common_emptyName,
                     },
                   ),
                   style: AppTextStyle.headline2,
