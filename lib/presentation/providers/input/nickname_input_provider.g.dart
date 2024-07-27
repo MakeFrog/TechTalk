@@ -6,7 +6,7 @@ part of 'nickname_input_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$nicknameInputHash() => r'f591c18f7866edaf875bc89b315b1bfbfdeb6695';
+String _$nicknameInputHash() => r'554667819faa7e1f41e6a89f483f5793d00a64b7';
 
 /// See also [NicknameInput].
 @ProviderFor(NicknameInput)
