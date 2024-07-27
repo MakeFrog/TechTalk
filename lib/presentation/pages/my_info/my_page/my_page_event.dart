@@ -50,22 +50,22 @@ mixin class MyPageEvent {
   ///
   /// 로그아웃 버튼이 클릭 되었을 때
   ///
-void onLogOutBtnTapped(WidgetRef ref) {
-  DialogService.show(
-    dialog: AppDialog.dividedBtn(
-      title: tr(LocaleKeys.myInfo_others_logout),
-      subTitle: tr(LocaleKeys.myInfo_logout_confirmLogout),
-      leftBtnContent: tr(LocaleKeys.common_cancel),
-      rightBtnContent: tr(LocaleKeys.myInfo_others_logout),
-      showContentImg: false,
-      onRightBtnClicked: () {
-        _clearKeepAliveModules(ref);
-        const SignInRoute().go(ref.context);
-      },
-      onLeftBtnClicked: ref.context.pop,
-    ),
-  );
-}
+  void onLogOutBtnTapped(WidgetRef ref) {
+    DialogService.show(
+      dialog: AppDialog.dividedBtn(
+        title: tr(LocaleKeys.myInfo_others_logout),
+        subTitle: tr(LocaleKeys.myInfo_logout_confirmLogout),
+        leftBtnContent: tr(LocaleKeys.common_cancel),
+        rightBtnContent: tr(LocaleKeys.myInfo_others_logout),
+        showContentImg: false,
+        onRightBtnClicked: () {
+          _clearKeepAliveModules(ref);
+          const SignInRoute().go(ref.context);
+        },
+        onLeftBtnClicked: ref.context.pop,
+      ),
+    );
+  }
 
   ///
   /// 회원탈퇴
@@ -73,9 +73,9 @@ void onLogOutBtnTapped(WidgetRef ref) {
   void onResignBtnTapped(WidgetRef ref) {
     DialogService.show(
       dialog: AppDialog.dividedBtn(
-      title: tr(LocaleKeys.myInfo_others_deleteAccount),
-      subTitle: tr(LocaleKeys.myInfo_deleteAccount_confirmDeleteAccount),
-      leftBtnContent: tr(LocaleKeys.common_cancel),
+        title: tr(LocaleKeys.myInfo_others_deleteAccount),
+        subTitle: tr(LocaleKeys.myInfo_deleteAccount_confirmDeleteAccount),
+        leftBtnContent: tr(LocaleKeys.common_cancel),
         rightBtnContent: tr(LocaleKeys.common_confirm),
         showContentImg: false,
         onRightBtnClicked: () {
@@ -102,13 +102,15 @@ void onLogOutBtnTapped(WidgetRef ref) {
           final response = await resignUserInfoUseCase
               .call(ref.read(userInfoProvider).requireValue!);
           response.fold(
-              onSuccess: (_) {
-                _clearKeepAliveModules(ref);
-                const SignInRoute().go(ref.context);
-                SnackBarService.showSnackBar(tr(LocaleKeys.undefined_resignSuccess)); 
-                EasyLoading.dismiss();
-              },
-              onFailure: (e) {},);
+            onSuccess: (_) {
+              _clearKeepAliveModules(ref);
+              const SignInRoute().go(ref.context);
+              SnackBarService.showSnackBar(
+                  tr(LocaleKeys.undefined_resignSuccess));
+              EasyLoading.dismiss();
+            },
+            onFailure: (e) {},
+          );
         },
         onLeftBtnClicked: ref.context.pop,
       ),
@@ -142,7 +144,9 @@ void onLogOutBtnTapped(WidgetRef ref) {
         return OptionListBottomSheet(
           leadingText: tr(LocaleKeys.myInfo_editMyInfo_editMyInfo),
           onCloseBtnTapped: context.pop,
-          options: ProfileSettingType.values.map((e) => e.name).toList(),
+          options: ProfileSettingType.values
+              .map((e) => context.tr(e.nameTrKey))
+              .toList(),
           onOptionTapped: (int index) {
             ProfileSettingType.branch(
               targetCategory: ProfileSettingType.getByIndex(index),

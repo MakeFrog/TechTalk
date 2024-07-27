@@ -66,7 +66,10 @@ class _EmptyListPlaceholder extends ConsumerWidget
                             type: InterviewType.singleTopic,
                           );
                         },
-                        child: const Text('주제별 면접'),
+                        child: Text(
+                          context.tr(LocaleKeys.common_topicInterviewFormat),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                     const Gap(8),
@@ -85,7 +88,12 @@ class _EmptyListPlaceholder extends ConsumerWidget
                             type: InterviewType.practical,
                           );
                         },
-                        child: const Text('실전형 면접'),
+                        child: Text(
+                          context.tr(
+                            LocaleKeys.common_practicalInterviewFormat,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ],
