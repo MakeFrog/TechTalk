@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
@@ -59,10 +61,10 @@ class WrongAnswerNotePage extends BasePage
       loading: () => const Center(
         child: CircularProgressIndicator(),
       ),
-      error: (error, stackTrace) => const Center(
+      error: (error, stackTrace) => Center(
         child: ExceptionIndicator(
-          title: '오류가 발생했어요.',
-          subTitle: '오답노트 목록을 불러오는데 실패했습니다',
+          title: tr(LocaleKeys.errors_errorOccurred),
+          subTitle: tr(LocaleKeys.undefined_failedToLoadWrongAnswerNotes),
         ),
       ),
     );

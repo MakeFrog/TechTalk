@@ -4,8 +4,10 @@
         "next": "다음",
         "close": "닫기",
         "save": "저장하기",
+        "start": "시작하기",
         "cancel": "취소",
         "confirm": "확인",
+        "notice": "공지",
         "responseResult": {
             "pass": "합격",
             "fail": "불합격",
@@ -110,7 +112,7 @@
         }
     },
     "jobSelection": {
-        "promptJobPositions": "관심있는 직군을 알려주세요.",
+        "promptJobPositions": "관심있는 직군을\n알려주세요.",
         "selectOneOrMore": "1개 이상 선택해주세요"
     },
     "techSelection": {
@@ -126,20 +128,21 @@
         "multipleTopics": "여러 주제를 선택해 실전 연습을 해보세요!",
         "focusOnOneTopic": "하나의 주제를 선택해 집중 공략해 보세요!",
         "selectInterviewTopic": "AI 면접을 진행할 주제를 알려주세요",
-        "chooseNumberOfQuestions": "면접 질문 개수를 선택해주세요",
+        "chooseNumberOfQuestions": "면접 질문 개수를\n선택해주세요",
         "startInterview": "면접 시작하기",
-        "maxFourQuestions": "최대 4개까지 선택할 수 있어요",
+        "maxFourQuestions": "최대 {number}개까지 선택할 수 있어요",
         "interviewer": "{ } 면접관",
         "waitPlease": "잠시만 기다려주세요.",
         "provideAnswer": "답변을 입력해 주세요",
         "notification": "알림",
         "confirmEndInterview": "정말 면접을 종료하시겠어요?",
-        "continueLater": "나중에 면접을 이어서 진행할 수 있습니다"
+        "continueLater": "나중에 면접을 이어서 진행할 수 있습니다",
+        "interviewEnded": "면접이 종료되었습니다"
     },
     "qa": {
-        "numberOfQa": "{ }개의 문답",
+        "numberOfQa": "개의 문답",
         "swiftAndTwoOthers": "Swift 외 2",
-        "noCompletedQa": "완료된 문답 항목이 없습니다.",
+        "noCompletedQa": "완료된 문답 항목이 없습니다.\n면접 질문에 답해보세요!",
         "answerInterviewQuestions": "면접 질문에 답해보세요!",
         "myAnswer": "내 답변",
         "modelAnswer": "모범 답변"
@@ -153,7 +156,7 @@
     },
     "mistakeNote": {
         "noMistakeRecords": "아직 오답 기록이 없어요.",
-        "letsHaveInterview": "Let's have a { } interview!",
+        "letsHaveInterview": "Let's have a {tech} interview!",
         "wrongManyTimes": "여러 번 틀린 문제"
     },
     "myInfo": {
@@ -161,7 +164,7 @@
         "developer": "{ } 개발자",
         "settings": {
             "settings": "설정",
-            "currentVersion": "현재 버전 { }",
+            "currentVersion": "현재 버전",
             "feedbackAndInquiries": "피드백 및 문의사항",
             "privacyAndTerms": "개인정보 및 약관",
             "rateApp": "앱 평가하기"
@@ -187,8 +190,48 @@
         }
     },
     "errors": {
+        "error": "오류",
         "photoUploadError": "사진첩에서 정상적으로 이미지를 불러오지 못했습니다.",
         "errorOccurred": "오류가 발생했어요",
-        "networkUnstable": "[401] 네트워크 상태가 불안정해요"
+        "networkUnstable": "[401] 네트워크 상태가 불안정해요",
+        "unexpectedErrorOccurred": "예상하지 못한 오류가 발생했어요",
+        "unknownErrorOccurred": "알 수 없는 오류가 발생했습니다."
+    },
+    "undefined": {
+        "serviceLimitedForMaintenance": "시스템 점검으로 서비스 이용이 제한됩니다",
+        "maintenanceNotice": "시스템 점검 안내",
+        "temporaryServiceRestriction": "사용 임시 제한",
+        "networkUnstable": "네트워크 불안정",
+        "enableWiFiOrData": "Wi-Fi 또는 데이터를 활성화 해주세요.",
+        "updateNotice": "업데이트 안내",
+        "techtalkUpdated": "테크톡이 업데이트 되었습니다!",
+        "pleaseUpdateForLatestFeatures": "최신 기능을 이용하기 위해 업데이트를 진행해주세요",
+        "later": "다음에",
+        "update": "업데이트",
+        "setUp": "설정하기",
+        "question": "문항",
+        "questionNumber": "{questionNumber}번",
+        "interviewTopic": "면접 주제",
+        "report": "신고",
+        "weirdResponse": "면접관의 답변이 이상하신가요?",
+        "helpImproveAccuracy": "면접관의 답변을 신고해 정확도를 향상시키는데 도움을 주시면 감사하겠습니다.",
+        "thankYouForFeedback": "피드백 주셔서 감사합니다.",
+        "errorOccurredPleaseTryAgain": "오류가 발생했습니다. 다시 시도해주세요.",
+        "interview_prompt": "면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 실제로 대화하는 것처럼 자연스럽게 답변해주세요.",
+        "user_name_prompt": "지원자의 이름은 {nickname}입니다. 유저를 지칭할 항상 닉네임으로 불러주세요.",
+        "model_answer_prompt": "{relatedAnswer}와 관련된 질문입니다. 제시된 질문은 {question} 입니다. 모범답안은 다음과 같습니다. {modelAnswer}",
+        "user_answer_prompt": "{nickname}님은 질문에 {answer}라고 답변하였습니다. 제시된 모범답안을 참고해서 정답 여부를 판별하고 {nickname}님이 적합하게 답변했으면 \"[c]\"를, 반대로 오답이라면 \"[w]\"라는 태그 단어를 문장 맨 앞에 붙여서 정답 여부를 표시해주고 이유도 100글자 이내로 간략하게 설명해주세요.",
+        "next_question_prompt": "다음 {topic} 질문을 드리겠습니다.",
+        "interview_ended": "면접이 종료 되었습니다.",
+        "and": "외",
+        "realWorldInterview": "실전 면접",
+        "failedToLoadWrongAnswerNotes": "오답노트 목록을 불러오는데 실패했습니다.",
+        "greetingMessageSingleTopic": "반가워요! {nickname}님. {topic} 면접 질문을 드리겠습니다.",
+        "greetingMessageMultipleTopics": "반가워요! {nickname}님. 먼저 {firstTopic} 질문을 드리겠습니다.",
+        "greetingMessage": "반가워요 {nickname}님.",
+        "greetingWithNickname": "{nickname}님!\n",
+        "warning": "경고",
+        "resignWarning": "회원탈퇴 시 모든 정보가 삭제되며 복구가 어렵습니다. 그래도 탈퇴 하시겠습니까?",
+        "resignSuccess": "회원탈퇴가 완료되었습니다."
     }
 }

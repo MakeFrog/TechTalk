@@ -19,7 +19,7 @@ class _BottomControllerBar extends ConsumerWidget
               children: [
                 UnderLabelIconButton(
                   isActive: currentIndex(ref) != 0,
-                  label: '이전 문항',
+                  label: tr(LocaleKeys.learning_previous),
                   icon: Assets.iconsArrowLeft,
                   onTap: () => onTapPrevQuestion(ref),
                 ),
@@ -35,7 +35,7 @@ class _BottomControllerBar extends ConsumerWidget
                     ),
                     const Gap(12),
                     Text(
-                      '전체 문항',
+                      tr(LocaleKeys.learning_all),
                       style: AppTextStyle.alert1.copyWith(
                         color: AppColor.of.gray4,
                       ),
@@ -44,7 +44,7 @@ class _BottomControllerBar extends ConsumerWidget
                 ),
                 UnderLabelIconButton(
                   isActive: currentIndex(ref) + 1 != qnas(ref).length,
-                  label: '다음 문항',
+                  label: tr(LocaleKeys.learning_next),
                   icon: Assets.iconsArrowRight,
                   onTap: () => onTapNextQuestion(ref),
                 ),

@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pub_semver/pub_semver.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/system/system.dart';
@@ -71,11 +73,16 @@ class SetEntryFlowUseCase extends BaseNoParamUseCase<Result<void>> {
   Future<void> showUpdateIsAvailable() async {
     await DialogService.asyncShow(
       dialog: AppDialog.dividedBtn(
-        title: '업데이트 안내',
-        subTitle: '테크톡이 업데이트 되었습니다!',
-        description: '최신 기능을 이용하기 위해 업데이트를 진행해주세요',
-        leftBtnContent: '다음에',
-        rightBtnContent: '확인',
+        title: rootNavigatorKey.currentContext!
+            .tr(LocaleKeys.undefined_updateNotice),
+        subTitle: rootNavigatorKey.currentContext!
+            .tr(LocaleKeys.undefined_techtalkUpdated),
+        description: rootNavigatorKey.currentContext!
+            .tr(LocaleKeys.undefined_pleaseUpdateForLatestFeatures),
+        leftBtnContent:
+            rootNavigatorKey.currentContext!.tr(LocaleKeys.undefined_later),
+        rightBtnContent:
+            rootNavigatorKey.currentContext!.tr(LocaleKeys.common_confirm),
         showContentImg: true,
         onLeftBtnClicked: () async {
           rootNavigatorKey.currentContext!.pop();
@@ -105,9 +112,11 @@ class SetEntryFlowUseCase extends BaseNoParamUseCase<Result<void>> {
   void somethingIsWrongModal() {
     DialogService.show(
       dialog: AppDialog.singleBtn(
-        title: '오류',
-        description: '알 수 없는 오류가 발생했습니다',
-        btnContent: '확인',
+        title: rootNavigatorKey.currentContext!.tr(LocaleKeys.errors_error),
+        description: rootNavigatorKey.currentContext!
+            .tr(LocaleKeys.errors_unknownErrorOccurred),
+        btnContent:
+            rootNavigatorKey.currentContext!.tr(LocaleKeys.common_confirm),
         showContentImg: true,
         onBtnClicked: () {
           rootNavigatorKey.currentContext!.pop();
@@ -120,10 +129,12 @@ class SetEntryFlowUseCase extends BaseNoParamUseCase<Result<void>> {
   void showSystemIsNotAvailableNotificationModal(String notification) {
     DialogService.show(
       dialog: AppDialog.singleBtn(
-        title: '공지',
-        subTitle: '사용 임시 제한',
+        title: rootNavigatorKey.currentContext!.tr(LocaleKeys.common_notice),
+        subTitle: rootNavigatorKey.currentContext!
+            .tr(LocaleKeys.undefined_temporaryServiceRestriction),
         description: notification,
-        btnContent: '확인',
+        btnContent:
+            rootNavigatorKey.currentContext!.tr(LocaleKeys.common_confirm),
         showContentImg: false,
         onBtnClicked: () {
           rootNavigatorKey.currentContext!.pop();
@@ -136,9 +147,12 @@ class SetEntryFlowUseCase extends BaseNoParamUseCase<Result<void>> {
   void showSystemIsNotAvailableModal() {
     DialogService.show(
       dialog: AppDialog.singleBtn(
-        title: '시스템 점검 안내',
-        description: '시스템 점검으로 서비스 이용이 제한됩니다',
-        btnContent: '확인',
+        title: rootNavigatorKey.currentContext!
+            .tr(LocaleKeys.undefined_maintenanceNotice),
+        description: rootNavigatorKey.currentContext!
+            .tr(LocaleKeys.undefined_serviceLimitedForMaintenance),
+        btnContent:
+            rootNavigatorKey.currentContext!.tr(LocaleKeys.common_confirm),
         showContentImg: true,
         onBtnClicked: () {
           rootNavigatorKey.currentContext!.pop();
@@ -151,9 +165,12 @@ class SetEntryFlowUseCase extends BaseNoParamUseCase<Result<void>> {
   void showNetworkIsBadModal() {
     DialogService.show(
       dialog: AppDialog.singleBtn(
-        title: '네트워크 불안정',
-        description: 'Wi-Fi 또는 데이터를 활성화 해주세요.',
-        btnContent: '확인',
+        title: rootNavigatorKey.currentContext!
+            .tr(LocaleKeys.undefined_networkUnstable),
+        description: rootNavigatorKey.currentContext!
+            .tr(LocaleKeys.undefined_enableWiFiOrData),
+        btnContent:
+            rootNavigatorKey.currentContext!.tr(LocaleKeys.common_confirm),
         showContentImg: true,
         onBtnClicked: () {
           rootNavigatorKey.currentContext!.pop();
@@ -166,11 +183,15 @@ class SetEntryFlowUseCase extends BaseNoParamUseCase<Result<void>> {
   void showNeedUpdateModal() {
     DialogService.show(
       dialog: AppDialog.singleBtn(
-        title: '업데이트 안내',
-        subTitle: '테크톡이 업데이트 되었습니다!',
-        description: '최신 기능을 이용하기 위해 업데이트를 진행해주세요',
+        title: rootNavigatorKey.currentContext!
+            .tr(LocaleKeys.undefined_updateNotice),
+        subTitle: rootNavigatorKey.currentContext!
+            .tr(LocaleKeys.undefined_techtalkUpdated),
+        description: rootNavigatorKey.currentContext!
+            .tr(LocaleKeys.undefined_pleaseUpdateForLatestFeatures),
         showContentImg: true,
-        btnContent: '업데이트',
+        btnContent:
+            rootNavigatorKey.currentContext!.tr(LocaleKeys.undefined_update),
         onBtnClicked: () async {
           rootNavigatorKey.currentContext!.pop();
           if (Platform.isIOS) {

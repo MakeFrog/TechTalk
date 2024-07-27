@@ -12,9 +12,17 @@ class _EmptyListPlaceholder extends ConsumerWidget
         physics: const ScrollPhysics(),
         children: [
           ExceptionIndicator(
-            title: '아직 오답 문제가 없어요.',
-            subTitle:
-                '지금 ${userTopicRecords(ref).isNotEmpty ? '${selectedTopic(ref)!.text} ' : ''}면접을 진행해보세요!',
+            title: tr(LocaleKeys.mistakeNote_noMistakeRecords),
+            subTitle: tr(
+              LocaleKeys.mistakeNote_letsHaveInterview,
+              namedArgs: {
+                'tech': userTopicRecords(ref).isNotEmpty
+                    ? selectedTopic(ref)!.text
+                    : '',
+              },
+            ),
+
+            //  '지금 ${userTopicRecords(ref).isNotEmpty ? '${selectedTopic(ref)!.text} ' : ''}면접을 진행해보세요!',
           ),
           const Gap(22),
           Builder(
@@ -33,7 +41,9 @@ class _EmptyListPlaceholder extends ConsumerWidget
                       onPressed: () {
                         routeToSingleSubjectQuestionCount(ref);
                       },
-                      child: const Text('면접보기'),
+                      child: Text(
+                        tr(LocaleKeys.common_interviewTerms_startInterview),
+                      ),
                     ),
                   ),
                 );
@@ -51,8 +61,10 @@ class _EmptyListPlaceholder extends ConsumerWidget
                           ),
                         ),
                         onPressed: () {
-                          routeToTopicSelection(ref,
-                              type: InterviewType.singleTopic);
+                          routeToTopicSelection(
+                            ref,
+                            type: InterviewType.singleTopic,
+                          );
                         },
                         child: const Text('주제별 면접'),
                       ),
@@ -68,8 +80,10 @@ class _EmptyListPlaceholder extends ConsumerWidget
                           ),
                         ),
                         onPressed: () {
-                          routeToTopicSelection(ref,
-                              type: InterviewType.practical);
+                          routeToTopicSelection(
+                            ref,
+                            type: InterviewType.practical,
+                          );
                         },
                         child: const Text('실전형 면접'),
                       ),

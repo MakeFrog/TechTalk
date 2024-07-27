@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/presentation/pages/study/topic_selection/providers/study_topic_selection_state.dart';
 import 'package:techtalk/presentation/pages/study/topic_selection/study_topic_selection_event.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
@@ -50,7 +52,7 @@ class StudyTopicSelectionPage extends BasePage
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) {
     return FoldableAppBar(
-      title: '학습',
+      title: tr(LocaleKeys.gnb_learning),
       scrollController: scrollController(ref),
       animatedPosition: 20,
     );

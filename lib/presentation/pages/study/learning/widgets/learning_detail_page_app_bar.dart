@@ -18,7 +18,7 @@ class _AppBar extends ConsumerWidget
         title: ref.watch(selectedStudyTopicProvider).text,
         actions: [
           Text(
-            '답안 가리기',
+            tr(LocaleKeys.learning_hideAnswers),
             style: AppTextStyle.alert1.copyWith(
               color: AppColor.of.gray3,
             ),

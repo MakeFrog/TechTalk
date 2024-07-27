@@ -22,7 +22,7 @@ class _BottomControllerBar extends ConsumerWidget
             children: [
               UnderLabelIconButton(
                 isActive: currentPage != 0,
-                label: '이전 문항',
+                label: tr(LocaleKeys.learning_previous),
                 icon: Assets.iconsArrowLeft,
                 onTap: () => jumpToPreviousPage(ref),
               ),
@@ -30,7 +30,7 @@ class _BottomControllerBar extends ConsumerWidget
               UnderLabelIconButton(
                 isActive: currentPage + 1 !=
                     wrongAnswersAsync(ref).requireValue.length,
-                label: '다음 문항',
+                label: tr(LocaleKeys.learning_next),
                 icon: Assets.iconsArrowRight,
                 onTap: () => jumpToNextPage(ref),
               ),

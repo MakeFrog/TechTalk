@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/presentation/pages/sign_up/events/sign_up_event.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_state.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/select_result_chip_list_view.dart';
@@ -17,9 +19,9 @@ class SkillSelectStep extends HookConsumerWidget with SignUpState, SignUpEvent {
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
     return SkillSelectionScaffold(
-      introTextView: const SignUpStepIntroMessage(
-        title: '준비하고 있는 기술면접\n주제를 알려주세요!',
-        subTitle: '영어로 검색해 주세요.',
+      introTextView: SignUpStepIntroMessage(
+        title: tr(LocaleKeys.techSelection_promptTechInterviewTopics),
+        subTitle: tr(LocaleKeys.techSelection_searchInEnglish),
       ),
       selectedSkillSlider: const _SelectedListViewSlider(),
       searchBar: const _SearchBar(),
@@ -43,8 +45,8 @@ class _SearchBar extends ConsumerWidget with SignUpState, SignUpEvent {
     return Form(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: ClearableTextField(
-        inputDecoration: const InputDecoration(
-          hintText: '관심 기술을 검색해 주세요',
+        inputDecoration: InputDecoration(
+          hintText: tr(LocaleKeys.techSelection_searchTechnologies),
         ),
         controller: skillTextFieldController(ref),
         validator: (input) => skillInputValidation(ref, searchedTerm: input),

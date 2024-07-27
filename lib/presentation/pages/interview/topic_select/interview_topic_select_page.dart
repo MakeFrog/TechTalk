@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_event.dart';
@@ -25,14 +27,19 @@ class InterviewTopicSelectPage extends BasePage with InterviewTopicSelectState {
         children: <Widget>[
           const Gap(20),
           Text(
-            'AI 면접을 진행할\n주제를 알려주세요',
+            tr(LocaleKeys.interview_selectInterviewTopic),
             style: AppTextStyle.headline1,
           ),
           if (interviewType(ref).isPractical)
             Padding(
               padding: const EdgeInsets.only(top: 12),
               child: Text(
-                '최대 ${SelectedInterviewTopics.limitCount + 1}개까지 선택할 수 있어요',
+                tr(
+                  LocaleKeys.interview_maxFourQuestions,
+                  namedArgs: {
+                    'number': '${SelectedInterviewTopics.limitCount + 1}',
+                  },
+                ),
                 style: AppTextStyle.body1.copyWith(
                   color: AppColor.of.gray4,
                 ),
@@ -49,7 +56,7 @@ class InterviewTopicSelectPage extends BasePage with InterviewTopicSelectState {
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) {
     return AnimatedAppBar(
-      title: '면접 주제',
+      title: tr(LocaleKeys.undefined_interviewTopic),
       scrollController: scrollController(ref),
       opacityPosition: 86,
     );
@@ -123,8 +130,8 @@ class _NextButton extends ConsumerWidget
         onPressed: isStepBtnActivate(ref)
             ? () => routeToQuestionCountSelect(ref)
             : null,
-        child: const Center(
-          child: Text('다음'),
+        child: Center(
+          child: Text(tr(LocaleKeys.common_next)),
         ),
       ),
     );

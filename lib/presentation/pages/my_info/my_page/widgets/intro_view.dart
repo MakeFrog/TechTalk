@@ -5,10 +5,17 @@ class _IntroView extends ConsumerWidget with MyPageState {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const String guideText = '오늘도 열공하세요.';
+    String guideText = tr(LocaleKeys.myInfo_stayStrong);
 
     return user(ref).when(
       data: (user) {
+        String nickname = user?.nickname ?? tr(LocaleKeys.common_emptyName);
+        String greetingNickname = tr(
+          LocaleKeys.undefined_greetingWithNickname,
+          namedArgs: {
+            'nickname': nickname,
+          },
+        );
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -16,12 +23,12 @@ class _IntroView extends ConsumerWidget with MyPageState {
               TextSpan(
                 children: <TextSpan>[
                   TextSpan(
-                    text: '${user?.nickname ?? '익명'}님\n',
+                    text: greetingNickname,
                     style: TextStyle(
                       color: AppColor.of.brand3,
                     ),
                   ),
-                  const TextSpan(text: guideText),
+                  TextSpan(text: guideText),
                 ],
               ),
               style: AppTextStyle.headline1,
@@ -40,7 +47,7 @@ class _IntroView extends ConsumerWidget with MyPageState {
             '\n$guideText',
             style: AppTextStyle.headline1,
           ),
-          RoundProfileImg.createSkeleton(size: 64)
+          RoundProfileImg.createSkeleton(size: 64),
         ],
       ),
       loading: EmptyBox.new,

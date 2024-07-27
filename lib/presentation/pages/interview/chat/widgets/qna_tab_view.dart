@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
@@ -26,7 +28,7 @@ class QnaTabView extends HookConsumerWidget with ChatState {
           child: completedQnaListAsync(ref).when(
             data: (qnaList) {
               return Text(
-                '${qnaList.length}개의 문답',
+                '${qnaList.length}${tr(LocaleKeys.qa_numberOfQa)}',
                 style: AppTextStyle.alert2.copyWith(
                   color: AppColor.of.gray3,
                 ),
@@ -43,7 +45,7 @@ class QnaTabView extends HookConsumerWidget with ChatState {
             if (qnaList.isEmpty) {
               return Center(
                 child: Text(
-                  '완료된 문답 항목이 없습니다\n면접 질문에 답해보세요!',
+                  tr(LocaleKeys.qa_noCompletedQa),
                   textAlign: TextAlign.center,
                   style: AppTextStyle.title3.copyWith(
                     color: AppColor.of.gray3,

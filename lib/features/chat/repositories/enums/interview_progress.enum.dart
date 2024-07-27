@@ -6,11 +6,11 @@ enum InterviewProgress {
   error;
 
   String get fieldHintText => switch (this) {
-        InterviewProgress.initial => '잠시만 기다려주세요',
-        InterviewProgress.readyToAnswer => '답변을 입력해주세요',
-        InterviewProgress.interviewerReplying => '잠시만 기다려주세요',
-        InterviewProgress.done => '면접이 종료되었습니다',
-        InterviewProgress.error => '예상하지 못한 오류가 발생했어요'
+        InterviewProgress.initial => 'interview.waitPlease', 
+        InterviewProgress.readyToAnswer => 'interview.provideAnswer', 
+        InterviewProgress.interviewerReplying => 'interview.waitPlease', 
+        InterviewProgress.done => 'interview.interviewEnded',
+        InterviewProgress.error => 'errors.unexpectedErrorOccurred'
       };
 
   bool get enableChat => switch (this) {

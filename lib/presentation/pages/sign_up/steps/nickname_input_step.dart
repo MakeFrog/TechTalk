@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/sign_up/events/sign_up_event.dart';
@@ -22,9 +24,9 @@ class NicknameInputStep extends StatelessWidget {
       builder: (context) {
         useAutomaticKeepAlive();
         return _Scaffold(
-          introText: const SignUpStepIntroMessage(
-            title: '안녕하세요. 테크톡으로\n면접을 준비해 볼까요?',
-            subTitle: '먼저 사용할 닉네임이 필요해요.',
+          introText: SignUpStepIntroMessage(
+            title: tr(LocaleKeys.onboarding_nickname_greeting),
+            subTitle: tr(LocaleKeys.onboarding_nickname_needNickname),
           ),
           searchBar: _SearchBar(formKey),
           bottomFixedBtn: _StepBtn(formKey),
@@ -59,7 +61,7 @@ class _SearchBar extends ConsumerWidget with SignUpState, SignUpEvent {
         textInputAction: TextInputAction.done,
         validator: (input) => nicknameValidation(ref, input: input),
         inputDecoration: InputDecoration(
-          hintText: '닉네임을 입력해 주세요',
+          hintText: tr(LocaleKeys.onboarding_nickname_enterNickname),
           errorStyle: AppTextStyle.alert2.copyWith(),
         ),
         onClear: () {
@@ -127,8 +129,8 @@ class _StepBtn extends HookConsumerWidget with SignUpState, SignUpEvent {
       child: FilledButton(
         onPressed:
             isBtnActivate.value ? () => onNicknameStepBtnTapped(ref) : null,
-        child: const Center(
-          child: Text('다음'),
+        child: Center(
+          child: Text(tr(LocaleKeys.common_next)),
         ),
       ),
     );

@@ -35,13 +35,9 @@ class _Scaffold extends StatelessWidget {
                     child: TabBar(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       controller: tabController,
-                      tabs: const [
-                        Tab(
-                          text: '면접',
-                        ),
-                        Tab(
-                          text: '문답',
-                        ),
+                      tabs: [
+                       Tab(text: tr(LocaleKeys.common_interviewTerms_interview)),
+                        Tab(text: tr(LocaleKeys.common_interviewTerms_qa)),
                       ],
                       indicator: UnderlineTabIndicator(
                         borderSide:

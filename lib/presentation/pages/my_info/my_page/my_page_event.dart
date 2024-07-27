@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/user/user.dart';
@@ -48,23 +50,22 @@ mixin class MyPageEvent {
   ///
   /// 로그아웃 버튼이 클릭 되었을 때
   ///
-  void onLogOutBtnTapped(WidgetRef ref) {
-    DialogService.show(
-      dialog: AppDialog.dividedBtn(
-        title: '로그아웃',
-        subTitle: '정말 로그아웃 하시겠습니까?',
-        leftBtnContent: '취소',
-        rightBtnContent: '로그아웃',
-        showContentImg: false,
-        onRightBtnClicked: () {
-          _clearKeepAliveModules(ref);
-
-          const SignInRoute().go(ref.context);
-        },
-        onLeftBtnClicked: ref.context.pop,
-      ),
-    );
-  }
+void onLogOutBtnTapped(WidgetRef ref) {
+  DialogService.show(
+    dialog: AppDialog.dividedBtn(
+      title: tr(LocaleKeys.myInfo_others_logout),
+      subTitle: tr(LocaleKeys.myInfo_logout_confirmLogout),
+      leftBtnContent: tr(LocaleKeys.common_cancel),
+      rightBtnContent: tr(LocaleKeys.myInfo_others_logout),
+      showContentImg: false,
+      onRightBtnClicked: () {
+        _clearKeepAliveModules(ref);
+        const SignInRoute().go(ref.context);
+      },
+      onLeftBtnClicked: ref.context.pop,
+    ),
+  );
+}
 
   ///
   /// 회원탈퇴
@@ -72,10 +73,10 @@ mixin class MyPageEvent {
   void onResignBtnTapped(WidgetRef ref) {
     DialogService.show(
       dialog: AppDialog.dividedBtn(
-        title: '회원탈퇴',
-        subTitle: '정말 회원탈퇴 하시겠습니까?',
-        leftBtnContent: '취소',
-        rightBtnContent: '확인',
+      title: tr(LocaleKeys.myInfo_others_deleteAccount),
+      subTitle: tr(LocaleKeys.myInfo_deleteAccount_confirmDeleteAccount),
+      leftBtnContent: tr(LocaleKeys.common_cancel),
+        rightBtnContent: tr(LocaleKeys.common_confirm),
         showContentImg: false,
         onRightBtnClicked: () {
           ref.context.pop();
@@ -92,10 +93,10 @@ mixin class MyPageEvent {
   Future<void> _showResignRemindDialog(WidgetRef ref) async {
     DialogService.show(
       dialog: AppDialog.dividedBtn(
-        title: '경고',
-        subTitle: '회원탈퇴 시 모든 정보가 삭제되며 복구가 어렵습니다. 그래도 탈퇴 하시겠습니까?',
-        leftBtnContent: '취소',
-        rightBtnContent: '회원탈퇴',
+        title: tr(LocaleKeys.undefined_warning),
+        subTitle: tr(LocaleKeys.undefined_resignWarning),
+        leftBtnContent: tr(LocaleKeys.common_cancel),
+        rightBtnContent: tr(LocaleKeys.myInfo_others_deleteAccount),
         onRightBtnClicked: () async {
           await EasyLoading.show();
           final response = await resignUserInfoUseCase
@@ -104,10 +105,10 @@ mixin class MyPageEvent {
               onSuccess: (_) {
                 _clearKeepAliveModules(ref);
                 const SignInRoute().go(ref.context);
-                SnackBarService.showSnackBar('회원탈퇴가 원료되었습니다');
+                SnackBarService.showSnackBar(tr(LocaleKeys.undefined_resignSuccess)); 
                 EasyLoading.dismiss();
               },
-              onFailure: (e) {});
+              onFailure: (e) {},);
         },
         onLeftBtnClicked: ref.context.pop,
       ),
@@ -139,7 +140,7 @@ mixin class MyPageEvent {
       isScrollControlled: true,
       builder: (context) {
         return OptionListBottomSheet(
-          leadingText: '내 정보 수정',
+          leadingText: tr(LocaleKeys.myInfo_editMyInfo_editMyInfo),
           onCloseBtnTapped: context.pop,
           options: ProfileSettingType.values.map((e) => e.name).toList(),
           onOptionTapped: (int index) {

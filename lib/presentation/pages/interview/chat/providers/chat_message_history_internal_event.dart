@@ -68,8 +68,26 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
 
     final nickname = ref.watch(userInfoProvider).requireValue!.nickname!;
     final firstQna = _getNewQna();
-    final String introMessage =
-        '반가워요! $nickname님. ${room.type.isSingleTopic ? '${room.topics.first.text} 면접 질문을 드리겠습니다.' : '먼저 ${StoredTopics.getById(firstQna.qna.id.getFirstPartOfSpliited).text} 질문을 드리겠습니다.'}';
+final String introMessage;
+
+if (room.type.isSingleTopic) {
+  introMessage = rootNavigatorKey.currentContext!.tr(
+    LocaleKeys.undefined_greetingMessageSingleTopic,
+    namedArgs: {
+      'nickname': nickname,
+      'topic': room.topics.first.text,
+    },
+  );
+} else {
+  introMessage = rootNavigatorKey.currentContext!.tr(
+    LocaleKeys.undefined_greetingMessageMultipleTopics,
+    namedArgs: {
+      'nickname': nickname,
+      'firstTopic': StoredTopics.getById(firstQna.qna.id.getFirstPartOfSpliited).text,
+    },
+  );
+}
+
 
     final introChat = GuideChatEntity.createStatic(
       message: introMessage,

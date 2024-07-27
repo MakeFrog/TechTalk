@@ -11,7 +11,7 @@ class _UserInfoCard extends ConsumerWidget with MyPageState, MyPageEvent {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '내 정보',
+              tr(LocaleKeys.gnb_myInfo),
               style: AppTextStyle.title1,
             ),
             IconFlashAreaButton.assetIcon(
@@ -40,7 +40,7 @@ class _UserInfoCard extends ConsumerWidget with MyPageState, MyPageEvent {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '관심 직군',
+                    tr(LocaleKeys.common_interviewTerms_interestedJobPositions),
                     style: AppTextStyle.body3,
                   ),
                   const Gap(8),
@@ -51,7 +51,7 @@ class _UserInfoCard extends ConsumerWidget with MyPageState, MyPageEvent {
                   ),
                   const Gap(16),
                   Text(
-                    '관심 주제',
+                    tr(LocaleKeys.common_interviewTerms_interestedTopics),
                     style: AppTextStyle.body3,
                   ),
                   const Gap(8),

@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/services/size_service.dart';
@@ -93,7 +95,7 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
         title: switch (selectedInterviewType(ref)) {
           InterviewType.singleTopic => selectedTopic(ref)?.text ??
               ref.read(selectedChatRoomProvider).singleTopic.text,
-          InterviewType.practical => '실전 면접',
+          InterviewType.practical => tr(LocaleKeys.undefined_realWorldInterview),
         },
       );
 
