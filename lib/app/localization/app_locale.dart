@@ -35,7 +35,7 @@ abstract final class AppLocale {
     return Platform.localeName;
   }
 
-  bool get isKo => currentLocal.languageCode == 'ko';
+  static bool get isKo => currentLocal.languageCode == 'ko';
 
-  bool get isEn => currentLocal.languageCode == 'en';
+  static bool get isEn => currentLocal.languageCode == 'en';
 }
