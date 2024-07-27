@@ -11,7 +11,7 @@ final class SystemLocalDataSourceImpl implements SystemLocalDataSource {
   SystemBox? get systemInfo => box.values.firstOrNull;
 
   @override
-  Future<String?> loadLocaleCode() async {
+  Future<String?> loadLocaleLanguageCode() async {
     final systemBox = box.get(AppLocal.systemBoxName);
     if (systemBox == null) return null;
 

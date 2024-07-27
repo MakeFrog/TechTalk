@@ -28,7 +28,7 @@ class SystemRepositoryImpl implements SystemRepository {
   @override
   Future<Result<Locale?>> getStoredLocale() async {
     try {
-      final code = await _localDataSource.loadLocaleCode();
+      final code = await _localDataSource.loadLocaleLanguageCode();
 
       if (code == null) {
         final currentLocaleCode = AppLocale.currentLocal.languageCode;
