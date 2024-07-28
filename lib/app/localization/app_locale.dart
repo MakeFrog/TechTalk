@@ -19,7 +19,7 @@ abstract final class AppLocale {
     /// 이런 경우는 거의 발생하지 않겠지만.. 혹시 모를 안전장치
     if (rootNavigatorKey.currentContext == null) {
       final languageCode =
-          AppLocal.systemBox.get(AppLocal.systemBox)?.languageCode ??
+          AppLocal.systemBox.get(AppLocal.systemBoxName)?.languageCode ??
               Localization.en.locale.languageCode;
 
       return Localization.getMatchedLocalization(languageCode).locale;
