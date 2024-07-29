@@ -13,19 +13,19 @@ import 'localization_enum.dart';
 /// DataSource, Repository, Presentation 등등 어디서든 유연하게 사용될 수 있음
 ///
 abstract final class AppLocale {
-  static Locale get currentLocal {
+  static Locale get currentLocale {
     /// 현재 context로부터 locale을 가져올 수 없다면 Local Storage에 저장된 값을 가져옴.
     /// [NOTE]
     /// 이런 경우는 거의 발생하지 않겠지만.. 혹시 모를 안전장치
     if (rootNavigatorKey.currentContext == null) {
       final languageCode =
-          AppLocal.systemBox.get(AppLocal.systemBoxName)?.languageCode ??
-              Localization.en.locale.languageCode;
+          AppLocal.systemBox.get(AppLocal.systemBoxName)?.languageCode ?? Localization.en.locale.languageCode;
 
       return Localization.getMatchedLocalization(languageCode).locale;
     }
 
-    return rootNavigatorKey.currentContext!.locale;
+    /// 혹시나 db에 잘못된 languageCode 접근 방지위해 enum을 통해 넘겨준다.
+    return Localization.getMatchedLocalization(rootNavigatorKey.currentContext!.locale.languageCode).locale;
   }
 
   ///
@@ -35,7 +35,7 @@ abstract final class AppLocale {
     return Platform.localeName;
   }
 
-  static bool get isKo => currentLocal.languageCode == 'ko';
+  static bool get isKo => currentLocale.languageCode == 'ko';
 
-  static bool get isEn => currentLocal.languageCode == 'en';
+  static bool get isEn => currentLocale.languageCode == 'en';
 }

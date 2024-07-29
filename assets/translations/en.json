@@ -21,11 +21,19 @@
       "topicInterview": "Topic Interview",
       "interview": "Interview",
       "qa": "Q&A",
-      "interviewer": "{ } Interviewer",
+      "interviewer": "Interviewer {}",
       "interestedJobPositions": "Interested Job Positions",
       "interestedTopics": "Interested Topics",
       "goToInterview": "Go to Interview",
       "startInterview": "Start Interview"
+    },
+    "interviewersName": {
+      "bitwiseNegation": "Bitwise",
+      "incrementOperation": "Increment",
+      "equalityOperation": "Equality",
+      "comment": "Comment",
+      "exponentiation": "Exponent",
+      "string": "String"
     },
     "interestedJobPositions": {
       "android": "Android",

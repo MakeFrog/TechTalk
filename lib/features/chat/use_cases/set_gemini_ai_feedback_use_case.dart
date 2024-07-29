@@ -2,12 +2,16 @@ import 'package:flutter/services.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:techtalk/app/environment/flavor.dart';
+import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
 final gemini = GenerativeModel(
   model: 'gemini-1.5-pro-001',
   apiKey: Flavor.env.geminiApiKey,
+  systemInstruction: Content.system(
+    'You are the interviewer, and the user is the candidate.',
+  ),
 );
 
 class SetGeminiAiFeedbackUseCase
@@ -32,22 +36,21 @@ class SetGeminiAiFeedbackUseCase
       gemini.generateContentStream(
         [
           Content.text('''
-    면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다.
-    지원자의 이름은 ${param.userName}입니다. 유저를 지칭할 때에는 항상 닉네임으로 불러주세요.
-    ${StoredTopics.getById(param.qna.qna.id.getFirstPartOfSpliited)}와 관련된 질문입니다.
-    제시된 질문은 ${param.question} 입니다.
-    모범답안은 다음과 같습니다. ${param.qna.qna.answers.map((str) => '-$str').join(' ')}'
-    ${param.userName}님은 질문에 "${param.userAnswer}"라고 답변하였습니다.
-    제시된 모범답안을 참고해서 정답 여부를 판별하고 ${param.userName}님이 적합하게 답변했으면
-    "[c]"를, 반대로 오답이라면 "[w]"라는 태그 단어를 문장 맨 앞에 붙여서 정답 여부를 표시해주고
-    그 이유를 100글자 이내로 간략하게 설명해주세요. 정답이긴 하지만 유저가 제시한 답변이 조금 부족하다면
-    유저가 추가적으로 어떤 답안을 추가하면 좋을지도 포함하여 100글자 이내로 간략하게 설명해주세요.
-    이모티콘 붙이지 마세요.
+      You will ask an interview question and verify the correctness of the user's answer.
+
+      The candidate's name is ${param.userName}. Always refer to the user by this nickname.
+      The question is related to ${StoredTopics.getById(param.qna.qna.id.getFirstPartOfSpliited)}.
+      The question presented is: ${param.question}.
+      The model answer is: ${param.qna.qna.answers.map((str) => '-$str').join(' ')}'
+      ${param.userName} answered: "${param.userAnswer}".
+
+      Based on the model answer provided, determine whether ${param.userName}'s response is correct by prefixing your response with "[c]" if it is correct, or "[w]" if it is incorrect. Provide a brief explanation of up to 100 characters regarding the correctness and quality of the answer.
+      Please respond in the language corresponding to language code "${AppLocale.currentLocale.languageCode}".
     
 '''),
         ],
         generationConfig: GenerationConfig(
-          temperature: 0.3,
+          temperature: 0.4,
           maxOutputTokens: 300,
         ),
       ).listen(

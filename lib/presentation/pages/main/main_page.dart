@@ -61,8 +61,11 @@ class MainPage extends BasePage with MainEvent {
   }
 
   @override
-  void onInit(WidgetRef ref) {
+  Future<void> onInit(WidgetRef ref) async {
     super.onInit(ref);
+
+    // root 페이지 접근시 언어 설정 확인하여 로컬 캐싱 날릴지말지 처리
+    await clearTopicCacheOnCondition();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       activateNetworkConnectivityDetector(ref);
@@ -83,8 +86,7 @@ class MainPage extends BasePage with MainEvent {
   bool get canPop => false;
 
   @override
-  Widget buildBottomNavigationBar(BuildContext context) =>
-      const _BottomNavigationBar();
+  Widget buildBottomNavigationBar(BuildContext context) => const _BottomNavigationBar();
 }
 
 class _BottomNavigationBar extends ConsumerWidget with MainEvent {
@@ -115,9 +117,7 @@ class _BottomNavigationBar extends ConsumerWidget with MainEvent {
             icon: SvgPicture.asset(
               e.iconPath,
               colorFilter: ColorFilter.mode(
-                currentTab.index == index
-                    ? AppColor.of.gray5
-                    : AppColor.of.gray2,
+                currentTab.index == index ? AppColor.of.gray5 : AppColor.of.gray2,
                 BlendMode.srcIn,
               ),
             ),

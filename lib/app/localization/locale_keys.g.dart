@@ -26,6 +26,13 @@ abstract class  LocaleKeys {
   static const common_interviewTerms_goToInterview = 'common.interviewTerms.goToInterview';
   static const common_interviewTerms_startInterview = 'common.interviewTerms.startInterview';
   static const common_interviewTerms = 'common.interviewTerms';
+  static const common_interviewersName_bitwiseNegation = 'common.interviewersName.bitwiseNegation';
+  static const common_interviewersName_incrementOperation = 'common.interviewersName.incrementOperation';
+  static const common_interviewersName_equalityOperation = 'common.interviewersName.equalityOperation';
+  static const common_interviewersName_comment = 'common.interviewersName.comment';
+  static const common_interviewersName_exponentiation = 'common.interviewersName.exponentiation';
+  static const common_interviewersName_string = 'common.interviewersName.string';
+  static const common_interviewersName = 'common.interviewersName';
   static const common_interestedJobPositions_android = 'common.interestedJobPositions.android';
   static const common_interestedJobPositions_dataStructure = 'common.interestedJobPositions.dataStructure';
   static const common_interestedJobPositions_database = 'common.interestedJobPositions.database';
@@ -182,6 +189,7 @@ abstract class  LocaleKeys {
   static const errors_networkUnstable = 'errors.networkUnstable';
   static const errors_unexpectedErrorOccurred = 'errors.unexpectedErrorOccurred';
   static const errors_unknownErrorOccurred = 'errors.unknownErrorOccurred';
+  static const errors_setUp = 'errors.setUp';
   static const errors = 'errors';
   static const undefined_serviceLimitedForMaintenance = 'undefined.serviceLimitedForMaintenance';
   static const undefined_maintenanceNotice = 'undefined.maintenanceNotice';
@@ -193,7 +201,6 @@ abstract class  LocaleKeys {
   static const undefined_pleaseUpdateForLatestFeatures = 'undefined.pleaseUpdateForLatestFeatures';
   static const undefined_later = 'undefined.later';
   static const undefined_update = 'undefined.update';
-  static const undefined_setUp = 'undefined.setUp';
   static const undefined_question = 'undefined.question';
   static const undefined_questionNumber = 'undefined.questionNumber';
   static const undefined_interviewTopic = 'undefined.interviewTopic';

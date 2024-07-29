@@ -1,4 +1,5 @@
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -49,8 +50,9 @@ class Flavor {
     /// 앱 DI 실행
     await AppBinder.init();
 
-    await FirebaseAnalytics.instance
-        .setAnalyticsCollectionEnabled(_env == Environment.prod ? true : false);
+    await EasyLocalization.ensureInitialized();
+
+    await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(_env == Environment.prod ? true : false);
     if (_env == Environment.prod) {
       await FirebaseAnalytics.instance.logAppOpen();
     }

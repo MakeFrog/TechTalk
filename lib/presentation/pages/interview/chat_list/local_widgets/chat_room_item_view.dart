@@ -1,11 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/helper/date_time_extension.dart';
 import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/repositories/enums/interview_type.enum.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_event.dart';
 import 'package:techtalk/presentation/widgets/common/avatar/clip_oval_circle_avatar.dart';
 import 'package:techtalk/presentation/widgets/common/box/skeleton_box.dart';
@@ -22,8 +23,7 @@ class ChatRoomItemView extends StatelessWidget with ChatListEvent {
   factory ChatRoomItemView.create(InterviewType type, ChatRoomEntity item) =>
       ChatRoomItemView(item: item, isLoaded: true);
 
-  factory ChatRoomItemView.createSkeleton() =>
-      const ChatRoomItemView(item: null, isLoaded: false);
+  factory ChatRoomItemView.createSkeleton() => const ChatRoomItemView(item: null, isLoaded: false);
 
   final ChatRoomEntity? item;
   final bool isLoaded;
@@ -32,8 +32,7 @@ class ChatRoomItemView extends StatelessWidget with ChatListEvent {
   Widget build(BuildContext context) {
     if (isLoaded) {
       return MaterialButton(
-        padding: const EdgeInsets.symmetric(horizontal: 16) +
-            const EdgeInsets.only(top: 24, bottom: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 16) + const EdgeInsets.only(top: 24, bottom: 24),
         onPressed: () {
           routeToChatPage(
             context,
@@ -59,7 +58,9 @@ class ChatRoomItemView extends StatelessWidget with ChatListEvent {
                   children: [
                     // CHARACTER NAME
                     Text(
-                      item!.interviewer.name,
+                      tr(LocaleKeys.common_interviewTerms_interviewer, args: [
+                        tr(item!.interviewer.name),
+                      ]),
                       style: AppTextStyle.title1,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
@@ -115,11 +116,9 @@ class ChatRoomItemView extends StatelessWidget with ChatListEvent {
                   Builder(
                     builder: (context) {
                       switch (item!.progressState) {
-                        case ChatRoomProgress.initial ||
-                              ChatRoomProgress.ongoing:
+                        case ChatRoomProgress.initial || ChatRoomProgress.ongoing:
                           return NormalRoundedChip(
-                              text:
-                                  '${item!.completedQuestionCount}/${item!.progressInfo.totalQuestionCount}');
+                              text: '${item!.completedQuestionCount}/${item!.progressInfo.totalQuestionCount}');
 
                         case ChatRoomProgress.completed:
                           return PassFailIndicator(
@@ -139,8 +138,7 @@ class ChatRoomItemView extends StatelessWidget with ChatListEvent {
       );
     } else {
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16) +
-            const EdgeInsets.only(top: 24, bottom: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 16) + const EdgeInsets.only(top: 24, bottom: 24),
         child: SizedBox(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,

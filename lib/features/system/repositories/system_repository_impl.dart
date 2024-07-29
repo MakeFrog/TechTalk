@@ -31,7 +31,7 @@ class SystemRepositoryImpl implements SystemRepository {
       final code = await _localDataSource.loadLocaleLanguageCode();
 
       if (code == null) {
-        final currentLocaleCode = AppLocale.currentLocal.languageCode;
+        final currentLocaleCode = AppLocale.currentLocale.languageCode;
         unawaited(_localDataSource.storeLocaleCode(currentLocaleCode));
 
         return Result.success(null);

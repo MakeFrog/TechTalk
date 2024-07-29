@@ -1,36 +1,33 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 abstract class FirestoreTopicsRef {
-  static const String name = 'Topics';
+  static const String _name = 'Topics';
 
-  static CollectionReference<TopicModel> collection() =>
-      FirebaseFirestore.instance.collection(name).withConverter(
-            fromFirestore: TopicModel.fromFirestore,
-            toFirestore: (value, options) => value.toJson(),
-          );
+  static CollectionReference<TopicModel> collection() => FirebaseFirestore.instance.collection(_name).withConverter(
+        fromFirestore: TopicModel.fromFirestore,
+        toFirestore: (value, options) => value.toJson(),
+      );
 
   static DocumentReference<TopicModel> doc(String id) =>
-      FirebaseFirestore.instance.collection(name).doc(id).withConverter(
+      FirebaseFirestore.instance.collection(_name).doc(id).withConverter(
             fromFirestore: TopicModel.fromFirestore,
             toFirestore: (value, options) => value.toJson(),
           );
 }
 
 abstract class FirestoreTopicQuestionsRef {
-  static const String name = 'Questions';
-
-  static CollectionReference<TopicQnaModel> collection(String topicId) =>
-      FirestoreTopicsRef.doc(topicId).collection(name).withConverter(
+  static CollectionReference<TopicQnaModel> collection(String topicId, {required Locale locale}) =>
+      // TODO: 잘못된 languageCode 접근 관련 예외처리 필요, 앞에서 되어있긴 하지만 혹시나..
+      FirestoreTopicsRef.doc(topicId).collection(locale.languageCode).withConverter(
             fromFirestore: TopicQnaModel.fromFirestore,
             toFirestore: (value, options) => value.toJson(),
           );
 
-  static DocumentReference<TopicQnaModel> doc(
-    String topicId,
-    String id,
-  ) =>
-      FirestoreTopicsRef.doc(topicId).collection(name).doc(id).withConverter(
+  static DocumentReference<TopicQnaModel> doc(String topicId, String id, {required Locale locale}) =>
+      FirestoreTopicsRef.doc(topicId).collection(locale.languageCode).doc(id).withConverter(
             fromFirestore: TopicQnaModel.fromFirestore,
             toFirestore: (value, options) => value.toJson(),
           );
@@ -53,11 +50,7 @@ abstract class FirestoreTopicWrongAnswerRef {
     String topicId,
     String userId,
   ) =>
-      FirestoreTopicsRef.doc(topicId)
-          .collection(name)
-          .doc(userId)
-          .collection(subCollectionName)
-          .withConverter(
+      FirestoreTopicsRef.doc(topicId).collection(name).doc(userId).collection(subCollectionName).withConverter(
             fromFirestore: WrongAnswerModel.fromFirestore,
             toFirestore: (value, options) => value.toJson(),
           );

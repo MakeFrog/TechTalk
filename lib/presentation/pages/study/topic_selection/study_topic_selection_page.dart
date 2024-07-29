@@ -9,15 +9,8 @@ import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/foldable_app_bar.dart';
 import 'package:techtalk/presentation/widgets/section/study_topic_card.dart';
 
-class StudyTopicSelectionPage extends BasePage
-    with StudyTopicSelectionState, StudyTopicSelectionEvent {
+class StudyTopicSelectionPage extends BasePage with StudyTopicSelectionState, StudyTopicSelectionEvent {
   const StudyTopicSelectionPage({super.key});
-
-  @override
-  void onInit(WidgetRef ref) async {
-    super.onInit(ref);
-    await clearTopicCacheOnCondition();
-  }
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
@@ -26,8 +19,7 @@ class StudyTopicSelectionPage extends BasePage
     return GridView.builder(
       controller: scrollController(ref),
       physics: const ScrollPhysics(),
-      padding: const EdgeInsets.symmetric(vertical: 8) +
-          const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 8) + const EdgeInsets.symmetric(horizontal: 16),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 11,
@@ -39,11 +31,10 @@ class StudyTopicSelectionPage extends BasePage
 
         return StudyTopicCard(
           topic: topic,
-          onTap: () =>
-              onTapCard(
-                ref,
-                topic: topic,
-              ),
+          onTap: () => onTapCard(
+            ref,
+            topic: topic,
+          ),
         );
       },
     );

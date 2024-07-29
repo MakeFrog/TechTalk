@@ -21,11 +21,19 @@
       "topicInterview": "주제별 면접",
       "interview": "면접",
       "qa": "문답",
-      "interviewer": "{ } 면접관",
+      "interviewer": "{} 면접관",
       "interestedJobPositions": "관심 직군",
       "interestedTopics": "관심 주제",
       "goToInterview": "면접 보기",
       "startInterview": "면접 보기"
+    },
+    "interviewersName": {
+      "bitwiseNegation": "비트 단위 부정",
+      "incrementOperation": "증가 연산",
+      "equalityOperation": "동등 연산",
+      "comment": "주석",
+      "exponentiation": "거듭제곱",
+      "string": "문자열"
     },
     "interestedJobPositions": {
       "android": "android",

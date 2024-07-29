@@ -37,29 +37,21 @@ class ProviderLogger extends ProviderObserver {
 
 Future<void> runFlavoredApp() async {
   await Flavor.instance.setup();
-  await EasyLocalization.ensureInitialized();
 
   return runApp(
     ProviderScope(
       observers: [
         ProviderLogger(),
       ],
-      child: EasyLocalization(
-        // startLocale: locale,
-        supportedLocales: Localization.values.map((e) => e.locale).toList(),
-        path: 'assets/translations',
-        fallbackLocale: Localization.en.locale,
-        child: App(),
-      ),
+      child: App(),
     ),
   );
 }
 
-class App extends ConsumerWidget {
+class App extends StatelessWidget {
   App({super.key}) {
     _initLoadingIndicator();
   }
-
   static void _initLoadingIndicator() {
     EasyLoading.instance
       ..indicatorType = EasyLoadingIndicatorType.ring
@@ -76,24 +68,36 @@ class App extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialApp.router(
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
-      routerConfig: appRouter(ref),
-      debugShowCheckedModeBanner: false,
-      title: '테크톡',
-      themeMode: ThemeMode.light,
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
-      builder: EasyLoading.init(
-        builder: (context, child) {
-          AppColor.init(context);
-          AppSize.to.init(context);
-          return FToastBuilder()(
-            context,
-            ResponsiveLayoutBuilder(context, child),
+  Widget build(BuildContext context) {
+    return EasyLocalization(
+      // 앱 언어만 바꿀 경우 Locale(en-KR)과 같은 형식으로 들어오므로 langCode만 봐야함
+      useOnlyLangCode: true,
+      startLocale: View.of(context).platformDispatcher.locale,
+      fallbackLocale: Localization.en.locale,
+      supportedLocales: Localization.values.map((e) => e.locale).toList(),
+      path: 'assets/translations',
+      child: Consumer(
+        builder: (context, ref, child) {
+          return MaterialApp.router(
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            routerConfig: appRouter(ref),
+            debugShowCheckedModeBanner: false,
+            title: '테크톡',
+            themeMode: ThemeMode.light,
+            theme: AppTheme.light,
+            darkTheme: AppTheme.dark,
+            builder: EasyLoading.init(
+              builder: (context, child) {
+                AppColor.init(context);
+                AppSize.to.init(context);
+                return FToastBuilder()(
+                  context,
+                  ResponsiveLayoutBuilder(context, child),
+                );
+              },
+            ),
           );
         },
       ),
