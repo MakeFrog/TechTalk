@@ -60,7 +60,7 @@ class SetGeminiAiFeedbackUseCase
 '''),
         ],
         generationConfig: GenerationConfig(
-          temperature: 0.4,
+          temperature: 0.5,
           maxOutputTokens: 300,
         ),
       ).listen(
@@ -69,8 +69,9 @@ class SetGeminiAiFeedbackUseCase
           /// 1) 정답 여부 확인
           /// 2) 응답 텍스트 포맷
           /// 3) 스트림 값 삽입
-          ///
+
           response += it.text ?? '';
+
           setCorrectnessIfNeeded(response, param.checkAnswer);
           streamedFeedbackResponse.add(formatResponse(response));
         },
@@ -124,6 +125,7 @@ class SetGeminiAiFeedbackUseCase
 
     HapticFeedback.lightImpact();
 
+    state = FeedbackProgress.completed;
     checkAnswer.call(answerState: answerState);
   }
 
