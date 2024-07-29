@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/modules/converter/time_stamp_converter.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
@@ -11,6 +12,7 @@ class TopicModel {
     required this.id,
     required this.categoryId,
     required this.name,
+    required this.enName,
     this.imagePath,
     required this.skillIds,
     required this.isAvailable,
@@ -21,6 +23,7 @@ class TopicModel {
   final String categoryId;
   final List<String> skillIds;
   final String name;
+  final String enName;
   final String? imagePath;
   final bool isAvailable;
   @TimeStampConverter()
@@ -30,7 +33,7 @@ class TopicModel {
     return TopicEntity(
       id: id,
       categoryId: categoryId,
-      text: name,
+      text: AppLocale.isEn ? enName : name,
       skillIds: skillIds,
       imageUrl: imagePath,
       isAvailable: isAvailable,

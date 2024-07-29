@@ -4,13 +4,13 @@
 ///
 
 enum ProfileSettingType {
-  basicProfile('프로필'),
-  jobGroup('관심 직군'),
-  topic('관심 주제');
+  basicProfile('myInfo.profile'),
+  jobGroup('myInfo.interestedJobPositions'),
+  topic('myInfo.interestedTopics');
 
-  final String name;
+  final String nameTrKey;
 
-  const ProfileSettingType(this.name);
+  const ProfileSettingType(this.nameTrKey);
 
   static ProfileSettingType getByIndex(int index) => values.firstWhere(
         (type) => type.index == index,

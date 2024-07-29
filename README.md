@@ -17,22 +17,21 @@
 <br>
 
 # 목차
-    
+
 - [요약](#요약)
 - [구현 결과](#구현-결과)
 - [폴더 구조](#폴더-구조)
 - [프로젝트에 도입된 개념](#프로젝트에-도입된-개념)
 
-
 # 요약
 
-| Index       | Detail                                                                                                   |  
-|-------------|----------------------------------------------------------------------------------------------------------|
-| 컨트리뷰터       | <a href="https://github.com/suneogkwon">suneogkwon<a/>, <a href ="https://github.com/Xim-ya"> Ximya </a> |
-| 상태관리        | rivepord, rxdart                                                                                         |
-| 주요 패키지      | go_router(라우팅), get_it(DI), dio(네트워킹), hive(로컬 데이터베이스), json_serializable(모델링)                           |
-| Flutter SDK | 3.19.1                                                                                                   |
-| 구조          | <img src="https://velog.velcdn.com/images/ximya_hf/post/344edd13-f828-453b-a9c1-7ee076898af6/image.png"> |
+| Index       | Detail                                                                                                                                                                                                                      |  
+|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 컨트리뷰터       | <a href="https://github.com/suneogkwon">suneogkwon<a/>, <a href ="https://github.com/Yellowtoast">Yellowtoast</a>, <a href ="https://github.com/yundal8755">yundal8755 </a>, <a href ="https://github.com/Xim-ya">Ximya</a> |
+| 상태관리        | rivepord, rxdart                                                                                                                                                                                                            |
+| 주요 패키지      | go_router(라우팅), get_it(DI), dio(네트워킹), hive(로컬 데이터베이스), json_serializable(모델링)                                                                                                                                              |
+| Flutter SDK | 3.19.1                                                                                                                                                                                                                      |
+| 구조          | <img src="https://velog.velcdn.com/images/ximya_hf/post/344edd13-f828-453b-a9c1-7ee076898af6/image.png">                                                                                                                    |
 
 # 구현 결과
 
@@ -91,10 +90,14 @@
 ```
 
 # 프로젝트에 도입된 개념
-- <a href="https://medium.com/@tnsdjr7/flutter-%ED%81%B4%EB%A6%B0-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98%EC%9D%98-%EB%94%94%EB%A0%89%ED%86%A0%EB%A6%AC-%EA%B5%AC%EC%84%B1%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EB%AF%BC-8ea9cfabaf0f">Flutter 클린 아키텍처의 디렉토리 구성에 대한 고민</a>
+
+- <a href="https://medium.com/@tnsdjr7/flutter-%ED%81%B4%EB%A6%B0-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98%EC%9D%98-%EB%94%94%EB%A0%89%ED%86%A0%EB%A6%AC-%EA%B5%AC%EC%84%B1%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EB%AF%BC-8ea9cfabaf0f">
+  Flutter 클린 아키텍처의 디렉토리 구성에 대한 고민</a>
 - <a href="https://velog.io/@ximya_hf/Flutter-%EC%99%84%EC%84%B1%EB%8F%84-%EB%86%92%EC%9D%80-%EC%B1%84%ED%8C%85-%EA%B8%B0%EB%8A%A5%EC%9D%84-%EB%A7%8C%EB%93%A4%EA%B8%B0-%EC%9C%84%ED%95%9C-%EC%9D%B8%ED%84%B0%EB%A0%89%EC%85%98-%EB%A1%9C%EC%A7%81%EB%93%A4"> Flutter, 완성도 높은 채팅 기능을 만들기 위한 인터렉션 로직들 </a>
-- <a href="https://velog.io/@ximya_hf/organize-your-global-providersinflutterriverpod">Mixin Class를 활용하여 Riverpod 단점 극복하기 </a>
-- <a href="https://velog.io/@ximya_hf/optimizing-network-image-rendering-in-flutter">네트워크 이미지 렌더링을 최적화하여 메모리 사용량 절감하기</a>
+- <a href="https://velog.io/@ximya_hf/organize-your-global-providersinflutterriverpod">Mixin Class를
+  활용하여 Riverpod 단점 극복하기 </a>
+- <a href="https://velog.io/@ximya_hf/optimizing-network-image-rendering-in-flutter">네트워크 이미지 렌더링을
+  최적화하여 메모리 사용량 절감하기</a>
 - <a href="https://velog.io/@ximya_hf/flutter-clean-ui-code">내일 바로 써먹는 Flutter Clean UI Code </a>
 - <a href="https://velog.io/@ximya_hf/optimizing-network-image-rendering-in-flutter"> 네트워크 이미지 렌더링을 최적화하여 메모리 사용량 절감하기 </a>
 - <a href="https://velog.io/@ximya_hf/korean-profanity-filter-based-on-regex"> Flutter 정규 표현식을 이용한 욕설·비속어를 필터링 로직 </a>

@@ -14,6 +14,12 @@ class StudyTopicSelectionPage extends BasePage
   const StudyTopicSelectionPage({super.key});
 
   @override
+  void onInit(WidgetRef ref) async {
+    super.onInit(ref);
+    await clearTopicCacheOnCondition();
+  }
+
+  @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
 
@@ -33,10 +39,11 @@ class StudyTopicSelectionPage extends BasePage
 
         return StudyTopicCard(
           topic: topic,
-          onTap: () => onTapCard(
-            ref,
-            topic: topic,
-          ),
+          onTap: () =>
+              onTapCard(
+                ref,
+                topic: topic,
+              ),
         );
       },
     );

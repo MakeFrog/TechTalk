@@ -9,6 +9,8 @@ abstract class  LocaleKeys {
   static const common_cancel = 'common.cancel';
   static const common_confirm = 'common.confirm';
   static const common_notice = 'common.notice';
+  static const common_practicalInterviewFormat = 'common.practicalInterviewFormat';
+  static const common_topicInterviewFormat = 'common.topicInterviewFormat';
   static const common_responseResult_pass = 'common.responseResult.pass';
   static const common_responseResult_fail = 'common.responseResult.fail';
   static const common_responseResult_correct = 'common.responseResult.correct';
@@ -104,6 +106,9 @@ abstract class  LocaleKeys {
   static const onboarding = 'onboarding';
   static const jobSelection_promptJobPositions = 'jobSelection.promptJobPositions';
   static const jobSelection_selectOneOrMore = 'jobSelection.selectOneOrMore';
+  static const jobSelection_needSearchKeyword = 'jobSelection.needSearchKeyword';
+  static const jobSelection_needToSearchInEnglish = 'jobSelection.needToSearchInEnglish';
+  static const jobSelection_noResultFound = 'jobSelection.noResultFound';
   static const jobSelection = 'jobSelection';
   static const techSelection_promptTechInterviewTopics = 'techSelection.promptTechInterviewTopics';
   static const techSelection_searchInEnglish = 'techSelection.searchInEnglish';
@@ -144,6 +149,9 @@ abstract class  LocaleKeys {
   static const mistakeNote_letsHaveInterview = 'mistakeNote.letsHaveInterview';
   static const mistakeNote_wrongManyTimes = 'mistakeNote.wrongManyTimes';
   static const mistakeNote = 'mistakeNote';
+  static const myInfo_profile = 'myInfo.profile';
+  static const myInfo_interestedJobPositions = 'myInfo.interestedJobPositions';
+  static const myInfo_interestedTopics = 'myInfo.interestedTopics';
   static const myInfo_stayStrong = 'myInfo.stayStrong';
   static const myInfo_developer = 'myInfo.developer';
   static const myInfo_settings_settings = 'myInfo.settings.settings';

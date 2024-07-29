@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/constants/job_group.enum.dart';
+import 'package:techtalk/core/index.dart';
 
 class JobGroupSliverListView extends SliverList {
   JobGroupSliverListView(
@@ -23,7 +25,7 @@ class JobGroupSliverListView extends SliverList {
               title: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  item.name,
+                  AppLocale.isKo ? item.name : item.enName,
                   style: AppTextStyle.body2,
                 ),
               ),

@@ -1,4 +1,5 @@
 import 'package:techtalk/app/di/app_binding.dart';
+import 'package:techtalk/features/system/data_source/local/system_local_data_source.dart';
 import 'package:techtalk/features/system/data_source/remote/system_remote_data_source.dart';
 import 'package:techtalk/features/system/repositories/system_repository.dart';
 import 'package:techtalk/features/system/use_cases/get_version_info_use_case.dart';
@@ -15,6 +16,7 @@ export 'system.dart';
 export 'use_cases/get_version_info_use_case.dart';
 export 'use_cases/set_entry_flow_use_case.dart';
 
+final systemLocalDataSource = locator<SystemLocalDataSource>();
 final systemRemoteDataSource = locator<SystemRemoteDataSource>();
 final systemRepository = locator<SystemRepository>();
 final getVersionInfoUseCase = locator<GetVersionInfoUseCase>();
