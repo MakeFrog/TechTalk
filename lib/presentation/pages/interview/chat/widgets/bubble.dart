@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -79,8 +80,7 @@ class Bubble extends StatelessWidget {
                               return StreamBuilder<String>(
                                 stream: item.message.stream,
                                 builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
                                     return SizedBox(
                                       height: 17,
                                       width: 17,
@@ -91,8 +91,7 @@ class Bubble extends StatelessWidget {
                                     );
                                   }
 
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.none) {
+                                  if (snapshot.connectionState == ConnectionState.none) {
                                     return Text(
                                       '오류가 발생했어요',
                                       style: AppTextStyle.alert2,
@@ -100,7 +99,7 @@ class Bubble extends StatelessWidget {
                                   }
 
                                   return Text(
-                                    snapshot.requireData,
+                                    snapshot.hasData ? snapshot.requireData : '',
                                     style: AppTextStyle.body2,
                                   );
                                 },
@@ -162,8 +161,7 @@ class Bubble extends StatelessWidget {
                 borderRadius: radiusOnCase,
               ),
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
                 child: Text(
                   item.message.value,
                   style: AppTextStyle.body2.copyWith(color: AppColor.of.black),
@@ -179,9 +177,8 @@ class Bubble extends StatelessWidget {
                     return Wrap(
                       children: [
                         Text(
-                          '정답',
-                          style: AppTextStyle.alert1
-                              .copyWith(color: AppColor.of.blue2),
+                          tr(item.answerState.str),
+                          style: AppTextStyle.alert1.copyWith(color: AppColor.of.blue2),
                         ),
                         const SizedBox(
                           width: 2,
@@ -189,13 +186,13 @@ class Bubble extends StatelessWidget {
                         SvgPicture.asset(Assets.iconsRoundedCheckSmallBlue),
                       ],
                     );
+                  case AnswerState.inappropriate:
                   case AnswerState.wrong:
                     return Wrap(
                       children: [
                         Text(
-                          '오답',
-                          style: AppTextStyle.alert1
-                              .copyWith(color: AppColor.of.red2),
+                          tr(item.answerState.str),
+                          style: AppTextStyle.alert1.copyWith(color: AppColor.of.red2),
                         ),
                         const SizedBox(
                           width: 2,

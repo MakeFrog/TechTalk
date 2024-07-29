@@ -6,12 +6,19 @@ import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
+/// gemini-1.5-pro-001 모델에서는 한정된 SafetySetting만 가능
+final safetySettings = [
+  SafetySetting(HarmCategory.harassment, HarmBlockThreshold.none),
+  SafetySetting(HarmCategory.hateSpeech, HarmBlockThreshold.none),
+];
+
 final gemini = GenerativeModel(
   model: 'gemini-1.5-pro-001',
   apiKey: Flavor.env.geminiApiKey,
   systemInstruction: Content.system(
     'You are the interviewer, and the user is the candidate.',
   ),
+  safetySettings: safetySettings,
 );
 
 class SetGeminiAiFeedbackUseCase
@@ -45,6 +52,9 @@ class SetGeminiAiFeedbackUseCase
       ${param.userName} answered: "${param.userAnswer}".
 
       Based on the model answer provided, determine whether ${param.userName}'s response is correct by prefixing your response with "[c]" if it is correct, or "[w]" if it is incorrect. Provide a brief explanation of up to 100 characters regarding the correctness and quality of the answer.
+
+      If ${param.userAnswer} contains inappropriate or offensive content, respond with "[i]" indicating that the answer is unacceptable. Provide a brief explanation of why the answer is not suitable and how it should be appropriately addressed.
+      
       Please respond in the language corresponding to language code "${AppLocale.currentLocale.languageCode}".
     
 '''),
@@ -60,8 +70,6 @@ class SetGeminiAiFeedbackUseCase
           /// 2) 응답 텍스트 포맷
           /// 3) 스트림 값 삽입
           ///
-          if ((it.text ?? '').isEmpty) return;
-
           response += it.text ?? '';
           setCorrectnessIfNeeded(response, param.checkAnswer);
           streamedFeedbackResponse.add(formatResponse(response));
@@ -102,37 +110,38 @@ class SetGeminiAiFeedbackUseCase
   ///
   void setCorrectnessIfNeeded(
     String response,
-    void Function({required bool isCorrect}) checkAnswer,
+    void Function({required AnswerState answerState}) checkAnswer,
   ) {
     if (!state.isOnProgress) return;
 
-    if (response.contains(AnswerState.wrong.tag)) {
-      checkAnswer(
-        isCorrect: false,
-      );
-      state = FeedbackProgress.completed;
-    } else if (response.contains(AnswerState.correct.tag)) {
-      state = FeedbackProgress.completed;
-      checkAnswer(
-        isCorrect: true,
-      );
-    }
+    late final AnswerState answerState;
+
+    // 모든 AnswerState 값을 순회하면서 적절한 상태를 찾음
+    answerState = AnswerState.values.firstWhere(
+      (state) => response.contains(state.tag),
+      orElse: () => AnswerState.wrong,
+    );
+
     HapticFeedback.lightImpact();
+
+    checkAnswer.call(answerState: answerState);
   }
 
   /// 응답값 포맷
   /// 1. [c] & [w] 인디에키터 포맷, [AnswerState]
   /// 2. 불필요 줄바꿈 제거
   String formatResponse(String response) {
-    String formattedText = response.replaceAll('\n', '');
+    String formattedText = response.replaceAll('\n', '').trim();
 
     if (formattedText.length <= 3) return '';
 
-    if (formattedText.contains(AnswerState.wrong.tag)) {
-      return formattedText.replaceFirst(AnswerState.wrong.tag, '').trim();
-    } else {
-      return formattedText.replaceFirst(AnswerState.correct.tag, '').trim();
+    for (final state in AnswerState.values) {
+      if (formattedText.contains(state.tag)) {
+        return formattedText.replaceFirst(state.tag, '').trim();
+      }
     }
+
+    return formattedText;
   }
 }
 
@@ -143,5 +152,5 @@ typedef GetQuestionFeedbackParam = ({
   String userAnswer,
   String userName,
   void Function(String feedback) onFeedBackCompleted,
-  void Function({required bool isCorrect}) checkAnswer
+  void Function({required AnswerState answerState}) checkAnswer
 });

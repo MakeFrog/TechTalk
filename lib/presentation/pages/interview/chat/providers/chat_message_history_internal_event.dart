@@ -40,14 +40,13 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   /// 상태를 업데이트
   ///
   Future<AnswerChatEntity> _updateUserAnswerState({
-    required bool isCorrect,
+    required AnswerState answerState,
   }) async {
     final chatList = state.requireValue.toList();
 
-    final answeredChat = chatList.firstWhere((chat) => chat.type.isSentMessage)
-        as AnswerChatEntity;
+    final answeredChat = chatList.firstWhere((chat) => chat.type.isSentMessage) as AnswerChatEntity;
     final resolvedAnsweredChat = answeredChat.copyWith(
-      answerState: isCorrect ? AnswerState.correct : AnswerState.wrong,
+      answerState: answerState,
     );
     final targetIndex = chatList.indexWhere((chat) => chat == answeredChat);
     chatList[targetIndex] = resolvedAnsweredChat;
@@ -68,26 +67,25 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
 
     final nickname = ref.watch(userInfoProvider).requireValue!.nickname!;
     final firstQna = _getNewQna();
-final String introMessage;
+    final String introMessage;
 
-if (room.type.isSingleTopic) {
-  introMessage = rootNavigatorKey.currentContext!.tr(
-    LocaleKeys.undefined_greetingMessageSingleTopic,
-    namedArgs: {
-      'nickname': nickname,
-      'topic': room.topics.first.text,
-    },
-  );
-} else {
-  introMessage = rootNavigatorKey.currentContext!.tr(
-    LocaleKeys.undefined_greetingMessageMultipleTopics,
-    namedArgs: {
-      'nickname': nickname,
-      'firstTopic': StoredTopics.getById(firstQna.qna.id.getFirstPartOfSpliited).text,
-    },
-  );
-}
-
+    if (room.type.isSingleTopic) {
+      introMessage = rootNavigatorKey.currentContext!.tr(
+        LocaleKeys.undefined_greetingMessageSingleTopic,
+        namedArgs: {
+          'nickname': nickname,
+          'topic': room.topics.first.text,
+        },
+      );
+    } else {
+      introMessage = rootNavigatorKey.currentContext!.tr(
+        LocaleKeys.undefined_greetingMessageMultipleTopics,
+        namedArgs: {
+          'nickname': nickname,
+          'firstTopic': StoredTopics.getById(firstQna.qna.id.getFirstPartOfSpliited).text,
+        },
+      );
+    }
 
     final introChat = GuideChatEntity.createStatic(
       message: introMessage,
@@ -109,9 +107,7 @@ if (room.type.isSingleTopic) {
             qnas: ref.read(chatQnasProvider).requireValue,
           ).then(
             (_) {
-              ref
-                  .read(selectedChatRoomProvider.notifier)
-                  .updateInitialInfo(firstQuestionChat);
+              ref.read(selectedChatRoomProvider.notifier).updateInitialInfo(firstQuestionChat);
             },
           ),
           showMessage(
@@ -120,13 +116,9 @@ if (room.type.isSingleTopic) {
               showMessage(
                 message: firstQuestionChat.overwriteToStream(),
                 onDone: () {
-                  ref
-                      .read(userInfoProvider.notifier)
-                      .updateTopicRecordsOnCondition(room.topics);
+                  ref.read(userInfoProvider.notifier).updateTopicRecordsOnCondition(room.topics);
                   if (room.type.isPractical) {
-                    ref
-                        .read(userInfoProvider.notifier)
-                        .storeUserPracticalRecordExistInfo();
+                    ref.read(userInfoProvider.notifier).storeUserPracticalRecordExistInfo();
                   }
                 },
               );
@@ -141,10 +133,7 @@ if (room.type.isSingleTopic) {
   /// 새로운 Qna 추출
   ///
   ChatQnaEntity _getNewQna() {
-    final qna = ref
-        .read(chatQnasProvider)
-        .requireValue
-        .firstWhere((qna) => !qna.hasUserResponded);
+    final qna = ref.read(chatQnasProvider).requireValue.firstWhere((qna) => !qna.hasUserResponded);
 
     return qna;
   }
@@ -155,8 +144,7 @@ if (room.type.isSingleTopic) {
   void _rollbackToPreviousChatStep() {
     final chatList = state.requireValue;
 
-    final targetIndex =
-        chatList.firstIndexWhereOrNull((chat) => chat.type.isQuestionMessage);
+    final targetIndex = chatList.firstIndexWhereOrNull((chat) => chat.type.isQuestionMessage);
 
     update((previous) {
       return [...chatList.sublist(targetIndex!, chatList.length - 1)];
