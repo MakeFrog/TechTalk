@@ -1,12 +1,12 @@
 name: techtalk
 description: A new Flutter project.
 
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.2+7
 
 environment:
-  sdk: '>=3.0.6 <4.0.0'
+  sdk: ">=3.0.6 <4.0.0"
 
 dependencies:
   flutter:
@@ -17,8 +17,11 @@ dependencies:
   #ChatGPT
   chat_gpt_sdk: ^2.2.5
 
+  #Gemini
+  google_generative_ai: ^0.4.3
+
   # UI
-  cupertino_will_pop_scope: ^1.2.1  #pop scope (스와이프 백 제스쳐 지원)
+  cupertino_will_pop_scope: ^1.2.1 #pop scope (스와이프 백 제스쳐 지원)
   flutter_svg: ^2.0.5 # SVG 아이콘
   flutter_easyloading: ^3.0.5 # 로딩 UI 처리 관련
   fluttertoast: ^8.2.2 # 토스트
@@ -58,7 +61,6 @@ dependencies:
   # 네트워크
   dio: ^5.0.3
 
-
   # 로컬 데이터베이스
   hive: ^2.2.3
   hive_flutter: ^1.1.0
@@ -67,7 +69,6 @@ dependencies:
   # 모델링
   json_serializable: ^6.7.1
   json_annotation: ^4.8.1
-
 
   # Utils
   crypto: ^3.0.3 # 해슁
@@ -89,7 +90,6 @@ dependencies:
   # 앱 정보
   package_info_plus: ^5.0.1 # 현재 앱 버전 정보
   pub_semver: ^2.1.4 # 주부수 버전 비교 연산
-
 
 dev_dependencies:
   flutter_lints: ^2.0.1
@@ -117,8 +117,6 @@ flutter:
     - assets/character/
     - assets/json/
     - assets/translations/
-
-
 
   fonts:
     - family: pretendard
