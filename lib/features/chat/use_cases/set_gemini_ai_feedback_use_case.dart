@@ -21,8 +21,8 @@ final gemini = GenerativeModel(
   safetySettings: safetySettings,
 );
 
-class SetGeminiAiFeedbackUseCase
-    extends BaseNoFutureUseCase<GetQuestionFeedbackParam, Result<BehaviorSubject<String>>> {
+class SetGeminiAiFeedbackUseCase extends BaseNoFutureUseCase<
+    GetQuestionFeedbackParam, Result<BehaviorSubject<String>>> {
   ///
   /// 피드백 진행 상태
   ///
@@ -34,7 +34,8 @@ class SetGeminiAiFeedbackUseCase
   ///
   @override
   Result<BehaviorSubject<String>> call(GetQuestionFeedbackParam param) {
-    final BehaviorSubject<String> streamedFeedbackResponse = BehaviorSubject<String>();
+    final BehaviorSubject<String> streamedFeedbackResponse =
+        BehaviorSubject<String>();
     state = FeedbackProgress.onProgress;
 
     String response = '';
@@ -44,20 +45,15 @@ class SetGeminiAiFeedbackUseCase
         [
           Content.text('''
       You will ask an interview question and verify the correctness of the user's answer.
-
+      You are the interviewer, and the user is the candidate.
       The candidate's name is ${param.userName}. Always refer to the user by this nickname.
       The question is related to ${StoredTopics.getById(param.qna.qna.id.getFirstPartOfSpliited)}.
       The question presented is: ${param.question}.
       The model answer is: ${param.qna.qna.answers.map((str) => '-$str').join(' ')}'
       ${param.userName} answered: "${param.userAnswer}".
-
       Based on the model answer provided, determine whether ${param.userName}'s response is correct by prefixing your response with "[c]" if it is correct, or "[w]" if it is incorrect. Provide a brief explanation of up to 100 characters regarding the correctness and quality of the answer.
-
       If ${param.userAnswer} contains inappropriate or offensive content, respond with "[i]" indicating that the answer is unacceptable. Provide a brief explanation of why the answer is not suitable and how it should be appropriately addressed.
-      
-      Please respond in the language corresponding to language code "${AppLocale.currentLocale.languageCode}".
-    
-'''),
+      Please respond in the language corresponding to language code "${AppLocale.currentLocale.languageCode}".'''),
         ],
         generationConfig: GenerationConfig(
           temperature: 0.3,
@@ -76,18 +72,6 @@ class SetGeminiAiFeedbackUseCase
             setCorrectnessIfNeeded(response, param.checkAnswer);
             streamedFeedbackResponse.add(formatResponse(response));
           }
-        },
-        onDone: () {
-          /// 응답이 종료된 이후
-          /// 1) Stream 닫기
-          /// 2) 응답 진행 상태 초기화
-          /// 3) 완료 콜백 메소드 실행
-          state = FeedbackProgress.init;
-          streamedFeedbackResponse.close().then(
-                (_) => param.onFeedBackCompleted(
-                  formatResponse(streamedFeedbackResponse.value),
-                ),
-              );
         },
       ).onDone(() {
         /// 응답이 종료된 이후
