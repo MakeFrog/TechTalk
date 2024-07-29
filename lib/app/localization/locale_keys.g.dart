@@ -138,6 +138,8 @@ abstract class  LocaleKeys {
   static const interview_confirmEndInterview = 'interview.confirmEndInterview';
   static const interview_continueLater = 'interview.continueLater';
   static const interview_interviewEnded = 'interview.interviewEnded';
+  static const interview_noInterviewRecords = 'interview.noInterviewRecords';
+  static const interview_startYourInterviewByClicking = 'interview.startYourInterviewByClicking';
   static const interview = 'interview';
   static const qa_numberOfQa = 'qa.numberOfQa';
   static const qa_swiftAndTwoOthers = 'qa.swiftAndTwoOthers';

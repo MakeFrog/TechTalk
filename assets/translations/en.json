@@ -150,7 +150,9 @@
     "notification": "Notification",
     "confirmEndInterview": "Are you sure you want to end the interview?",
     "continueLater": "You can continue the interview later.",
-    "interviewEnded": "The interview has ended"
+    "interviewEnded": "The interview has ended",
+    "noInterviewRecords": "No interview records",
+    "startYourInterviewByClicking": "Start the interview by clicking the button below!"
   },
   "qa": {
     "numberOfQa": "Q&A",
@@ -188,7 +190,7 @@
     "others": {
       "others": "Others",
       "logout": "Logout",
-      "deleteAccount": "Delete Account"
+      "deleteAccount": "Delete"
     },
     "editMyInfo": {
       "editMyInfo": "Edit My Info",

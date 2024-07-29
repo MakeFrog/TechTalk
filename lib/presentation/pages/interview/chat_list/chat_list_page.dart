@@ -27,8 +27,8 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
         if (chatList.isEmpty) {
           return Center(
             child: ExceptionIndicator(
-              subTitle: '우측 하단 버튼을 클릭하여 면접을 시작해보세요!',
-              title: '면접 기록이 없어요',
+              subTitle: tr(LocaleKeys.interview_startYourInterviewByClicking),
+              title: tr(LocaleKeys.interview_noInterviewRecords),
               padding: EdgeInsets.only(
                 bottom: AppSize.to.ratioHeight(60),
               ),
@@ -90,11 +90,9 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
   }
 
   @override
-  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
-      BackButtonAppBar(
+  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) => BackButtonAppBar(
         title: switch (selectedInterviewType(ref)) {
-          InterviewType.singleTopic => selectedTopic(ref)?.text ??
-              ref.read(selectedChatRoomProvider).singleTopic.text,
+          InterviewType.singleTopic => selectedTopic(ref)?.text ?? ref.read(selectedChatRoomProvider).singleTopic.text,
           InterviewType.practical => tr(LocaleKeys.undefined_realWorldInterview),
         },
       );

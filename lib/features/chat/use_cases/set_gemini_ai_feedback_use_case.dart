@@ -60,7 +60,7 @@ class SetGeminiAiFeedbackUseCase
 '''),
         ],
         generationConfig: GenerationConfig(
-          temperature: 0.5,
+          temperature: 0.3,
           maxOutputTokens: 300,
         ),
       ).listen(
@@ -72,8 +72,10 @@ class SetGeminiAiFeedbackUseCase
 
           response += it.text ?? '';
 
-          setCorrectnessIfNeeded(response, param.checkAnswer);
-          streamedFeedbackResponse.add(formatResponse(response));
+          if (response.length >= 3) {
+            setCorrectnessIfNeeded(response, param.checkAnswer);
+            streamedFeedbackResponse.add(formatResponse(response));
+          }
         },
         onDone: () {
           /// 응답이 종료된 이후
@@ -120,11 +122,10 @@ class SetGeminiAiFeedbackUseCase
     // 모든 AnswerState 값을 순회하면서 적절한 상태를 찾음
     answerState = AnswerState.values.firstWhere(
       (state) => response.contains(state.tag),
-      orElse: () => AnswerState.wrong,
+      orElse: () => AnswerState.loading,
     );
 
     HapticFeedback.lightImpact();
-
     state = FeedbackProgress.completed;
     checkAnswer.call(answerState: answerState);
   }

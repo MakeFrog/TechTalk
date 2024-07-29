@@ -150,7 +150,9 @@
     "notification": "알림",
     "confirmEndInterview": "정말 면접을 종료하시겠어요?",
     "continueLater": "나중에 면접을 이어서 진행할 수 있습니다",
-    "interviewEnded": "면접이 종료되었습니다"
+    "interviewEnded": "면접이 종료되었습니다",
+    "noInterviewRecords": "면접 기록이 없어요",
+    "startYourInterviewByClicking": "우측 하단 버튼을 클릭하여 면접을 시작해보세요!"
   },
   "qa": {
     "numberOfQa": "개의 문답",
