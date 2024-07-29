@@ -1,20 +1,29 @@
 {
   "project_info": {
     "project_number": "481445661271",
+    "firebase_url": "https://techtalk-dev-33-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "techtalk-dev-33",
     "storage_bucket": "techtalk-dev-33.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:481445661271:android:fe3c67d232f8771fa27112",
+        "mobilesdk_app_id": "1:481445661271:android:22d7792dcd46a42ba27112",
         "android_client_info": {
-          "package_name": "com.techtalk.dev"
+          "package_name": "com.techtalk.ai.dev"
         }
       },
       "oauth_client": [
         {
-          "client_id": "481445661271-hc48nfrjgjc1j28snts7355ut240t312.apps.googleusercontent.com",
+          "client_id": "481445661271-p9bt2fna8psjjip0sp6gqp1etjubksqp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techtalk.ai.dev",
+            "certificate_hash": "77986d017edc380530787a5ba5e6439036b6fcd8"
+          }
+        },
+        {
+          "client_id": "481445661271-galdsdhfrj4m8iimeka4amibre4u4f7h.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,7 +36,59 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "481445661271-hc48nfrjgjc1j28snts7355ut240t312.apps.googleusercontent.com",
+              "client_id": "481445661271-galdsdhfrj4m8iimeka4amibre4u4f7h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "481445661271-evtbkarml9forfmlkmacvfouj0sas1k8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.techtalk.dev"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:481445661271:android:fe3c67d232f8771fa27112",
+        "android_client_info": {
+          "package_name": "com.techtalk.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "481445661271-koiontpp3a2mukakau24jmkubnuisa1p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techtalk.dev",
+            "certificate_hash": "bb37d669404e6f0ddc8563b6e71ada5f8a0ffb35"
+          }
+        },
+        {
+          "client_id": "481445661271-oo649gpcnugc3nla26r6dqv657kturvo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techtalk.dev",
+            "certificate_hash": "313ad20919805135b8bc5cf10863901ae717db5f"
+          }
+        },
+        {
+          "client_id": "481445661271-galdsdhfrj4m8iimeka4amibre4u4f7h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgcHuCwbnl0UMTrNPY_J14SjSZHzwJvtg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "481445661271-galdsdhfrj4m8iimeka4amibre4u4f7h.apps.googleusercontent.com",
               "client_type": 3
             },
             {
