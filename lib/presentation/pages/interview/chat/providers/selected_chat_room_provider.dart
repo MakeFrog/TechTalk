@@ -31,6 +31,7 @@ class SelectedChatRoom extends _$SelectedChatRoom {
   ///
   void updateProgressInfo(
       {required bool isCorrect, required BaseChatEntity lastChatMessage}) {
+
     late ChatProgressInfoEntity updatedProgressInfo = switch (isCorrect) {
       true => state.progressInfo.copyWith(
           correctAnswerCount: state.progressInfo.correctAnswerCount + 1),

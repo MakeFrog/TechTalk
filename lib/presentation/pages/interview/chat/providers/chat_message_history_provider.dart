@@ -104,7 +104,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           /// 만약 정상 작동하지 못했다면
           /// 기존 응답 메세지를 제거하고
           /// 팝업을 노출
-          if (answerState == AnswerState.inappropriate) {
+          if (answerState == AnswerState.error) {
             await _rollbackToPreviousChatStep();
             final context = rootNavigatorKey.currentContext!;
             DialogService.show(
@@ -120,6 +120,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
             /// 2) 유저의 답변 정답 여부 확인
             resolvedUserAnswer =
                 await _updateUserAnswerState(answerState: answerState);
+
             isAnswerCorrect = answerState.isCorrect;
           }
         },

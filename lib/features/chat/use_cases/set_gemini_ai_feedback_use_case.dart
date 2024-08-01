@@ -56,7 +56,7 @@ class SetGeminiAiFeedbackUseCase extends BaseNoFutureUseCase<
       Based on the model answer provided, determine whether ${param.userName}'s response is correct by prefixing your response with "[c]" if it is correct, or "[w]" if it is incorrect.
       Provide a technical explanation(don't ask additional question) of up to 120 characters regarding the correctness and quality of the answer.
 
-      If ${param.userAnswer} contains inappropriate or offensive content, respond with "[i]" indicating that the answer is unacceptable. Provide a brief explanation of why the answer is not suitable and how it should be appropriately addressed.
+      If ${param.userAnswer} contains inappropriate or offensive content, respond with "[x]" indicating that the answer is unacceptable. Provide a brief explanation of why the answer is not suitable and how it should be appropriately addressed.
           
       Please respond in the language corresponding to language code "${AppLocale.currentLocale.languageCode}".
 '''),
@@ -80,7 +80,7 @@ class SetGeminiAiFeedbackUseCase extends BaseNoFutureUseCase<
           }
         },
         onError: (e) {
-          param.checkAnswer.call(answerState: AnswerState.inappropriate);
+          param.checkAnswer.call(answerState: AnswerState.error);
           log('ai 응답 실패 : $e');
         },
       ).onDone(() {
@@ -117,11 +117,14 @@ class SetGeminiAiFeedbackUseCase extends BaseNoFutureUseCase<
   ) {
     if (!state.isOnProgress) return;
 
+
     late final AnswerState answerState;
 
     // 모든 AnswerState 값을 순회하면서 적절한 상태를 찾음
     answerState = AnswerState.values.firstWhere(
-      (state) => response.contains(state.tag),
+      (state) {
+        return response.contains(state.tag);
+      },
       orElse: () => AnswerState.loading,
     );
 

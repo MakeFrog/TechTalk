@@ -98,8 +98,12 @@ class _StepBtn extends ConsumerWidget with SignUpState, SignUpEvent {
                   ref,
                 )
             : null,
-        child: const Center(
-          child: Text('시작하기'),
+        child: Center(
+          child: Text(
+            context.tr(
+              LocaleKeys.common_start,
+            ),
+          ),
         ),
       ),
     );

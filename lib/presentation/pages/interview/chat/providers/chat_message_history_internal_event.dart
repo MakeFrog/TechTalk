@@ -141,24 +141,17 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   /// 새로운 Qna 추출
   ///
   ChatQnaEntity _getNewQna() {
-    final qna = ref
+    var qna = ref
         .read(chatQnasProvider)
         .requireValue
         .firstWhereOrNull((qna) => !qna.hasUserResponded);
 
-    if (qna == null) {
-      final context = rootNavigatorKey.currentContext!;
-      DialogService.show(
-          dialog: AppDialog.singleBtn(
-        btnContent: context.tr(LocaleKeys.common_confirm),
-        title: context.tr(LocaleKeys.common_errorDetectedTryLater),
-        onBtnClicked: () async {
-          context.pop();
-          context.pop();
-        },
-      ));
-      throw Exception('다음 질문을 정상적으로 가져오지 못함');
-    }
+    /// TODO
+    /// 비동기 순서가 꼬여서 아직 제시할 질문이 하나가 남았지만
+    /// 이미 응답이 완료되었기 때문에 마지막 질문을 못가져오는 경우가 잇음
+    /// 이런 경우 마지막 질문을 리턴함
+    /// 추후에 근본적인 해결 방법 필요
+    qna ??= ref.read(chatQnasProvider).requireValue.first;
 
     return qna;
   }
