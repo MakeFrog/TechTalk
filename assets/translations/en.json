@@ -8,7 +8,7 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "notice": "Notice",
-    "practicalInterviewFormat": "Practical\nInterview",
+    "practicalInterviewFormat": "Mock\nInterview",
     "topicInterviewFormat": "Topic\nInterview",
     "responseResult": {
       "pass": "Pass",
@@ -17,13 +17,13 @@
       "incorrect": "Incorrect"
     },
     "interviewTerms": {
-      "practicalInterview": "Practical Interview",
+      "practicalInterview": "Mock Interview",
       "topicInterview": "Topic Interview",
       "interview": "Interview",
       "qa": "Q&A",
       "interviewer": "Interviewer {}",
-      "interestedJobPositions": "Interested Job Positions",
-      "interestedTopics": "Interested Topics",
+      "interestedJobPositions": "Positions",
+      "interestedTopics": "Topics",
       "goToInterview": "Go to Interview",
       "startInterview": "Start Interview"
     },
@@ -90,60 +90,60 @@
     }
   },
   "home": {
-    "cheerUpMessage": "Hello, {nickname}!\nWe always cheers you on!",
-    "practicalInterview": "Practical Interview",
-    "practicalInterviewDesc": "Choose multiple topics and\npractice for the real interview!",
+    "cheerUpMessage": "Hi, {nickname}!\nAlways rooting for you!",
+    "practicalInterview": "Mock Interview",
+    "practicalInterviewDesc": "Pick multiple skill topics\nand try Live Interview!",
     "topicInterview": "Topic Interview",
-    "topicInterviewDesc": "Choose one topic to focus on\nand strategize your approach!",
+    "topicInterviewDesc": "Pick one skill topic\nand focus on it!",
     "takeInterview": "Take Interview"
   },
   "gnb": {
     "home": "Home",
     "learning": "Learning",
-    "mistakeNote": "Mistake Note",
+    "mistakeNote": "Review",
     "myInfo": "My"
   },
   "onboarding": {
     "login": {
-      "talkTalkWithAiInterviewer": "Talk Talk with \nAI Interviewer!",
+      "talkTalkWithAiInterviewer": "Walk the Walk with\nAI Interviewer!",
       "signUpWithGoogle": "Sign up with Google",
       "signUpWithApple": "Sign up with Apple"
     },
     "nickname": {
-      "greeting": "Hello! Shall we prepare for\nthe interview with Techtalk?",
-      "needNickname": "First, you need a nickname.",
+      "greeting": "Hi there! Ready to prepare\nyour next interview with Techtalk?",
+      "needNickname": "What should I call you?",
       "enterNickname": "Please enter your nickname",
       "nicknameAvailable": "The nickname is available.",
-      "nicknameTaken": "This nickname is already taken.",
-      "profanityNotAllowed": "You cannot use offensive or profane words.",
-      "nicknameLength": "Nicknames must be between 2 and 10 characters.",
-      "invalidNickname": "This nickname cannot be used.",
+      "nicknameTaken": "Sorry, this nickname is already taken.",
+      "profanityNotAllowed": "Please avoid offensive words",
+      "nicknameLength": "Please use 2-10 characters",
+      "invalidNickname": "Sorry, this nickname cannot be used.",
       "noSpacesAllowed": "Nicknames cannot contain spaces."
     }
   },
   "jobSelection": {
-    "promptJobPositions": "Let me know the job positions\nyou are interested in.",
+    "promptJobPositions": "What positions\nare you interested in?",
     "selectOneOrMore": "Please select one or more.",
     "needSearchKeyword": "Please search for a skill",
     "needToSearchInEnglish": "Please search for skills in English",
     "noResultFound": "No results found"
   },
   "techSelection": {
-    "promptTechInterviewTopics": "Let me know\nthe technical interview topics you are preparing for!",
+    "promptTechInterviewTopics": "What skills are you interested in?",
     "searchInEnglish": "Please search in English.",
     "selectOneOrMore": "Please select one or more.",
-    "searchTechnologies": "Search for technologies",
+    "searchTechnologies": "Search for your tech skill",
     "searchInKorean": "Please search for skills in English.",
-    "noSearchResults": "Sorry, there are no search results for the requested topics."
+    "noSearchResults": "Sorry, there are no search results"
   },
   "interview": {
-    "hello": "Hello, {}! We always cheers you on!",
-    "multipleTopics": "Choose multiple topics and practice for the real interview!",
-    "focusOnOneTopic": "Choose one topic to focus on and strategize your approach!",
-    "selectInterviewTopic": "Please suggest topics for\nAI interview",
-    "chooseNumberOfQuestions": "Please choose the number of interview questions",
+    "hello": "Hi, {}! Always rooting for you.",
+    "multipleTopics": "Pick multiple skill topics and try Live Interview!",
+    "focusOnOneTopic": "Pick one skill topic and focus on it!",
+    "selectInterviewTopic": "Choose your topics for AI interview",
+    "chooseNumberOfQuestions": "Select the number\nof interview questions",
     "startInterview": "Start Interview",
-    "maxFourQuestions": "You can choose up to 4 interview questions",
+    "maxFourQuestions": "You can choose up to 4 skills",
     "interviewer": "{ } Interviewer",
     "waitPlease": "Please wait a moment.",
     "provideAnswer": "Please provide your answer",
@@ -157,33 +157,33 @@
   "qa": {
     "numberOfQa": "Q&A",
     "swiftAndTwoOthers": "Swift and 2 others",
-    "noCompletedQa": "There are no completed question and answer items.\nPlease answer the interview questions!",
-    "answerInterviewQuestions": "Please answer the interview questions!",
+    "noCompletedQa": "No history of completion.\nPlease answer the interview questions!",
+    "answerInterviewQuestions": "Come back after answering the interview questions.",
     "myAnswer": "My Answer",
-    "modelAnswer": "Model Answer"
+    "modelAnswer": "Sample Answer"
   },
   "learning": {
     "hideAnswers": "Hide the Answers",
     "oneOutOfFifty": "1/50 Questions",
-    "previous": "Previous",
+    "previous": "Prev",
     "all": "All",
     "next": "Next"
   },
   "mistakeNote": {
-    "noMistakeRecords": "There are no incorrect\nanswers recorded yet.",
-    "letsHaveInterview": "Let's have a {tech} interview!",
-    "wrongManyTimes": "Wrong many times"
+    "noMistakeRecords": "No wrong answers yet.",
+    "letsHaveInterview": "Let’s try a {tech} interview!",
+    "wrongManyTimes": "Frequently Wrong"
   },
   "myInfo": {
     "profile": "Profile",
-    "interestedJobPositions": "Interested Job Positions",
-    "interestedTopics": "Interested Topics",
-    "stayStrong": "Stay strong today.",
+    "interestedJobPositions": "Positions",
+    "interestedTopics": "Skills",
+    "stayStrong": "You've got this!",
     "developer": "{ } Developer",
     "settings": {
       "settings": "Settings",
       "currentVersion": "Current Version",
-      "feedbackAndInquiries": "Feedback and Inquiries",
+      "feedbackAndInquiries": "Feedback and Q&A",
       "privacyAndTerms": "Privacy and Terms",
       "rateApp": "Rate the App"
     },
@@ -195,9 +195,9 @@
     "editMyInfo": {
       "editMyInfo": "Edit My Info",
       "profile": "Profile",
-      "topicsUpdated": "Topics have been updated.",
-      "noSearchResults": "No search results found.",
-      "jobPositionsUpdated": "Job positions have been updated.",
+      "topicsUpdated": "My skill has been updated.",
+      "noSearchResults": "Sorry, no skill topics found.",
+      "jobPositionsUpdated": "My position has been updated.",
       "profileUpdated": "Profile information has been updated."
     },
     "deleteAccount": {
@@ -242,7 +242,7 @@
     "next_question_prompt": "I will ask the next {topic} question.",
     "interview_ended": "The interview has ended.",
     "and": "and",
-    "realWorldInterview": "Practical Interview",
+    "realWorldInterview": "Mock Interview",
     "failedToLoadWrongAnswerNotes": "Failed to load the wrong answer notes.",
     "greetingMessageSingleTopic": "Nice to meet you! {nickname}. I will ask you a {topic} interview question.",
     "greetingMessageMultipleTopics": "Nice to meet you! {nickname}. First, I will ask you a {firstTopic} question.",

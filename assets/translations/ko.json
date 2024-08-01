@@ -137,7 +137,7 @@
     "noSearchResults": "검색된 기술면접 주제가 없습니다."
   },
   "interview": {
-    "hello": "Hello, {}! 테크톡이 항상 응원해요",
+    "hello": "안녕하세요, {}님! 테크톡이 항상 응원해요",
     "multipleTopics": "여러 주제를 선택해 실전 연습을 해보세요!",
     "focusOnOneTopic": "하나의 주제를 선택해 집중 공략해 보세요!",
     "selectInterviewTopic": "AI 면접을 진행할 주제를 알려주세요",
