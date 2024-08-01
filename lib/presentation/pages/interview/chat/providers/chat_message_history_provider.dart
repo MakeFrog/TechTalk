@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
@@ -12,8 +14,10 @@ import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
+import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
 part 'chat_message_history_internal_event.dart';
+
 part 'chat_message_history_provider.g.dart';
 
 @riverpod
@@ -31,7 +35,9 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           final response = await getChatMessageHistoryUseCase(room.id);
           return response.fold(
             onSuccess: (chatCollection) {
-              ref.read(chatQnasProvider.notifier).arrangeQnasInOrder(chatCollection.progressQnaIds);
+              ref
+                  .read(chatQnasProvider.notifier)
+                  .arrangeQnasInOrder(chatCollection.progressQnaIds);
               return chatCollection.chatHistories;
             },
             onFailure: (e) {
@@ -62,7 +68,8 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   /// 1) 유저의 답변 채팅 메세지 추가
   ///
   Future<AnswerChatEntity> addUserMessage(String message) async {
-    final answeredQuestion = state.requireValue.firstWhere((chat) => chat is QuestionChatEntity) as QuestionChatEntity;
+    final answeredQuestion = state.requireValue
+        .firstWhere((chat) => chat is QuestionChatEntity) as QuestionChatEntity;
     final answerChat = AnswerChatEntity.initial(
       message: message,
       qnaId: answeredQuestion.qnaId,
@@ -86,18 +93,40 @@ class ChatMessageHistory extends _$ChatMessageHistory {
     late AnswerChatEntity resolvedUserAnswer;
     late bool isAnswerCorrect;
     final room = ref.read(selectedChatRoomProvider);
-    final qna = ref.read(chatQnasProvider.notifier).getQnaById(userAnswer.qnaId);
+    final qna =
+        ref.read(chatQnasProvider.notifier).getQnaById(userAnswer.qnaId);
     /*final feedbackChat*/
     final response = getAnswerFeedBackUseCase.call(
       (
         qna: qna,
         userName: ref.read(userInfoProvider).requireValue!.nickname!,
         checkAnswer: ({required AnswerState answerState}) async {
-          /// 2) 유저의 답변 정답 여부 확인
-          resolvedUserAnswer = await _updateUserAnswerState(answerState: answerState);
-          isAnswerCorrect = answerState.isCorrect;
+          /// 만약 정상 작동하지 못했다면
+          /// 기존 응답 메세지를 제거하고
+          /// 팝업을 노출
+          if (answerState == AnswerState.inappropriate) {
+            await _rollbackToPreviousChatStep();
+            final context = rootNavigatorKey.currentContext!;
+            DialogService.show(
+                dialog: AppDialog.singleBtn(
+              btnContent: context.tr(LocaleKeys.common_confirm),
+              title: context.tr(LocaleKeys.common_errorDetectedTryLater),
+              onBtnClicked: () async {
+                context.pop();
+                context.pop();
+              },
+            ));
+          } else {
+            /// 2) 유저의 답변 정답 여부 확인
+            resolvedUserAnswer =
+                await _updateUserAnswerState(answerState: answerState);
+            isAnswerCorrect = answerState.isCorrect;
+          }
         },
-        question: state.requireValue.firstWhere((chat) => chat.type.isQuestionMessage).message.value,
+        question: state.requireValue
+            .firstWhere((chat) => chat.type.isQuestionMessage)
+            .message
+            .value,
         userAnswer: userAnswer.message.value,
         onFeedBackCompleted: (String feedback) async {
           unawaited(
@@ -111,7 +140,8 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           );
 
           /// 4) 피드백 채팅이 전달된 이후 가이드 채팅과 다음 질문 채팅을 전달
-          final isCompleted = ref.read(selectedChatRoomProvider.notifier).isLastQuestion();
+          final isCompleted =
+              ref.read(selectedChatRoomProvider.notifier).isLastQuestion();
 
           final feedbackChat = FeedbackChatEntity.createStatic(
             message: feedback,
@@ -128,11 +158,15 @@ class ChatMessageHistory extends _$ChatMessageHistory {
             guideMessage = rootNavigatorKey.currentContext!.tr(
               LocaleKeys.undefined_next_question_prompt,
               namedArgs: {
-                'topic': room.type.isPractical ? StoredTopics.getById(newQna.qna.id.getFirstPartOfSpliited).text : '',
+                'topic': room.type.isPractical
+                    ? StoredTopics.getById(newQna.qna.id.getFirstPartOfSpliited)
+                        .text
+                    : '',
               },
             );
           } else {
-            guideMessage = rootNavigatorKey.currentContext!.tr(LocaleKeys.undefined_interview_ended);
+            guideMessage = rootNavigatorKey.currentContext!
+                .tr(LocaleKeys.undefined_interview_ended);
           }
 
           /// NOTE : 순서 주의
@@ -157,9 +191,12 @@ class ChatMessageHistory extends _$ChatMessageHistory {
                 feedbackChat,
                 resolvedUserAnswer,
               ]).then(
-                (_) => ref.read(selectedChatRoomProvider.notifier).updateProgressInfo(
+                (_) => ref
+                    .read(selectedChatRoomProvider.notifier)
+                    .updateProgressInfo(
                       isCorrect: isAnswerCorrect,
-                      lastChatMessage: isCompleted ? guideChat : nextQuestionChat,
+                      lastChatMessage:
+                          isCompleted ? guideChat : nextQuestionChat,
                     ),
               ),
               showMessage(
@@ -189,7 +226,8 @@ class ChatMessageHistory extends _$ChatMessageHistory {
       },
       onFailure: (e) {
         _rollbackToPreviousChatStep();
-        SnackBarService.showSnackBar('정답 여부를 판별하는 과정에서 오류가 발생했습니다. 잠시후 다시 시도해주세요.');
+        SnackBarService.showSnackBar(
+            '정답 여부를 판별하는 과정에서 오류가 발생했습니다. 잠시후 다시 시도해주세요.');
       },
     );
   }

@@ -1,5 +1,6 @@
 {
   "common": {
+    "errorDetectedTryLater": "An error occurred.\nPlease try again later.",
     "emptyName": "Anonymous",
     "next": "Next",
     "close": "Close",

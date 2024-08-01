@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/services.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:rxdart/rxdart.dart';
@@ -16,13 +18,13 @@ final gemini = GenerativeModel(
   model: 'gemini-1.5-pro-001',
   apiKey: Flavor.env.geminiApiKey,
   systemInstruction: Content.system(
-    'You are the interviewer, and the user is the candidate.',
+    'You are an interviewer, and the user is an applicant for a developer position. Please conduct the conversation naturally, as if you were an interviewer from a real company.',
   ),
   safetySettings: safetySettings,
 );
 
-class SetGeminiAiFeedbackUseCase
-    extends BaseNoFutureUseCase<GetQuestionFeedbackParam, Result<BehaviorSubject<String>>> {
+class SetGeminiAiFeedbackUseCase extends BaseNoFutureUseCase<
+    GetQuestionFeedbackParam, Result<BehaviorSubject<String>>> {
   ///
   /// 피드백 진행 상태
   ///
@@ -34,7 +36,8 @@ class SetGeminiAiFeedbackUseCase
   ///
   @override
   Result<BehaviorSubject<String>> call(GetQuestionFeedbackParam param) {
-    final BehaviorSubject<String> streamedFeedbackResponse = BehaviorSubject<String>();
+    final BehaviorSubject<String> streamedFeedbackResponse =
+        BehaviorSubject<String>();
     state = FeedbackProgress.onProgress;
 
     String response = '';
@@ -45,18 +48,17 @@ class SetGeminiAiFeedbackUseCase
           Content.text('''
       You will ask an interview question and verify the correctness of the user's answer.
 
-      The candidate's name is ${param.userName}. Always refer to the user by this nickname.
       The question is related to ${StoredTopics.getById(param.qna.qna.id.getFirstPartOfSpliited)}.
       The question presented is: ${param.question}.
-      The model answer is: ${param.qna.qna.answers.map((str) => '-$str').join(' ')}'
-      ${param.userName} answered: "${param.userAnswer}".
+      The answer is: ${param.qna.qna.answers.map((str) => '-$str').join(' ')}'
+      ${param.userName} answered: "${param.userAnswer}".  
 
-      Based on the model answer provided, determine whether ${param.userName}'s response is correct by prefixing your response with "[c]" if it is correct, or "[w]" if it is incorrect. Provide a brief explanation of up to 100 characters regarding the correctness and quality of the answer.
+      Based on the model answer provided, determine whether ${param.userName}'s response is correct by prefixing your response with "[c]" if it is correct, or "[w]" if it is incorrect.
+      Provide a brief explanation(don't ask additional question) of up to 100 characters regarding the correctness and quality of the answer.
 
       If ${param.userAnswer} contains inappropriate or offensive content, respond with "[i]" indicating that the answer is unacceptable. Provide a brief explanation of why the answer is not suitable and how it should be appropriately addressed.
-      
+          
       Please respond in the language corresponding to language code "${AppLocale.currentLocale.languageCode}".
-    
 '''),
         ],
         generationConfig: GenerationConfig(
@@ -77,17 +79,9 @@ class SetGeminiAiFeedbackUseCase
             streamedFeedbackResponse.add(formatResponse(response));
           }
         },
-        onDone: () {
-          /// 응답이 종료된 이후
-          /// 1) Stream 닫기
-          /// 2) 응답 진행 상태 초기화
-          /// 3) 완료 콜백 메소드 실행
-          state = FeedbackProgress.init;
-          streamedFeedbackResponse.close().then(
-                (_) => param.onFeedBackCompleted(
-                  formatResponse(streamedFeedbackResponse.value),
-                ),
-              );
+        onError: (e) {
+          param.checkAnswer.call(answerState: AnswerState.inappropriate);
+          log('ai 응답 실패 : $e');
         },
       ).onDone(() {
         /// 응답이 종료된 이후
@@ -95,11 +89,17 @@ class SetGeminiAiFeedbackUseCase
         /// 2) 응답 진행 상태 초기화
         /// 3) 완료 콜백 메소드 실행
         state = FeedbackProgress.init;
-        streamedFeedbackResponse.close().then(
-              (_) => param.onFeedBackCompleted(
-                formatResponse(streamedFeedbackResponse.value),
-              ),
+        streamedFeedbackResponse.close().then((_) {
+          String? streamedRes = streamedFeedbackResponse.valueOrNull;
+
+          if (streamedRes == null) {
+            return;
+          } else {
+            return param.onFeedBackCompleted(
+              formatResponse(streamedFeedbackResponse.value),
             );
+          }
+        });
       });
 
       return Result.success(streamedFeedbackResponse);

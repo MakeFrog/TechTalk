@@ -1,6 +1,7 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
 abstract class  LocaleKeys {
+  static const common_errorDetectedTryLater = 'common.errorDetectedTryLater';
   static const common_emptyName = 'common.emptyName';
   static const common_next = 'common.next';
   static const common_close = 'common.close';
