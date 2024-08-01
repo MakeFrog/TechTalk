@@ -43,7 +43,6 @@ class Flavor {
 
     /// FireBase 초기화
     await Firebase.initializeApp(
-      name: option.projectId,
       options: option,
     );
 

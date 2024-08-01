@@ -26,11 +26,19 @@ class VersionModel {
       );
 
   factory VersionModel.fromFirestore(
-          DocumentSnapshot snapshot, SnapshotOptions? options) =>
-      VersionModel.fromJson(snapshot.data() as Map<String, dynamic>);
+          DocumentSnapshot snapshot, SnapshotOptions? options) {
+    final data = snapshot.data() as Map<String, dynamic>;
+    return VersionModel.fromJson(data);
+  }
 
-  factory VersionModel.fromJson(Map<String, dynamic> json) =>
-      _$VersionModelFromJson(json);
+  factory VersionModel.fromJson(Map<String, dynamic> json) {
+    return VersionModel(
+      isSystemAvailable: json['is_system_available'] as bool? ?? false,
+      needUpdate: json['need_update'] as bool? ?? false,
+      versionCode: json['version_code'] as String? ?? '',
+      notification: json['notification'] as String? ?? '',
+    );
+  }
 
   Map<String, dynamic> toJson() => _$VersionModelToJson(this);
 }

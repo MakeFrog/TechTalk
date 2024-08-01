@@ -15,11 +15,27 @@
       },
       "oauth_client": [
         {
+          "client_id": "481445661271-fkp6j6tkvtcnk3fm4c8rppgsfv2i72ui.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techtalk.ai.dev",
+            "certificate_hash": "313ad20919805135b8bc5cf10863901ae717db5f"
+          }
+        },
+        {
           "client_id": "481445661271-p9bt2fna8psjjip0sp6gqp1etjubksqp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.techtalk.ai.dev",
             "certificate_hash": "77986d017edc380530787a5ba5e6439036b6fcd8"
+          }
+        },
+        {
+          "client_id": "481445661271-rcpnec6j5b9q7u93os46phdp76lhr4s4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techtalk.ai.dev",
+            "certificate_hash": "bb37d669404e6f0ddc8563b6e71ada5f8a0ffb35"
           }
         },
         {
@@ -52,26 +68,18 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:481445661271:android:fe3c67d232f8771fa27112",
+        "mobilesdk_app_id": "1:481445661271:android:4e17ea400e3102e7a27112",
         "android_client_info": {
-          "package_name": "com.techtalk.dev"
+          "package_name": "com.techtalk.android.dev"
         }
       },
       "oauth_client": [
         {
-          "client_id": "481445661271-koiontpp3a2mukakau24jmkubnuisa1p.apps.googleusercontent.com",
+          "client_id": "481445661271-0m4hsfegv84ftr2egc16m3sf16gfq9kt.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.techtalk.dev",
-            "certificate_hash": "bb37d669404e6f0ddc8563b6e71ada5f8a0ffb35"
-          }
-        },
-        {
-          "client_id": "481445661271-oo649gpcnugc3nla26r6dqv657kturvo.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.techtalk.dev",
-            "certificate_hash": "313ad20919805135b8bc5cf10863901ae717db5f"
+            "package_name": "com.techtalk.android.dev",
+            "certificate_hash": "f3545303b0f76dc0f21a52872f493a40943d7645"
           }
         },
         {

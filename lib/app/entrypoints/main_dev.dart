@@ -3,7 +3,7 @@ import 'package:techtalk/app/environment/flavor.dart';
 import 'package:techtalk/presentation/app.dart';
 
 void main() async {
-  Flavor.initialize(Environment.prod);
+  Flavor.initialize(Environment.dev);
 
   return runFlavoredApp();
 }

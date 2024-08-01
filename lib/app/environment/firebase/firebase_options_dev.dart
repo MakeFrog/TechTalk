@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAgcHuCwbnl0UMTrNPY_J14SjSZHzwJvtg',
-    appId: '1:481445661271:android:fe3c67d232f8771fa27112',
+    appId: '1:481445661271:android:22d7792dcd46a42ba27112',
     messagingSenderId: '481445661271',
     projectId: 'techtalk-dev-33',
     storageBucket: 'techtalk-dev-33.appspot.com',
