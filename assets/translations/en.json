@@ -96,7 +96,7 @@
     "practicalInterviewDesc": "Pick multiple skill topics and try Live Interview!",
     "topicInterview": "Topic Interview",
     "topicInterviewDesc": "Pick one skill topic and focus on it!",
-    "takeInterview": "Take Interview"
+    "takeInterview": "Start"
   },
   "gnb": {
     "home": "Home",
@@ -159,7 +159,7 @@
     "waitForReply": "Wait for the interviewer to finish before replying"
   },
   "qa": {
-    "numberOfQa": " Q&A",
+    "numberOfQa": " items",
     "swiftAndTwoOthers": "Swift and 2 others",
     "noCompletedQa": "No history of completion.\nPlease answer the interview questions!",
     "answerInterviewQuestions": "Come back after answering the interview questions.",
