@@ -16,7 +16,7 @@ class GoogleSignInButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedScaleTap(
+    return ShrinkGestureView(
       borderRadius: BorderRadius.circular(16),
       onTap: onTap,
       child: FilledButton(

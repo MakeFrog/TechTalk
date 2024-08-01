@@ -29,7 +29,7 @@ class _EmptyListPlaceholder extends ConsumerWidget
             builder: (context) {
               if (userTopicRecords(ref).isNotEmpty) {
                 return Center(
-                  child: AnimatedScaleTap(
+                  child: ShrinkGestureView(
                     borderRadius: BorderRadius.circular(16),
                     child: FilledButton(
                       style: FilledButton.styleFrom(
@@ -51,7 +51,7 @@ class _EmptyListPlaceholder extends ConsumerWidget
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    AnimatedScaleTap(
+                    ShrinkGestureView(
                       borderRadius: BorderRadius.circular(16),
                       child: FilledButton(
                         style: FilledButton.styleFrom(
@@ -73,7 +73,7 @@ class _EmptyListPlaceholder extends ConsumerWidget
                       ),
                     ),
                     const Gap(8),
-                    AnimatedScaleTap(
+                    ShrinkGestureView(
                       borderRadius: BorderRadius.circular(16),
                       child: OutlinedButton(
                         style: FilledButton.styleFrom(

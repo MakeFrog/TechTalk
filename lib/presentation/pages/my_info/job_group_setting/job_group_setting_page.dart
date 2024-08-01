@@ -56,7 +56,7 @@ class _SaveBtn extends ConsumerWidget with JobGroupSettingState, JobGroupSetting
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AnimatedScaleTap(
+    return ShrinkGestureView(
       borderRadius: BorderRadius.circular(16),
       disableScaleAnimation: !isBottomFixedBtnActivate(ref),
       child: FilledButton(

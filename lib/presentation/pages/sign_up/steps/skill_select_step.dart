@@ -89,7 +89,7 @@ class _StepBtn extends ConsumerWidget with SignUpState, SignUpEvent {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AnimatedScaleTap(
+    return ShrinkGestureView(
       borderRadius: BorderRadius.circular(16),
       disableScaleAnimation: !isSkillSelectionFilled(ref),
       child: FilledButton(

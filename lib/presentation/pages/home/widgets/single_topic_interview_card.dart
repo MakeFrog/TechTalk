@@ -86,7 +86,7 @@ class SingleTopicInterviewCard extends ConsumerWidget
     const double imgSize = 40;
     return Consumer(
       builder: (context, ref, _) {
-        return AnimatedScaleTap(
+        return ShrinkGestureView(
           onTap: () {
             routeToChatListPage(
               context,
@@ -131,7 +131,13 @@ class SingleTopicInterviewCard extends ConsumerWidget
                     backgroundColor: AppColor.of.background1,
                     foregroundColor: AppColor.of.gray4,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    routeToChatListPage(
+                      context,
+                      type: InterviewType.singleTopic,
+                      topicId: topic.id,
+                    );
+                  },
                   child: Text(
                     tr(LocaleKeys.home_takeInterview),
                     style: AppTextStyle.body1,

@@ -20,7 +20,7 @@ class _SaveButton extends HookConsumerWidget
           (hasProfileImgEdited(ref) || hasNicknameEdited(ref));
     });
 
-    return AnimatedScaleTap(
+    return ShrinkGestureView(
       disableScaleAnimation: !isBtnActivate.value,
       borderRadius: BorderRadius.circular(16),
       child: Padding(

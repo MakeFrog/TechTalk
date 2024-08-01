@@ -123,7 +123,7 @@ class _StepBtn extends HookConsumerWidget with SignUpState, SignUpEvent {
       isBtnActivate.value = formKey.currentState!.validate();
     });
 
-    return AnimatedScaleTap(
+    return ShrinkGestureView(
       borderRadius: BorderRadius.circular(16),
       disableScaleAnimation: !isBtnActivate.value,
       child: FilledButton(

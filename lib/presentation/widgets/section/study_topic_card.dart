@@ -19,7 +19,7 @@ class StudyTopicCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final double _topicImgSize = AppSize.to.ratioWidth(72);
 
-    return AnimatedScaleTap(
+    return ShrinkGestureView(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: Container(

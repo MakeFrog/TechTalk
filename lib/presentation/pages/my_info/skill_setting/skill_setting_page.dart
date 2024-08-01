@@ -74,7 +74,7 @@ class _SaveBtn extends ConsumerWidget
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AnimatedScaleTap(
+    return ShrinkGestureView(
       disableScaleAnimation: !isBottomFixedBtnActivate(ref),
       borderRadius: BorderRadius.circular(16),
       child: FilledButton(

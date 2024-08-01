@@ -15,7 +15,7 @@ class PracticalInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AnimatedScaleTap(
+    return ShrinkGestureView(
       borderRadius: BorderRadius.circular(16),
       onTap: () => onPracticalCardTapped(ref),
       child: Container(
