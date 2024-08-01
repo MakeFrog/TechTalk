@@ -12,7 +12,8 @@ import 'package:techtalk/presentation/widgets/section/job_group_selection_scaffo
 import 'package:techtalk/presentation/widgets/section/job_group_sliver_list_view.dart';
 import 'package:techtalk/presentation/widgets/section/selected_job_group_list_view_delegate.dart';
 
-class JobGroupSettingPage extends BasePage with JobGroupSettingState, JobGroupSettingEvent {
+class JobGroupSettingPage extends BasePage
+    with JobGroupSettingState, JobGroupSettingEvent {
   const JobGroupSettingPage({super.key});
 
   @override
@@ -48,10 +49,12 @@ class JobGroupSettingPage extends BasePage with JobGroupSettingState, JobGroupSe
   bool get setBottomSafeArea => true;
 
   @override
-  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) => const BackButtonAppBar();
+  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
+      const BackButtonAppBar();
 }
 
-class _SaveBtn extends ConsumerWidget with JobGroupSettingState, JobGroupSettingEvent {
+class _SaveBtn extends ConsumerWidget
+    with JobGroupSettingState, JobGroupSettingEvent {
   const _SaveBtn({super.key});
 
   @override
@@ -65,8 +68,12 @@ class _SaveBtn extends ConsumerWidget with JobGroupSettingState, JobGroupSetting
                 onSaveBtnTapped(ref);
               }
             : null,
-        child: const Center(
-          child: Text('저장하기'),
+        child: Center(
+          child: Text(
+            context.tr(
+              LocaleKeys.common_save,
+            ),
+          ),
         ),
       ),
     );

@@ -102,7 +102,7 @@ class EntireQuestionListView extends HookConsumerWidget
           child: Row(
             children: [
               Text(
-                '${index + 1}번',
+                'Q${index + 1}',
                 style: AppTextStyle.body3.copyWith(
                   color: isSelected ? AppColor.of.brand3 : AppColor.of.gray3,
                 ),

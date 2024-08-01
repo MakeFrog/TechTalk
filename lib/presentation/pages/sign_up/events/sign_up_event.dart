@@ -1,9 +1,11 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';

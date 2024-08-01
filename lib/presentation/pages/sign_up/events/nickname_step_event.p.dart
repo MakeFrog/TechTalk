@@ -38,14 +38,16 @@ extension NicknameStepEvent on SignUpEvent {
       onSuccess: (isDuplicated) {
         EasyLoading.dismiss();
         if (isDuplicated) {
-          SnackBarService.showSnackBar('중복된 닉네임 입니다');
+          SnackBarService.showSnackBar(
+              ref.context.tr(LocaleKeys.onboarding_nickname_nicknameTaken));
         } else {
           ref.read(signUpStepControllerProvider.notifier).next();
         }
       },
       onFailure: (e) {
         EasyLoading.dismiss();
-        SnackBarService.showSnackBar('프로필 정보를 업데이트하지 못했습니다');
+        SnackBarService.showSnackBar(
+            ref.context.tr(LocaleKeys.myInfo_editMyInfo_profileUpdatedFailed));
         log(e.toString());
       },
     );

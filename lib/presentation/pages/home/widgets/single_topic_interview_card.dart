@@ -51,7 +51,7 @@ class SingleTopicInterviewCard extends ConsumerWidget
           ),
           if (user(ref)?.recordedTopics.isEmpty ?? true)
             Padding(
-              padding: const EdgeInsets.only(bottom: 12, left: 24),
+              padding: const EdgeInsets.only(bottom: 12, left: 24, right: 24),
               child: Text(
                 tr(LocaleKeys.home_topicInterviewDesc),
                 style: AppTextStyle.body1.copyWith(

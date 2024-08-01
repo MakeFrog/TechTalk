@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/providers/picked_profile_img.dart';
@@ -66,14 +68,15 @@ mixin class ProfileSettingEvent {
     checkDuplicationRes.fold(
       onSuccess: (isDuplicated) {
         if (isDuplicated && hasNicknameEdited) {
-          SnackBarService.showSnackBar('중복된 닉네임 입니다');
+          SnackBarService.showSnackBar(
+              ref.context.tr(LocaleKeys.onboarding_nickname_nicknameTaken));
           EasyLoading.dismiss();
         } else {
           _saveProfileInfo(ref, editedNickname);
         }
       },
       onFailure: (e) {
-        _dismissLoadingAndShowMessage(ref, '프로필 정보를 업데이트하지 못했습니다');
+        _dismissLoadingAndShowMessage(ref, ref.context.tr(LocaleKeys.myInfo_editMyInfo_profileUpdatedFailed));
         log(e.toString());
       },
     );
@@ -94,11 +97,13 @@ mixin class ProfileSettingEvent {
     response.fold(
       onSuccess: (userRes) {
         ref.read(userInfoProvider.notifier).edit(userRes);
-        _dismissLoadingAndShowMessage(ref, '프로필 정보를 업데이트 했습니다');
+        _dismissLoadingAndShowMessage(
+            ref, ref.context.tr(LocaleKeys.myInfo_editMyInfo_profileUpdated));
       },
       onFailure: (e) {
         log(e.toString());
-        _dismissLoadingAndShowMessage(ref, '프로필 정보를 업데이트하지 못했습니다');
+        _dismissLoadingAndShowMessage(ref,
+            ref.context.tr(LocaleKeys.myInfo_editMyInfo_profileUpdatedFailed));
       },
     );
   }

@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skill_entity.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/searched_skills_provider.dart';
@@ -66,7 +68,7 @@ mixin class SkillSettingEvent {
     ref.read(userInfoProvider.notifier).updateData(user).whenComplete(() {
       EasyLoading.dismiss();
       ref.context.pop();
-      SnackBarService.showSnackBar('스킬 정보가 변경되었습니다');
+      SnackBarService.showSnackBar(ref.context.tr(LocaleKeys.myInfo_editMyInfo_topicsUpdated));
     });
   }
 }

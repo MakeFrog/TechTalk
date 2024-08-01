@@ -92,9 +92,9 @@
   "home": {
     "cheerUpMessage": "Hi, {nickname}!\nAlways rooting for you!",
     "practicalInterview": "Mock Interview",
-    "practicalInterviewDesc": "Pick multiple skill topics\nand try Live Interview!",
+    "practicalInterviewDesc": "Pick multiple skill topics and try Live Interview!",
     "topicInterview": "Topic Interview",
-    "topicInterviewDesc": "Pick one skill topic\nand focus on it!",
+    "topicInterviewDesc": "Pick one skill topic and focus on it!",
     "takeInterview": "Take Interview"
   },
   "gnb": {
@@ -129,7 +129,7 @@
     "noResultFound": "No results found"
   },
   "techSelection": {
-    "promptTechInterviewTopics": "What skills are you interested in?",
+    "promptTechInterviewTopics": "What skills are you\ninterested in?",
     "searchInEnglish": "Please search in English.",
     "selectOneOrMore": "Please select one or more.",
     "searchTechnologies": "Search for your tech skill",
@@ -152,10 +152,13 @@
     "continueLater": "You can continue the interview later.",
     "interviewEnded": "The interview has ended",
     "noInterviewRecords": "No interview records",
-    "startYourInterviewByClicking": "Start the interview by clicking the button below!"
+    "startYourInterviewByClicking": "Click the button at the bottom right\nto start the interview!",
+    "interviewHasEnd": "The interview has ended",
+    "errorHasDetected": "An error occurred, unable to send the response",
+    "waitForReply": "Wait for the interviewer to finish before replying"
   },
   "qa": {
-    "numberOfQa": "Q&A",
+    "numberOfQa": " Q&A",
     "swiftAndTwoOthers": "Swift and 2 others",
     "noCompletedQa": "No history of completion.\nPlease answer the interview questions!",
     "answerInterviewQuestions": "Come back after answering the interview questions.",
@@ -198,7 +201,8 @@
       "topicsUpdated": "My skill has been updated.",
       "noSearchResults": "Sorry, no skill topics found.",
       "jobPositionsUpdated": "My position has been updated.",
-      "profileUpdated": "Profile information has been updated."
+      "profileUpdated": "Profile information has been updated.",
+      "profileUpdatedFailed": "Failed to update profile information"
     },
     "deleteAccount": {
       "confirmDeleteAccount": "Are you sure you want to delete your account?"

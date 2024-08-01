@@ -129,7 +129,7 @@
     "noResultFound": "검색된 결과가 없습니다."
   },
   "techSelection": {
-    "promptTechInterviewTopics": "준비하고 있는 기술면접 주제를 알려주세요!",
+    "promptTechInterviewTopics": "준비하고 있는 기술면접\n주제를 알려주세요!",
     "searchInEnglish": "영어로 검색해주세요.",
     "selectOneOrMore": "1개 이상 선택해 주세요.",
     "searchTechnologies": "관심 기술을 검색해 주세요",
@@ -152,7 +152,10 @@
     "continueLater": "나중에 면접을 이어서 진행할 수 있습니다",
     "interviewEnded": "면접이 종료되었습니다",
     "noInterviewRecords": "면접 기록이 없어요",
-    "startYourInterviewByClicking": "우측 하단 버튼을 클릭하여 면접을 시작해보세요!"
+    "startYourInterviewByClicking": "우측 하단 버튼을 클릭하여 면접을 시작해보세요!",
+    "interviewHasEnd": "종료된 면접입니다",
+    "errorHasDetected": "오류가 발생하여 답변을 전송할 수 없습니다",
+    "waitForReply": "면접관의 응답이 마무리된 이후 답변을 전송해주세요."
   },
   "qa": {
     "numberOfQa": "개의 문답",
@@ -198,7 +201,8 @@
       "topicsUpdated": "스킬 정보가 변경되었습니다.",
       "noSearchResults": "검색된 결과가 없습니다.",
       "jobPositionsUpdated": "직군 정보가 변경되었습니다.",
-      "profileUpdated": "프로필 정보를 업데이트 했습니다."
+      "profileUpdated": "프로필 정보를 업데이트 했습니다.",
+      "profileUpdatedFailed": "프로필 정보를 업데이트하지 못했습니다"
     },
     "deleteAccount": {
       "confirmDeleteAccount": "정말 회원탈퇴 하시겠습니까?"

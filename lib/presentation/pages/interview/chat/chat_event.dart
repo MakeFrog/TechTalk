@@ -37,7 +37,7 @@ mixin class ChatEvent {
     final message = textEditingController.text;
     if (message.isEmpty) {
       unawaited(HapticFeedback.vibrate());
-      return SnackBarService.showSnackBar('답변을 입력해 주세요');
+      return SnackBarService.showSnackBar(ref.context.tr(LocaleKeys.interview_provideAnswer));
     }
     textEditingController.clear();
 
@@ -53,15 +53,17 @@ mixin class ChatEvent {
     unawaited(HapticFeedback.vibrate());
     late String message;
 
+    final context = rootNavigatorKey.currentContext!;
     if (progressState.isDone) {
-      message = '종료된 면접입니다.';
+      message = context.tr(LocaleKeys.interview_interviewEnded);
     }
 
     if (progressState.isError) {
-      message = '오류가 발생하여 답변을 전송할 수 없습니다';
+      message = context.tr(LocaleKeys.interview_errorHasDetected);
     }
+
     if (progressState.isInterviewerReplying) {
-      message = '면접관의 응답이 마무리된 이후 답변을 전송해주세요.';
+      message = context.tr(LocaleKeys.interview_waitForReply);
     }
 
     return SnackBarService.showSnackBar(message);
@@ -113,7 +115,6 @@ mixin class ChatEvent {
     DialogService.show(
       dialog: AppDialog.dividedBtn(
         title: tr(LocaleKeys.undefined_report),
-
         subTitle: tr(LocaleKeys.undefined_weirdResponse),
         description: tr(LocaleKeys.undefined_helpImproveAccuracy),
         leftBtnContent: tr(LocaleKeys.common_cancel),
@@ -128,7 +129,7 @@ mixin class ChatEvent {
               onSuccess: (value) {
                 ref.context.pop();
                 ScaffoldMessenger.of(ref.context).showSnackBar(
-                   SnackBar(
+                  SnackBar(
                     content: Text(tr(LocaleKeys.undefined_thankYouForFeedback)),
                   ),
                 );
@@ -136,7 +137,7 @@ mixin class ChatEvent {
               onFailure: (e) {
                 ref.context.pop();
                 ScaffoldMessenger.of(ref.context).showSnackBar(
-                   SnackBar(
+                  SnackBar(
                     content: Text(tr(LocaleKeys.undefined_thankYouForFeedback)),
                   ),
                 );
