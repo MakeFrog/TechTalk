@@ -48,7 +48,8 @@ abstract class BasePage extends HookConsumerWidget {
     ///
     return PopScope(
       canPop: canPop,
-      onPopInvoked: (_) async {
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
         onWillPop(ref);
       },
       child: GestureDetector(
