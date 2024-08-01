@@ -16,7 +16,9 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
 
   @override
   Future<List<TopicQnaModel>> getQnas(String topicId) async {
-    final snapshot = await FirestoreTopicQuestionsRef.collection(topicId, locale: AppLocale.currentLocale).get();
+    final snapshot = await FirestoreTopicQuestionsRef.collection(topicId,
+            locale: AppLocale.currentLocale)
+        .get();
 
     if (snapshot.docs.isEmpty) {
       throw Exception();
@@ -43,7 +45,8 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
   }
 
   @override
-  Future<void> updateWrongAnswer({required WrongAnswerModel wrongAnswer, required String topicId}) async {
+  Future<void> updateWrongAnswer(
+      {required WrongAnswerModel wrongAnswer, required String topicId}) async {
     await FirebaseFirestore.instance.runTransaction(
       (transaction) async {
         final docRef = FirestoreTopicWrongAnswerRef.subCollectionDoc(
@@ -56,9 +59,12 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
 
         if (prevDoc.exists) {
           transaction.update(docRef, {
-            FirestoreTopicWrongAnswerRef.wrongAnswerCountField: FieldValue.increment(1),
-            FirestoreTopicWrongAnswerRef.updatedAtField: FieldValue.serverTimestamp(),
-            FirestoreTopicWrongAnswerRef.userAnswerField: wrongAnswer.userAnswer,
+            FirestoreTopicWrongAnswerRef.wrongAnswerCountField:
+                FieldValue.increment(1),
+            FirestoreTopicWrongAnswerRef.updatedAtField:
+                FieldValue.serverTimestamp(),
+            FirestoreTopicWrongAnswerRef.userAnswerField:
+                wrongAnswer.userAnswer,
           });
         } else {
           transaction.set(
@@ -72,7 +78,8 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
 
   @override
   Future<List<WrongAnswerModel>> getWrongAnswers(String topicId) async {
-    final collectionRef = FirestoreTopicWrongAnswerRef.subCollection(topicId, FirebaseAuth.instance.currentUser!.uid)
+    final collectionRef = FirestoreTopicWrongAnswerRef.subCollection(
+            topicId, FirebaseAuth.instance.currentUser!.uid)
         .orderBy('updated_at', descending: true);
 
     final snapshot = await collectionRef.get();
@@ -115,15 +122,17 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
 // Future<void> addQuestions(String topicId, Locale locale) async {
 //   // JSON 파일 읽기
 //   String jsonString = await rootBundle.loadString('assets/json/topic/question/${locale.languageCode}/$topicId.json');
-
+//
 //   List<dynamic> jsonData = json.decode(jsonString);
-
+//
 //   for (var e in jsonData) {
 //     final ref =
-//         FirebaseFirestore.instance.collection('Topics').doc(topicId).collection(locale.languageCode).doc(e['id']);
-
+//     FirebaseFirestore.instance.collection('Topics').doc(topicId).collection(locale.languageCode).doc(e['id']);
+//
 //     final map = e as Map<String, dynamic>;
-
+//
+//     print('삽입중 : $map');
+//
 //     await ref.set({
 //       'id': map['id'] as String,
 //       'question': map['question'] as String,

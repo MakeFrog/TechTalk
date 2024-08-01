@@ -23,7 +23,7 @@ class UserAuth extends _$UserAuth {
         state = value.user;
       },
       onFailure: (e) {
-        log('에임 $e');
+        print('에임 $e');
       },
     );
   }
