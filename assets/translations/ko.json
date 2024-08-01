@@ -141,7 +141,7 @@
     "hello": "안녕하세요, {}님! 테크톡이 항상 응원해요",
     "multipleTopics": "여러 주제를 선택해 실전 연습을 해보세요!",
     "focusOnOneTopic": "하나의 주제를 선택해 집중 공략해 보세요!",
-    "selectInterviewTopic": "AI 면접을 진행할 주제를 알려주세요",
+    "selectInterviewTopic": "AI 면접을\n진행할 주제를 알려주세요",
     "chooseNumberOfQuestions": "면접 질문 개수를\n선택해주세요",
     "startInterview": "면접 시작하기",
     "maxFourQuestions": "최대 {number}개까지 선택할 수 있어요",
