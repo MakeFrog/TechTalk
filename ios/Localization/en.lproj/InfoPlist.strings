@@ -6,3 +6,4 @@
   
 */
 "CFBundleDisplayName" = "TechTalk";
+"NSPhotoLibraryUsageDescription" = "The app needs access to the photo library to change your profile image.";
