@@ -50,10 +50,10 @@ class SetGeminiAiFeedbackUseCase extends BaseNoFutureUseCase<
 
       The question is related to ${StoredTopics.getById(param.qna.qna.id.getFirstPartOfSpliited)}.
       The question presented is: ${param.question}.
-      The answer is: ${param.qna.qna.answers.map((str) => '-$str').join(' ')}'
-      ${param.userName} answered: "${param.userAnswer}".  
-
-      Based on the model answer provided, determine whether ${param.userName}'s response is correct by prefixing your response with "[c]" if it is correct, or "[w]" if it is incorrect.
+      The correct answer is: ${param.qna.qna.answers.map((str) => '-$str').join(' ')}'
+      I answered: "${param.userAnswer}".  
+  
+      Based on the correct answer provided, determine whether response is correct by prefixing your response with "[c]" if it is correct, or "[w]" if it is incorrect.
       Provide a technical explanation(don't ask additional question) of up to 120 characters regarding the correctness and quality of the answer.
 
       If ${param.userAnswer} contains inappropriate or offensive content, respond with "[x]" indicating that the answer is unacceptable. Provide a brief explanation of why the answer is not suitable and how it should be appropriately addressed.
