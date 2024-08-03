@@ -37,7 +37,7 @@ class _QnaListTile extends HookWidget {
         _buildAnswers(),
         const Gap(46),
         Text(
-          '내 답변',
+          context.tr(LocaleKeys.qa_myAnswer),
           style: AppTextStyle.body1,
         ),
         const Gap(16),
