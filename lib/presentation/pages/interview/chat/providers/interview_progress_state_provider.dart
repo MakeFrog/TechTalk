@@ -104,7 +104,6 @@ class InterviewProgressState extends _$InterviewProgressState {
     unawaited(
       response.fold(
         onSuccess: (increasedCount) async {
-          print('증가된 카운트 : ${increasedCount}');
           ref
               .read(userInfoProvider.notifier)
               .increaseCompletedInterviewCount(increasedCount);
@@ -112,7 +111,10 @@ class InterviewProgressState extends _$InterviewProgressState {
               .read(userInfoProvider)
               .requireValue!
               .isReviewRequestAvailable) {
-            if (increasedCount == 2 || increasedCount == 12) {
+            if (increasedCount == 1 ||
+                increasedCount == 6 ||
+                increasedCount == 12 ||
+                increasedCount == 20) {
               final InAppReview inAppReview = InAppReview.instance;
 
               if (await inAppReview.isAvailable()) {
