@@ -52,6 +52,7 @@ class App extends StatelessWidget {
   App({super.key}) {
     _initLoadingIndicator();
   }
+
   static void _initLoadingIndicator() {
     EasyLoading.instance
       ..indicatorType = EasyLoadingIndicatorType.ring
@@ -72,7 +73,9 @@ class App extends StatelessWidget {
     return EasyLocalization(
       // 앱 언어만 바꿀 경우 Locale(en-KR)과 같은 형식으로 들어오므로 langCode만 봐야함
       useOnlyLangCode: true,
-      startLocale: View.of(context).platformDispatcher.locale,
+      startLocale: Localization.getMatchedLocalization(
+              View.of(context).platformDispatcher.locale.languageCode)
+          .locale,
       fallbackLocale: Localization.en.locale,
       supportedLocales: Localization.values.map((e) => e.locale).toList(),
       path: 'assets/translations',
