@@ -131,7 +131,8 @@ class SingleTopicInterviewCard extends ConsumerWidget
                     backgroundColor: AppColor.of.background1,
                     foregroundColor: AppColor.of.gray4,
                   ),
-                  onPressed: () {
+                  onPressed: () async {
+                    await Future.delayed(const Duration(milliseconds: 200));
                     routeToChatListPage(
                       context,
                       type: InterviewType.singleTopic,
