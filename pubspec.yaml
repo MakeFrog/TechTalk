@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none"
 
-version: 1.0.4+9
+version: 1.0.4+10
 
 environment:
   sdk: ">=3.0.6 <4.0.0"
@@ -13,9 +13,6 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-
-  #ChatGPT
-  chat_gpt_sdk: ^2.2.5
 
   #Gemini
   google_generative_ai: ^0.4.3
@@ -116,8 +113,6 @@ flutter:
     - assets/images/
     - assets/character/
     - assets/json/
-    - assets/json/topic/question/ko/
-    - assets/json/topic/question/en/
     - assets/translations/
 
   fonts:
