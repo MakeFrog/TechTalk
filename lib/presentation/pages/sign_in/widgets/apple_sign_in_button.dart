@@ -17,15 +17,15 @@ class AppleSignInButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ShrinkGestureView(
       borderRadius: BorderRadius.circular(16),
-      onTap: onTap,
+
       child: FilledButton(
         style: FilledButton.styleFrom(
           backgroundColor: const Color(0xFF09090B),
           foregroundColor: Colors.white,
           textStyle: AppTextStyle.body1,
-          padding: EdgeInsets.zero,
-        ),
-        onPressed: () {},
+            padding: EdgeInsets.zero,
+          ),
+        onPressed:onTap,
         child: Stack(
           clipBehavior: Clip.none,
           children: [
