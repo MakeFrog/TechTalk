@@ -26,13 +26,18 @@ class _SettingCard extends ConsumerWidget with MyPageState, MyPageEvent {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              version(ref).when(
-                data: (versionInfo) => CardListTileButton(
-                  text:
-                      '${tr(LocaleKeys.myInfo_settings_currentVersion)} ${versionInfo.versionCode}',
-                ),
-                error: (e, _) => const EmptyBox(),
-                loading: () => const CardListTileButton(text: '현재 버전'),
+              FutureBuilder(
+                future: currentAppVersion(),
+                builder: (context, value) {
+                  if (value.hasData) {
+                    return CardListTileButton(
+                      text:
+                          '${tr(LocaleKeys.myInfo_settings_currentVersion)} ${value.requireData}',
+                    );
+                  } else {
+                    return const EmptyBox();
+                  }
+                },
               ),
               CardListTileButton(
                 onTap: onVisitCsPageTapped,

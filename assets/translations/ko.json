@@ -1,5 +1,6 @@
 {
   "common": {
+    "errorDetectedTryLater": "오류가 발생했어요.\n잠시 후 다시 시도해 주세요",
     "emptyName": "익명",
     "next": "다음",
     "close": "닫기",
@@ -129,7 +130,7 @@
     "noResultFound": "검색된 결과가 없습니다."
   },
   "techSelection": {
-    "promptTechInterviewTopics": "준비하고 있는 기술면접 주제를 알려주세요!",
+    "promptTechInterviewTopics": "준비하고 있는 기술면접\n주제를 알려주세요!",
     "searchInEnglish": "영어로 검색해주세요.",
     "selectOneOrMore": "1개 이상 선택해 주세요.",
     "searchTechnologies": "관심 기술을 검색해 주세요",
@@ -137,10 +138,10 @@
     "noSearchResults": "검색된 기술면접 주제가 없습니다."
   },
   "interview": {
-    "hello": "Hello, {}! 테크톡이 항상 응원해요",
+    "hello": "안녕하세요, {}님! 테크톡이 항상 응원해요",
     "multipleTopics": "여러 주제를 선택해 실전 연습을 해보세요!",
     "focusOnOneTopic": "하나의 주제를 선택해 집중 공략해 보세요!",
-    "selectInterviewTopic": "AI 면접을 진행할 주제를 알려주세요",
+    "selectInterviewTopic": "AI 면접을\n진행할 주제를 알려주세요",
     "chooseNumberOfQuestions": "면접 질문 개수를\n선택해주세요",
     "startInterview": "면접 시작하기",
     "maxFourQuestions": "최대 {number}개까지 선택할 수 있어요",
@@ -152,7 +153,10 @@
     "continueLater": "나중에 면접을 이어서 진행할 수 있습니다",
     "interviewEnded": "면접이 종료되었습니다",
     "noInterviewRecords": "면접 기록이 없어요",
-    "startYourInterviewByClicking": "우측 하단 버튼을 클릭하여 면접을 시작해보세요!"
+    "startYourInterviewByClicking": "우측 하단 버튼을 클릭하여 면접을 시작해보세요!",
+    "interviewHasEnd": "종료된 면접입니다",
+    "errorHasDetected": "오류가 발생하여 답변을 전송할 수 없습니다",
+    "waitForReply": "면접관의 응답이 마무리된 이후 답변을 전송해주세요."
   },
   "qa": {
     "numberOfQa": "개의 문답",
@@ -198,7 +202,8 @@
       "topicsUpdated": "스킬 정보가 변경되었습니다.",
       "noSearchResults": "검색된 결과가 없습니다.",
       "jobPositionsUpdated": "직군 정보가 변경되었습니다.",
-      "profileUpdated": "프로필 정보를 업데이트 했습니다."
+      "profileUpdated": "프로필 정보를 업데이트 했습니다.",
+      "profileUpdatedFailed": "프로필 정보를 업데이트하지 못했습니다"
     },
     "deleteAccount": {
       "confirmDeleteAccount": "정말 회원탈퇴 하시겠습니까?"

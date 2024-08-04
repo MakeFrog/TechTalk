@@ -67,7 +67,7 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
                 if (message.answerState.isCorrect)
                   FirestoreChatRoomRef.correctAnswerCount:
                       FieldValue.increment(1),
-                if (message.answerState.isWrong)
+                if (message.answerState.isWrongOrInappropriate)
                   FirestoreChatRoomRef.incorrectAnswerCount:
                       FieldValue.increment(1),
               })

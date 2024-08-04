@@ -15,7 +15,7 @@ class PracticalInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AnimatedScaleTap(
+    return ShrinkGestureView(
       borderRadius: BorderRadius.circular(16),
       onTap: () => onPracticalCardTapped(ref),
       child: Container(
@@ -48,7 +48,7 @@ class PracticalInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
             ),
             if (!(user(ref)?.hasPracticalInterviewRecord ?? false))
               Padding(
-                padding: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.only(bottom: 12, right: 24),
                 child: Text(
                   tr(LocaleKeys.home_practicalInterviewDesc),
                   style: AppTextStyle.body1.copyWith(

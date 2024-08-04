@@ -84,7 +84,8 @@ class ChatQnas extends _$ChatQnas {
   /// 오답노트 기록 업데이트
   ///
   Future<void> _updateWrongAnswer(ChatQnaEntity qna) async {
-    if (qna.message!.answerState.isWrong) {
+    if (qna.message!.answerState.isWrong ||
+        qna.message!.answerState.isInappropriate) {
       final response = await updateWrongAnswerUSeCase.call(qna);
       response.fold(
         onSuccess: (_) {
@@ -92,7 +93,7 @@ class ChatQnas extends _$ChatQnas {
           ref.invalidate(wrongAnswersProvider);
         },
         onFailure: (e) {
-          log('오답 노트 업데이트 실패 : $e');
+          log('오답 노트 업데이트 실 패 : $e');
         },
       );
     }

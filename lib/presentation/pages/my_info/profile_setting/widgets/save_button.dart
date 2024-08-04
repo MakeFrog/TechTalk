@@ -20,7 +20,7 @@ class _SaveButton extends HookConsumerWidget
           (hasProfileImgEdited(ref) || hasNicknameEdited(ref));
     });
 
-    return AnimatedScaleTap(
+    return ShrinkGestureView(
       disableScaleAnimation: !isBtnActivate.value,
       borderRadius: BorderRadius.circular(16),
       child: Padding(
@@ -31,8 +31,12 @@ class _SaveButton extends HookConsumerWidget
                   onSaveBtnTapped(ref);
                 }
               : null,
-          child: const Center(
-            child: Text('저장하기'),
+          child: Center(
+            child: Text(
+              context.tr(
+                LocaleKeys.common_save,
+              ),
+            ),
           ),
         ),
       ),

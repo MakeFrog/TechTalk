@@ -1,6 +1,7 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
 abstract class  LocaleKeys {
+  static const common_errorDetectedTryLater = 'common.errorDetectedTryLater';
   static const common_emptyName = 'common.emptyName';
   static const common_next = 'common.next';
   static const common_close = 'common.close';
@@ -140,6 +141,9 @@ abstract class  LocaleKeys {
   static const interview_interviewEnded = 'interview.interviewEnded';
   static const interview_noInterviewRecords = 'interview.noInterviewRecords';
   static const interview_startYourInterviewByClicking = 'interview.startYourInterviewByClicking';
+  static const interview_interviewHasEnd = 'interview.interviewHasEnd';
+  static const interview_errorHasDetected = 'interview.errorHasDetected';
+  static const interview_waitForReply = 'interview.waitForReply';
   static const interview = 'interview';
   static const qa_numberOfQa = 'qa.numberOfQa';
   static const qa_swiftAndTwoOthers = 'qa.swiftAndTwoOthers';
@@ -179,6 +183,7 @@ abstract class  LocaleKeys {
   static const myInfo_editMyInfo_noSearchResults = 'myInfo.editMyInfo.noSearchResults';
   static const myInfo_editMyInfo_jobPositionsUpdated = 'myInfo.editMyInfo.jobPositionsUpdated';
   static const myInfo_editMyInfo_profileUpdated = 'myInfo.editMyInfo.profileUpdated';
+  static const myInfo_editMyInfo_profileUpdatedFailed = 'myInfo.editMyInfo.profileUpdatedFailed';
   static const myInfo_editMyInfo = 'myInfo.editMyInfo';
   static const myInfo_deleteAccount_confirmDeleteAccount = 'myInfo.deleteAccount.confirmDeleteAccount';
   static const myInfo_deleteAccount = 'myInfo.deleteAccount';

@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/skill_setting_state.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/skill_setting_event.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/select_result_chip_list_view.dart';
@@ -18,9 +20,9 @@ class SkillSettingPage extends BasePage
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
     return SkillSelectionScaffold(
-      introTextView: const SignUpStepIntroMessage(
-        title: '준비하고 있는 기술면접\n주제를 알려주세요!',
-        subTitle: '영어로 검색해주세요',
+      introTextView:  SignUpStepIntroMessage(
+        title: context.tr(LocaleKeys.techSelection_promptTechInterviewTopics),
+        subTitle: context.tr(LocaleKeys.techSelection_searchInEnglish),
       ),
       selectedSkillSlider: const _SelectedListViewSlider(),
       searchBar: const _SearchBar(),
@@ -53,8 +55,10 @@ class _SearchBar extends ConsumerWidget
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: ClearableTextField(
         controller: skillTextFieldController(ref),
-        inputDecoration: const InputDecoration(
-          hintText: '관심 기술을 검색해 주세요',
+        inputDecoration:  InputDecoration(
+          hintText: context.tr(
+            LocaleKeys.techSelection_searchTechnologies,
+          ),
         ),
         validator: (input) => skillInputValidation(ref, searchedTerm: input),
         onClear: () {
@@ -74,7 +78,7 @@ class _SaveBtn extends ConsumerWidget
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AnimatedScaleTap(
+    return ShrinkGestureView(
       disableScaleAnimation: !isBottomFixedBtnActivate(ref),
       borderRadius: BorderRadius.circular(16),
       child: FilledButton(
@@ -83,8 +87,12 @@ class _SaveBtn extends ConsumerWidget
                 onSaveBtnTapped(ref);
               }
             : null,
-        child: const Center(
-          child: Text('저장하기'),
+        child: Center(
+          child: Text(
+            context.tr(
+              LocaleKeys.common_save,
+            ),
+          ),
         ),
       ),
     );

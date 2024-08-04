@@ -1,12 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/enums/chat_result.enum.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
+import 'package:techtalk/presentation/widgets/common/indicator/pass_fail_indicator.dart';
 import 'package:techtalk/presentation/widgets/common/text/bullet_text.dart';
 import 'package:techtalk/presentation/widgets/common/tile/flexible_expansion_tile.dart';
 
@@ -31,10 +35,14 @@ class QnAExpansionTile extends HookConsumerWidget with ChatState {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               /// CORRECT WRONG INDICATOR
-              SvgPicture.asset(
-                item.message!.answerState.isCorrect
-                    ? Assets.iconsCorrectIndicator
-                    : Assets.iconsWrongIndicator,
+
+              PassFailIndicator(
+                status: item.message!.answerState.isCorrect
+                    ? ChatResult.pass
+                    : ChatResult.failed,
+                text: item.message!.answerState.isCorrect
+                    ? context.tr(LocaleKeys.common_responseResult_correct)
+                    : context.tr(LocaleKeys.common_responseResult_incorrect),
               ),
               AnimatedRotation(
                 turns: isOpen.value ? 0 : 0.5,
@@ -62,7 +70,7 @@ class QnAExpansionTile extends HookConsumerWidget with ChatState {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              '내 답변',
+              context.tr(LocaleKeys.qa_myAnswer),
               style: AppTextStyle.alert1.copyWith(color: AppColor.of.black),
             ),
             const Gap(6),
@@ -74,7 +82,7 @@ class QnAExpansionTile extends HookConsumerWidget with ChatState {
             ),
             const Gap(18),
             Text(
-              '모범 답변',
+              context.tr(LocaleKeys.qa_modelAnswer),
               style: AppTextStyle.alert1.copyWith(color: AppColor.of.black),
             ),
             const Gap(6),

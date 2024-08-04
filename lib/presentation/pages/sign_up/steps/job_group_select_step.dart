@@ -36,7 +36,7 @@ class JobGroupSelectStep extends HookConsumerWidget
           onJobGroupItemTapped(ref, item: item);
         },
       ),
-      bottomFixedBtn: AnimatedScaleTap(
+      bottomFixedBtn: ShrinkGestureView(
         borderRadius: BorderRadius.circular(16),
         disableScaleAnimation: !isJobGroupSelectionFilled(ref),
         child: FilledButton(

@@ -51,7 +51,7 @@ class SingleTopicInterviewCard extends ConsumerWidget
           ),
           if (user(ref)?.recordedTopics.isEmpty ?? true)
             Padding(
-              padding: const EdgeInsets.only(bottom: 12, left: 24),
+              padding: const EdgeInsets.only(bottom: 12, left: 24, right: 24),
               child: Text(
                 tr(LocaleKeys.home_topicInterviewDesc),
                 style: AppTextStyle.body1.copyWith(
@@ -86,7 +86,7 @@ class SingleTopicInterviewCard extends ConsumerWidget
     const double imgSize = 40;
     return Consumer(
       builder: (context, ref, _) {
-        return AnimatedScaleTap(
+        return ShrinkGestureView(
           onTap: () {
             routeToChatListPage(
               context,
@@ -131,7 +131,14 @@ class SingleTopicInterviewCard extends ConsumerWidget
                     backgroundColor: AppColor.of.background1,
                     foregroundColor: AppColor.of.gray4,
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    await Future.delayed(const Duration(milliseconds: 200));
+                    routeToChatListPage(
+                      context,
+                      type: InterviewType.singleTopic,
+                      topicId: topic.id,
+                    );
+                  },
                   child: Text(
                     tr(LocaleKeys.home_takeInterview),
                     style: AppTextStyle.body1,

@@ -44,7 +44,8 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   }) async {
     final chatList = state.requireValue.toList();
 
-    final answeredChat = chatList.firstWhere((chat) => chat.type.isSentMessage) as AnswerChatEntity;
+    final answeredChat = chatList.firstWhere((chat) => chat.type.isSentMessage)
+        as AnswerChatEntity;
     final resolvedAnsweredChat = answeredChat.copyWith(
       answerState: answerState,
     );
@@ -82,7 +83,8 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
         LocaleKeys.undefined_greetingMessageMultipleTopics,
         namedArgs: {
           'nickname': nickname,
-          'firstTopic': StoredTopics.getById(firstQna.qna.id.getFirstPartOfSpliited).text,
+          'firstTopic':
+              StoredTopics.getById(firstQna.qna.id.getFirstPartOfSpliited).text,
         },
       );
     }
@@ -107,7 +109,9 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
             qnas: ref.read(chatQnasProvider).requireValue,
           ).then(
             (_) {
-              ref.read(selectedChatRoomProvider.notifier).updateInitialInfo(firstQuestionChat);
+              ref
+                  .read(selectedChatRoomProvider.notifier)
+                  .updateInitialInfo(firstQuestionChat);
             },
           ),
           showMessage(
@@ -116,9 +120,13 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
               showMessage(
                 message: firstQuestionChat.overwriteToStream(),
                 onDone: () {
-                  ref.read(userInfoProvider.notifier).updateTopicRecordsOnCondition(room.topics);
+                  ref
+                      .read(userInfoProvider.notifier)
+                      .updateTopicRecordsOnCondition(room.topics);
                   if (room.type.isPractical) {
-                    ref.read(userInfoProvider.notifier).storeUserPracticalRecordExistInfo();
+                    ref
+                        .read(userInfoProvider.notifier)
+                        .storeUserPracticalRecordExistInfo();
                   }
                 },
               );
@@ -133,7 +141,17 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   /// 새로운 Qna 추출
   ///
   ChatQnaEntity _getNewQna() {
-    final qna = ref.read(chatQnasProvider).requireValue.firstWhere((qna) => !qna.hasUserResponded);
+    var qna = ref
+        .read(chatQnasProvider)
+        .requireValue
+        .firstWhereOrNull((qna) => !qna.hasUserResponded);
+
+    /// TODO
+    /// 비동기 순서가 꼬여서 아직 제시할 질문이 하나가 남았지만
+    /// 이미 응답이 완료되었기 때문에 마지막 질문을 못가져오는 경우가 잇음
+    /// 이런 경우 마지막 질문을 리턴함
+    /// 추후에 근본적인 해결 방법 필요
+    qna ??= ref.read(chatQnasProvider).requireValue.first;
 
     return qna;
   }
@@ -141,12 +159,13 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   ///
   /// 가장 최근 유저가 질문에 답변하기 이전의 채팅 상태로 롤백
   ///
-  void _rollbackToPreviousChatStep() {
+  Future<void> _rollbackToPreviousChatStep() async {
     final chatList = state.requireValue;
 
-    final targetIndex = chatList.firstIndexWhereOrNull((chat) => chat.type.isQuestionMessage);
+    final targetIndex =
+        chatList.firstIndexWhereOrNull((chat) => chat.type.isQuestionMessage);
 
-    update((previous) {
+    await update((previous) {
       return [...chatList.sublist(targetIndex!, chatList.length - 1)];
     });
   }

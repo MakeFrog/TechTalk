@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/provider/selected_job_groups_provider.dart';
 import 'package:techtalk/presentation/providers/scroll/selected_job_group_scroll_controller.dart';
@@ -55,7 +57,7 @@ mixin class JobGroupSettingEvent {
     ref.read(userInfoProvider.notifier).updateData(user).whenComplete(() {
       EasyLoading.dismiss();
       ref.context.pop();
-      SnackBarService.showSnackBar('직군 정보가 변경되었습니다');
+      SnackBarService.showSnackBar(ref.context.tr(LocaleKeys.myInfo_editMyInfo_jobPositionsUpdated));
     });
   }
 }

@@ -56,6 +56,11 @@ android {
     }
 
 
+    lintOptions {
+        disable 'InvalidPackage'
+        checkReleaseBuilds false
+    }
+
     flavorDimensions "build-type"
     productFlavors {
         dev {

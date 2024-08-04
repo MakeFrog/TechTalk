@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none"
 
-version: 1.0.2+7
+version: 1.0.5+13
 
 environment:
   sdk: ">=3.0.6 <4.0.0"
@@ -13,9 +13,6 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-
-  #ChatGPT
-  chat_gpt_sdk: ^2.2.5
 
   #Gemini
   google_generative_ai: ^0.4.3
@@ -86,7 +83,7 @@ dependencies:
   url_launcher: ^6.2.5 # url 런쳐
   connectivity_plus: ^5.0.2 # 네트워크 연결 상태 관리
   easy_localization: ^3.0.0 # 다국어 지원
-
+  collection: ^1.18.0 # 콜렉션 타입 익스텐션 지원 메소드
   # 앱 정보
   package_info_plus: ^5.0.1 # 현재 앱 버전 정보
   pub_semver: ^2.1.4 # 주부수 버전 비교 연산

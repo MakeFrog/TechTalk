@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:techtalk/features/system/repositories/entities/version_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
 import 'package:techtalk/presentation/providers/system/app_version_provider.dart';
@@ -11,8 +12,10 @@ mixin class MyPageState {
   AsyncValue<UserEntity?> user(WidgetRef ref) => ref.watch(userInfoProvider);
 
   ///
-  /// 버전 정보
+  /// 현재 앱 버전
   ///
-  AsyncValue<VersionEntity> version(WidgetRef ref) =>
-      ref.watch(appVersionProvider);
+  Future<String> currentAppVersion() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    return packageInfo.version;
+  }
 }

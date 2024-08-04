@@ -6,9 +6,10 @@ import 'package:techtalk/app/localization/locale_keys.g.dart';
 enum AnswerState {
   initial('[i]', ''),
   loading('[l]', ''),
+  error('[e]', ''),
   correct('[c]', LocaleKeys.common_responseResult_correct),
   wrong('[w]', LocaleKeys.common_responseResult_incorrect),
-  inappropriate('[i]', LocaleKeys.common_responseResult_incorrect);
+  inappropriate('[x]', LocaleKeys.common_responseResult_incorrect);
 
   final String tag;
   final String str;
@@ -18,8 +19,10 @@ enum AnswerState {
   bool get isCompleted => this == AnswerState.wrong || this == AnswerState.correct;
   bool get isInitial => this == AnswerState.initial;
   bool get isLoading => this == AnswerState.loading;
+  bool get isError => this == AnswerState.error;
   bool get isCorrect => this == AnswerState.correct;
   bool get isWrong => this == AnswerState.wrong;
+  bool get isWrongOrInappropriate => this == AnswerState.wrong || this == AnswerState.inappropriate;
   bool get isInappropriate => this == AnswerState.inappropriate;
 
   static AnswerState getStateById(String id) {

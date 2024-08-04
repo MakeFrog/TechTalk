@@ -6,8 +6,10 @@ class DialogService {
 
   static void show({
     required Dialog dialog,
+     bool? dismissible,
   }) {
     showDialog(
+      barrierDismissible: dismissible ?? true,
       context: rootNavigatorKey.currentContext!,
       builder: (_) => dialog,
     );
@@ -15,9 +17,11 @@ class DialogService {
 
   static Future<void> asyncShow({
     required Dialog dialog,
+     bool? dismissible,
   }) {
     return Future.value(
       showDialog(
+        barrierDismissible: dismissible ?? true,
         context: rootNavigatorKey.currentContext!,
         builder: (_) => dialog,
       ),

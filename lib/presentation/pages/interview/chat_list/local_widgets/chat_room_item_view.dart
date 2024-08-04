@@ -23,7 +23,8 @@ class ChatRoomItemView extends StatelessWidget with ChatListEvent {
   factory ChatRoomItemView.create(InterviewType type, ChatRoomEntity item) =>
       ChatRoomItemView(item: item, isLoaded: true);
 
-  factory ChatRoomItemView.createSkeleton() => const ChatRoomItemView(item: null, isLoaded: false);
+  factory ChatRoomItemView.createSkeleton() =>
+      const ChatRoomItemView(item: null, isLoaded: false);
 
   final ChatRoomEntity? item;
   final bool isLoaded;
@@ -32,7 +33,8 @@ class ChatRoomItemView extends StatelessWidget with ChatListEvent {
   Widget build(BuildContext context) {
     if (isLoaded) {
       return MaterialButton(
-        padding: const EdgeInsets.symmetric(horizontal: 16) + const EdgeInsets.only(top: 24, bottom: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 16) +
+            const EdgeInsets.only(top: 24, bottom: 24),
         onPressed: () {
           routeToChatPage(
             context,
@@ -116,14 +118,21 @@ class ChatRoomItemView extends StatelessWidget with ChatListEvent {
                   Builder(
                     builder: (context) {
                       switch (item!.progressState) {
-                        case ChatRoomProgress.initial || ChatRoomProgress.ongoing:
+                        case ChatRoomProgress.initial ||
+                              ChatRoomProgress.ongoing:
                           return NormalRoundedChip(
-                              text: '${item!.completedQuestionCount}/${item!.progressInfo.totalQuestionCount}');
+                              text:
+                                  '${item!.completedQuestionCount}/${item!.progressInfo.totalQuestionCount}');
 
                         case ChatRoomProgress.completed:
                           return PassFailIndicator(
                             status: item!.passOrFail,
-                            text: item!.passOrFail.isPassed ? '합격' : '불합격',
+                            text: item!.passOrFail.isPassed
+                                ? context
+                                    .tr(LocaleKeys.common_responseResult_pass)
+                                : context.tr(
+                                    LocaleKeys.common_responseResult_fail,
+                                  ),
                           );
                         default:
                           throw UnimplementedError('잘못된 enum값 입니다');
@@ -138,7 +147,8 @@ class ChatRoomItemView extends StatelessWidget with ChatListEvent {
       );
     } else {
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16) + const EdgeInsets.only(top: 24, bottom: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 16) +
+            const EdgeInsets.only(top: 24, bottom: 24),
         child: SizedBox(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -21,7 +21,7 @@ class _QnaListTile extends HookWidget {
               SvgPicture.asset(Assets.iconsRoundedBlueExclamation),
               const Gap(4),
               Text(
-                '여러 번 틀린 문제',
+                context.tr(LocaleKeys.mistakeNote_wrongManyTimes),
                 style: AppTextStyle.alert1.copyWith(
                   color: AppColor.of.gray4,
                 ),
@@ -37,7 +37,7 @@ class _QnaListTile extends HookWidget {
         _buildAnswers(),
         const Gap(46),
         Text(
-          '내 답변',
+          context.tr(LocaleKeys.qa_myAnswer),
           style: AppTextStyle.body1,
         ),
         const Gap(16),

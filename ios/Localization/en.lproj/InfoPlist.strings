@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  Runner
+
+  Created by 심야 on 8/1/24.
+  
+*/
+"CFBundleDisplayName" = "TechTalk";
+"NSPhotoLibraryUsageDescription" = "The app needs access to the photo library to change your profile image.";
