@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
@@ -37,7 +39,8 @@ mixin class ChatEvent {
     final message = textEditingController.text;
     if (message.isEmpty) {
       unawaited(HapticFeedback.vibrate());
-      return SnackBarService.showSnackBar(ref.context.tr(LocaleKeys.interview_provideAnswer));
+      return SnackBarService.showSnackBar(
+          ref.context.tr(LocaleKeys.interview_provideAnswer));
     }
     textEditingController.clear();
 
@@ -149,6 +152,25 @@ mixin class ChatEvent {
           ref.context.pop();
         },
       ),
+    );
+  }
+
+  ///
+  /// 면접 처음 입장한 유저의 경우
+  /// 면접 처음 입장했다는 local Storage 값의 상태를 업데이트
+  ///
+  void updateFirstEnteredStateToTrue() {
+    final response = userRepository.hasEnteredFirstInterview();
+    response.fold(
+      onSuccess: (hasEnteredFirstInterview) async {
+        if (hasEnteredFirstInterview) return;
+        await userRepository.changeFirstEnteredFieldToTrue();
+        print('면접 최초 실행 여부 값 업데이트');
+      },
+      onFailure: (e) {
+        log('CARD EVENT > $e');
+        return Exception('로컬 스토리지 업데이트 실패');
+      },
     );
   }
 }

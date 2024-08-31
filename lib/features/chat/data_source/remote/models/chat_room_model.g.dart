@@ -13,9 +13,9 @@ ChatRoomModel _$ChatRoomModelFromJson(Map<String, dynamic> json) =>
       topicIds:
           (json['topic_ids'] as List<dynamic>).map((e) => e as String).toList(),
       type: $enumDecode(_$InterviewTypeEnumMap, json['type']),
-      totalQuestionCount: json['total_question_count'] as int,
-      correctAnswerCount: json['correct_answer_count'] as int,
-      incorrectAnswerCount: json['incorrect_answer_count'] as int,
+      totalQuestionCount: (json['total_question_count'] as num).toInt(),
+      correctAnswerCount: (json['correct_answer_count'] as num).toInt(),
+      incorrectAnswerCount: (json['incorrect_answer_count'] as num).toInt(),
     );
 
 Map<String, dynamic> _$ChatRoomModelToJson(ChatRoomModel instance) =>

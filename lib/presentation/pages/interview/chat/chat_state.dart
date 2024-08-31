@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_async_adapter_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
@@ -61,4 +64,21 @@ mixin class ChatState {
   ///
   ScrollController chatScrollController(WidgetRef ref) =>
       ref.watch(chatScrollControllerProvider);
+
+  ///
+  /// 처음 면접에 입장한 유저인지 여부
+  ///
+  bool isFirstInterview() {
+    final response = userRepository.hasEnteredFirstInterview();
+    return response.fold(
+      onSuccess: (hasEnteredFirstInterview) {
+        print('이찌방 : ${hasEnteredFirstInterview}');
+        return !hasEnteredFirstInterview;
+      },
+      onFailure: (e) {
+        log('CHAT STATE > $e');
+        return false;
+      },
+    );
+  }
 }

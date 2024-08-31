@@ -133,4 +133,25 @@ final class UserRepositoryImpl implements UserRepository {
       return Result.failure(e);
     }
   }
+
+  @override
+  Result<bool> hasEnteredFirstInterview()  {
+    try {
+      final response = _userLocalDataSource.loadUserLocalInfo().hasEnteredFirstInterview;
+      return Result.success(response);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<void>> changeFirstEnteredFieldToTrue() async{
+    try {
+      await _userLocalDataSource.changeFirstEnteredFieldToTrue();
+      return Result.success(null);
+    } on Exception catch(e) {
+      return Result.failure(e);
+    }
+  }
+
 }
