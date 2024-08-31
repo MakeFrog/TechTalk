@@ -72,7 +72,6 @@ mixin class ChatState {
     final response = userRepository.hasEnteredFirstInterview();
     return response.fold(
       onSuccess: (hasEnteredFirstInterview) {
-        print('이찌방 : ${hasEnteredFirstInterview}');
         return !hasEnteredFirstInterview;
       },
       onFailure: (e) {

@@ -4,7 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
@@ -13,6 +12,7 @@ import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/bubble.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/gradient_shine_effect_view.dart';
+import 'package:techtalk/presentation/widgets/common/animated/animated_appear_view.dart';
 import 'package:techtalk/presentation/widgets/common/gesture/animated_scale_tap.dart';
 import 'package:techtalk/presentation/widgets/common/indicator/exception_indicator.dart';
 
@@ -119,8 +119,15 @@ class _BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
           () => messageController.text,
         );
 
-        final isFieldFocused =
-            useListenableSelector(focusNode, () => focusNode.hasFocus);
+        final isFieldFocused = useListenableSelector(focusNode, () {
+          /// 최초 1번 입력폼이 활성화되면
+          /// [showHighlightEffect] 마이크 강조 효과 해제
+          if (showHighlightEffect.value.isTrue && focusNode.hasFocus) {
+            showHighlightEffect.value = false;
+          }
+
+          return focusNode.hasFocus;
+        });
 
         useEffect(
           () {
@@ -172,7 +179,9 @@ class _BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                 opacity: isFieldFocused ? 0 : 1,
                 child: ShrinkGestureView(
                   onTap: () {
-                    print('${showHighlightEffect.value}');
+                    /// TODO
+                    /// 윤수님 여기에 음성 인식 활성화 UI를 노출하는 로직을 연동해주시면됩니다!
+                    onMicBtnTapped();
                   },
                   borderRadius: BorderRadius.circular(22),
                   child: Container(
@@ -201,6 +210,19 @@ class _BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                       ],
                     ),
                   ),
+                ),
+              ),
+            ),
+
+            /// MICROPHONE INDUCTION TOOL TIP
+            if (showHighlightEffect.value.isTrue)
+            Positioned(
+              left: 0,
+              top: -36,
+              child: AnimatedAppearView(
+                awaitAppearDuration: const Duration(milliseconds: 800),
+                child: SvgPicture.asset(
+                  Assets.iconsUseMicTooltip,
                 ),
               ),
             ),
