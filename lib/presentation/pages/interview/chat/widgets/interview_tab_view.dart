@@ -200,8 +200,9 @@ class _BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                             child: SvgPicture.asset(
                               Assets.iconsIconMic,
                               colorFilter: ColorFilter.mode(
-                                AppColor.of.white,
-                                // AppColor.of.brand3,
+                                showHighlightEffect.value
+                                    ? AppColor.of.white
+                                    : AppColor.of.brand3,
                                 BlendMode.srcIn,
                               ),
                             ),
@@ -216,16 +217,16 @@ class _BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
 
             /// MICROPHONE INDUCTION TOOL TIP
             if (showHighlightEffect.value.isTrue)
-            Positioned(
-              left: 0,
-              top: -36,
-              child: AnimatedAppearView(
-                awaitAppearDuration: const Duration(milliseconds: 800),
-                child: SvgPicture.asset(
-                  Assets.iconsUseMicTooltip,
+              Positioned(
+                left: 0,
+                top: -36,
+                child: AnimatedAppearView(
+                  awaitAppearDuration: const Duration(milliseconds: 800),
+                  child: SvgPicture.asset(
+                    Assets.iconsUseMicTooltip,
+                  ),
                 ),
               ),
-            ),
 
             /// SEND BUTTON
             Positioned(
