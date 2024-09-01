@@ -31,7 +31,7 @@ class UserBox extends HiveObject {
       isReviewRequestAvailable:
           isReviewRequestAvailable ?? this.isReviewRequestAvailable,
       hasEnteredFirstInterview:
-          isReviewRequestAvailable ?? this.isReviewRequestAvailable,
+          hasEnteredFirstInterview ?? this.isReviewRequestAvailable,
     );
   }
 
