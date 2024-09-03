@@ -39,6 +39,8 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
 
           if (chunk.isEmpty) return;
 
+          print(chunk);
+
           if (_isStartingJsonCollection(chunk, isCollectingJson)) {
             // JSON 수집 시작
             isCollectingJson = true;
@@ -61,7 +63,7 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
           if (_isJsonCollectionComplete(jsonResponse, isCollectingJson)) {
             final feedback = _parseAndHandleJsonResponse(jsonResponse);
             // TODO: 임시로 확인을 위해 출력, 추후 피드백 핸들링 추가 예정
-            print('score: ${feedback.score}\nfollowingQ: ${feedback.followUpQuestion}\ncause: ${feedback.cause}');
+            print('score: ${feedback.score}\n followingQ: ${feedback.followUpQuestion}\n cause: ${feedback.cause}');
 
             jsonResponse = ''; // JSON 수집 상태 초기화
             isCollectingJson = false;
@@ -114,7 +116,8 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
       Messages(
         role: Role.system,
         content:
-            '먼저 유저의 답변에 대한 피드백을 80글자 이내의 문자열 형태로 반드시 제공해야 합니다. 조언 가장 앞에 면접자의 답변이 틀렸다면 [w]를, 답변이 맞았다고 판단되면 [c]를 붙입니다. 조언을 제공한 다음, 유저의 답변에 대한 점수를 0~5점까지로 매긴 뒤 점수가 1점 이상이고 면접자가 주제에 대한 심화적인 이해를 가지고 있는지 확인하기 위한 꼬리질문이 필요할 경우 JSON 형식으로 0~5점 사이의 점수, 꼬리질문, 꼬리질문이 필요한 이유를 제공해주세요. 꼬리질문은 제시된 질문과 연관이 있어야 합니다. JSON 형식은 {"score": 점수, "followUpQuestion": "꼬리 질문", "cause": "꼬리질문이 나온 이유" }입니다.',
+            '먼저 유저의 답변에 대한 피드백을 80글자 이내의 문자열 형태로 반드시 제공해야 합니다. 조언 가장 앞에 면접자의 답변이 틀렸다면 [w]를, 답변이 맞았다고 판단되면 [c]를 붙입니다. 조언을 제공한 다음, 유저의 답변에 대한 점수를 0~5점까지로 매긴 뒤 점수가 1점 이상이고 면접자가 주제에 대한 심화적인 이해를 가지고 있는지 확인하기 위한 꼬리질문이 필요할 경우 JSON 형식으로 0~5점 사이의 점수, 꼬리질문, 꼬리질문이 필요한 이유를 제공해주세요. 꼬리질문은 제시된 질문과 연관이 있어야 합니다. JSON 형식은 {"score": 점수, "followUpQuestion": "꼬리 질문", "cause": "꼬리질문이 나온 이유" }입니다. score은 필수값입니다',
+        // '''You must first provide feedback on the user's answer in a string of 80 characters or less. Start the feedback with [w] if the answer is incorrect, or [c] if it is correct. After giving feedback, assign a score between 0 and 5. If the score is 1 or higher, you must provide a follow-up question to assess deeper understanding, along with the reason in JSON format: {"score": score, "followUpQuestion": "follow-up question", "cause": "reason for follow-up question"}. The follow-up question should be related to the original question. The score is mandatory.''',
       ).toJson(),
     ];
   }
