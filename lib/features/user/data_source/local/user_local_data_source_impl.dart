@@ -10,11 +10,6 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
   UserBox? get localUser => box.values.firstOrNull;
 
   @override
-  bool hasPracticalInterviewRecord() {
-    return localUser?.hasPracticalInterviewRecord ?? false;
-  }
-
-  @override
   Future<void> storeUserLocalInfo(UserEntity user) async {
     final userLocalInfo = localUser?.copyWith(
           hasPracticalInterviewRecord: user.hasPracticalInterviewRecord,
@@ -35,5 +30,15 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
         ) ??
         UserBox.defaultValue();
     return box.put(AppLocal.userBoxName, userLocalInfo);
+  }
+
+  @override
+  Future<void> changeFirstEnteredFieldToTrue() async {
+    final userLocalInfo = localUser?.copyWith(hasEnteredFirstInterview: true);
+
+    await box.put(
+        AppLocal.userBoxName,
+        userLocalInfo ??
+            UserBox.defaultValue().copyWith(hasEnteredFirstInterview: true));
   }
 }
