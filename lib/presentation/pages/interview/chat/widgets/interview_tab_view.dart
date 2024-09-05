@@ -10,7 +10,6 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/presentation/app.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
@@ -301,6 +300,7 @@ class _BottomSpeechToTextField extends HookConsumerWidget
     final speechToText = useMemoized(stt.SpeechToText.new, []);
     final isListening = useState(false);
     final recognizedText = useState('');
+    final showHighlightEffect = useState(isFirstInterview());
 
     // SpeechToText 초기화 및 리스닝 상태 처리
     useEffect(() {
@@ -347,9 +347,10 @@ class _BottomSpeechToTextField extends HookConsumerWidget
       child: Column(
         children: [
           if (!isListening.value && recognizedText.value.isNotEmpty)
-          _buildRecognizedText(recognizedText.value),
+            _buildRecognizedText(recognizedText.value),
           _buildSpeechField(
             isSpeechMode,
+            showHighlightEffect,
             isListening.value,
             recognizedText.value,
             startListening,
@@ -364,38 +365,38 @@ class _BottomSpeechToTextField extends HookConsumerWidget
   /// speech to text의 결과물을 보여줌
   ///
 
-Widget _buildRecognizedText(String recognizedText) {
-  return Container(
-    width: double.infinity,
-    margin: const EdgeInsets.only(right: 12, left: 12),
-    padding: const EdgeInsets.all(12.0),
-    decoration: BoxDecoration(
-      color: AppColor.of.background1,
-      borderRadius: BorderRadius.circular(8.0),
-    ),
-    child: ConstrainedBox(
-      constraints: const BoxConstraints(
-        maxHeight: 100.0, // 4줄에 해당하는 최대 높이를 설정 (줄바꿈에 따라 조정 가능)
+  Widget _buildRecognizedText(String recognizedText) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(right: 12, left: 12),
+      padding: const EdgeInsets.all(12.0),
+      decoration: BoxDecoration(
+        color: AppColor.of.background1,
+        borderRadius: BorderRadius.circular(14.0),
       ),
-      child: SingleChildScrollView(
-        child: Text(
-          recognizedText,
-          style: TextStyle(
-            fontSize: 16.0,
-            color: AppColor.of.black,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(
+          maxHeight: 100.0, // 4줄에 해당하는 최대 높이를 설정 (줄바꿈에 따라 조정 가능)
+        ),
+        child: SingleChildScrollView(
+          child: Text(
+            recognizedText,
+            style: TextStyle(
+              fontSize: 16.0,
+              color: AppColor.of.black,
+            ),
           ),
         ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 
   ///
   /// 음성 모드 입력 폼
   ///
   Widget _buildSpeechField(
     ValueNotifier<bool> isSpeechMode,
+    ValueNotifier<bool> showHighlightEffect,
     bool isListening,
     String recognizedText,
     VoidCallback startListening,
@@ -422,10 +423,17 @@ Widget _buildRecognizedText(String recognizedText) {
                   child: CircleAvatar(
                     radius: 44,
                     backgroundColor: Colors.white,
-                    child: Icon(
-                      size: 44,
-                      isListening ? Icons.record_voice_over : Icons.mic,
-                      color: AppColor.of.brand2,
+                    child: Center(
+                      child: SvgPicture.asset(
+                        isListening
+                            ? Assets.iconsArrowLeft
+                            : Assets.iconsIconMic,
+                        width: 44,
+                        colorFilter: ColorFilter.mode(
+                          AppColor.of.brand3,
+                          BlendMode.srcIn,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -450,9 +458,9 @@ Widget _buildRecognizedText(String recognizedText) {
                     child: CircleAvatar(
                       radius: 24,
                       backgroundColor: AppColor.of.blue1,
-                      child: Icon(
-                        Icons.cloud,
-                        color: AppColor.of.brand2,
+                      child: SvgPicture.asset(
+                        Assets.iconsTypingModeAa,
+                        height: 16,
                       ),
                     ),
                   ),
@@ -463,19 +471,41 @@ Widget _buildRecognizedText(String recognizedText) {
                   // 녹음 취소
                   GestureDetector(
                     onTap: () {
-                      stopListening();
                       print('현재 SpeechMode인가? : ${isSpeechMode.value}');
+
+                      isListening
+                          ? stopListening()
+                          : print('녹음 취소 버튼이 현재 비활성화 되어있음');
                     },
                     child: CircleAvatar(
                       radius: 24,
-                      backgroundColor: AppColor.of.background1,
-                      child: Icon(
-                        Icons.close,
-                        color: AppColor.of.gray3,
+                      backgroundColor: isListening
+                          ? AppColor.of.red1
+                          : AppColor.of.background1,
+                      child: SvgPicture.asset(
+                        Assets.iconsDeleteOrWrong,
+                        colorFilter: ColorFilter.mode(
+                          isListening ? AppColor.of.red2 : AppColor.of.gray3,
+                          BlendMode.srcIn,
+                        ),
+                        // color: AppColor.of.gray3,
                       ),
                     ),
                   ),
                 ],
+              ),
+            ),
+          ),
+
+          /// TYPING MODE INDUCTION TOOL TIP
+          // if (showHighlightEffect.value.isTrue)
+          Positioned(
+            left: 52,
+            top: 52,
+            child: AnimatedAppearView(
+              awaitAppearDuration: const Duration(milliseconds: 400),
+              child: SvgPicture.asset(
+                Assets.iconsTypingModeTooltip,
               ),
             ),
           ),

@@ -48,6 +48,7 @@ class Assets {
   static const String iconsCorrect = 'assets/icons/correct.svg';
   static const String iconsCorrectIndicator = 'assets/icons/correct_indicator.svg';
   static const String iconsDataStructure = 'assets/icons/data_structure.svg';
+  static const String iconsDeleteOrWrong = 'assets/icons/delete_or_wrong.svg';
   static const String iconsErrorIndicator = 'assets/icons/error_indicator.svg';
   static const String iconsExpansionArrowIndicator = 'assets/icons/expansion_arrow_indicator.svg';
   static const String iconsGoogleLogo = 'assets/icons/google_logo.svg';
@@ -84,6 +85,8 @@ class Assets {
   static const String iconsStudy = 'assets/icons/study.svg';
   static const String iconsTalker = 'assets/icons/talker.svg';
   static const String iconsTechTalkLogo = 'assets/icons/tech_talk_logo.svg';
+  static const String iconsTypingModeTooltip = 'assets/icons/typing_mode_tooltip.svg';
+  static const String iconsTypingModeAa = 'assets/icons/typing_mode_aa.svg';
   static const String iconsUseMicTooltip = 'assets/icons/use_mic_tooltip.svg';
   static const String iconsUser = 'assets/icons/user.svg';
   static const String iconsWarning = 'assets/icons/warning.svg';
