@@ -109,6 +109,21 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
         role: Role.system,
         content: '면접 질문에 대한 모범답안은 다음과 같습니다: ${param.qna.qna.answers.map((str) => '-$str').join(' ')}',
       ).toJson(),
+
+      /// 꼬리 질문 히스토리가 있다면 꼬리질문 히스토리를 제공합니다.
+      ...param.qna.followUpQuestions?.expand((followUpQ) {
+            return [
+              Messages(
+                role: Role.assistant,
+                content: followUpQ.qna.question,
+              ).toJson(),
+              Messages(
+                role: Role.user,
+                content: followUpQ.message?.message.value,
+              ).toJson(),
+            ];
+          }).toList() ??
+          [],
       Messages(
         role: Role.system,
         content:
