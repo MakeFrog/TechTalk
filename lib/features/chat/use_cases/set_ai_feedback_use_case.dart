@@ -7,6 +7,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/repositories/entities/feedback_response_entity.dart';
 
 class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam, Result<BehaviorSubject<String>>> {
   FeedbackProgress state = FeedbackProgress.init;
@@ -33,13 +34,15 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
           user: FirebaseAuth.instance.currentUser!.uid,
         ),
       )
-          .listen(
+          .doOnError(
+        (error, _) {
+          throw error;
+        },
+      ).listen(
         (it) {
           final chunk = it.choices?.last.message?.content ?? '';
 
           if (chunk.isEmpty) return;
-
-          print(chunk);
 
           if (_isStartingJsonCollection(chunk, isCollectingJson)) {
             // JSON 수집 시작
@@ -57,35 +60,28 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
           }
 
           _setCorrectnessIfNeeded(response, param.checkAnswer);
-          streamedAdviceResponse.add(formatResponse(response));
+          streamedAdviceResponse.add(_formatAdvice(response));
 
           // JSON 데이터 수집 완료 여부 확인
           if (_isJsonCollectionComplete(jsonResponse, isCollectingJson)) {
-            final feedback = _parseAndHandleJsonResponse(jsonResponse);
-            // TODO: 임시로 확인을 위해 출력, 추후 피드백 핸들링 추가 예정
-            print('score: ${feedback.score}\n followingQ: ${feedback.followUpQuestion}\n cause: ${feedback.cause}');
+            final feedbackResponse = _parseAndHandleJsonResponse(
+              jsonResponse: jsonResponse,
+              feedback: _formatAdvice(response),
+              topicQuestion: param.qna,
+            );
 
             jsonResponse = ''; // JSON 수집 상태 초기화
             isCollectingJson = false;
+
+            return param.onFeedBackCompleted(feedbackResponse: feedbackResponse);
           }
         },
         onDone: () {
           /// 응답이 종료된 이후
           /// 1) Stream 닫기
           /// 2) 응답 진행 상태 초기화
-          /// 3) 완료 콜백 메소드 실행
           state = FeedbackProgress.init;
-          streamedAdviceResponse.close().then((_) {
-            String? streamedRes = streamedAdviceResponse.valueOrNull;
-
-            if (streamedRes == null) {
-              return;
-            } else {
-              return param.onFeedBackCompleted(
-                formatResponse(streamedAdviceResponse.value),
-              );
-            }
-          });
+          streamedAdviceResponse.close();
         },
       );
       return Result.success(streamedAdviceResponse);
@@ -102,7 +98,7 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
       Messages(
         role: Role.system,
         content:
-            '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 이제부터 진행할 면접은 ${StoredTopics.getById(param.qna.qna.id.getFirstPartOfSpliited)}와 관련된 질문입니다. 지원자의 이름은 \'${param.userName}\'입니다. 유저를 지칭할 때 항상 이름으로 불러주세요. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
+            '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 이제부터 진행할 면접은 ${StoredTopics.getById(param.qna.qna.id.getFirstPartOfSpliited)}와 관련된 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
       ).toJson(),
       Messages(role: Role.assistant, content: param.question).toJson(),
       Messages(
@@ -116,8 +112,10 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
       Messages(
         role: Role.system,
         content:
-            '먼저 유저의 답변에 대한 피드백을 80글자 이내의 문자열 형태로 반드시 제공해야 합니다. 조언 가장 앞에 면접자의 답변이 틀렸다면 [w]를, 답변이 맞았다고 판단되면 [c]를 붙입니다. 조언을 제공한 다음, 유저의 답변에 대한 점수를 0~5점까지로 매긴 뒤 점수가 1점 이상이고 면접자가 주제에 대한 심화적인 이해를 가지고 있는지 확인하기 위한 꼬리질문이 필요할 경우 JSON 형식으로 0~5점 사이의 점수, 꼬리질문, 꼬리질문이 필요한 이유를 제공해주세요. 꼬리질문은 제시된 질문과 연관이 있어야 합니다. JSON 형식은 {"score": 점수, "followUpQuestion": "꼬리 질문", "cause": "꼬리질문이 나온 이유" }입니다. score은 필수값입니다',
-        // '''You must first provide feedback on the user's answer in a string of 80 characters or less. Start the feedback with [w] if the answer is incorrect, or [c] if it is correct. After giving feedback, assign a score between 0 and 5. If the score is 1 or higher, you must provide a follow-up question to assess deeper understanding, along with the reason in JSON format: {"score": score, "followUpQuestion": "follow-up question", "cause": "reason for follow-up question"}. The follow-up question should be related to the original question. The score is mandatory.''',
+            '먼저 유저의 면접 답변에 대한 피드백을 80글자 이내의 문자열 형태로 반드시 제공해야 합니다. 조언 가장 앞에 면접자의 답변이 틀렸다면 [w]를, 답변이 맞았다고 판단되면 [c]를 붙입니다. 조언을 제공한 다음, 유저의 답변을 평가하여 JSON형식으로 0~5점 사이의 점수와, 꼬리질문 필요 여부를 제공해주세요. 꼬리질문은 유저의 면접 답변을 기반으로 면접관이 제시한 질문에 대해 확실하고 심화적인 이해를 가지고 있는지 확인하기 위해 필요합니다. JSON 형식은 {"score": "점수", "isFollowUpQuestionNeeded": "꼬리 질문 필요 여부", }입니다. score과 isFollowUpQuestionNeeded는 필수값입니다',
+
+        /// 꼬리질문까지 생성할 경우 프롬프트 - 추후에 꼬리질문 usecase에서 사용하기 위해 임시 주석해두었습니다.
+        /* '먼저 유저의 답변에 대한 피드백을 80글자 이내의 문자열 형태로 반드시 제공해야 합니다. 조언 가장 앞에 면접자의 답변이 틀렸다면 [w]를, 답변이 맞았다고 판단되면 [c]를 붙입니다. 조언을 제공한 다음, 유저의 답변에 대한 점수를 0~5점까지로 매긴 뒤 점수가 1점 이상이고 면접자가 주제에 대한 심화적인 이해를 가지고 있는지 확인하기 위한 꼬리질문이 필요할 경우 JSON 형식으로 0~5점 사이의 점수, 꼬리질문, 꼬리질문이 필요한 이유를 제공해주세요. 꼬리질문은 제시된 질문과 연관이 있어야 합니다. JSON 형식은 {"score": 점수, "followUpQuestion": "꼬리 질문", "cause": "꼬리질문이 나온 이유" }입니다. score은 필수값입니다' */
       ).toJson(),
     ];
   }
@@ -130,20 +128,22 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
     return isCollectingJson && jsonResponse.contains('}');
   }
 
-  FeedbackResponse _parseAndHandleJsonResponse(String jsonResponse) {
-    final parsedData = _parseJsonResponse(jsonResponse);
-    return FeedbackResponse.fromJson(parsedData);
-  }
-
-  /// 응답에서 점수와 꼬리질문을 JSON 형식으로 파싱하는 함수
-  Map<String, dynamic> _parseJsonResponse(String response) {
+  FeedbackResponseEntity _parseAndHandleJsonResponse(
+      {required String jsonResponse, required String feedback, required ChatQnaEntity topicQuestion}) {
     try {
-      return jsonDecode(response) as Map<String, dynamic>;
+      final parsedData = jsonDecode(jsonResponse) as Map<String, dynamic>;
+      return FeedbackResponseEntity.fromJson(
+        parsedData,
+        feedback,
+        topicQuestion,
+      );
     } catch (e) {
-      return {
-        "score": 0,
-        "followUpQuestion": null,
-      };
+      return FeedbackResponseEntity(
+        feedback: feedback,
+        score: 0,
+        isFollowUpQuestionNeeded: false,
+        topicQuestion: topicQuestion,
+      );
     }
   }
 
@@ -181,7 +181,7 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
   /// 응답값 포맷
   /// 1. [c] & [w] 인디에키터 포맷, [AnswerState]
   /// 2. 불필요 줄바꿈 제거
-  String formatResponse(String response) {
+  String _formatAdvice(String response) {
     String formattedText = response.replaceAll('\n', '').trim();
 
     if (formattedText.length <= 3) return '';
@@ -196,41 +196,12 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
   }
 }
 
-// TODO: 추후에 클래스 정리하면서 꼬리질문 UI 구현시 사용 예정, 임시로 여기 위치시키겠습니다.
-/// JSON 응답을 담을 클래스
-class FeedbackResponse {
-  final int score;
-  final String? followUpQuestion;
-  final String? cause;
-
-  FeedbackResponse({
-    required this.score,
-    this.followUpQuestion,
-    this.cause,
-  });
-
-  factory FeedbackResponse.fromJson(Map<String, dynamic> json) {
-    return FeedbackResponse(
-      score: json['score'],
-      followUpQuestion: json['followUpQuestion'],
-      cause: json['cause'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'score': score,
-      'followUpQuestion': followUpQuestion,
-    };
-  }
-}
-
 /// [SetAiFeedbackUseCase] 파라미터
 typedef GetQuestionFeedbackParam = ({
   ChatQnaEntity qna,
   String question,
   String userAnswer,
   String userName,
-  void Function(String feedback) onFeedBackCompleted,
+  void Function({required FeedbackResponseEntity feedbackResponse}) onFeedBackCompleted,
   void Function({required AnswerState answerState}) checkAnswer
 });
