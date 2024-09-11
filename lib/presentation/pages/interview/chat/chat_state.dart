@@ -10,6 +10,7 @@ import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_p
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 
 mixin class ChatState {
   ///
@@ -80,4 +81,10 @@ mixin class ChatState {
       },
     );
   }
+
+  ///
+  /// SpeechMode 상태
+  ///
+  bool isSpeechMode(WidgetRef ref) => ref.watch(isSpeechModeProvider);
+  
 }
