@@ -178,5 +178,7 @@ mixin class ChatEvent {
   /// 음성 인식 활성화
   /// '마이크' 버튼이 클릭 되었을 때
   ///
-  void onMicBtnTapped() {}
+  void onMicBtnTapped(ValueNotifier<bool> isSpeechMode) {
+    isSpeechMode.value = !isSpeechMode.value;
+  }
 }
