@@ -26,14 +26,14 @@ class BottomSpeechToTextField extends HookConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // SpeechToText 객체 생성
-    final speechToText = stt.SpeechToText();
+    final speechToText = useMemoized(stt.SpeechToText.new, []);
     final isListening = useState(false);
     final recognizedText = useState('');
     final showHighlightEffect = useState(isFirstInterview());
 
     ///
     /// SpeechToText 초기화 및 리스닝 상태 처리
-    /// 
+    ///
     useEffect(() {
       Future<void> initSpeech() async {
         bool speechEnabled = await speechToText.initialize(
@@ -270,14 +270,19 @@ class BottomSpeechToTextField extends HookConsumerWidget
       ),
       child: ConstrainedBox(
         constraints: const BoxConstraints(
-          maxHeight: 100.0, // 4줄에 해당하는 최대 높이를 설정 (줄바꿈에 따라 조정 가능)
+          maxHeight: 100.0, // 4줄에 해당하는 최대 높이 설정
         ),
-        child: SingleChildScrollView(
-          child: Text(
-            recognizedText,
-            style: TextStyle(
-              fontSize: 16.0,
-              color: AppColor.of.black,
+        child: Scrollbar(
+          thumbVisibility: true, // 스크롤바 항상 표시
+          thickness: 4.0, // 스크롤바의 두께
+          radius: const Radius.circular(10.0), // 스크롤바의 끝을 둥글게
+          child: SingleChildScrollView(
+            child: Text(
+              recognizedText,
+              style: TextStyle(
+                fontSize: 16.0,
+                color: AppColor.of.black,
+              ),
             ),
           ),
         ),

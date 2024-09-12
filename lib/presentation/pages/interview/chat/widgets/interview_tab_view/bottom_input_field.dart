@@ -27,9 +27,9 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
         horizontal: 12,
       ),
       child: chatAsyncAdapterValue(ref).when(
-        data: (_) => _buildTextField(progressState(ref), ref),
-        error: (_, __) => _buildTextField(InterviewProgress.error, null),
-        loading: () => _buildTextField(InterviewProgress.initial, null),
+        data: (_) => _buildTextField(progressState(ref)),
+        error: (_, __) => _buildTextField(InterviewProgress.error),
+        loading: () => _buildTextField(InterviewProgress.initial),
       ),
     );
   }
@@ -37,7 +37,7 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
   ///
   /// 입력폼
   ///
-  Widget _buildTextField(InterviewProgress progressState, WidgetRef? ref) {
+  Widget _buildTextField(InterviewProgress progressState) {
     return HookBuilder(
       builder: (context) {
         /// 하이라이트(마이크 기능 알림) 효과 노출 여부
@@ -110,40 +110,45 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
               child: AnimatedOpacity(
                 duration: const Duration(milliseconds: 120),
                 opacity: isFieldFocused
-                // || isSpeechMode(ref
-                 ? 0 : 1,
-                child: ShrinkGestureView(
-                  onTap: () {
-                   ref!.read(isSpeechModeProvider.notifier).toggle();
-                  },
-                  borderRadius: BorderRadius.circular(22),
-                  child: Container(
-                    height: 44,
-                    width: 44,
-                    decoration: BoxDecoration(
-                      color: AppColor.of.blue1,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Stack(
-                      children: [
-                        if (showHighlightEffect.value.isTrue)
-                          const GradientShineEffectView(),
-                        Positioned(
-                          child: Center(
-                            child: SvgPicture.asset(
-                              Assets.iconsIconMic,
-                              colorFilter: ColorFilter.mode(
-                                showHighlightEffect.value
-                                    ? AppColor.of.white
-                                    : AppColor.of.brand3,
-                                BlendMode.srcIn,
+                    // || isSpeechMode(ref
+                    ? 0
+                    : 1,
+                child: Consumer(
+                  builder: (context, ref, child) {
+                    return ShrinkGestureView(
+                      onTap: () {
+                        ref.read(isSpeechModeProvider.notifier).toggle();
+                      },
+                      borderRadius: BorderRadius.circular(22),
+                      child: Container(
+                        height: 44,
+                        width: 44,
+                        decoration: BoxDecoration(
+                          color: AppColor.of.blue1,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Stack(
+                          children: [
+                            if (showHighlightEffect.value.isTrue)
+                              const GradientShineEffectView(),
+                            Positioned(
+                              child: Center(
+                                child: SvgPicture.asset(
+                                  Assets.iconsIconMic,
+                                  colorFilter: ColorFilter.mode(
+                                    showHighlightEffect.value
+                                        ? AppColor.of.white
+                                        : AppColor.of.brand3,
+                                    BlendMode.srcIn,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
