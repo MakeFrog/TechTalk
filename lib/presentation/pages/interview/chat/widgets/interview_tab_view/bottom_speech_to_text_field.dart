@@ -1,15 +1,23 @@
+// ignore_for_file: avoid_print
+
+import 'dart:developer';
+
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 import 'package:techtalk/presentation/widgets/common/animated/animated_appear_view.dart';
+import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
+import 'package:go_router/go_router.dart';
 
 class BottomSpeechToTextField extends HookConsumerWidget
     with ChatState, ChatEvent {
@@ -23,10 +31,12 @@ class BottomSpeechToTextField extends HookConsumerWidget
     final recognizedText = useState('');
     final showHighlightEffect = useState(isFirstInterview());
 
-    // SpeechToText 초기화 및 리스닝 상태 처리
+    ///
+    /// SpeechToText 초기화 및 리스닝 상태 처리
+    /// 
     useEffect(() {
       Future<void> initSpeech() async {
-        bool available = await speechToText.initialize(
+        bool speechEnabled = await speechToText.initialize(
           onStatus: (status) {
             if (status == 'listening') {
               isListening.value = true;
@@ -39,7 +49,7 @@ class BottomSpeechToTextField extends HookConsumerWidget
           onError: (error) => print('Speech error: $error'),
         );
 
-        if (available) {
+        if (speechEnabled) {
           print('초기화됨');
         } else {
           print('사용 불가능');
@@ -50,14 +60,65 @@ class BottomSpeechToTextField extends HookConsumerWidget
       return null;
     });
 
-    // 음성 인식을 시작하는 함수
-    void startListening() {
-      speechToText.listen(
-        onResult: (result) {
-          recognizedText.value = result.recognizedWords;
-          print('Recognized words: ${recognizedText.value}');
-        },
-      );
+    ///
+    /// 음성 인식 시작
+    /// 마이크, 음성 인식 권한 Handler
+    ///
+    Future<void> startListening() async {
+      try {
+        final hasMicPermission = await speechToText.hasPermission;
+        final isSpeechAvailable = speechToText.isAvailable;
+
+        print('마이크 권한 허용했는가? : $hasMicPermission');
+        print('음성 인식 권한 허용했는가? $isSpeechAvailable');
+
+        // 권한이 하나라도 허용되지 않은 경우 예외 처리
+        if (!hasMicPermission || !isSpeechAvailable) {
+          String missingPermissions = '';
+
+          if (!hasMicPermission) {
+            missingPermissions += '마이크 권한';
+          }
+
+          if (!isSpeechAvailable) {
+            if (missingPermissions.isNotEmpty) {
+              missingPermissions += ', ';
+            }
+            missingPermissions += '음성 인식 권한';
+          }
+
+          DialogService.show(
+            dialog: AppDialog.dividedBtn(
+              title: '권한 필요',
+              subTitle: '$missingPermissions 설정이 필요합니다. 설정에서 권한을 허용해주세요.',
+              leftBtnContent: '취소',
+              showContentImg: false,
+              rightBtnContent: '설정하기',
+              onRightBtnClicked: () async {
+                rootNavigatorKey.currentContext?.pop();
+                await AppSettings.openAppSettings(
+                  type: AppSettingsType.internalStorage,
+                );
+              },
+              onLeftBtnClicked: () {
+                rootNavigatorKey.currentContext?.pop();
+              },
+            ),
+          );
+          return;
+        }
+
+        // 음성 인식 시작
+        await speechToText.listen(
+          onResult: (result) {
+            recognizedText.value = result.recognizedWords;
+            print('Recognized words: ${recognizedText.value}');
+          },
+        );
+      } catch (e) {
+        log(e.toString());
+        SnackBarService.showSnackBar('음성 인식을 시작할 수 없습니다. 다시 시도해주세요.');
+      }
     }
 
     // 음성 인식을 중지하는 함수
