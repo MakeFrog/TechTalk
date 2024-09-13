@@ -12,6 +12,7 @@ import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/repositories/enums/speech_mode_status.enum.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller.dart';
@@ -190,13 +191,14 @@ mixin class ChatEvent {
   ///
   Future<void> initSpeech(
     stt.SpeechToText speechToText,
-    ValueNotifier<RecordingStatus> recordingStatus,
-    ValueNotifier<bool> isListening,
+    SpeechState speechState,
   ) async {
     await speechToText.initialize(
       onStatus: (status) {
-        isListening.value =
-            recordingStatus.value == RecordingStatus.during ? true : false;
+        speechState.isListening.value =
+            speechState.status.value == SpeechStatus.listening
+                ? true
+                : false;
       },
       onError: (error) {
         final errorMessage = getErrorMessage(error.errorMsg);
@@ -233,20 +235,19 @@ mixin class ChatEvent {
   ///
   Future<void> onMainBtnTapped(
     stt.SpeechToText speechToText,
-    ValueNotifier<RecordingStatus> recordingStatus,
-    ValueNotifier<String> recognizedText,
+    SpeechState speechState,
   ) async {
     final hasPermission = await checkPermissions(speechToText);
     if (!hasPermission) return;
 
-    switch (recordingStatus.value) {
-      case RecordingStatus.before:
-        await startRecording(speechToText, recordingStatus, recognizedText);
+    switch (speechState.status.value) {
+      case SpeechStatus.ready:
+        await startRecording(speechToText, speechState);
         break;
-      case RecordingStatus.during:
-        stopRecording(speechToText, recordingStatus);
+      case SpeechStatus.listening:
+        stopRecording(speechToText, speechState);
         break;
-      case RecordingStatus.after:
+      case SpeechStatus.recognized:
         await submitRecognizedText();
         break;
     }
@@ -286,14 +287,13 @@ mixin class ChatEvent {
   ///
   Future<void> startRecording(
     stt.SpeechToText speechToText,
-    ValueNotifier<RecordingStatus> recordingStatus,
-    ValueNotifier<String> recognizedText,
+    SpeechState speechState,
   ) async {
-    recordingStatus.value = RecordingStatus.during;
+    speechState.status.value = SpeechStatus.listening;
 
     await speechToText.listen(
       onResult: (result) {
-        recognizedText.value = result.recognizedWords;
+        speechState.recognizedText.value = result.recognizedWords;
       },
     );
   }
@@ -303,9 +303,9 @@ mixin class ChatEvent {
   ///
   void stopRecording(
     stt.SpeechToText speechToText,
-    ValueNotifier<RecordingStatus> recordingStatus,
+    SpeechState speechState,
   ) {
-    recordingStatus.value = RecordingStatus.after;
+    speechState.status.value = SpeechStatus.recognized;
     speechToText.stop();
   }
 
@@ -314,14 +314,12 @@ mixin class ChatEvent {
   ///
   void resetRecognizedText(
     stt.SpeechToText speechToText,
-    ValueNotifier<RecordingStatus> recordingStatus,
-    ValueNotifier<String> recognizedText,
-    ValueNotifier<bool> isListening,
+    SpeechState speechState,
   ) {
-    recordingStatus.value = RecordingStatus.before;
-    recognizedText.value = '';
-    if (isListening.value == true) {
-      stopRecording(speechToText, recordingStatus);
+    speechState.status.value = SpeechStatus.ready;
+    speechState.recognizedText.value = '';
+    if (speechState.isListening.value == true) {
+      stopRecording(speechToText, speechState);
     }
   }
 
