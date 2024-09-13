@@ -19,6 +19,8 @@ import 'package:techtalk/presentation/widgets/common/animated/animated_appear_vi
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 import 'package:go_router/go_router.dart';
 
+enum RecordingStatus { before, during, after }
+
 class BottomSpeechToTextField extends HookConsumerWidget
     with ChatState, ChatEvent {
   const BottomSpeechToTextField({Key? key}) : super(key: key);
@@ -29,80 +31,142 @@ class BottomSpeechToTextField extends HookConsumerWidget
     final speechToText = useMemoized(stt.SpeechToText.new, []);
     final isListening = useState(false);
     final recognizedText = useState('');
-    final showHighlightEffect = useState(isFirstInterview());
+    final recordingStatus = useState(RecordingStatus.before);
 
     ///
     /// SpeechToText 초기화 및 리스닝 상태 처리
     ///
-    useEffect(() {
-      Future<void> initSpeech() async {
-        bool speechEnabled = await speechToText.initialize(
-          onStatus: (status) {
-            if (status == 'listening') {
-              isListening.value = true;
-            } else if (status == 'done') {
-              isListening.value = false;
-            }
-            print('Speech status: $status');
-          },
-          onError: (error) {
-            print(
-              'Speech error: ${error.errorMsg}, permanent: ${error.permanent}',
-            );
+    useEffect(
+      () {
+        Future<void> initSpeech() async {
+          bool speechEnabled = await speechToText.initialize(
+            // status는 음성 인식이 활성화되고 나서 동작함
+            onStatus: (status) {
+              if (recordingStatus.value == RecordingStatus.during) {
+                isListening.value = true;
+              } else {
+                isListening.value = false;
+              }
+            },
 
-            // error_listen_failed 에러 처리
-            if (error.errorMsg == 'error_listen_failed') {
-              log('음성 인식에 실패했습니다. 에러 메시지: ${error.errorMsg}');
-              // 사용자에게 음성 인식 실패 알림
-              SnackBarService.showSnackBar(
-                '음성 인식에 실패했습니다. 마이크 권한 또는 음성 인식 서비스 상태를 확인해주세요.',
-              );
-            }
-          },
-        );
+            // 에러 처리
+            onError: (error) {
+              String errorMessage = '';
+              print('에러 메시지 : ${error.errorMsg}');
 
-        if (speechEnabled) {
-          print('초기화됨');
-        } else {
-          print('사용 불가능');
+              if (error.errorMsg == 'network') {
+                // 인터넷 연결 문제
+                errorMessage = '인터넷 연결에 문제가 있습니다. 네트워크 상태를 확인해주세요.';
+              } else if (error.errorMsg == 'not-allowed') {
+                // 마이크 접근 불가 또는 다른 앱이 마이크 사용 중
+                errorMessage = '마이크에 접근할 수 없습니다. 장치 상태를 확인해주세요.';
+              } else if (error.errorMsg == 'audio') {
+                // 오디오 장치 문제
+                errorMessage = '오디오 장치에서 문제가 발생했습니다. 장치 상태를 확인해주세요.';
+              } else if (error.errorMsg == 'server') {
+                // 음성 인식 서버 문제
+                errorMessage = '음성 인식 서버에 문제가 있습니다. 잠시 후 다시 시도해주세요.';
+              } else if (error.errorMsg == 'error_listen_failed') {
+                // 음성 인식 실패
+                errorMessage = '음성 인식에 실패했습니다. 다시 시도해주세요.';
+              } else {
+                // 그 외 예외 상황
+                errorMessage = '음성 인식 중 오류가 발생했습니다. 다시 시도해주세요.';
+              }
+
+              if (errorMessage.isNotEmpty) {
+                log(errorMessage);
+                SnackBarService.showSnackBar(errorMessage);
+              }
+            },
+          );
+
+          if (speechEnabled) {
+            print('===== 음성 인식 사용 가능 =====');
+          } else {
+            print('===== 음성 인식 사용 불가능 =====');
+            if (!await speechToText.hasPermission ||
+                !speechToText.isAvailable) {
+              print('마이크 권한 또는 음성 인식 권한이 필요합니다.');
+            } else {
+              print('알 수 없는 이유로 음성 인식이 불가능합니다.');
+            }
+          }
         }
-      }
 
-      initSpeech();
-      return null;
-    });
+        initSpeech();
+        return null;
+      },
+      // 빈 배열을 의존성으로 추가하여 initSpeech()가 한 번만 실행되도록 설정
+      [],
+    );
 
     ///
     /// 음성 인식 시작
-    /// 마이크, 음성 인식 권한 Handler
     ///
     Future<void> startListening() async {
+      print('startListening 실행');
+      recordingStatus.value = RecordingStatus.during;
+
+      // 음성 인식 시작
+      await speechToText.listen(
+        onResult: (result) {
+          recognizedText.value = result.recognizedWords;
+        },
+      );
+    }
+
+    // 음성 인식을 중지하는 함수
+    void stopListening() {
+      recordingStatus.value = RecordingStatus.after;
+      speechToText.stop();
+    }
+
+    // 음성 인식을 중지하는 함수
+    void resetRecognizedText() {
+      recordingStatus.value = RecordingStatus.before;
+      recognizedText.value = '';
+      if (isListening.value == true) {
+        stopListening();
+      }
+    }
+
+    // 인식된 텍스트를 전송하는 함수
+    Future<void> submitRecognizedText() async {
+      // after 상태에서 호출되는 함수로, 음성 인식 후 텍스트를 처리하는 로직
+      print('음성 인식이 완료되어 텍스트를 제출합니다.');
+    }
+
+    ///
+    /// 메인 버튼 클릭시
+    ///
+    Future<void> onMainBtnClicked() async {
       try {
         final hasMicPermission = await speechToText.hasPermission;
         final isSpeechAvailable = speechToText.isAvailable;
 
-        print('마이크 권한 허용했는가? : $hasMicPermission');
-        print('음성 인식 권한 허용했는가? $isSpeechAvailable');
+        // 권한이 모두 허용돼있으면 바로 리스닝 시작
+        if (await speechToText.hasPermission && speechToText.isAvailable) {
+          print('권한 체크 완료');
+          switch (recordingStatus.value) {
+            case RecordingStatus.before:
+              await startListening();
+              break;
+            case RecordingStatus.during:
+              stopListening();
+              break;
+            case RecordingStatus.after:
+              await submitRecognizedText();
+              break;
+          }
+        }
 
-        // 권한이 하나라도 허용되지 않은 경우 예외 처리
+        // 권한 허용 체크
         if (!hasMicPermission || !isSpeechAvailable) {
-          String missingPermissions = '';
-
-          if (!hasMicPermission) {
-            missingPermissions += '마이크 권한';
-          }
-
-          if (!isSpeechAvailable) {
-            if (missingPermissions.isNotEmpty) {
-              missingPermissions += ', ';
-            }
-            missingPermissions += '음성 인식 권한';
-          }
-
           DialogService.show(
             dialog: AppDialog.dividedBtn(
               title: '권한 필요',
-              subTitle: '$missingPermissions 설정이 필요합니다. 설정에서 권한을 허용해주세요.',
+              subTitle: '설정에서 마이크 권한과 음성 인식 권한을 허용해주세요.',
               leftBtnContent: '취소',
               showContentImg: false,
               rightBtnContent: '설정하기',
@@ -119,23 +183,10 @@ class BottomSpeechToTextField extends HookConsumerWidget
           );
           return;
         }
-
-        // 음성 인식 시작
-        await speechToText.listen(
-          onResult: (result) {
-            recognizedText.value = result.recognizedWords;
-            print('Recognized words: ${recognizedText.value}');
-          },
-        );
       } catch (e) {
         log(e.toString());
         SnackBarService.showSnackBar('음성 인식을 시작할 수 없습니다. 다시 시도해주세요.');
       }
-    }
-
-    // 음성 인식을 중지하는 함수
-    void stopListening() {
-      speechToText.stop();
     }
 
     return Container(
@@ -146,19 +197,30 @@ class BottomSpeechToTextField extends HookConsumerWidget
       ),
       child: Column(
         children: [
-          if (!isListening.value && recognizedText.value.isNotEmpty)
+          SizedBox(
+            width: double.infinity,
+            child: Center(
+              child: Text(
+                recognizedText.value.isEmpty &&
+                        recordingStatus.value == RecordingStatus.during
+                    ? '듣고 있어요'
+                    : '',
+                style: AppTextStyle.body1,
+              ),
+            ),
+          ),
+          if (recordingStatus.value == RecordingStatus.after)
             _buildRecognizedText(recognizedText.value),
-          // 음성 모드 입력 폼을 메소드에서 제거하고 직접 구현
           Container(
             margin: const EdgeInsets.symmetric(vertical: 36),
             height: 143,
             child: Stack(
               children: [
-                // 음성 인식 버튼
+                /// 메인 음성 버튼
                 Align(
                   alignment: Alignment.topCenter,
                   child: GestureDetector(
-                    onTap: isListening.value ? stopListening : startListening,
+                    onTap: onMainBtnClicked,
                     child: Container(
                       width: 112,
                       height: 112,
@@ -172,9 +234,12 @@ class BottomSpeechToTextField extends HookConsumerWidget
                           backgroundColor: Colors.white,
                           child: Center(
                             child: SvgPicture.asset(
-                              isListening.value
-                                  ? Assets.iconsArrowLeft
-                                  : Assets.iconsIconMic,
+                              recordingStatus.value == RecordingStatus.before
+                                  ? Assets.iconsIconMic
+                                  : recordingStatus.value ==
+                                          RecordingStatus.during
+                                      ? Assets.iconsArrowLeft
+                                      : Assets.iconsSend,
                               width: 44,
                               colorFilter: ColorFilter.mode(
                                 AppColor.of.brand3,
@@ -188,7 +253,7 @@ class BottomSpeechToTextField extends HookConsumerWidget
                   ),
                 ),
 
-                // 타이핑 모드, 녹음 취소 버튼
+                /// 타이핑 모드, 녹음 취소 버튼
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Container(
@@ -198,8 +263,9 @@ class BottomSpeechToTextField extends HookConsumerWidget
                       children: [
                         // 타이핑 모드로 전환
                         GestureDetector(
-                          onTap: () =>
-                              ref.read(isSpeechModeProvider.notifier).toggle(),
+                          onTap: () {
+                            ref.read(isSpeechModeProvider.notifier).toggle();
+                          },
                           child: CircleAvatar(
                             radius: 24,
                             backgroundColor: AppColor.of.blue1,
@@ -210,23 +276,24 @@ class BottomSpeechToTextField extends HookConsumerWidget
                           ),
                         ),
 
-                        // UI 레이아웃을 위한 Gap 설정
+                        /// UI 레이아웃을 위한 Gap 설정
                         const Gap(48),
 
-                        // 녹음 취소
+                        /// 녹음 취소
                         GestureDetector(
                           onTap: () {
-                            isListening.value
-                                ? stopListening()
-                                : print('녹음 취소 버튼이 현재 비활성화 되어있음');
+                            recordingStatus.value == RecordingStatus.before
+                                ? print('녹음 취소 버튼이 현재 비활성화 되어있음')
+                                : resetRecognizedText();
                           },
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 300),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: isListening.value
-                                  ? AppColor.of.red1
-                                  : AppColor.of.background1,
+                              color: recordingStatus.value ==
+                                      RecordingStatus.before
+                                  ? AppColor.of.background1
+                                  : AppColor.of.red1,
                             ),
                             child: CircleAvatar(
                               radius: 24,
@@ -234,9 +301,10 @@ class BottomSpeechToTextField extends HookConsumerWidget
                               child: SvgPicture.asset(
                                 Assets.iconsDeleteOrWrong,
                                 colorFilter: ColorFilter.mode(
-                                  isListening.value
-                                      ? AppColor.of.red2
-                                      : AppColor.of.gray3,
+                                  recordingStatus.value ==
+                                          RecordingStatus.before
+                                      ? AppColor.of.gray3
+                                      : AppColor.of.red2,
                                   BlendMode.srcIn,
                                 ),
                               ),
@@ -247,19 +315,6 @@ class BottomSpeechToTextField extends HookConsumerWidget
                     ),
                   ),
                 ),
-
-                /// TYPING MODE INDUCTION TOOL TIP
-                if (showHighlightEffect.value.isTrue)
-                  Positioned(
-                    left: 52,
-                    top: 52,
-                    child: AnimatedAppearView(
-                      awaitAppearDuration: const Duration(milliseconds: 400),
-                      child: SvgPicture.asset(
-                        Assets.iconsTypingModeTooltip,
-                      ),
-                    ),
-                  ),
               ],
             ),
           ),
@@ -292,10 +347,7 @@ class BottomSpeechToTextField extends HookConsumerWidget
             padding: const EdgeInsets.only(right: 11.0),
             child: Text(
               recognizedText,
-              style: TextStyle(
-                fontSize: 16.0,
-                color: AppColor.of.black,
-              ),
+              style: AppTextStyle.body2,
             ),
           ),
         ),
