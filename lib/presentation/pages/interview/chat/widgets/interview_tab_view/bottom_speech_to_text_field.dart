@@ -6,18 +6,18 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/features/chat/repositories/enums/speech_mode_status.enum.dart';
+import 'package:techtalk/features/chat/repositories/enums/speech_state.enum.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 
 /// Speech to Text 상태 객체
-class SpeechState {
-  final ValueNotifier<SpeechStatus> status; // 음성 인식 상태 (준비, 듣는 중, 완료)
+class SpeechController {
+  final ValueNotifier<SpeechState> status; // 음성 인식 상태 (준비, 듣는 중, 완료)
   final ValueNotifier<String> recognizedText; // 음성 인식된 텍스트
   final ValueNotifier<bool> isListening; // 음성 인식 활성화 여부
 
-  SpeechState({
+  SpeechController({
     required this.status,
     required this.recognizedText,
     required this.isListening,
@@ -30,16 +30,17 @@ class BottomSpeechToTextField extends HookConsumerWidget
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final TextEditingController textEditingController = TextEditingController();
     final speechToText = useMemoized(stt.SpeechToText.new, []);
-    final speechState = SpeechState(
-      status: useState(SpeechStatus.ready),
+    final speechController = SpeechController(
+      status: useState(SpeechState.ready),
       recognizedText: useState(''),
       isListening: useState(false),
     );
 
     /// 음성 인식 초기화
     useEffect(() {
-      initSpeech(speechToText, speechState);
+      initSpeech(speechToText, speechController);
       return null;
     }, []);
 
@@ -49,11 +50,11 @@ class BottomSpeechToTextField extends HookConsumerWidget
       child: Column(
         children: [
           // 음성 인식 중일 때 보여줄 텍스트
-          _buildListeningIndicator(speechState),
+          _buildListeningIndicator(speechController),
 
           // 음성 인식된 텍스트의 결과물을 보여줌
-          if (speechState.status.value == SpeechStatus.recognized)
-            _buildRecognizedText(speechState),
+          if (speechController.status.value == SpeechState.recognized)
+            _buildRecognizedText(speechController),
 
           // 버튼 UI
           Container(
@@ -65,7 +66,12 @@ class BottomSpeechToTextField extends HookConsumerWidget
                 Align(
                   alignment: Alignment.topCenter,
                   child: GestureDetector(
-                    onTap: () => onMainBtnTapped(speechToText, speechState),
+                    onTap: () => onMainBtnTapped(
+                      speechToText,
+                      speechController,
+                      ref,
+                      textEditingController,
+                    ),
                     child: Container(
                       width: 112,
                       height: 112,
@@ -76,15 +82,24 @@ class BottomSpeechToTextField extends HookConsumerWidget
                       child: Center(
                         child: CircleAvatar(
                           radius: 44,
-                          backgroundColor: Colors.white,
+                          backgroundColor: speechController.status.value ==
+                                  SpeechState.submitMessage
+                              ? AppColor.of.brand3
+                              : Colors.white,
                           child: Center(
                             child: SvgPicture.asset(
-                              _getMainButtonIcon(speechState.status.value),
+                              _getMainButtonIcon(speechController.status.value),
                               width: 44,
-                              colorFilter: ColorFilter.mode(
-                                AppColor.of.brand3,
-                                BlendMode.srcIn,
-                              ),
+                              colorFilter: speechController.status.value ==
+                                      SpeechState.submitMessage
+                                  ? const ColorFilter.mode(
+                                      Colors.white,
+                                      BlendMode.srcIn,
+                                    )
+                                  : ColorFilter.mode(
+                                      AppColor.of.brand3,
+                                      BlendMode.srcIn,
+                                    ),
                             ),
                           ),
                         ),
@@ -103,7 +118,7 @@ class BottomSpeechToTextField extends HookConsumerWidget
                       children: [
                         _buildTypingModeButton(),
                         const Gap(48),
-                        _buildCancelButton(speechToText, speechState),
+                        _buildCancelButton(speechToText, speechController),
                       ],
                     ),
                   ),
@@ -117,25 +132,40 @@ class BottomSpeechToTextField extends HookConsumerWidget
   }
 
   // 음성 인식 중일 때 보여줄 텍스트
-  Widget _buildListeningIndicator(
-    SpeechState speechState,
-  ) {
+  Widget _buildListeningIndicator(SpeechController speechController) {
+    String message = '';
+    Color textColor = AppColor.of.black;
+
+    // UI만 Listening 모드로 변경됨
+    if (speechController.status.value == SpeechState.listening) {
+      // 인식된 텍스트가 없을 때
+      if (speechController.recognizedText.value.isEmpty) {
+        // SpeechToText에서 Listening 상태 진입 중일때
+        if (speechController.isListening.value == false) {
+          message = '잠시만 기다려주세요';
+          textColor = AppColor.of.red2;
+        }
+        // SpeechToText에서 Listening 상태 진입 성공시
+        else {
+          message = '듣고 있어요';
+          textColor = AppColor.of.black;
+        }
+      }
+    }
+
     return SizedBox(
       width: double.infinity,
       child: Center(
         child: Text(
-          speechState.recognizedText.value.isEmpty &&
-                  speechState.status.value == SpeechStatus.listening
-              ? '듣고 있어요'
-              : '',
-          style: AppTextStyle.body1,
+          message,
+          style: AppTextStyle.body1.copyWith(color: textColor),
         ),
       ),
     );
   }
 
   // 음성 인식된 텍스트의 결과물을 보여줌
-  Widget _buildRecognizedText(SpeechState speechState) {
+  Widget _buildRecognizedText(SpeechController speechController) {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 12),
@@ -153,7 +183,7 @@ class BottomSpeechToTextField extends HookConsumerWidget
           child: SingleChildScrollView(
             padding: const EdgeInsets.only(right: 11),
             child: Text(
-              speechState.recognizedText.value,
+              speechController.recognizedText.value,
               style: AppTextStyle.body2,
             ),
           ),
@@ -163,16 +193,20 @@ class BottomSpeechToTextField extends HookConsumerWidget
   }
 
   // 녹음 상태에 따라 메인 버튼 아이콘 변경
-  String _getMainButtonIcon(SpeechStatus status) {
+  String _getMainButtonIcon(SpeechState status) {
     switch (status) {
-      case SpeechStatus.ready:
+      case SpeechState.ready:
+        print('SpeechState : $status');
         return Assets.iconsIconMic;
-      case SpeechStatus.listening:
+      case SpeechState.listening:
+        print('SpeechState : $status');
         return Assets.iconsArrowLeft;
-      case SpeechStatus.recognized:
+      case SpeechState.recognized:
+        print('SpeechState : $status');
         return Assets.iconsSend;
-      default:
-        return Assets.iconsIconMic;
+      case SpeechState.submitMessage:
+        print('SpeechState : $status');
+        return Assets.iconsSend;
     }
   }
 
@@ -195,21 +229,21 @@ class BottomSpeechToTextField extends HookConsumerWidget
   // 녹음 취소 버튼
   Widget _buildCancelButton(
     stt.SpeechToText speechToText,
-    SpeechState speechState,
+    SpeechController speechController,
   ) {
     return GestureDetector(
       onTap: () {
-        if (speechState.status.value == SpeechStatus.ready) {
+        if (speechController.status.value == SpeechState.ready) {
           print('현재 비활성화 되어있음');
         } else {
-          resetRecognizedText(speechToText, speechState);
+          resetRecognizedText(speechToText, speechController);
         }
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: speechState.status.value == SpeechStatus.ready
+          color: speechController.status.value == SpeechState.ready
               ? AppColor.of.background1
               : AppColor.of.red1,
         ),
@@ -219,7 +253,7 @@ class BottomSpeechToTextField extends HookConsumerWidget
           child: SvgPicture.asset(
             Assets.iconsDeleteOrWrong,
             colorFilter: ColorFilter.mode(
-              speechState.status.value == SpeechStatus.ready
+              speechController.status.value == SpeechState.ready
                   ? AppColor.of.gray3
                   : AppColor.of.red2,
               BlendMode.srcIn,

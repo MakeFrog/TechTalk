@@ -12,7 +12,7 @@ import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/repositories/enums/speech_mode_status.enum.dart';
+import 'package:techtalk/features/chat/repositories/enums/speech_state.enum.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller.dart';
@@ -191,12 +191,12 @@ mixin class ChatEvent {
   ///
   Future<void> initSpeech(
     stt.SpeechToText speechToText,
-    SpeechState speechState,
+    SpeechController speechController,
   ) async {
     await speechToText.initialize(
       onStatus: (status) {
-        speechState.isListening.value =
-            speechState.status.value == SpeechStatus.listening
+        speechController.isListening.value =
+            speechController.status.value == SpeechState.listening
                 ? true
                 : false;
       },
@@ -235,20 +235,29 @@ mixin class ChatEvent {
   ///
   Future<void> onMainBtnTapped(
     stt.SpeechToText speechToText,
-    SpeechState speechState,
+    SpeechController speechController,
+    WidgetRef ref,
+    TextEditingController textEditingController,
   ) async {
     final hasPermission = await checkPermissions(speechToText);
     if (!hasPermission) return;
 
-    switch (speechState.status.value) {
-      case SpeechStatus.ready:
-        await startRecording(speechToText, speechState);
+    switch (speechController.status.value) {
+      case SpeechState.ready:
+        await startRecording(speechToText, speechController);
         break;
-      case SpeechStatus.listening:
-        stopRecording(speechToText, speechState);
+      case SpeechState.listening:
+        stopRecording(speechToText, speechController);
         break;
-      case SpeechStatus.recognized:
-        await submitRecognizedText();
+      case SpeechState.recognized:
+        await submitRecognizedText(
+          ref,
+          textEditingController,
+          speechToText,
+          speechController,
+        );
+        break;
+      case SpeechState.submitMessage:
         break;
     }
   }
@@ -287,13 +296,13 @@ mixin class ChatEvent {
   ///
   Future<void> startRecording(
     stt.SpeechToText speechToText,
-    SpeechState speechState,
+    SpeechController speechController,
   ) async {
-    speechState.status.value = SpeechStatus.listening;
+    speechController.status.value = SpeechState.listening;
 
     await speechToText.listen(
       onResult: (result) {
-        speechState.recognizedText.value = result.recognizedWords;
+        speechController.recognizedText.value = result.recognizedWords;
       },
     );
   }
@@ -303,30 +312,56 @@ mixin class ChatEvent {
   ///
   void stopRecording(
     stt.SpeechToText speechToText,
-    SpeechState speechState,
+    SpeechController speechController,
   ) {
-    speechState.status.value = SpeechStatus.recognized;
-    speechToText.stop();
-  }
-
-  ///
-  /// 음성 인식을 리셋하는 함수
-  ///
-  void resetRecognizedText(
-    stt.SpeechToText speechToText,
-    SpeechState speechState,
-  ) {
-    speechState.status.value = SpeechStatus.ready;
-    speechState.recognizedText.value = '';
-    if (speechState.isListening.value == true) {
-      stopRecording(speechToText, speechState);
+    if (speechController.recognizedText.value.isEmpty) {
+      // 음성 인식 제대로 안됐을때 로직
+      // _buildListeningIndicator에 '다시 말해줘요' 텍스트 띄우기
+    } else {
+      speechController.status.value = SpeechState.recognized;
+      speechToText.stop();
     }
   }
 
   ///
-  /// 인식된 텍스트를 전송하는 함수
+  /// 음성 인식을 리셋
   ///
-  Future<void> submitRecognizedText() async {
-    print('음성 인식이 완료되어 텍스트를 제출합니다.');
+  void resetRecognizedText(
+    stt.SpeechToText speechToText,
+    SpeechController speechController,
+  ) {
+    speechController.status.value = SpeechState.ready;
+    speechController.recognizedText.value = '';
+    if (speechController.isListening.value == true) {
+      stopRecording(speechToText, speechController);
+    }
+  }
+
+  ///
+  /// 인식된 텍스트를 전송
+  ///
+  Future<void> submitRecognizedText(
+    WidgetRef ref,
+    TextEditingController textEditingController,
+    stt.SpeechToText speechToText,
+    SpeechController speechController,
+  ) async {
+    // 음성 인식된 텍스트 가져오기
+    final recognizedText = speechController.recognizedText.value;
+
+    // 텍스트 필드에 recognizedText를 설정
+    textEditingController.text = recognizedText;
+
+    // speechController 상태 변경하기
+    speechController.status.value = SpeechState.submitMessage;
+
+    // 기존 onChatFieldSubmitted 함수 사용하여 채팅 전송
+    await onChatFieldSubmitted(
+      ref,
+      textEditingController: textEditingController,
+    );
+
+    // 음성 인식 상태 리셋
+    resetRecognizedText(speechToText, speechController);
   }
 }
