@@ -40,13 +40,25 @@ class BottomSpeechToTextField extends HookConsumerWidget
           onStatus: (status) {
             if (status == 'listening') {
               isListening.value = true;
-            }
-            if (status == 'done') {
+            } else if (status == 'done') {
               isListening.value = false;
             }
             print('Speech status: $status');
           },
-          onError: (error) => print('Speech error: $error'),
+          onError: (error) {
+            print(
+              'Speech error: ${error.errorMsg}, permanent: ${error.permanent}',
+            );
+
+            // error_listen_failed 에러 처리
+            if (error.errorMsg == 'error_listen_failed') {
+              log('음성 인식에 실패했습니다. 에러 메시지: ${error.errorMsg}');
+              // 사용자에게 음성 인식 실패 알림
+              SnackBarService.showSnackBar(
+                '음성 인식에 실패했습니다. 마이크 권한 또는 음성 인식 서비스 상태를 확인해주세요.',
+              );
+            }
+          },
         );
 
         if (speechEnabled) {
@@ -270,13 +282,14 @@ class BottomSpeechToTextField extends HookConsumerWidget
       ),
       child: ConstrainedBox(
         constraints: const BoxConstraints(
-          maxHeight: 100.0, // 4줄에 해당하는 최대 높이 설정
+          maxHeight: 100.0,
         ),
         child: Scrollbar(
-          thumbVisibility: true, // 스크롤바 항상 표시
-          thickness: 4.0, // 스크롤바의 두께
-          radius: const Radius.circular(10.0), // 스크롤바의 끝을 둥글게
+          thumbVisibility: true,
+          thickness: 4.0,
+          radius: const Radius.circular(24.0),
           child: SingleChildScrollView(
+            padding: const EdgeInsets.only(right: 11.0),
             child: Text(
               recognizedText,
               style: TextStyle(
