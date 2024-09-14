@@ -12,11 +12,12 @@ import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/repositories/enums/speech_state.enum.dart';
+import 'package:techtalk/features/chat/repositories/enums/speech_ui_state.enum.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/bottom_speech_to_text_field.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
@@ -193,21 +194,35 @@ mixin class ChatEvent {
     stt.SpeechToText speechToText,
     SpeechController speechController,
   ) async {
-    await speechToText.initialize(
-      onStatus: (status) {
-        speechController.isListening.value =
-            speechController.status.value == SpeechState.listening
-                ? true
-                : false;
+    final isInitialized = await speechToText.initialize(
+      onStatus: (state) {
+        if (state == 'listening') {
+          speechController.isListening.value = true;
+        } else {
+          speechController.isListening.value = false;
+        }
       },
       onError: (error) {
         final errorMessage = getErrorMessage(error.errorMsg);
         if (errorMessage.isNotEmpty) {
+          speechController.state.value = SpeechUiState.ready;
           log(errorMessage);
           SnackBarService.showSnackBar(errorMessage);
         }
       },
     );
+    // 음성 인식이 초기화되었는지 확인
+    if (isInitialized) {
+      final isSpeechAvailable = speechToText.isAvailable;
+      if (isSpeechAvailable) {
+        print('음성 인식을 사용할 수 있습니다.');
+      } else {
+        print('음성 인식을 사용할 수 없습니다.');
+      }
+    } else {
+      log('음성 인식 초기화에 실패했습니다.');
+      SnackBarService.showSnackBar('음성 인식 초기화에 실패했습니다.');
+    }
   }
 
   ///
@@ -242,14 +257,14 @@ mixin class ChatEvent {
     final hasPermission = await checkPermissions(speechToText);
     if (!hasPermission) return;
 
-    switch (speechController.status.value) {
-      case SpeechState.ready:
-        await startRecording(speechToText, speechController);
+    switch (speechController.state.value) {
+      case SpeechUiState.ready:
+        await startRecognized(speechToText, speechController);
         break;
-      case SpeechState.listening:
-        stopRecording(speechToText, speechController);
+      case SpeechUiState.listening:
+        stopRecognized(speechToText, speechController);
         break;
-      case SpeechState.recognized:
+      case SpeechUiState.recognized:
         await submitRecognizedText(
           ref,
           textEditingController,
@@ -257,7 +272,7 @@ mixin class ChatEvent {
           speechController,
         );
         break;
-      case SpeechState.submitMessage:
+      case SpeechUiState.submitMessage:
         break;
     }
   }
@@ -294,11 +309,15 @@ mixin class ChatEvent {
   ///
   /// 음성 인식 시작
   ///
-  Future<void> startRecording(
+  Future<void> startRecognized(
     stt.SpeechToText speechToText,
     SpeechController speechController,
   ) async {
-    speechController.status.value = SpeechState.listening;
+    // 음성 인식 시작 전에 텍스트 초기화
+    speechController.recognizedText.value = '';
+
+    // SpeechUiState 변경
+    speechController.state.value = SpeechUiState.listening;
 
     await speechToText.listen(
       onResult: (result) {
@@ -308,37 +327,23 @@ mixin class ChatEvent {
   }
 
   ///
-  /// 음성 인식 중지
+  /// 음성 인식 정지
   ///
-  void stopRecording(
+  void stopRecognized(
     stt.SpeechToText speechToText,
     SpeechController speechController,
   ) {
+    // 메인 버튼 비활성화
     if (speechController.recognizedText.value.isEmpty) {
-      // 음성 인식 제대로 안됐을때 로직
-      // _buildListeningIndicator에 '다시 말해줘요' 텍스트 띄우기
+      print('버튼 비활성화 : 인식된 텍스트 x');
     } else {
-      speechController.status.value = SpeechState.recognized;
       speechToText.stop();
+      speechController.state.value = SpeechUiState.recognized;
     }
   }
 
   ///
-  /// 음성 인식을 리셋
-  ///
-  void resetRecognizedText(
-    stt.SpeechToText speechToText,
-    SpeechController speechController,
-  ) {
-    speechController.status.value = SpeechState.ready;
-    speechController.recognizedText.value = '';
-    if (speechController.isListening.value == true) {
-      stopRecording(speechToText, speechController);
-    }
-  }
-
-  ///
-  /// 인식된 텍스트를 전송
+  /// 음성 인식 텍스트를 전송
   ///
   Future<void> submitRecognizedText(
     WidgetRef ref,
@@ -353,7 +358,7 @@ mixin class ChatEvent {
     textEditingController.text = recognizedText;
 
     // speechController 상태 변경하기
-    speechController.status.value = SpeechState.submitMessage;
+    speechController.state.value = SpeechUiState.submitMessage;
 
     // 기존 onChatFieldSubmitted 함수 사용하여 채팅 전송
     await onChatFieldSubmitted(
@@ -361,7 +366,52 @@ mixin class ChatEvent {
       textEditingController: textEditingController,
     );
 
-    // 음성 인식 상태 리셋
-    resetRecognizedText(speechToText, speechController);
+    // 예외처리 : 음성 전송중
+
+    // 예외처리 : 전송 완료
+    speechController.state.value = SpeechUiState.ready;
+    speechController.recognizedText.value = '';
+  }
+
+  ///
+  /// 녹음 취소 버튼 클릭시
+  ///
+  void cancleBtnClicked(
+    stt.SpeechToText speechToText,
+    SpeechController speechController,
+  ) {
+    speechController.state.value = SpeechUiState.ready;
+    speechController.recognizedText.value = '';
+
+    // 녹음 중 리셋 버튼 클릭시
+    if (speechController.isListening.value == true) {
+      speechToText.stop();
+    }
+  }
+
+  ///
+  /// 타이핑 모드 버튼 클릭시
+  ///
+  void typingModeBtnClicked(
+    WidgetRef ref,
+    stt.SpeechToText speechToText,
+    SpeechController speechController,
+  ) {
+    switch (speechController.state.value) {
+      case SpeechUiState.listening:
+        // 향후 텍스트 전달 기능 구현
+        ref.read(isSpeechModeProvider.notifier).toggle();
+        speechToText.stop();
+        break;
+
+      case SpeechUiState.recognized:
+        // 향후 텍스트 전달 기능 구현
+        ref.read(isSpeechModeProvider.notifier).toggle();
+        break;
+
+      default:
+        ref.read(isSpeechModeProvider.notifier).toggle();
+        break;
+    }
   }
 }
