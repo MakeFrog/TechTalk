@@ -55,4 +55,24 @@ class SystemRepositoryImpl implements SystemRepository {
       return Result.failure(e);
     }
   }
+
+  @override
+  Future<Result<double?>> getKeyboardHeight() async {
+    try {
+      final result = await _localDataSource.loadKeyboardHeight();
+      return Result.success(result);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+  
+  @override
+  Future<Result<void>> storeKeyboardHeight(double height) async {
+    try {
+      await _localDataSource.storeKeyboardHeight(height);
+      return Result.success(null);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
 }

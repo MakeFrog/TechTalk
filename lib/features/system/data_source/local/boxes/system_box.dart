@@ -13,5 +13,9 @@ class SystemBox extends HiveObject {
   @HiveField(0)
   final String languageCode;
 
-  SystemBox({required this.languageCode});
+  /// 디바이싀 가상 키보드 높이
+  @HiveField(1)
+  final double? virtualKeyboardHeight;
+
+  SystemBox({required this.languageCode, required this.virtualKeyboardHeight});
 }
