@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
@@ -182,14 +183,6 @@ mixin class ChatEvent {
   }
 
   ///
-  /// 음성 인식 활성화
-  /// '마이크' 버튼이 클릭 되었을 때
-  ///
-  void onMicBtnTapped(ValueNotifier<bool> isSpeechMode) {
-    isSpeechMode.value = !isSpeechMode.value;
-  }
-
-  ///
   /// 음성인식 초기화 관리
   ///
   Future<void> initSpeech(
@@ -288,24 +281,58 @@ mixin class ChatEvent {
 
     if (!hasMicPermission || !isSpeechAvailable) {
       // 권한 부족시 처리 로직 (ex: 다이얼로그 표시)
-      DialogService.show(
-        dialog: AppDialog.dividedBtn(
-          title: '권한 필요',
-          subTitle: '설정에서 마이크 권한과 음성 인식 권한을 허용해주세요.',
-          leftBtnContent: '취소',
-          rightBtnContent: '설정하기',
-          onRightBtnClicked: () async {
-            rootNavigatorKey.currentContext?.pop();
-            await AppSettings.openAppSettings();
-          },
-          onLeftBtnClicked: () {
-            rootNavigatorKey.currentContext?.pop();
-          },
-        ),
-      );
+      _showNeedMicPermissionsDialog();
       return false;
     }
     return true;
+  }
+
+  ///
+  /// 마이크 권한허용 필요 다이어로그 노출
+  ///
+  void _showNeedMicPermissionsDialog() {
+    DialogService.show(
+      dialog: AppDialog.dividedBtn(
+        title: '권한 필요',
+        subTitle: '설정에서 마이크 권한과 음성 인식 권한을 허용해주세요.',
+        leftBtnContent: '취소',
+        showContentImg: false,
+        rightBtnContent: '설정하기',
+        onRightBtnClicked: () async {
+          rootNavigatorKey.currentContext?.pop();
+          await AppSettings.openAppSettings();
+        },
+        onLeftBtnClicked: () {
+          rootNavigatorKey.currentContext?.pop();
+        },
+      ),
+    );
+  }
+
+  /// 음성 인식 활성화 '마이크' 버튼이 클릭 되었을 때
+  ///
+  /// - 음성 인식 가능 권한 여부를 요청 및 검사
+  ///    - 만약 권한이 허용 안되었다면 권한 허용 팝업 노출
+  /// - 권한 허용이 충족되었다면 음성 인식 활성화
+  ///
+  Future<void> onMicBtnTapped(WidgetRef ref) async {
+    // 여러 권한을 한 번에 요청
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.speech,
+      Permission.microphone,
+    ].request();
+
+    /// 두 권한 중 하나라도 허용되지 않은 경우
+    /// 권한 허용 다이어로그 노출
+    if (statuses.values.any((status) => !status.isGranted)) {
+      _showNeedMicPermissionsDialog();
+    } else {
+      /// 키보드 focus 비활성화
+      FocusScope.of(ref.context).unfocus();
+      /// 약간의 딜레이를 주어 자연스럽게 음성 인식 활성화 ui 노출
+      await Future.delayed(Duration(milliseconds: 120));
+      ref.read(isSpeechModeProvider.notifier).toggle();
+    }
   }
 
   ///

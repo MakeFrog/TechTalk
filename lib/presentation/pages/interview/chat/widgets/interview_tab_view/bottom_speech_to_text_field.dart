@@ -9,6 +9,7 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/enums/speech_ui_state.enum.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 
 /// Speech to Text 상태 객체
 class SpeechController {
@@ -46,12 +47,18 @@ class BottomSpeechToTextField extends HookConsumerWidget
     );
 
     return Container(
+      constraints: BoxConstraints(
+        minHeight: AppSize.to.keyboardHeight != null
+            ? AppSize.to.keyboardHeight! - AppSize.to.bottomInset
+            : AppSize.to.screenHeight * 0.4,
+      ),
+      // color: Colors.red,
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-      child: Column(
+      child: Stack(
+        alignment: Alignment.center,
         children: [
           // 음성 인식 중일 때 보여줄 텍스트
-          _buildListeningIndicator(speechController),
+          Positioned(child: _buildListeningIndicator(speechController)),
 
           // 음성 인식된 텍스트의 결과물을 보여줌
           if (speechController.state.value == SpeechUiState.recognized)
@@ -59,8 +66,12 @@ class BottomSpeechToTextField extends HookConsumerWidget
 
           // 버튼 UI
           Container(
-            margin: const EdgeInsets.only(top: 48, bottom: 18),
-            height: 143,
+            alignment: Alignment.center,
+            height: 141,
+            constraints: const BoxConstraints(maxWidth: 281),
+            margin: const EdgeInsets.symmetric(
+              horizontal: 48,
+            ),
             child: Stack(
               children: [
                 // 메인 버튼
@@ -112,16 +123,12 @@ class BottomSpeechToTextField extends HookConsumerWidget
                 // 하단 버튼
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 36),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildTypingModeBtn(speechToText, speechController),
-                        const Gap(48),
-                        _buildCancelBtn(speechToText, speechController),
-                      ],
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _buildTypingModeBtn(speechToText, speechController),
+                      _buildCancelBtn(speechToText, speechController),
+                    ],
                   ),
                 ),
               ],
@@ -230,36 +237,40 @@ class BottomSpeechToTextField extends HookConsumerWidget
     stt.SpeechToText speechToText,
     SpeechController speechController,
   ) {
-    return GestureDetector(
-      onTap: () {
-        if (speechController.state.value == SpeechUiState.ready) {
-          print('현재 비활성화 되어있음');
-        } else {
-          cancleBtnClicked(speechToText, speechController);
-        }
-      },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: speechController.state.value == SpeechUiState.ready
-              ? AppColor.of.background1
-              : AppColor.of.red1,
-        ),
-        child: CircleAvatar(
-          radius: 24,
-          backgroundColor: Colors.transparent,
-          child: SvgPicture.asset(
-            Assets.iconsDeleteOrWrong,
-            colorFilter: ColorFilter.mode(
-              speechController.state.value == SpeechUiState.ready
-                  ? AppColor.of.gray3
-                  : AppColor.of.red2,
-              BlendMode.srcIn,
+    return Consumer(
+      builder: (context, ref, _) {
+        return GestureDetector(
+          onTap: () {
+            if (speechController.state.value == SpeechUiState.ready) {
+              ref.read(isSpeechModeProvider.notifier).toggle();
+            } else {
+              cancleBtnClicked(speechToText, speechController);
+            }
+          },
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: speechController.state.value == SpeechUiState.ready
+                  ? AppColor.of.background1
+                  : AppColor.of.red1,
+            ),
+            child: CircleAvatar(
+              radius: 24,
+              backgroundColor: Colors.transparent,
+              child: SvgPicture.asset(
+                Assets.iconsDeleteOrWrong,
+                colorFilter: ColorFilter.mode(
+                  speechController.state.value == SpeechUiState.ready
+                      ? AppColor.of.gray3
+                      : AppColor.of.red2,
+                  BlendMode.srcIn,
+                ),
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
