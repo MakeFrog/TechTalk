@@ -3,19 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/gradient_shine_effect_view.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/bubble_indicator.dart';
 import 'package:techtalk/presentation/widgets/common/animated/animated_appear_view.dart';
-import 'package:techtalk/presentation/widgets/common/gesture/animated_scale_tap.dart';
 
 class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
   const BottomInputField({
@@ -43,7 +39,6 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
   Widget _buildTextField(InterviewProgress progressState) {
     return HookBuilder(
       builder: (context) {
-        print('이찌방 : ${isFirstInterview()}');
         final showHighlightEffect = useState(isFirstInterview());
         return Row(
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -52,7 +47,7 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
               clipBehavior: Clip.none,
               children: [
                 _buildMicButton(showHighlightEffect),
-                if (showHighlightEffect.value)
+                if (showHighlightEffect.value.isTrue)
                   const Positioned(
                     top: -46,
                     child: AnimatedAppearView(
@@ -64,7 +59,6 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                   ),
               ],
             ),
-            const Gap(6),
             _buildTextInputForm(
                 showHighlightEffect: showHighlightEffect,
                 progressState: progressState),
@@ -80,11 +74,10 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
       required InterviewProgress progressState}) {
     return Expanded(
       child: IntrinsicWidth(
-        child: HookBuilder(
-          builder: (context) {
-            final messageController = useTextEditingController();
-            final message = useListenableSelector(messageController, () {
-              final input = messageController.text;
+        child: HookConsumer(
+          builder: (context, ref, _) {
+            final message = useListenableSelector(unListenedInputController(ref), () {
+              final input = unListenedInputController(ref).text;
               if (showHighlightEffect.value.isTrue && input.isNotEmpty) {
                 showHighlightEffect.value = false;
               }
@@ -96,7 +89,7 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                 Positioned(
                   child: SizedBox(
                     child: TextField(
-                      controller: messageController,
+                      controller: unListenedInputController(ref),
                       maxLines: null,
                       autofocus: AppSize.to.keyboardHeight == null,
                       textAlignVertical: TextAlignVertical.top,
@@ -131,14 +124,12 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                         ),
                         onPressed: progressState.enableChat
                             ? () {
-                                onChatFieldSubmitted(
-                                  ref,
-                                  textEditingController: messageController,
-                                );
+                                onChatFieldSubmitted(ref);
                               }
                             : () {
                                 onChatFieldSubmittedOnWaitingState(
-                                    progressState);
+                                  progressState,
+                                );
                               },
                       );
                     },
@@ -156,13 +147,16 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
   Widget _buildMicButton(ValueNotifier<bool> showHighlightEffect) {
     return Consumer(
       builder: (context, ref, _) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 8),
-          child: ShrinkGestureView(
-            onTap: () {
-              onMicBtnTapped(ref);
-            },
-            borderRadius: BorderRadius.circular(22),
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            onMicBtnTapped(ref);
+          },
+          child: Container(
+            color: Colors.transparent,
+
+            /// 넉넉하게 터치 영역을 패딩으로 줌
+            padding: const EdgeInsets.fromLTRB(0, 8, 6, 8),
             child: Container(
               height: 32,
               width: 32,

@@ -42,13 +42,15 @@ class AnimatedAppearView extends HookWidget {
     /// 로딩 이후 자연스럽게 명함 카드 위젯을 노출하기 위해
     /// Opacity 애니메이션 조건 값 설정
     useEffect(() {
-      WidgetsBinding.instance.addPostFrameCallback((_) async{
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
         await Future.delayed(awaitAppearDuration ?? Duration.zero);
         isRendered.value = true;
-        });
-      animationController.forward();
+        animationController.forward();
+      });
+
       return null;
     }, []);
+
     return AnimatedBuilder(
       animation: animation,
       builder: (_, __) {

@@ -9,6 +9,7 @@ import 'package:techtalk/presentation/pages/interview/chat/providers/chat_messag
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/main_input_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/recognized_text_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
@@ -92,4 +93,16 @@ mixin class ChatState {
   /// 텍스트, 스피치 모드에서 공유중인 텍스트
   ///
   String recognizedText(WidgetRef ref) => ref.watch(recognizedTextProvider);
+
+  ///
+  /// 메인 TextEditingController
+  ///
+  TextEditingController listenedInputController(WidgetRef ref) =>
+      ref.watch(mainInputControllerProvider);
+
+  ///
+  /// 메인 TextEditingController (listened X)
+  ///
+  TextEditingController unListenedInputController(WidgetRef ref) =>
+      ref.read(mainInputControllerProvider);
 }

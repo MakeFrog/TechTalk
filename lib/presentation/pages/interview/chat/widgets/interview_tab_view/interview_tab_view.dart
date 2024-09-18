@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/bubble.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/bottom_input_field.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/bottom_speech_to_text_field.dart';
+import 'package:techtalk/presentation/widgets/common/animated/animated_appear_view.dart';
 import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 import 'package:techtalk/presentation/widgets/common/indicator/exception_indicator.dart';
 
@@ -71,15 +73,19 @@ class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
             ),
           ),
         ),
-        if (isSpeechMode(ref))
-          const BottomSpeechToTextField()
-        else
-          const BottomInputField(),
+        Consumer(builder: (context, ref, _) {
+          listenedInputController(ref);
+          if (isSpeechMode(ref)) {
+            return const AnimatedAppearView(
+              child: BottomSpeechToTextField(),
+            );
+          } else {
+            return const BottomInputField();
+          }
+        }),
         // AnimatedCrossFade(
         //   firstChild: const BottomInputField(),
-        //   secondChild: isSpeechMode(ref)
-        //       ? const BottomSpeechToTextField()
-        //       : const EmptyBox(),
+        //   secondChild: const BottomSpeechToTextField(),
         //   crossFadeState: isSpeechMode(ref)
         //       ? CrossFadeState.showSecond
         //       : CrossFadeState.showFirst,
