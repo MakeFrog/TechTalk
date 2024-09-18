@@ -5,6 +5,7 @@ import 'package:app_settings/app_settings.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
@@ -19,6 +20,7 @@ import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/bottom_speech_to_text_field.dart';
+import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
 mixin class ChatEvent {
@@ -412,6 +414,41 @@ mixin class ChatEvent {
       default:
         ref.read(isSpeechModeProvider.notifier).toggle();
         break;
+    }
+  }
+
+  ///
+  /// [AppSize] 모듈의 [keyboardHeight] 프러퍼티를
+  /// 조건에 따라 초기화 시키는 로직
+  ///
+  Future<void> initializeKeyboardHeightOnCondition(BuildContext context) async {
+    /// 캐싱된 키보드 높이 값이 없다면
+    /// 높이를 가져올 수 있는 아래 로직을 실행
+    if (AppSize.to.keyboardHeight == null ||
+        (AppSize.to.keyboardHeight ?? 0) <= 150.0) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) async {
+          try {
+            await EasyLoading.show(
+              indicator: const EmptyBox(),
+              // maskType: EasyLoadingMaskType.custom,
+            );
+
+            /// 넉넉하게 delyaed를주어
+            /// 키보드 auto focus가 되어 나타난 키보드 높이를 가져올 수 있도록 함
+            await Future.delayed(const Duration(milliseconds: 500));
+            final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+
+            /// 획득한 키보드 높이를
+            /// [AppSize] 모듈과 로컬 스터리지에 저장
+            await AppSize.to.updateKeyboardHeight(keyboardHeight);
+          } catch (e) {
+            log(e.toString());
+          } finally {
+            await EasyLoading.dismiss();
+          }
+        },
+      );
     }
   }
 }

@@ -85,6 +85,9 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                 controller: messageController,
                 maxLines: null,
                 focusNode: focusNode,
+                /// NOTE
+                /// 캐싱된 키보드가 없을 경우
+                autofocus:  AppSize.to.keyboardHeight == null,
                 textAlignVertical: TextAlignVertical.top,
                 decoration: InputDecoration(
                   enabled: !progressState.isDoneOrError,

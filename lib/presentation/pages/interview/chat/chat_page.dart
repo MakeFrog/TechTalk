@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
@@ -13,6 +17,7 @@ import 'package:techtalk/presentation/pages/interview/chat/widgets/qna_tab_view.
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
+import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 
 part 'widgets/chat_page_scaffold.dart';
 
@@ -63,6 +68,8 @@ class ChatPage extends BasePage with ChatEvent {
   @override
   void onInit(WidgetRef ref) {
     super.onInit(ref);
+
+    initializeKeyboardHeightOnCondition(ref.context);
 
     FirebaseAnalytics.instance.logEvent(
       name: 'Interview Created',
