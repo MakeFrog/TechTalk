@@ -71,18 +71,22 @@ class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
             ),
           ),
         ),
-        AnimatedCrossFade(
-          firstChild: const BottomInputField(),
-          secondChild: isSpeechMode(ref)
-              ? const BottomSpeechToTextField()
-              : const EmptyBox(),
-          crossFadeState: isSpeechMode(ref)
-              ? CrossFadeState.showSecond
-              : CrossFadeState.showFirst,
-          duration: const Duration(
-            milliseconds: 400,
-          ),
-        ),
+        if (isSpeechMode(ref))
+          const BottomSpeechToTextField()
+        else
+          const BottomInputField(),
+        // AnimatedCrossFade(
+        //   firstChild: const BottomInputField(),
+        //   secondChild: isSpeechMode(ref)
+        //       ? const BottomSpeechToTextField()
+        //       : const EmptyBox(),
+        //   crossFadeState: isSpeechMode(ref)
+        //       ? CrossFadeState.showSecond
+        //       : CrossFadeState.showFirst,
+        //   duration: const Duration(
+        //     milliseconds: 400,
+        //   ),
+        // ),
       ],
     );
   }
