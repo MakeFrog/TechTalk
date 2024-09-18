@@ -7,3 +7,5 @@
 */
 "CFBundleDisplayName" = "TechTalk";
 "NSPhotoLibraryUsageDescription" = "The app needs access to the photo library to change your profile image.";
+"NSMicrophoneUsageDescription" = "Please allow the app to access the microphone for voice recognition.";
+"NSSpeechRecognitionUsageDescription" = "Please allow the app to analyze speech for voice recognition.";
