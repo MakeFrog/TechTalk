@@ -72,6 +72,7 @@ dependencies:
   async: ^2.11.0 # 비동기 처리
   flutter_dotenv: ^5.0.2 # dotnev
   intl: ^0.19.0 # 포맷팅
+  permission_handler: ^11.3.1 #각종 플랫폼 권한 허용 및 감지
   uuid: ^4.1.0 # uuid 제너레이터
   image_picker: ^1.0.5 # 갤러리 접근
   single_import_generator: ^1.0.0 # barrel file generator
