@@ -41,6 +41,7 @@ class Assets {
   static const String iconsAvatar1 = 'assets/icons/avatar_1.svg';
   static const String iconsBullet = 'assets/icons/bullet.svg';
   static const String iconsCamera = 'assets/icons/camera.svg';
+  static const String iconsChatBubbleTale = 'assets/icons/chat_bubble_tale.svg';
   static const String iconsCheck = 'assets/icons/check.svg';
   static const String iconsCheckThick = 'assets/icons/check_thick.svg';
   static const String iconsClose = 'assets/icons/close.svg';
@@ -85,8 +86,8 @@ class Assets {
   static const String iconsStudy = 'assets/icons/study.svg';
   static const String iconsTalker = 'assets/icons/talker.svg';
   static const String iconsTechTalkLogo = 'assets/icons/tech_talk_logo.svg';
-  static const String iconsTypingModeTooltip = 'assets/icons/typing_mode_tooltip.svg';
   static const String iconsTypingModeAa = 'assets/icons/typing_mode_aa.svg';
+  static const String iconsTypingModeTooltip = 'assets/icons/typing_mode_tooltip.svg';
   static const String iconsUseMicTooltip = 'assets/icons/use_mic_tooltip.svg';
   static const String iconsUser = 'assets/icons/user.svg';
   static const String iconsWarning = 'assets/icons/warning.svg';
