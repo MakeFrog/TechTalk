@@ -329,6 +329,7 @@ mixin class ChatEvent {
     } else {
       /// 키보드 focus 비활성화
       FocusScope.of(ref.context).unfocus();
+
       /// 약간의 딜레이를 주어 자연스럽게 음성 인식 활성화 ui 노출
       await Future.delayed(Duration(milliseconds: 120));
       ref.read(isSpeechModeProvider.notifier).toggle();
@@ -453,29 +454,25 @@ mixin class ChatEvent {
     /// 높이를 가져올 수 있는 아래 로직을 실행
     if (AppSize.to.keyboardHeight == null ||
         (AppSize.to.keyboardHeight ?? 0) <= 150.0) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) async {
-          try {
-            await EasyLoading.show(
-              indicator: const EmptyBox(),
-              // maskType: EasyLoadingMaskType.custom,
-            );
+      try {
+        await EasyLoading.show(
+          indicator: const EmptyBox(),
+          maskType: EasyLoadingMaskType.custom,
+        );
 
-            /// 넉넉하게 delyaed를주어
-            /// 키보드 auto focus가 되어 나타난 키보드 높이를 가져올 수 있도록 함
-            await Future.delayed(const Duration(milliseconds: 500));
-            final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+        /// 넉넉하게 delyaed를주어
+        /// 키보드 auto focus가 되어 나타난 키보드 높이를 가져올 수 있도록 함
+        await Future.delayed(const Duration(milliseconds: 500));
+        final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
-            /// 획득한 키보드 높이를
-            /// [AppSize] 모듈과 로컬 스터리지에 저장
-            await AppSize.to.updateKeyboardHeight(keyboardHeight);
-          } catch (e) {
-            log(e.toString());
-          } finally {
-            await EasyLoading.dismiss();
-          }
-        },
-      );
+        /// 획득한 키보드 높이를
+        /// [AppSize] 모듈과 로컬 스터리지에 저장
+        await AppSize.to.updateKeyboardHeight(keyboardHeight);
+      } catch (e) {
+        log(e.toString());
+      } finally {
+        await EasyLoading.dismiss();
+      }
     }
   }
 }

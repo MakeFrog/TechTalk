@@ -43,6 +43,7 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
   Widget _buildTextField(InterviewProgress progressState) {
     return HookBuilder(
       builder: (context) {
+        print('이찌방 : ${isFirstInterview()}');
         final showHighlightEffect = useState(isFirstInterview());
         return Row(
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -86,7 +87,6 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
               final input = messageController.text;
               if (showHighlightEffect.value.isTrue && input.isNotEmpty) {
                 showHighlightEffect.value = false;
-                updateFirstEnteredStateToTrue();
               }
               return input;
             });

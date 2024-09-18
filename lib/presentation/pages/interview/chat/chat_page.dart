@@ -64,7 +64,12 @@ class ChatPage extends BasePage with ChatEvent {
   void onInit(WidgetRef ref) {
     super.onInit(ref);
 
-    initializeKeyboardHeightOnCondition(ref.context);
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) async {
+        initializeKeyboardHeightOnCondition(ref.context);
+        updateFirstEnteredStateToTrue();
+      },
+    );
 
     FirebaseAnalytics.instance.logEvent(
       name: 'Interview Created',
