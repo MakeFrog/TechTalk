@@ -124,7 +124,7 @@ class DotContainer extends StatelessWidget {
               child: Transform.translate(
                 offset: currentOffset,
                 child: Container(
-                  width: size * 0.13,
+                  width: size * 0.15,
                   height: currentHeight,
                   decoration: BoxDecoration(
                     color: color,

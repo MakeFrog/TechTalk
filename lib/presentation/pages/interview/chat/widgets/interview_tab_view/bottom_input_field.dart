@@ -1,3 +1,4 @@
+import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -29,24 +30,23 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
         vertical: 8,
         horizontal: 16,
       ),
-
       child: HookBuilder(
         builder: (context) {
           final showHighlightEffect = useState(isFirstInterview());
           return chatAsyncAdapterValue(ref).when(
             data: (_) {
-
               return _buildTextField(
                 showHighlightEffect: showHighlightEffect,
                 progressState: InterviewProgress.readyToAnswer,
               );
             },
             error: (_, __) => _buildTextField(
-                showHighlightEffect: showHighlightEffect,
-                progressState: InterviewProgress.initial),
-            loading: () => _buildTextField(
               showHighlightEffect: showHighlightEffect,
               progressState: InterviewProgress.error,
+            ),
+            loading: () => _buildTextField(
+              showHighlightEffect: showHighlightEffect,
+              progressState: InterviewProgress.initial,
             ),
           );
         },
@@ -65,15 +65,15 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
           children: [
             _buildMicButton(showHighlightEffect),
             if (showHighlightEffect.value.isTrue)
-            const Positioned(
-              top: -39,
-              child: AnimatedAppearView(
-                child: BubbleIndicator(
-                  talePosition: BubbleTalePosition.left,
-                  text: '음성으로 답변해 보세요!',
+              const Positioned(
+                top: -39,
+                child: AnimatedAppearView(
+                  child: BubbleIndicator(
+                    talePosition: BubbleTalePosition.left,
+                    text: '음성으로 답변해 보세요!',
+                  ),
                 ),
               ),
-            ),
           ],
         ),
         _buildTextInputForm(
@@ -107,6 +107,7 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                     child: TextField(
                       controller: unListenedInputController(ref),
                       maxLines: null,
+                      focusNode: focusNode(ref),
                       enabled: progressState.canEnableTextField,
                       textAlignVertical: TextAlignVertical.top,
                       decoration: InputDecoration(
@@ -163,9 +164,10 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
   Widget _buildMicButton(ValueNotifier<bool> showHighlightEffect) {
     return Consumer(
       builder: (context, ref, _) {
-        return GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {
+        return BounceTapper(
+          highlightColor: Colors.transparent,
+          delayedDurationBeforeGrow: Duration.zero,
+          onTap: (){
             onMicBtnTapped(ref);
           },
           child: Container(

@@ -8,10 +8,17 @@ part 'main_input_controller_provider.g.dart';
 ///
 @riverpod
 class MainInputController extends _$MainInputController {
+  // ignore: avoid_public_notifier_properties
+  late FocusNode focusNode;
+
   @override
   Raw<TextEditingController> build() {
     final controller = TextEditingController();
-    ref.onDispose(controller.dispose);
+    focusNode = FocusNode();
+    ref.onDispose(() {
+      controller.dispose();
+      focusNode.dispose();
+    });
     return TextEditingController();
   }
 
@@ -19,7 +26,8 @@ class MainInputController extends _$MainInputController {
     state.text = text;
   }
 
-  void addInputToExisting(String text) {
+  String addInputToExisting(String text) {
     state.text = state.text + text;
+    return state.text;
   }
 }

@@ -73,6 +73,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  bounce_tapper:
+    dependency: "direct main"
+    description:
+      name: bounce_tapper
+      sha256: "834b4a28cb885bfe637f1783aca1f04b7b809ae60500c5f9f349527436fb43eb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
   build:
     dependency: transitive
     description:
@@ -1077,6 +1085,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  loading_animation_widget:
+    dependency: "direct main"
+    description:
+      name: loading_animation_widget
+      sha256: ee3659035528d19145d50cf0107632bf647e7306c88b6a32f35f3bed63f6d728
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.1"
+  local_hero:
+    dependency: "direct main"
+    description:
+      name: local_hero
+      sha256: "5c85451dd51ecd0e8d3656775fac9a6db82f296f200d9931217186d34fed6089"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.0"
   logging:
     dependency: transitive
     description:

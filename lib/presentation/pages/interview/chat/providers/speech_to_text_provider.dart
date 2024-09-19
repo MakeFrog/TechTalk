@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
@@ -9,6 +10,7 @@ import 'package:techtalk/presentation/pages/interview/chat/constant/recrod_progr
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/main_input_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
+import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 
 class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
   SpeechToText controller = SpeechToText();
@@ -33,22 +35,23 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
   ///
   /// 타이핑 모드 버튼 클릭시
   ///
-  void onTypingModeBtnTapped(WidgetRef ref) {
-    switch (progressState) {
-      case RecordProgressState.onProgress:
-        // 향후 텍스트 전달 기능 구현
-        ref.read(isSpeechModeProvider.notifier).toggle();
-        controller.stop();
-        break;
+  void onTypingModeBtnTapped(WidgetRef ref) async {
+    try {
+      if (progressState.isLoadingResult) {
+        SnackBarService.showSnackBar('음성인식 결과를 로드하고 있습니다');
+        return;
+      }
 
-      case RecordProgressState.recognized:
-        // 향후 텍스트 전달 기능 구현
-        ref.read(isSpeechModeProvider.notifier).toggle();
-        break;
+      if (progressState.isRecognized) {
+        ref.read(mainInputControllerProvider).text = recordedText;
+      }
 
-      default:
-        ref.read(isSpeechModeProvider.notifier).toggle();
-        break;
+      await controller.cancel();
+
+      ref.read(mainInputControllerProvider.notifier).focusNode.requestFocus();
+      ref.read(isSpeechModeProvider.notifier).toggle();
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -63,11 +66,14 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
 
     await controller.listen(
       onResult: (result) {
-        if (!progressState.isOnProgress) {
+        if (progressState.isReady) {
           updateSpeechProgressState(RecordProgressState.onProgress);
         }
 
-        recordedText = result.recognizedWords;
+        if (progressState.isOnProgress) {
+          recordedText = result.recognizedWords;
+          notifyListeners();
+        }
       },
     );
   }
@@ -75,16 +81,31 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
   ///
   /// 음성 인식 정지
   ///
-  void stopRecord(WidgetRef ref) {
+  Future<void> stopRecord(WidgetRef ref) async {
     if (isSpeechTextEmpty) {
-      print('버튼 비활성화 : 인식된 텍스트 x');
+      SnackBarService.showSnackBar('인식된 답변이 없습니다');
     } else {
-      controller.stop();
+      updateSpeechProgressState(RecordProgressState.loadingResult);
+      await EasyLoading.show(
+        indicator: const EmptyBox(),
+        maskType: EasyLoadingMaskType.custom,
+      );
+
+      /// 성격을 급한 유저를 배려하여
+      /// 음성 인식 마무리할 수 있는 딜리에 설정
+      await Future.delayed(const Duration(milliseconds: 300));
+      await controller.stop();
+
+      final textFiledController = ref.read(mainInputControllerProvider);
+
+      recordedText = textFiledController.text + recordedText;
+
+      // await controller.cancel();
+      await EasyLoading.dismiss();
       updateSpeechProgressState(RecordProgressState.recognized);
     }
   }
 
-  ///
   /// 음성 인식 결과 제출
   ///
   Future<void> submitRecognizedText(WidgetRef ref) async {
@@ -94,28 +115,30 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
     // 텍스트 필드에 recognizedText를 설정
     // textEditingController.text = recognizedText;
 
-    // speechController 상태 변경하기
-    updateSpeechProgressState(RecordProgressState.submitMessage);
+    ref.read(mainInputControllerProvider).text = recordedText;
 
-    ref.read(mainInputControllerProvider.notifier).updateInput(recordedText);
-
+    print('찌방이');
     // 기존 onChatFieldSubmitted 함수 사용하여 채팅 전송
     await onChatFieldSubmitted(ref);
+
+    // speechController 상태 변경하기
+    updateSpeechProgressState(RecordProgressState.initial);
 
     // 예외처리 : 음성 전송중
 
     // 예외처리 : 전송 완료
-    updateSpeechProgressState(RecordProgressState.initial);
-    recordedText = '';
+    // updateSpeechProgressState(RecordProgressState.initial);
   }
 
-  void cancelRecord(WidgetRef ref) {
-    updateSpeechProgressState(RecordProgressState.initial);
-    recordedText = '';
-
-    // 녹음 중 리셋 버튼 클릭시
-    if (isListening == true) {
-      controller.stop();
+  Future<void> cancelRecordMode(WidgetRef ref) async {
+    if (progressState.isOnProgress ||
+        progressState.isReady ||
+        progressState.isRecognized) {
+      await controller.stop();
+      updateSpeechProgressState(RecordProgressState.initial);
+      recordedText = '';
+    } else {
+      ref.read(isSpeechModeProvider.notifier).toggle();
     }
   }
 

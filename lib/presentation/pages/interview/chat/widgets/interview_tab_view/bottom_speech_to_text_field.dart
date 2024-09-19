@@ -1,3 +1,4 @@
+import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,7 +11,10 @@ import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_to_text_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/rounded_mic_motion_view.dart';
+import 'package:techtalk/presentation/widgets/common/animated/animated_size_and_fade.dart';
 import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
+import 'package:techtalk/presentation/widgets/common/gesture/animated_scale_tap.dart';
 
 class BottomSpeechToTextField extends HookConsumerWidget
     with ChatState, ChatEvent {
@@ -26,7 +30,6 @@ class BottomSpeechToTextField extends HookConsumerWidget
         _buildRecognizedText(),
 
         Container(
-          color: Colors.red,
           constraints: BoxConstraints(
             minHeight: AppSize.ratioHeight(280.0),
           ),
@@ -49,49 +52,12 @@ class BottomSpeechToTextField extends HookConsumerWidget
                     // 메인 버튼
                     Align(
                       alignment: Alignment.topCenter,
-                      child: GestureDetector(
-                        onTap: () => onMainBtnTapped(
+                      child: BounceTapper(
+                        highlightBorderRadius: BorderRadius.circular(106),
+                        onTap: () => onRecordMainBtnTapped(
                           ref,
                         ),
-                        child: Container(
-                          width: 112,
-                          height: 112,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColor.of.blue1,
-                          ),
-                          child: Center(
-                            child: Consumer(
-                              builder: (context, ref, _) {
-                                final isProgressOnSubmit = ref.watch(
-                                        speechToTextProvider
-                                            .select((c) => c.progressState)) ==
-                                    RecordProgressState.submitMessage;
-                                return CircleAvatar(
-                                  radius: 44,
-                                  backgroundColor: isProgressOnSubmit
-                                      ? AppColor.of.brand3
-                                      : Colors.white,
-                                  child: Center(
-                                    child: SvgPicture.asset(
-                                      _getMainBtnIcon(ref),
-                                      width: 44,
-                                      colorFilter: isProgressOnSubmit
-                                          ? const ColorFilter.mode(
-                                              Colors.white,
-                                              BlendMode.srcIn,
-                                            )
-                                          : ColorFilter.mode(
-                                              AppColor.of.brand3,
-                                              BlendMode.srcIn,
-                                            ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
+                        child: const RoundedMicMotionView(),
                       ),
                     ),
 
@@ -131,40 +97,18 @@ class BottomSpeechToTextField extends HookConsumerWidget
           final progressState =
               ref.watch(speechToTextProvider.select((c) => c.progressState));
 
-          print('아지랑이둘 : ${progressState}');
-          // ref.listen(speechToTextProvider.select((c) => c.progressState),
-          //     (prev, now) {
-          //   if (now.isOnProgress ||
-          //       now.isErrorOccured && showIndicator.value.isFalse) {
-          //     showIndicator.value = true;
-          //     return;
-          //   }
-          //
-          //   if (showIndicator.value.isTrue) {
-          //     showIndicator.value = false;
-          //   }
-          // });
-
-          return Center(
-            child: AnimatedCrossFade(
-              firstChild: Text(
-                progressState.label ?? '',
-                textAlign: TextAlign.center,
-                style: AppTextStyle.body1.copyWith(color: textColor),
+          return AnimatedSizeAndFade.showHide(
+            alignment: Alignment.bottomCenter,
+            show: progressState.isErrorOccured || progressState.isReady,
+            child: Text(
+              progressState.label ?? '',
+              textAlign: TextAlign.center,
+              style: AppTextStyle.body1.copyWith(
+                color: progressState.isErrorOccured
+                    ? AppColor.of.red1
+                    : AppColor.of.gray7,
               ),
-              secondChild: const EmptyBox(),
-              crossFadeState:
-                  progressState.isErrorOccured || progressState.isOnProgress
-                      ? CrossFadeState.showFirst
-                      : CrossFadeState.showSecond,
-              duration: Duration(milliseconds: 300),
             ),
-          );
-
-          return Text(
-            'message',
-            textAlign: TextAlign.center,
-            style: AppTextStyle.body1.copyWith(color: textColor),
           );
         },
       ),
@@ -179,10 +123,11 @@ class BottomSpeechToTextField extends HookConsumerWidget
             ref.read(speechToTextProvider.select((c) => c.recordedText));
         final progressState =
             ref.read(speechToTextProvider.select((c) => c.progressState));
+        print('결과랑이 : ${recognizedText}');
 
-        return AnimatedCrossFade(
-          firstChild: EmptyBox(),
-          secondChild: Container(
+        return AnimatedSizeAndFade.showHide(
+          show: progressState == RecordProgressState.recognized,
+          child: Container(
             width: double.infinity,
             margin: const EdgeInsets.symmetric(
               horizontal: 12,
@@ -209,12 +154,6 @@ class BottomSpeechToTextField extends HookConsumerWidget
                 ),
               ),
             ),
-          ),
-          crossFadeState: progressState == RecordProgressState.recognized
-              ? CrossFadeState.showSecond
-              : CrossFadeState.showFirst,
-          duration: const Duration(
-            milliseconds: 220,
           ),
         );
       },
@@ -243,6 +182,8 @@ class BottomSpeechToTextField extends HookConsumerWidget
       // TODO: Handle this case.
       case RecordProgressState.ready:
         return Assets.iconsArrowLeft;
+      case RecordProgressState.loadingResult:
+        return Assets.iconsArrowLeft;
     }
   }
 
@@ -252,7 +193,8 @@ class BottomSpeechToTextField extends HookConsumerWidget
   ) {
     return Consumer(
       builder: (context, ref, child) {
-        return GestureDetector(
+        return BounceTapper(
+          highlightBorderRadius: BorderRadius.circular(24),
           onTap: () => ref
               .read(speechToTextProvider.notifier)
               .onTypingModeBtnTapped(ref),
@@ -272,14 +214,10 @@ class BottomSpeechToTextField extends HookConsumerWidget
       builder: (context, ref, _) {
         final progressSate =
             ref.read(speechToTextProvider.select((c) => c.progressState));
-        return GestureDetector(
+        return BounceTapper(
+          highlightBorderRadius: BorderRadius.circular(24),
           onTap: () {
-            ref.read(isSpeechModeProvider.notifier).toggle();
-            // if (speechController.progressState.value == SpeechUiState.ready) {
-            //   ref.read(isSpeechModeProvider.notifier).toggle();
-            // } else {
-            //   onCancelRecordBtnTapped(speechToText, speechController);
-            // }
+            onRecordCancelBtnTapped(ref);
           },
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),

@@ -27,6 +27,9 @@ dependencies:
   smooth_page_indicator: ^1.1.0 # pageview 인디케이터
   flutter_animate: ^4.2.0+1 # 간편 애니메이션 메소드 지원
   cached_network_image: ^3.3.0 # 네트워크 이미지 캐싱
+  bounce_tapper: ^1.0.4
+  loading_animation_widget: ^1.2.1
+  local_hero: ^0.3.0
   defer_pointer: ^0.0.2 # Overflow 영역에도 터치를 보장할 수 있도록 도와주는 패키지
   gap: ^3.0.1 # 간격 위젯
 #  animated_size_and_fade: ^4.0.0

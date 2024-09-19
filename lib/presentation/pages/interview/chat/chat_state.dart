@@ -105,4 +105,10 @@ mixin class ChatState {
   ///
   TextEditingController unListenedInputController(WidgetRef ref) =>
       ref.read(mainInputControllerProvider);
+
+  ///
+  /// focusNode
+  ///
+  FocusNode focusNode(WidgetRef ref) =>
+      ref.read(mainInputControllerProvider.notifier).focusNode;
 }

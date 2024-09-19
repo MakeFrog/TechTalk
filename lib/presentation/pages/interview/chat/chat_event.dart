@@ -34,9 +34,7 @@ mixin class ChatEvent {
   /// - 입력된 채팅 state 초기화
   /// - 스크롤 포지션 맨 아래로 변경
   ///
-  Future<void> onChatFieldSubmitted(
-    WidgetRef ref
-  ) async {
+  Future<void> onChatFieldSubmitted(WidgetRef ref) async {
     unawaited(
       ref.read(chatScrollControllerProvider).animateTo(
             0,
@@ -206,37 +204,29 @@ mixin class ChatEvent {
   }
 
   ///
-  /// 메인 버튼 클릭시 실행되는 함수
+  /// 음성 녹음 메인 버튼 클릭시 실행되는 함수
   ///
-  Future<void> onMainBtnTapped(
+  Future<void> onRecordMainBtnTapped(
     WidgetRef ref,
   ) async {
-    final controller =
-        ref.read(speechToTextProvider.select((c) => c.controller));
-    final hasPermission = await checkPermissions(controller);
-    if (!hasPermission) return;
-
     final currentProgressState =
         ref.read(speechToTextProvider.select((c) => c.progressState));
 
     switch (currentProgressState) {
       case RecordProgressState.initial:
-        ref.read(speechToTextProvider.notifier).startRecord(ref);
+        await ref.read(speechToTextProvider.notifier).startRecord(ref);
         break;
-      case RecordProgressState.onProgress:
-        ref.read(speechToTextProvider.notifier).stopRecord(ref);
-
+      case RecordProgressState.onProgress || RecordProgressState.ready:
+        await ref.read(speechToTextProvider.notifier).stopRecord(ref);
         break;
       case RecordProgressState.recognized:
         await ref.read(speechToTextProvider.notifier).submitRecognizedText(ref);
-
         break;
       case RecordProgressState.submitMessage:
         break;
       case RecordProgressState.errorOccured:
-        // TODO: Handle this case.
-      case RecordProgressState.ready:
-        // TODO: Handle this case.
+      case RecordProgressState.loadingResult:
+      // TODO: Handle this case.
     }
   }
 
@@ -295,21 +285,18 @@ mixin class ChatEvent {
     if (statuses.values.any((status) => !status.isGranted)) {
       _showNeedMicPermissionsDialog();
     } else {
-      // /// 키보드 focus 비활성화
-      // FocusScope.of(ref.context).unfocus();
-
-      /// 약간의 딜레이를 주어 자연스럽게 음성 인식 활성화 ui 노출
-      await Future.delayed(const Duration(milliseconds: 250));
       ref.read(isSpeechModeProvider.notifier).toggle();
     }
   }
 
+
+
   ///
   /// 녹음 취소 버튼 클릭시
   ///
-  void onCancelRecordBtnTapped(
+  void onRecordCancelBtnTapped(
     WidgetRef ref,
   ) {
-   ref.read(speechToTextProvider.notifier).cancelRecord(ref);
+    ref.read(speechToTextProvider.notifier).cancelRecordMode(ref);
   }
 }

@@ -6,14 +6,14 @@
 // import 'package:techtalk/app/localization/locale_keys.g.dart';
 // import 'package:techtalk/core/index.dart';
 // import 'package:techtalk/features/chat/chat.dart';
-
+//
 // class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
 //     Result<BehaviorSubject<String>>> {
 //   ///
 //   /// 피드백 진행 상태
 //   ///
 //   FeedbackProgress state = FeedbackProgress.init;
-
+//
 //   ///
 //   /// 면접 질문에 대한 유저의 응답의 정답여부를 확인
 //   /// propmt 로직을 고도화 할 필요 있음.
@@ -23,9 +23,9 @@
 //     final BehaviorSubject<String> streamedFeedbackResponse =
 //         BehaviorSubject<String>();
 //     state = FeedbackProgress.onProgress;
-
+//
 //     String response = '';
-
+//
 //     try {
 //       OpenAI.instance
 //           .onChatCompletionSSE(
@@ -83,7 +83,7 @@
 //           /// 1) 정답 여부 확인
 //           /// 2) 응답 텍스트 포맷
 //           /// 3) 스트림 값 삽입
-
+//
 //           response += it.choices?.last.message?.content ?? '';
 //           setCorrectnessIfNeeded(response, param.checkAnswer);
 //           streamedFeedbackResponse.add(formatResponse(response));
@@ -106,7 +106,7 @@
 //       return Result.failure(e);
 //     }
 //   }
-
+//
 //   ///
 //   /// 정답 여부를 확인하는 메소드
 //   ///
@@ -115,7 +115,7 @@
 //     void Function({required bool isCorrect}) checkAnswer,
 //   ) {
 //     if (!state.isOnProgress) return;
-
+//
 //     if (response.contains(AnswerState.wrong.tag)) {
 //       checkAnswer(
 //         isCorrect: false,
@@ -129,15 +129,15 @@
 //     }
 //     HapticFeedback.lightImpact();
 //   }
-
+//
 //   /// 응답값 포맷
 //   /// 1. [c] & [w] 인디에키터 포맷, [AnswerState]
 //   /// 2. 불필요 줄바꿈 제거
 //   String formatResponse(String response) {
 //     String formattedText = response.replaceAll('\n', '');
-
+//
 //     if (formattedText.length <= 3) return '';
-
+//
 //     if (formattedText.contains(AnswerState.wrong.tag)) {
 //       return formattedText.replaceFirst(AnswerState.wrong.tag, '').trim();
 //     } else {
@@ -145,7 +145,7 @@
 //     }
 //   }
 // }
-
+//
 // /// [SetAiFeedbackUseCase] 파라미터
 // typedef GetQuestionFeedbackParam = ({
 //   ChatQnaEntity qna,
