@@ -1,16 +1,24 @@
+import 'dart:ffi';
+
+import 'package:animated_size_and_fade/animated_size_and_fade.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/chat/repositories/enums/interview_progress.enum.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/main_input_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/bubble.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/bottom_input_field.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/bottom_speech_to_text_field.dart';
 import 'package:techtalk/presentation/widgets/common/animated/animated_appear_view.dart';
 import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
+import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/common/indicator/exception_indicator.dart';
 
 class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
@@ -73,26 +81,32 @@ class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
             ),
           ),
         ),
-        Consumer(builder: (context, ref, _) {
-          listenedInputController(ref);
-          if (isSpeechMode(ref)) {
-            return const AnimatedAppearView(
-              child: BottomSpeechToTextField(),
+        Consumer(
+          builder: (context, ref, _) {
+            return chatAsyncAdapterValue(ref).when(
+              data: (_) {
+                listenedInputController(ref);
+                final state = interviewProgressState(ref);
+                return Column(
+                  children: <Widget>[
+                    AnimatedSizeAndFade.showHide(
+                      show: isSpeechMode(ref),
+                      child:
+                          const KeepAliveView(child: BottomSpeechToTextField()),
+                    ),
+                    AnimatedSizeAndFade.showHide(
+                      show: !isSpeechMode(ref),
+                      sizeDuration : Duration.zero,
+                      child: KeepAliveView(child: BottomInputField(state)),
+                    ),
+                  ],
+                );
+              },
+              error: (_, __) => const BottomInputField(InterviewProgress.error),
+              loading: () => const BottomInputField(InterviewProgress.initial),
             );
-          } else {
-            return const BottomInputField();
-          }
-        }),
-        // AnimatedCrossFade(
-        //   firstChild: const BottomInputField(),
-        //   secondChild: const BottomSpeechToTextField(),
-        //   crossFadeState: isSpeechMode(ref)
-        //       ? CrossFadeState.showSecond
-        //       : CrossFadeState.showFirst,
-        //   duration: const Duration(
-        //     milliseconds: 400,
-        //   ),
-        // ),
+          },
+        ),
       ],
     );
   }
