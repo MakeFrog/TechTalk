@@ -18,18 +18,15 @@ class SystemBoxAdapter extends TypeAdapter<SystemBox> {
     };
     return SystemBox(
       languageCode: fields[0] as String,
-      virtualKeyboardHeight: fields[1] as double?,
     );
   }
 
   @override
   void write(BinaryWriter writer, SystemBox obj) {
     writer
-      ..writeByte(2)
-      ..writeByte(0)
-      ..write(obj.languageCode)
       ..writeByte(1)
-      ..write(obj.virtualKeyboardHeight);
+      ..writeByte(0)
+      ..write(obj.languageCode);
   }
 
   @override

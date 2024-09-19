@@ -28,9 +28,7 @@ class BottomSpeechToTextField extends HookConsumerWidget
         Container(
           color: Colors.red,
           constraints: BoxConstraints(
-            minHeight: AppSize.keyboardHeight != null
-                ? AppSize.keyboardHeight! - AppSize.bottomInset
-                : 280.0,
+            minHeight: AppSize.ratioHeight(280.0),
           ),
           alignment: Alignment.center,
           // color: Colors.red,

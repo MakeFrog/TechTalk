@@ -48,8 +48,6 @@ class ChatPage extends BasePage with ChatEvent {
   @override
   bool get canPop => false;
 
-
-
   @override
   void onWillPop(WidgetRef ref) {
     onAppbarBackBtnTapped(ref);
@@ -67,8 +65,7 @@ class ChatPage extends BasePage with ChatEvent {
     super.onInit(ref);
 
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) async {
-        initializeKeyboardHeightOnCondition(ref.context);
+      (_) {
         updateFirstEnteredStateToTrue();
       },
     );

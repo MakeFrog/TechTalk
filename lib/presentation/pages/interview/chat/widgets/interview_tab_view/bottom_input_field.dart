@@ -24,8 +24,6 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    useAutomaticKeepAlive();
-
     return Container(
       color: AppColor.of.white,
       constraints: const BoxConstraints(minHeight: 48, maxHeight: 240),
@@ -34,39 +32,41 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
         vertical: 8,
         horizontal: 16,
       ),
-      child: _buildTextField(state),
-    );
-  }
+      child: HookBuilder(
+        builder: (context) {
+          final showHighlightEffect = useState(false);
+          useEffect(() {
+            if (state.enableChat) {
+              // showHighlightEffect.value = isFirstInterview();
+            }
+          }, []);
 
-  Widget _buildTextField(InterviewProgress progressState) {
-    return HookBuilder(
-      builder: (context) {
-        final showHighlightEffect = useState(isFirstInterview());
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                _buildMicButton(showHighlightEffect),
-                if (showHighlightEffect.value.isTrue)
-                  const Positioned(
-                    top: -46,
-                    child: AnimatedAppearView(
-                      child: BubbleIndicator(
-                        talePosition: BubbleTalePosition.left,
-                        text: '음성으로 답변해 보세요!',
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  _buildMicButton(showHighlightEffect),
+                  if (showHighlightEffect.value.isTrue)
+                    const Positioned(
+                      top: -46,
+                      child: AnimatedAppearView(
+                        child: BubbleIndicator(
+                          talePosition: BubbleTalePosition.left,
+                          text: '음성으로 답변해 보세요!',
+                        ),
                       ),
                     ),
-                  ),
-              ],
-            ),
-            _buildTextInputForm(
-                showHighlightEffect: showHighlightEffect,
-                progressState: progressState),
-          ],
-        );
-      },
+                ],
+              ),
+              _buildTextInputForm(
+                  showHighlightEffect: showHighlightEffect,
+                  progressState: state),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -94,7 +94,6 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                     child: TextField(
                       controller: unListenedInputController(ref),
                       maxLines: null,
-                      autofocus: AppSize.keyboardHeight == null,
                       textAlignVertical: TextAlignVertical.top,
                       decoration: InputDecoration(
                         enabled: !progressState.isDoneOrError,

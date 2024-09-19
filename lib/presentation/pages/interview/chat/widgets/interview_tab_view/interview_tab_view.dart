@@ -11,15 +11,11 @@ import 'package:techtalk/features/chat/repositories/enums/interview_progress.enu
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/main_input_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/bubble.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/bottom_input_field.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/bottom_speech_to_text_field.dart';
-import 'package:techtalk/presentation/widgets/common/animated/animated_appear_view.dart';
-import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
-import 'package:techtalk/presentation/widgets/common/indicator/exception_indicator.dart';
+
 
 class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
   const InterviewTabView({Key? key}) : super(key: key);

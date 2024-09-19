@@ -18,14 +18,4 @@ abstract interface class SystemRepository {
   /// [Locale] language코드를 로컬 스토리지에 저장
   ///
   Future<Result<void>> storeLocale(Locale currentLocale);
-
-  ///
-  /// 가상 키보드 높이 호출
-  ///
-  Future<Result<double?>> getKeyboardHeight();
-
-  ///
-  /// 키보드 높이를 로컬 스토리지에 저장
-  ///
-  Future<Result<void>> storeKeyboardHeight(double height);
 }
