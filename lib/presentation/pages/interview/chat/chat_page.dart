@@ -57,8 +57,8 @@ class ChatPage extends BasePage with ChatEvent {
 
   static const double tabBarHeight = 48;
 
-  static double tabViewHeight = AppSize.to.screenHeight -
-      AppSize.to.statusBarHeight -
+  static double tabViewHeight = AppSize.screenHeight -
+      AppSize.statusBarHeight -
       BackButtonAppBar.appbarHeight -
       ChatPage.tabBarHeight;
 

@@ -94,7 +94,7 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                     child: TextField(
                       controller: unListenedInputController(ref),
                       maxLines: null,
-                      autofocus: AppSize.to.keyboardHeight == null,
+                      autofocus: AppSize.keyboardHeight == null,
                       textAlignVertical: TextAlignVertical.top,
                       decoration: InputDecoration(
                         enabled: !progressState.isDoneOrError,

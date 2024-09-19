@@ -11,7 +11,7 @@ import 'package:techtalk/app/localization/localization_enum.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_theme.dart';
-import 'package:techtalk/core/services/size_service.dart';
+import 'package:techtalk/core/services/app_size.dart';
 import 'package:techtalk/presentation/widgets/common/layout/responsive_layout.dart';
 
 class ProviderLogger extends ProviderObserver {
@@ -94,7 +94,7 @@ class App extends StatelessWidget {
             builder: EasyLoading.init(
               builder: (context, child) {
                 AppColor.init(context);
-                AppSize.to.init(context);
+                AppSize.init(context);
                 return FToastBuilder()(
                   context,
                   ResponsiveLayoutBuilder(context, child),

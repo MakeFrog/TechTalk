@@ -30,7 +30,7 @@ class SignInPage extends BasePage with SignInEvent {
             width: 114,
           ),
           Gap(
-            AppSize.to.ratioHeight(8),
+            AppSize.ratioHeight(8),
           ),
           Center(
             child: Text(
@@ -39,10 +39,10 @@ class SignInPage extends BasePage with SignInEvent {
               style: AppTextStyle.pretendardBoldStyle(24, 33),
             ),
           ),
-          Gap(AppSize.to.ratioHeight(70)),
+          Gap(AppSize.ratioHeight(70)),
           SvgPicture.asset(
             Assets.imagesWelcomeTechtalk,
-            height: AppSize.to.ratioWidth(270),
+            height: AppSize.ratioWidth(270),
           ),
           const Spacer(),
           GoogleSignInButton(
@@ -51,7 +51,7 @@ class SignInPage extends BasePage with SignInEvent {
               socialAccountProvider: UserAccountProvider.google,
             ),
           ),
-          Gap(AppSize.to.ratioHeight(8)),
+          Gap(AppSize.ratioHeight(8)),
           if (Platform.isIOS)
             AppleSignInButton(
               onTap: () async => onSocialSignInBtnTapped(
@@ -60,9 +60,9 @@ class SignInPage extends BasePage with SignInEvent {
               ),
             ),
           Gap(
-            AppSize.to.ratioHeight(
+            AppSize.ratioHeight(
               Platform.isIOS
-                  ? AppSize.to.screenWidth <= 320
+                  ? AppSize.screenWidth <= 320
                       ? 24
                       : 48
                   : 24,

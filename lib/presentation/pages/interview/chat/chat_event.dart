@@ -320,8 +320,8 @@ mixin class ChatEvent {
   Future<void> initializeKeyboardHeightOnCondition(BuildContext context) async {
     /// 캐싱된 키보드 높이 값이 없다면
     /// 높이를 가져올 수 있는 아래 로직을 실행
-    if (AppSize.to.keyboardHeight == null ||
-        (AppSize.to.keyboardHeight ?? 0) <= 150.0) {
+    if (AppSize.keyboardHeight == null ||
+        (AppSize.keyboardHeight ?? 0) <= 150.0) {
       try {
         await EasyLoading.show(
           indicator: const EmptyBox(),
@@ -335,7 +335,7 @@ mixin class ChatEvent {
 
         /// 획득한 키보드 높이를
         /// [AppSize] 모듈과 로컬 스터리지에 저장
-        await AppSize.to.updateKeyboardHeight(keyboardHeight);
+        await AppSize.updateKeyboardHeight(keyboardHeight);
       } catch (e) {
         log(e.toString());
       } finally {

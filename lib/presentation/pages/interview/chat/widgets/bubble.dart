@@ -57,7 +57,7 @@ class Bubble extends StatelessWidget {
                       bottom: 8,
                     )
                   : null,
-              constraints: BoxConstraints(maxWidth: AppSize.to.ratioWidth(250)),
+              constraints: BoxConstraints(maxWidth: AppSize.ratioWidth(250)),
               child: Builder(
                 builder: (BuildContext context) {
                   return Container(
@@ -155,7 +155,7 @@ class Bubble extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Container(
-              constraints: BoxConstraints(maxWidth: AppSize.to.ratioWidth(250)),
+              constraints: BoxConstraints(maxWidth: AppSize.ratioWidth(250)),
               decoration: BoxDecoration(
                 color: AppColor.of.background1,
                 borderRadius: radiusOnCase,
