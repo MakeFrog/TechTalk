@@ -13,10 +13,12 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/feedback_response_entity.dart';
+import 'package:techtalk/features/chat/use_cases/set_ai_follow_up_question_use_case.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
+import 'package:uuid/uuid.dart';
 
 part 'chat_message_history_internal_event.dart';
 part 'chat_message_history_provider.g.dart';
@@ -71,6 +73,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
     final answerChat = AnswerChatEntity.initial(
       message: message,
       qnaId: answeredQuestion.qnaId,
+      rootQnaId: answeredQuestion.rootQnaId!,
     );
 
     await showMessage(
@@ -90,12 +93,19 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   Future<void> handleFeedbackProgress(AnswerChatEntity userAnswer) async {
     late AnswerChatEntity resolvedUserAnswer;
     late bool isAnswerCorrect;
+
     final room = ref.read(selectedChatRoomProvider);
-    final qna = ref.read(chatQnasProvider.notifier).getQnaById(userAnswer.qnaId);
+
+    final chatHistory =
+        [...state.requireValue.where((element) => element.rootQnaId == userAnswer.rootQnaId)].reversed.toList();
+
+    final rootQna = ref.read(chatQnasProvider.notifier).getQnaById(userAnswer.rootQnaId ?? userAnswer.qnaId);
+
     /*final feedbackChat*/
     final response = getAnswerFeedBackUseCase.call(
       (
-        qna: qna,
+        chatHistory: chatHistory,
+        qna: rootQna,
         userName: ref.read(userInfoProvider).requireValue!.nickname!,
         checkAnswer: ({required AnswerState answerState}) async {
           /// 만약 정상 작동하지 못했다면
@@ -120,14 +130,13 @@ class ChatMessageHistory extends _$ChatMessageHistory {
             isAnswerCorrect = answerState.isCorrect;
           }
         },
-        question: state.requireValue.firstWhere((chat) => chat.type.isQuestionMessage).message.value,
-        userAnswer: userAnswer.message.value,
         onFeedBackCompleted: ({required FeedbackResponseEntity feedbackResponse}) async {
           if (kDebugMode) {
             log(
               '\n👀feedback: ${feedbackResponse.feedback}\n👀score: ${feedbackResponse.score}\n👀isFollowUpQuestionNeeded: ${feedbackResponse.isFollowUpQuestionNeeded}\n',
             );
           }
+
           unawaited(
             FirebaseAnalytics.instance.logEvent(
               name: 'Question Answered',
@@ -141,15 +150,55 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           /// 4) 피드백 채팅이 전달된 이후 가이드 채팅과 다음 질문 채팅을 전달
           final isCompleted = ref.read(selectedChatRoomProvider.notifier).isLastQuestion();
 
-          final feedbackChat = FeedbackChatEntity.createStatic(
-            message: feedbackResponse.feedback,
-            timestamp: DateTime.now(),
-          );
-
           late QuestionChatEntity nextQuestionChat;
           late GuideChatEntity guideChat;
           late String guideMessage;
           late ChatQnaEntity newQna;
+          late FeedbackChatEntity feedbackChat;
+
+          feedbackChat = FeedbackChatEntity.createStatic(
+            message: feedbackResponse.feedback,
+            timestamp: DateTime.now(),
+            rootQnaId: rootQna.qna.id,
+            qnaId: userAnswer.qnaId,
+          );
+
+          if (feedbackResponse.isFollowUpQuestionNeeded &&
+              chatHistory.whereType<QuestionChatEntity>().length < 2 &&
+              !isCompleted) {
+            /// NOTE : 순서 주의
+            final guideChat = GuideChatEntity.createStatic(
+              message: '꼬리 질문입니다.',
+              timestamp: DateTime.now(),
+            );
+
+            await Future.wait(
+              [
+                _uploadMessage([
+                  resolvedUserAnswer,
+                  feedbackChat,
+                  guideChat,
+                ]),
+                showMessage(
+                  message: guideChat.overwriteToStream(),
+                  onDone: () async {
+                    await _startFollowUpQuestion(
+                      feedbackResponse: feedbackResponse,
+                      chatHistory: chatHistory,
+                    );
+                  },
+                ).then(
+                  (_) => ref.read(selectedChatRoomProvider.notifier).updateProgressInfo(
+                        isCorrect: isAnswerCorrect,
+                        lastChatMessage: guideChat,
+                        isRootQuestion: userAnswer.isAnwserForRootQuestion,
+                      ),
+                ),
+              ],
+            );
+
+            return;
+          }
 
           if (!isCompleted) {
             newQna = _getNewQna();
@@ -172,6 +221,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           if (!isCompleted) {
             nextQuestionChat = QuestionChatEntity.createStatic(
               qnaId: newQna.qna.id,
+              rootQnaId: newQna.qna.id,
               message: newQna.qna.question,
               timestamp: DateTime.now(),
             );
@@ -188,6 +238,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
                 (_) => ref.read(selectedChatRoomProvider.notifier).updateProgressInfo(
                       isCorrect: isAnswerCorrect,
                       lastChatMessage: isCompleted ? guideChat : nextQuestionChat,
+                      isRootQuestion: userAnswer.isAnwserForRootQuestion,
                     ),
               ),
               showMessage(
@@ -212,6 +263,8 @@ class ChatMessageHistory extends _$ChatMessageHistory {
         await showMessage(
           message: FeedbackChatEntity(
             message: feedbackStreamedChat,
+            qnaId: rootQna.qna.id,
+            rootQnaId: rootQna.qna.id,
           ),
         );
       },
@@ -220,6 +273,57 @@ class ChatMessageHistory extends _$ChatMessageHistory {
         SnackBarService.showSnackBar('정답 여부를 판별하는 과정에서 오류가 발생했습니다. 잠시후 다시 시도해주세요.');
       },
     );
+  }
+
+  Future<QuestionChatEntity?> _startFollowUpQuestion(
+      {required List<BaseChatEntity> chatHistory, required FeedbackResponseEntity feedbackResponse}) async {
+    log('👀: 피드백 필요함!!!!!!');
+
+    final followUpQuestionId = const Uuid().v1();
+
+    QuestionChatEntity? followUpQuestionChat;
+
+    final response = SetAiFollowUpQuestionUseCase().call((
+      chatHistory: chatHistory,
+      onFollowUpQuestionCompleted: ({required String followUpQuestion}) {
+        followUpQuestionChat = QuestionChatEntity.createStatic(
+          qnaId: followUpQuestionId,
+          rootQnaId: feedbackResponse.topicQuestion.qna.id,
+          message: followUpQuestion,
+          timestamp: DateTime.now(),
+        );
+        _uploadMessage([
+          followUpQuestionChat!,
+        ]).then(
+          (_) => ref.read(selectedChatRoomProvider.notifier).updateProgressInfo(
+                isCorrect: false,
+                lastChatMessage: followUpQuestionChat!,
+                isRootQuestion: false,
+              ),
+        );
+      },
+      rootQna: feedbackResponse.topicQuestion,
+      userName: feedbackResponse.userName,
+    ));
+
+    await response.fold(
+      onSuccess: (questionStreamChat) async {
+        /// 3) 유저 답변에 대한 피드백 채팅 전달
+        await showMessage(
+          message: QuestionChatEntity(
+            message: questionStreamChat,
+            qnaId: followUpQuestionId,
+            rootQnaId: feedbackResponse.topicQuestion.qna.id,
+          ),
+        );
+      },
+      onFailure: (e) {
+        _rollbackToPreviousChatStep();
+        SnackBarService.showSnackBar('정답 여부를 판별하는 과정에서 오류가 발생했습니다. 잠시후 다시 시도해주세요.');
+      },
+    );
+
+    return followUpQuestionChat;
   }
 
   ///

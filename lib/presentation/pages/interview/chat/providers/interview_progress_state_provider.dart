@@ -44,10 +44,7 @@ class InterviewProgressState extends _$InterviewProgressState {
           lastChat.message.listen(
             null,
             onDone: () {
-              if (ref
-                  .read(selectedChatRoomProvider)
-                  .progressState
-                  .isCompleted) {
+              if (ref.read(selectedChatRoomProvider).progressState.isCompleted) {
                 Future.wait([
                   _setAnalytics(),
                   _increaseCompletedCountAndAlertAppReview(),
@@ -65,7 +62,9 @@ class InterviewProgressState extends _$InterviewProgressState {
           );
 
         case ChatType.feedback:
-          if (ref.read(selectedChatRoomProvider.notifier).isLastQuestion()) {
+          final feedbackChat = lastChat as FeedbackChatEntity;
+          final isFeedbackForRootQuestion = feedbackChat.qnaId == feedbackChat.rootQnaId;
+          if (isFeedbackForRootQuestion && ref.read(selectedChatRoomProvider.notifier).isLastQuestion()) {
             state = InterviewProgress.done;
           }
         default:
@@ -83,11 +82,7 @@ class InterviewProgressState extends _$InterviewProgressState {
       parameters: {
         'user_id': ref.read(userInfoProvider).requireValue?.uid,
         'user_name': ref.read(userInfoProvider).requireValue?.nickname,
-        'topics': ref
-            .read(selectedChatRoomProvider)
-            .topics
-            .map((e) => e.text)
-            .join(', '),
+        'topics': ref.read(selectedChatRoomProvider).topics.map((e) => e.text).join(', '),
         'interview_type': ref.read(selectedChatRoomProvider).type.name,
         'passOrFail': ref.read(selectedChatRoomProvider).passOrFail.name,
       },
@@ -104,17 +99,9 @@ class InterviewProgressState extends _$InterviewProgressState {
     unawaited(
       response.fold(
         onSuccess: (increasedCount) async {
-          ref
-              .read(userInfoProvider.notifier)
-              .increaseCompletedInterviewCount(increasedCount);
-          if (ref
-              .read(userInfoProvider)
-              .requireValue!
-              .isReviewRequestAvailable) {
-            if (increasedCount == 1 ||
-                increasedCount == 6 ||
-                increasedCount == 12 ||
-                increasedCount == 20) {
+          ref.read(userInfoProvider.notifier).increaseCompletedInterviewCount(increasedCount);
+          if (ref.read(userInfoProvider).requireValue!.isReviewRequestAvailable) {
+            if (increasedCount == 1 || increasedCount == 6 || increasedCount == 12 || increasedCount == 20) {
               final InAppReview inAppReview = InAppReview.instance;
 
               if (await inAppReview.isAvailable()) {

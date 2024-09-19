@@ -14,6 +14,7 @@ ChatModel _$ChatModelFromJson(Map<String, dynamic> json) => ChatModel(
       state: json['state'] as String?,
       timestamp:
           const TimeStampConverter().fromJson(json['timestamp'] as Timestamp),
+      rootQnaId: json['root_qna_id'] as String?,
     );
 
 Map<String, dynamic> _$ChatModelToJson(ChatModel instance) {
@@ -31,6 +32,7 @@ Map<String, dynamic> _$ChatModelToJson(ChatModel instance) {
 
   writeNotNull('qna_id', instance.qnaId);
   writeNotNull('state', instance.state);
+  writeNotNull('root_qna_id', instance.rootQnaId);
   val['timestamp'] = const TimeStampConverter().toJson(instance.timestamp);
   return val;
 }
