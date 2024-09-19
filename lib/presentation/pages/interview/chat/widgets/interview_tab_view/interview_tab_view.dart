@@ -1,6 +1,5 @@
 import 'dart:ffi';
 
-import 'package:animated_size_and_fade/animated_size_and_fade.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
@@ -14,8 +13,8 @@ import 'package:techtalk/presentation/pages/interview/chat/providers/chat_messag
 import 'package:techtalk/presentation/pages/interview/chat/widgets/bubble.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/bottom_input_field.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/bottom_speech_to_text_field.dart';
+import 'package:techtalk/presentation/widgets/common/animated/animated_size_and_fade.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
-
 
 class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
   const InterviewTabView({Key? key}) : super(key: key);
@@ -77,34 +76,56 @@ class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
             ),
           ),
         ),
-        Consumer(
-          builder: (context, ref, _) {
-            return chatAsyncAdapterValue(ref).when(
-              data: (_) {
-                listenedInputController(ref);
-                final state = interviewProgressState(ref);
-                return Column(
-                  children: <Widget>[
-                    AnimatedSizeAndFade.showHide(
-                      show: isSpeechMode(ref),
-                      child: const KeepAliveView(
-                          child: BottomSpeechToTextField()),
-                    ),
-                    AnimatedSizeAndFade.showHide(
-                      show: !isSpeechMode(ref),
-                      sizeDuration: Duration(milliseconds: 0),
-                      child: KeepAliveView(child: BottomInputField(state)),
-                    ),
-                  ],
-                );
-              },
-              error: (_, __) =>
-              const BottomInputField(InterviewProgress.error),
-              loading: () =>
-              const BottomInputField(InterviewProgress.initial),
-            );
-          },
+
+        //
+        // AnimatedSizeAndFade.showHide(
+        //   show: !isSpeechMode(ref),
+        //   sizeDuration: Duration(milliseconds: 0),
+        //   child: BottomInputField(),
+        // ),
+        Column(
+          children: <Widget>[
+            AnimatedSizeAndFade.showHide(
+              show: isSpeechMode(ref),
+              child: const KeepAliveView(child: BottomSpeechToTextField()),
+            ),
+            AnimatedSizeAndFade.showHide(
+              show: !isSpeechMode(ref),
+              sizeDuration: Duration(milliseconds: 0),
+              child: KeepAliveView(child: BottomInputField()),
+            ),
+          ],
         ),
+
+
+        // Consumer(
+        //   builder: (context, ref, _) {
+        //     return chatAsyncAdapterValue(ref).when(
+        //       data: (_) {
+        //         listenedInputController(ref);
+        //         final state = interviewProgressState(ref);
+        //         return Column(
+        //           children: <Widget>[
+        //             AnimatedSizeAndFade.showHide(
+        //               show: isSpeechMode(ref),
+        //               child: const KeepAliveView(
+        //                   child: BottomSpeechToTextField()),
+        //             ),
+        //             AnimatedSizeAndFade.showHide(
+        //               show: !isSpeechMode(ref),
+        //               sizeDuration: Duration(milliseconds: 0),
+        //               child: KeepAliveView(child: BottomInputField(state)),
+        //             ),
+        //           ],
+        //         );
+        //       },
+        //       error: (_, __) =>
+        //       const BottomInputField(InterviewProgress.error),
+        //       loading: () =>
+        //       const BottomInputField(InterviewProgress.initial),
+        //     );
+        //   },
+        // ),
       ],
     );
   }

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 ///
@@ -39,44 +40,49 @@ class _GradientShineEffectViewState extends State<GradientShineEffectView>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animation,
-      builder: (context, child) {
-        return Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xFF6D84FF),
-                Color(0xFF9175FF),
-              ],
-              stops: [0, 1],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            backgroundBlendMode: BlendMode.srcATop,
-          ),
-          // 중간에 빛나는 느낌을 주기 위해 shader 추가
-          child: ShaderMask(
-            shaderCallback: (rect) {
-              return LinearGradient(
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: AnimatedBuilder(
+        animation: _animation,
+        builder: (context, child) {
+          return Container(
+            width: 32,
+            height: 32,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
                 colors: [
-                  Colors.transparent,
-                  Colors.white.withOpacity(0.3),
-                  Colors.transparent
+                  Color(0xFF6D84FF),
+                  Color(0xFF9175FF),
                 ],
-                stops: const [0.1, 0.5, 1],
-                begin: Alignment.topLeft
-                    .add(Alignment(_animation.value, _animation.value)),
-                end: Alignment.bottomRight
-                    .add(Alignment(_animation.value, _animation.value)),
-              ).createShader(rect);
-            },
-            child: Container(
-              color: Colors.white,
+                stops: [0, 1],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              backgroundBlendMode: BlendMode.srcATop,
             ),
-          ),
-        );
-      },
+            // 중간에 빛나는 느낌을 주기 위해 shader 추가
+            child: ShaderMask(
+              shaderCallback: (rect) {
+                return LinearGradient(
+                  colors: [
+                    Colors.transparent,
+                    Colors.white.withOpacity(0.3),
+                    Colors.transparent
+                  ],
+                  stops: const [0.1, 0.5, 1],
+                  begin: Alignment.topLeft
+                      .add(Alignment(_animation.value, _animation.value)),
+                  end: Alignment.bottomRight
+                      .add(Alignment(_animation.value, _animation.value)),
+                ).createShader(rect);
+              },
+              child: Container(
+                color: Colors.white,
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

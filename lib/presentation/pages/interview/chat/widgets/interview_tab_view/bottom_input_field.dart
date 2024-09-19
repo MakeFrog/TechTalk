@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,18 +10,14 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/gradient_shine_effect_view.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/bubble_indicator.dart';
 import 'package:techtalk/presentation/widgets/common/animated/animated_appear_view.dart';
 
 class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
-  const BottomInputField(
-    this.state, {
+  const BottomInputField({
     Key? key,
   }) : super(key: key);
-
-  final InterviewProgress state;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,41 +29,57 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
         vertical: 8,
         horizontal: 16,
       ),
+
       child: HookBuilder(
         builder: (context) {
-          final showHighlightEffect = useState(false);
-          useEffect(() {
-            if (state.enableChat) {
-              // showHighlightEffect.value = isFirstInterview();
-            }
-          }, []);
+          final showHighlightEffect = useState(isFirstInterview());
+          return chatAsyncAdapterValue(ref).when(
+            data: (_) {
 
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  _buildMicButton(showHighlightEffect),
-                  if (showHighlightEffect.value.isTrue)
-                    const Positioned(
-                      top: -46,
-                      child: AnimatedAppearView(
-                        child: BubbleIndicator(
-                          talePosition: BubbleTalePosition.left,
-                          text: '음성으로 답변해 보세요!',
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-              _buildTextInputForm(
-                  showHighlightEffect: showHighlightEffect,
-                  progressState: state),
-            ],
+              return _buildTextField(
+                showHighlightEffect: showHighlightEffect,
+                progressState: InterviewProgress.readyToAnswer,
+              );
+            },
+            error: (_, __) => _buildTextField(
+                showHighlightEffect: showHighlightEffect,
+                progressState: InterviewProgress.initial),
+            loading: () => _buildTextField(
+              showHighlightEffect: showHighlightEffect,
+              progressState: InterviewProgress.error,
+            ),
           );
         },
       ),
+    );
+  }
+
+  Widget _buildTextField(
+      {required ValueNotifier<bool> showHighlightEffect,
+      required InterviewProgress progressState}) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Stack(
+          clipBehavior: Clip.none,
+          children: [
+            _buildMicButton(showHighlightEffect),
+            if (showHighlightEffect.value.isTrue)
+            const Positioned(
+              top: -39,
+              child: AnimatedAppearView(
+                child: BubbleIndicator(
+                  talePosition: BubbleTalePosition.left,
+                  text: '음성으로 답변해 보세요!',
+                ),
+              ),
+            ),
+          ],
+        ),
+        _buildTextInputForm(
+            showHighlightEffect: showHighlightEffect,
+            progressState: progressState),
+      ],
     );
   }
 
@@ -79,8 +92,8 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
         child: HookConsumer(
           builder: (context, ref, _) {
             final message =
-                useListenableSelector(unListenedInputController(ref), () {
-              final input = unListenedInputController(ref).text;
+                useListenableSelector(listenedInputController(ref), () {
+              final input = listenedInputController(ref).text;
               if (showHighlightEffect.value.isTrue && input.isNotEmpty) {
                 showHighlightEffect.value = false;
               }
@@ -94,6 +107,7 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                     child: TextField(
                       controller: unListenedInputController(ref),
                       maxLines: null,
+                      enabled: progressState.canEnableTextField,
                       textAlignVertical: TextAlignVertical.top,
                       decoration: InputDecoration(
                         enabled: !progressState.isDoneOrError,

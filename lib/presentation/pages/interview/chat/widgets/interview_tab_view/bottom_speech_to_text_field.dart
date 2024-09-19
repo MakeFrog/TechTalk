@@ -196,6 +196,7 @@ class BottomSpeechToTextField extends HookConsumerWidget
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxHeight: 80),
               child: Scrollbar(
+                interactive: true,
                 thumbVisibility: true,
                 thickness: 4,
                 radius: const Radius.circular(24),
