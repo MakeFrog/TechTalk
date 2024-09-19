@@ -5,7 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/features/chat/repositories/enums/speech_ui_state.enum.dart';
+import 'package:techtalk/presentation/pages/interview/chat/constant/recrod_progress_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
@@ -32,19 +32,17 @@ class BottomSpeechToTextField extends HookConsumerWidget
                 ? AppSize.to.keyboardHeight! - AppSize.to.bottomInset
                 : 280.0,
           ),
+          alignment: Alignment.center,
           // color: Colors.red,
           width: double.infinity,
           child: Stack(
             alignment: Alignment.center,
+            clipBehavior: Clip.none,
             children: [
-              // 음성 인식 중일 때 보여줄 텍스트
-              _buildListeningIndicator(),
-
-              // 버튼 UI
               Container(
                 alignment: Alignment.center,
                 height: 141,
-                constraints: const BoxConstraints(maxWidth: 281),
+                constraints: const BoxConstraints(maxWidth: 280),
                 margin: const EdgeInsets.symmetric(
                   horizontal: 48,
                 ),
@@ -70,7 +68,7 @@ class BottomSpeechToTextField extends HookConsumerWidget
                                 final isProgressOnSubmit = ref.watch(
                                         speechToTextProvider
                                             .select((c) => c.progressState)) ==
-                                    SpeechUiState.submitMessage;
+                                    RecordProgressState.submitMessage;
                                 return CircleAvatar(
                                   radius: 44,
                                   backgroundColor: isProgressOnSubmit
@@ -113,6 +111,7 @@ class BottomSpeechToTextField extends HookConsumerWidget
                   ],
                 ),
               ),
+              _buildListeningIndicator(),
             ],
           ),
         ),
@@ -125,25 +124,52 @@ class BottomSpeechToTextField extends HookConsumerWidget
     String message = '';
     Color textColor = AppColor.of.black;
 
-    return Consumer(
-      builder: (context, ref, _) {
-        final isReady = ref.watch(
-            speechToTextProvider.select((c) => c.isListeningWithEmptyText));
+    return Positioned(
+      left: 0,
+      right: 0,
+      top: -32,
+      child: HookConsumer(
+        builder: (context, ref, _) {
+          final progressState =
+              ref.watch(speechToTextProvider.select((c) => c.progressState));
 
-        if (isReady) {
-          message = '듣고 있어요';
-          textColor = AppColor.of.black;
-        }
-        return SizedBox(
-          width: double.infinity,
-          child: Center(
-            child: Text(
-              message,
-              style: AppTextStyle.body1.copyWith(color: textColor),
+          print('아지랑이둘 : ${progressState}');
+          // ref.listen(speechToTextProvider.select((c) => c.progressState),
+          //     (prev, now) {
+          //   if (now.isOnProgress ||
+          //       now.isErrorOccured && showIndicator.value.isFalse) {
+          //     showIndicator.value = true;
+          //     return;
+          //   }
+          //
+          //   if (showIndicator.value.isTrue) {
+          //     showIndicator.value = false;
+          //   }
+          // });
+
+          return Center(
+            child: AnimatedCrossFade(
+              firstChild: Text(
+                progressState.label ?? '',
+                textAlign: TextAlign.center,
+                style: AppTextStyle.body1.copyWith(color: textColor),
+              ),
+              secondChild: const EmptyBox(),
+              crossFadeState:
+                  progressState.isErrorOccured || progressState.isOnProgress
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+              duration: Duration(milliseconds: 300),
             ),
-          ),
-        );
-      },
+          );
+
+          return Text(
+            'message',
+            textAlign: TextAlign.center,
+            style: AppTextStyle.body1.copyWith(color: textColor),
+          );
+        },
+      ),
     );
   }
 
@@ -185,7 +211,7 @@ class BottomSpeechToTextField extends HookConsumerWidget
               ),
             ),
           ),
-          crossFadeState: progressState == SpeechUiState.recognized
+          crossFadeState: progressState == RecordProgressState.recognized
               ? CrossFadeState.showSecond
               : CrossFadeState.showFirst,
           duration: const Duration(
@@ -201,18 +227,23 @@ class BottomSpeechToTextField extends HookConsumerWidget
     final progressState =
         ref.read(speechToTextProvider.select((c) => c.progressState));
     switch (progressState) {
-      case SpeechUiState.ready:
+      case RecordProgressState.initial:
         print('UI State : $progressState');
         return Assets.iconsIconMic;
-      case SpeechUiState.listening:
+      case RecordProgressState.onProgress:
         print('UI State : $progressState');
         return Assets.iconsArrowLeft;
-      case SpeechUiState.recognized:
+      case RecordProgressState.recognized:
         print('UI State : $progressState');
         return Assets.iconsSend;
-      case SpeechUiState.submitMessage:
+      case RecordProgressState.submitMessage:
         print('UI State : $progressState');
         return Assets.iconsSend;
+      case RecordProgressState.errorOccured:
+        return '';
+      // TODO: Handle this case.
+      case RecordProgressState.ready:
+        return Assets.iconsArrowLeft;
     }
   }
 
@@ -255,7 +286,7 @@ class BottomSpeechToTextField extends HookConsumerWidget
             duration: const Duration(milliseconds: 300),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: progressSate == SpeechUiState.ready
+              color: progressSate == RecordProgressState.initial
                   ? AppColor.of.background1
                   : AppColor.of.red1,
             ),
@@ -265,7 +296,7 @@ class BottomSpeechToTextField extends HookConsumerWidget
               child: SvgPicture.asset(
                 Assets.iconsDeleteOrWrong,
                 colorFilter: ColorFilter.mode(
-                  progressSate == SpeechUiState.ready
+                  progressSate == RecordProgressState.initial
                       ? AppColor.of.gray3
                       : AppColor.of.red2,
                   BlendMode.srcIn,

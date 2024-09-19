@@ -5,14 +5,15 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
 
-import 'package:techtalk/features/chat/repositories/enums/speech_ui_state.enum.dart';
+import 'package:techtalk/presentation/pages/interview/chat/constant/recrod_progress_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/main_input_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 
 class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
   SpeechToText controller = SpeechToText();
-  SpeechUiState progressState = SpeechUiState.ready; // 음성 인식 상태 (준비, 듣는 중, 완료)
+  RecordProgressState progressState =
+      RecordProgressState.initial; // 음성 인식 상태 (준비, 듣는 중, 완료)
 
   bool isListening = false;
   String recordedText = '';
@@ -22,28 +23,25 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
     notifyListeners();
   }
 
-  void updateSpeechProgressState(SpeechUiState targetState) {
+  void updateSpeechProgressState(RecordProgressState targetState) {
     progressState = targetState;
     notifyListeners();
   }
 
   bool get isSpeechTextEmpty => recordedText.isEmpty;
 
-  bool get isListeningWithEmptyText =>
-      progressState == SpeechUiState.listening && recordedText.isEmpty;
-
   ///
   /// 타이핑 모드 버튼 클릭시
   ///
   void onTypingModeBtnTapped(WidgetRef ref) {
     switch (progressState) {
-      case SpeechUiState.listening:
+      case RecordProgressState.onProgress:
         // 향후 텍스트 전달 기능 구현
         ref.read(isSpeechModeProvider.notifier).toggle();
         controller.stop();
         break;
 
-      case SpeechUiState.recognized:
+      case RecordProgressState.recognized:
         // 향후 텍스트 전달 기능 구현
         ref.read(isSpeechModeProvider.notifier).toggle();
         break;
@@ -58,19 +56,17 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
   /// 음성 인식 시작
   ///
   Future<void> startRecord(WidgetRef ref) async {
-    final controller =
-        ref.read(speechToTextProvider.select((c) => c.controller));
-
     /// 음성 인식 시작 전에 텍스트 초기화
     recordedText = '';
 
-    /// SpeechUiState 변경
-    ref
-        .read(speechToTextProvider.notifier)
-        .updateSpeechProgressState(SpeechUiState.listening);
+    updateSpeechProgressState(RecordProgressState.ready);
 
     await controller.listen(
       onResult: (result) {
+        if (!progressState.isOnProgress) {
+          updateSpeechProgressState(RecordProgressState.onProgress);
+        }
+
         recordedText = result.recognizedWords;
       },
     );
@@ -84,7 +80,7 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
       print('버튼 비활성화 : 인식된 텍스트 x');
     } else {
       controller.stop();
-      updateSpeechProgressState(SpeechUiState.recognized);
+      updateSpeechProgressState(RecordProgressState.recognized);
     }
   }
 
@@ -99,7 +95,7 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
     // textEditingController.text = recognizedText;
 
     // speechController 상태 변경하기
-    updateSpeechProgressState(SpeechUiState.submitMessage);
+    updateSpeechProgressState(RecordProgressState.submitMessage);
 
     ref.read(mainInputControllerProvider.notifier).updateInput(recordedText);
 
@@ -109,13 +105,12 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
     // 예외처리 : 음성 전송중
 
     // 예외처리 : 전송 완료
-    updateSpeechProgressState(SpeechUiState.ready);
+    updateSpeechProgressState(RecordProgressState.initial);
     recordedText = '';
-
   }
 
   void cancelRecord(WidgetRef ref) {
-    updateSpeechProgressState(SpeechUiState.ready);
+    updateSpeechProgressState(RecordProgressState.initial);
     recordedText = '';
 
     // 녹음 중 리셋 버튼 클릭시
@@ -135,7 +130,7 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
       onError: (error) {
         final errorMessage = getErrorMessage(error.errorMsg);
         if (errorMessage.isNotEmpty) {
-          updateSpeechProgressState(SpeechUiState.ready);
+          updateSpeechProgressState(RecordProgressState.initial);
           log(errorMessage);
           SnackBarService.showSnackBar(errorMessage);
         }

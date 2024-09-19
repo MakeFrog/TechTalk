@@ -9,17 +9,23 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/gradient_shine_effect_view.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/bubble_indicator.dart';
 import 'package:techtalk/presentation/widgets/common/animated/animated_appear_view.dart';
 
 class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
-  const BottomInputField({
+  const BottomInputField(
+    this.state, {
     Key? key,
   }) : super(key: key);
 
+  final InterviewProgress state;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useAutomaticKeepAlive();
+
     return Container(
       color: AppColor.of.white,
       constraints: const BoxConstraints(minHeight: 48, maxHeight: 240),
@@ -28,11 +34,7 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
         vertical: 8,
         horizontal: 16,
       ),
-      child: chatAsyncAdapterValue(ref).when(
-        data: (_) => _buildTextField(progressState(ref)),
-        error: (_, __) => _buildTextField(InterviewProgress.error),
-        loading: () => _buildTextField(InterviewProgress.initial),
-      ),
+      child: _buildTextField(state),
     );
   }
 
@@ -76,7 +78,8 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
       child: IntrinsicWidth(
         child: HookConsumer(
           builder: (context, ref, _) {
-            final message = useListenableSelector(unListenedInputController(ref), () {
+            final message =
+                useListenableSelector(unListenedInputController(ref), () {
               final input = unListenedInputController(ref).text;
               if (showHighlightEffect.value.isTrue && input.isNotEmpty) {
                 showHighlightEffect.value = false;

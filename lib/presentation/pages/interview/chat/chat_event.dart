@@ -14,12 +14,14 @@ import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/repositories/enums/speech_ui_state.enum.dart';
+import 'package:techtalk/presentation/pages/interview/chat/constant/recrod_progress_state.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/main_input_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/speech_to_text_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/bottom_speech_to_text_field.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
@@ -33,9 +35,8 @@ mixin class ChatEvent {
   /// - 스크롤 포지션 맨 아래로 변경
   ///
   Future<void> onChatFieldSubmitted(
-    WidgetRef ref, {
-    required TextEditingController textEditingController,
-  }) async {
+    WidgetRef ref
+  ) async {
     unawaited(
       ref.read(chatScrollControllerProvider).animateTo(
             0,
@@ -44,13 +45,15 @@ mixin class ChatEvent {
           ),
     );
 
-    final message = textEditingController.text;
+    final controller = ref.read(mainInputControllerProvider);
+
+    final message = controller.text;
     if (message.isEmpty) {
       unawaited(HapticFeedback.vibrate());
       return SnackBarService.showSnackBar(
           ref.context.tr(LocaleKeys.interview_provideAnswer));
     }
-    textEditingController.clear();
+    controller.clear();
 
     await ref
         .read(chatMessageHistoryProvider.notifier)
@@ -183,44 +186,6 @@ mixin class ChatEvent {
   }
 
   ///
-  /// 음성인식 초기화 관리
-  ///
-  Future<void> initSpeech(
-    stt.SpeechToText speechToText,
-    SpeechController speechController,
-  ) async {
-    final isInitialized = await speechToText.initialize(
-      onStatus: (state) {
-        if (state == 'listening') {
-          speechController.isListening.value = true;
-        } else {
-          speechController.isListening.value = false;
-        }
-      },
-      onError: (error) {
-        final errorMessage = getErrorMessage(error.errorMsg);
-        if (errorMessage.isNotEmpty) {
-          speechController.state.value = SpeechUiState.ready;
-          log(errorMessage);
-          SnackBarService.showSnackBar(errorMessage);
-        }
-      },
-    );
-    // 음성 인식이 초기화되었는지 확인
-    if (isInitialized) {
-      final isSpeechAvailable = speechToText.isAvailable;
-      if (isSpeechAvailable) {
-        print('음성 인식을 사용할 수 있습니다.');
-      } else {
-        print('음성 인식을 사용할 수 없습니다.');
-      }
-    } else {
-      log('음성 인식 초기화에 실패했습니다.');
-      SnackBarService.showSnackBar('음성 인식 초기화에 실패했습니다.');
-    }
-  }
-
-  ///
   /// 에러 예외처리를 스낵바로 보여줌
   ///
   String getErrorMessage(String errorMsg) {
@@ -244,31 +209,34 @@ mixin class ChatEvent {
   /// 메인 버튼 클릭시 실행되는 함수
   ///
   Future<void> onMainBtnTapped(
-    stt.SpeechToText speechToText,
-    SpeechController speechController,
     WidgetRef ref,
-    TextEditingController textEditingController,
   ) async {
-    final hasPermission = await checkPermissions(speechToText);
+    final controller =
+        ref.read(speechToTextProvider.select((c) => c.controller));
+    final hasPermission = await checkPermissions(controller);
     if (!hasPermission) return;
 
-    switch (speechController.state.value) {
-      case SpeechUiState.ready:
-        await startRecognized(speechToText, speechController);
+    final currentProgressState =
+        ref.read(speechToTextProvider.select((c) => c.progressState));
+
+    switch (currentProgressState) {
+      case RecordProgressState.initial:
+        ref.read(speechToTextProvider.notifier).startRecord(ref);
         break;
-      case SpeechUiState.listening:
-        stopRecognized(speechToText, speechController);
+      case RecordProgressState.onProgress:
+        ref.read(speechToTextProvider.notifier).stopRecord(ref);
+
         break;
-      case SpeechUiState.recognized:
-        await submitRecognizedText(
-          ref,
-          textEditingController,
-          speechToText,
-          speechController,
-        );
+      case RecordProgressState.recognized:
+        await ref.read(speechToTextProvider.notifier).submitRecognizedText(ref);
+
         break;
-      case SpeechUiState.submitMessage:
+      case RecordProgressState.submitMessage:
         break;
+      case RecordProgressState.errorOccured:
+        // TODO: Handle this case.
+      case RecordProgressState.ready:
+        // TODO: Handle this case.
     }
   }
 
@@ -327,122 +295,22 @@ mixin class ChatEvent {
     if (statuses.values.any((status) => !status.isGranted)) {
       _showNeedMicPermissionsDialog();
     } else {
-      /// 키보드 focus 비활성화
-      FocusScope.of(ref.context).unfocus();
+      // /// 키보드 focus 비활성화
+      // FocusScope.of(ref.context).unfocus();
 
       /// 약간의 딜레이를 주어 자연스럽게 음성 인식 활성화 ui 노출
-      await Future.delayed(Duration(milliseconds: 120));
+      await Future.delayed(const Duration(milliseconds: 250));
       ref.read(isSpeechModeProvider.notifier).toggle();
     }
   }
 
   ///
-  /// 음성 인식 시작
-  ///
-  Future<void> startRecognized(
-    stt.SpeechToText speechToText,
-    SpeechController speechController,
-  ) async {
-    // 음성 인식 시작 전에 텍스트 초기화
-    speechController.recognizedText.value = '';
-
-    // SpeechUiState 변경
-    speechController.state.value = SpeechUiState.listening;
-
-    await speechToText.listen(
-      onResult: (result) {
-        speechController.recognizedText.value = result.recognizedWords;
-      },
-    );
-  }
-
-  ///
-  /// 음성 인식 정지
-  ///
-  void stopRecognized(
-    stt.SpeechToText speechToText,
-    SpeechController speechController,
-  ) {
-    // 메인 버튼 비활성화
-    if (speechController.recognizedText.value.isEmpty) {
-      print('버튼 비활성화 : 인식된 텍스트 x');
-    } else {
-      speechToText.stop();
-      speechController.state.value = SpeechUiState.recognized;
-    }
-  }
-
-  ///
-  /// 음성 인식 텍스트를 전송
-  ///
-  Future<void> submitRecognizedText(
-    WidgetRef ref,
-    TextEditingController textEditingController,
-    stt.SpeechToText speechToText,
-    SpeechController speechController,
-  ) async {
-    // 음성 인식된 텍스트 가져오기
-    final recognizedText = speechController.recognizedText.value;
-
-    // 텍스트 필드에 recognizedText를 설정
-    textEditingController.text = recognizedText;
-
-    // speechController 상태 변경하기
-    speechController.state.value = SpeechUiState.submitMessage;
-
-    // 기존 onChatFieldSubmitted 함수 사용하여 채팅 전송
-    await onChatFieldSubmitted(
-      ref,
-      textEditingController: textEditingController,
-    );
-
-    // 예외처리 : 음성 전송중
-
-    // 예외처리 : 전송 완료
-    speechController.state.value = SpeechUiState.ready;
-    speechController.recognizedText.value = '';
-  }
-
-  ///
   /// 녹음 취소 버튼 클릭시
   ///
-  void cancleBtnClicked(
-    stt.SpeechToText speechToText,
-    SpeechController speechController,
-  ) {
-    speechController.state.value = SpeechUiState.ready;
-    speechController.recognizedText.value = '';
-
-    // 녹음 중 리셋 버튼 클릭시
-    if (speechController.isListening.value == true) {
-      speechToText.stop();
-    }
-  }
-
-  ///
-  /// 타이핑 모드 버튼 클릭시
-  ///
-  void typingModeBtnClicked(
+  void onCancelRecordBtnTapped(
     WidgetRef ref,
-    stt.SpeechToText speechToText,
-    SpeechController speechController,
   ) {
-    switch (speechController.state.value) {
-      case SpeechUiState.listening:
-        // 향후 텍스트 전달 기능 구현
-        ref.read(isSpeechModeProvider.notifier).toggle();
-        speechToText.stop();
-        break;
-
-      case SpeechUiState.recognized:
-        // 향후 텍스트 전달 기능 구현
-        ref.read(isSpeechModeProvider.notifier).toggle();
-        break;
-
-      default:
-        ref.read(isSpeechModeProvider.notifier).toggle();
-        break;
-    }
+   ref.read(speechToTextProvider.notifier).cancelRecord(ref);
   }
 
   ///

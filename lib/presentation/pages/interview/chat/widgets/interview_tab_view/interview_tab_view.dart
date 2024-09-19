@@ -91,19 +91,21 @@ class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
                   children: <Widget>[
                     AnimatedSizeAndFade.showHide(
                       show: isSpeechMode(ref),
-                      child:
-                          const KeepAliveView(child: BottomSpeechToTextField()),
+                      child: const KeepAliveView(
+                          child: BottomSpeechToTextField()),
                     ),
                     AnimatedSizeAndFade.showHide(
                       show: !isSpeechMode(ref),
-                      sizeDuration : Duration.zero,
+                      sizeDuration: Duration(milliseconds: 0),
                       child: KeepAliveView(child: BottomInputField(state)),
                     ),
                   ],
                 );
               },
-              error: (_, __) => const BottomInputField(InterviewProgress.error),
-              loading: () => const BottomInputField(InterviewProgress.initial),
+              error: (_, __) =>
+              const BottomInputField(InterviewProgress.error),
+              loading: () =>
+              const BottomInputField(InterviewProgress.initial),
             );
           },
         ),

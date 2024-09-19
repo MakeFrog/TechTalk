@@ -20,6 +20,7 @@ class AppSize {
 
   // 초기화 구문
   void init(BuildContext context) async {
+    print('@@@@@@@@ 이찌방 @@@@');
     final mediaQuery = MediaQuery.of(context);
     final bool isTablet = mediaQuery.size.width > 600;
     statusBarHeight = mediaQuery.padding.top;

@@ -29,7 +29,7 @@ dependencies:
   cached_network_image: ^3.3.0 # 네트워크 이미지 캐싱
   defer_pointer: ^0.0.2 # Overflow 영역에도 터치를 보장할 수 있도록 도와주는 패키지
   gap: ^3.0.1 # 간격 위젯
-
+  animated_size_and_fade: ^4.0.0
   # 상태관리
   provider: ^6.0.5
   hooks_riverpod: ^2.4.0

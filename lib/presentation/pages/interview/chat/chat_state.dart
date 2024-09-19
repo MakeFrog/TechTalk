@@ -47,7 +47,7 @@ mixin class ChatState {
   ///
   /// 인터뷰 진행 상태
   ///
-  InterviewProgress progressState(WidgetRef ref) =>
+  InterviewProgress interviewProgressState(WidgetRef ref) =>
       ref.watch(interviewProgressStateProvider);
 
   ///
