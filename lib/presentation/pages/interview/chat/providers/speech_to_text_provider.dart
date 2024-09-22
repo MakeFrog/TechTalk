@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:developer';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat/constant/recrod_progress_state.dart';
@@ -35,7 +37,7 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
   ///
   Future<void> onTypingModeBtnTapped(WidgetRef ref) async {
     if (progressState.isLoadingResult) {
-      SnackBarService.showSnackBar('음성인식 결과를 로드하고 있습니다');
+      SnackBarService.showSnackBar(tr(LocaleKeys.interview_waitPlease));
       return;
     }
 
@@ -59,12 +61,12 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
   Future<void> startRecord(WidgetRef ref) async {
     final chatProgress = ref.read(interviewProgressStateProvider);
     if (chatProgress.isDone) {
-      SnackBarService.showSnackBar('면접이 종료되었습니다');
+      SnackBarService.showSnackBar(tr(LocaleKeys.interview_interviewEnded));
       ref.read(isSpeechModeProvider.notifier).toggle();
     }
 
     if (chatProgress.isInterviewerReplying) {
-      SnackBarService.showSnackBar('면접관의 질문이 끝난 뒤 답변을 진행해주세요');
+      SnackBarService.showSnackBar(tr(LocaleKeys.interview_waitForReply));
       return;
     }
 
@@ -92,13 +94,13 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
 
       recognizedText = textFiledController.text + text;
       if (recognizedText.trim().isEmpty) {
-        SnackBarService.showSnackBar('음성 인식에 실패했어요. 다시 시도해주세요');
+        SnackBarService.showSnackBar(tr(LocaleKeys.interview_recordFailed));
         _updateProgressState(RecordProgressState.initial);
       } else {
         _updateProgressState(RecordProgressState.recognized);
       }
     }, onFailure: (e) {
-      SnackBarService.showSnackBar('음성 인식에 실패했어요. 다시 시도해주세요');
+      SnackBarService.showSnackBar(tr(LocaleKeys.interview_recordFailed));
       log('Speech To Text 실패');
     });
   }
@@ -141,7 +143,7 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
       }
       _updateProgressState(RecordProgressState.initial, resetText: true);
     } else if (progressState.isLoadingResult) {
-      SnackBarService.showSnackBar('잠시만 기다려 주세요');
+      SnackBarService.showSnackBar(tr(LocaleKeys.interview_waitPlease));
     } else {
       ref.read(isSpeechModeProvider.notifier).toggle();
     }

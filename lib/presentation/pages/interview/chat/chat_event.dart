@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
@@ -182,26 +183,6 @@ mixin class ChatEvent {
   }
 
   ///
-  /// 에러 예외처리를 스낵바로 보여줌
-  ///
-  String getErrorMessage(String errorMsg) {
-    switch (errorMsg) {
-      case 'network':
-        return '인터넷 연결에 문제가 있습니다. 네트워크 상태를 확인해주세요.';
-      case 'not-allowed':
-        return '마이크에 접근할 수 없습니다. 장치 상태를 확인해주세요.';
-      case 'audio':
-        return '오디오 장치에서 문제가 발생했습니다. 장치 상태를 확인해주세요.';
-      case 'server':
-        return '음성 인식 서버에 문제가 있습니다. 잠시 후 다시 시도해주세요.';
-      case 'error_listen_failed':
-        return '음성 인식에 실패했습니다. 다시 시도해주세요.';
-      default:
-        return '음성 인식 중 오류가 발생했습니다. 다시 시도해주세요.';
-    }
-  }
-
-  ///
   /// 음성 녹음 메인 버튼 클릭시 실행되는 함수
   ///
   Future<void> onRecordMainBtnTapped(
@@ -221,11 +202,11 @@ mixin class ChatEvent {
         await ref.read(speechToTextProvider.notifier).submitRecognizedText(ref);
         break;
       case RecordProgressState.errorOccured:
-        SnackBarService.showSnackBar('오류가 발생했어요');
+        SnackBarService.showSnackBar(tr(LocaleKeys.errors_errorOccurred));
         break;
 
       case RecordProgressState.loading:
-        SnackBarService.showSnackBar('녹음을 처리하고 있습니다');
+        SnackBarService.showSnackBar(tr(LocaleKeys.interview_processingRecord));
         break;
     }
   }
@@ -236,11 +217,11 @@ mixin class ChatEvent {
   void showNeedMicPermissionsDialog() {
     DialogService.show(
       dialog: AppDialog.dividedBtn(
-        title: '권한 필요',
-        subTitle: '설정에서 마이크 권한을 허용해주세요.',
-        leftBtnContent: '취소',
+        title: tr(LocaleKeys.permission_permissionNeeded),
+        subTitle: tr(LocaleKeys.permission_micRequired),
+        leftBtnContent: tr(LocaleKeys.common_cancel),
         showContentImg: false,
-        rightBtnContent: '설정하기',
+        rightBtnContent: tr(LocaleKeys.permission_setUp),
         onRightBtnClicked: () async {
           rootNavigatorKey.currentContext?.pop();
           await AppSettings.openAppSettings();
@@ -259,10 +240,9 @@ mixin class ChatEvent {
   /// - 권한 허용이 충족되었다면 음성 인식 활성화
   ///
   Future<void> onMicBtnTapped(WidgetRef ref) async {
-
     final chatProgress = ref.read(interviewProgressStateProvider);
     if (chatProgress.isDone) {
-      SnackBarService.showSnackBar('면접이 종료되었습니다');
+      SnackBarService.showSnackBar(tr(LocaleKeys.interview_interviewEnded));
       return;
     }
 

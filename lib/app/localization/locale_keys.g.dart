@@ -125,6 +125,7 @@ abstract class  LocaleKeys {
   static const techSelection_searchInKorean = 'techSelection.searchInKorean';
   static const techSelection_noSearchResults = 'techSelection.noSearchResults';
   static const techSelection = 'techSelection';
+  static const interview_processingRecord = 'interview.processingRecord';
   static const interview_hello = 'interview.hello';
   static const interview_multipleTopics = 'interview.multipleTopics';
   static const interview_focusOnOneTopic = 'interview.focusOnOneTopic';
@@ -144,6 +145,7 @@ abstract class  LocaleKeys {
   static const interview_interviewHasEnd = 'interview.interviewHasEnd';
   static const interview_errorHasDetected = 'interview.errorHasDetected';
   static const interview_waitForReply = 'interview.waitForReply';
+  static const interview_recordFailed = 'interview.recordFailed';
   static const interview = 'interview';
   static const qa_numberOfQa = 'qa.numberOfQa';
   static const qa_swiftAndTwoOthers = 'qa.swiftAndTwoOthers';
@@ -190,6 +192,10 @@ abstract class  LocaleKeys {
   static const myInfo_logout_confirmLogout = 'myInfo.logout.confirmLogout';
   static const myInfo_logout = 'myInfo.logout';
   static const myInfo = 'myInfo';
+  static const permission_permissionNeeded = 'permission.permissionNeeded';
+  static const permission_micRequired = 'permission.micRequired';
+  static const permission_setUp = 'permission.setUp';
+  static const permission = 'permission';
   static const errors_error = 'errors.error';
   static const errors_photoUploadError = 'errors.photoUploadError';
   static const errors_errorOccurred = 'errors.errorOccurred';
