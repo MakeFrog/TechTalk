@@ -30,15 +30,17 @@ class BottomSpeechToTextField extends HookConsumerWidget
             minHeight: AppSize.ratioHeight(280.0),
           ),
           alignment: Alignment.center,
-          // color: Colors.red,
+          color: AppColor.of.white,
           width: double.infinity,
           child: Container(
             alignment: Alignment.center,
             height: 141,
+            color: AppColor.of.white,
             constraints: const BoxConstraints(maxWidth: 280),
             margin: const EdgeInsets.symmetric(
-              horizontal: 48,
-            ),
+                  horizontal: 48,
+                ) +
+                EdgeInsets.only(bottom: AppSize.ratioHeight(29)),
             child: Stack(
               children: [
                 // 메인 버튼

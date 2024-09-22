@@ -139,10 +139,6 @@ PODS:
     - FirebaseCoreExtension (~> 10.0)
     - GTMSessionFetcher/Core (< 4.0, >= 2.1)
   - Flutter (1.0.0)
-  - flutter_sound (9.6.0):
-    - Flutter
-    - flutter_sound_core (= 9.6.0)
-  - flutter_sound_core (9.6.0)
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
@@ -268,7 +264,6 @@ DEPENDENCIES:
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `10.22.0`)
   - Flutter (from `Flutter`)
-  - flutter_sound (from `.symlinks/plugins/flutter_sound/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/darwin`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
@@ -305,7 +300,6 @@ SPEC REPOS:
     - FirebaseSessions
     - FirebaseSharedSwift
     - FirebaseStorage
-    - flutter_sound_core
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleSignIn
@@ -343,8 +337,6 @@ EXTERNAL SOURCES:
     :tag: 10.22.0
   Flutter:
     :path: Flutter
-  flutter_sound:
-    :path: ".symlinks/plugins/flutter_sound/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
   google_sign_in_ios:
@@ -408,8 +400,6 @@ SPEC CHECKSUMS:
   FirebaseSharedSwift: 48076404e6e52372290d15a07d2ed1d2f1754023
   FirebaseStorage: bc7bddc743548a89cfb896843a77cf4bdde2c231
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_sound: dde9a913063b65a27ba8fdc2039036b99b136c79
-  flutter_sound_core: 0c6eb9d5268adc70ff159b3d65fd3d98a82d3a27
   fluttertoast: 9f2f8e81bb5ce18facb9748d7855bf5a756fe3db
   google_sign_in_ios: 07375bfbf2620bc93a602c0e27160d6afc6ead38
   GoogleAppMeasurement: ccefe3eac9b0aa27f96066809fb1a7fe4b462626
