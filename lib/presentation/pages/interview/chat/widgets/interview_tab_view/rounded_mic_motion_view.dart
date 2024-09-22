@@ -8,8 +8,6 @@ import 'package:techtalk/presentation/pages/interview/chat/constant/recrod_progr
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_to_text_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/staggered_dot_wave.dart';
 
-import 'dart:async';
-
 class RoundedMicMotionView extends HookConsumerWidget {
   const RoundedMicMotionView({super.key});
 
@@ -103,23 +101,5 @@ class RoundedMicMotionView extends HookConsumerWidget {
         ),
       ),
     );
-  }
-}
-
-class Debouncer {
-  Duration delay;
-  Timer? _timer;
-
-  Debouncer(
-    this.delay,
-  );
-
-  run(void Function() callback) {
-    _timer?.cancel();
-    _timer = Timer(delay, callback);
-  }
-
-  dispose() {
-    _timer?.cancel();
   }
 }

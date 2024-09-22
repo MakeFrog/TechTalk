@@ -2,7 +2,6 @@ import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
@@ -119,32 +118,6 @@ class BottomSpeechToTextField extends HookConsumerWidget
         );
       },
     );
-  }
-
-  // 녹음 상태에 따라 메인 버튼 아이콘 변경
-  String _getMainBtnIcon(WidgetRef ref) {
-    final progressState =
-        ref.read(speechToTextProvider.select((c) => c.progressState));
-    switch (progressState) {
-      case RecordProgressState.initial:
-        print('UI State : $progressState');
-        return Assets.iconsIconMic;
-      case RecordProgressState.onProgress:
-        print('UI State : $progressState');
-        return Assets.iconsArrowLeft;
-      case RecordProgressState.recognized:
-        print('UI State : $progressState');
-        return Assets.iconsSend;
-
-        return Assets.iconsSend;
-      case RecordProgressState.errorOccured:
-        return '';
-      // TODO: Handle this case.
-      case RecordProgressState.ready:
-        return Assets.iconsArrowLeft;
-      case RecordProgressState.loading:
-        return Assets.iconsArrowLeft;
-    }
   }
 
   // 타이핑 모드 전환 버튼

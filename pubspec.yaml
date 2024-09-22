@@ -16,7 +16,6 @@ dependencies:
 
   #Gemini
   google_generative_ai: ^0.4.3
-  flutter_sound: ^9.6.0
   record: ^5.1.2
   # UI
   cupertino_will_pop_scope: ^1.2.1 #pop scope (스와이프 백 제스쳐 지원)
@@ -33,7 +32,6 @@ dependencies:
   local_hero: ^0.3.0
   defer_pointer: ^0.0.2 # Overflow 영역에도 터치를 보장할 수 있도록 도와주는 패키지
   gap: ^3.0.1 # 간격 위젯
-#  animated_size_and_fade: ^4.0.0
   # 상태관리
   provider: ^6.0.5
   hooks_riverpod: ^2.4.0
@@ -72,7 +70,7 @@ dependencies:
   json_annotation: ^4.8.1
 
   # Utils
-  dart_openai: ^5.1.0
+  dart_openai: ^5.1.0 #Whisper 사용 목적
   chat_gpt_sdk: ^3.0.8
   crypto: ^3.0.3 # 해슁
   async: ^2.11.0 # 비동기 처리
@@ -91,7 +89,6 @@ dependencies:
   connectivity_plus: ^5.0.2 # 네트워크 연결 상태 관리
   easy_localization: ^3.0.0 # 다국어 지원
   collection: ^1.18.0 # 콜렉션 타입 익스텐션 지원 메소드
-  speech_to_text: ^6.6.0 # 음성을 텍스트로 변환
   # 앱 정보
   package_info_plus: ^5.0.1 # 현재 앱 버전 정보
   pub_semver: ^2.1.4 # 주부수 버전 비교 연산
