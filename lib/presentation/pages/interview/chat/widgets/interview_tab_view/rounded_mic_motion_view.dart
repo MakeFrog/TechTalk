@@ -6,6 +6,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/presentation/pages/interview/chat/constant/recrod_progress_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_to_text_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/horizon_roating_dots.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/staggered_dot_wave.dart';
 
 class RoundedMicMotionView extends HookConsumerWidget {
@@ -61,26 +62,22 @@ class RoundedMicMotionView extends HookConsumerWidget {
                             duration: const Duration(milliseconds: 1650),
                           );
 
-                          ref.listen(
-                              speechToTextProvider
-                                  .select((c) => c.progressState), (prev, now) {
-                            if (now.isOnProgress ||
-                                !animationController.isAnimating) {
-                              animationController.repeat();
-                            }
-                          });
+                          useEffect(() {
+                            animationController.repeat();
+                            return null;
+                          }, []);
 
                           return StaggeredDotsWave(
-                            size: 28,
+                            size: 24,
                             color: AppColor.of.white,
                             controller: animationController,
                           );
                         },
                       );
                     case RecordProgressState.loading:
-                      return LoadingAnimationWidget.horizontalRotatingDots(
+                      return HorizontalRotatingDots(
                         color: AppColor.of.white,
-                        size: 32,
+                        size: 30,
                       );
 
                     default:
