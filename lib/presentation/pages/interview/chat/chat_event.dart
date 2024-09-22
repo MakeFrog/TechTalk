@@ -5,11 +5,9 @@ import 'package:app_settings/app_settings.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
@@ -18,11 +16,11 @@ import 'package:techtalk/presentation/pages/interview/chat/constant/recrod_progr
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/main_input_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_to_text_provider.dart';
-import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/bottom_speech_to_text_field.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
@@ -222,37 +220,24 @@ mixin class ChatEvent {
       case RecordProgressState.recognized:
         await ref.read(speechToTextProvider.notifier).submitRecognizedText(ref);
         break;
-      case RecordProgressState.submitMessage:
-        break;
       case RecordProgressState.errorOccured:
-      case RecordProgressState.loadingResult:
-      // TODO: Handle this case.
-    }
-  }
+        SnackBarService.showSnackBar('오류가 발생했어요');
+        break;
 
-  ///
-  /// 권한 허용 함수
-  ///
-  Future<bool> checkPermissions(stt.SpeechToText speechToText) async {
-    final hasMicPermission = await speechToText.hasPermission;
-    final isSpeechAvailable = speechToText.isAvailable;
-
-    if (!hasMicPermission || !isSpeechAvailable) {
-      // 권한 부족시 처리 로직 (ex: 다이얼로그 표시)
-      _showNeedMicPermissionsDialog();
-      return false;
+      case RecordProgressState.loading:
+        SnackBarService.showSnackBar('녹음을 처리하고 있습니다');
+        break;
     }
-    return true;
   }
 
   ///
   /// 마이크 권한허용 필요 다이어로그 노출
   ///
-  void _showNeedMicPermissionsDialog() {
+  void showNeedMicPermissionsDialog() {
     DialogService.show(
       dialog: AppDialog.dividedBtn(
         title: '권한 필요',
-        subTitle: '설정에서 마이크 권한과 음성 인식 권한을 허용해주세요.',
+        subTitle: '설정에서 마이크 권한을 허용해주세요.',
         leftBtnContent: '취소',
         showContentImg: false,
         rightBtnContent: '설정하기',
@@ -274,29 +259,40 @@ mixin class ChatEvent {
   /// - 권한 허용이 충족되었다면 음성 인식 활성화
   ///
   Future<void> onMicBtnTapped(WidgetRef ref) async {
-    // 여러 권한을 한 번에 요청
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.speech,
-      Permission.microphone,
-    ].request();
 
-    /// 두 권한 중 하나라도 허용되지 않은 경우
-    /// 권한 허용 다이어로그 노출
-    if (statuses.values.any((status) => !status.isGranted)) {
-      _showNeedMicPermissionsDialog();
-    } else {
+    final chatProgress = ref.read(interviewProgressStateProvider);
+    if (chatProgress.isDone) {
+      SnackBarService.showSnackBar('면접이 종료되었습니다');
+      return;
+    }
+
+    /// 매번 권한 허용 여부를 async 가져오지 않기 위해
+    /// provider 권한 허용 여부 값을 관리하고
+    /// 우선적으로 허용 여부를 판단
+    final hasGuardPermissionGranted =
+        ref.read(isSpeechModeProvider.notifier).isPermissionGranted;
+
+    if (hasGuardPermissionGranted != null && hasGuardPermissionGranted.isTrue) {
       ref.read(isSpeechModeProvider.notifier).toggle();
+      return;
+    }
+
+    final hasPermission = await Permission.microphone.request();
+
+    if (hasPermission.isGranted) {
+      ref.read(isSpeechModeProvider.notifier).isPermissionGranted = true;
+      ref.read(isSpeechModeProvider.notifier).toggle();
+    } else {
+      showNeedMicPermissionsDialog();
     }
   }
-
-
 
   ///
   /// 녹음 취소 버튼 클릭시
   ///
-  void onRecordCancelBtnTapped(
+  Future<void> onRecordCancelBtnTapped(
     WidgetRef ref,
-  ) {
-    ref.read(speechToTextProvider.notifier).cancelRecordMode(ref);
+  ) async {
+    await ref.read(speechToTextProvider.notifier).cancelRecordMode(ref);
   }
 }

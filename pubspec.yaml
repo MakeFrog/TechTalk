@@ -16,7 +16,8 @@ dependencies:
 
   #Gemini
   google_generative_ai: ^0.4.3
-
+  flutter_sound: ^9.6.0
+  record: ^5.1.2
   # UI
   cupertino_will_pop_scope: ^1.2.1 #pop scope (스와이프 백 제스쳐 지원)
   flutter_svg: ^2.0.5 # SVG 아이콘
@@ -71,6 +72,8 @@ dependencies:
   json_annotation: ^4.8.1
 
   # Utils
+  dart_openai: ^5.1.0
+  chat_gpt_sdk: ^3.0.8
   crypto: ^3.0.3 # 해슁
   async: ^2.11.0 # 비동기 처리
   flutter_dotenv: ^5.0.2 # dotnev

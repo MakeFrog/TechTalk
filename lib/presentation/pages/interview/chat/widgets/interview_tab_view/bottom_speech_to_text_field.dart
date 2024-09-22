@@ -9,12 +9,10 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/interview/chat/constant/recrod_progress_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_to_text_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/rounded_mic_motion_view.dart';
 import 'package:techtalk/presentation/widgets/common/animated/animated_size_and_fade.dart';
-import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
-import 'package:techtalk/presentation/widgets/common/gesture/animated_scale_tap.dart';
+
 
 class BottomSpeechToTextField extends HookConsumerWidget
     with ChatState, ChatEvent {
@@ -36,82 +34,43 @@ class BottomSpeechToTextField extends HookConsumerWidget
           alignment: Alignment.center,
           // color: Colors.red,
           width: double.infinity,
-          child: Stack(
+          child: Container(
             alignment: Alignment.center,
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                alignment: Alignment.center,
-                height: 141,
-                constraints: const BoxConstraints(maxWidth: 280),
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 48,
-                ),
-                child: Stack(
-                  children: [
-                    // 메인 버튼
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: BounceTapper(
-                        highlightBorderRadius: BorderRadius.circular(106),
-                        onTap: () => onRecordMainBtnTapped(
-                          ref,
-                        ),
-                        child: const RoundedMicMotionView(),
-                      ),
+            height: 141,
+            constraints: const BoxConstraints(maxWidth: 280),
+            margin: const EdgeInsets.symmetric(
+              horizontal: 48,
+            ),
+            child: Stack(
+              children: [
+                // 메인 버튼
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: BounceTapper(
+                    highlightBorderRadius: BorderRadius.circular(106),
+                    onTap: () => onRecordMainBtnTapped(
+                      ref,
                     ),
+                    child: const RoundedMicMotionView(),
+                  ),
+                ),
 
-                    // 하단 버튼
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          _buildTypingModeBtn(ref),
-                          _buildCancelBtn(),
-                        ],
-                      ),
-                    ),
-                  ],
+                // 하단 버튼
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _buildTypingModeBtn(ref),
+                      _buildCancelBtn(),
+                    ],
+                  ),
                 ),
-              ),
-              _buildListeningIndicator(),
-            ],
+              ],
+            ),
           ),
         ),
       ],
-    );
-  }
-
-  // 음성 인식 중일 때 보여줄 텍스트
-  Widget _buildListeningIndicator() {
-    String message = '';
-    Color textColor = AppColor.of.black;
-
-    return Positioned(
-      left: 0,
-      right: 0,
-      top: -32,
-      child: HookConsumer(
-        builder: (context, ref, _) {
-          final progressState =
-              ref.watch(speechToTextProvider.select((c) => c.progressState));
-
-          return AnimatedSizeAndFade.showHide(
-            alignment: Alignment.bottomCenter,
-            show: progressState.isErrorOccured || progressState.isReady,
-            child: Text(
-              progressState.label ?? '',
-              textAlign: TextAlign.center,
-              style: AppTextStyle.body1.copyWith(
-                color: progressState.isErrorOccured
-                    ? AppColor.of.red1
-                    : AppColor.of.gray7,
-              ),
-            ),
-          );
-        },
-      ),
     );
   }
 
@@ -120,10 +79,11 @@ class BottomSpeechToTextField extends HookConsumerWidget
     return HookConsumer(
       builder: (context, ref, _) {
         final recognizedText =
-            ref.read(speechToTextProvider.select((c) => c.recordedText));
+            ref.read(speechToTextProvider.select((c) => c.recognizedText));
         final progressState =
             ref.read(speechToTextProvider.select((c) => c.progressState));
-        print('결과랑이 : ${recognizedText}');
+
+        final scrollController = useScrollController();
 
         return AnimatedSizeAndFade.showHide(
           show: progressState == RecordProgressState.recognized,
@@ -133,7 +93,7 @@ class BottomSpeechToTextField extends HookConsumerWidget
               horizontal: 12,
               vertical: 8,
             ),
-            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
+            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 14),
             decoration: BoxDecoration(
               color: AppColor.of.background1,
               borderRadius: BorderRadius.circular(14),
@@ -141,11 +101,13 @@ class BottomSpeechToTextField extends HookConsumerWidget
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxHeight: 80),
               child: Scrollbar(
+                controller: scrollController,
                 interactive: true,
                 thumbVisibility: true,
                 thickness: 4,
                 radius: const Radius.circular(24),
                 child: SingleChildScrollView(
+                  controller: scrollController,
                   padding: const EdgeInsets.only(right: 11),
                   child: Text(
                     recognizedText,
@@ -174,15 +136,14 @@ class BottomSpeechToTextField extends HookConsumerWidget
       case RecordProgressState.recognized:
         print('UI State : $progressState');
         return Assets.iconsSend;
-      case RecordProgressState.submitMessage:
-        print('UI State : $progressState');
+
         return Assets.iconsSend;
       case RecordProgressState.errorOccured:
         return '';
       // TODO: Handle this case.
       case RecordProgressState.ready:
         return Assets.iconsArrowLeft;
-      case RecordProgressState.loadingResult:
+      case RecordProgressState.loading:
         return Assets.iconsArrowLeft;
     }
   }
@@ -195,9 +156,9 @@ class BottomSpeechToTextField extends HookConsumerWidget
       builder: (context, ref, child) {
         return BounceTapper(
           highlightBorderRadius: BorderRadius.circular(24),
-          onTap: () => ref
-              .read(speechToTextProvider.notifier)
-              .onTypingModeBtnTapped(ref),
+          onTap: () {
+            ref.read(speechToTextProvider.notifier).onTypingModeBtnTapped(ref);
+          },
           child: CircleAvatar(
             radius: 24,
             backgroundColor: AppColor.of.blue1,
