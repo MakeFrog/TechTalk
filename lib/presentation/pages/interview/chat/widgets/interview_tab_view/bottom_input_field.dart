@@ -22,34 +22,38 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      color: AppColor.of.white,
-      constraints: const BoxConstraints(minHeight: 48, maxHeight: 240),
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(
-        vertical: 8,
-        horizontal: 16,
-      ),
-      child: HookBuilder(
-        builder: (context) {
-          final showHighlightEffect = useState(isFirstInterview());
-          return chatAsyncAdapterValue(ref).when(
-            data: (_) {
-              return _buildTextField(
+    return SafeArea(
+      top: false,
+      child: Container(
+        color: AppColor.of.white,
+        /// NOTE : 128 = 20(texHeight) * 4 + fieldHeight(48)
+        constraints: const BoxConstraints(minHeight: 48, maxHeight: 128),
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(
+          vertical: 8,
+          horizontal: 16,
+        ),
+        child: HookBuilder(
+          builder: (context) {
+            final showHighlightEffect = useState(isFirstInterview());
+            return chatAsyncAdapterValue(ref).when(
+              data: (_) {
+                return _buildTextField(
+                  showHighlightEffect: showHighlightEffect,
+                  progressState: interviewProgressState(ref),
+                );
+              },
+              error: (_, __) => _buildTextField(
                 showHighlightEffect: showHighlightEffect,
-                progressState: InterviewProgress.readyToAnswer,
-              );
-            },
-            error: (_, __) => _buildTextField(
-              showHighlightEffect: showHighlightEffect,
-              progressState: InterviewProgress.error,
-            ),
-            loading: () => _buildTextField(
-              showHighlightEffect: showHighlightEffect,
-              progressState: InterviewProgress.initial,
-            ),
-          );
-        },
+                progressState: InterviewProgress.error,
+              ),
+              loading: () => _buildTextField(
+                showHighlightEffect: showHighlightEffect,
+                progressState: InterviewProgress.initial,
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -105,6 +109,7 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                 Positioned(
                   child: SizedBox(
                     child: TextField(
+                      style: AppTextStyle.body2,
                       controller: unListenedInputController(ref),
                       maxLines: null,
                       focusNode: focusNode(ref),
@@ -120,8 +125,11 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                         contentPadding: const EdgeInsets.only(
                           right: 42,
                           left: 16,
-                          top: 18,
+                          top: 14,
+                          bottom: 14
                         ),
+
+                        hintStyle: AppTextStyle.body2.copyWith(color: AppColor.of.gray3),
                         hintText: progressState.fieldHintText.tr(),
                       ),
                     ),
@@ -134,10 +142,13 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                     builder: (context, ref, _) {
                       return IconButton(
                         icon: SvgPicture.asset(
-                          /// NOTE : SVG 패키지 문제가 있어 colorFilter를 사용하지 않고 아이콘 자체를 반환
                           message.isNotEmpty && progressState.enableChat
-                              ? Assets.iconsSendActivate
-                              : Assets.iconsSend,
+                              ? Assets.iconsRoundedSend
+                              : Assets.iconsRoundedSendInactive,
+                          height: 32,
+                          width: 32,
+                          // NOTE : SVG 패키지 문제가 있어 colorFilter를 사용하지 않고 아이콘 자체를 반환
+
                         ),
                         onPressed: progressState.enableChat
                             ? () {
@@ -172,7 +183,6 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
           },
           child: Container(
             color: Colors.transparent,
-
             /// 넉넉하게 터치 영역을 패딩으로 줌
             padding: const EdgeInsets.fromLTRB(0, 8, 6, 8),
             child: Container(
@@ -195,7 +205,7 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                         colorFilter: ColorFilter.mode(
                           showHighlightEffect.value
                               ? AppColor.of.white
-                              : AppColor.of.brand3,
+                              : AppColor.of.blue2,
                           BlendMode.srcIn,
                         ),
                       ),

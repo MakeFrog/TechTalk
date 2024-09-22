@@ -13,7 +13,6 @@ import 'package:techtalk/presentation/pages/interview/chat/providers/speech_to_t
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/rounded_mic_motion_view.dart';
 import 'package:techtalk/presentation/widgets/common/animated/animated_size_and_fade.dart';
 
-
 class BottomSpeechToTextField extends HookConsumerWidget
     with ChatState, ChatEvent {
   const BottomSpeechToTextField({Key? key}) : super(key: key);

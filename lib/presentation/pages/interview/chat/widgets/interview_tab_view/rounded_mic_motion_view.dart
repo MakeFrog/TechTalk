@@ -79,7 +79,6 @@ class RoundedMicMotionView extends HookConsumerWidget {
                           );
                         },
                       );
-                    // TODO: Handle this case.
                     case RecordProgressState.loading:
                       return LoadingAnimationWidget.horizontalRotatingDots(
                         color: AppColor.of.white,

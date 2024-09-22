@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
@@ -61,6 +60,7 @@ mixin class ChatEvent {
   /// 채팅 전송이 불가능할 상태일 때 전송 버튼이 클릭 되었을 때
   ///
   void onChatFieldSubmittedOnWaitingState(InterviewProgress progressState) {
+
     unawaited(HapticFeedback.vibrate());
     late String message;
 

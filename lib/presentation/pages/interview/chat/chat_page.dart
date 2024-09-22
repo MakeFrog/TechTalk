@@ -49,6 +49,9 @@ class ChatPage extends BasePage with ChatEvent {
   bool get canPop => false;
 
   @override
+  bool get wrapWithSafeArea => false;
+
+  @override
   void onWillPop(WidgetRef ref) {
     onAppbarBackBtnTapped(ref);
   }
