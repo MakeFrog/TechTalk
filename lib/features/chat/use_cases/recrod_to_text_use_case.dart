@@ -18,14 +18,10 @@ class RecordToTextUseCase extends BaseUseCase<String, Result<String>> {
         responseFormat: OpenAIAudioResponseFormat.json,
         language: AppLocale.currentLocale.languageCode,
       );
-
       final result = await transcription;
 
       return Result.success(result.text);
     } on Exception catch (e) {
-      if(e is RequestFailedException) {
-        e.message.startsWith('T');
-      }
       log('RecordToTextUseCase ERROR: $e');
       return Result.failure(Exception('음성 인식 과정에서 오류가 발생했어요'));
     }
