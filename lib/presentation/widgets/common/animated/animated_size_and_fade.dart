@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 ///
 /// [AnimatedSizeAndFade] 패키지 소스코드
 /// https://github.com/marcglasberg/animated_size_and_fade
@@ -48,27 +47,36 @@ class AnimatedSizeAndFade extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var animatedSize = AnimatedSize(
-      duration: sizeDuration,
-      curve: sizeCurve,
-      child: AnimatedSwitcher(
-        duration: fadeDuration,
-        switchInCurve: fadeInCurve,
-        switchOutCurve: fadeOutCurve,
-        layoutBuilder: _layoutBuilder,
-        child: show
-            ? child
-            : SizedBox(
-                key: AnimatedSizeAndFade._key,
-                width: double.infinity,
-                height: 0,
-              ),
-      ),
-    );
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        var animatedSizeView = AnimatedSwitcher(
+          duration: fadeDuration,
+          switchInCurve: fadeInCurve,
+          switchOutCurve: fadeOutCurve,
+          layoutBuilder: _layoutBuilder,
+          child: show
+              ? child
+              : SizedBox(
+            key: AnimatedSizeAndFade._key,
+            width: constraints.maxWidth,
+            height: 0,
+          ),
+        );
 
-    return ClipRect(
-      clipBehavior: Clip.none,
-      child: animatedSize,
+        // sizeDuration이 0이 아니면 AnimatedSize로 애니메이션 적용
+        var animatedAdjustView = sizeDuration != Duration.zero
+            ? AnimatedSize(
+          duration: sizeDuration,
+          curve: sizeCurve,
+          child: animatedSizeView,
+        )
+            : animatedSizeView;
+
+        return ClipRect(
+          clipBehavior: Clip.none,
+          child: animatedAdjustView,
+        );
+      },
     );
   }
 
@@ -96,5 +104,3 @@ class AnimatedSizeAndFade extends StatelessWidget {
     );
   }
 }
-
-

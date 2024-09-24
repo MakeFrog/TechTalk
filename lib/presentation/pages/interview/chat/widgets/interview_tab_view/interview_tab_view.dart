@@ -73,13 +73,6 @@ class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
             ),
           ),
         ),
-
-        //
-        // AnimatedSizeAndFade.showHide(
-        //   show: !isSpeechMode(ref),
-        //   sizeDuration: Duration(milliseconds: 0),
-        //   child: BottomInputField(),
-        // ),
         Column(
           children: <Widget>[
             AnimatedSizeAndFade.showHide(
@@ -93,47 +86,19 @@ class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
             ),
           ],
         ),
-
-        Consumer(builder: (context, ref, _) {
-          return chatAsyncAdapterValue(ref).when(
-            data: (_) {
-              listenedInputController(ref);
-              interviewProgressState(ref);
-              return const EmptyBox();
-            },
-            error: (_, __) => const EmptyBox(),
-            loading: () => const EmptyBox(),
-          );
-        }),
-
-        // Consumer(
-        //   builder: (context, ref, _) {
-        //     return chatAsyncAdapterValue(ref).when(
-        //       data: (_) {
-        //         listenedInputController(ref);
-        //         final state = interviewProgressState(ref);
-        //         return Column(
-        //           children: <Widget>[
-        //             AnimatedSizeAndFade.showHide(
-        //               show: isSpeechMode(ref),
-        //               child: const KeepAliveView(
-        //                   child: BottomSpeechToTextField()),
-        //             ),
-        //             AnimatedSizeAndFade.showHide(
-        //               show: !isSpeechMode(ref),
-        //               sizeDuration: Duration(milliseconds: 0),
-        //               child: KeepAliveView(child: BottomInputField(state)),
-        //             ),
-        //           ],
-        //         );
-        //       },
-        //       error: (_, __) =>
-        //       const BottomInputField(InterviewProgress.error),
-        //       loading: () =>
-        //       const BottomInputField(InterviewProgress.initial),
-        //     );
-        //   },
-        // ),
+        Consumer(
+          builder: (context, ref, _) {
+            return chatAsyncAdapterValue(ref).when(
+              data: (_) {
+                listenedInputController(ref);
+                interviewProgressState(ref);
+                return const EmptyBox();
+              },
+              error: (_, __) => const EmptyBox(),
+              loading: () => const EmptyBox(),
+            );
+          },
+        ),
       ],
     );
   }
