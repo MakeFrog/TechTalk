@@ -36,7 +36,7 @@ class Flavor {
 
     /// LocalStorage Hive 초기화
     await AppLocal.initHive();
-    AppLocal.clearAllLocalStorage();
+    // AppLocal.clearAllLocalStorage();
 
     /// FireBase 초기화
     await Firebase.initializeApp(

@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/app_color.dart';
+import 'package:techtalk/core/helper/debouncer.dart';
 import 'package:techtalk/presentation/pages/interview/chat/constant/recrod_progress_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_to_text_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/horizon_roating_dots.dart';
@@ -21,8 +22,8 @@ class RoundedMicMotionView extends HookConsumerWidget {
       children: [
         /// 메인 녹음 버튼 Background / 애니메이션을 조건에 따라 실행
         Positioned(
-          child: HookBuilder(
-            builder: (context) {
+          child: HookConsumer(
+            builder: (context, ref, _) {
               final bgAnimationController = useAnimationController(
                 duration: const Duration(milliseconds: 1000),
                 vsync: useSingleTickerProvider(),
@@ -35,15 +36,37 @@ class RoundedMicMotionView extends HookConsumerWidget {
                 ),
               );
 
+              void stopAnimation() {
+                Future.microtask(() async {
+                  // 원래 크기로 돌아오는것을 기다린 이후 애니메이션 멈춤
+                  await bgAnimationController.reverse();
+                  bgAnimationController.stop();
+                });
+              }
+
               if (state.isOnProgress && !bgAnimationController.isAnimating) {
-                bgAnimationController.repeat(reverse: true);
+                ref.listen(speechToTextProvider.select((p) => p.notifyText),
+                    (prev, now) {
+                  if (now.isNotEmpty) {
+                    // 텍스트가 입력되면 애니메이션 반복 실행
+
+                    if (!bgAnimationController.isAnimating) {
+                      bgAnimationController.repeat(reverse: true);
+                    }
+
+                    ref
+                        .read(speechToTextProvider.select((p) => p.debouncer))
+                        .run(() async {
+                      if (bgAnimationController.isAnimating) {
+                        // 0.6초 동안 입력이 없으면 애니메이션 중지
+                        stopAnimation();
+                      }
+                    });
+                  }
+                });
               } else {
                 if (bgAnimationController.isAnimating) {
-                  Future.microtask(() async {
-                    // 원래 크기로 돌아오는것을 기다린 이후 애니메이션 멈춤
-                    await bgAnimationController.reverse();
-                    bgAnimationController.stop();
-                  });
+                  stopAnimation();
                 }
               }
 
@@ -103,16 +126,34 @@ class RoundedMicMotionView extends HookConsumerWidget {
                               RecordProgressState.onProgress:
                           return HookConsumer(
                             builder: (context, ref, _) {
+                              final debouncer = Debouncer(const Duration(milliseconds: 500));
+
                               // AnimationController 설정
                               final animationController =
                                   useAnimationController(
                                 duration: const Duration(milliseconds: 1650),
                               );
 
-                              useEffect(() {
-                                animationController.repeat();
-                                return null;
-                              }, []);
+
+                              ref.listen(
+                                  speechToTextProvider.select(
+                                      (p) => p.notifyText), (prev, now) {
+                                if (now.isNotEmpty) {
+                                  // 텍스트가 입력되면 애니메이션 반복 실행
+
+                                  if (!animationController.isAnimating) {
+                                    animationController.repeat();
+                                  }
+
+                                  debouncer
+                                      .run(() async {
+                                    if (animationController.isAnimating) {
+                                      await animationController.forward();
+                                      animationController.stop();
+                                    }
+                                  });
+                                }
+                              });
 
                               return StaggeredDotsWave(
                                 size: 24,

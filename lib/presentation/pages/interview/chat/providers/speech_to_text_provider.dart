@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:developer';
+import 'dart:isolate';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
+import 'package:techtalk/core/helper/debouncer.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat/constant/recrod_progress_state.dart';
@@ -23,11 +26,21 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
   /// 음성 인식 상태 (준비, 듣는 중, 완료 , 등등)
   RecordProgressState progressState = RecordProgressState.initial;
 
+  /// 애니메이션 활성화 모션에 사용되는 디바운서 (원형 백그라운드)
+  final debouncer = Debouncer(const Duration(milliseconds: 600));
+
   /// 음성 녹음 컨트롤러
   final recordController = AudioRecorder();
+  final speechController = SpeechToText();
+
+  //// speech 컨트롤러 listen 가능 상태 여부
+  Completer<void> isSpeechListenAvailable = Completer<void>();
 
   /// 음성 인식된 텍스트
   String recognizedText = '';
+
+  /// SpeechToText로 인식된 텍스트
+  String notifyText = '';
 
   /// 음성 녹음 파일이 저장되는 경로
   late String recordPath;
@@ -69,6 +82,10 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
       SnackBarService.showSnackBar(tr(LocaleKeys.interview_waitForReply));
       return;
     }
+    await Future.microtask(
+        () => _updateProgressState(RecordProgressState.loading));
+
+    notifyText = '';
 
     _updateProgressState(RecordProgressState.ready, resetText: true);
     await recordController.start(const RecordConfig(), path: recordPath);
@@ -83,6 +100,16 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
 
     /// 녹음 중지
     await recordController.stop();
+
+    await isSpeechListenAvailable.future;
+
+    /// 입력된 텍스트가 없다면 알럿을 노출 후 초기화 상태로 변경
+    if (notifyText.isEmpty) {
+      SnackBarService.showSnackBar('입력된 음성이 없습니다');
+      await File(recordPath).delete();
+      _updateProgressState(RecordProgressState.initial);
+      return;
+    }
 
     /// 녹음된 텍스트 (Speech To Text)
     final recordedText = await recordToTextUseCase.call(recordPath);
@@ -100,6 +127,7 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
         _updateProgressState(RecordProgressState.recognized);
       }
     }, onFailure: (e) {
+      _updateProgressState(RecordProgressState.initial);
       SnackBarService.showSnackBar(tr(LocaleKeys.interview_recordFailed));
       log('Speech To Text 실패');
     });
@@ -139,7 +167,8 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
       if (progressState.isOnProgress || progressState.isReady) {
         _updateProgressState(RecordProgressState.loading);
         notifyListeners();
-        unawaited(recordController.stop());
+        unawaited(
+            Future.wait([recordController.stop(), speechController.cancel()]));
       }
 
       _updateProgressState(RecordProgressState.initial, resetText: true);
@@ -153,9 +182,34 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
   }
 
   ///
-  /// [SpeechController] 초기화
+  /// SpeechToText 컨트롤러 초기화
   ///
   Future<void> initializeSpeechController() async {
+    final isEnabled = await speechController.initialize();
+    if (isEnabled) {
+      await speechController.listen(onResult: (result) {
+        if (progressState.isOnProgress) {
+          notifyText = result.recognizedWords;
+          notifyListeners();
+        }
+      });
+
+      isSpeechListenAvailable.complete(null);
+    } else {
+      unawaited(speechController.cancel());
+    }
+  }
+
+  ///
+  /// 각종 컨트롤러 및 path 초기 설정
+  ///
+  Future<void> initConfigSettings() async {
+    final hasPermission = await recordController.hasPermission();
+    if (!hasPermission) {
+      showNeedMicPermissionsDialog();
+      return;
+    }
+
     Directory tempDir = await getTemporaryDirectory();
     final targetPath = '${tempDir.path}/myFile.m4a';
     recordPath = targetPath;
@@ -164,16 +218,17 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
       await File(recordPath).delete();
     }
 
-    final hasPermission = await recordController.hasPermission();
-    if (!hasPermission) {
-      showNeedMicPermissionsDialog();
-    }
+    await initializeSpeechController();
   }
 }
 
 final speechToTextProvider = AutoDisposeChangeNotifierProvider((ref) {
   final provider = SpeechToTextProvider();
-  provider.initializeSpeechController();
-  ref.onDispose(provider.recordController.dispose);
+  provider.initConfigSettings();
+
+  ref.onDispose(() {
+    provider.speechController.cancel();
+    provider.recordController.dispose();
+  });
   return provider;
 });

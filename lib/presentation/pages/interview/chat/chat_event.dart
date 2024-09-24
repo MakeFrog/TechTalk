@@ -60,7 +60,6 @@ mixin class ChatEvent {
   /// 채팅 전송이 불가능할 상태일 때 전송 버튼이 클릭 되었을 때
   ///
   void onChatFieldSubmittedOnWaitingState(InterviewProgress progressState) {
-
     unawaited(HapticFeedback.vibrate());
     late String message;
 
@@ -257,9 +256,15 @@ mixin class ChatEvent {
       return;
     }
 
-    final hasPermission = await Permission.microphone.request();
+    Map<Permission, PermissionStatus> permissionStatus = await [
+      Permission.microphone,
+      Permission.speech,
+    ].request();
 
-    if (hasPermission.isGranted) {
+    bool allPermissionsGranted =
+        permissionStatus.values.every((status) => status.isGranted);
+
+    if (allPermissionsGranted) {
       ref.read(isSpeechModeProvider.notifier).isPermissionGranted = true;
       ref.read(isSpeechModeProvider.notifier).toggle();
     } else {
