@@ -138,6 +138,7 @@
     "noSearchResults": "Sorry, there are no search results"
   },
   "interview": {
+    "answerVocally" : "Answer vocally!",
     "processingRecord" : "Processing the recording",
     "hello": "Hi, {}! Always rooting for you.",
     "multipleTopics": "Pick multiple skill topics and try Live Interview!",

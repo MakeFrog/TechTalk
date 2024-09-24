@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
@@ -26,6 +27,7 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
       top: false,
       child: Container(
         color: AppColor.of.white,
+
         /// NOTE : 128 = 20(texHeight) * 4 + fieldHeight(48)
         constraints: const BoxConstraints(minHeight: 48, maxHeight: 128),
         width: double.infinity,
@@ -58,9 +60,10 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
     );
   }
 
-  Widget _buildTextField(
-      {required ValueNotifier<bool> showHighlightEffect,
-      required InterviewProgress progressState}) {
+  Widget _buildTextField({
+    required ValueNotifier<bool> showHighlightEffect,
+    required InterviewProgress progressState,
+  }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -69,12 +72,18 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
           children: [
             _buildMicButton(showHighlightEffect),
             if (showHighlightEffect.value.isTrue)
-              const Positioned(
+              Positioned(
                 top: -39,
                 child: AnimatedAppearView(
-                  child: BubbleIndicator(
-                    talePosition: BubbleTalePosition.left,
-                    text: '음성으로 답변해 보세요!',
+                  child: Builder(
+                    builder: (context) {
+                      return BubbleIndicator(
+                        talePosition: BubbleTalePosition.left,
+                        text: context.tr(
+                          LocaleKeys.interview_answerVocally,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
@@ -123,13 +132,9 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                           borderRadius: BorderRadius.circular(16.0),
                         ),
                         contentPadding: const EdgeInsets.only(
-                          right: 42,
-                          left: 16,
-                          top: 14,
-                          bottom: 14
-                        ),
-
-                        hintStyle: AppTextStyle.body2.copyWith(color: AppColor.of.gray3),
+                            right: 42, left: 16, top: 14, bottom: 14),
+                        hintStyle: AppTextStyle.body2
+                            .copyWith(color: AppColor.of.gray3),
                         hintText: progressState.fieldHintText.tr(),
                       ),
                     ),
@@ -148,7 +153,6 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                           height: 32,
                           width: 32,
                           // NOTE : SVG 패키지 문제가 있어 colorFilter를 사용하지 않고 아이콘 자체를 반환
-
                         ),
                         onPressed: progressState.enableChat
                             ? () {
@@ -178,11 +182,12 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
         return BounceTapper(
           highlightColor: Colors.transparent,
           delayedDurationBeforeGrow: Duration.zero,
-          onTap: (){
+          onTap: () {
             onMicBtnTapped(ref);
           },
           child: Container(
             color: Colors.transparent,
+
             /// 넉넉하게 터치 영역을 패딩으로 줌
             padding: const EdgeInsets.fromLTRB(0, 8, 6, 8),
             child: Container(
