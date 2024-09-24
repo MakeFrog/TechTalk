@@ -15,9 +15,8 @@ class RecordToTextUseCase extends BaseUseCase<String, Result<String>> {
           OpenAI.instance.audio.createTranscription(
         file: File(path),
         model: "whisper-1",
-        responseFormat: OpenAIAudioResponseFormat.verbose_json,
+        responseFormat: OpenAIAudioResponseFormat.json,
         language: AppLocale.currentLocale.languageCode,
-        timestamp_granularities: [OpenAIAudioTimestampGranularity.word],
       );
 
       final result = await transcription;
