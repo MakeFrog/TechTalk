@@ -91,7 +91,6 @@ class Assets {
   static const String iconsTechTalkLogo = 'assets/icons/tech_talk_logo.svg';
   static const String iconsTypingModeAa = 'assets/icons/typing_mode_aa.svg';
   static const String iconsTypingModeTooltip = 'assets/icons/typing_mode_tooltip.svg';
-  static const String iconsUseMicTooltip = 'assets/icons/use_mic_tooltip.svg';
   static const String iconsUser = 'assets/icons/user.svg';
   static const String iconsWarning = 'assets/icons/warning.svg';
   static const String iconsWrongIndicator = 'assets/icons/wrong_indicator.svg';
