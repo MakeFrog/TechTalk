@@ -138,8 +138,8 @@
     "noSearchResults": "검색된 기술면접 주제가 없습니다."
   },
   "interview": {
-    "answerVocally" : "음성으로 답변해 보세요!",
-    "processingRecord" : "녹음을 처리하고 있어요",
+    "answerVocally": "음성으로 답변해 보세요!",
+    "processingRecord": "녹음을 처리하고 있어요",
     "hello": "안녕하세요, {}님! 테크톡이 항상 응원해요",
     "multipleTopics": "여러 주제를 선택해 실전 연습을 해보세요!",
     "focusOnOneTopic": "하나의 주제를 선택해 집중 공략해 보세요!",
@@ -159,7 +159,7 @@
     "interviewHasEnd": "종료된 면접입니다",
     "errorHasDetected": "오류가 발생하여 답변을 전송할 수 없습니다",
     "waitForReply": "면접관의 응답이 마무리된 이후 답변을 전송해주세요.",
-    "recordFailed" : "음성 인식에 실패했어요. 다시 시도해주세요"
+    "recordFailed": "음성 인식에 실패했어요. 다시 시도해주세요"
   },
   "qa": {
     "numberOfQa": "개의 문답",
@@ -215,9 +215,9 @@
       "confirmLogout": "정말 로그아웃 하시겠습니까?"
     }
   },
-  "permission" : {
-    "permissionNeeded" : "권한 필요",
-    "micRequired" : "설정에서 마이크 권한을 허용해주세요.",
+  "permission": {
+    "permissionNeeded": "권한 필요",
+    "micRequired": "설정에서 마이크 권한을 허용해주세요.",
     "setUp": "설정하기"
   },
   "errors": {

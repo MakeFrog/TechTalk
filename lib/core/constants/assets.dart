@@ -89,6 +89,7 @@ class Assets {
   static const String iconsStudy = 'assets/icons/study.svg';
   static const String iconsTalker = 'assets/icons/talker.svg';
   static const String iconsTechTalkLogo = 'assets/icons/tech_talk_logo.svg';
+  static const String iconsTextFieldMic = 'assets/icons/text_field_mic.svg';
   static const String iconsTypingModeAa = 'assets/icons/typing_mode_aa.svg';
   static const String iconsTypingModeTooltip = 'assets/icons/typing_mode_tooltip.svg';
   static const String iconsUser = 'assets/icons/user.svg';

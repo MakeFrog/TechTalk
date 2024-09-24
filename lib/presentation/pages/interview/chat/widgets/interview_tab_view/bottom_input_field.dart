@@ -7,6 +7,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
+import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
@@ -79,9 +80,7 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                     builder: (context) {
                       return BubbleIndicator(
                         talePosition: BubbleTalePosition.left,
-                        text: context.tr(
-                          LocaleKeys.interview_answerVocally,
-                        ),
+                        text: tr(LocaleKeys.interview_answerVocally),
                       );
                     },
                   ),
@@ -204,7 +203,7 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                   Positioned(
                     child: Center(
                       child: SvgPicture.asset(
-                        Assets.iconsIconMic,
+                        Assets.iconsTextFieldMic,
                         width: 16,
                         height: 16,
                         colorFilter: ColorFilter.mode(
