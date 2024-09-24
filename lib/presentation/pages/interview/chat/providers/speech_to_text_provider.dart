@@ -133,19 +133,24 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
   /// 녹음 모두 중단
   ///
   Future<void> cancelRecordMode(WidgetRef ref) async {
-    if (progressState.isOnProgress ||
-        progressState.isReady ||
-        progressState.isRecognized) {
+    if (progressState.isOnProgress || progressState.isReady || progressState.isRecognized) {
       if (progressState.isOnProgress || progressState.isReady) {
         _updateProgressState(RecordProgressState.loading);
         notifyListeners();
         unawaited(recordController.stop());
       }
+
+      if (progressState.isRecognized) {
+        ref.read(mainInputControllerProvider).text = '';
+      }
+
       _updateProgressState(RecordProgressState.initial, resetText: true);
-    } else if (progressState.isLoadingResult) {
-      SnackBarService.showSnackBar(tr(LocaleKeys.interview_waitPlease));
     } else {
-      ref.read(isSpeechModeProvider.notifier).toggle();
+      if (progressState.isLoadingResult) {
+        SnackBarService.showSnackBar(tr(LocaleKeys.interview_waitPlease));
+      } else {
+        ref.read(isSpeechModeProvider.notifier).toggle();
+      }
     }
   }
 
