@@ -46,12 +46,16 @@ class Flavor {
     /// 채팅 면접에서 사용되는 OepnAI SK
     OpenAI.instance.build(
       token: env.openApiKey,
-      baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 10), connectTimeout: const Duration(seconds: 10)),
+      baseOption: HttpSetup(
+          receiveTimeout: const Duration(seconds: 10),
+          connectTimeout: const Duration(seconds: 10)),
       enableLog: true,
     );
 
     /// whisper 모델을 제공하는 OpenAI SDK
-    forWhisper.OpenAI.apiKey =  env.openApiKey;
+    forWhisper.OpenAI.apiKey = env.openApiKey;
+    forWhisper.OpenAI.requestsTimeOut = const Duration(seconds: 12);
+
 
     /// 앱 DI 실행
     await AppBinder.init();
