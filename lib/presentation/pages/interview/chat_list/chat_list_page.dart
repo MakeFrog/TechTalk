@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/core/constants/assets.dart';
-import 'package:techtalk/core/services/size_service.dart';
+import 'package:techtalk/core/services/app_size.dart';
 import 'package:techtalk/features/chat/repositories/enums/interview_type.enum.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_event.dart';
@@ -30,7 +30,7 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
               subTitle: tr(LocaleKeys.interview_startYourInterviewByClicking),
               title: tr(LocaleKeys.interview_noInterviewRecords),
               padding: EdgeInsets.only(
-                bottom: AppSize.to.ratioHeight(60),
+                bottom: AppSize.ratioHeight(60),
               ),
             ),
           );

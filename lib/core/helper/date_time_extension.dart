@@ -27,4 +27,13 @@ extension KoreaDateTimeExt on DateTime {
 
     return differenceInMonths >= 1;
   }
+
+  ///
+  /// 주어진 시간이 24간 이내인지 여부
+  ///
+  bool get isWithin24Hours {
+    final DateTime now = DateTime.now();
+    final Duration difference = now.difference(this);
+    return difference.inHours < 24;
+  }
 }

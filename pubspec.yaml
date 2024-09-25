@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none"
 
-version: 1.0.5+13
+version: 1.0.5+18
 
 environment:
   sdk: ">=3.0.6 <4.0.0"
@@ -16,7 +16,7 @@ dependencies:
 
   #Gemini
   google_generative_ai: ^0.4.3
-
+  record: ^5.1.2
   # UI
   cupertino_will_pop_scope: ^1.2.1 #pop scope (스와이프 백 제스쳐 지원)
   flutter_svg: ^2.0.5 # SVG 아이콘
@@ -27,9 +27,10 @@ dependencies:
   smooth_page_indicator: ^1.1.0 # pageview 인디케이터
   flutter_animate: ^4.2.0+1 # 간편 애니메이션 메소드 지원
   cached_network_image: ^3.3.0 # 네트워크 이미지 캐싱
+  bounce_tapper: ^1.0.4
+  local_hero: ^0.3.0
   defer_pointer: ^0.0.2 # Overflow 영역에도 터치를 보장할 수 있도록 도와주는 패키지
   gap: ^3.0.1 # 간격 위젯
-
   # 상태관리
   provider: ^6.0.5
   hooks_riverpod: ^2.4.0
@@ -68,10 +69,14 @@ dependencies:
   json_annotation: ^4.8.1
 
   # Utils
+  dart_openai: ^5.1.0 #Whisper 사용 목적
+  speech_to_text: ^7.0.0 # 음성 인식
+  chat_gpt_sdk: ^3.0.8
   crypto: ^3.0.3 # 해슁
   async: ^2.11.0 # 비동기 처리
   flutter_dotenv: ^5.0.2 # dotnev
   intl: ^0.19.0 # 포맷팅
+  permission_handler: ^11.3.1 #각종 플랫폼 권한 허용 및 감지
   uuid: ^4.1.0 # uuid 제너레이터
   image_picker: ^1.0.5 # 갤러리 접근
   single_import_generator: ^1.0.0 # barrel file generator
@@ -85,7 +90,7 @@ dependencies:
   easy_localization: ^3.0.0 # 다국어 지원
   collection: ^1.18.0 # 콜렉션 타입 익스텐션 지원 메소드
   # 앱 정보
-  package_info_plus: ^5.0.1 # 현재 앱 버전 정보
+  package_info_plus: ^8.0.2 # 현재 앱 버전 정보
   pub_semver: ^2.1.4 # 주부수 버전 비교 연산
 
 dev_dependencies:

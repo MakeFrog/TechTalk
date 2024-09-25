@@ -5,7 +5,7 @@ import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/helper/date_time_extension.dart';
-import 'package:techtalk/core/services/size_service.dart';
+import 'package:techtalk/core/services/app_size.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/enums/follow_up_status.enum.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_event.dart';
@@ -55,7 +55,7 @@ class ChatRoomItemView extends StatelessWidget with ChatListEvent {
                 width: 16,
               ),
               SizedBox(
-                width: AppSize.to.ratioWidth(174),
+                width: AppSize.ratioWidth(174),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -162,7 +162,7 @@ class ChatRoomItemView extends StatelessWidget with ChatListEvent {
               ),
               const Gap(16),
               SizedBox(
-                width: AppSize.to.ratioWidth(174),
+                width: AppSize.ratioWidth(174),
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

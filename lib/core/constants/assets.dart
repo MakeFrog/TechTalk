@@ -42,6 +42,7 @@ class Assets {
   static const String iconsAvatar1 = 'assets/icons/avatar_1.svg';
   static const String iconsBullet = 'assets/icons/bullet.svg';
   static const String iconsCamera = 'assets/icons/camera.svg';
+  static const String iconsChatBubbleTale = 'assets/icons/chat_bubble_tale.svg';
   static const String iconsCheck = 'assets/icons/check.svg';
   static const String iconsCheckThick = 'assets/icons/check_thick.svg';
   static const String iconsClose = 'assets/icons/close.svg';
@@ -49,10 +50,12 @@ class Assets {
   static const String iconsCorrect = 'assets/icons/correct.svg';
   static const String iconsCorrectIndicator = 'assets/icons/correct_indicator.svg';
   static const String iconsDataStructure = 'assets/icons/data_structure.svg';
+  static const String iconsDeleteOrWrong = 'assets/icons/delete_or_wrong.svg';
   static const String iconsErrorIndicator = 'assets/icons/error_indicator.svg';
   static const String iconsExpansionArrowIndicator = 'assets/icons/expansion_arrow_indicator.svg';
   static const String iconsGoogleLogo = 'assets/icons/google_logo.svg';
   static const String iconsHome = 'assets/icons/home.svg';
+  static const String iconsIconMic = 'assets/icons/icon_mic.svg';
   static const String iconsIncorrect = 'assets/icons/incorrect.svg';
   static const String iconsMenu = 'assets/icons/menu.svg';
   static const String iconsMenuThick = 'assets/icons/menu_thick.svg';
@@ -75,15 +78,21 @@ class Assets {
   static const String iconsRoundedMore = 'assets/icons/rounded_more.svg';
   static const String iconsRoundedOs = 'assets/icons/rounded_os.svg';
   static const String iconsRoundedPlusBig = 'assets/icons/rounded_plus_big.svg';
+  static const String iconsRoundedSend = 'assets/icons/rounded_send.svg';
+  static const String iconsRoundedSendInactive = 'assets/icons/rounded_send_inactive.svg';
   static const String iconsRoundedTop = 'assets/icons/rounded_top.svg';
   static const String iconsRoundedWarnningSmallRed = 'assets/icons/rounded_warnning_small_red.svg';
   static const String iconsSearch = 'assets/icons/search.svg';
   static const String iconsSearchThick = 'assets/icons/search_thick.svg';
   static const String iconsSend = 'assets/icons/send.svg';
   static const String iconsSendActivate = 'assets/icons/send_activate.svg';
+  static const String iconsSendUp = 'assets/icons/send_up.svg';
   static const String iconsStudy = 'assets/icons/study.svg';
   static const String iconsTalker = 'assets/icons/talker.svg';
   static const String iconsTechTalkLogo = 'assets/icons/tech_talk_logo.svg';
+  static const String iconsTextFieldMic = 'assets/icons/text_field_mic.svg';
+  static const String iconsTypingModeAa = 'assets/icons/typing_mode_aa.svg';
+  static const String iconsTypingModeTooltip = 'assets/icons/typing_mode_tooltip.svg';
   static const String iconsUser = 'assets/icons/user.svg';
   static const String iconsWarning = 'assets/icons/warning.svg';
   static const String iconsWrongIndicator = 'assets/icons/wrong_indicator.svg';
@@ -114,4 +123,7 @@ class Assets {
   static const String pretendardPretendardRegular = 'assets/fonts/pretendard/Pretendard-Regular.otf';
   static const String pretendardPretendardSemiBold = 'assets/fonts/pretendard/Pretendard-SemiBold.otf';
   static const String techTalk = '.env';
+  static const String translationsEn = 'assets/translations/en.json';
+  static const String translationsKo = 'assets/translations/ko.json';
+
 }

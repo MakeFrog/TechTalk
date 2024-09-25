@@ -20,6 +20,10 @@ final class SystemLocalDataSourceImpl implements SystemLocalDataSource {
 
   @override
   Future<void> storeLocaleCode(String code) async {
-    await box.put(AppLocal.systemBoxName, SystemBox(languageCode: code));
+    await box.put(
+        AppLocal.systemBoxName,
+        SystemBox(
+          languageCode: code,
+        ));
   }
 }

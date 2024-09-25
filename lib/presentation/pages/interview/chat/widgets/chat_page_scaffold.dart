@@ -43,7 +43,7 @@ class _Scaffold extends StatelessWidget {
                         borderSide:
                             BorderSide(width: 2, color: AppColor.of.black),
                         insets: EdgeInsets.symmetric(
-                          horizontal: AppSize.to.screenWidth / 4.2,
+                          horizontal: AppSize.screenWidth / 4.2,
                         ),
                       ),
                       onTap: (_) {

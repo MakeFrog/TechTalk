@@ -24,7 +24,7 @@ class _SaveButton extends HookConsumerWidget
       disableScaleAnimation: !isBtnActivate.value,
       borderRadius: BorderRadius.circular(16),
       child: Padding(
-        padding: EdgeInsets.only(bottom: AppSize.to.bottomInset == 0 ? 16 : 0),
+        padding: EdgeInsets.only(bottom: AppSize.bottomInset == 0 ? 16 : 0),
         child: FilledButton(
           onPressed: isBtnActivate.value
               ? () {
