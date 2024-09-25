@@ -38,7 +38,8 @@ class QnAExpansionTile extends HookConsumerWidget with ChatState {
               /// CORRECT WRONG INDICATOR
 
               ResponseIndicator(
-                followupStatus: FollowupStatus.no, // TODO : 꼬리질문 기능 도입시 해당 부분 수정 필요
+                followupStatus:
+                    FollowupStatus.no, // TODO : 꼬리질문 기능 도입시 해당 부분 수정 필요
                 chatResult: item.message!.answerState.isCorrect
                     ? ChatResult.pass
                     : ChatResult.failed,
@@ -71,39 +72,88 @@ class QnAExpansionTile extends HookConsumerWidget with ChatState {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              context.tr(LocaleKeys.qa_myAnswer),
-              style: AppTextStyle.alert1.copyWith(color: AppColor.of.black),
+            /// 내 답변
+            _buildAnswerContainer(
+              backgroundColor: AppColor.of.brand5,
+              title: tr(LocaleKeys.qa_myAnswer),
+              children: [
+                Text(
+                  item.message!.message.value,
+                  style: AppTextStyle.body3,
+                ),
+              ],
             ),
-            const Gap(6),
 
-            /// USER ANSWER RESPONSE
-            BulletText(
-              item.message!.message.value,
-              style: AppTextStyle.alert2,
-            ),
-            const Gap(18),
-            Text(
-              context.tr(LocaleKeys.qa_modelAnswer),
-              style: AppTextStyle.alert1.copyWith(color: AppColor.of.black),
-            ),
-            const Gap(6),
-
-            /// LIST OF IDEAL ANSWER
-            ...List.generate(
-              item.qna.answers.length,
-              (index) => Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: BulletText(
-                  item.qna.answers[index],
-                  style: AppTextStyle.alert2,
+            /// 모범 답변
+            _buildAnswerContainer(
+              backgroundColor: AppColor.of.brand5,
+              title: tr(LocaleKeys.qa_modelAnswer),
+              children: List.generate(
+                item.qna.answers.length,
+                (index) => Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Text(
+                        item.qna.answers[index],
+                        style: AppTextStyle.body3,
+                      ),
+                    ),
+                    if (index != item.qna.answers.length - 1)
+                      Divider(
+                        thickness: 0.7,
+                        color: AppColor.of.gray1,
+                        height: 24,
+                      ),
+                  ],
                 ),
               ),
             ),
 
-            /// USER ANSWER RESPONSE
+            // TODO : 꼬리질문 기능 구현시 적용할 예정
+            // _buildAnswerContainer(
+            //   backgroundColor: AppColor.of.purple1,
+            //   title: '꼬리 질문',
+            //   children: [
+            //     Text(
+            //       '꼬리질문 답변입니다'
+            //       style: AppTextStyle.body3,
+            //     ),
+            //   ],
+            // ),
           ],
         ),
+      ),
+    );
+  }
+
+  // 공통된 레이아웃 위젯
+  Widget _buildAnswerContainer({
+    required Color backgroundColor,
+    required String title,
+    required List<Widget> children,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // 제목 텍스트
+          Text(
+            title,
+            style: AppTextStyle.body1,
+          ),
+          const Gap(6),
+          // 내용
+          ...children,
+        ],
       ),
     );
   }
