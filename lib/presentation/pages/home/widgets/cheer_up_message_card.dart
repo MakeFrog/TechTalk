@@ -101,7 +101,7 @@ class CheerUpMessageCard extends HookWidget with HomeState {
             },
           ),
           Container(
-            width: AppSize.to.screenWidth - 108,
+            width: AppSize.screenWidth - 108,
             padding: const EdgeInsets.all(24),
             child: Consumer(
               builder: (context, ref, child) {

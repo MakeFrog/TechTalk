@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
-import 'package:techtalk/core/services/size_service.dart';
+import 'package:techtalk/core/services/app_size.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
@@ -27,7 +27,7 @@ class InterviewTopicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double _topicImgSize = AppSize.to.ratioHeight(72);
+    final double _topicImgSize = AppSize.ratioHeight(72);
 
     return Material(
       color: isSelected

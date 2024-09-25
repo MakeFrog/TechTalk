@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
-import 'package:techtalk/core/services/size_service.dart';
+import 'package:techtalk/core/services/app_size.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/widgets/common/gesture/animated_scale_tap.dart';
 
@@ -17,7 +17,7 @@ class StudyTopicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double _topicImgSize = AppSize.to.ratioWidth(72);
+    final double _topicImgSize = AppSize.ratioWidth(72);
 
     return ShrinkGestureView(
       onTap: onTap,

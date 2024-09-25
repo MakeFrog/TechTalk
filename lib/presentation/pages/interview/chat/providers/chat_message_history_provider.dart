@@ -11,6 +11,7 @@ import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/topic/repositories/entities/qna_entity.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
@@ -253,5 +254,15 @@ class ChatMessageHistory extends _$ChatMessageHistory {
     }
 
     return false;
+  }
+
+  QnaEntity getCurrentQna() {
+    final targetQuestion = state.requireValue
+        .firstWhere((chat) => chat is QuestionChatEntity) as QuestionChatEntity;
+
+    return ref
+        .read(chatQnasProvider.notifier)
+        .getQnaById(targetQuestion.qnaId)
+        .qna;
   }
 }

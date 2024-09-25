@@ -6,19 +6,23 @@ enum InterviewProgress {
   error;
 
   String get fieldHintText => switch (this) {
-        InterviewProgress.initial => 'interview.waitPlease', 
-        InterviewProgress.readyToAnswer => 'interview.provideAnswer', 
-        InterviewProgress.interviewerReplying => 'interview.waitPlease', 
+        InterviewProgress.initial => 'interview.waitPlease',
+        InterviewProgress.readyToAnswer => 'interview.provideAnswer',
+        InterviewProgress.interviewerReplying => 'interview.waitPlease',
         InterviewProgress.done => 'interview.interviewEnded',
         InterviewProgress.error => 'errors.unexpectedErrorOccurred'
       };
 
   bool get enableChat => switch (this) {
-        InterviewProgress.initial => false,
         InterviewProgress.readyToAnswer => true,
-        InterviewProgress.interviewerReplying => false,
-        InterviewProgress.done => false,
-        InterviewProgress.error => false,
+        _ => false,
+      };
+
+  bool get canEnableTextField => switch (this) {
+        InterviewProgress.readyToAnswer ||
+        InterviewProgress.interviewerReplying =>
+          true,
+        _ => false,
       };
 
   bool get isDoneOrError {

@@ -60,7 +60,7 @@ class QuestionCountSelectPage extends BasePage
   @override
   Widget? buildFloatingActionButton(WidgetRef ref) {
     return Container(
-      margin: EdgeInsets.only(bottom: AppSize.to.bottomInset == 0 ? 16 : 0),
+      margin: EdgeInsets.only(bottom: AppSize.bottomInset == 0 ? 16 : 0),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       height: 56,
       child: FilledButton(
@@ -103,7 +103,7 @@ class _Scaffold extends StatelessWidget {
           Expanded(
             child: Center(
               child: SizedBox(
-                height: AppSize.to.screenHeight * 0.6,
+                height: AppSize.screenHeight * 0.6,
                 child: questionCountPicker,
               ),
             ),
