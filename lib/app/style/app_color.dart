@@ -8,6 +8,7 @@ class AppColor extends ThemeExtension<AppColor> {
     brand2: const Color(0xFF5C6DFF),
     brand3: const Color(0xFF3446EA),
     brand4: const Color(0xFF060E56),
+    brand5: const Color(0xFFF7F8FC),
     gray1: const Color(0xFFECECF2),
     gray2: const Color(0xFFDCDCE9),
     gray3: const Color(0xFFA2A2B2),
@@ -35,6 +36,7 @@ class AppColor extends ThemeExtension<AppColor> {
     brand2: const Color(0xFF5C6DFF),
     brand3: const Color(0xFF3446EA),
     brand4: const Color(0xFF060E56),
+    brand5: const Color(0xFFF7F8FC),
     gray1: const Color(0xFFECECF2),
     gray2: const Color(0xFFDCDCE9),
     gray3: const Color(0xFFA2A2B2),
@@ -63,6 +65,7 @@ class AppColor extends ThemeExtension<AppColor> {
     required this.brand2,
     required this.brand3,
     required this.brand4,
+    required this.brand5,
     required this.gray1,
     required this.gray2,
     required this.gray3,
@@ -91,6 +94,7 @@ class AppColor extends ThemeExtension<AppColor> {
   final Color brand2;
   final Color brand3;
   final Color brand4;
+  final Color brand5;
   final Color gray1;
   final Color gray2;
   final Color gray3;
@@ -124,6 +128,7 @@ class AppColor extends ThemeExtension<AppColor> {
     Color? brand2,
     Color? brand3,
     Color? brand4,
+    Color? brand5,
     Color? gray1,
     Color? gray2,
     Color? gray3,
@@ -150,6 +155,7 @@ class AppColor extends ThemeExtension<AppColor> {
       brand2: brand2 ?? this.brand2,
       brand3: brand3 ?? this.brand3,
       brand4: brand4 ?? this.brand4,
+      brand5: brand5 ?? this.brand5,
       gray1: gray1 ?? this.gray1,
       gray2: gray2 ?? this.gray2,
       gray3: gray3 ?? this.gray3,
@@ -186,6 +192,7 @@ class AppColor extends ThemeExtension<AppColor> {
       brand2: Color.lerp(brand2, other.brand2, t)!,
       brand3: Color.lerp(brand3, other.brand3, t)!,
       brand4: Color.lerp(brand4, other.brand4, t)!,
+      brand5: Color.lerp(brand5, other.brand5, t)!,
       gray1: Color.lerp(gray1, other.gray1, t)!,
       gray2: Color.lerp(gray2, other.gray2, t)!,
       gray3: Color.lerp(gray3, other.gray3, t)!,
