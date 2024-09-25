@@ -22,69 +22,68 @@ class RoundedMicMotionView extends HookConsumerWidget {
       children: [
         /// 메인 녹음 버튼 Background / 애니메이션을 조건에 따라 실행
         Positioned(
-          child: HookConsumer(
-            builder: (context, ref, _) {
-              final bgAnimationController = useAnimationController(
-                duration: const Duration(milliseconds: 1000),
-                vsync: useSingleTickerProvider(),
-              );
+          child: Builder(
+            /// NOTE : BACK LOG
+            /// 추후에 음성 데시벨을 크기를 기반으로
+            /// 아래 위젯에 애니메이션을 추가할 계획이 있음
+            /// 그때 기존 애니메이션 동작 코드를 재활용하기에 주석 처리 함.
+            builder: (context) {
+              // final bgAnimationController = useAnimationController(
+              //   duration: const Duration(milliseconds: 1000),
+              //   vsync: useSingleTickerProvider(),
+              // );
+              //
+              // final scale = Tween<double>(begin: 1, end: 1.1464).animate(
+              //   CurvedAnimation(
+              //     parent: bgAnimationController,
+              //     curve: Curves.easeInOut,
+              //   ),
+              // );
+              //
+              // void stopAnimation() {
+              //   Future.microtask(() async {
+              //     // 원래 크기로 돌아오는것을 기다린 이후 애니메이션 멈춤
+              //     await bgAnimationController.reverse();
+              //     bgAnimationController.stop();
+              //   });
+              // }
+              //
+              // if (state.isOnProgress && !bgAnimationController.isAnimating) {
+              //   ref.listen(speechToTextProvider.select((p) => p.notifyText),
+              //       (prev, now) {
+              //     if (now.isNotEmpty) {
+              //       // 텍스트가 입력되면 애니메이션 반복 실행
+              //
+              //       if (!bgAnimationController.isAnimating) {
+              //         bgAnimationController.repeat(reverse: true);
+              //       }
+              //
+              //       ref
+              //           .read(speechToTextProvider.select((p) => p.debouncer))
+              //           .run(() async {
+              //         if (bgAnimationController.isAnimating) {
+              //           // 0.6초 동안 입력이 없으면 애니메이션 중지
+              //           stopAnimation();
+              //         }
+              //       });
+              //     }
+              //   });
+              // } else {
+              //   if (bgAnimationController.isAnimating) {
+              //     stopAnimation();
+              //   }
+              // }
 
-              final scale = Tween<double>(begin: 1, end: 1.1464).animate(
-                CurvedAnimation(
-                  parent: bgAnimationController,
-                  curve: Curves.easeInOut,
+              return Transform.scale(
+                scale: 1,
+                child: Container(
+                  height: 120,
+                  width: 120,
+                  decoration: BoxDecoration(
+                    color: AppColor.of.blue1,
+                    shape: BoxShape.circle,
+                  ),
                 ),
-              );
-
-              void stopAnimation() {
-                Future.microtask(() async {
-                  // 원래 크기로 돌아오는것을 기다린 이후 애니메이션 멈춤
-                  await bgAnimationController.reverse();
-                  bgAnimationController.stop();
-                });
-              }
-
-              if (state.isOnProgress && !bgAnimationController.isAnimating) {
-                ref.listen(speechToTextProvider.select((p) => p.notifyText),
-                    (prev, now) {
-                  if (now.isNotEmpty) {
-                    // 텍스트가 입력되면 애니메이션 반복 실행
-
-                    if (!bgAnimationController.isAnimating) {
-                      bgAnimationController.repeat(reverse: true);
-                    }
-
-                    ref
-                        .read(speechToTextProvider.select((p) => p.debouncer))
-                        .run(() async {
-                      if (bgAnimationController.isAnimating) {
-                        // 0.6초 동안 입력이 없으면 애니메이션 중지
-                        stopAnimation();
-                      }
-                    });
-                  }
-                });
-              } else {
-                if (bgAnimationController.isAnimating) {
-                  stopAnimation();
-                }
-              }
-
-              return AnimatedBuilder(
-                animation: bgAnimationController,
-                builder: (BuildContext context, Widget? child) {
-                  return Transform.scale(
-                    scale: scale.value,
-                    child: Container(
-                      height: 120, // 원하는 최종 높이 설정
-                      width: 120, // 원하는 최종 너비 설정
-                      decoration: BoxDecoration(
-                        color: AppColor.of.blue1, // 원하는 색상으로 변경
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  );
-                },
               );
             },
           ),
@@ -126,14 +125,14 @@ class RoundedMicMotionView extends HookConsumerWidget {
                               RecordProgressState.onProgress:
                           return HookConsumer(
                             builder: (context, ref, _) {
-                              final debouncer = Debouncer(const Duration(milliseconds: 500));
+                              final debouncer =
+                                  Debouncer(const Duration(milliseconds: 500));
 
                               // AnimationController 설정
                               final animationController =
                                   useAnimationController(
                                 duration: const Duration(milliseconds: 1650),
                               );
-
 
                               ref.listen(
                                   speechToTextProvider.select(
@@ -145,8 +144,7 @@ class RoundedMicMotionView extends HookConsumerWidget {
                                     animationController.repeat();
                                   }
 
-                                  debouncer
-                                      .run(() async {
+                                  debouncer.run(() async {
                                     if (animationController.isAnimating) {
                                       await animationController.forward();
                                       animationController.stop();

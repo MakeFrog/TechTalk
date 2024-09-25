@@ -26,9 +26,6 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
   /// 음성 인식 상태 (준비, 듣는 중, 완료 , 등등)
   RecordProgressState progressState = RecordProgressState.initial;
 
-  /// 애니메이션 활성화 모션에 사용되는 디바운서 (원형 백그라운드)
-  final debouncer = Debouncer(const Duration(milliseconds: 600));
-
   /// 음성 녹음 컨트롤러
   final recordController = AudioRecorder();
   final speechController = SpeechToText();
