@@ -1,9 +1,9 @@
+import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
-import 'package:techtalk/presentation/widgets/common/gesture/animated_scale_tap.dart';
 
 class AppleSignInButton extends StatelessWidget {
   const AppleSignInButton({
@@ -15,9 +15,7 @@ class AppleSignInButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ShrinkGestureView(
-      borderRadius: BorderRadius.circular(16),
-
+    return BounceTapper(
       child: FilledButton(
         style: FilledButton.styleFrom(
           backgroundColor: const Color(0xFF09090B),

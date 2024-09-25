@@ -1,3 +1,4 @@
+import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -6,7 +7,6 @@ import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/presentation/pages/sign_up/events/sign_up_event.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_state.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_intro_message.dart';
-import 'package:techtalk/presentation/widgets/common/gesture/animated_scale_tap.dart';
 import 'package:techtalk/presentation/widgets/section/job_group_selection_scaffold.dart';
 import 'package:techtalk/presentation/widgets/section/job_group_sliver_list_view.dart';
 import 'package:techtalk/presentation/widgets/section/selected_job_group_list_view_delegate.dart';
@@ -36,9 +36,8 @@ class JobGroupSelectStep extends HookConsumerWidget
           onJobGroupItemTapped(ref, item: item);
         },
       ),
-      bottomFixedBtn: ShrinkGestureView(
-        borderRadius: BorderRadius.circular(16),
-        disableScaleAnimation: !isJobGroupSelectionFilled(ref),
+      bottomFixedBtn: BounceTapper(
+        enable: isJobGroupSelectionFilled(ref),
         child: FilledButton(
           onPressed: isJobGroupSelectionFilled(ref)
               ? () => onJobGroupStepBtnTapped(ref)
