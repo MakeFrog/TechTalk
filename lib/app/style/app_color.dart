@@ -2,28 +2,31 @@ import 'package:flutter/material.dart';
 
 class AppColor extends ThemeExtension<AppColor> {
   static final AppColor _light = AppColor._(
-      white: const Color(0xFFFFFFFF),
-      black: const Color(0xFF09090B),
-      brand1: const Color(0xFFEBEDFF),
-      brand2: const Color(0xFF5C6DFF),
-      brand3: const Color(0xFF3446EA),
-      brand4: const Color(0xFF060E56),
-      gray1: const Color(0xFFECECF2),
-      gray2: const Color(0xFFDCDCE9),
-      gray3: const Color(0xFFA2A2B2),
-      gray4: const Color(0xFF71717E),
-      gray5: const Color(0xFF42424A),
-      gray6: const Color(0xFF282831),
-      gray7: const Color(0xFF09090B),
-      background1: const Color(0xFFF6F6F9),
-      red1: const Color(0xFFFFE4E8),
-      red2: const Color(0xFFFF445A),
-      red3: const Color(0xFFF62B44),
-      blue1: const Color(0xFFEDEFFF),
-      blue2: const Color(0xFF5C6DFF),
-      green1: const Color(0xFF79F09A),
-      green2: const Color(0xFF30DE80),
-      green3: const Color(0xFF02C875));
+    white: const Color(0xFFFFFFFF),
+    black: const Color(0xFF09090B),
+    brand1: const Color(0xFFEBEDFF),
+    brand2: const Color(0xFF5C6DFF),
+    brand3: const Color(0xFF3446EA),
+    brand4: const Color(0xFF060E56),
+    gray1: const Color(0xFFECECF2),
+    gray2: const Color(0xFFDCDCE9),
+    gray3: const Color(0xFFA2A2B2),
+    gray4: const Color(0xFF71717E),
+    gray5: const Color(0xFF42424A),
+    gray6: const Color(0xFF282831),
+    gray7: const Color(0xFF09090B),
+    background1: const Color(0xFFF6F6F9),
+    red1: const Color(0xFFFFE4E8),
+    red2: const Color(0xFFFF445A),
+    red3: const Color(0xFFF62B44),
+    blue1: const Color(0xFFEDEFFF),
+    blue2: const Color(0xFF5C6DFF),
+    green1: const Color(0xFF79F09A),
+    green2: const Color(0xFF30DE80),
+    green3: const Color(0xFF02C875),
+    purple1: const Color(0xFFF4EDFF),
+    purple2: const Color(0xFF8D3EFF),
+  );
 
   static final AppColor _dark = AppColor._(
     white: const Color(0xFFFFFFFF),
@@ -48,6 +51,8 @@ class AppColor extends ThemeExtension<AppColor> {
     green1: const Color(0xFF79F09A),
     green2: const Color(0xFF30DE80),
     green3: const Color(0xFF02C875),
+    purple1: const Color(0xFFF4EDFF),
+    purple2: const Color(0xFF8D3EFF),
   );
   factory AppColor() => _light;
 
@@ -74,6 +79,8 @@ class AppColor extends ThemeExtension<AppColor> {
     required this.green1,
     required this.green2,
     required this.green3,
+    required this.purple1,
+    required this.purple2,
   });
 
   factory AppColor.dark() => _dark;
@@ -100,6 +107,8 @@ class AppColor extends ThemeExtension<AppColor> {
   final Color green1;
   final Color green2;
   final Color green3;
+  final Color purple1;
+  final Color purple2;
 
   static late BuildContext _context;
   static void init(BuildContext context) => _context = context;
@@ -131,6 +140,8 @@ class AppColor extends ThemeExtension<AppColor> {
     Color? green1,
     Color? green2,
     Color? green3,
+    Color? purple1,
+    Color? purple2,
   }) {
     return AppColor._(
       white: white ?? this.white,
@@ -155,6 +166,8 @@ class AppColor extends ThemeExtension<AppColor> {
       green1: green1 ?? this.green1,
       green2: green2 ?? this.green2,
       green3: green3 ?? this.green3,
+      purple1: purple1 ?? this.purple1,
+      purple2: purple2 ?? this.purple2,
     );
   }
 
@@ -189,6 +202,8 @@ class AppColor extends ThemeExtension<AppColor> {
       green1: Color.lerp(green1, other.green1, t)!,
       green2: Color.lerp(green2, other.green2, t)!,
       green3: Color.lerp(green3, other.green3, t)!,
+      purple1: Color.lerp(purple1, other.purple1, t)!,
+      purple2: Color.lerp(purple2, other.purple2, t)!,
     );
   }
 }
