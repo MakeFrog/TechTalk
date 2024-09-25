@@ -10,6 +10,7 @@ import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_to_text_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/rounded_mic_motion_view.dart';
+import 'package:techtalk/presentation/widgets/common/animated/animated_appear_view.dart';
 import 'package:techtalk/presentation/widgets/common/animated/animated_size_and_fade.dart';
 
 class BottomSpeechToTextField extends HookConsumerWidget
@@ -85,33 +86,43 @@ class BottomSpeechToTextField extends HookConsumerWidget
 
         final scrollController = useScrollController();
 
-        return AnimatedSizeAndFade.showHide(
-          show: progressState == RecordProgressState.recognized,
-          child: Container(
-            width: double.infinity,
-            margin: const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 8,
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 14),
-            decoration: BoxDecoration(
-              color: AppColor.of.background1,
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxHeight: 80),
-              child: Scrollbar(
-                controller: scrollController,
-                interactive: true,
-                thumbVisibility: true,
-                thickness: 4,
-                radius: const Radius.circular(24),
-                child: SingleChildScrollView(
+        final hasPrevTextAndInitialState = progressState.isInitial &&
+            unListenedInputController(ref).text.isNotEmpty;
+
+        return AnimatedAppearView(
+          translateDuration: hasPrevTextAndInitialState
+              ? const Duration(milliseconds: 720)
+              : Duration.zero,
+          child: AnimatedSizeAndFade.showHide(
+            show: progressState.isRecognized || hasPrevTextAndInitialState,
+            child: Container(
+              width: double.infinity,
+              margin: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 8,
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 14),
+              decoration: BoxDecoration(
+                color: AppColor.of.background1,
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxHeight: 80),
+                child: Scrollbar(
                   controller: scrollController,
-                  padding: const EdgeInsets.only(right: 11),
-                  child: Text(
-                    recognizedText,
-                    style: AppTextStyle.body2,
+                  interactive: true,
+                  thumbVisibility: true,
+                  thickness: 4,
+                  radius: const Radius.circular(24),
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    padding: const EdgeInsets.only(right: 11),
+                    child: Text(
+                      hasPrevTextAndInitialState
+                          ? unListenedInputController(ref).text
+                          : recognizedText,
+                      style: AppTextStyle.body2,
+                    ),
                   ),
                 ),
               ),

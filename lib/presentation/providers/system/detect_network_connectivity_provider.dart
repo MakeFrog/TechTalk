@@ -41,7 +41,7 @@ class DetectNetworkConnectivity extends _$DetectNetworkConnectivity {
             rightBtnContent: tr(LocaleKeys.undefined_setUp),
             onRightBtnClicked: () async {
               rootNavigatorKey.currentContext?.pop();
-              await AppSettings.openAppSettings(
+              await AppSettings.openAppSettings(  
                 type: AppSettingsType.wifi,
               );
             },
