@@ -8,6 +8,7 @@ class AppColor extends ThemeExtension<AppColor> {
     brand2: const Color(0xFF5C6DFF),
     brand3: const Color(0xFF3446EA),
     brand4: const Color(0xFF060E56),
+    brand5: const Color(0xFFF7F8FC),
     gray1: const Color(0xFFECECF2),
     gray2: const Color(0xFFDCDCE9),
     gray3: const Color(0xFFA2A2B2),
@@ -24,6 +25,8 @@ class AppColor extends ThemeExtension<AppColor> {
     green1: const Color(0xFF79F09A),
     green2: const Color(0xFF30DE80),
     green3: const Color(0xFF02C875),
+    purple1: const Color(0xFFF4EDFF),
+    purple2: const Color(0xFF8D3EFF),
   );
 
   static final AppColor _dark = AppColor._(
@@ -33,6 +36,7 @@ class AppColor extends ThemeExtension<AppColor> {
     brand2: const Color(0xFF5C6DFF),
     brand3: const Color(0xFF3446EA),
     brand4: const Color(0xFF060E56),
+    brand5: const Color(0xFFF7F8FC),
     gray1: const Color(0xFFECECF2),
     gray2: const Color(0xFFDCDCE9),
     gray3: const Color(0xFFA2A2B2),
@@ -49,6 +53,8 @@ class AppColor extends ThemeExtension<AppColor> {
     green1: const Color(0xFF79F09A),
     green2: const Color(0xFF30DE80),
     green3: const Color(0xFF02C875),
+    purple1: const Color(0xFFF4EDFF),
+    purple2: const Color(0xFF8D3EFF),
   );
   factory AppColor() => _light;
 
@@ -59,6 +65,7 @@ class AppColor extends ThemeExtension<AppColor> {
     required this.brand2,
     required this.brand3,
     required this.brand4,
+    required this.brand5,
     required this.gray1,
     required this.gray2,
     required this.gray3,
@@ -75,6 +82,8 @@ class AppColor extends ThemeExtension<AppColor> {
     required this.green1,
     required this.green2,
     required this.green3,
+    required this.purple1,
+    required this.purple2,
   });
 
   factory AppColor.dark() => _dark;
@@ -85,6 +94,7 @@ class AppColor extends ThemeExtension<AppColor> {
   final Color brand2;
   final Color brand3;
   final Color brand4;
+  final Color brand5;
   final Color gray1;
   final Color gray2;
   final Color gray3;
@@ -101,6 +111,8 @@ class AppColor extends ThemeExtension<AppColor> {
   final Color green1;
   final Color green2;
   final Color green3;
+  final Color purple1;
+  final Color purple2;
 
   static late BuildContext _context;
   static void init(BuildContext context) => _context = context;
@@ -116,6 +128,7 @@ class AppColor extends ThemeExtension<AppColor> {
     Color? brand2,
     Color? brand3,
     Color? brand4,
+    Color? brand5,
     Color? gray1,
     Color? gray2,
     Color? gray3,
@@ -132,6 +145,8 @@ class AppColor extends ThemeExtension<AppColor> {
     Color? green1,
     Color? green2,
     Color? green3,
+    Color? purple1,
+    Color? purple2,
   }) {
     return AppColor._(
       white: white ?? this.white,
@@ -140,6 +155,7 @@ class AppColor extends ThemeExtension<AppColor> {
       brand2: brand2 ?? this.brand2,
       brand3: brand3 ?? this.brand3,
       brand4: brand4 ?? this.brand4,
+      brand5: brand5 ?? this.brand5,
       gray1: gray1 ?? this.gray1,
       gray2: gray2 ?? this.gray2,
       gray3: gray3 ?? this.gray3,
@@ -156,6 +172,8 @@ class AppColor extends ThemeExtension<AppColor> {
       green1: green1 ?? this.green1,
       green2: green2 ?? this.green2,
       green3: green3 ?? this.green3,
+      purple1: purple1 ?? this.purple1,
+      purple2: purple2 ?? this.purple2,
     );
   }
 
@@ -174,6 +192,7 @@ class AppColor extends ThemeExtension<AppColor> {
       brand2: Color.lerp(brand2, other.brand2, t)!,
       brand3: Color.lerp(brand3, other.brand3, t)!,
       brand4: Color.lerp(brand4, other.brand4, t)!,
+      brand5: Color.lerp(brand5, other.brand5, t)!,
       gray1: Color.lerp(gray1, other.gray1, t)!,
       gray2: Color.lerp(gray2, other.gray2, t)!,
       gray3: Color.lerp(gray3, other.gray3, t)!,
@@ -190,6 +209,8 @@ class AppColor extends ThemeExtension<AppColor> {
       green1: Color.lerp(green1, other.green1, t)!,
       green2: Color.lerp(green2, other.green2, t)!,
       green3: Color.lerp(green3, other.green3, t)!,
+      purple1: Color.lerp(purple1, other.purple1, t)!,
+      purple2: Color.lerp(purple2, other.purple2, t)!,
     );
   }
 }

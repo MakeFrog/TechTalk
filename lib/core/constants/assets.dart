@@ -30,6 +30,7 @@ class Assets {
   static const String characterRed05 = 'assets/character/red_05.svg';
   static const String characterRed06 = 'assets/character/red_06.svg';
   static const String characterRed07 = 'assets/character/red_07.svg';
+  static const String followUpQuestion = 'assets/icons/follow_up_question.svg';
   static const String iconsArrowDown = 'assets/icons/arrow_down.svg';
   static const String iconsArrowDownThick = 'assets/icons/arrow_down_thick.svg';
   static const String iconsArrowLeft = 'assets/icons/arrow_left.svg';
