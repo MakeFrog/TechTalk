@@ -138,6 +138,7 @@
     "noSearchResults": "검색된 기술면접 주제가 없습니다."
   },
   "interview": {
+    "noAudioDetected" : "입력된 음성이 없습니다",
     "answerVocally": "음성으로 답변해 보세요!",
     "processingRecord": "녹음을 처리하고 있어요",
     "hello": "안녕하세요, {}님! 테크톡이 항상 응원해요",

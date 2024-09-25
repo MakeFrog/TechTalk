@@ -102,7 +102,7 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
 
     /// 입력된 텍스트가 없다면 알럿을 노출 후 초기화 상태로 변경
     if (notifyText.isEmpty) {
-      SnackBarService.showSnackBar('입력된 음성이 없습니다');
+      SnackBarService.showSnackBar(tr(LocaleKeys.interview_noAudioDetected));
       await File(recordPath).delete();
       _updateProgressState(RecordProgressState.initial);
       return;
