@@ -7,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/constants/assets.dart';
-import 'package:techtalk/core/services/size_service.dart';
+import 'package:techtalk/core/services/app_size.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_setting_event.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_setting_state.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/providers/picked_profile_img.dart';

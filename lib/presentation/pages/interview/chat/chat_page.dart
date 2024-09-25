@@ -49,20 +49,29 @@ class ChatPage extends BasePage with ChatEvent {
   bool get canPop => false;
 
   @override
+  bool get wrapWithSafeArea => false;
+
+  @override
   void onWillPop(WidgetRef ref) {
     onAppbarBackBtnTapped(ref);
   }
 
   static const double tabBarHeight = 48;
 
-  static double tabViewHeight = AppSize.to.screenHeight -
-      AppSize.to.statusBarHeight -
+  static double tabViewHeight = AppSize.screenHeight -
+      AppSize.statusBarHeight -
       BackButtonAppBar.appbarHeight -
       ChatPage.tabBarHeight;
 
   @override
   void onInit(WidgetRef ref) {
     super.onInit(ref);
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        updateFirstEnteredStateToTrue();
+      },
+    );
 
     FirebaseAnalytics.instance.logEvent(
       name: 'Interview Created',

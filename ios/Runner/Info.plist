@@ -39,12 +39,12 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>앱이 음성 인식을 위해 마이크에 접근할 수 있도록 허용해주세요.</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>앱이 음성 인식을 위해 음성을 분석할 수 있도록 허용해주세요.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>프로필 이미지를 변경하려면 앱에서 사진 라이브러리에 액세스 할 수 있어야 합니다.</string>
+    <string>프로필 이미지를 변경하려면 앱에서 사진 라이브러리에 접근할 수 있어야 합니다.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>앱이 음성 인식을 위해 마이크에 접근할 수 있도록 허용해주세요.</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>앱이 음성 인식을 위해 음성을 분석할 수 있도록 허용해주세요.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

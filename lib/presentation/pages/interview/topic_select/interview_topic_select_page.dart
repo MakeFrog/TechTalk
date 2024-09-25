@@ -123,7 +123,7 @@ class _NextButton extends ConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      margin: EdgeInsets.only(bottom: AppSize.to.bottomInset == 0 ? 16 : 0),
+      margin: EdgeInsets.only(bottom: AppSize.bottomInset == 0 ? 16 : 0),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       height: 56,
       child: FilledButton(
