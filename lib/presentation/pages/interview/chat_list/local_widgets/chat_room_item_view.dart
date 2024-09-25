@@ -7,11 +7,12 @@ import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/helper/date_time_extension.dart';
 import 'package:techtalk/core/services/size_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/repositories/enums/follow_up_status.enum.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_event.dart';
 import 'package:techtalk/presentation/widgets/common/avatar/clip_oval_circle_avatar.dart';
 import 'package:techtalk/presentation/widgets/common/box/skeleton_box.dart';
 import 'package:techtalk/presentation/widgets/common/chip/normal_rounded_chip.dart';
-import 'package:techtalk/presentation/widgets/common/indicator/pass_fail_indicator.dart';
+import 'package:techtalk/presentation/widgets/common/indicator/response_indicator.dart';
 
 class ChatRoomItemView extends StatelessWidget with ChatListEvent {
   const ChatRoomItemView({
@@ -121,12 +122,14 @@ class ChatRoomItemView extends StatelessWidget with ChatListEvent {
                         case ChatRoomProgress.initial ||
                               ChatRoomProgress.ongoing:
                           return NormalRoundedChip(
-                              text:
-                                  '${item!.completedQuestionCount}/${item!.progressInfo.totalQuestionCount}');
+                            text:
+                                '${item!.completedQuestionCount}/${item!.progressInfo.totalQuestionCount}',
+                          );
 
                         case ChatRoomProgress.completed:
-                          return PassFailIndicator(
-                            status: item!.passOrFail,
+                          return ResponseIndicator(
+                            followupStatus: FollowupStatus.no, // TODO : 꼬리질문 기능 도입시 해당 부분 수정 필요
+                            chatResult: item!.passOrFail,
                             text: item!.passOrFail.isPassed
                                 ? context
                                     .tr(LocaleKeys.common_responseResult_pass)
