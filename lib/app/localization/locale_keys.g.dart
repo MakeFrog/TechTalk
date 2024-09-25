@@ -216,6 +216,7 @@ abstract class  LocaleKeys {
   static const undefined_pleaseUpdateForLatestFeatures = 'undefined.pleaseUpdateForLatestFeatures';
   static const undefined_later = 'undefined.later';
   static const undefined_update = 'undefined.update';
+  static const undefined_setUp = 'undefined.setUp';
   static const undefined_question = 'undefined.question';
   static const undefined_questionNumber = 'undefined.questionNumber';
   static const undefined_interviewTopic = 'undefined.interviewTopic';
