@@ -124,7 +124,6 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
     await recordedText.fold(onSuccess: (text) async {
       if (Platform.isAndroid &&
           _ghostWords.any((element) => text.contains(element))) {
-        print('아지랑이 : ${text}');
         SnackBarService.showSnackBar(tr(LocaleKeys.interview_noAudioDetected));
         await File(recordPath).delete();
         _updateProgressState(RecordProgressState.initial);
