@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -134,24 +136,31 @@ class RoundedMicMotionView extends HookConsumerWidget {
                                 duration: const Duration(milliseconds: 1650),
                               );
 
-                              ref.listen(
-                                  speechToTextProvider.select(
-                                      (p) => p.notifyText), (prev, now) {
-                                if (now.isNotEmpty) {
-                                  // 텍스트가 입력되면 애니메이션 반복 실행
+                              if (Platform.isIOS) {
+                                ref.listen(
+                                    speechToTextProvider.select(
+                                        (p) => p.notifyText), (prev, now) {
+                                  if (now.isNotEmpty) {
+                                    // 텍스트가 입력되면 애니메이션 반복 실행
 
-                                  if (!animationController.isAnimating) {
-                                    animationController.repeat();
-                                  }
-
-                                  debouncer.run(() async {
-                                    if (animationController.isAnimating) {
-                                      await animationController.forward();
-                                      animationController.stop();
+                                    if (!animationController.isAnimating) {
+                                      animationController.repeat();
                                     }
-                                  });
-                                }
-                              });
+
+                                    debouncer.run(() async {
+                                      if (animationController.isAnimating) {
+                                        await animationController.forward();
+                                        animationController.stop();
+                                      }
+                                    });
+                                  }
+                                });
+                              } else {
+                                useEffect(() {
+                                  animationController.repeat();
+                                  return null;
+                                }, []);
+                              }
 
                               return StaggeredDotsWave(
                                 size: 24,

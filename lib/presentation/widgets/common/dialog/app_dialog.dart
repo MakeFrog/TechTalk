@@ -173,7 +173,10 @@ class AppDialog extends Dialog {
                                 ),
                                 textStyle: AppTextStyle.title1,
                               ),
-                              child: Text(leftBtnText!),
+                              child: Text(
+                                leftBtnText!,
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                           ),
                         ],
@@ -190,7 +193,10 @@ class AppDialog extends Dialog {
                           vertical: 13,
                         ),
                       ),
-                      child: Text(btnText!),
+                      child: Text(
+                        btnText!,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   )
                 ],

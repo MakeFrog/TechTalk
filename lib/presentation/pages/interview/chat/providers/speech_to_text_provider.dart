@@ -28,7 +28,7 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
 
   /// 음성 녹음 컨트롤러
   final recordController = AudioRecorder();
-  final speechController = SpeechToText();
+  late final speechController = Platform.isIOS ? SpeechToText() : null;
 
   //// speech 컨트롤러 listen 가능 상태 여부
   Completer<void> isSpeechListenAvailable = Completer<void>();
@@ -41,6 +41,14 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
 
   /// 음성 녹음 파일이 저장되는 경로
   late String recordPath;
+
+  /// 아무 음성을 인식하지 않고 whisper 모델을 실행했을 때 발생하는 텍스트\
+  /// ko버전
+  final List<String> _ghostWords = [
+    'MBC 뉴스 이덕영입니다',
+    '시청해주셔서',
+    '. .',
+  ];
 
   ///
   /// 타이핑 모드 버튼 클릭시
@@ -98,20 +106,30 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
     /// 녹음 중지
     await recordController.stop();
 
-    await isSpeechListenAvailable.future;
+    if (Platform.isIOS) {
+      await isSpeechListenAvailable.future;
 
-    /// 입력된 텍스트가 없다면 알럿을 노출 후 초기화 상태로 변경
-    if (notifyText.isEmpty) {
-      SnackBarService.showSnackBar(tr(LocaleKeys.interview_noAudioDetected));
-      await File(recordPath).delete();
-      _updateProgressState(RecordProgressState.initial);
-      return;
+      /// 입력된 텍스트가 없다면 알럿을 노출 후 초기화 상태로 변경
+      if (notifyText.isEmpty) {
+        SnackBarService.showSnackBar(tr(LocaleKeys.interview_noAudioDetected));
+        await File(recordPath).delete();
+        _updateProgressState(RecordProgressState.initial);
+        return;
+      }
     }
 
     /// 녹음된 텍스트 (Speech To Text)
     final recordedText = await recordToTextUseCase.call(recordPath);
 
     await recordedText.fold(onSuccess: (text) async {
+      if (Platform.isAndroid &&
+          _ghostWords.any((element) => text.contains(element))) {
+        SnackBarService.showSnackBar(tr(LocaleKeys.interview_noAudioDetected));
+        await File(recordPath).delete();
+        _updateProgressState(RecordProgressState.initial);
+        return;
+      }
+
       /// 기존 텍스트 입력폼에 저장되어 있던 텍스트와 녹음된 텍스트 병합
       final textFiledController = ref.read(mainInputControllerProvider);
       await File(recordPath).delete();
@@ -164,8 +182,10 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
       if (progressState.isOnProgress || progressState.isReady) {
         _updateProgressState(RecordProgressState.loading);
         notifyListeners();
-        unawaited(
-            Future.wait([recordController.stop(), speechController.cancel()]));
+        unawaited(Future.wait([
+          recordController.stop(),
+          if (Platform.isIOS) speechController!.cancel() else Future.value()
+        ]));
       }
 
       _updateProgressState(RecordProgressState.initial, resetText: true);
@@ -182,9 +202,9 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
   /// SpeechToText 컨트롤러 초기화
   ///
   Future<void> initializeSpeechController() async {
-    final isEnabled = await speechController.initialize();
+    final isEnabled = await speechController!.initialize();
     if (isEnabled) {
-      await speechController.listen(onResult: (result) {
+      await speechController!.listen(onResult: (result) {
         if (progressState.isOnProgress) {
           notifyText = result.recognizedWords;
           notifyListeners();
@@ -193,7 +213,7 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
 
       isSpeechListenAvailable.complete(null);
     } else {
-      unawaited(speechController.cancel());
+      unawaited(speechController!.cancel());
     }
   }
 
@@ -215,7 +235,9 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
       await File(recordPath).delete();
     }
 
-    await initializeSpeechController();
+    if (Platform.isIOS) {
+      await initializeSpeechController();
+    }
   }
 }
 
@@ -224,7 +246,9 @@ final speechToTextProvider = AutoDisposeChangeNotifierProvider((ref) {
   provider.initConfigSettings();
 
   ref.onDispose(() {
-    provider.speechController.cancel();
+    if (Platform.isIOS) {
+      provider.speechController!.cancel();
+    }
     provider.recordController.dispose();
   });
   return provider;
