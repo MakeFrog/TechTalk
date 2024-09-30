@@ -1,3 +1,4 @@
+import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -40,13 +41,18 @@ class Flavor {
       options: option,
     );
 
+    OpenAI.instance.build(
+      token: env.openApiKey,
+      baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 10), connectTimeout: const Duration(seconds: 10)),
+      enableLog: true,
+    );
+
     /// 앱 DI 실행
     await AppBinder.init();
 
     await EasyLocalization.ensureInitialized();
 
-    await FirebaseAnalytics.instance
-        .setAnalyticsCollectionEnabled(_env == Environment.prod ? true : false);
+    await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(_env == Environment.prod ? true : false);
     if (_env == Environment.prod) {
       await FirebaseAnalytics.instance.logAppOpen();
     }
