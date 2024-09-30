@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -7,6 +8,7 @@ import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/app/localization/localization_enum.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/home/home_event.dart';
 import 'package:techtalk/presentation/pages/home/widgets/cheer_up_message_card.dart';
@@ -28,7 +30,7 @@ class HomePage extends BasePage with HomeState, HomeEvent {
         return ListView(
           physics: const ScrollPhysics(),
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          children: const [
+          children: const[
             CheerUpMessageCard(),
             Gap(16),
             PracticalInterviewCard(),

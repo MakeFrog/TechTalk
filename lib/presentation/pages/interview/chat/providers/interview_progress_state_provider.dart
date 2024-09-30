@@ -4,10 +4,12 @@ import 'dart:developer';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 part 'interview_progress_state_provider.g.dart';
@@ -66,6 +68,9 @@ class InterviewProgressState extends _$InterviewProgressState {
           final isFeedbackForRootQuestion = feedbackChat.qnaId == feedbackChat.rootQnaId;
           if (isFeedbackForRootQuestion && ref.read(selectedChatRoomProvider.notifier).isLastQuestion()) {
             state = InterviewProgress.done;
+            if (ref.read(isSpeechModeProvider).isTrue) {
+              ref.read(isSpeechModeProvider.notifier).toggle();
+            }
           }
         default:
           state = InterviewProgress.interviewerReplying;

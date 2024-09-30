@@ -1,3 +1,4 @@
+import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,19 +9,20 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/home/home_event.dart';
 import 'package:techtalk/presentation/pages/home/widgets/home_state.dart';
-import 'package:techtalk/presentation/widgets/common/gesture/animated_scale_tap.dart';
 
 class PracticalInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
   const PracticalInterviewCard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ShrinkGestureView(
-      borderRadius: BorderRadius.circular(16),
+    return BounceTapper(
       onTap: () => onPracticalCardTapped(ref),
       child: Container(
         padding: const EdgeInsets.fromLTRB(24, 12, 0, 12),
-        color: AppColor.of.brand1,
+        decoration: BoxDecoration(
+          color: AppColor.of.brand1,
+          borderRadius: BorderRadius.circular(16),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

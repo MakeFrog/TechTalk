@@ -8,7 +8,7 @@ import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
-import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view.dart';
+import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/interview_tab_view.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/qna_tab_view.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
@@ -49,20 +49,29 @@ class ChatPage extends BasePage with ChatEvent {
   bool get canPop => false;
 
   @override
+  bool get wrapWithSafeArea => false;
+
+  @override
   void onWillPop(WidgetRef ref) {
     onAppbarBackBtnTapped(ref);
   }
 
   static const double tabBarHeight = 48;
 
-  static double tabViewHeight = AppSize.to.screenHeight -
-      AppSize.to.statusBarHeight -
+  static double tabViewHeight = AppSize.screenHeight -
+      AppSize.statusBarHeight -
       BackButtonAppBar.appbarHeight -
       ChatPage.tabBarHeight;
 
   @override
   void onInit(WidgetRef ref) {
     super.onInit(ref);
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        updateFirstEnteredStateToTrue();
+      },
+    );
 
     FirebaseAnalytics.instance.logEvent(
       name: 'Interview Created',

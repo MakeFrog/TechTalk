@@ -12,7 +12,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
           .fromJson(json['sign_up_date'] as Timestamp),
       lastLoginDate: const TimeStampConverter()
           .fromJson(json['last_login_date'] as Timestamp),
-      loginCount: json['login_count'] as int?,
+      loginCount: (json['login_count'] as num?)?.toInt(),
       locale: json['locale'] as String?,
       email: json['email'] as String?,
       profileImgUrl: json['profile_img_url'] as String?,
@@ -23,7 +23,8 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       recordedTopicIds: (json['recorded_topic_ids'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
-      completedInterviewCount: json['completed_interview_count'] as int?,
+      completedInterviewCount:
+          (json['completed_interview_count'] as num?)?.toInt(),
       techSkills: (json['tech_skills'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),

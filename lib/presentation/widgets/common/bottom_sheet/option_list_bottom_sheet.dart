@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
-import 'package:techtalk/core/services/size_service.dart';
+import 'package:techtalk/core/services/app_size.dart';
 
 class OptionListBottomSheet<T extends dynamic> extends StatelessWidget {
   const OptionListBottomSheet({
@@ -29,7 +29,7 @@ class OptionListBottomSheet<T extends dynamic> extends StatelessWidget {
         onTap: context.pop,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16) +
-              EdgeInsets.only(bottom: AppSize.to.bottomInset == 0 ? 12 : 0),
+              EdgeInsets.only(bottom: AppSize.bottomInset == 0 ? 12 : 0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [

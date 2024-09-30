@@ -20,11 +20,10 @@ class _SaveButton extends HookConsumerWidget
           (hasProfileImgEdited(ref) || hasNicknameEdited(ref));
     });
 
-    return ShrinkGestureView(
-      disableScaleAnimation: !isBtnActivate.value,
-      borderRadius: BorderRadius.circular(16),
+    return BounceTapper(
+      enable: isBtnActivate.value,
       child: Padding(
-        padding: EdgeInsets.only(bottom: AppSize.to.bottomInset == 0 ? 16 : 0),
+        padding: EdgeInsets.only(bottom: AppSize.bottomInset == 0 ? 16 : 0),
         child: FilledButton(
           onPressed: isBtnActivate.value
               ? () {

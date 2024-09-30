@@ -25,5 +25,5 @@ export 'modules/exceptions/custom_exception.dart';
 export 'modules/exceptions/network_exception.dart';
 export 'modules/local/app_local.dart';
 export 'services/dialog_service.dart';
-export 'services/size_service.dart';
+export 'services/app_size.dart';
 export 'services/snack_bar_service.dart';
