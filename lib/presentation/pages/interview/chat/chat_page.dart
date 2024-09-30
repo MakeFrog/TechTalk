@@ -1,7 +1,9 @@
+import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
@@ -13,6 +15,7 @@ import 'package:techtalk/presentation/pages/interview/chat/widgets/qna_tab_view.
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
+import 'package:techtalk/presentation/widgets/common/common.dart';
 
 part 'widgets/chat_page_scaffold.dart';
 
@@ -42,6 +45,30 @@ class ChatPage extends BasePage with ChatEvent {
       onBackBtnTapped: () {
         onAppbarBackBtnTapped(ref);
       },
+      actions: [
+        Text(
+          '꼬리 질문',
+          style: AppTextStyle.alert1,
+        ),
+        const Gap(6),
+        BounceTapper(
+          onTap: () {},
+          child: HookBuilder(
+            builder: (context) {
+              final isActivate = useState(false);
+              return FlatSwitch(
+                height: 24,
+                value: isActivate.value,
+                bgColor: AppColor.of.purple2,
+                onTap: (value) {
+                  isActivate.value = value;
+                },
+              );
+            },
+          ),
+        ),
+        const Gap(16),
+      ],
     );
   }
 
