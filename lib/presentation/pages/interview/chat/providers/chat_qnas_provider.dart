@@ -41,6 +41,9 @@ class ChatQnas extends _$ChatQnas {
   Future<void> updateState(AnswerChatEntity message) async {
     final qnas = state.requireValue;
     final targetQnaIndex = qnas.indexWhere((e) => e.qna.id == message.qnaId);
+
+    if (targetQnaIndex < 0) return;
+
     final resolvedQna = qnas[targetQnaIndex].copyWith(
       message: message,
     );
@@ -75,17 +78,15 @@ class ChatQnas extends _$ChatQnas {
   /// 기존 Qna 응답 순서별로 qna 목록을 정렬
   ///
   void arrangeQnasInOrder(List<String> prevQnaIdsInOrder) {
-    state.requireValue.sort((a, b) => prevQnaIdsInOrder
-        .indexOf(a.qna.id)
-        .compareTo(prevQnaIdsInOrder.indexOf(b.qna.id)));
+    state.requireValue
+        .sort((a, b) => prevQnaIdsInOrder.indexOf(a.qna.id).compareTo(prevQnaIdsInOrder.indexOf(b.qna.id)));
   }
 
   ///
   /// 오답노트 기록 업데이트
   ///
   Future<void> _updateWrongAnswer(ChatQnaEntity qna) async {
-    if (qna.message!.answerState.isWrong ||
-        qna.message!.answerState.isInappropriate) {
+    if (qna.message!.answerState.isWrong || qna.message!.answerState.isInappropriate) {
       final response = await updateWrongAnswerUSeCase.call(qna);
       response.fold(
         onSuccess: (_) {

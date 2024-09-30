@@ -8,12 +8,15 @@ class QuestionChatEntity extends BaseChatEntity {
   QuestionChatEntity({
     super.id,
     required this.qnaId,
+    required String rootQnaId,
     required super.message,
     super.isStreamApplied = true,
     DateTime? timestamp,
+    ChatType? type,
   }) : super(
-          type: ChatType.question,
+          type: type ?? ChatType.question,
           timestamp: timestamp ?? DateTime.now(),
+          rootQnaId: rootQnaId,
         );
 
   ///
@@ -22,20 +25,25 @@ class QuestionChatEntity extends BaseChatEntity {
   factory QuestionChatEntity.createStatic({
     String? id,
     required String qnaId,
+    required String rootQnaId,
     required String message,
     required DateTime timestamp,
   }) =>
       QuestionChatEntity(
         id: id,
         qnaId: qnaId,
+        rootQnaId: rootQnaId,
         message: BehaviorSubject.seeded(message)..close(),
         timestamp: timestamp,
         isStreamApplied: false,
       );
 
+  bool get isRootQuestion => qnaId == rootQnaId;
+
   QuestionChatEntity overwriteToStream() {
     return QuestionChatEntity(
       id: id,
+      rootQnaId: rootQnaId ?? qnaId,
       message: message.value.convertToStreamText,
       timestamp: timestamp,
       isStreamApplied: true,

@@ -10,12 +10,12 @@ import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/feedback_response_entity.dart';
 
 class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam, Result<BehaviorSubject<String>>> {
-  FeedbackProgress state = FeedbackProgress.init;
+  AiAnswerProgress state = AiAnswerProgress.init;
 
   @override
   Result<BehaviorSubject<String>> call(GetQuestionFeedbackParam param) {
     final BehaviorSubject<String> streamedAdviceResponse = BehaviorSubject<String>();
-    state = FeedbackProgress.onProgress;
+    state = AiAnswerProgress.onProgress;
 
     String response = '';
     String jsonResponse = '';
@@ -34,11 +34,7 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
           user: FirebaseAuth.instance.currentUser!.uid,
         ),
       )
-          .doOnError(
-        (error, _) {
-          throw error;
-        },
-      ).listen(
+          .listen(
         (it) {
           final chunk = it.choices?.last.message?.content ?? '';
 
@@ -67,7 +63,7 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
             final feedbackResponse = _parseAndHandleJsonResponse(
               jsonResponse: jsonResponse,
               feedback: _formatAdvice(response),
-              topicQuestion: param.qna,
+              param: param,
             );
 
             jsonResponse = ''; // JSON 수집 상태 초기화
@@ -80,7 +76,7 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
           /// 응답이 종료된 이후
           /// 1) Stream 닫기
           /// 2) 응답 진행 상태 초기화
-          state = FeedbackProgress.init;
+          state = AiAnswerProgress.init;
           streamedAdviceResponse.close();
         },
       );
@@ -98,36 +94,36 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
       Messages(
         role: Role.system,
         content:
-            '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 이제부터 진행할 면접은 ${StoredTopics.getById(param.qna.qna.id.getFirstPartOfSpliited)}와 관련된 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
+            '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 이제부터 진행할 면접은 ${StoredTopics.getById(param.qna.qna.id.getFirstPartOfSpliited).text}와 관련된 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
       ).toJson(),
-      Messages(role: Role.assistant, content: param.question).toJson(),
-      Messages(
-        role: Role.user,
-        content: param.userAnswer,
-      ).toJson(),
+      ...param.chatHistory.map(
+        (element) => switch (element) {
+          QuestionChatEntity() => Messages(
+              role: Role.assistant,
+              content: element.message.value,
+            ).toJson(),
+          FeedbackChatEntity() => Messages(
+              role: Role.assistant,
+              content: element.message.value,
+            ).toJson(),
+          AnswerChatEntity() => Messages(
+              role: Role.user,
+              content: element.message.value,
+            ).toJson(),
+          _ => Messages(
+              role: Role.assistant,
+              content: element.message.value,
+            ).toJson()
+        },
+      ),
       Messages(
         role: Role.system,
         content: '면접 질문에 대한 모범답안은 다음과 같습니다: ${param.qna.qna.answers.map((str) => '-$str').join(' ')}',
       ).toJson(),
-
-      /// 꼬리 질문 히스토리가 있다면 꼬리질문 히스토리를 제공합니다.
-      ...param.qna.followUpQuestions?.expand((followUpQ) {
-            return [
-              Messages(
-                role: Role.assistant,
-                content: followUpQ.qna.question,
-              ).toJson(),
-              Messages(
-                role: Role.user,
-                content: followUpQ.message?.message.value,
-              ).toJson(),
-            ];
-          }).toList() ??
-          [],
       Messages(
         role: Role.system,
         content:
-            '먼저 유저의 면접 답변에 대한 피드백을 80글자 이내의 문자열 형태로 반드시 제공해야 합니다. 조언 가장 앞에 면접자의 답변이 틀렸다면 [w]를, 답변이 맞았다고 판단되면 [c]를 붙입니다. 조언을 제공한 다음, 유저의 답변을 평가하여 JSON형식으로 0~5점 사이의 점수와, 꼬리질문 필요 여부를 제공해주세요. 꼬리질문은 유저의 면접 답변을 기반으로 면접관이 제시한 질문에 대해 확실하고 심화적인 이해를 가지고 있는지 확인하기 위해 필요합니다. JSON 형식은 {"score": "점수", "isFollowUpQuestionNeeded": "꼬리 질문 필요 여부", }입니다. score과 isFollowUpQuestionNeeded는 필수값입니다',
+            '먼저 반드시 면접자의 답변에 대한 조언을 80글자 이내의 문자열 형태로 제공해야 합니다. 조언 가장 앞에 면접자의 답변이 틀렸다면 [w]를, 답변이 맞았다고 판단되면 [c]를 붙입니다. 조언을 제공한 다음, 유저의 답변을 평가하여 JSON형식으로 0~5점 사이의 점수와, 꼬리질문 필요 여부를 제공해주세요. 꼬리질문은 유저의 면접 답변을 기반으로 면접관이 제시한 질문에 대해 확실하고 심화적인 이해를 가지고 있는지 확인하기 위해 필요합니다. JSON 형식은 {"score": "점수", "isFollowUpQuestionNeeded": "꼬리 질문 필요 여부", }입니다. score과 isFollowUpQuestionNeeded는 필수값입니다',
 
         /// 꼬리질문까지 생성할 경우 프롬프트 - 추후에 꼬리질문 usecase에서 사용하기 위해 임시 주석해두었습니다.
         /* '먼저 유저의 답변에 대한 피드백을 80글자 이내의 문자열 형태로 반드시 제공해야 합니다. 조언 가장 앞에 면접자의 답변이 틀렸다면 [w]를, 답변이 맞았다고 판단되면 [c]를 붙입니다. 조언을 제공한 다음, 유저의 답변에 대한 점수를 0~5점까지로 매긴 뒤 점수가 1점 이상이고 면접자가 주제에 대한 심화적인 이해를 가지고 있는지 확인하기 위한 꼬리질문이 필요할 경우 JSON 형식으로 0~5점 사이의 점수, 꼬리질문, 꼬리질문이 필요한 이유를 제공해주세요. 꼬리질문은 제시된 질문과 연관이 있어야 합니다. JSON 형식은 {"score": 점수, "followUpQuestion": "꼬리 질문", "cause": "꼬리질문이 나온 이유" }입니다. score은 필수값입니다' */
@@ -144,20 +140,24 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
   }
 
   FeedbackResponseEntity _parseAndHandleJsonResponse(
-      {required String jsonResponse, required String feedback, required ChatQnaEntity topicQuestion}) {
+      {required String jsonResponse, required String feedback, required GetQuestionFeedbackParam param}) {
     try {
       final parsedData = jsonDecode(jsonResponse) as Map<String, dynamic>;
       return FeedbackResponseEntity.fromJson(
         parsedData,
         feedback,
-        topicQuestion,
+        param.qna,
+        param.chatHistory,
+        param.userName,
       );
     } catch (e) {
       return FeedbackResponseEntity(
         feedback: feedback,
         score: 0,
         isFollowUpQuestionNeeded: false,
-        topicQuestion: topicQuestion,
+        topicQuestion: param.qna,
+        userName: param.userName,
+        relatedChatHistory: param.chatHistory,
       );
     }
   }
@@ -188,7 +188,7 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
       case AnswerState.wrong:
       case AnswerState.inappropriate:
         HapticFeedback.lightImpact();
-        state = FeedbackProgress.completed;
+        state = AiAnswerProgress.completed;
         checkAnswer.call(answerState: answerState);
     }
   }
@@ -213,9 +213,8 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
 
 /// [SetAiFeedbackUseCase] 파라미터
 typedef GetQuestionFeedbackParam = ({
+  List<BaseChatEntity> chatHistory,
   ChatQnaEntity qna,
-  String question,
-  String userAnswer,
   String userName,
   void Function({required FeedbackResponseEntity feedbackResponse}) onFeedBackCompleted,
   void Function({required AnswerState answerState}) checkAnswer

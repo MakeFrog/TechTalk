@@ -13,6 +13,7 @@ abstract class BaseChatEntity {
   final ChatType type; // 채팅 타입
   final DateTime timestamp;
   bool isStreamApplied; // Stream 적용 여부
+  final String? rootQnaId;
 
   BaseChatEntity({
     String? id,
@@ -20,6 +21,7 @@ abstract class BaseChatEntity {
     required this.type,
     required this.isStreamApplied,
     required this.timestamp,
+    this.rootQnaId,
   }) : id = id ?? const Uuid().v1();
 
   //<editor-fold desc="Data Methods">
@@ -35,12 +37,7 @@ abstract class BaseChatEntity {
           isStreamApplied == other.isStreamApplied);
 
   @override
-  int get hashCode =>
-      id.hashCode ^
-      message.hashCode ^
-      type.hashCode ^
-      timestamp.hashCode ^
-      isStreamApplied.hashCode;
+  int get hashCode => id.hashCode ^ message.hashCode ^ type.hashCode ^ timestamp.hashCode ^ isStreamApplied.hashCode;
 
   @override
   String toString() {

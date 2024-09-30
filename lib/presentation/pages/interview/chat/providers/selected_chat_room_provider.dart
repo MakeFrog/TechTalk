@@ -29,20 +29,20 @@ class SelectedChatRoom extends _$SelectedChatRoom {
   ///
   /// 채팅 진행상태 정보 업데이트
   ///
-  void updateProgressInfo(
-      {required bool isCorrect, required BaseChatEntity lastChatMessage}) {
-
+  void updateProgressInfo({
+    required bool isCorrect,
+    required BaseChatEntity lastChatMessage,
+    required bool isRootQuestion,
+  }) {
     late ChatProgressInfoEntity updatedProgressInfo = switch (isCorrect) {
-      true => state.progressInfo.copyWith(
-          correctAnswerCount: state.progressInfo.correctAnswerCount + 1),
-      false => state.progressInfo.copyWith(
-          incorrectAnswerCount: state.progressInfo.incorrectAnswerCount + 1)
+      true => state.progressInfo.copyWith(correctAnswerCount: state.progressInfo.correctAnswerCount + 1),
+      false => state.progressInfo.copyWith(incorrectAnswerCount: state.progressInfo.incorrectAnswerCount + 1)
     };
 
     final updatedRoom = state.copyWith(
       lastChatMessage: lastChatMessage.message.value,
       lastChatDate: lastChatMessage.timestamp,
-      progressInfo: updatedProgressInfo,
+      progressInfo: isRootQuestion ? updatedProgressInfo : state.progressInfo,
     );
 
     state = updatedRoom;
@@ -53,7 +53,6 @@ class SelectedChatRoom extends _$SelectedChatRoom {
   /// 마지막 질문 여부
   ///
   bool isLastQuestion() {
-    return state.progressInfo.completedQuestionCount + 1 ==
-        state.progressInfo.totalQuestionCount;
+    return state.progressInfo.completedQuestionCount == state.progressInfo.totalQuestionCount;
   }
 }

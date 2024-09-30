@@ -44,12 +44,13 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   }) async {
     final chatList = state.requireValue.toList();
 
-    final answeredChat = chatList.firstWhere((chat) => chat.type.isSentMessage)
-        as AnswerChatEntity;
+    final answeredChat = chatList.firstWhere((chat) => chat.type.isSentMessage) as AnswerChatEntity;
+
     final resolvedAnsweredChat = answeredChat.copyWith(
       answerState: answerState,
     );
     final targetIndex = chatList.indexWhere((chat) => chat == answeredChat);
+
     chatList[targetIndex] = resolvedAnsweredChat;
 
     await update((_) => chatList);
@@ -83,8 +84,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
         LocaleKeys.undefined_greetingMessageMultipleTopics,
         namedArgs: {
           'nickname': nickname,
-          'firstTopic':
-              StoredTopics.getById(firstQna.qna.id.getFirstPartOfSpliited).text,
+          'firstTopic': StoredTopics.getById(firstQna.qna.id.getFirstPartOfSpliited).text,
         },
       );
     }
@@ -96,6 +96,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
 
     final firstQuestionChat = QuestionChatEntity.createStatic(
       qnaId: firstQna.qna.id,
+      rootQnaId: firstQna.qna.id,
       message: firstQna.qna.question,
       timestamp: DateTime.timestamp(),
     );
@@ -109,9 +110,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
             qnas: ref.read(chatQnasProvider).requireValue,
           ).then(
             (_) {
-              ref
-                  .read(selectedChatRoomProvider.notifier)
-                  .updateInitialInfo(firstQuestionChat);
+              ref.read(selectedChatRoomProvider.notifier).updateInitialInfo(firstQuestionChat);
             },
           ),
           showMessage(
@@ -120,13 +119,9 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
               showMessage(
                 message: firstQuestionChat.overwriteToStream(),
                 onDone: () {
-                  ref
-                      .read(userInfoProvider.notifier)
-                      .updateTopicRecordsOnCondition(room.topics);
+                  ref.read(userInfoProvider.notifier).updateTopicRecordsOnCondition(room.topics);
                   if (room.type.isPractical) {
-                    ref
-                        .read(userInfoProvider.notifier)
-                        .storeUserPracticalRecordExistInfo();
+                    ref.read(userInfoProvider.notifier).storeUserPracticalRecordExistInfo();
                   }
                 },
               );
@@ -141,10 +136,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   /// 새로운 Qna 추출
   ///
   ChatQnaEntity _getNewQna() {
-    var qna = ref
-        .read(chatQnasProvider)
-        .requireValue
-        .firstWhereOrNull((qna) => !qna.hasUserResponded);
+    var qna = ref.read(chatQnasProvider).requireValue.firstWhereOrNull((qna) => !qna.hasUserResponded);
 
     /// TODO
     /// 비동기 순서가 꼬여서 아직 제시할 질문이 하나가 남았지만
@@ -162,8 +154,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   Future<void> _rollbackToPreviousChatStep() async {
     final chatList = state.requireValue;
 
-    final targetIndex =
-        chatList.firstIndexWhereOrNull((chat) => chat.type.isQuestionMessage);
+    final targetIndex = chatList.firstIndexWhereOrNull((chat) => chat.type.isQuestionMessage);
 
     await update((previous) {
       return [...chatList.sublist(targetIndex!, chatList.length - 1)];
