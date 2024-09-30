@@ -73,7 +73,6 @@ dependencies:
   # Utils
   dart_openai: ^5.1.0 #Whisper 사용 목적
   speech_to_text: ^7.0.0 # 음성 인식
-  chat_gpt_sdk: ^3.0.8
   crypto: ^3.0.3 # 해슁
   async: ^2.11.0 # 비동기 처리
   flutter_dotenv: ^5.0.2 # dotnev
