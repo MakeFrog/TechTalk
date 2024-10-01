@@ -10,6 +10,7 @@ ChatQnaModel _$ChatQnaModelFromJson(Map<String, dynamic> json) => ChatQnaModel(
       id: json['id'] as String,
       messageId: json['message_id'] as String?,
       state: json['state'] as String?,
+
     );
 
 Map<String, dynamic> _$ChatQnaModelToJson(ChatQnaModel instance) =>
@@ -17,4 +18,5 @@ Map<String, dynamic> _$ChatQnaModelToJson(ChatQnaModel instance) =>
       'id': instance.id,
       'message_id': instance.messageId,
       'state': instance.state,
+      'follow_up_qnas': instance.followUpQnas,
     };

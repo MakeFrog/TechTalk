@@ -43,4 +43,9 @@ class AnswerChatEntity extends BaseChatEntity {
       rootQnaId: rootQnaId ?? qnaId,
     );
   }
+
+  ///
+  /// 꼬리 질문인지 여부
+  ///
+  bool get isFollowUpQna => qnaId == rootQnaId;
 }

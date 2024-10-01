@@ -10,11 +10,13 @@ class ChatQnaModel {
     required this.id,
     this.messageId,
     this.state,
+    this.followUpQnas,
   });
 
   final String id;
   final String? messageId;
   final String? state;
+  final String? followUpQnas;
 
   String get topicId => id.split('-').first;
 

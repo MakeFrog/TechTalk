@@ -45,6 +45,7 @@ abstract class FirestoreChatQnaRef {
   static const String name = 'Qna';
   static const String messageIdField = 'message_id';
   static const String stateField = 'state';
+  static const String followUpQnasField = 'follow_up_qnas';
 
   static CollectionReference<ChatQnaModel> collection(String roomId) =>
       FirestoreChatRoomRef.doc(roomId).collection(name).withConverter(
