@@ -8,13 +8,14 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 
 /// AI를 사용하여 꼬리질문을 생성하는 use case
-class SetAiFollowUpQuestionUseCase
-    extends BaseNoFutureUseCase<GetFollowUpQuestionParam, Result<BehaviorSubject<String>>> {
+class SetAiFollowUpQuestionUseCase extends BaseNoFutureUseCase<
+    GetFollowUpQuestionParam, Result<BehaviorSubject<String>>> {
   AiAnswerProgress state = AiAnswerProgress.init;
 
   @override
   Result<BehaviorSubject<String>> call(GetFollowUpQuestionParam param) {
-    final BehaviorSubject<String> streamedAdviceResponse = BehaviorSubject<String>();
+    final BehaviorSubject<String> streamedAdviceResponse =
+        BehaviorSubject<String>();
     state = AiAnswerProgress.onProgress;
 
     String response = '';
@@ -68,7 +69,8 @@ class SetAiFollowUpQuestionUseCase
   }
 
   List<Map<String, dynamic>> _createChatMessage(
-      {required List<BaseChatEntity> chatHistory, required ChatQnaEntity rootQna}) {
+      {required List<BaseChatEntity> chatHistory,
+      required ChatQnaEntity rootQna}) {
     // 프롬프트는 추후 전부 한 언어로 통일할 것이므로 따로 localization은 필요하지 않아 보입니다.
     return [
       Messages(

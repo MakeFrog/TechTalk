@@ -179,39 +179,10 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           if (feedbackResponse.isFollowUpQuestionNeeded &&
               chatHistory.whereType<QuestionChatEntity>().length < 2 &&
               !isCompleted) {
-            print('아지랑이 : 꼬리질문');
-
-            /// NOTE : 순서 주의
-            final guideChat = GuideChatEntity.createStatic(
-              message: '꼬리 질문입니다.',
-              timestamp: DateTime.now(),
-            );
-
-            await Future.wait(
-              [
-                _uploadMessage([
-                  resolvedUserAnswer,
-                  feedbackChat,
-                  guideChat,
-                ]),
-                showMessage(
-                  message: guideChat.overwriteToStream(),
-                  onDone: () async {
-                    await _startFollowUpQuestion(
-                      feedbackResponse: feedbackResponse,
-                      chatHistory: chatHistory,
-                    );
-                  },
-                ).then(
-                  (_) => ref
-                      .read(selectedChatRoomProvider.notifier)
-                      .updateProgressInfo(
-                        isCorrect: isAnswerCorrect,
-                        lastChatMessage: guideChat,
-                        isRootQuestion: userAnswer.isAnwserForRootQuestion,
-                      ),
-                ),
-              ],
+            await _startFollowUpQuestion(
+              feedbackResponse: feedbackResponse,
+              chatHistory: chatHistory,
+              answerChat: resolvedUserAnswer,
             );
 
             /// !!! 꼬리 질문이 있을 경우 '리턴' 하여 프로세스 중단 !!!

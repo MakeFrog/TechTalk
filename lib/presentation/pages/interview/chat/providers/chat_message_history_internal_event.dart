@@ -4,12 +4,20 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   ///
   /// 꼬리질문 생성
   ///
-  Future<QuestionChatEntity?> _startFollowUpQuestion(
-      {required List<BaseChatEntity> chatHistory,
-      required FeedbackResponseEntity feedbackResponse}) async {
+  Future<QuestionChatEntity?> _startFollowUpQuestion({
+    required List<BaseChatEntity> chatHistory,
+    required FeedbackResponseEntity feedbackResponse,
+    required AnswerChatEntity answerChat,
+  }) async {
     log('👀: 피드백 필요함!!!!!!');
 
+    final feedbackChat = FeedbackChatEntity.createStatic(
+      message: feedbackResponse.feedback,
+      timestamp: DateTime.now(),
+      qnaId: feedbackResponse.topicQuestion.qna.id,
+    );
 
+    /// NOTE
     /// 꼬리질문 id 형태
     /// "rootQnaId=난수"
     final followUpQuestionId =
@@ -28,12 +36,15 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
         );
 
         await _uploadMessage([
+          answerChat,
+          feedbackChat,
           followUpQuestionChat!,
         ]).then(
+          /// 꼬리 질문 제시 이전 root Qna 프로스세 정보 업데이트
           (_) => ref.read(selectedChatRoomProvider.notifier).updateProgressInfo(
-                isCorrect: false,
+                isCorrect: answerChat.answerState.isCorrect,
                 lastChatMessage: followUpQuestionChat!,
-                isRootQuestion: false,
+                isRootQuestion: true,
               ),
         );
       },
