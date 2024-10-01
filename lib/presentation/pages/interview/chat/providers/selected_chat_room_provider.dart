@@ -63,20 +63,4 @@ class SelectedChatRoom extends _$SelectedChatRoom {
     state = updatedRoom;
     ref.read(interviewRoomsProvider.notifier).synchronizeRooms(updatedRoom);
   }
-
-  ///
-  /// 마지막 질문 여부
-  ///
-  bool isLastQuestion() {
-    return state.progressInfo.completedQuestionCount ==
-        state.progressInfo.totalQuestionCount;
-  }
-
-  ///
-  /// 마지막 두 번째 질문 여부
-  ///
-  bool isBeforeLastQuestion() {
-    return state.progressInfo.completedQuestionCount + 1 ==
-        state.progressInfo.totalQuestionCount;
-  }
 }
