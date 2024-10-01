@@ -9,7 +9,11 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
       required FeedbackResponseEntity feedbackResponse}) async {
     log('👀: 피드백 필요함!!!!!!');
 
-    final followUpQuestionId = const Uuid().v1();
+
+    /// 꼬리질문 id 형태
+    /// "rootQnaId=난수"
+    final followUpQuestionId =
+        '${feedbackResponse.topicQuestion.qna.id}=${const Uuid().v1()}';
 
     QuestionChatEntity? followUpQuestionChat;
 
