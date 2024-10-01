@@ -8,6 +8,7 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
@@ -46,7 +47,10 @@ class InterviewProgressState extends _$InterviewProgressState {
           lastChat.message.listen(
             null,
             onDone: () {
-              if (ref.read(selectedChatRoomProvider).progressState.isCompleted) {
+              if (ref
+                  .read(selectedChatRoomProvider)
+                  .progressState
+                  .isCompleted) {
                 Future.wait([
                   _setAnalytics(),
                   _increaseCompletedCountAndAlertAppReview(),
@@ -64,14 +68,24 @@ class InterviewProgressState extends _$InterviewProgressState {
           );
 
         case ChatType.feedback:
-          final feedbackChat = lastChat as FeedbackChatEntity;
-          final isFeedbackForRootQuestion = feedbackChat.qnaId == feedbackChat.rootQnaId;
-          if (isFeedbackForRootQuestion && ref.read(selectedChatRoomProvider.notifier).isLastQuestion()) {
-            state = InterviewProgress.done;
-            if (ref.read(isSpeechModeProvider).isTrue) {
-              ref.read(isSpeechModeProvider.notifier).toggle();
+          lastChat.message.listen(null, onDone: () async {
+            final hasFollowupProcess = await ref
+                .read(chatMessageHistoryProvider.notifier)
+                .isFollowUpProcessActive
+                .future;
+            print('우랑이 : ${!hasFollowupProcess} : ${ref.read(chatQnasProvider.notifier).isEveryQnaCompleted()}');
+            if (!hasFollowupProcess &&
+                ref.read(chatQnasProvider.notifier).isEveryQnaCompleted()) {
+              print(
+                  '이찌방 : ${ref.read(chatQnasProvider.notifier).isEveryQnaCompleted()}');
+              // ref.read(selectedChatRoomProvider.notifier).isLastQuestion()
+              state = InterviewProgress.done;
+              if (ref.read(isSpeechModeProvider).isTrue) {
+                ref.read(isSpeechModeProvider.notifier).toggle();
+              }
             }
-          }
+          });
+
         default:
           state = InterviewProgress.interviewerReplying;
       }
@@ -87,7 +101,11 @@ class InterviewProgressState extends _$InterviewProgressState {
       parameters: {
         'user_id': ref.read(userInfoProvider).requireValue?.uid,
         'user_name': ref.read(userInfoProvider).requireValue?.nickname,
-        'topics': ref.read(selectedChatRoomProvider).topics.map((e) => e.text).join(', '),
+        'topics': ref
+            .read(selectedChatRoomProvider)
+            .topics
+            .map((e) => e.text)
+            .join(', '),
         'interview_type': ref.read(selectedChatRoomProvider).type.name,
         'passOrFail': ref.read(selectedChatRoomProvider).passOrFail.name,
       },
@@ -104,9 +122,17 @@ class InterviewProgressState extends _$InterviewProgressState {
     unawaited(
       response.fold(
         onSuccess: (increasedCount) async {
-          ref.read(userInfoProvider.notifier).increaseCompletedInterviewCount(increasedCount);
-          if (ref.read(userInfoProvider).requireValue!.isReviewRequestAvailable) {
-            if (increasedCount == 1 || increasedCount == 6 || increasedCount == 12 || increasedCount == 20) {
+          ref
+              .read(userInfoProvider.notifier)
+              .increaseCompletedInterviewCount(increasedCount);
+          if (ref
+              .read(userInfoProvider)
+              .requireValue!
+              .isReviewRequestAvailable) {
+            if (increasedCount == 1 ||
+                increasedCount == 6 ||
+                increasedCount == 12 ||
+                increasedCount == 20) {
               final InAppReview inAppReview = InAppReview.instance;
 
               if (await inAppReview.isAvailable()) {

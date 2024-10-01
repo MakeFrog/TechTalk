@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/interview_rooms_provider.dart';
 
@@ -32,17 +35,29 @@ class SelectedChatRoom extends _$SelectedChatRoom {
   void updateProgressInfo({
     required bool isCorrect,
     required BaseChatEntity lastChatMessage,
-    required bool isRootQuestion,
+    bool updateTotalCount = false,
   }) {
+    log('결과랑이 0 : ${state.progressInfo.totalQuestionCount}');
+    int totalQuestionCount = state.progressInfo.totalQuestionCount;
+    if (updateTotalCount.isTrue) {
+      totalQuestionCount += 1;
+    }
+
     late ChatProgressInfoEntity updatedProgressInfo = switch (isCorrect) {
-      true => state.progressInfo.copyWith(correctAnswerCount: state.progressInfo.correctAnswerCount + 1),
-      false => state.progressInfo.copyWith(incorrectAnswerCount: state.progressInfo.incorrectAnswerCount + 1)
+      true => state.progressInfo.copyWith(
+          correctAnswerCount: state.progressInfo.correctAnswerCount + 1,
+          totalQuestionCount: totalQuestionCount,
+        ),
+      false => state.progressInfo.copyWith(
+          incorrectAnswerCount: state.progressInfo.incorrectAnswerCount + 1,
+          totalQuestionCount: totalQuestionCount,
+        )
     };
 
     final updatedRoom = state.copyWith(
       lastChatMessage: lastChatMessage.message.value,
       lastChatDate: lastChatMessage.timestamp,
-      progressInfo: isRootQuestion ? updatedProgressInfo : state.progressInfo,
+      progressInfo: updatedProgressInfo,
     );
 
     state = updatedRoom;
@@ -53,6 +68,15 @@ class SelectedChatRoom extends _$SelectedChatRoom {
   /// 마지막 질문 여부
   ///
   bool isLastQuestion() {
-    return state.progressInfo.completedQuestionCount == state.progressInfo.totalQuestionCount;
+    return state.progressInfo.completedQuestionCount ==
+        state.progressInfo.totalQuestionCount;
+  }
+
+  ///
+  /// 마지막 두 번째 질문 여부
+  ///
+  bool isBeforeLastQuestion() {
+    return state.progressInfo.completedQuestionCount + 1 ==
+        state.progressInfo.totalQuestionCount;
   }
 }

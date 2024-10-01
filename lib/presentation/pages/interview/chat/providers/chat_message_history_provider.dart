@@ -27,6 +27,9 @@ part 'chat_message_history_provider.g.dart';
 
 @riverpod
 class ChatMessageHistory extends _$ChatMessageHistory {
+  // ignore: avoid_public_notifier_properties
+  Completer<bool> isFollowUpProcessActive = Completer<bool>();
+
   @override
   FutureOr<List<BaseChatEntity>> build() async {
     final room = ref.read(selectedChatRoomProvider);
@@ -111,6 +114,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
         .read(chatQnasProvider.notifier)
         .getQnaById(userAnswer.rootQnaId ?? userAnswer.qnaId);
 
+    isFollowUpProcessActive = Completer<bool>();
     /*final feedbackChat*/
     final response = getAnswerFeedBackUseCase.call(
       (
@@ -134,9 +138,14 @@ class ChatMessageHistory extends _$ChatMessageHistory {
               },
             ));
           } else {
+            final isFollowUpQuestion =
+                chatHistory.whereType<QuestionChatEntity>().length < 2;
+
             /// 2) 유저의 답변 정답 여부 확인
-            resolvedUserAnswer =
-                await _updateUserAnswerState(answerState: answerState);
+            resolvedUserAnswer = await _updateUserAnswerState(
+              answerState: answerState,
+              isFollowUpQuestion: isFollowUpQuestion,
+            );
 
             isAnswerCorrect = answerState.isCorrect;
           }
@@ -159,10 +168,6 @@ class ChatMessageHistory extends _$ChatMessageHistory {
             ),
           );
 
-          /// 4) 피드백 채팅이 전달된 이후 가이드 채팅과 다음 질문 채팅을 전달
-          final isCompleted =
-              ref.read(selectedChatRoomProvider.notifier).isLastQuestion();
-
           late QuestionChatEntity nextQuestionChat;
           late GuideChatEntity guideChat;
           late String guideMessage;
@@ -176,22 +181,30 @@ class ChatMessageHistory extends _$ChatMessageHistory {
             qnaId: userAnswer.qnaId,
           );
 
-          if (feedbackResponse.isFollowUpQuestionNeeded &&
-              chatHistory.whereType<QuestionChatEntity>().length < 2 &&
-              !isCompleted) {
+          final isFollowUpProcessActivate =
+              feedbackResponse.isFollowUpQuestionNeeded &&
+                  chatHistory.whereType<QuestionChatEntity>().length < 2;
+
+          isFollowUpProcessActive.complete(isFollowUpProcessActivate);
+
+          if (isFollowUpProcessActivate) {
             await _startFollowUpQuestion(
-              feedbackResponse: feedbackResponse,
+              rootFeedbackResponse: feedbackResponse,
               chatHistory: chatHistory,
-              answerChat: resolvedUserAnswer,
+              rootAnswerChat: resolvedUserAnswer,
             );
 
             /// !!! 꼬리 질문이 있을 경우 '리턴' 하여 프로세스 중단 !!!
             return;
           }
 
+          /// 4) 피드백 채팅이 전달된 이후 가이드 채팅과 다음 질문 채팅을 전달
+          final isCompleted =
+              ref.read(chatQnasProvider.notifier).isEveryQnaCompleted();
+
           /// 다음 면접 질문을 제시
           if (!isCompleted) {
-            newQna = _getNewQna();
+            newQna = _getNewQna()!;
             guideMessage = rootNavigatorKey.currentContext!.tr(
               LocaleKeys.undefined_next_question_prompt,
               namedArgs: {
@@ -235,7 +248,6 @@ class ChatMessageHistory extends _$ChatMessageHistory {
                       isCorrect: isAnswerCorrect,
                       lastChatMessage:
                           isCompleted ? guideChat : nextQuestionChat,
-                      isRootQuestion: userAnswer.isAnwserForRootQuestion,
                     ),
               ),
               showMessage(
