@@ -4,6 +4,7 @@ import 'package:techtalk/features/chat/chat.dart';
 class AnswerChatEntity extends BaseChatEntity {
   final AnswerState answerState;
   final String qnaId;
+  late String? followUpQuestion;
 
   bool get isAnwserForRootQuestion => qnaId == rootQnaId;
 
@@ -12,6 +13,7 @@ class AnswerChatEntity extends BaseChatEntity {
     required String message,
     DateTime? timestamp,
     this.answerState = AnswerState.loading,
+    this.followUpQuestion,
     required this.qnaId,
     required String rootQnaId,
   }) : super(
@@ -35,10 +37,12 @@ class AnswerChatEntity extends BaseChatEntity {
 
   AnswerChatEntity copyWith({
     AnswerState? answerState,
+    String? followUpQuestion,
   }) {
     return AnswerChatEntity(
       qnaId: qnaId,
       message: message.value,
+      followUpQuestion: followUpQuestion ?? this.followUpQuestion,
       answerState: answerState ?? this.answerState,
       rootQnaId: rootQnaId ?? qnaId,
     );

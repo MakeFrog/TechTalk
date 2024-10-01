@@ -144,8 +144,16 @@ class ChatMessageHistory extends _$ChatMessageHistory {
             /// 2) 유저의 답변 정답 여부 확인
             resolvedUserAnswer = await _updateUserAnswerState(
               answerState: answerState,
-              isFollowUpQuestion: isFollowUpQuestion,
             );
+
+            final uploadTargetChat =
+                chatHistory.whereType<QuestionChatEntity>().toList().last;
+
+            if (uploadTargetChat.isFollowUpQuestion) {
+              resolvedUserAnswer = resolvedUserAnswer.copyWith(
+                followUpQuestion: uploadTargetChat.message.value,
+              );
+            }
 
             isAnswerCorrect = answerState.isCorrect;
           }
@@ -233,6 +241,8 @@ class ChatMessageHistory extends _$ChatMessageHistory {
               timestamp: DateTime.now(),
             );
           }
+
+          print('아지선 : ${resolvedUserAnswer.followUpQuestion}');
 
           await Future.wait(
             [

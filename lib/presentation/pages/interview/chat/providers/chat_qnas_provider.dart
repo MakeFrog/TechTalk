@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/repositories/entities/follow_up_qna_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answers_provider.dart';
@@ -44,9 +45,14 @@ class ChatQnas extends _$ChatQnas {
 
     if (targetQnaIndex < 0) return;
 
-    final resolvedQna = qnas[targetQnaIndex].copyWith(
-      message: message,
-    );
+    final isRootQna = message.qnaId == message.rootQnaId;
+
+    final resolvedQna = isRootQna
+        ? qnas[targetQnaIndex].copyWith(
+            message: message,
+          )
+        : qnas[targetQnaIndex].copyWith(
+            followUpQna: FollowUpQnaEntity.fromAnswerChatEntity(message));
 
     unawaited(
       Future.wait(
@@ -55,7 +61,7 @@ class ChatQnas extends _$ChatQnas {
             previous.removeAt(targetQnaIndex);
             return [...previous, resolvedQna];
           }),
-          _updateWrongAnswer(resolvedQna),
+          if (isRootQna) _updateWrongAnswer(resolvedQna),
         ],
       ),
     );
@@ -65,7 +71,9 @@ class ChatQnas extends _$ChatQnas {
   /// 전체 qna 리스트 진행 완료 여부
   ///
   bool isEveryQnaCompleted() {
-    return state.requireValue.every((e) => e.hasUserResponded);
+    return state.requireValue.every((e) =>
+        e.hasUserResponded &&
+        (e.followUpQna?.answerState?.isCompleted ?? true));
   }
 
   _onError(Exception e) {
@@ -78,15 +86,17 @@ class ChatQnas extends _$ChatQnas {
   /// 기존 Qna 응답 순서별로 qna 목록을 정렬
   ///
   void arrangeQnasInOrder(List<String> prevQnaIdsInOrder) {
-    state.requireValue
-        .sort((a, b) => prevQnaIdsInOrder.indexOf(a.qna.id).compareTo(prevQnaIdsInOrder.indexOf(b.qna.id)));
+    state.requireValue.sort((a, b) => prevQnaIdsInOrder
+        .indexOf(a.qna.id)
+        .compareTo(prevQnaIdsInOrder.indexOf(b.qna.id)));
   }
 
   ///
   /// 오답노트 기록 업데이트
   ///
   Future<void> _updateWrongAnswer(ChatQnaEntity qna) async {
-    if (qna.message!.answerState.isWrong || qna.message!.answerState.isInappropriate) {
+    if (qna.message!.answerState.isWrong ||
+        qna.message!.answerState.isInappropriate) {
       final response = await updateWrongAnswerUSeCase.call(qna);
       response.fold(
         onSuccess: (_) {

@@ -21,11 +21,6 @@ abstract interface class ChatRepository {
   ]);
 
   ///
-  /// 채팅방 정보 호출
-  ///
-  Future<Result<ChatRoomEntity>> getChatRoom(String roomId);
-
-  ///
   /// 채팅 메세지 업데이트
   ///
   Future<Result<void>> uploadChats(

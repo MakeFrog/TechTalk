@@ -113,7 +113,6 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   ///
   Future<AnswerChatEntity> _updateUserAnswerState({
     required AnswerState answerState,
-    required bool isFollowUpQuestion,
   }) async {
     final chatList = state.requireValue.toList();
 
