@@ -87,7 +87,7 @@ dependencies:
   icons_launcher: ^2.1.7 # 앱 아이콘
   in_app_review: ^2.0.8 # 인앱 리뷰
   url_launcher: ^6.2.5 # url 런쳐
-  connectivity_plus: ^5.0.2 # 네트워크 연결 상태 관리
+  connectivity_plus: ^5.0.2 # 네트워크 연결 상태 관리합
   easy_localization: ^3.0.0 # 다국어 지원
   collection: ^1.18.0 # 콜렉션 타입 익스텐션 지원 메소드
   # 앱 정보

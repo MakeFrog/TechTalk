@@ -22,6 +22,7 @@ import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 import 'package:uuid/uuid.dart';
 
 part 'chat_message_history_internal_event.dart';
+
 part 'chat_message_history_provider.g.dart';
 
 @riverpod
@@ -39,7 +40,9 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           final response = await getChatMessageHistoryUseCase(room.id);
           return response.fold(
             onSuccess: (chatCollection) {
-              ref.read(chatQnasProvider.notifier).arrangeQnasInOrder(chatCollection.progressQnaIds);
+              ref
+                  .read(chatQnasProvider.notifier)
+                  .arrangeQnasInOrder(chatCollection.progressQnaIds);
               return chatCollection.chatHistories;
             },
             onFailure: (e) {
@@ -70,7 +73,9 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   /// 1) 유저의 답변 채팅 메세지 추가
   ///
   Future<AnswerChatEntity> _addUserMessage(String message) async {
-    final answeredQuestion = state.requireValue.firstWhere((chat) => chat is QuestionChatEntity) as QuestionChatEntity;
+    final answeredQuestion = state.requireValue
+        .firstWhere((chat) => chat is QuestionChatEntity) as QuestionChatEntity;
+
     final answerChat = AnswerChatEntity.initial(
       message: message,
       qnaId: answeredQuestion.qnaId,
@@ -97,10 +102,14 @@ class ChatMessageHistory extends _$ChatMessageHistory {
 
     final room = ref.read(selectedChatRoomProvider);
 
-    final chatHistory =
-        [...state.requireValue.where((element) => element.rootQnaId == userAnswer.rootQnaId)].reversed.toList();
+    final chatHistory = [
+      ...state.requireValue
+          .where((element) => element.rootQnaId == userAnswer.rootQnaId)
+    ].reversed.toList();
 
-    final rootQna = ref.read(chatQnasProvider.notifier).getQnaById(userAnswer.rootQnaId ?? userAnswer.qnaId);
+    final rootQna = ref
+        .read(chatQnasProvider.notifier)
+        .getQnaById(userAnswer.rootQnaId ?? userAnswer.qnaId);
 
     /*final feedbackChat*/
     final response = getAnswerFeedBackUseCase.call(
@@ -126,12 +135,14 @@ class ChatMessageHistory extends _$ChatMessageHistory {
             ));
           } else {
             /// 2) 유저의 답변 정답 여부 확인
-            resolvedUserAnswer = await _updateUserAnswerState(answerState: answerState);
+            resolvedUserAnswer =
+                await _updateUserAnswerState(answerState: answerState);
 
             isAnswerCorrect = answerState.isCorrect;
           }
         },
-        onFeedBackCompleted: ({required FeedbackResponseEntity feedbackResponse}) async {
+        onFeedBackCompleted: (
+            {required FeedbackResponseEntity feedbackResponse}) async {
           if (kDebugMode) {
             log(
               '\n👀feedback: ${feedbackResponse.feedback}\n👀score: ${feedbackResponse.score}\n👀isFollowUpQuestionNeeded: ${feedbackResponse.isFollowUpQuestionNeeded}\n',
@@ -149,7 +160,8 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           );
 
           /// 4) 피드백 채팅이 전달된 이후 가이드 채팅과 다음 질문 채팅을 전달
-          final isCompleted = ref.read(selectedChatRoomProvider.notifier).isLastQuestion();
+          final isCompleted =
+              ref.read(selectedChatRoomProvider.notifier).isLastQuestion();
 
           late QuestionChatEntity nextQuestionChat;
           late GuideChatEntity guideChat;
@@ -167,6 +179,8 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           if (feedbackResponse.isFollowUpQuestionNeeded &&
               chatHistory.whereType<QuestionChatEntity>().length < 2 &&
               !isCompleted) {
+            print('아지랑이 : 꼬리질문');
+
             /// NOTE : 순서 주의
             final guideChat = GuideChatEntity.createStatic(
               message: '꼬리 질문입니다.',
@@ -189,7 +203,9 @@ class ChatMessageHistory extends _$ChatMessageHistory {
                     );
                   },
                 ).then(
-                  (_) => ref.read(selectedChatRoomProvider.notifier).updateProgressInfo(
+                  (_) => ref
+                      .read(selectedChatRoomProvider.notifier)
+                      .updateProgressInfo(
                         isCorrect: isAnswerCorrect,
                         lastChatMessage: guideChat,
                         isRootQuestion: userAnswer.isAnwserForRootQuestion,
@@ -198,19 +214,25 @@ class ChatMessageHistory extends _$ChatMessageHistory {
               ],
             );
 
+            /// !!! 꼬리 질문이 있을 경우 '리턴' 하여 프로세스 중단 !!!
             return;
           }
 
+          /// 다음 면접 질문을 제시
           if (!isCompleted) {
             newQna = _getNewQna();
             guideMessage = rootNavigatorKey.currentContext!.tr(
               LocaleKeys.undefined_next_question_prompt,
               namedArgs: {
-                'topic': room.type.isPractical ? StoredTopics.getById(newQna.qna.id.getFirstPartOfSpliited).text : '',
+                'topic': room.type.isPractical
+                    ? StoredTopics.getById(newQna.qna.id.getFirstPartOfSpliited)
+                        .text
+                    : '',
               },
             );
           } else {
-            guideMessage = rootNavigatorKey.currentContext!.tr(LocaleKeys.undefined_interview_ended);
+            guideMessage = rootNavigatorKey.currentContext!
+                .tr(LocaleKeys.undefined_interview_ended);
           }
 
           /// NOTE : 순서 주의
@@ -236,9 +258,12 @@ class ChatMessageHistory extends _$ChatMessageHistory {
                 feedbackChat,
                 resolvedUserAnswer,
               ]).then(
-                (_) => ref.read(selectedChatRoomProvider.notifier).updateProgressInfo(
+                (_) => ref
+                    .read(selectedChatRoomProvider.notifier)
+                    .updateProgressInfo(
                       isCorrect: isAnswerCorrect,
-                      lastChatMessage: isCompleted ? guideChat : nextQuestionChat,
+                      lastChatMessage:
+                          isCompleted ? guideChat : nextQuestionChat,
                       isRootQuestion: userAnswer.isAnwserForRootQuestion,
                     ),
               ),
@@ -271,60 +296,10 @@ class ChatMessageHistory extends _$ChatMessageHistory {
       },
       onFailure: (e) {
         _rollbackToPreviousChatStep();
-        SnackBarService.showSnackBar('정답 여부를 판별하는 과정에서 오류가 발생했습니다. 잠시후 다시 시도해주세요.');
+        SnackBarService.showSnackBar(
+            '정답 여부를 판별하는 과정에서 오류가 발생했습니다. 잠시후 다시 시도해주세요.');
       },
     );
-  }
-
-  Future<QuestionChatEntity?> _startFollowUpQuestion(
-      {required List<BaseChatEntity> chatHistory, required FeedbackResponseEntity feedbackResponse}) async {
-    log('👀: 피드백 필요함!!!!!!');
-
-    final followUpQuestionId = const Uuid().v1();
-
-    QuestionChatEntity? followUpQuestionChat;
-
-    final response = SetAiFollowUpQuestionUseCase().call((
-      chatHistory: chatHistory,
-      onFollowUpQuestionCompleted: ({required String followUpQuestion}) {
-        followUpQuestionChat = QuestionChatEntity.createStatic(
-          qnaId: followUpQuestionId,
-          rootQnaId: feedbackResponse.topicQuestion.qna.id,
-          message: followUpQuestion,
-          timestamp: DateTime.now(),
-        );
-        _uploadMessage([
-          followUpQuestionChat!,
-        ]).then(
-          (_) => ref.read(selectedChatRoomProvider.notifier).updateProgressInfo(
-                isCorrect: false,
-                lastChatMessage: followUpQuestionChat!,
-                isRootQuestion: false,
-              ),
-        );
-      },
-      rootQna: feedbackResponse.topicQuestion,
-      userName: feedbackResponse.userName,
-    ));
-
-    await response.fold(
-      onSuccess: (questionStreamChat) async {
-        /// 3) 유저 답변에 대한 피드백 채팅 전달
-        await showMessage(
-          message: QuestionChatEntity(
-            message: questionStreamChat,
-            qnaId: followUpQuestionId,
-            rootQnaId: feedbackResponse.topicQuestion.qna.id,
-          ),
-        );
-      },
-      onFailure: (e) {
-        _rollbackToPreviousChatStep();
-        SnackBarService.showSnackBar('정답 여부를 판별하는 과정에서 오류가 발생했습니다. 잠시후 다시 시도해주세요.');
-      },
-    );
-
-    return followUpQuestionChat;
   }
 
   ///

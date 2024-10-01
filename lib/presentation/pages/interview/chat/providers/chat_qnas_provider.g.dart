@@ -6,7 +6,7 @@ part of 'chat_qnas_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chatQnasHash() => r'1b38cd2abef31587eb1905e36ef77d0473cc463f';
+String _$chatQnasHash() => r'b57b9648f35d8a1c63d50219c27d3199f06a9008';
 
 ///
 /// 채팅 Qna 리스트
