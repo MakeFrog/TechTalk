@@ -242,10 +242,22 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   ///
   /// AI 응답 과정에서 에러 발생했을 때 실행하는 프로세스
   ///
-  void _onAiFeedbackErrorOccured(Object error, StackTrace startTrace) {
+  void _onAiFeedbackErrorOccured([Object? error, StackTrace? startTrace]) {
     _rollbackToPreviousChatStep();
     SnackBarService.showSnackBar(
         tr(LocaleKeys.interview_aiFeedbackErrorOccured));
+    /// NOTE 임시 주석
+    // await _rollbackToPreviousChatStep();
+    // final context = rootNavigatorKey.currentContext!;
+    // DialogService.show(
+    //     dialog: AppDialog.singleBtn(
+    //       btnContent: context.tr(LocaleKeys.common_confirm),
+    //       title: context.tr(LocaleKeys.common_errorDetectedTryLater),
+    //       onBtnClicked: () async {
+    //         context.pop();
+    //         context.pop();
+    //       },
+    //     ));
   }
 
   ///

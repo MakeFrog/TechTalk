@@ -101,7 +101,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   /// 4) 피드백 채팅이 전달된 이후 가이드 채팅과 다음 질문 채팅을 전달
   ///
   Future<void> handleFeedbackProgress(AnswerChatEntity userAnswer) async {
-    late AnswerChatEntity resolvedUserAnswer;
+     AnswerChatEntity? resolvedUserAnswer;
     late bool isAnswerCorrect;
 
     final room = ref.read(selectedChatRoomProvider);
@@ -128,17 +128,8 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           /// 기존 응답 메세지를 제거하고
           /// 팝업을 노출
           if (answerState == AnswerState.error) {
-            await _rollbackToPreviousChatStep();
-            final context = rootNavigatorKey.currentContext!;
-            DialogService.show(
-                dialog: AppDialog.singleBtn(
-              btnContent: context.tr(LocaleKeys.common_confirm),
-              title: context.tr(LocaleKeys.common_errorDetectedTryLater),
-              onBtnClicked: () async {
-                context.pop();
-                context.pop();
-              },
-            ));
+            _onAiFeedbackErrorOccured();
+
           } else {
             /// 2) 유저의 답변 정답 여부 확인
             resolvedUserAnswer = await _updateUserAnswerState(
@@ -146,11 +137,16 @@ class ChatMessageHistory extends _$ChatMessageHistory {
               targetChatHistory: chatHistory,
             );
 
+            if(resolvedUserAnswer == null) {
+              _onAiFeedbackErrorOccured();
+              return;
+            }
+
             final uploadTargetChat =
                 chatHistory.whereType<QuestionChatEntity>().toList().last;
 
             if (uploadTargetChat.isFollowUpQuestion) {
-              resolvedUserAnswer = resolvedUserAnswer.copyWith(
+              resolvedUserAnswer = resolvedUserAnswer!.copyWith(
                 followUpQuestion: uploadTargetChat.message.value,
               );
             }
@@ -170,7 +166,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
             FirebaseAnalytics.instance.logEvent(
               name: 'Question Answered',
               parameters: {
-                'qna_id': resolvedUserAnswer.qnaId,
+                'qna_id': resolvedUserAnswer!.qnaId,
                 'is_correct': isAnswerCorrect.toString(),
               },
             ),
@@ -199,7 +195,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
             await _startFollowUpQuestion(
               rootFeedbackResponse: feedbackResponse,
               chatHistory: chatHistory,
-              rootAnswerChat: resolvedUserAnswer,
+              rootAnswerChat: resolvedUserAnswer!,
             );
 
             /// !!! 꼬리 질문이 있을 경우 '리턴' 하여 프로세스 중단 !!!
@@ -248,7 +244,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
                 if (!isCompleted) nextQuestionChat,
                 guideChat,
                 feedbackChat,
-                resolvedUserAnswer,
+                resolvedUserAnswer!,
               ]).then(
                 (_) => ref
                     .read(selectedChatRoomProvider.notifier)
