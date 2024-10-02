@@ -101,7 +101,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   /// 4) 피드백 채팅이 전달된 이후 가이드 채팅과 다음 질문 채팅을 전달
   ///
   Future<void> handleFeedbackProgress(AnswerChatEntity userAnswer) async {
-     AnswerChatEntity? resolvedUserAnswer;
+    AnswerChatEntity? resolvedUserAnswer;
     late bool isAnswerCorrect;
 
     final room = ref.read(selectedChatRoomProvider);
@@ -129,7 +129,6 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           /// 팝업을 노출
           if (answerState == AnswerState.error) {
             _onAiFeedbackErrorOccured();
-
           } else {
             /// 2) 유저의 답변 정답 여부 확인
             resolvedUserAnswer = await _updateUserAnswerState(
@@ -137,7 +136,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
               targetChatHistory: chatHistory,
             );
 
-            if(resolvedUserAnswer == null) {
+            if (resolvedUserAnswer == null) {
               _onAiFeedbackErrorOccured();
               return;
             }
@@ -192,6 +191,10 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           isFollowUpProcessActive.complete(isFollowUpProcessActivate);
 
           if (isFollowUpProcessActivate) {
+            /// 꼬리질문일 경우
+            /// root 질문에 대항 피드백 chat도 포함시켜
+            /// 적절한 꼬리 질문을 생성할 수 있도록함
+            chatHistory.add(feedbackChat);
             await _startFollowUpQuestion(
               rootFeedbackResponse: feedbackResponse,
               chatHistory: chatHistory,
