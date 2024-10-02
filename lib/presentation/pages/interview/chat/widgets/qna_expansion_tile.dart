@@ -113,7 +113,7 @@ class QnAExpansionTile extends HookConsumerWidget with ChatState {
             ),
 
             // TODO : 꼬리질문 기능 구현시 적용할 예정
-            if (item.followUpQna!.question != null)
+            if (item.followUpQna?.question != null)
               _buildAnswerContainer(
                 backgroundColor: AppColor.of.purple1,
                 title: '꼬리 질문',

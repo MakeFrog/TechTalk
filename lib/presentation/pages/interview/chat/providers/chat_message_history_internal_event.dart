@@ -118,15 +118,10 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
     final chatList = state.requireValue.toList();
 
     final answeredChat = targetChatHistory
-        .firstWhere((chat) => chat.type.isSentMessage) as AnswerChatEntity;
+        .lastWhere((chat) => chat.type.isSentMessage) as AnswerChatEntity;
 
     final followUpQna =
         targetChatHistory.whereType<QuestionChatEntity>().toList().last;
-
-    print('아지랑이큼 : ${followUpQna.message.value}');
-    print('아지랑이큼 : ${answeredChat.qnaId}');
-    print('아지랑이큼 : ${answeredChat.rootQnaId}');
-    print('아지랑이큼 : ${answeredChat.id}');
 
     final resolvedAnsweredChat = answeredChat.copyWith(
       answerState: answerState,

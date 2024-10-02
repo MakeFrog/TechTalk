@@ -240,7 +240,6 @@ class ChatMessageHistory extends _$ChatMessageHistory {
             );
           }
 
-          print('아지선 : ${resolvedUserAnswer.followUpQuestion}');
 
           await Future.wait(
             [

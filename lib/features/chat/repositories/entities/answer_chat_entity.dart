@@ -4,6 +4,9 @@ import 'package:techtalk/features/chat/chat.dart';
 class AnswerChatEntity extends BaseChatEntity {
   final AnswerState answerState;
   final String qnaId;
+
+  /// NOTE 꼬리질문 정보를 서버에 보내기 위한 용도
+  /// 데이터를 처리하는 용도이지 화면에 데이터를 보여주기 위한 용도가 아님
   late String? followUpQuestion;
 
   bool get isAnwserForRootQuestion => qnaId == rootQnaId;

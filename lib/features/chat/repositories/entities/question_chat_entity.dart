@@ -40,7 +40,6 @@ class QuestionChatEntity extends BaseChatEntity {
         isStreamApplied: false,
       );
 
-  bool get isRootQuestion => qnaId == rootQnaId;
 
   QuestionChatEntity overwriteToStream() {
     return QuestionChatEntity(
