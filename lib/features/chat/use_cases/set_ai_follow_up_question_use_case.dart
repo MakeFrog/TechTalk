@@ -79,7 +79,7 @@ class SetAiFollowUpQuestionUseCase extends BaseNoFutureUseCase<
       Messages(
         role: Role.system,
         content:
-            '당신은 면접관, 유저는 지원자입니다. 면접 내용을 기반으로 적절한 꼬리질문을 제공합니다. 꼬리질문은 ${StoredTopics.getById(rootQna.qna.id.getFirstPartOfSpliited).text}와 관련된 질문입니다. 면접관이 처음 제시한 질문에 대해 확실하고 심화적인 이해를 가지고 있는지 테스트하기 위해 필요합니다. 주제에 대한 심화적이고 날카로운 질문을 제공하세요. ${AppLocale.currentLocale.languageCode}언어로 꼬리질문을 생성하세요.',
+            '당신은 면접관, 유저는 지원자입니다. 유저의 마지막 답변을 기반으로 적절한 꼬리질문(연관질문)을 제공합니다.면접주제는 ${StoredTopics.getById(rootQna.qna.id.getFirstPartOfSpliited).text} 프로그래밍 입니다. 꼬리 질문은 유저의 면접 질문 답변에 대해 심화적이고 날카로운 질문을 제공하세요. ${AppLocale.currentLocale.languageCode}언어로 꼬리질문을 생성하세요.',
       ).toJson(),
       ...chatHistory.map(
         (element) => switch (element) {

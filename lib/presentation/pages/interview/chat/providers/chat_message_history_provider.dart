@@ -29,6 +29,8 @@ part 'chat_message_history_provider.g.dart';
 @riverpod
 class ChatMessageHistory extends _$ChatMessageHistory {
   // ignore: avoid_public_notifier_properties
+  /// 꼬리질문 프로세스 실행 여부값을 반환하는 completor
+  /// 다른 provider에서 해당 값을 접근하여 필요한 예외처리 로직을 실행함
   Completer<bool> isFollowUpProcessActive = Completer<bool>();
 
   @override
@@ -116,7 +118,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
         .getQnaById(userAnswer.rootQnaId ?? userAnswer.qnaId);
 
     isFollowUpProcessActive = Completer<bool>();
-    /*final feedbackChat*/
+
     final response = getAnswerFeedBackUseCase.call(
       (
         chatHistory: chatHistory,
@@ -160,6 +162,10 @@ class ChatMessageHistory extends _$ChatMessageHistory {
               '\n👀feedback: ${feedbackResponse.feedback}\n👀score: ${feedbackResponse.score}\n👀isFollowUpQuestionNeeded: ${feedbackResponse.isFollowUpQuestionNeeded}\n',
             );
           }
+          if (resolvedUserAnswer == null) {
+            _onAiFeedbackErrorOccured();
+            return;
+          }
 
           unawaited(
             FirebaseAnalytics.instance.logEvent(
@@ -184,9 +190,14 @@ class ChatMessageHistory extends _$ChatMessageHistory {
             qnaId: userAnswer.qnaId,
           );
 
+          /// 꼬리질문 프로세스 실행여부
+          ///
+          /// 적절한 꼬리 질문을 생성할 수 있는 상태이고,
+          /// 유저의 답변 점수가 1을 초과할 때만 실행함.
           final isFollowUpProcessActivate =
               feedbackResponse.isFollowUpQuestionNeeded &&
-                  chatHistory.whereType<QuestionChatEntity>().length < 2;
+                  chatHistory.whereType<QuestionChatEntity>().length < 2 &&
+                  feedbackResponse.score > 1;
 
           isFollowUpProcessActive.complete(isFollowUpProcessActivate);
 
