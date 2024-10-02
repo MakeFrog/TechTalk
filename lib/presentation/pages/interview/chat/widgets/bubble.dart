@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
@@ -84,14 +86,31 @@ class Bubble extends StatelessWidget {
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return SizedBox(
-                                  height: 17,
-                                  width: 17,
-                                  child: CircularProgressIndicator(
-                                    color: AppColor.of.gray3,
-                                    strokeWidth: 2,
-                                  ),
-                                );
+                                if (chat.type.isQuestionMessage &&
+                                    (chat as QuestionChatEntity)
+                                        .isFollowUpQuestion) {
+                                  return Text(
+                                    tr(LocaleKeys.interview_loadingFollowUpQuestion),
+                                    style: AppTextStyle.body2
+                                        .copyWith(color: AppColor.of.gray4),
+                                  )
+                                      .animate(
+                                          delay: 320.ms,
+                                          onPlay: (controller) =>
+                                              controller.repeat(
+                                                  period: 500.milliseconds))
+                                      .shimmer(
+                                          color: Colors.white.withOpacity(0.5));
+                                } else {
+                                  return SizedBox(
+                                    height: 17,
+                                    width: 17,
+                                    child: CircularProgressIndicator(
+                                      color: AppColor.of.gray3,
+                                      strokeWidth: 2,
+                                    ),
+                                  );
+                                }
                               }
 
                               if (snapshot.connectionState ==
@@ -103,9 +122,7 @@ class Bubble extends StatelessWidget {
                               }
 
                               return Text(
-                                snapshot.hasData
-                                    ? snapshot.requireData
-                                    : '',
+                                snapshot.hasData ? snapshot.requireData : '',
                                 style: AppTextStyle.body2,
                               );
                             },
@@ -113,7 +130,6 @@ class Bubble extends StatelessWidget {
                         },
                       );
                     } else {
-                      /// STATIC MESSAGE
                       return Text(
                         item.message.valueOrNull ?? '알 수 없는 메세지 입니다',
                         style: AppTextStyle.body2,
