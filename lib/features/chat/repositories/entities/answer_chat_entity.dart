@@ -36,15 +36,16 @@ class AnswerChatEntity extends BaseChatEntity {
       );
 
   AnswerChatEntity copyWith({
+    String? qnaId,
     AnswerState? answerState,
     String? followUpQuestion,
   }) {
     return AnswerChatEntity(
-      qnaId: qnaId,
+      qnaId: qnaId ?? this.qnaId,
       message: message.value,
       followUpQuestion: followUpQuestion ?? this.followUpQuestion,
       answerState: answerState ?? this.answerState,
-      rootQnaId: rootQnaId ?? qnaId,
+      rootQnaId: rootQnaId ?? this.qnaId,
     );
   }
 

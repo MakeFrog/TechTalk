@@ -37,7 +37,6 @@ class SelectedChatRoom extends _$SelectedChatRoom {
     required BaseChatEntity lastChatMessage,
     bool updateTotalCount = false,
   }) {
-    log('결과랑이 0 : ${state.progressInfo.totalQuestionCount}');
     int totalQuestionCount = state.progressInfo.totalQuestionCount;
     if (updateTotalCount.isTrue) {
       totalQuestionCount += 1;

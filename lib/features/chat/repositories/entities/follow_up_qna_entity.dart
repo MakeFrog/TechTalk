@@ -17,8 +17,8 @@ class FollowUpQnaEntity {
 
   factory FollowUpQnaEntity.fromAnswerChatEntity(AnswerChatEntity entity) =>
       FollowUpQnaEntity(
-        id: entity.id,
-        question: entity.message.value,
+        id: entity.qnaId,
+        question: entity.followUpQuestion,
         messageId: entity.id,
         answerState: entity.answerState,
       );

@@ -41,11 +41,14 @@ class ChatQnas extends _$ChatQnas {
   ///
   Future<void> updateState(AnswerChatEntity message) async {
     final qnas = state.requireValue;
-    final targetQnaIndex = qnas.indexWhere((e) => e.qna.id == message.qnaId);
+    final targetQnaIndex = qnas.indexWhere((e) => e.qna.id == message.rootQnaId);
 
-    if (targetQnaIndex < 0) return;
+    // if (targetQnaIndex < 0) return;
+
+
 
     final isRootQna = message.qnaId == message.rootQnaId;
+    print('사무리 : ${message.qnaId} : ${message.rootQnaId}');
 
     final resolvedQna = isRootQna
         ? qnas[targetQnaIndex].copyWith(
@@ -54,17 +57,43 @@ class ChatQnas extends _$ChatQnas {
         : qnas[targetQnaIndex].copyWith(
             followUpQna: FollowUpQnaEntity.fromAnswerChatEntity(message));
 
-    unawaited(
-      Future.wait(
-        [
-          update((previous) {
-            previous.removeAt(targetQnaIndex);
-            return [...previous, resolvedQna];
-          }),
-          if (isRootQna) _updateWrongAnswer(resolvedQna),
-        ],
-      ),
-    );
+    print('움튼32 : ${qnas[targetQnaIndex].followUpQna}');
+    print('움튼 : ${isRootQna}');
+    print('아지랑이랑 : ${resolvedQna.qna.id}');
+    if (isRootQna) {
+      unawaited(
+        Future.wait(
+          [
+            update((previous) {
+              previous.removeAt(targetQnaIndex);
+              return [...previous, resolvedQna];
+            }),
+            _updateWrongAnswer(resolvedQna),
+          ],
+        ),
+      );
+    } else {
+      print('키리 : ${resolvedQna.followUpQna}');
+      try {
+        unawaited(
+          Future.wait(
+            [
+              update((previous) {
+                final targetArray = previous;
+                final targetIndex =
+                previous.indexWhere((e) => e.qna.id == resolvedQna.qna.id);
+                targetArray[targetIndex] = resolvedQna;
+                return [...targetArray];
+              }),
+              // _updateWrongAnswer(resolvedQna),
+            ],
+          ),
+        );
+      } catch(e) {
+        print('키리 오류 : ${e}');
+      }
+
+    }
   }
 
   ///
@@ -73,7 +102,7 @@ class ChatQnas extends _$ChatQnas {
   bool isEveryQnaCompleted() {
     return state.requireValue.every((e) =>
         e.hasUserResponded &&
-        (e.followUpQna?.answerState?.isCompleted ?? true));
+        (e.followUpQna?.answerState.isCompleted ?? true));
   }
 
   _onError(Exception e) {

@@ -138,12 +138,10 @@ class ChatMessageHistory extends _$ChatMessageHistory {
               },
             ));
           } else {
-            final isFollowUpQuestion =
-                chatHistory.whereType<QuestionChatEntity>().length < 2;
-
             /// 2) 유저의 답변 정답 여부 확인
             resolvedUserAnswer = await _updateUserAnswerState(
               answerState: answerState,
+              targetChatHistory: chatHistory,
             );
 
             final uploadTargetChat =
@@ -283,7 +281,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           message: FeedbackChatEntity(
             message: feedbackStreamedChat,
             qnaId: rootQna.qna.id,
-            rootQnaId: rootQna.qna.id,
+            rootQnaId:  rootQna.qna.id,
           ),
         );
       },

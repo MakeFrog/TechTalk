@@ -29,8 +29,12 @@ class Bubble extends StatelessWidget {
 
   final VoidCallback onReportBtnTapped;
 
+
+
   @override
   Widget build(BuildContext context) {
+
+
     /// RECEIVED CHAT
     if (chat.type.isReceivedMessage) {
       final item = chat;

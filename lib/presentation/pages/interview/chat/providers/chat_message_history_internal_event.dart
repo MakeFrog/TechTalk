@@ -113,14 +113,26 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   ///
   Future<AnswerChatEntity> _updateUserAnswerState({
     required AnswerState answerState,
+    required List<BaseChatEntity> targetChatHistory,
   }) async {
     final chatList = state.requireValue.toList();
 
-    final answeredChat = chatList.firstWhere((chat) => chat.type.isSentMessage)
-        as AnswerChatEntity;
+    final answeredChat = targetChatHistory
+        .firstWhere((chat) => chat.type.isSentMessage) as AnswerChatEntity;
+
+    final followUpQna =
+        targetChatHistory.whereType<QuestionChatEntity>().toList().last;
+
+    print('아지랑이큼 : ${followUpQna.message.value}');
+    print('아지랑이큼 : ${answeredChat.qnaId}');
+    print('아지랑이큼 : ${answeredChat.rootQnaId}');
+    print('아지랑이큼 : ${answeredChat.id}');
 
     final resolvedAnsweredChat = answeredChat.copyWith(
       answerState: answerState,
+      followUpQuestion: followUpQna.message.value,
+      qnaId: followUpQna.isFollowUpQuestion ? followUpQna.qnaId : null,
+      // followUpQuestion: followUpQna.message.value,
     );
     final targetIndex = chatList.indexWhere((chat) => chat == answeredChat);
 
@@ -216,14 +228,10 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   /// 새로운 Qna 추출
   ///
   ChatQnaEntity? _getNewQna() {
-
     var qna = ref
         .read(chatQnasProvider)
         .requireValue
         .firstWhereOrNull((qna) => !qna.hasUserResponded);
-
-
-
 
     /// TODO
     /// 비동기 순서가 꼬여서 아직 제시할 질문이 하나가 남았지만

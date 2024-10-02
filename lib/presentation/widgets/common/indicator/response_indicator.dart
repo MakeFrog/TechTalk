@@ -21,9 +21,6 @@ class ResponseIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(followupStatus);
-
-
     return followupStatus.isFollowup
         ? Row(
             children: [
@@ -91,7 +88,7 @@ class ResponseIndicator extends StatelessWidget {
             width: 2,
           ),
           SvgPicture.asset(
-            Assets.followUpQuestion,
+            Assets.iconsStarDeco,
             height: 16,
             width: 16,
           ),
