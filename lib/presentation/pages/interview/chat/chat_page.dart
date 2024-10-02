@@ -9,17 +9,19 @@ import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
+import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/interview_tab_view.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/qna_tab_view.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
-import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 part 'widgets/chat_page_scaffold.dart';
 
-class ChatPage extends BasePage with ChatEvent {
+part 'widgets/chat_page_app_bar.p.dart';
+
+class ChatPage extends BasePage with ChatEvent, ChatState {
   const ChatPage({Key? key}) : super(key: key);
 
   @override
@@ -34,43 +36,8 @@ class ChatPage extends BasePage with ChatEvent {
   }
 
   @override
-  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) {
-    final firstTopic = ref.watch(selectedChatRoomProvider).topics.first.text;
-    final otherTopicCount =
-        ref.watch(selectedChatRoomProvider).topics.length - 1;
-
-    return BackButtonAppBar(
-      title:
-          '$firstTopic${otherTopicCount > 0 ? ' ${tr(LocaleKeys.undefined_and)} $otherTopicCount' : ''}',
-      onBackBtnTapped: () {
-        onAppbarBackBtnTapped(ref);
-      },
-      actions: [
-        Text(
-          '꼬리 질문',
-          style: AppTextStyle.alert1,
-        ),
-        const Gap(6),
-        BounceTapper(
-          onTap: () {},
-          child: HookBuilder(
-            builder: (context) {
-              final isActivate = useState(false);
-              return FlatSwitch(
-                height: 24,
-                value: isActivate.value,
-                bgColor: AppColor.of.purple2,
-                onTap: (value) {
-                  isActivate.value = value;
-                },
-              );
-            },
-          ),
-        ),
-        const Gap(16),
-      ],
-    );
-  }
+  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
+      const _AppBar();
 
   @override
   bool get canPop => false;

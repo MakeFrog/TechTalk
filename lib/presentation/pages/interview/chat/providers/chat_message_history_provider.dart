@@ -17,6 +17,7 @@ import 'package:techtalk/features/chat/repositories/entities/feedback_response_e
 import 'package:techtalk/features/chat/use_cases/set_ai_follow_up_question_use_case.dart';
 import 'package:techtalk/features/topic/repositories/entities/qna_entity.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/is_follow_up_process_active_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
@@ -190,14 +191,16 @@ class ChatMessageHistory extends _$ChatMessageHistory {
             qnaId: userAnswer.qnaId,
           );
 
-          /// 꼬리질문 프로세스 실행여부
+          /// 꼬리질문 프로세스 실행여부. 아래와 같은 조건을 모든 만족해야됨
           ///
-          /// 적절한 꼬리 질문을 생성할 수 있는 상태이고,
-          /// 유저의 답변 점수가 1을 초과할 때만 실행함.
+          /// 1. AI가 적절한 꼬리 질문을 생성할 수 있는 상태
+          /// 2. 유저의 답변 점수가 1을 초과할 경우
+          /// 3. 유저가 꼬리 질문을 비활성화 하지 않았을 경우
           final isFollowUpProcessActivate =
               feedbackResponse.isFollowUpQuestionNeeded &&
                   chatHistory.whereType<QuestionChatEntity>().length < 2 &&
-                  feedbackResponse.score > 1;
+                  feedbackResponse.score > 1 &&
+                  ref.read(isFollowUpProcessActiveProvider).isTrue;
 
           isFollowUpProcessActive.complete(isFollowUpProcessActivate);
 
