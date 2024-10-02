@@ -138,6 +138,7 @@
     "noSearchResults": "검색된 기술면접 주제가 없습니다."
   },
   "interview": {
+    "followUpQuestion" : "꼬리 질문",
     "aiFeedbackErrorOccured": "정답 여부를 판별하는 과정에서 오류가 발생했습니다. 잠시후 다시 시도해주세요.",
     "noAudioDetected": "입력된 음성이 없습니다",
     "answerVocally": "음성으로 답변해 보세요!",

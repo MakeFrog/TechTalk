@@ -25,7 +25,7 @@ class _AppBar extends ConsumerWidget
           child: Row(
             children: [
               Text(
-                '꼬리 질문',
+                tr(LocaleKeys.interview_followUpQuestion),
                 style: AppTextStyle.alert1,
               ),
               const Gap(6),

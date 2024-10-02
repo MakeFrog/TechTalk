@@ -138,6 +138,7 @@
     "noSearchResults": "Sorry, there are no search results"
   },
   "interview": {
+    "followUpQuestion" : "Follow-up Questions",
     "aiFeedbackErrorOccured": "An error occurred in verifying the answer. Please try again later.",
     "noAudioDetected": "No input audio detected",
     "answerVocally": "Answer vocally!",
