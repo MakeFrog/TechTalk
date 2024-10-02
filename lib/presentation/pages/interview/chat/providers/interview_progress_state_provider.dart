@@ -73,12 +73,8 @@ class InterviewProgressState extends _$InterviewProgressState {
                 .read(chatMessageHistoryProvider.notifier)
                 .isFollowUpProcessActive
                 .future;
-            print('우랑이 : ${!hasFollowupProcess} : ${ref.read(chatQnasProvider.notifier).isEveryQnaCompleted()}');
             if (!hasFollowupProcess &&
                 ref.read(chatQnasProvider.notifier).isEveryQnaCompleted()) {
-              print(
-                  '이찌방 : ${ref.read(chatQnasProvider.notifier).isEveryQnaCompleted()}');
-              // ref.read(selectedChatRoomProvider.notifier).isLastQuestion()
               state = InterviewProgress.done;
               if (ref.read(isSpeechModeProvider).isTrue) {
                 ref.read(isSpeechModeProvider.notifier).toggle();
