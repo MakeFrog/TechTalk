@@ -50,6 +50,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
       },
       rootQna: rootFeedbackResponse.topicQuestion,
       userName: rootFeedbackResponse.userName,
+      onError: _onAiFeedbackErrorOccured,
     ));
 
     await response.fold(
@@ -236,6 +237,15 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
     // qna ??= ref.read(chatQnasProvider).requireValue.first;
 
     return qna;
+  }
+
+  ///
+  /// AI 응답 과정에서 에러 발생했을 때 실행하는 프로세스
+  ///
+  void _onAiFeedbackErrorOccured(Object error, StackTrace startTrace) {
+    _rollbackToPreviousChatStep();
+    SnackBarService.showSnackBar(
+        tr(LocaleKeys.interview_aiFeedbackErrorOccured));
   }
 
   ///

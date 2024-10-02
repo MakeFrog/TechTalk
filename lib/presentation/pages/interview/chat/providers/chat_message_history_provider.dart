@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
@@ -121,6 +122,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
         chatHistory: chatHistory,
         qna: rootQna,
         userName: ref.read(userInfoProvider).requireValue!.nickname!,
+        onError: _onAiFeedbackErrorOccured,
         checkAnswer: ({required AnswerState answerState}) async {
           /// 만약 정상 작동하지 못했다면
           /// 기존 응답 메세지를 제거하고
@@ -240,7 +242,6 @@ class ChatMessageHistory extends _$ChatMessageHistory {
             );
           }
 
-
           await Future.wait(
             [
               _uploadMessage([
@@ -273,23 +274,31 @@ class ChatMessageHistory extends _$ChatMessageHistory {
       ),
     );
 
-    await response.fold(
-      onSuccess: (feedbackStreamedChat) async {
-        /// 3) 유저 답변에 대한 피드백 채팅 전달
-        await showMessage(
-          message: FeedbackChatEntity(
-            message: feedbackStreamedChat,
-            qnaId: rootQna.qna.id,
-            rootQnaId:  rootQna.qna.id,
-          ),
-        );
-      },
-      onFailure: (e) {
-        _rollbackToPreviousChatStep();
-        SnackBarService.showSnackBar(
-            '정답 여부를 판별하는 과정에서 오류가 발생했습니다. 잠시후 다시 시도해주세요.');
-      },
+    await showMessage(
+      message: FeedbackChatEntity(
+        message: response,
+        qnaId: rootQna.qna.id,
+        rootQnaId: rootQna.qna.id,
+      ),
     );
+
+    // await response.fold(
+    //   onSuccess: (feedbackStreamedChat) async {
+    //     /// 3) 유저 답변에 대한 피드백 채팅 전달
+    //     await showMessage(
+    //       message: FeedbackChatEntity(
+    //         message: feedbackStreamedChat,
+    //         qnaId: rootQna.qna.id,
+    //         rootQnaId:  rootQna.qna.id,
+    //       ),
+    //     );
+    //   },
+    //   onFailure: (e) {
+    //     _rollbackToPreviousChatStep();
+    //     SnackBarService.showSnackBar(
+    //         '정답 여부를 판별하는 과정에서 오류가 발생했습니다. 잠시후 다시 시도해주세요.');
+    //   },
+    // );
   }
 
   ///

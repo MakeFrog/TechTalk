@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
@@ -35,14 +36,16 @@ class SetAiFollowUpQuestionUseCase extends BaseNoFutureUseCase<
           stream: true,
           user: FirebaseAuth.instance.currentUser!.uid,
         ),
-      )
-          .doOnError(
-        (error, _) {
-          throw error;
-        },
+      )  .transform(
+        StreamTransformer.fromHandlers(
+          handleError: (error, stackTrace, sink) {
+            param.onError(error, stackTrace);
+          },
+        ),
       ).listen(
         cancelOnError: true,
         (it) {
+          it as ChatResponseSSE;
           response += it.choices?.last.message?.content ?? '';
 
           if (response.isEmpty) return;
@@ -116,4 +119,5 @@ typedef GetFollowUpQuestionParam = ({
   ChatQnaEntity rootQna,
   String userName,
   void Function({required String followUpQuestion}) onFollowUpQuestionCompleted,
+  void Function(Object error, StackTrace startTrace) onError,
 });

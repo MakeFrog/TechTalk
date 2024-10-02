@@ -138,7 +138,8 @@
     "noSearchResults": "Sorry, there are no search results"
   },
   "interview": {
-    "noAudioDetected" : "No input audio detected",
+    "aiFeedbackErrorOccured": "An error occurred in verifying the answer. Please try again later.",
+    "noAudioDetected": "No input audio detected",
     "answerVocally": "Answer vocally!",
     "processingRecord": "Processing the recording",
     "hello": "Hi, {}! Always rooting for you.",
