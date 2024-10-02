@@ -29,12 +29,8 @@ class Bubble extends StatelessWidget {
 
   final VoidCallback onReportBtnTapped;
 
-
-
   @override
   Widget build(BuildContext context) {
-
-
     /// RECEIVED CHAT
     if (chat.type.isReceivedMessage) {
       final item = chat;
@@ -62,65 +58,69 @@ class Bubble extends StatelessWidget {
                     )
                   : null,
               constraints: BoxConstraints(maxWidth: AppSize.ratioWidth(250)),
-              child: Builder(
-                builder: (BuildContext context) {
-                  return Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 14,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColor.of.blue1,
-                      borderRadius: radiusOnCase,
-                    ),
-                    child: Builder(
-                      builder: (BuildContext context) {
-                        if (item.isStreamApplied) {
-                          /// STREAMED MESSAGE
-                          return HookBuilder(
-                            builder: (context) {
-                              useAutomaticKeepAlive();
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 14,
+                ),
+                decoration: BoxDecoration(
+                  color: chat.type.isQuestionMessage
+                      ? ((chat as QuestionChatEntity).isFollowUpQuestion
+                          ? const Color(0xFFF4EDFF)
+                          : AppColor.of.blue1)
+                      : AppColor.of.blue1,
+                  borderRadius: radiusOnCase,
+                ),
+                child: Builder(
+                  builder: (BuildContext context) {
+                    if (item.isStreamApplied) {
+                      /// STREAMED MESSAGE
+                      return HookBuilder(
+                        builder: (context) {
+                          useAutomaticKeepAlive();
 
-                              return StreamBuilder<String>(
-                                stream: item.message.stream,
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                    return SizedBox(
-                                      height: 17,
-                                      width: 17,
-                                      child: CircularProgressIndicator(
-                                        color: AppColor.of.gray3,
-                                        strokeWidth: 2,
-                                      ),
-                                    );
-                                  }
+                          return StreamBuilder<String>(
+                            stream: item.message.stream,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return SizedBox(
+                                  height: 17,
+                                  width: 17,
+                                  child: CircularProgressIndicator(
+                                    color: AppColor.of.gray3,
+                                    strokeWidth: 2,
+                                  ),
+                                );
+                              }
 
-                                  if (snapshot.connectionState == ConnectionState.none) {
-                                    return Text(
-                                      '오류가 발생했어요',
-                                      style: AppTextStyle.alert2,
-                                    );
-                                  }
+                              if (snapshot.connectionState ==
+                                  ConnectionState.none) {
+                                return Text(
+                                  '오류가 발생했어요',
+                                  style: AppTextStyle.alert2,
+                                );
+                              }
 
-                                  return Text(
-                                    snapshot.hasData ? snapshot.requireData : '',
-                                    style: AppTextStyle.body2,
-                                  );
-                                },
+                              return Text(
+                                snapshot.hasData
+                                    ? snapshot.requireData
+                                    : '',
+                                style: AppTextStyle.body2,
                               );
                             },
                           );
-                        } else {
-                          /// STATIC MESSAGE
-                          return Text(
-                            item.message.valueOrNull ?? '알 수 없는 메세지 입니다',
-                            style: AppTextStyle.body2,
-                          );
-                        }
-                      },
-                    ),
-                  );
-                },
+                        },
+                      );
+                    } else {
+                      /// STATIC MESSAGE
+                      return Text(
+                        item.message.valueOrNull ?? '알 수 없는 메세지 입니다',
+                        style: AppTextStyle.body2,
+                      );
+                    }
+                  },
+                ),
               ),
             ),
             if (item is FeedbackChatEntity && item.message.isClosed)
@@ -165,7 +165,8 @@ class Bubble extends StatelessWidget {
                 borderRadius: radiusOnCase,
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
                 child: Text(
                   item.message.value,
                   style: AppTextStyle.body2.copyWith(color: AppColor.of.black),
@@ -182,7 +183,8 @@ class Bubble extends StatelessWidget {
                       children: [
                         Text(
                           tr(item.answerState.str),
-                          style: AppTextStyle.alert1.copyWith(color: AppColor.of.blue2),
+                          style: AppTextStyle.alert1
+                              .copyWith(color: AppColor.of.blue2),
                         ),
                         const SizedBox(
                           width: 2,
@@ -196,7 +198,8 @@ class Bubble extends StatelessWidget {
                       children: [
                         Text(
                           tr(item.answerState.str),
-                          style: AppTextStyle.alert1.copyWith(color: AppColor.of.red2),
+                          style: AppTextStyle.alert1
+                              .copyWith(color: AppColor.of.red2),
                         ),
                         const SizedBox(
                           width: 2,
