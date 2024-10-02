@@ -103,7 +103,7 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
       Messages(
         role: Role.system,
         content:
-            '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 이제부터 진행할 면접은 ${StoredTopics.getById(param.qna.qna.id.getFirstPartOfSpliited).text}와 관련된 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
+            '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 이제부터 진행할 면접은 ${StoredTopics.getById(param.qna.qna.id.getFirstPartOfSpliited).text}와 관련된 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다. 답변은 의무문으로 끝나면 안됩니다',
       ).toJson(),
       ...param.chatHistory.map(
         (element) => switch (element) {
