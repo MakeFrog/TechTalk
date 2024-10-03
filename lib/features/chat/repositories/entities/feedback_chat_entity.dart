@@ -3,10 +3,12 @@ import 'package:techtalk/features/chat/chat.dart';
 
 class FeedbackChatEntity extends BaseChatEntity {
   final String qnaId;
+  final bool hasFollowUpQuestion;
 
   FeedbackChatEntity({
     super.id,
     required super.message,
+    this.hasFollowUpQuestion = false,
     super.isStreamApplied = true,
     DateTime? timestamp,
     required String rootQnaId,
@@ -21,15 +23,17 @@ class FeedbackChatEntity extends BaseChatEntity {
     String? id,
     required String message,
     required DateTime timestamp,
-    required String rootQnaId,
+    String? rootQnaId,
     required String qnaId,
+    bool? hasFollowUpQuestion,
   }) =>
       FeedbackChatEntity(
         id: id,
         qnaId: qnaId,
+        hasFollowUpQuestion: hasFollowUpQuestion ?? false,
         message: BehaviorSubject.seeded(message)..close(),
         timestamp: timestamp,
         isStreamApplied: false,
-        rootQnaId: rootQnaId,
+        rootQnaId: rootQnaId ?? qnaId,
       );
 }

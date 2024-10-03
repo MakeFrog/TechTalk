@@ -19,6 +19,8 @@ class QuestionChatEntity extends BaseChatEntity {
           rootQnaId: rootQnaId,
         );
 
+  bool get isFollowUpQuestion => qnaId != rootQnaId;
+
   ///
   /// 스트림 상태 적용 X (정적)
   ///
@@ -38,7 +40,6 @@ class QuestionChatEntity extends BaseChatEntity {
         isStreamApplied: false,
       );
 
-  bool get isRootQuestion => qnaId == rootQnaId;
 
   QuestionChatEntity overwriteToStream() {
     return QuestionChatEntity(

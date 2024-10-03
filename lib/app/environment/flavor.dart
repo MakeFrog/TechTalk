@@ -7,6 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/app/environment/environment.enum.dart';
 import 'package:techtalk/core/modules/local/app_local.dart';
+import 'package:dart_openai/dart_openai.dart' as forWhisper;
 
 class Flavor {
   Flavor._();
@@ -35,6 +36,7 @@ class Flavor {
 
     /// LocalStorage Hive 초기화
     await AppLocal.initHive();
+    // AppLocal.clearAllLocalStorage();
 
     /// FireBase 초기화
     await Firebase.initializeApp(
@@ -46,6 +48,20 @@ class Flavor {
       baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 10), connectTimeout: const Duration(seconds: 10)),
       enableLog: true,
     );
+
+    /// 채팅 면접에서 사용되는 OepnAI SK
+    OpenAI.instance.build(
+      token: env.openApiKey,
+      baseOption: HttpSetup(
+          receiveTimeout: const Duration(seconds: 10),
+          connectTimeout: const Duration(seconds: 10)),
+      enableLog: true,
+    );
+
+    /// whisper 모델을 제공하는 OpenAI SDK
+    forWhisper.OpenAI.apiKey = env.openApiKey;
+    forWhisper.OpenAI.requestsTimeOut = const Duration(seconds: 12);
+
 
     /// 앱 DI 실행
     await AppBinder.init();

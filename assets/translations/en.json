@@ -138,6 +138,12 @@
     "noSearchResults": "Sorry, there are no search results"
   },
   "interview": {
+    "loadingFollowUpQuestion" : "Loading Follow-up Question...",
+    "followUpQuestion" : "Follow-up Questions",
+    "aiFeedbackErrorOccured": "An error occurred in verifying the answer. Please try again later.",
+    "noAudioDetected": "No input audio detected",
+    "answerVocally": "Answer vocally!",
+    "processingRecord": "Processing the recording",
     "hello": "Hi, {}! Always rooting for you.",
     "multipleTopics": "Pick multiple skill topics and try Live Interview!",
     "focusOnOneTopic": "Pick one skill topic and focus on it!",
@@ -156,7 +162,8 @@
     "startYourInterviewByClicking": "Click the button at the bottom right\nto start the interview!",
     "interviewHasEnd": "The interview has ended",
     "errorHasDetected": "An error occurred, unable to send the response",
-    "waitForReply": "Wait for the interviewer to finish before replying"
+    "waitForReply": "Wait for the interviewer to finish before replying",
+    "recordFailed": "Failed to recognize the voice. Please try again."
   },
   "qa": {
     "numberOfQa": " items",
@@ -212,6 +219,11 @@
       "confirmLogout": "Are you sure you want to log out?"
     }
   },
+  "permission": {
+    "permissionNeeded": "Permission Required",
+    "micRequired": "Please allow microphone permission in the settings.",
+    "setUp": "Go to Settings"
+  },
   "errors": {
     "error": "error",
     "photoUploadError": "Failed to load the image from the photo album.",
@@ -232,6 +244,7 @@
     "pleaseUpdateForLatestFeatures": "Please update to enjoy the latest features",
     "later": "Later",
     "update": "Update",
+    "setUp": "Settings",
     "question": "Question",
     "questionNumber": "Question{questionNumber}",
     "interviewTopic": "Interview Topic",

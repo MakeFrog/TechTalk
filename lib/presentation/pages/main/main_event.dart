@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/auth/auth.dart';
 import 'package:techtalk/features/system/system.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
@@ -32,7 +33,7 @@ mixin class MainEvent {
   Future<void> alertRateAppDialogIfNeeded(WidgetRef ref) async {
     final user = ref.read(userInfoProvider).requireValue!;
 
-    if (user.signUpDate.isOneMonthOrMorePassedFromNow && user.isReviewRequestAvailable) {
+    if (user.signUpDate.isOneMonthOrMorePassedFromNow &&  user.signUpDate.isWithin24Hours && user.isReviewRequestAvailable ) {
       final InAppReview inAppReview = InAppReview.instance;
       if (await inAppReview.isAvailable()) {
         unawaited(inAppReview.requestReview());

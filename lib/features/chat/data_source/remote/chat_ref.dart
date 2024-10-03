@@ -6,6 +6,7 @@ abstract class FirestoreChatRoomRef {
   static const String name = 'Chats';
   static const String typeField = 'type';
   static const String topicIdsField = 'topic_ids';
+  static const String totalQuestionCount = 'total_question_count';
   static const String correctAnswerCount = 'correct_answer_count';
   static const String incorrectAnswerCount = 'incorrect_answer_count';
 
@@ -45,6 +46,8 @@ abstract class FirestoreChatQnaRef {
   static const String name = 'Qna';
   static const String messageIdField = 'message_id';
   static const String stateField = 'state';
+  static const String questionField = 'question';
+  static const String followUpQnasField = 'follow_up_qnas';
 
   static CollectionReference<ChatQnaModel> collection(String roomId) =>
       FirestoreChatRoomRef.doc(roomId).collection(name).withConverter(

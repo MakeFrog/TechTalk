@@ -7,3 +7,5 @@
 */
 "CFBundleDisplayName" = "테크톡";
 "NSPhotoLibraryUsageDescription" = "프로필 이미지를 변경하려면 앱에서 사진 라이브러리에 액세스 할 수 있어야 합니다.";
+"NSMicrophoneUsageDescription" = "앱이 음성 인식을 위해 마이크에 접근할 수 있도록 허용해주세요.";
+"NSSpeechRecognitionUsageDescription" = "앱이 음성 인식을 위해 음성을 분석할 수 있도록 허용해주세요.";

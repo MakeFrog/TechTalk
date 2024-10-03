@@ -1,3 +1,4 @@
+import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -11,7 +12,6 @@ import 'package:techtalk/presentation/pages/sign_up/sign_up_state.dart';
 import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_intro_message.dart';
 import 'package:techtalk/presentation/providers/input/nickname_input_provider.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
-import 'package:techtalk/presentation/widgets/common/gesture/animated_scale_tap.dart';
 
 class NicknameInputStep extends StatelessWidget {
   const NicknameInputStep({super.key});
@@ -101,7 +101,7 @@ class _Scaffold extends StatelessWidget {
         ),
         const Spacer(),
         Container(
-          margin: EdgeInsets.only(bottom: AppSize.to.bottomInset == 0 ? 16 : 0),
+          margin: EdgeInsets.only(bottom: AppSize.bottomInset == 0 ? 16 : 0),
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: bottomFixedBtn,
         )
@@ -123,9 +123,8 @@ class _StepBtn extends HookConsumerWidget with SignUpState, SignUpEvent {
       isBtnActivate.value = formKey.currentState!.validate();
     });
 
-    return ShrinkGestureView(
-      borderRadius: BorderRadius.circular(16),
-      disableScaleAnimation: !isBtnActivate.value,
+    return BounceTapper(
+      enable: isBtnActivate.value,
       child: FilledButton(
         onPressed:
             isBtnActivate.value ? () => onNicknameStepBtnTapped(ref) : null,

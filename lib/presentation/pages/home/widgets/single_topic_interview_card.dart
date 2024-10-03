@@ -1,3 +1,4 @@
+import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,7 +11,6 @@ import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/home/home_event.dart';
 import 'package:techtalk/presentation/pages/home/widgets/home_state.dart';
-import 'package:techtalk/presentation/widgets/common/gesture/animated_scale_tap.dart';
 
 class SingleTopicInterviewCard extends ConsumerWidget
     with HomeState, HomeEvent {
@@ -86,7 +86,7 @@ class SingleTopicInterviewCard extends ConsumerWidget
     const double imgSize = 40;
     return Consumer(
       builder: (context, ref, _) {
-        return ShrinkGestureView(
+        return BounceTapper(
           onTap: () {
             routeToChatListPage(
               context,
@@ -94,11 +94,13 @@ class SingleTopicInterviewCard extends ConsumerWidget
               topicId: topic.id,
             );
           },
-          borderRadius: BorderRadius.circular(16),
           child: Container(
-            color: AppColor.of.white,
             padding: const EdgeInsets.only(right: 24, left: 24),
             height: 64,
+            decoration: BoxDecoration(
+              color: AppColor.of.white,
+              borderRadius: BorderRadius.circular(16),
+            ),
             child: Row(
               children: [
                 SizedBox(
@@ -118,30 +120,33 @@ class SingleTopicInterviewCard extends ConsumerWidget
                   style: AppTextStyle.title1,
                 ),
                 const Spacer(),
-                FilledButton(
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  style: FilledButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
+                BounceTapper(
+                  highlightColor: Colors.transparent,
+                  child: FilledButton(
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    style: FilledButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      backgroundColor: AppColor.of.background1,
+                      foregroundColor: AppColor.of.gray4,
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    onPressed: () async {
+                      await Future.delayed(const Duration(milliseconds: 200));
+                      routeToChatListPage(
+                        context,
+                        type: InterviewType.singleTopic,
+                        topicId: topic.id,
+                      );
+                    },
+                    child: Text(
+                      tr(LocaleKeys.home_takeInterview),
+                      style: AppTextStyle.body1,
                     ),
-                    backgroundColor: AppColor.of.background1,
-                    foregroundColor: AppColor.of.gray4,
-                  ),
-                  onPressed: () async {
-                    await Future.delayed(const Duration(milliseconds: 200));
-                    routeToChatListPage(
-                      context,
-                      type: InterviewType.singleTopic,
-                      topicId: topic.id,
-                    );
-                  },
-                  child: Text(
-                    tr(LocaleKeys.home_takeInterview),
-                    style: AppTextStyle.body1,
                   ),
                 ),
               ],

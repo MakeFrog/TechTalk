@@ -1,3 +1,4 @@
+import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -123,15 +124,18 @@ class _NextButton extends ConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      margin: EdgeInsets.only(bottom: AppSize.to.bottomInset == 0 ? 16 : 0),
+      margin: EdgeInsets.only(bottom: AppSize.bottomInset == 0 ? 16 : 0),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       height: 56,
-      child: FilledButton(
-        onPressed: isStepBtnActivate(ref)
-            ? () => routeToQuestionCountSelect(ref)
-            : null,
-        child: Center(
-          child: Text(tr(LocaleKeys.common_next)),
+      child: BounceTapper(
+        onTap: () {
+          routeToQuestionCountSelect(ref);
+        },
+        child: FilledButton(
+          onPressed: () {},
+          child: Center(
+            child: Text(tr(LocaleKeys.common_next)),
+          ),
         ),
       ),
     );

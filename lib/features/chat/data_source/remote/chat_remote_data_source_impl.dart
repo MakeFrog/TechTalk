@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:techtalk/app/di/modules/system_di.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/data_source/remote/models/follow_up_qna_model.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
@@ -54,30 +57,67 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   }) async {
     await FirebaseFirestore.instance.runTransaction(
       (transaction) async {
-        for (final message in messages) {
-          final messageModel = ChatModel.fromEntity(message);
+        for (final item in messages) {
+          final messageModel = ChatModel.fromEntity(item);
           transaction.set(
-            FirestoreChatMessageRef.collection(roomId).doc(message.id),
+            FirestoreChatMessageRef.collection(roomId).doc(item.id),
             messageModel,
           );
 
-          if (message is AnswerChatEntity) {
-            transaction
-              ..update(FirestoreChatRoomRef.doc(roomId), {
-                if (message.answerState.isCorrect)
+          /// 꼬리 질문 question type일 경우
+          /// 총합 개수 +1
+          if (item is QuestionChatEntity && item.isFollowUpQuestion) {
+            transaction.update(FirestoreChatRoomRef.doc(roomId), {
+              FirestoreChatRoomRef.totalQuestionCount: FieldValue.increment(1),
+            });
+          }
+
+          /// 꼬리 질문 답변인지 여부를 판별
+          /// 꼬리 질문이라면 채팅방의 정오답 개수를 업데이트하는 로직을 실행하지 않음
+          if (item is AnswerChatEntity) {
+            /// 정오답 개수 업데이트
+            transaction.update(
+              FirestoreChatRoomRef.doc(roomId),
+              {
+                if (item.answerState.isCorrect)
                   FirestoreChatRoomRef.correctAnswerCount:
                       FieldValue.increment(1),
-                if (message.answerState.isWrongOrInappropriate)
+                if (item.answerState.isWrongOrInappropriate)
                   FirestoreChatRoomRef.incorrectAnswerCount:
                       FieldValue.increment(1),
-              })
-              ..update(
-                FirestoreChatQnaRef.collection(roomId).doc(message.qnaId),
+              },
+            );
+
+            /// 꼬리 질문이 아니라면
+            if (item.isFollowUpQna) {
+              transaction.update(
+                FirestoreChatQnaRef.collection(roomId).doc(item.qnaId),
                 {
-                  FirestoreChatQnaRef.messageIdField: message.id,
-                  FirestoreChatQnaRef.stateField: message.answerState.tag,
+                  FirestoreChatQnaRef.messageIdField: item.id,
+                  FirestoreChatQnaRef.stateField: item.answerState.tag,
                 },
               );
+            }
+
+            /// 꼬리 질문이라면
+            /// Qna > 꼬리질문 필드 업데이트
+            else {
+              transaction.update(
+                FirestoreChatQnaRef.collection(roomId).doc(item.rootQnaId),
+                {
+                  FirestoreChatQnaRef.followUpQnasField: FieldValue.arrayUnion(
+                    [
+                      FollowUpQnaModel(
+                        id: item.qnaId,
+                        state: item.answerState.tag,
+                        messageId: item.id,
+                        question: item.followUpQuestion!,
+                      ).toJson(),
+                    ],
+                  )
+                },
+              );
+            }
           }
         }
       },

@@ -29,8 +29,7 @@ class _EmptyListPlaceholder extends ConsumerWidget
             builder: (context) {
               if (userTopicRecords(ref).isNotEmpty) {
                 return Center(
-                  child: ShrinkGestureView(
-                    borderRadius: BorderRadius.circular(16),
+                  child: BounceTapper(
                     child: FilledButton(
                       style: FilledButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
@@ -51,8 +50,7 @@ class _EmptyListPlaceholder extends ConsumerWidget
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ShrinkGestureView(
-                      borderRadius: BorderRadius.circular(16),
+                    BounceTapper(
                       child: FilledButton(
                         style: FilledButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
@@ -73,8 +71,7 @@ class _EmptyListPlaceholder extends ConsumerWidget
                       ),
                     ),
                     const Gap(8),
-                    ShrinkGestureView(
-                      borderRadius: BorderRadius.circular(16),
+                    BounceTapper(
                       child: OutlinedButton(
                         style: FilledButton.styleFrom(
                           padding: const EdgeInsets.symmetric(

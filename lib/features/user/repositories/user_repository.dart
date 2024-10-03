@@ -10,6 +10,11 @@ abstract interface class UserRepository {
   Future<Result<void>> createUser(UserEntity data);
 
   ///
+  /// 유저의 면접 실행 기록 여부
+  ///
+  Result<bool> hasEnteredFirstInterview();
+
+  ///
   /// 유저 정보 호출
   ///
   Future<Result<UserEntity>> getUser([String? uid]);
@@ -53,4 +58,9 @@ abstract interface class UserRepository {
   /// 유저 앱 평가 요청 가능 상태를 비활성화
   ///
   Future<Result<void>> disableReviewAvailableState();
+
+  ///
+  /// 면접을 처음 실행했는지 여부 값 업데이트
+  ///
+  Future<Result<void>> changeFirstEnteredFieldToTrue();
 }

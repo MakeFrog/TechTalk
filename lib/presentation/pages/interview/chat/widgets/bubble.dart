@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
@@ -57,66 +59,84 @@ class Bubble extends StatelessWidget {
                       bottom: 8,
                     )
                   : null,
-              constraints: BoxConstraints(maxWidth: AppSize.to.ratioWidth(250)),
-              child: Builder(
-                builder: (BuildContext context) {
-                  return Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 14,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColor.of.blue1,
-                      borderRadius: radiusOnCase,
-                    ),
-                    child: Builder(
-                      builder: (BuildContext context) {
-                        if (item.isStreamApplied) {
-                          /// STREAMED MESSAGE
-                          return HookBuilder(
-                            builder: (context) {
-                              useAutomaticKeepAlive();
+              constraints: BoxConstraints(maxWidth: AppSize.ratioWidth(250)),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 14,
+                ),
+                decoration: BoxDecoration(
+                  color: chat.type.isQuestionMessage
+                      ? ((chat as QuestionChatEntity).isFollowUpQuestion
+                          ? const Color(0xFFF4EDFF)
+                          : AppColor.of.blue1)
+                      : AppColor.of.blue1,
+                  borderRadius: radiusOnCase,
+                ),
+                child: Builder(
+                  builder: (BuildContext context) {
+                    if (item.isStreamApplied) {
+                      /// STREAMED MESSAGE
+                      return HookBuilder(
+                        builder: (context) {
+                          useAutomaticKeepAlive();
 
-                              return StreamBuilder<String>(
-                                stream: item.message.stream,
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                    return SizedBox(
-                                      height: 17,
-                                      width: 17,
-                                      child: CircularProgressIndicator(
-                                        color: AppColor.of.gray3,
-                                        strokeWidth: 2,
-                                      ),
-                                    );
-                                  }
-
-                                  if (snapshot.connectionState == ConnectionState.none) {
-                                    return Text(
-                                      '오류가 발생했어요',
-                                      style: AppTextStyle.alert2,
-                                    );
-                                  }
-
+                          return StreamBuilder<String>(
+                            stream: item.message.stream,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                if (chat.type.isQuestionMessage &&
+                                    (chat as QuestionChatEntity)
+                                        .isFollowUpQuestion) {
                                   return Text(
-                                    snapshot.hasData ? snapshot.requireData : '',
-                                    style: AppTextStyle.body2,
+                                    tr(LocaleKeys.interview_loadingFollowUpQuestion),
+                                    style: AppTextStyle.body2
+                                        .copyWith(color: AppColor.of.gray4),
+                                  )
+                                      .animate(
+                                          delay: 320.ms,
+                                          onPlay: (controller) =>
+                                              controller.repeat(
+                                                  period: 500.milliseconds))
+                                      .shimmer(
+                                          color: Colors.white.withOpacity(0.5));
+                                } else {
+                                  return SizedBox(
+                                    height: 17,
+                                    width: 17,
+                                    child: CircularProgressIndicator(
+                                      color: AppColor.of.gray3,
+                                      strokeWidth: 2,
+                                    ),
                                   );
-                                },
+                                }
+                              }
+
+                              if (snapshot.connectionState ==
+                                  ConnectionState.none) {
+                                return Text(
+                                  '오류가 발생했어요',
+                                  style: AppTextStyle.alert2,
+                                );
+                              }
+
+                              return Text(
+                                snapshot.hasData ? snapshot.requireData : '',
+                                style: AppTextStyle.body2,
                               );
                             },
                           );
-                        } else {
-                          /// STATIC MESSAGE
-                          return Text(
-                            item.message.valueOrNull ?? '알 수 없는 메세지 입니다',
-                            style: AppTextStyle.body2,
-                          );
-                        }
-                      },
-                    ),
-                  );
-                },
+                        },
+                      );
+                    } else {
+                      return Text(
+                        item.message.valueOrNull ?? '알 수 없는 메세지 입니다',
+                        style: AppTextStyle.body2,
+                      );
+                    }
+                  },
+                ),
               ),
             ),
             if (item is FeedbackChatEntity && item.message.isClosed)
@@ -155,13 +175,14 @@ class Bubble extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Container(
-              constraints: BoxConstraints(maxWidth: AppSize.to.ratioWidth(250)),
+              constraints: BoxConstraints(maxWidth: AppSize.ratioWidth(250)),
               decoration: BoxDecoration(
                 color: AppColor.of.background1,
                 borderRadius: radiusOnCase,
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
                 child: Text(
                   item.message.value,
                   style: AppTextStyle.body2.copyWith(color: AppColor.of.black),
@@ -178,7 +199,8 @@ class Bubble extends StatelessWidget {
                       children: [
                         Text(
                           tr(item.answerState.str),
-                          style: AppTextStyle.alert1.copyWith(color: AppColor.of.blue2),
+                          style: AppTextStyle.alert1
+                              .copyWith(color: AppColor.of.blue2),
                         ),
                         const SizedBox(
                           width: 2,
@@ -192,7 +214,8 @@ class Bubble extends StatelessWidget {
                       children: [
                         Text(
                           tr(item.answerState.str),
-                          style: AppTextStyle.alert1.copyWith(color: AppColor.of.red2),
+                          style: AppTextStyle.alert1
+                              .copyWith(color: AppColor.of.red2),
                         ),
                         const SizedBox(
                           width: 2,

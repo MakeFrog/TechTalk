@@ -125,6 +125,12 @@ abstract class  LocaleKeys {
   static const techSelection_searchInKorean = 'techSelection.searchInKorean';
   static const techSelection_noSearchResults = 'techSelection.noSearchResults';
   static const techSelection = 'techSelection';
+  static const interview_loadingFollowUpQuestion = 'interview.loadingFollowUpQuestion';
+  static const interview_followUpQuestion = 'interview.followUpQuestion';
+  static const interview_aiFeedbackErrorOccured = 'interview.aiFeedbackErrorOccured';
+  static const interview_noAudioDetected = 'interview.noAudioDetected';
+  static const interview_answerVocally = 'interview.answerVocally';
+  static const interview_processingRecord = 'interview.processingRecord';
   static const interview_hello = 'interview.hello';
   static const interview_multipleTopics = 'interview.multipleTopics';
   static const interview_focusOnOneTopic = 'interview.focusOnOneTopic';
@@ -144,6 +150,7 @@ abstract class  LocaleKeys {
   static const interview_interviewHasEnd = 'interview.interviewHasEnd';
   static const interview_errorHasDetected = 'interview.errorHasDetected';
   static const interview_waitForReply = 'interview.waitForReply';
+  static const interview_recordFailed = 'interview.recordFailed';
   static const interview = 'interview';
   static const qa_numberOfQa = 'qa.numberOfQa';
   static const qa_swiftAndTwoOthers = 'qa.swiftAndTwoOthers';
@@ -190,6 +197,10 @@ abstract class  LocaleKeys {
   static const myInfo_logout_confirmLogout = 'myInfo.logout.confirmLogout';
   static const myInfo_logout = 'myInfo.logout';
   static const myInfo = 'myInfo';
+  static const permission_permissionNeeded = 'permission.permissionNeeded';
+  static const permission_micRequired = 'permission.micRequired';
+  static const permission_setUp = 'permission.setUp';
+  static const permission = 'permission';
   static const errors_error = 'errors.error';
   static const errors_photoUploadError = 'errors.photoUploadError';
   static const errors_errorOccurred = 'errors.errorOccurred';
@@ -208,6 +219,7 @@ abstract class  LocaleKeys {
   static const undefined_pleaseUpdateForLatestFeatures = 'undefined.pleaseUpdateForLatestFeatures';
   static const undefined_later = 'undefined.later';
   static const undefined_update = 'undefined.update';
+  static const undefined_setUp = 'undefined.setUp';
   static const undefined_question = 'undefined.question';
   static const undefined_questionNumber = 'undefined.questionNumber';
   static const undefined_interviewTopic = 'undefined.interviewTopic';

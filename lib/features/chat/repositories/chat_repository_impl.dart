@@ -1,5 +1,6 @@
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/repositories/entities/follow_up_qna_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 final class ChatRepositoryImpl implements ChatRepository {
@@ -129,12 +130,14 @@ final class ChatRepositoryImpl implements ChatRepository {
 
       // 응답 id가 있으면 응답 데이터 조회
       final AnswerChatEntity? answer;
+
       if (element.messageId != null) {
-        final messageModel = await _remoteDataSource.getChat(
+        final message = await _remoteDataSource.getChat(
           room.id,
           element.messageId!,
         );
-        answer = messageModel.toEntity() as AnswerChatEntity;
+
+        answer = message.toEntity() as AnswerChatEntity;
       } else {
         answer = null;
       }
@@ -143,6 +146,9 @@ final class ChatRepositoryImpl implements ChatRepository {
         ChatQnaEntity(
           qna: question,
           message: answer,
+          followUpQna: element.followUpQnas?.first != null
+              ? FollowUpQnaEntity.fromModel(element.followUpQnas!.first)
+              : null,
         ),
       );
     });

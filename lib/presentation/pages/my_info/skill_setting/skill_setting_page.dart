@@ -1,3 +1,4 @@
+import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,7 +9,6 @@ import 'package:techtalk/presentation/pages/sign_up/widgets/select_result_chip_l
 import 'package:techtalk/presentation/pages/sign_up/widgets/sign_up_step_intro_message.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
-import 'package:techtalk/presentation/widgets/common/gesture/animated_scale_tap.dart';
 import 'package:techtalk/presentation/widgets/common/input/clearable_text_field.dart';
 import 'package:techtalk/presentation/widgets/section/searched_skill_list_view.dart';
 import 'package:techtalk/presentation/widgets/section/skill_selection_scaffold.dart';
@@ -20,7 +20,7 @@ class SkillSettingPage extends BasePage
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
     return SkillSelectionScaffold(
-      introTextView:  SignUpStepIntroMessage(
+      introTextView: SignUpStepIntroMessage(
         title: context.tr(LocaleKeys.techSelection_promptTechInterviewTopics),
         subTitle: context.tr(LocaleKeys.techSelection_searchInEnglish),
       ),
@@ -55,7 +55,7 @@ class _SearchBar extends ConsumerWidget
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: ClearableTextField(
         controller: skillTextFieldController(ref),
-        inputDecoration:  InputDecoration(
+        inputDecoration: InputDecoration(
           hintText: context.tr(
             LocaleKeys.techSelection_searchTechnologies,
           ),
@@ -78,9 +78,8 @@ class _SaveBtn extends ConsumerWidget
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ShrinkGestureView(
-      disableScaleAnimation: !isBottomFixedBtnActivate(ref),
-      borderRadius: BorderRadius.circular(16),
+    return BounceTapper(
+      enable: isBottomFixedBtnActivate(ref),
       child: FilledButton(
         onPressed: isBottomFixedBtnActivate(ref)
             ? () {
