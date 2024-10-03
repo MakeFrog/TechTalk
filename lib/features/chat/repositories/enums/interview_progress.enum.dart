@@ -19,6 +19,7 @@ enum InterviewProgress {
       };
 
   bool get canEnableTextField => switch (this) {
+        InterviewProgress.initial ||
         InterviewProgress.readyToAnswer ||
         InterviewProgress.interviewerReplying =>
           true,

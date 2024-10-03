@@ -17,6 +17,7 @@ import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/is_follow_up_process_active_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/main_input_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
@@ -279,5 +280,12 @@ mixin class ChatEvent {
     WidgetRef ref,
   ) async {
     await ref.read(speechToTextProvider.notifier).cancelRecordMode(ref);
+  }
+
+  ///
+  /// 꼬리 질문 활성화 여부 상태 토글
+  ///
+  void toggleFollowUpQuestionActiveState(WidgetRef ref) {
+    ref.read(isFollowUpProcessActiveProvider.notifier).toggle();
   }
 }

@@ -8,6 +8,7 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
@@ -67,12 +68,20 @@ class InterviewProgressState extends _$InterviewProgressState {
           );
 
         case ChatType.feedback:
-          if (ref.read(selectedChatRoomProvider.notifier).isLastQuestion()) {
-            state = InterviewProgress.done;
-            if (ref.read(isSpeechModeProvider).isTrue) {
-              ref.read(isSpeechModeProvider.notifier).toggle();
+          lastChat.message.listen(null, onDone: () async {
+            final hasFollowupProcess = await ref
+                .read(chatMessageHistoryProvider.notifier)
+                .isFollowUpProcessActive
+                .future;
+            if (!hasFollowupProcess &&
+                ref.read(chatQnasProvider.notifier).isEveryQnaCompleted()) {
+              state = InterviewProgress.done;
+              if (ref.read(isSpeechModeProvider).isTrue) {
+                ref.read(isSpeechModeProvider.notifier).toggle();
+              }
             }
-          }
+          });
+
         default:
           state = InterviewProgress.interviewerReplying;
       }

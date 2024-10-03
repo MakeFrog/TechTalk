@@ -2,6 +2,79 @@ part of 'chat_message_history_provider.dart';
 
 extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   ///
+  /// 꼬리질문 생성
+  ///
+  Future<QuestionChatEntity?> _startFollowUpQuestion({
+    required List<BaseChatEntity> chatHistory,
+    required FeedbackResponseEntity rootFeedbackResponse,
+    required AnswerChatEntity rootAnswerChat,
+  }) async {
+    log('👀: 피드백 필요함!!!!!!');
+
+    final feedbackChat = FeedbackChatEntity.createStatic(
+      message: rootFeedbackResponse.feedback,
+      timestamp: DateTime.now(),
+      qnaId: rootFeedbackResponse.topicQuestion.qna.id,
+    );
+
+    /// NOTE
+    /// 꼬리질문 id 형태
+    /// "rootQnaId=난수"
+    final followUpQuestionId =
+        '${rootFeedbackResponse.topicQuestion.qna.id}=${const Uuid().v1()}';
+
+    QuestionChatEntity? followUpQuestionChat;
+
+    final response = SetAiFollowUpQuestionUseCase().call((
+      chatHistory: chatHistory,
+      onFollowUpQuestionCompleted: ({required String followUpQuestion}) async {
+        followUpQuestionChat = QuestionChatEntity.createStatic(
+          qnaId: followUpQuestionId,
+          rootQnaId: rootFeedbackResponse.topicQuestion.qna.id,
+          message: followUpQuestion,
+          timestamp: DateTime.now(),
+        );
+
+        await _uploadMessage([
+          rootAnswerChat,
+          feedbackChat,
+          followUpQuestionChat!,
+        ]).then(
+          /// 꼬리 질문 제시 이전 root Qna 프로스세 정보 업데이트
+          (_) => ref.read(selectedChatRoomProvider.notifier).updateProgressInfo(
+                isCorrect: rootAnswerChat.answerState.isCorrect,
+                lastChatMessage: followUpQuestionChat!,
+                updateTotalCount: true,
+              ),
+        );
+      },
+      rootQna: rootFeedbackResponse.topicQuestion,
+      userName: rootFeedbackResponse.userName,
+      onError: _onAiFeedbackErrorOccured,
+    ));
+
+    await response.fold(
+      onSuccess: (questionStreamChat) async {
+        /// 3) 유저 답변에 대한 피드백 채팅 전달
+        await showMessage(
+          message: QuestionChatEntity(
+            message: questionStreamChat,
+            qnaId: followUpQuestionId,
+            rootQnaId: rootFeedbackResponse.topicQuestion.qna.id,
+          ),
+        );
+      },
+      onFailure: (e) {
+        _rollbackToPreviousChatStep();
+        SnackBarService.showSnackBar(
+            '정답 여부를 판별하는 과정에서 오류가 발생했습니다. 잠시후 다시 시도해주세요.');
+      },
+    );
+
+    return followUpQuestionChat;
+  }
+
+  ///
   /// 채팅 메세지 상태 업데이트
   ///
   Future<void> showMessage({
@@ -41,15 +114,24 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   ///
   Future<AnswerChatEntity> _updateUserAnswerState({
     required AnswerState answerState,
+    required List<BaseChatEntity> targetChatHistory,
   }) async {
     final chatList = state.requireValue.toList();
 
-    final answeredChat = chatList.firstWhere((chat) => chat.type.isSentMessage)
-        as AnswerChatEntity;
+    final answeredChat = targetChatHistory
+        .lastWhere((chat) => chat.type.isSentMessage) as AnswerChatEntity;
+
+    final followUpQna =
+        targetChatHistory.whereType<QuestionChatEntity>().toList().last;
+
     final resolvedAnsweredChat = answeredChat.copyWith(
       answerState: answerState,
+      followUpQuestion: followUpQna.message.value,
+      qnaId: followUpQna.isFollowUpQuestion ? followUpQna.qnaId : null,
+      // followUpQuestion: followUpQna.message.value,
     );
     final targetIndex = chatList.indexWhere((chat) => chat == answeredChat);
+
     chatList[targetIndex] = resolvedAnsweredChat;
 
     await update((_) => chatList);
@@ -67,7 +149,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
     final room = ref.read(selectedChatRoomProvider);
 
     final nickname = ref.watch(userInfoProvider).requireValue!.nickname!;
-    final firstQna = _getNewQna();
+    final firstQna = _getNewQna()!;
     final String introMessage;
 
     if (room.type.isSingleTopic) {
@@ -96,6 +178,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
 
     final firstQuestionChat = QuestionChatEntity.createStatic(
       qnaId: firstQna.qna.id,
+      rootQnaId: firstQna.qna.id,
       message: firstQna.qna.question,
       timestamp: DateTime.timestamp(),
     );
@@ -140,7 +223,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   ///
   /// 새로운 Qna 추출
   ///
-  ChatQnaEntity _getNewQna() {
+  ChatQnaEntity? _getNewQna() {
     var qna = ref
         .read(chatQnasProvider)
         .requireValue
@@ -151,9 +234,30 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
     /// 이미 응답이 완료되었기 때문에 마지막 질문을 못가져오는 경우가 잇음
     /// 이런 경우 마지막 질문을 리턴함
     /// 추후에 근본적인 해결 방법 필요
-    qna ??= ref.read(chatQnasProvider).requireValue.first;
+    // qna ??= ref.read(chatQnasProvider).requireValue.first;
 
     return qna;
+  }
+
+  ///
+  /// AI 응답 과정에서 에러 발생했을 때 실행하는 프로세스
+  ///
+  void _onAiFeedbackErrorOccured([Object? error, StackTrace? startTrace]) {
+    _rollbackToPreviousChatStep();
+    SnackBarService.showSnackBar(
+        tr(LocaleKeys.interview_aiFeedbackErrorOccured));
+    /// NOTE 임시 주석
+    // await _rollbackToPreviousChatStep();
+    // final context = rootNavigatorKey.currentContext!;
+    // DialogService.show(
+    //     dialog: AppDialog.singleBtn(
+    //       btnContent: context.tr(LocaleKeys.common_confirm),
+    //       title: context.tr(LocaleKeys.common_errorDetectedTryLater),
+    //       onBtnClicked: () async {
+    //         context.pop();
+    //         context.pop();
+    //       },
+    //     ));
   }
 
   ///

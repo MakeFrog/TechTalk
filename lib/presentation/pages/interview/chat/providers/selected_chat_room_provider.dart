@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/interview_rooms_provider.dart';
 
@@ -29,14 +32,25 @@ class SelectedChatRoom extends _$SelectedChatRoom {
   ///
   /// 채팅 진행상태 정보 업데이트
   ///
-  void updateProgressInfo(
-      {required bool isCorrect, required BaseChatEntity lastChatMessage}) {
+  void updateProgressInfo({
+    required bool isCorrect,
+    required BaseChatEntity lastChatMessage,
+    bool updateTotalCount = false,
+  }) {
+    int totalQuestionCount = state.progressInfo.totalQuestionCount;
+    if (updateTotalCount.isTrue) {
+      totalQuestionCount += 1;
+    }
 
     late ChatProgressInfoEntity updatedProgressInfo = switch (isCorrect) {
       true => state.progressInfo.copyWith(
-          correctAnswerCount: state.progressInfo.correctAnswerCount + 1),
+          correctAnswerCount: state.progressInfo.correctAnswerCount + 1,
+          totalQuestionCount: totalQuestionCount,
+        ),
       false => state.progressInfo.copyWith(
-          incorrectAnswerCount: state.progressInfo.incorrectAnswerCount + 1)
+          incorrectAnswerCount: state.progressInfo.incorrectAnswerCount + 1,
+          totalQuestionCount: totalQuestionCount,
+        )
     };
 
     final updatedRoom = state.copyWith(
@@ -47,13 +61,5 @@ class SelectedChatRoom extends _$SelectedChatRoom {
 
     state = updatedRoom;
     ref.read(interviewRoomsProvider.notifier).synchronizeRooms(updatedRoom);
-  }
-
-  ///
-  /// 마지막 질문 여부
-  ///
-  bool isLastQuestion() {
-    return state.progressInfo.completedQuestionCount + 1 ==
-        state.progressInfo.totalQuestionCount;
   }
 }

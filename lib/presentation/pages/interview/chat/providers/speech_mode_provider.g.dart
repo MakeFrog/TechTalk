@@ -6,7 +6,7 @@ part of 'speech_mode_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$isSpeechModeHash() => r'ee3504c6cd8f08731aabd0eaaac7561e40c21872';
+String _$isSpeechModeHash() => r'9c2bb9653cbaa0899aec8a3066523cdb3b2a1d26';
 
 /// See also [IsSpeechMode].
 @ProviderFor(IsSpeechMode)

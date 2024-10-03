@@ -125,6 +125,9 @@ abstract class  LocaleKeys {
   static const techSelection_searchInKorean = 'techSelection.searchInKorean';
   static const techSelection_noSearchResults = 'techSelection.noSearchResults';
   static const techSelection = 'techSelection';
+  static const interview_loadingFollowUpQuestion = 'interview.loadingFollowUpQuestion';
+  static const interview_followUpQuestion = 'interview.followUpQuestion';
+  static const interview_aiFeedbackErrorOccured = 'interview.aiFeedbackErrorOccured';
   static const interview_noAudioDetected = 'interview.noAudioDetected';
   static const interview_answerVocally = 'interview.answerVocally';
   static const interview_processingRecord = 'interview.processingRecord';

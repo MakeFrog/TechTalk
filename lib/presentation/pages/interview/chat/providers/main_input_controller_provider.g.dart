@@ -7,7 +7,7 @@ part of 'main_input_controller_provider.dart';
 // **************************************************************************
 
 String _$mainInputControllerHash() =>
-    r'c6cfa80f50b4ad23c2a1decfd41c901199308fe2';
+    r'ddad216448c8064a1d093d4527232c53ce150793';
 
 ///
 ///

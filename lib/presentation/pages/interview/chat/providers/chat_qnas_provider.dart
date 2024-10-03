@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/repositories/entities/follow_up_qna_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answers_provider.dart';
@@ -40,29 +41,57 @@ class ChatQnas extends _$ChatQnas {
   ///
   Future<void> updateState(AnswerChatEntity message) async {
     final qnas = state.requireValue;
-    final targetQnaIndex = qnas.indexWhere((e) => e.qna.id == message.qnaId);
-    final resolvedQna = qnas[targetQnaIndex].copyWith(
-      message: message,
-    );
+    final targetQnaIndex =
+        qnas.indexWhere((e) => e.qna.id == message.rootQnaId);
 
-    unawaited(
-      Future.wait(
-        [
-          update((previous) {
-            previous.removeAt(targetQnaIndex);
-            return [...previous, resolvedQna];
-          }),
-          _updateWrongAnswer(resolvedQna),
-        ],
-      ),
-    );
+    final isRootQna = message.qnaId == message.rootQnaId;
+
+    final resolvedQna = isRootQna
+        ? qnas[targetQnaIndex].copyWith(
+            message: message,
+          )
+        : qnas[targetQnaIndex].copyWith(
+            followUpQna: FollowUpQnaEntity.fromAnswerChatEntity(message));
+
+
+    /// 일반 Qna
+    if (isRootQna) {
+      unawaited(
+        Future.wait(
+          [
+            update((previous) {
+              previous.removeAt(targetQnaIndex);
+              return [...previous, resolvedQna];
+            }),
+            _updateWrongAnswer(resolvedQna),
+          ],
+        ),
+      );
+    }
+    /// 꼬리 질문 Qna
+    else {
+      unawaited(
+        Future.wait(
+          [
+            update((previous) {
+              final targetArray = previous;
+              final targetIndex =
+                  previous.indexWhere((e) => e.qna.id == resolvedQna.qna.id);
+              targetArray[targetIndex] = resolvedQna;
+              return [...targetArray];
+            }),
+          ],
+        ),
+      );
+    }
   }
 
   ///
   /// 전체 qna 리스트 진행 완료 여부
   ///
   bool isEveryQnaCompleted() {
-    return state.requireValue.every((e) => e.hasUserResponded);
+    return state.requireValue.every((e) =>
+        e.hasUserResponded && (e.followUpQna?.answerState.isCompleted ?? true));
   }
 
   _onError(Exception e) {

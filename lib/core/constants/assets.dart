@@ -30,7 +30,6 @@ class Assets {
   static const String characterRed05 = 'assets/character/red_05.svg';
   static const String characterRed06 = 'assets/character/red_06.svg';
   static const String characterRed07 = 'assets/character/red_07.svg';
-  static const String followUpQuestion = 'assets/icons/follow_up_question.svg';
   static const String iconsArrowDown = 'assets/icons/arrow_down.svg';
   static const String iconsArrowDownThick = 'assets/icons/arrow_down_thick.svg';
   static const String iconsArrowLeft = 'assets/icons/arrow_left.svg';
@@ -53,6 +52,7 @@ class Assets {
   static const String iconsDeleteOrWrong = 'assets/icons/delete_or_wrong.svg';
   static const String iconsErrorIndicator = 'assets/icons/error_indicator.svg';
   static const String iconsExpansionArrowIndicator = 'assets/icons/expansion_arrow_indicator.svg';
+  static const String iconsFollowUpQuestion = 'assets/icons/follow_up_question.svg';
   static const String iconsGoogleLogo = 'assets/icons/google_logo.svg';
   static const String iconsHome = 'assets/icons/home.svg';
   static const String iconsIconMic = 'assets/icons/icon_mic.svg';
@@ -87,6 +87,7 @@ class Assets {
   static const String iconsSend = 'assets/icons/send.svg';
   static const String iconsSendActivate = 'assets/icons/send_activate.svg';
   static const String iconsSendUp = 'assets/icons/send_up.svg';
+  static const String iconsStarDeco = 'assets/icons/star_deco.svg';
   static const String iconsStudy = 'assets/icons/study.svg';
   static const String iconsTalker = 'assets/icons/talker.svg';
   static const String iconsTechTalkLogo = 'assets/icons/tech_talk_logo.svg';

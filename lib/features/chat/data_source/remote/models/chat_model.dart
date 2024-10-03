@@ -18,6 +18,7 @@ class ChatModel {
     this.qnaId,
     this.state,
     required this.timestamp,
+    this.rootQnaId,
   });
 
   final String id;
@@ -25,6 +26,7 @@ class ChatModel {
   final String type;
   final String? qnaId;
   final String? state;
+  final String? rootQnaId;
   @TimeStampConverter()
   final DateTime timestamp;
 
@@ -53,6 +55,7 @@ class ChatModel {
       qnaId: qnaId,
       state: state,
       timestamp: entity.timestamp,
+      rootQnaId: entity.rootQnaId,
     );
   }
 
@@ -71,12 +74,14 @@ class ChatModel {
           message: message,
           answerState: AnswerState.getStateById(state!),
           qnaId: qnaId!,
+          rootQnaId: rootQnaId ?? qnaId!,
           timestamp: timestamp,
         );
       case ChatType.question:
         return QuestionChatEntity.createStatic(
           id: id,
           qnaId: qnaId!,
+          rootQnaId: rootQnaId ?? qnaId!,
           message: message,
           timestamp: timestamp,
         );
@@ -85,6 +90,8 @@ class ChatModel {
           id: id,
           message: message,
           timestamp: timestamp,
+          qnaId: qnaId ?? '',
+          rootQnaId: rootQnaId ?? qnaId ?? '',
         );
 
       default:

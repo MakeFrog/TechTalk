@@ -9,6 +9,7 @@ import 'package:techtalk/presentation/pages/interview/chat/providers/chat_messag
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/is_follow_up_process_active_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/main_input_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/recognized_text_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
@@ -111,4 +112,9 @@ mixin class ChatState {
   ///
   FocusNode focusNode(WidgetRef ref) =>
       ref.read(mainInputControllerProvider.notifier).focusNode;
+
+  ///
+  /// 꼬리 질문 활성화 여부
+  ///
+  bool isFollowUpProcessActive(WidgetRef ref) => ref.watch(isFollowUpProcessActiveProvider);
 }
