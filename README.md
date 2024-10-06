@@ -29,12 +29,13 @@
 
 # Summary
 
-| Index       | Detail                                                                                                                                                                                                                      |  
-|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| State Management | rivepord, rxdart                                                                                                                                                                                                            |
-| Key Packages    | go_router (Routing), get_it (DI), dio (Networking), hive (Local Database), json_serializable (Modeling)                                                                                                                                  |
-| Flutter SDK     | 3.19.1                                                                                                                                                                                                                      |
-| Structure       | <img src="https://velog.velcdn.com/images/ximya_hf/post/344edd13-f828-453b-a9c1-7ee076898af6/image.png">                                                                                                                    |
+| Index       | Detail                                                                                                  |  
+|-------------|---------------------------------------------------------------------------------------------------------|
+| State Management | rivepord, rxdart                                                                                        |
+| Key Packages    | go_router (Routing), get_it (DI), dio (Networking), hive (Local Database), json_serializable (Modeling) |
+| Flutter SDK     | 3.19.1                                                                                                  |
+| Supported Languages    | English, Korean                                                                                         |
+| Structure       | <img src="https://velog.velcdn.com/images/ximya_hf/post/344edd13-f828-453b-a9c1-7ee076898af6/image.png"> |
 
 <br/>
 

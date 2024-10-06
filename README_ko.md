@@ -35,12 +35,13 @@
 
 # 요약
 
-| Index       | Detail                                                                                                                                                                                                                      |  
-|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 상태관리        | rivepord, rxdart                                                                                                                                                                                                            |
-| 주요 패키지      | go_router(라우팅), get_it(DI), dio(네트워킹), hive(로컬 데이터베이스), json_serializable(모델링)                                                                                                                                              |
-| Flutter SDK | 3.19.1                                                                                                                                                                                                                      |
-| 구조          | <img src="https://velog.velcdn.com/images/ximya_hf/post/344edd13-f828-453b-a9c1-7ee076898af6/image.png">                                                                                                                    |
+| Index       | Detail                                                                                                   |  
+|-------------|----------------------------------------------------------------------------------------------------------|
+| 상태관리        | rivepord, rxdart                                                                                         |
+| 주요 패키지      | go_router(라우팅), get_it(DI), dio(네트워킹), hive(로컬 데이터베이스), json_serializable(모델링)                           |
+| Flutter SDK | 3.19.1                                                                                                   |
+| 지원언어        | 한국어, 영어                                                                                                  |
+| 구조          | <img src="https://velog.velcdn.com/images/ximya_hf/post/344edd13-f828-453b-a9c1-7ee076898af6/image.png"> |
 
 
 <br/>
