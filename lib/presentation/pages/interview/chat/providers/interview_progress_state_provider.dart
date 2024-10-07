@@ -4,7 +4,9 @@ import 'dart:developer';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/core/services/slack_notification_service.dart' as noti;
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
@@ -36,11 +38,17 @@ class InterviewProgressState extends _$InterviewProgressState {
   /// 채팅 메세지 리스트를 listen하여
   /// 채팅 인터뷰 진행 상태를 조건별로 업데이트
   ///
+  ///
   void listenMessageChanges() {
     ref.listen(chatMessageHistoryProvider, (prev, chatHistory) {
-      if (chatHistory.value == null) return;
+      if (chatHistory.valueOrNull == null) return;
 
       final lastChat = chatHistory.value!.first;
+
+      if ((prev?.hasValue ?? false) &&
+          prev?.value?.first.type == lastChat.type) {
+        return;
+      }
 
       switch (lastChat.type) {
         case ChatType.guide:
@@ -92,6 +100,10 @@ class InterviewProgressState extends _$InterviewProgressState {
   /// 인터뷰가 종료되었을 때
   ///
   Future<void> _setAnalytics() async {
+    unawaited(noti.SlackNotificationService.sendNotification(
+        type: SlackNotificationType.event,
+        message:
+            '면접을 완료했어요!(${ref.read(selectedChatRoomProvider).passOrFail.name})'));
     unawaited(FirebaseAnalytics.instance.logEvent(
       name: 'Interview Completed',
       parameters: {
