@@ -103,7 +103,7 @@ class InterviewProgressState extends _$InterviewProgressState {
     unawaited(noti.SlackNotificationService.sendNotification(
         type: SlackNotificationType.event,
         message:
-            '면접을 완료했어요!(${ref.read(selectedChatRoomProvider).passOrFail.name})'));
+            '면접을 완료했어요!(결과:${ref.read(selectedChatRoomProvider).passOrFail.name})'));
     unawaited(FirebaseAnalytics.instance.logEvent(
       name: 'Interview Completed',
       parameters: {
@@ -145,6 +145,9 @@ class InterviewProgressState extends _$InterviewProgressState {
 
               if (await inAppReview.isAvailable()) {
                 unawaited(inAppReview.requestReview());
+                unawaited(noti.SlackNotificationService.sendNotification(
+                    type: SlackNotificationType.event,
+                    message: '유저에게 앱 리뷰를 요청했어요!'));
               }
             }
           }

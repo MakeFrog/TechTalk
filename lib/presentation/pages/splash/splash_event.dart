@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
+import 'package:techtalk/core/services/slack_notification_service.dart';
 import 'package:techtalk/features/system/system.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/presentation/providers/user/user_auth_provider.dart';
@@ -28,19 +31,35 @@ mixin class SplashEvent {
 
     await response.fold(
       onSuccess: (_) async {
+
         await initStaticData(ref);
         final auth = ref.read(userAuthProvider);
 
         if (auth == null) {
+          unawaited(
+            SlackNotificationService.sendNotification(
+              type: SlackNotificationType.login,
+            ),
+          );
           const SignInRoute().go(ref.context);
           return;
         }
 
+
+
         await ref.read(userInfoProvider.future).then(
-          (userData) {
+          (userData) async {
+            SlackNotificationService.updateUserInfo(userData);
+            unawaited(
+              SlackNotificationService.sendNotification(
+                targetUserInfo: userData,
+                type: SlackNotificationType.login,
+              ),
+            );
             if (userData == null) {
               const SignUpRoute().go(ref.context);
             } else {
+
               const MainRoute().go(ref.context);
             }
           },

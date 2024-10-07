@@ -4,6 +4,8 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
+import 'package:techtalk/core/services/slack_notification_service.dart' as noti;
 import 'package:techtalk/features/auth/repositories/entities/user_account_provider.enum.dart';
 import 'package:techtalk/presentation/providers/user/user_auth_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
@@ -20,6 +22,7 @@ mixin class SignInEvent {
           unawaited(FirebaseAnalytics.instance
               .logLogin(loginMethod: accountProvider.name));
           const MainRoute().go(ref.context);
+          unawaited(noti.SlackNotificationService.sendNotification(type: SlackNotificationType.login, targetUserInfo: userData));
         } else {
           unawaited(FirebaseAnalytics.instance
               .logSignUp(signUpMethod: accountProvider.name));
