@@ -37,7 +37,8 @@ class SingleTopicInterviewCard extends ConsumerWidget
                     style: AppTextStyle.headline2,
                   ),
                 ),
-                GestureDetector(
+                BounceTapper(
+                  highlightColor: Colors.transparent,
                   onTap: () {
                     routeToTopicSelectPage(
                       context,
