@@ -100,6 +100,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           ],
         ),
         GoRouteData.$route(
+          path: 'resume',
+          name: 'resume',
+          factory: $ResumeManageRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'profile-setting',
           name: 'profile-setting',
           factory: $ProfileSettingRouteExtension._fromState,
@@ -191,6 +196,24 @@ extension $QuestionCountSelectPageRouteExtension
 
   String get location => GoRouteData.$location(
         '/interview/${Uri.encodeComponent(_$InterviewTypeEnumMap[type]!)}/${Uri.encodeComponent(topicId)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $ResumeManageRouteExtension on ResumeManageRoute {
+  static ResumeManageRoute _fromState(GoRouterState state) =>
+      const ResumeManageRoute();
+
+  String get location => GoRouteData.$location(
+        '/resume',
       );
 
   void go(BuildContext context) => context.go(location);

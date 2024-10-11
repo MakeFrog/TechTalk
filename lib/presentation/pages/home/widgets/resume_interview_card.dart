@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/home/home_event.dart';
 import 'package:techtalk/presentation/pages/home/widgets/home_state.dart';
 
@@ -14,6 +13,7 @@ class ResumeInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return BounceTapper(
+      // TODO: routeToChatListPage()에서 InterviewType.resume 새로 만든 후 적용하기
       onTap: () => onResumeCardTapped(ref),
       child: Container(
         padding: const EdgeInsets.fromLTRB(24, 12, 0, 12),
@@ -35,12 +35,7 @@ class ResumeInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    routeToResumeManagePage(
-                      context,
-                      type: InterviewType.practical,
-                    );
-                  },
+                  onTap: () => routeToResumeManagePage(context),
                   child: SvgPicture.asset(Assets.iconsRoundBlueCircle),
                 ),
               ],

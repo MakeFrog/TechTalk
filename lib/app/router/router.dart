@@ -15,6 +15,7 @@ import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/job_group_setting_page.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_setting_page.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/skill_setting_page.dart';
+import 'package:techtalk/presentation/pages/resume_manage/resume_manage_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
@@ -138,6 +139,10 @@ class SignUpRoute extends GoRouteData {
         ),
       ],
     ),
+    TypedGoRoute<ResumeManageRoute>(
+      path: ResumeManageRoute.name,
+      name: ResumeManageRoute.name,
+    ),
     TypedGoRoute<ProfileSettingRoute>(
       path: ProfileSettingRoute.name,
       name: ProfileSettingRoute.name,
@@ -191,6 +196,20 @@ class MainRoute extends GoRouteData {
       },
       child: const MainPage(),
     );
+  }
+}
+
+///
+/// 이력서 관리 페이지 라우트
+///
+class ResumeManageRoute extends GoRouteData {
+  const ResumeManageRoute();
+
+  static const String name = 'resume';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ResumeManagePage();
   }
 }
 
