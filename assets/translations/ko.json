@@ -182,7 +182,7 @@
   },
   "mistakeNote": {
     "noMistakeRecords": "아직 오답 기록이 없어요.",
-    "letsHaveInterview": "Let's have a {tech} interview!",
+    "letsHaveInterview": "{tech} 주제로 면접을 진행해보세요!",
     "wrongManyTimes": "여러 번 틀린 문제"
   },
   "myInfo": {
