@@ -40,11 +40,15 @@ class UserEntity {
   /// 앱 리뷰 가능 여부
   final bool isReviewRequestAvailable;
 
+  /// 로그인 횟수
+  final int? loginCount;
+
   const UserEntity({
     required this.uid,
     this.profileImgUrl,
     this.nickname,
     this.email,
+    this.loginCount,
     required this.signUpDate,
     required this.completedInterviewCount,
     required this.isReviewRequestAvailable,
@@ -61,6 +65,7 @@ class UserEntity {
     required UserBox box,
   }) {
     return UserEntity(
+      loginCount: model.loginCount ?? 0,
       uid: model.uid,
       nickname: model.nickname,
       profileImgUrl: model.profileImgUrl,
