@@ -70,4 +70,19 @@ mixin class HomeEvent {
     ref.invalidate(userTopicsProvider);
     SplashRoute().go(ref.context);
   }
+
+  ///
+  /// 이력서 면접 카드가 클릭되었을 때
+  /// TODO: 비즈니스 로직 작성하기
+  ///
+  Future<void> onResumeCardTapped(WidgetRef ref) async {
+    await EasyLoading.show();
+  }
+
+  ///
+  /// 이력서 관리 페이지로 이동
+  /// TODO: 비즈니스 로직 작성하기
+  ///
+  void routeToResumeManagePage(BuildContext context,
+      {required InterviewType type}) {}
 }
