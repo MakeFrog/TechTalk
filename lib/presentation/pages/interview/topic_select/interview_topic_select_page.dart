@@ -128,6 +128,7 @@ class _NextButton extends ConsumerWidget
       padding: const EdgeInsets.symmetric(horizontal: 16),
       height: 56,
       child: BounceTapper(
+        enable: isStepBtnActivate(ref),
         child: FilledButton(
           onPressed: isStepBtnActivate(ref)
               ? () {
