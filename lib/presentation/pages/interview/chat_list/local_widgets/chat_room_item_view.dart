@@ -1,3 +1,4 @@
+import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
