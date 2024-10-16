@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -6,7 +8,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/core/services/slack_notification_service.dart' as noti;
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_blur_provider.dart';
@@ -59,6 +63,7 @@ mixin class MyPageEvent {
         rightBtnContent: tr(LocaleKeys.myInfo_others_logout),
         showContentImg: false,
         onRightBtnClicked: () {
+          unawaited(noti.SlackNotificationService.sendNotification(type: SlackNotificationType.logOut));
           _clearKeepAliveModules(ref);
           const SignInRoute().go(ref.context);
         },
@@ -101,6 +106,8 @@ mixin class MyPageEvent {
           await EasyLoading.show();
           final response = await resignUserInfoUseCase
               .call(ref.read(userInfoProvider).requireValue!);
+          unawaited(noti.SlackNotificationService.sendNotification(
+              type: SlackNotificationType.withdraw));
           response.fold(
             onSuccess: (_) {
               _clearKeepAliveModules(ref);
