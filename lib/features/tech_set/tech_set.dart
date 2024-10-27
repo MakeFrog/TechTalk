@@ -5,7 +5,6 @@ export 'data_source/local/tech_set_data_source_impl.dart';
 export 'data_source/local/tech_set_local_data_source.dart';
 export 'repositories/entities/skill_collection_entity.dart';
 export 'repositories/entities/skill_entity.dart';
-export 'repositories/enums/job.enum.dart';
 export 'repositories/tech_set_repository.dart';
 export 'repositories/tech_set_repository_impl.dart';
 export 'tech_set.dart';

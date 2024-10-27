@@ -7,8 +7,8 @@ import 'package:techtalk/features/tech_set/tech_set.dart';
 
 final class TechSetLocalDataSourceImpl implements TechSetLocalDataSource {
   @override
-  Future<List<Job>> getJobs() async {
-    return Job.values;
+  Future<List<JobGroup>> getJobs() async {
+    return JobGroup.values;
   }
 
   @override
