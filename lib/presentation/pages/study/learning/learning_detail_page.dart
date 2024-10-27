@@ -15,6 +15,7 @@ import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 part 'widgets/learning_detail_bottom_controller_bar.dart';
+
 part 'widgets/learning_detail_page_app_bar.dart';
 
 class LearningDetailPage extends BasePage with LearningDetailState {
@@ -32,10 +33,12 @@ class LearningDetailPage extends BasePage with LearningDetailState {
         child: Text('$error'),
       ),
       data: (questions) {
-        return const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Gap(24),
+        return ListView(
+          padding: const EdgeInsets.only(top: 24),
+          physics: const ScrollPhysics(),
+          shrinkWrap: true,
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
             StudyQnaView(),
           ],
         );
