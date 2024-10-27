@@ -15,78 +15,88 @@ class _QnaListTile extends HookWidget {
       physics: const BouncingScrollPhysics(),
       shrinkWrap: true,
       children: [
-        if (wrongAnswer.wrongAnswerCount > 2)
-          Row(
-            children: [
-              SvgPicture.asset(Assets.iconsRoundedBlueExclamation),
-              const Gap(4),
+        if (wrongAnswer.wrongAnswerCount > 0) const WrongAnswerIndicator(),
+        const Gap(12),
+        Padding(
+          padding: const EdgeInsets.only(right: 44),
+          child: Text(
+            wrongAnswer.qna.question,
+            style: AppTextStyle.headline3,
+          ),
+        ),
+        const Gap(24),
+        _buildAnswers(),
+        const Gap(24),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                width: 0.7,
+                color: AppColor.of.red1,
+              )),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
               Text(
-                context.tr(LocaleKeys.mistakeNote_wrongManyTimes),
-                style: AppTextStyle.alert1.copyWith(
-                  color: AppColor.of.gray4,
+                context.tr(LocaleKeys.qa_myAnswer),
+                style: AppTextStyle.title1.copyWith(color: AppColor.of.red2),
+              ),
+              const Gap(8),
+              Text(
+                wrongAnswer.userAnswer,
+                style: AppTextStyle.newBody.copyWith(
+                  color: AppColor.of.black,
+                  fontWeight: FontWeight.w400,
                 ),
               )
             ],
           ),
-        const Gap(4),
-        Text(
-          wrongAnswer.qna.question,
-          style: AppTextStyle.title1,
         ),
-        const Gap(8),
-        _buildAnswers(),
-        const Gap(46),
-        Text(
-          context.tr(LocaleKeys.qa_myAnswer),
-          style: AppTextStyle.body1,
-        ),
-        const Gap(16),
-        Text(
-          wrongAnswer.userAnswer,
-          style: AppTextStyle.body2.copyWith(
-            color: AppColor.of.gray3,
-          ),
-        )
+
       ],
     );
   }
 
   Widget _buildAnswers() {
     final answers = wrongAnswer.qna.answers;
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: answers.length,
-      itemBuilder: (context, index) {
-        final answer = answers[index];
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: AppColor.of.brand5,
+      ),
+      child: ListView.separated(
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(16),
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: answers.length,
+        separatorBuilder: (_, __) => const ListViewDivider(),
+        itemBuilder: (context, index) {
+          final answer = answers[index];
 
-        return Container(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: AppColor.of.gray2,
-              ),
-            ),
-          ),
-          child: Consumer(
+          return Consumer(
             builder: (context, ref, child) {
               final isBlur = ref.watch(wrongAnswerBlurProvider);
 
-              return ImageFiltered(
-                imageFilter: ImageFilter.blur(
-                  sigmaX: isBlur ? 4 : 0,
-                  sigmaY: isBlur ? 4 : 0,
-                ),
-                child: Text(
-                  answer,
-                  style: AppTextStyle.body2,
+              return AnimatedOpacity(
+                opacity: isBlur ? 0.2 : 1,
+                duration: const Duration(milliseconds: 60),
+                child: ImageFiltered(
+                  enabled: isBlur,
+                  imageFilter: ImageFilter.blur(
+                    sigmaX: 8,
+                    sigmaY: 8,
+                  ),
+                  child: Text(
+                    answer,
+                    style: AppTextStyle.body2,
+                  ),
                 ),
               );
             },
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

@@ -11,6 +11,7 @@ import 'package:techtalk/features/topic/repositories/entities/qna_entity.dart';
 import 'package:techtalk/presentation/pages/study/learning/learning_detail_event.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/learning_detail_state.dart';
+import 'package:techtalk/presentation/widgets/common/divider/list_view_divider.dart';
 
 class StudyQnaView extends ConsumerWidget
     with LearningDetailState, LearningDetailEvent {
@@ -43,7 +44,6 @@ class _StudyQna extends HookWidget {
   Widget build(BuildContext context) {
     useAutomaticKeepAlive();
     return Container(
-      color: Colors.red,
       padding: const EdgeInsets.only(bottom: 182),
       constraints: BoxConstraints(minHeight: AppSize.screenHeight - 260),
       child: Column(
@@ -61,7 +61,7 @@ class _StudyQna extends HookWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
-      ),
+      ) + const EdgeInsets.only(right: 44),
       child: Text(
         question.question,
         style: AppTextStyle.headline3,
@@ -83,11 +83,7 @@ class _StudyQna extends HookWidget {
           padding: const EdgeInsets.all(16),
           physics: const NeverScrollableScrollPhysics(),
           itemCount: question.answers.length,
-          separatorBuilder: (_, __) => Divider(
-            color: AppColor.of.gray2,
-            height: 32,
-            thickness: 0.7,
-          ),
+          separatorBuilder: (_, __) =>const ListViewDivider(),
           itemBuilder: (context, index) {
             final answer = answers[index];
             return Consumer(
