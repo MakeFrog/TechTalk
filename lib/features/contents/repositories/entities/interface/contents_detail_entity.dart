@@ -1,12 +1,12 @@
 import 'package:techtalk/core/constants/job_group.enum.dart';
-import 'package:techtalk/features/study_contents/repositories/entities/summary_entity.dart';
-import 'package:techtalk/features/study_contents/repositories/enums/contents_language.enum.dart';
+import 'package:techtalk/features/contents/repositories/entities/summary_entity.dart';
+import 'package:techtalk/features/contents/repositories/enums/contents_language.enum.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skill_entity.dart';
 import 'package:techtalk/features/topic/repositories/entities/qna_entity.dart';
 
 /// 앱에서 학습을 위해 제공하는 컨텐츠의 상세 정보
 abstract interface class ContentsDetailEntity {
-  /// 특정 컨텐츠의 id
+  /// 특정 컨텐츠의 id - 외부 값에 의존하지 않는 고유 id
   final String id;
 
   /// 컨텐츠 타이틀

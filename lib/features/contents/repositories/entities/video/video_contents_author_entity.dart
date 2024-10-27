@@ -1,4 +1,4 @@
-import 'package:techtalk/features/study_contents/repositories/entities/interface/contents_author_entity.dart';
+import 'package:techtalk/features/contents/repositories/entities/interface/contents_author_entity.dart';
 
 /// 비디오 컨텐츠 저자 정보
 class VideoContentsAuthorEntity implements ContentsAuthorEntity {

@@ -4,10 +4,14 @@ class ParagraphEntity {
   final String title;
 
   /// 문단 내용
-  final String contents;
+  final List<String> contents;
+
+  /// 해당 문단의 시작 시간
+  final Duration? timestamp;
 
   ParagraphEntity({
     required this.title,
     required this.contents,
+    this.timestamp,
   });
 }

@@ -1,4 +1,4 @@
-import 'package:techtalk/features/study_contents/repositories/entities/interface/contents_overview_entity.dart';
+import 'package:techtalk/features/contents/repositories/entities/interface/contents_overview_entity.dart';
 
 /// 비디오 컨텐츠의 미리보기 엔티티
 class VideoContentsOverviewEntity implements ContentsOverviewEntity {
