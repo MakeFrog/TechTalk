@@ -50,7 +50,7 @@ class _StudyQna extends HookWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildQuestion(),
-        const Gap(8),
+        const Gap(24),
         _buildAnswers(),
       ],
     );
@@ -63,47 +63,53 @@ class _StudyQna extends HookWidget {
       ),
       child: Text(
         question.question,
-        style: AppTextStyle.title1,
+        style: AppTextStyle.headline3,
       ),
     );
   }
 
   Widget _buildAnswers() {
     final answers = question.answers;
-    return Expanded(
-      child: ListView.builder(
-        physics: const ScrollPhysics(),
-        itemCount: question.answers.length,
-        itemBuilder: (context, index) {
-          final answer = answers[index];
-
-          return Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: AppColor.of.gray2,
-                ),
-              ),
-            ),
-            child: Consumer(
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+          color: AppColor.of.brand5, borderRadius: BorderRadius.circular(16)),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: ListView.separated(
+          shrinkWrap: true,
+          padding: const EdgeInsets.all(16),
+          physics: const ScrollPhysics(),
+          itemCount: question.answers.length,
+          separatorBuilder: (_, __) => Divider(
+            color: AppColor.of.gray2,
+            height: 32,
+            thickness: 0.7,
+          ),
+          itemBuilder: (context, index) {
+            final answer = answers[index];
+            return Consumer(
               builder: (context, ref, child) {
                 final isBlur = ref.watch(studyAnswerBlurProvider);
-
-                return ImageFiltered(
-                  imageFilter: ImageFilter.blur(
-                    sigmaX: isBlur ? 4 : 0,
-                    sigmaY: isBlur ? 4 : 0,
-                  ),
-                  child: Text(
-                    answer,
-                    style: AppTextStyle.body2,
+                return AnimatedOpacity(
+                  opacity: isBlur ? 0.2 : 1,
+                  duration: const Duration(milliseconds: 60),
+                  child: ImageFiltered(
+                    enabled: isBlur,
+                    imageFilter: ImageFilter.blur(
+                      sigmaX: 8,
+                      sigmaY: 8,
+                    ),
+                    child: Text(
+                      answer,
+                      style: AppTextStyle.body2,
+                    ),
                   ),
                 );
               },
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

@@ -23,9 +23,12 @@ class _AppBar extends ConsumerWidget
               color: AppColor.of.gray3,
             ),
           ),
-          const Gap(8),
+          const Gap(6),
           Consumer(
             builder: (context, ref, child) => FlatSwitch(
+              height: 24,
+              width: 40,
+              bgColor: AppColor.of.blue2,
               value: ref.watch(studyAnswerBlurProvider),
               onTap: (_) => onToggleAnswerBlur(ref),
             ),

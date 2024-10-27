@@ -50,8 +50,8 @@
       "spring": "spring"
     },
     "studyOrMistakeNote": {
-      "previous": "이전 문항",
-      "all": "전체 문항"
+      "previous": "이전",
+      "all": "전체 보기"
     },
     "interestedTopics": {
       "webFrontend": "웹 프론트엔드",
@@ -176,9 +176,9 @@
   "learning": {
     "hideAnswers": "답안 가리기",
     "oneOutOfFifty": "1 / 50 문항",
-    "previous": "이전 문항",
-    "all": "전체 문항",
-    "next": "다음 문항"
+    "previous": "이전",
+    "all": "전체 보기",
+    "next": "다음"
   },
   "mistakeNote": {
     "noMistakeRecords": "아직 오답 기록이 없어요.",

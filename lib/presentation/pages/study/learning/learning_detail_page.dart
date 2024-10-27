@@ -36,8 +36,6 @@ class LearningDetailPage extends BasePage with LearningDetailState {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Gap(24),
-            StudyProgressIndicator(),
-            Gap(5),
             StudyQnaView(),
           ],
         );
