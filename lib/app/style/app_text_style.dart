@@ -32,6 +32,7 @@ abstract class AppTextStyle {
   static final TextStyle title2 = pretendardSemiBoldStyle(16, 22);
   static final TextStyle title3 = pretendardBoldStyle(14, 20);
   static final TextStyle body1 = pretendardSemiBoldStyle(14, 20);
+  static final TextStyle newBody = pretendardSemiBoldStyle(15, 22);
   static final TextStyle body2 = pretendardMediumStyle(14, 20);
   static final TextStyle body3 = pretendardMediumStyle(13, 18);
   static final TextStyle alert1 = pretendardSemiBoldStyle(12, 17);
