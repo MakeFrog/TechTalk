@@ -1,3 +1,4 @@
+import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -8,7 +9,6 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/study/learning/learning_detail_event.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/learning_detail_state.dart';
-import 'package:techtalk/presentation/pages/study/learning/widgets/study_progress_indicator.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/study_qna_view.dart';
 import 'package:techtalk/presentation/pages/study/topic_selection/providers/selected_study_topic_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';

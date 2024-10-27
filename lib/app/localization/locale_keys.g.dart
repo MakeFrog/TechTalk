@@ -163,6 +163,7 @@ abstract class  LocaleKeys {
   static const learning_oneOutOfFifty = 'learning.oneOutOfFifty';
   static const learning_previous = 'learning.previous';
   static const learning_all = 'learning.all';
+  static const learning_all_question = 'learning.all_question';
   static const learning_next = 'learning.next';
   static const learning = 'learning';
   static const mistakeNote_noMistakeRecords = 'mistakeNote.noMistakeRecords';
