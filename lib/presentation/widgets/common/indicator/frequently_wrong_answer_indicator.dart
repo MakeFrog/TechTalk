@@ -7,8 +7,8 @@ import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/constants/assets.dart';
 
-class WrongAnswerIndicator extends StatelessWidget {
-  const WrongAnswerIndicator({super.key});
+class FrequentlyWrongAnswerIndicator extends StatelessWidget {
+  const FrequentlyWrongAnswerIndicator({super.key});
 
   @override
   Widget build(BuildContext context) {

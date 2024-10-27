@@ -15,7 +15,7 @@ class _QnaListTile extends HookWidget {
       physics: const BouncingScrollPhysics(),
       shrinkWrap: true,
       children: [
-        if (wrongAnswer.wrongAnswerCount > 0) const WrongAnswerIndicator(),
+        if (wrongAnswer.wrongAnswerCount > 2) const FrequentlyWrongAnswerIndicator(),
         const Gap(12),
         Padding(
           padding: const EdgeInsets.only(right: 44),
