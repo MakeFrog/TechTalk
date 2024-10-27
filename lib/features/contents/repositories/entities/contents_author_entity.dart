@@ -1,5 +1,5 @@
 /// 컨텐츠 저자 정보 인터페이스
-abstract interface class ContentsAuthorEntity {
+class ContentsAuthorEntity {
   /// 저자 id
   final String id;
 
