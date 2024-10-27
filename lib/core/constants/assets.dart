@@ -55,9 +55,9 @@ class Assets {
   static const String iconsFollowUpQuestion = 'assets/icons/follow_up_question.svg';
   static const String iconsGoogleLogo = 'assets/icons/google_logo.svg';
   static const String iconsHome = 'assets/icons/home.svg';
+  static const String iconsIconAppBarLeft = 'assets/icons/icon_app_bar_left.svg';
   static const String iconsIconMic = 'assets/icons/icon_mic.svg';
   static const String iconsIncorrect = 'assets/icons/incorrect.svg';
-  static const String iconsMenu = 'assets/icons/menu.svg';
   static const String iconsMenuThick = 'assets/icons/menu_thick.svg';
   static const String iconsMoreCircle = 'assets/icons/more_circle.svg';
   static const String iconsNote = 'assets/icons/note.svg';
