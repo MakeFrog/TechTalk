@@ -15,10 +15,12 @@ class SelectableChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChoiceChip(
+      visualDensity: VisualDensity.compact,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      labelPadding: const EdgeInsets.symmetric(horizontal: 12),
       showCheckmark: false,
       selected: isSelected,
       padding: const EdgeInsets.symmetric(
-        horizontal: 12,
         vertical: 6,
       ),
       backgroundColor: AppColor.of.background1,
@@ -31,7 +33,7 @@ class SelectableChip extends StatelessWidget {
         fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
         leadingDistribution: TextLeadingDistribution.even,
         color: isSelected ? Colors.white : AppColor.of.gray3,
-        letterSpacing: -0.02 / 100 * 15,
+        letterSpacing: -2 / 100 * 15,
         fontSize: 15,
         height: 22 / 15,
       ),

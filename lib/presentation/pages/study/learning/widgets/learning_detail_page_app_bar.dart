@@ -20,7 +20,7 @@ class _AppBar extends ConsumerWidget
           Text(
             tr(LocaleKeys.learning_hideAnswers),
             style: AppTextStyle.alert1.copyWith(
-              color: AppColor.of.gray3,
+              color: AppColor.of.black,
             ),
           ),
           const Gap(6),

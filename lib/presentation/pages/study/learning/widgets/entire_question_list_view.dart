@@ -67,7 +67,7 @@ class EntireQuestionListView extends HookConsumerWidget
                     children: [
                       item,
                       Divider(
-                        color: AppColor.of.gray2,
+                        color: AppColor.of.gray1,
                         height: 1,
                         thickness: 1,
                       ),
@@ -108,6 +108,7 @@ class EntireQuestionListView extends HookConsumerWidget
                   '${index + 1}',
                   textAlign: TextAlign.center,
                   style: AppTextStyle.body3.copyWith(
+                    fontWeight: FontWeight.w700,
                     color: isSelected ? AppColor.of.brand3 : AppColor.of.gray3,
                   ),
                 ),

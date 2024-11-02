@@ -15,10 +15,11 @@ class _QnaListTile extends HookWidget {
       physics: const BouncingScrollPhysics(),
       shrinkWrap: true,
       children: [
-        if (wrongAnswer.wrongAnswerCount > 2) const FrequentlyWrongAnswerIndicator(),
+        if (wrongAnswer.wrongAnswerCount > 2)
+          const FrequentlyWrongAnswerIndicator(),
         const Gap(12),
         Padding(
-          padding: const EdgeInsets.only(right: 44),
+          padding: const EdgeInsets.only(right: 24),
           child: Text(
             wrongAnswer.qna.question,
             style: AppTextStyle.headline3,
@@ -53,7 +54,6 @@ class _QnaListTile extends HookWidget {
             ],
           ),
         ),
-
       ],
     );
   }
@@ -89,7 +89,9 @@ class _QnaListTile extends HookWidget {
                   ),
                   child: Text(
                     answer,
-                    style: AppTextStyle.body2,
+                    style: AppTextStyle.body2.copyWith(
+                      color: isBlur ? AppColor.of.gray1 : AppColor.of.black,
+                    ),
                   ),
                 ),
               );

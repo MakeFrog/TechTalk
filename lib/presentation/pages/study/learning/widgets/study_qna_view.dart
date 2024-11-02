@@ -61,7 +61,7 @@ class _StudyQna extends HookWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
-      ) + const EdgeInsets.only(right: 44),
+      ) + const EdgeInsets.only(right: 24),
       child: Text(
         question.question,
         style: AppTextStyle.headline3,

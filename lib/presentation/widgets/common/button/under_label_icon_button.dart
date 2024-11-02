@@ -22,7 +22,7 @@ class UnderLabelIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
 
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 32),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

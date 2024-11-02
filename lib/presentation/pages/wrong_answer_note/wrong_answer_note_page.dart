@@ -17,7 +17,9 @@ import 'package:techtalk/presentation/widgets/common/chip/selectable_chip.dart';
 import 'package:techtalk/presentation/widgets/common/indicator/exception_indicator.dart';
 
 part 'local_widgets/wrong_answer_empty_list_placeholder.dart';
+
 part 'local_widgets/wrong_answer_floating_action_btn.dart';
+
 part 'local_widgets/wrong_answer_header.dart';
 
 class WrongAnswerNotePage extends BasePage
@@ -39,7 +41,7 @@ class WrongAnswerNotePage extends BasePage
           separatorBuilder: (context, index) => Divider(
             height: 0.5,
             thickness: 0.5,
-            color: AppColor.of.gray2,
+            color: AppColor.of.gray1,
           ),
           itemBuilder: (_, index) {
             final item = wrongAnswers[index];
