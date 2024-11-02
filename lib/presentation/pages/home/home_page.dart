@@ -1,9 +1,11 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/app/localization/localization_enum.dart';
 import 'package:techtalk/app/style/app_color.dart';
@@ -22,6 +24,13 @@ class HomePage extends BasePage with HomeState, HomeEvent {
   const HomePage({super.key});
 
   @override
+  void onInit(WidgetRef ref) async {
+    super.onInit(ref);
+
+    await requestNotificationPermission();
+  }
+
+  @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
 
@@ -30,7 +39,7 @@ class HomePage extends BasePage with HomeState, HomeEvent {
         return ListView(
           physics: const ScrollPhysics(),
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          children: const[
+          children: const [
             CheerUpMessageCard(),
             Gap(16),
             PracticalInterviewCard(),
