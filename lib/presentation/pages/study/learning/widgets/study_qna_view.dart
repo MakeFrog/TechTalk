@@ -100,7 +100,9 @@ class _StudyQna extends HookWidget {
                     ),
                     child: Text(
                       answer,
-                      style: AppTextStyle.body2,
+                      style: AppTextStyle.body2.copyWith(
+                        color: isBlur ? AppColor.of.gray1 : AppColor.of.black,
+                      ),
                     ),
                   ),
                 );
