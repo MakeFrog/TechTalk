@@ -107,8 +107,8 @@ class InterviewProgressState extends _$InterviewProgressState {
     unawaited(FirebaseAnalytics.instance.logEvent(
       name: 'Interview Completed',
       parameters: {
-        'user_id': ref.read(userInfoProvider).requireValue?.uid,
-        'user_name': ref.read(userInfoProvider).requireValue?.nickname,
+        'user_id': ref.read(userInfoProvider).requireValue?.uid ?? '',
+        'user_name': ref.read(userInfoProvider).requireValue?.nickname ?? '',
         'topics': ref
             .read(selectedChatRoomProvider)
             .topics

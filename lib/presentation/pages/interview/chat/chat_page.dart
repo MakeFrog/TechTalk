@@ -70,8 +70,8 @@ class ChatPage extends BasePage with ChatEvent, ChatState {
     FirebaseAnalytics.instance.logEvent(
       name: 'Interview Created',
       parameters: {
-        'user_id': ref.read(userInfoProvider).requireValue?.uid,
-        'user_name': ref.read(userInfoProvider).requireValue?.nickname,
+        'user_id': ref.read(userInfoProvider).requireValue?.uid  ?? '',
+        'user_name': ref.read(userInfoProvider).requireValue?.nickname ?? '',
         'interview_type': ref.read(selectedChatRoomProvider).type.name,
         'topics': ref
             .read(selectedChatRoomProvider)
