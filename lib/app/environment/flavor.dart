@@ -2,6 +2,7 @@ import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:techtalk/app/di/app_binding.dart';
@@ -43,9 +44,13 @@ class Flavor {
       options: option,
     );
 
+    FirebaseMessaging.onBackgroundMessage((_) async {});
+
     OpenAI.instance.build(
       token: env.openApiKey,
-      baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 10), connectTimeout: const Duration(seconds: 10)),
+      baseOption: HttpSetup(
+          receiveTimeout: const Duration(seconds: 10),
+          connectTimeout: const Duration(seconds: 10)),
       enableLog: true,
     );
 
@@ -62,13 +67,13 @@ class Flavor {
     forWhisper.OpenAI.apiKey = env.openApiKey;
     forWhisper.OpenAI.requestsTimeOut = const Duration(seconds: 12);
 
-
     /// 앱 DI 실행
     await AppBinder.init();
 
     await EasyLocalization.ensureInitialized();
 
-    await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(_env == Environment.prod ? true : false);
+    await FirebaseAnalytics.instance
+        .setAnalyticsCollectionEnabled(_env == Environment.prod ? true : false);
     if (_env == Environment.prod) {
       await FirebaseAnalytics.instance.logAppOpen();
     }
