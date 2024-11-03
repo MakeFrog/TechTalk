@@ -3,8 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/repositories/enums/interview_type.enum.dart';
+import 'package:techtalk/features/contents/repositories/entities/contents_overview_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/presentation/pages/contents/contents_detail_page.dart';
+import 'package:techtalk/presentation/pages/contents/contents_main_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_route_arg.dart';
@@ -154,6 +156,14 @@ class SignUpRoute extends GoRouteData {
       path: StudyRoute.path,
       name: StudyRoute.name,
     ),
+    TypedGoRoute<ContentsMainRoute>(
+      path: ContentsMainRoute.path,
+      name: ContentsMainRoute.name,
+    ),
+    TypedGoRoute<ContentsDetailRoute>(
+      path: ContentsDetailRoute.path,
+      name: ContentsDetailRoute.name,
+    ),
     TypedGoRoute<WrongAnswerRoute>(
       path: WrongAnswerRoute.path,
       name: WrongAnswerRoute.name,
@@ -211,6 +221,36 @@ class StudyRoute extends GoRouteData {
   }
 }
 
+class ContentsMainRoute extends GoRouteData {
+  ContentsMainRoute();
+
+  static const String path = 'contents';
+  static const String name = 'contents';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ContentsMainPage();
+  }
+}
+
+class ContentsDetailRoute extends GoRouteData {
+  ContentsDetailRoute(this.$extra) : contentsId = $extra.contentsId;
+
+  static const String path = 'contents-detail/:contentsId';
+  static const String name = 'contents-detail';
+
+  final ContentsOverviewEntity $extra;
+
+  final String contentsId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ContentsDetailPage(
+      overview: $extra,
+    );
+  }
+}
+
 class WrongAnswerRoute extends GoRouteData {
   const WrongAnswerRoute(this.index);
 
@@ -259,8 +299,7 @@ class QuestionCountSelectPageRoute extends GoRouteData {
   }
 
   /// NOTE: $extra 이슈로 직접 업데이트
-  void updateArg(
-      {required InterviewType type, required List<TopicEntity> topics}) {
+  void updateArg({required InterviewType type, required List<TopicEntity> topics}) {
     arg = (topics: topics, type: type);
   }
 }
@@ -312,11 +351,7 @@ class ChatListRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    arg = (
-      topic: StoredTopics.getByIdOrNull(topicId),
-      interviewType: type,
-      chatRooms: $extra
-    );
+    arg = (topic: StoredTopics.getByIdOrNull(topicId), interviewType: type, chatRooms: $extra);
     return ChatListPage();
   }
 }
@@ -341,8 +376,7 @@ class ChatPageRoute extends GoRouteData {
         var end = Offset.zero;
         var curve = Curves.ease;
 
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
         return SlideTransition(
           position: animation.drive(tween),

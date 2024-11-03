@@ -6,6 +6,7 @@ part 'main_bottom_navigation_provider.g.dart';
 enum MainNavigationTab {
   home('gnb.home', Assets.iconsHome),
   study('gnb.learning', Assets.iconsStudy),
+  contents('gnb.learning', Assets.iconsStudy),
   note('gnb.mistakeNote', Assets.iconsNote),
   myInfo('gnb.myInfo', Assets.iconsUser);
 
