@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/app_color.dart';
+import 'package:techtalk/presentation/widgets/base/route_argument.dart';
 
 ///
 /// 앱의 화면 페이지를 생성하는 유틸리티 클래스
@@ -71,16 +72,19 @@ abstract class BasePage extends HookConsumerWidget {
   }
 
   Widget _buildScaffold(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      extendBody: extendBodyBehindAppBar,
-      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-      appBar: buildAppBar(context, ref),
-      body: buildPage(context, ref),
-      backgroundColor: screenBackgroundColor,
-      bottomNavigationBar: buildBottomNavigationBar(context),
-      bottomSheet: buildBottomSheet(ref),
-      floatingActionButtonLocation: floatingActionButtonLocation,
-      floatingActionButton: buildFloatingActionButton(ref),
+    return ArgumentHolder(
+      argument: argument,
+      child: Scaffold(
+        extendBody: extendBodyBehindAppBar,
+        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+        appBar: buildAppBar(context, ref),
+        body: buildPage(context, ref),
+        backgroundColor: screenBackgroundColor,
+        bottomNavigationBar: buildBottomNavigationBar(context),
+        bottomSheet: buildBottomSheet(ref),
+        floatingActionButtonLocation: floatingActionButtonLocation,
+        floatingActionButton: buildFloatingActionButton(ref),
+      ),
     );
   }
 
@@ -142,6 +146,10 @@ abstract class BasePage extends HookConsumerWidget {
   /// 화면 클릭 시 자동으로 포커스를 해제할지 여부를 설정
   @protected
   bool get preventAutoUnfocus => false;
+
+  /// 전달받은 argument
+  @protected
+  dynamic get argument => null;
 
   /// 앱이 활성화된 상태로 돌아올 때 호출
   @protected
