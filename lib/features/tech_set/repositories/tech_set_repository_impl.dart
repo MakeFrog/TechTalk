@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
@@ -12,8 +13,8 @@ final class TechSetRepositoryImpl implements TechSetRepository {
   final List<SkillCollectionEntity> _cachedSkillCollection = [];
 
   @override
-  List<Job> getJobs() {
-    return Job.values;
+  List<JobGroup> getJobs() {
+    return JobGroup.values;
   }
 
   @override
@@ -24,8 +25,7 @@ final class TechSetRepositoryImpl implements TechSetRepository {
       _cachedSkillCollection.addAll(
         jsonData.entries.map(
           (entry) {
-            List<SkillEntity> skills =
-                entry.value.map(SkillEntity.fromJson).toList();
+            List<SkillEntity> skills = entry.value.map(SkillEntity.fromJson).toList();
 
             return SkillCollectionEntity(firstLetter: entry.key, items: skills);
           },
@@ -39,8 +39,7 @@ final class TechSetRepositoryImpl implements TechSetRepository {
   @override
   Result<SkillCollectionEntity> getSkillsByFirstLetter(String letter) {
     try {
-      final response =
-          _cachedSkillCollection.firstWhere((e) => e.firstLetter == letter);
+      final response = _cachedSkillCollection.firstWhere((e) => e.firstLetter == letter);
 
       return Result.success(response);
     } on Exception catch (e) {
@@ -56,8 +55,7 @@ final class TechSetRepositoryImpl implements TechSetRepository {
   SkillEntity getSkillById(String id) {
     final firstLetter = id[0];
 
-    final collection =
-        _cachedSkillCollection.firstWhere((e) => e.firstLetter == firstLetter);
+    final collection = _cachedSkillCollection.firstWhere((e) => e.firstLetter == firstLetter);
     final specificSkill = collection.items.firstWhere((e) => e.id == id);
 
     return specificSkill;

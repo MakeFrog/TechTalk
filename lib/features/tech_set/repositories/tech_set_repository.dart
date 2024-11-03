@@ -1,11 +1,12 @@
 import 'dart:async';
 
+import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 abstract interface class TechSetRepository {
   /// 개발 직군 리스트 호출
-  List<Job> getJobs();
+  List<JobGroup> getJobs();
 
   /// 스킬 리스트 초기화
   Future<void> initSkills();
