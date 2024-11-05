@@ -223,7 +223,12 @@
   "permission": {
     "permissionNeeded": "권한 필요",
     "micRequired": "설정에서 마이크 권한을 허용해주세요.",
-    "setUp": "설정하기"
+    "setUp": "설정하기",
+    "alarmSetting" : "알림 설정",
+    "alarmDismissDesc": "알림을 비활성화 하기 위해 권한을 해제 해주세요",
+    "needAlarmPermission" : "알림 수신을 위해서는 권한 동의가 필요해요",
+    "alarm_title": "알림 활성화",
+    "alarm_desc" : "주요 공지, 기능 업데이트 등 알림"
   },
   "errors": {
     "error": "오류",

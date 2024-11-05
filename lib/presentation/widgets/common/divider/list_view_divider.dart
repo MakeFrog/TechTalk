@@ -7,7 +7,7 @@ class ListViewDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Divider(
-      color: AppColor.of.gray1,
+      color: AppColor.of.gray2,
       height: 32,
       thickness: 0.7,
     );
