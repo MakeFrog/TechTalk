@@ -6,6 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/navigation_context.dart';
+import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
@@ -34,8 +35,8 @@ class NotificationStatus extends _$NotificationStatus {
     if (isGranted) {
       DialogService.show(
         dialog: AppDialog.dividedBtn(
-          title: '알람 설정',
-          subTitle: '알람을 비활성화 하기 위해 권한을 해제 해주세요',
+          title: tr(LocaleKeys.permission_alarmSetting),
+          subTitle: tr(LocaleKeys.permission_alarmDismissDesc),
           leftBtnContent: tr(LocaleKeys.common_cancel),
           showContentImg: false,
           rightBtnContent: tr(LocaleKeys.permission_setUp),
@@ -58,7 +59,7 @@ class NotificationStatus extends _$NotificationStatus {
           DialogService.show(
             dialog: AppDialog.dividedBtn(
               title: tr(LocaleKeys.permission_permissionNeeded),
-              subTitle: '알람 수신을 위해서는 권한 동의가 필요해요',
+              subTitle: tr(LocaleKeys.permission_needAlarmPermission),
               leftBtnContent: tr(LocaleKeys.common_cancel),
               showContentImg: false,
               rightBtnContent: tr(LocaleKeys.permission_setUp),

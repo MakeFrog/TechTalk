@@ -36,27 +36,28 @@ class _SettingCard extends ConsumerWidget with MyPageState, MyPageEvent {
                     spacing: 4,
                     children: [
                       Text(
-                        '알림 활성화',
+                        tr(LocaleKeys.permission_alarm_title),
                         style: AppTextStyle.title3,
                       ),
                       Text(
-                        '주요 공지, 기능 업데이트 등 알림',
+                        tr(LocaleKeys.permission_alarm_desc),
                         style: AppTextStyle.body3.copyWith(
                           color: AppColor.of.gray3,
                         ),
                       ),
                     ],
                   ),
-                  isNotificationGranted(ref).when(data: (isGranted) {
-                    return FlatSwitch(
-                      height: 24,
-                      value: isGranted,
-                      bgColor: AppColor.of.blue2,
-                      onTap: (_) {
-                        onNotificationSwitchBtnTapped(ref);
-                      },
-                    );
-                  },
+                  isNotificationGranted(ref).when(
+                    data: (isGranted) {
+                      return FlatSwitch(
+                        height: 24,
+                        value: isGranted,
+                        bgColor: AppColor.of.blue2,
+                        onTap: (_) {
+                          onNotificationSwitchBtnTapped(ref);
+                        },
+                      );
+                    },
                     error: (_, __) => const EmptyBox(),
                     loading: () => const EmptyBox(),
                   ),
@@ -69,8 +70,7 @@ class _SettingCard extends ConsumerWidget with MyPageState, MyPageEvent {
                   if (value.hasData) {
                     return CardListTileButton(
                       text:
-                      '${tr(LocaleKeys.myInfo_settings_currentVersion)} ${value
-                          .requireData}',
+                          '${tr(LocaleKeys.myInfo_settings_currentVersion)} ${value.requireData}',
                     );
                   } else {
                     return const EmptyBox();
@@ -90,10 +90,9 @@ class _SettingCard extends ConsumerWidget with MyPageState, MyPageEvent {
                 text: tr(LocaleKeys.myInfo_settings_rateApp),
               ),
             ],
-          ),)
-        ,
-      ]
-      ,
+          ),
+        ),
+      ],
     );
   }
 }
