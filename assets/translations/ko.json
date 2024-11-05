@@ -25,8 +25,8 @@
       "interviewer": "{} 면접관",
       "interestedJobPositions": "관심 직군",
       "interestedTopics": "관심 주제",
-      "goToInterview": "면접 보기",
-      "startInterview": "면접 보기"
+      "goToInterview": "면접 보러가기",
+      "startInterview": "면접 보러가기"
     },
     "interviewersName": {
       "bitwiseNegation": "비트 단위 부정",
@@ -50,8 +50,8 @@
       "spring": "spring"
     },
     "studyOrMistakeNote": {
-      "previous": "이전 문항",
-      "all": "전체 문항"
+      "previous": "이전",
+      "all": "전체 보기"
     },
     "interestedTopics": {
       "webFrontend": "웹 프론트엔드",
@@ -176,12 +176,13 @@
   "learning": {
     "hideAnswers": "답안 가리기",
     "oneOutOfFifty": "1 / 50 문항",
-    "previous": "이전 문항",
-    "all": "전체 문항",
-    "next": "다음 문항"
+    "previous": "이전",
+    "all": "전체 보기",
+    "all_question": "전체 문항",
+    "next": "다음"
   },
   "mistakeNote": {
-    "noMistakeRecords": "아직 오답 기록이 없어요.",
+    "noMistakeRecords": "아직 오답 기록이 없어요",
     "letsHaveInterview": "{tech} 주제로 면접을 진행해보세요!",
     "wrongManyTimes": "여러 번 틀린 문제"
   },

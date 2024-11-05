@@ -14,6 +14,7 @@ import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 import 'package:techtalk/presentation/widgets/common/button/icon_flash_area_button.dart';
 import 'package:techtalk/presentation/widgets/common/image/round_profile_image.dart';
+import 'package:techtalk/presentation/widgets/common/input/flat_switch.dart';
 
 part 'widgets/additional_info_card.dart';
 part 'widgets/intro_view.dart';

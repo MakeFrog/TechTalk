@@ -43,7 +43,7 @@ class EntireQuestionListView extends HookConsumerWidget
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: const AppBackButton(),
-        title: Text(tr(LocaleKeys.learning_all)),
+        title: Text(tr(LocaleKeys.learning_all_question)),
         titleSpacing: 0,
       ),
       body: SingleChildScrollView(
@@ -51,32 +51,34 @@ class EntireQuestionListView extends HookConsumerWidget
         padding: const EdgeInsets.symmetric(
           vertical: 8,
         ),
-        child: Column(
-          children: [
-            ...qnas(ref).mapIndexed((index, e) {
-              final item = _buildQuestion(
-                itemKeys[index],
-                ref,
-                index,
-                qnas(ref)[index],
-                index == currentIndex,
-              );
-              if (index != qnas(ref).length - 1) {
-                return Column(
-                  children: [
-                    item,
-                    Divider(
-                      color: AppColor.of.gray2,
-                      height: 1,
-                      thickness: 1,
-                    ),
-                  ],
+        child: SafeArea(
+          child: Column(
+            children: [
+              ...qnas(ref).mapIndexed((index, e) {
+                final item = _buildQuestion(
+                  itemKeys[index],
+                  ref,
+                  index,
+                  qnas(ref)[index],
+                  index == currentIndex,
                 );
-              } else {
-                return item;
-              }
-            })
-          ],
+                if (index != qnas(ref).length - 1) {
+                  return Column(
+                    children: [
+                      item,
+                      Divider(
+                        color: AppColor.of.gray1,
+                        height: 1,
+                        thickness: 1,
+                      ),
+                    ],
+                  );
+                } else {
+                  return item;
+                }
+              })
+            ],
+          ),
         ),
       ),
     );
@@ -96,22 +98,28 @@ class EntireQuestionListView extends HookConsumerWidget
         onTap: () => Navigator.pop(ref.context, index),
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: 16,
             vertical: 24,
           ),
           child: Row(
             children: [
-              Text(
-                'Q${index + 1}',
-                style: AppTextStyle.body3.copyWith(
-                  color: isSelected ? AppColor.of.brand3 : AppColor.of.gray3,
+              SizedBox(
+                width: 48,
+                child: Text(
+                  '${index + 1}',
+                  textAlign: TextAlign.center,
+                  style: AppTextStyle.body3.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: isSelected ? AppColor.of.brand3 : AppColor.of.gray3,
+                  ),
                 ),
               ),
-              const Gap(16),
               Expanded(
-                child: Text(
-                  question.question,
-                  style: AppTextStyle.body1,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: Text(
+                    question.question,
+                    style: AppTextStyle.newBody,
+                  ),
                 ),
               ),
             ],

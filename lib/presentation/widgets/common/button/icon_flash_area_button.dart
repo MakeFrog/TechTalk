@@ -71,7 +71,7 @@ class IconFlashAreaButton extends StatelessWidget {
                     iconPath!,
                     height: size,
                     width: size,
-                    colorFilter: onTap == null
+                    colorFilter: activatedColor != null && enabledColor != null
                         ? ColorFilter.mode(
                             onTap != null ? activatedColor! : enabledColor!,
                             BlendMode.srcIn,

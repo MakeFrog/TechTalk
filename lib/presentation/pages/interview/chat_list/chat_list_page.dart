@@ -36,6 +36,7 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
           );
         }
         return ListView.builder(
+          physics: const ClampingScrollPhysics(),
           itemCount: chatList.length,
           itemBuilder: (context, index) {
             return ChatRoomItemView.create(

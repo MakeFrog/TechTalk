@@ -24,12 +24,16 @@ class _AppBar extends ConsumerWidget
             ),
           ),
           const Gap(8),
+
           Consumer(
             builder: (context, ref, child) {
               final isBlurAnswer = ref.watch(wrongAnswerBlurProvider);
 
               return FlatSwitch(
                 value: isBlurAnswer,
+                height: 24,
+                width: 40,
+                bgColor: AppColor.of.blue2,
                 onTap: (_) => onHideAnswerSwitchTapped(ref),
               );
             },
