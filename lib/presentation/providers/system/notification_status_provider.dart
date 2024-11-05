@@ -1,5 +1,6 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -17,12 +18,38 @@ class NotificationStatus extends _$NotificationStatus {
     return Permission.notification.isGranted;
   }
 
+  Future<void> detectStatusOnResumed() async {
+    final isNotificationGranted = await Permission.notification.isGranted;
+
+    /// 설정 값과 현재 상태 값이 상이하다면
+    /// 상태 업데이트
+    if (state.hasValue && state.requireValue != isNotificationGranted) {
+      await update((_) => isNotificationGranted);
+    }
+  }
+
   Future<void> toggle() async {
     final isGranted = state.valueOrNull;
     if (isGranted == null) return;
     if (isGranted) {
-      await update((_) => false);
+      DialogService.show(
+        dialog: AppDialog.dividedBtn(
+          title: '알람 설정',
+          subTitle: '알람을 비활성화 하기 위해 권한을 해제 해주세요',
+          leftBtnContent: tr(LocaleKeys.common_cancel),
+          showContentImg: false,
+          rightBtnContent: tr(LocaleKeys.permission_setUp),
+          onRightBtnClicked: () async {
+            (await navigationContext).pop();
+            await AppSettings.openAppSettings();
+          },
+          onLeftBtnClicked: () async {
+            (await navigationContext).pop();
+          },
+        ),
+      );
     } else {
+      await FirebaseMessaging.instance.requestPermission();
       final result = await Permission.notification.request();
       if (result.isGranted) {
         await update((_) => true);
@@ -38,10 +65,6 @@ class NotificationStatus extends _$NotificationStatus {
               onRightBtnClicked: () async {
                 (await navigationContext).pop();
                 await AppSettings.openAppSettings();
-
-                if (await Permission.notification.isGranted) {
-                  await update((_) => true);
-                }
               },
               onLeftBtnClicked: () async {
                 (await navigationContext).pop();

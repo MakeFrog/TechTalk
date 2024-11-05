@@ -27,7 +27,7 @@ class HomePage extends BasePage with HomeState, HomeEvent {
   void onInit(WidgetRef ref) async {
     super.onInit(ref);
 
-    await requestNotificationPermission();
+    await requestNotificationPermission(ref);
   }
 
   @override
