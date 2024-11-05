@@ -16,6 +16,8 @@ import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_note_
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_note_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
+import 'package:techtalk/presentation/widgets/common/divider/list_view_divider.dart';
+import 'package:techtalk/presentation/widgets/common/indicator/frequently_wrong_answer_indicator.dart';
 
 part 'local_widgets/review_note_detail_app_bar.dart';
 part 'local_widgets/review_note_detail_bottom_controller_bar.dart';

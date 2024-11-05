@@ -21,22 +21,23 @@ class UnderLabelIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 32),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           IconFlashAreaButton.assetIcon(
             iconPath: icon,
-            size: 24,
-            activatedColor: AppColor.of.gray4,
-            enabledColor: AppColor.of.gray2,
+            size: 28,
+            activatedColor: AppColor.of.gray6,
+            enabledColor: AppColor.of.gray3,
             onIconTapped: isActive ? onTap : null,
           ),
           const Gap(12),
           Text(
             label,
-            style: AppTextStyle.alert1.copyWith(
-              color: isActive ? AppColor.of.gray4 : AppColor.of.gray2,
+            style: AppTextStyle.body3.copyWith(
+              color: isActive ? AppColor.of.gray6 : AppColor.of.gray3,
             ),
           ),
         ],

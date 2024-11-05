@@ -15,6 +15,7 @@ import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_blur_provider.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
+import 'package:techtalk/presentation/providers/system/notification_status_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_auth_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:techtalk/presentation/widgets/common/bottom_sheet/option_list_bottom_sheet.dart';
@@ -22,6 +23,14 @@ import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 mixin class MyPageEvent {
+
+  ///
+  /// 알럼 활성화 스위치 버튼이 클릭 되었을 때
+  ///
+  void onNotificationSwitchBtnTapped(WidgetRef ref){
+    ref.read(notificationStatusProvider.notifier).toggle();
+  }
+
   ///
   /// 개인정보 및 약관 사이트로 이동
   ///

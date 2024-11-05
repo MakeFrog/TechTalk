@@ -20,12 +20,15 @@ class _AppBar extends ConsumerWidget
           Text(
             tr(LocaleKeys.learning_hideAnswers),
             style: AppTextStyle.alert1.copyWith(
-              color: AppColor.of.gray3,
+              color: AppColor.of.black,
             ),
           ),
-          const Gap(8),
+          const Gap(6),
           Consumer(
             builder: (context, ref, child) => FlatSwitch(
+              height: 24,
+              width: 40,
+              bgColor: AppColor.of.blue2,
               value: ref.watch(studyAnswerBlurProvider),
               onTap: (_) => onToggleAnswerBlur(ref),
             ),

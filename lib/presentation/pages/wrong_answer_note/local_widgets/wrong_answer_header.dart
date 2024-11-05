@@ -73,30 +73,15 @@ class _WrongAnswerHeader extends HookWidget
                               final isSelected =
                                   topic.id == selectedTopic(ref)!.id;
 
-                              return ChoiceChip(
-                                showCheckmark: false,
-                                selected: isSelected,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 6,
-                                ),
-                                backgroundColor: AppColor.of.background1,
-                                selectedColor: AppColor.of.brand2,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                labelStyle: AppTextStyle.body1.copyWith(
-                                  color: isSelected
-                                      ? Colors.white
-                                      : AppColor.of.gray3,
-                                ),
-                                side: BorderSide.none,
-                                onSelected: (value) => onTapTopicChip(
-                                  ref,
-                                  topic,
-                                ),
-                                label: Text(topic.text),
+                              return SelectableChip(
+                                isSelected: isSelected,
+                                onTap: ()=> onTapTopicChip(
+                                ref,
+                                topic,
+                              ),
+                                label: topic.text,
                               );
+
                             },
                           ),
                         ),
