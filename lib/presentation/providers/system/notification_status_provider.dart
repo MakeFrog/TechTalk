@@ -65,7 +65,9 @@ class NotificationStatus extends _$NotificationStatus {
               rightBtnContent: tr(LocaleKeys.permission_setUp),
               onRightBtnClicked: () async {
                 (await navigationContext).pop();
-                await AppSettings.openAppSettings();
+                await AppSettings.openAppSettings(
+                  type: AppSettingsType.notification,
+                );
               },
               onLeftBtnClicked: () async {
                 (await navigationContext).pop();
