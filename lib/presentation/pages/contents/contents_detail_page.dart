@@ -5,22 +5,13 @@ import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_overview_entity.dart';
 import 'package:techtalk/presentation/pages/contents/contents_detail_event.dart';
-import 'package:techtalk/presentation/pages/contents/providers/youtube_video_data_provider.dart';
+import 'package:techtalk/presentation/pages/contents/contents_detail_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/box/async_skeleton_widget_builder.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-enum TabType {
-  summary('요약'),
-  questions('면접질문');
-
-  final String displayStr;
-
-  const TabType(this.displayStr);
-}
-
 /// 유튜브 컨텐츠 상세 페이지
-class ContentsDetailPage extends BasePage with ContentsDetailEvent {
+class ContentsDetailPage extends BasePage with ContentsDetailEvent, ContentsDetailState {
   const ContentsDetailPage({super.key, required this.overview});
 
   final ContentsOverviewEntity overview;
@@ -29,13 +20,11 @@ class ContentsDetailPage extends BasePage with ContentsDetailEvent {
   Widget buildPage(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
 
-    final videoData = ref.watch(youtubeVideoDataProvider(overview.contentsId));
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AsyncSkeletonWidgetBuilder(
-          asyncValue: videoData,
+          asyncValue: youtubeVideoDataAsync(ref, overview.contentsId),
           skeletonBuilder: (p0) => SizedBox(
             height: 210,
             width: double.infinity,
@@ -63,7 +52,7 @@ class ContentsDetailPage extends BasePage with ContentsDetailEvent {
             runSpacing: 5,
             children: [
               AsyncSkeletonWidgetBuilder(
-                asyncValue: videoData,
+                asyncValue: youtubeVideoDataAsync(ref, overview.contentsId),
                 skeletonBuilder: (p0) => Text(
                   overview.contentsTitle,
                   style: AppTextStyle.headline3,
@@ -74,7 +63,7 @@ class ContentsDetailPage extends BasePage with ContentsDetailEvent {
                 ),
               ),
               AsyncSkeletonWidgetBuilder(
-                asyncValue: videoData,
+                asyncValue: youtubeVideoDataAsync(ref, overview.contentsId),
                 skeletonBuilder: (_) => const SkeletonBox(
                   height: 20,
                 ),
@@ -100,7 +89,7 @@ class ContentsDetailPage extends BasePage with ContentsDetailEvent {
                 ),
               ),
               AsyncSkeletonWidgetBuilder(
-                asyncValue: videoData,
+                asyncValue: youtubeVideoDataAsync(ref, overview.contentsId),
                 skeletonBuilder: (p0) => const SkeletonBox(
                   height: 20,
                 ),
