@@ -1,0 +1,69 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:techtalk/core/constants/job_group.enum.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/contents_author_model.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/skill_model.dart';
+import 'package:techtalk/features/contents/repositories/entities/contents_overview_entity.dart';
+
+part 'video_contents_overview_model.g.dart';
+
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+class VideoContentsOverviewModel {
+  VideoContentsOverviewModel({
+    required this.id,
+    required this.contentsId,
+    required this.contentsTitle,
+    required this.thumbnailImgUrl,
+    required this.videoDuration,
+    required this.qnaNum,
+    required this.relatedSkills,
+    required this.relatedJobGroupIds,
+    required this.author,
+  });
+
+  final String id;
+
+  final String contentsId;
+
+  final String thumbnailImgUrl;
+
+  final String contentsTitle;
+
+  final Duration videoDuration;
+
+  final int qnaNum;
+
+  final List<SkillModel> relatedSkills;
+
+  final List<String> relatedJobGroupIds;
+
+  final ContentsAuthorModel author;
+
+  /// 엔티티로 변환
+  VideoContentsOverviewEntity toEntity() {
+    return VideoContentsOverviewEntity(
+      id: id,
+      contentsId: contentsId,
+      thumbnailImgUrl: thumbnailImgUrl,
+      contentsTitle: contentsTitle,
+      qnaNum: qnaNum,
+      author: author.toEntity(),
+      relatedSkills: relatedSkills.map((skill) => skill.toEntity()).toSet(),
+      relatedJobs: relatedJobGroupIds.map(JobGroup.getById).toSet(),
+      videoDuration: videoDuration,
+    );
+  }
+
+  /// Firestore에서 가져온 DocumentSnapshot을 모델로 변환
+  factory VideoContentsOverviewModel.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) =>
+      VideoContentsOverviewModel.fromJson(snapshot.data()!);
+
+  /// JSON에서 모델로 변환
+  factory VideoContentsOverviewModel.fromJson(Map<String, dynamic> json) => _$VideoContentsOverviewModelFromJson(json);
+
+  /// 모델을 JSON으로 변환
+  Map<String, dynamic> toJson() => _$VideoContentsOverviewModelToJson(this);
+}
