@@ -25,18 +25,15 @@ class AlreadyExistNicknameException extends CustomException {
 }
 
 class NoTopicQuestionException extends CustomException {
-  const NoTopicQuestionException(String topic)
-      : super('200002', '$topic 주제의 면접 질문이 없습니다.');
+  const NoTopicQuestionException(String topic) : super('200002', '$topic 주제의 면접 질문이 없습니다.');
 }
 
 class NoTopicException extends CustomException {
-  const NoTopicException(String topic)
-      : super('200003', '$topic 주제 데이터가 없습니다.');
+  const NoTopicException(String topic) : super('200003', '$topic 주제 데이터가 없습니다.');
 }
 
 class NoQnAsException extends CustomException {
-  const NoQnAsException(String topic)
-      : super('200004', '$topic 주제의 면접 문답 데이터가 없습니다.');
+  const NoQnAsException(String topic) : super('200004', '$topic 주제의 면접 문답 데이터가 없습니다.');
 }
 
 class TopicInitialFailed extends CustomException {
@@ -44,18 +41,15 @@ class TopicInitialFailed extends CustomException {
 }
 
 class ChatMessageFetchedFailedException extends CustomException {
-  const ChatMessageFetchedFailedException()
-      : super('300001', '채팅 기록을 가져오는데 실패하였습니다.');
+  const ChatMessageFetchedFailedException() : super('300001', '채팅 기록을 가져오는데 실패하였습니다.');
 }
 
 class ChatRoomsFetchedFailedException extends CustomException {
-  const ChatRoomsFetchedFailedException()
-      : super('300002', '채팅방 목록을 가져오는데 실패하였습니다.');
+  const ChatRoomsFetchedFailedException() : super('300002', '채팅방 목록을 가져오는데 실패하였습니다.');
 }
 
 class ChatRoomCreationFailedException extends CustomException {
-  const ChatRoomCreationFailedException()
-      : super('300003', '채팅방을 생성하는데 실패하였습니다.');
+  const ChatRoomCreationFailedException() : super('300003', '채팅방을 생성하는데 실패하였습니다.');
 }
 
 class ChatReportFailed extends CustomException {
@@ -63,28 +57,23 @@ class ChatReportFailed extends CustomException {
 }
 
 class NoInterviewQuestionException extends CustomException {
-  const NoInterviewQuestionException(String topic)
-      : super('000002', '$topic 주제의 면접 질문이 없습니다.');
+  const NoInterviewQuestionException(String topic) : super('000002', '$topic 주제의 면접 질문이 없습니다.');
 }
 
 class NoInterviewTopicException extends CustomException {
-  const NoInterviewTopicException(String topic)
-      : super('000003', '$topic 주제 데이터가 없습니다.');
+  const NoInterviewTopicException(String topic) : super('000003', '$topic 주제 데이터가 없습니다.');
 }
 
 class FetchSkillsFailedException extends CustomException {
-  const FetchSkillsFailedException()
-      : super('000004', '테크 스킬 목록을 불러오는데 실패하였습니다');
+  const FetchSkillsFailedException() : super('000004', '테크 스킬 목록을 불러오는데 실패하였습니다');
 }
 
 class WrongAnswerUpdateFailedException extends CustomException {
-  const WrongAnswerUpdateFailedException()
-      : super('000005', '오답노트 정보를 업데이트하는데 실패하였습니다.');
+  const WrongAnswerUpdateFailedException() : super('000005', '오답노트 정보를 업데이트하는데 실패하였습니다.');
 }
 
 class WrongAnswerFetchFailedException extends CustomException {
-  const WrongAnswerFetchFailedException()
-      : super('000006', '오답노트 목록을 가져오는데 실패하였습니다.');
+  const WrongAnswerFetchFailedException() : super('000006', '오답노트 목록을 가져오는데 실패하였습니다.');
 }
 
 class ImgStoreFailedException extends CustomException {
@@ -96,13 +85,11 @@ class MappingFailedException extends CustomException {
 }
 
 class VersionInfoFetchedFailedException extends CustomException {
-  const VersionInfoFetchedFailedException()
-      : super('500001', '앱 버전 정보를 가져오는데 실패하였습니다.');
+  const VersionInfoFetchedFailedException() : super('500001', '앱 버전 정보를 가져오는데 실패하였습니다.');
 }
 
 class SystemNotAvailableWithNotification extends CustomException {
-  const SystemNotAvailableWithNotification()
-      : super('500002', '시스템 사용불가 / 공지 메세지');
+  const SystemNotAvailableWithNotification() : super('500002', '시스템 사용불가 / 공지 메세지');
 }
 
 class SystemOnMaintenanceException extends CustomException {
@@ -119,4 +106,8 @@ class SystemNetworkUnstable extends CustomException {
 
 class SystemSomethingWrongException extends CustomException {
   const SystemSomethingWrongException() : super('500007', '알 수 없는 오류');
+}
+
+class FetchYoutubeContentsException extends CustomException {
+  const FetchYoutubeContentsException() : super('500008', '영상 정보 데이터를 불러오는 데에 실패하였습니다.');
 }

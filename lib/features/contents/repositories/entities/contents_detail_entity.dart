@@ -16,6 +16,10 @@ class ContentsDetailEntity {
   /// 컨텐츠 타이틀
   final String title;
 
+  /// NOTE: 저자 정보인데, 유튜브 api에서 channel 정보와 겹친다.
+  /// 어떻게 처리해야할지 고민 필요
+  // final ContentsAuthorEntity author;
+
   /// 관련 기술 스킬
   final Set<SkillEntity> relatedSkills;
 
@@ -38,6 +42,7 @@ class ContentsDetailEntity {
     required this.id,
     required this.contentsId,
     required this.title,
+    // required this.author,
     required this.relatedSkills,
     required this.relatedJobs,
     required this.contentsLanguage,

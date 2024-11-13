@@ -71,8 +71,6 @@ class VideoContentsOverviewEntity implements ContentsOverviewEntity {
   @override
   final Set<JobGroup> relatedJobs;
 
-  final int? viewCount;
-
   final Duration videoDuration;
 
   VideoContentsOverviewEntity({
@@ -84,7 +82,6 @@ class VideoContentsOverviewEntity implements ContentsOverviewEntity {
     required this.relatedJobs,
     required this.relatedSkills,
     required this.videoDuration,
-    this.viewCount,
     this.qnaNum = 0,
   });
 }

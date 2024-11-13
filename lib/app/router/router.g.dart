@@ -120,6 +120,16 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $StudyRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: 'contents',
+          name: 'contents',
+          factory: $ContentsMainRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'contents-detail/:contentsId',
+          name: 'contents-detail',
+          factory: $ContentsDetailRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'wrong-answer/:index',
           name: 'wrong answer',
           factory: $WrongAnswerRouteExtension._fromState,
@@ -264,6 +274,46 @@ extension $StudyRouteExtension on StudyRoute {
 
   String get location => GoRouteData.$location(
         '/study/${Uri.encodeComponent(topicId)}',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+extension $ContentsMainRouteExtension on ContentsMainRoute {
+  static ContentsMainRoute _fromState(GoRouterState state) =>
+      ContentsMainRoute();
+
+  String get location => GoRouteData.$location(
+        '/contents',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $ContentsDetailRouteExtension on ContentsDetailRoute {
+  static ContentsDetailRoute _fromState(GoRouterState state) =>
+      ContentsDetailRoute(
+        state.extra as ContentsOverviewEntity,
+      );
+
+  String get location => GoRouteData.$location(
+        '/contents-detail/${Uri.encodeComponent(contentsId)}',
       );
 
   void go(BuildContext context) => context.go(location, extra: $extra);
