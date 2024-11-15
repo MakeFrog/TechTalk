@@ -1,10 +1,11 @@
 part of 'interview_result_dialog.dart';
 
-class _OnLineView extends ConsumerWidget {
+class _OnLineView extends HookConsumerWidget with ChatState, ChatEvent {
   const _OnLineView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useAutomaticKeepAlive();
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(
@@ -34,24 +35,94 @@ class _OnLineView extends ConsumerWidget {
             Assets.iconsPonderingIllusration,
           ),
           Container(
-            height: 108,
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: AppColor.of.background1,
-            ),
-            child: Text(
-              '자료구조의 기본 개념인 트리(Tree)는 어느정도 이해했지만, 트리의 순회(Traversal) 부분에 대해서는 좀 더 깊이 있는 학습이 필요할 것 같습니다.',
-              style: TextStyle(
-                fontFamily: 'pretendard',
-                leadingDistribution: TextLeadingDistribution.even,
-                letterSpacing: -2 / 100 * 13,
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-                height: 20 / 13,
+              height: 108,
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: AppColor.of.background1,
               ),
-            ),
-          ),
+              child: HookConsumer(
+                builder: (context, ref, _) {
+                  final scrollController = useScrollController();
+
+                  // 스크롤 하단 이동 로직 (오버플로우 시에만)
+                  void scrollToBottomIfOverflowed() {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (scrollController.hasClients) {
+                        final maxScrollExtent =
+                            scrollController.position.maxScrollExtent;
+                        final currentScrollOffset = scrollController.offset;
+
+                        // 현재 스크롤 위치와 최대 스크롤 범위 비교
+                        if (currentScrollOffset < maxScrollExtent) {
+                          scrollController.jumpTo(maxScrollExtent);
+                        }
+                      }
+                    });
+                  }
+
+                  return SingleChildScrollView(
+                    controller: scrollController,
+                    child: StreamBuilder<String>(
+                      stream: oneLineStreamFeedback(ref),
+                      builder: (context, snapshot) {
+                        // 데이터가 업데이트될 때만 실행
+                        if (snapshot.hasData) {
+                          scrollToBottomIfOverflowed();
+                        }
+
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Text(
+                            'AI 면접관의 한줄평을 생성하고 있습니다',
+                            style: TextStyle(
+                              color: AppColor.of.gray4,
+                              fontFamily: 'pretendard',
+                              leadingDistribution: TextLeadingDistribution.even,
+                              letterSpacing: -2 / 100 * 13,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              height: 20 / 13,
+                            ),
+                          )
+                              .animate(
+                                  delay: 320.ms,
+                                  onPlay: (controller) => controller.repeat(
+                                      period: 500.milliseconds))
+                              .shimmer(color: Colors.white.withOpacity(0.5));
+                        }
+
+                        if (snapshot.hasError) {
+                          return const Text(
+                            '한줄평을 생성하는데 오류가 발생했어요',
+                            style: TextStyle(
+                              fontFamily: 'pretendard',
+                              leadingDistribution: TextLeadingDistribution.even,
+                              letterSpacing: -2 / 100 * 13,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              height: 20 / 13,
+                            ),
+                          );
+                        }
+
+                        return Text(
+                          snapshot.data ?? '',
+                          style: const TextStyle(
+                            fontFamily: 'pretendard',
+                            leadingDistribution: TextLeadingDistribution.even,
+                            letterSpacing: -2 / 100 * 13,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            height: 20 / 13,
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              )),
           const Gap(
             16,
           ),
@@ -89,7 +160,9 @@ class _OnLineView extends ConsumerWidget {
                         vertical: 13,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      changePageViewIndex(ref, index: 2);
+                    },
                     child: const Text(
                       '다음',
                     ),

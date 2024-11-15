@@ -1,12 +1,13 @@
 part of 'interview_result_dialog.dart';
 
-class _InterviewInductionView extends ConsumerWidget {
+class _InterviewInductionView extends HookConsumerWidget {
   const _InterviewInductionView({required this.type, super.key});
 
   final InterviewType type;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useAutomaticKeepAlive();
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(

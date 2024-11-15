@@ -10,12 +10,14 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/feedback_response_entity.dart';
 
-class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam, BehaviorSubject<String>> {
+class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
+    BehaviorSubject<String>> {
   AiAnswerProgress state = AiAnswerProgress.init;
 
   @override
   BehaviorSubject<String> call(GetQuestionFeedbackParam param) {
-    final BehaviorSubject<String> streamedAdviceResponse = BehaviorSubject<String>();
+    final BehaviorSubject<String> streamedAdviceResponse =
+        BehaviorSubject<String>();
     state = AiAnswerProgress.onProgress;
 
     String response = '';
@@ -81,7 +83,8 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
             jsonResponse = ''; // JSON 수집 상태 초기화
             isCollectingJson = false;
 
-            return param.onFeedBackCompleted(feedbackResponse: feedbackResponse);
+            return param.onFeedBackCompleted(
+                feedbackResponse: feedbackResponse);
           }
         },
         onDone: () {
@@ -101,7 +104,8 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
 
   /// 프롬프트 메세지 히스토리를 만드는 함수
   /// 추후에 메세지 히스토리 기반으로 채팅을 구현할 수도 있을 것 같아 따로 분리했습니다.
-  List<Map<String, dynamic>> _createChatMessage(GetQuestionFeedbackParam param) {
+  List<Map<String, dynamic>> _createChatMessage(
+      GetQuestionFeedbackParam param) {
     // 프롬프트는 추후 전부 한 언어로 통일할 것이므로 따로 localization은 필요하지 않아 보입니다.
     return [
       Messages(
@@ -131,7 +135,8 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
       ),
       Messages(
         role: Role.system,
-        content: '면접 질문에 대한 모범답안은 다음과 같습니다: ${param.qna.qna.answers.map((str) => '-$str').join(' ')}',
+        content:
+            '면접 질문에 대한 모범답안은 다음과 같습니다: ${param.qna.qna.answers.map((str) => '-$str').join(' ')}',
       ).toJson(),
       Messages(
         role: Role.system,
@@ -153,7 +158,9 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
   }
 
   FeedbackResponseEntity _parseAndHandleJsonResponse(
-      {required String jsonResponse, required String feedback, required GetQuestionFeedbackParam param}) {
+      {required String jsonResponse,
+      required String feedback,
+      required GetQuestionFeedbackParam param}) {
     try {
       final parsedData = jsonDecode(jsonResponse) as Map<String, dynamic>;
       return FeedbackResponseEntity.fromJson(
@@ -229,7 +236,8 @@ typedef GetQuestionFeedbackParam = ({
   List<BaseChatEntity> chatHistory,
   ChatQnaEntity qna,
   String userName,
-  void Function({required FeedbackResponseEntity feedbackResponse}) onFeedBackCompleted,
+  void Function(
+      {required FeedbackResponseEntity feedbackResponse}) onFeedBackCompleted,
   void Function({required AnswerState answerState}) checkAnswer,
   void Function(Object error, StackTrace startTrace) onError,
 });

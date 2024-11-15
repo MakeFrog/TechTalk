@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:rxdart/subjects.dart';
 import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/app/localization/localization_enum.dart';
 import 'package:techtalk/app/style/app_color.dart';
@@ -39,7 +40,52 @@ class HomePage extends BasePage with HomeState, HomeEvent {
         return ListView(
           physics: const ScrollPhysics(),
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          children: const [
+          children: [
+            Container(
+              constraints: const BoxConstraints(maxHeight: 80),
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: AppColor.of.background1,
+              ),
+              child: HookConsumer(
+                builder: (context, ref, _) {
+                  final scrollController = useScrollController();
+                  return Scrollbar(
+                    controller: scrollController,
+                    interactive: true,
+                    thumbVisibility: true,
+                    thickness: 4,
+                    radius: const Radius.circular(24),
+                    child: SingleChildScrollView(
+                      controller: scrollController,
+                      child: StreamBuilder<String>(
+                        stream: BehaviorSubject.seeded('asdkfjaklsdf'),
+                        // stream: oneLineStreamFeedback(ref),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          }
+                          return Text(
+                            '지랑이d아지랑이d아지랑이d아지랑이d아지랑이d아지랑이d아지랑이d아지랑이d아지랑이d아지랑이d아지랑이d아지랑이d아지랑이d아지랑이d아지랑이d아asdfasdfasdfasdfzzzzzzzzz',
+                            style: TextStyle(
+                              fontFamily: 'pretendard',
+                              leadingDistribution: TextLeadingDistribution.even,
+                              letterSpacing: -2 / 100 * 13,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              height: 20 / 13,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
             CheerUpMessageCard(),
             Gap(16),
             PracticalInterviewCard(),

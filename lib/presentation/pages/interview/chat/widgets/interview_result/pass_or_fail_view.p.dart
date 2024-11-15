@@ -1,19 +1,13 @@
 part of 'interview_result_dialog.dart';
 
-class _PassOrFailView extends StatelessWidget {
+class _PassOrFailView extends HookConsumerWidget with ChatState, ChatEvent {
   const _PassOrFailView({
     super.key,
-    required this.result,
-    required this.totalCount,
-    required this.correctAnswerCount,
   });
 
-  final InterviewResult result;
-  final int totalCount;
-  final int correctAnswerCount;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    useAutomaticKeepAlive();
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(
@@ -32,24 +26,26 @@ class _PassOrFailView extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Text(
-            '합격했어요!',
+            room(ref).interviewResult.isPassed ? '합격했어요!' : '불합격했어요',
             style: AppTextStyle.headline1,
           ),
           const Spacer(),
           const Gap(4),
           Text(
-            '앞으로도 꾸준히 해서 취뽀 성공!',
+            room(ref).interviewResult.isPassed
+                ? '앞으로도 꾸준히 해서 취뽀 성공!'
+                : '꾸준히 하면 분명 달라질 거예요',
             style: AppTextStyle.body1.copyWith(
               color: AppColor.of.gray5,
             ),
           ),
           const Gap(16),
-          SvgPicture.asset(Assets.iconsPassResult),
+          SvgPicture.asset(room(ref).interviewResult.illustration),
           const Gap(8),
-          const InterviewCountResultIndicator(
-            result: InterviewResult.pass,
-            correctAnswerCount: 4,
-            totalCount: 10,
+          InterviewCountResultIndicator(
+            result: room(ref).interviewResult,
+            correctAnswerCount: room(ref).progressInfo.correctAnswerCount,
+            totalCount: room(ref).progressInfo.totalQuestionCount,
           ),
           const Gap(24),
           const Spacer(),
@@ -87,7 +83,9 @@ class _PassOrFailView extends StatelessWidget {
                         vertical: 13,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      changePageViewIndex(ref, index: 1);
+                    },
                     child: const Text(
                       '다음',
                     ),

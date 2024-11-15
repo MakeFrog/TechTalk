@@ -41,7 +41,7 @@ class ChatRoomEntity {
 
   int get completedQuestionCount => progressInfo.completedQuestionCount;
 
-  InterviewResult get chatResult {
+  InterviewResult get interviewResult {
     if (progressState.isCompleted) {
       if (progressInfo.correctAnswerCount >=
           progressInfo.incorrectAnswerCount) {
@@ -57,7 +57,7 @@ class ChatRoomEntity {
     }
   }
 
-  InterviewResult get passOrFail => chatResult;
+  InterviewResult get passOrFail => interviewResult;
 
   TopicEntity get singleTopic => topics.first;
 

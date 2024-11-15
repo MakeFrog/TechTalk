@@ -179,6 +179,7 @@ extension $InterviewTopicSelectRouteExtension on InterviewTopicSelectRoute {
 const _$InterviewTypeEnumMap = {
   InterviewType.singleTopic: 'single-topic',
   InterviewType.practical: 'practical',
+  InterviewType.resume: 'resume',
 };
 
 extension $QuestionCountSelectPageRouteExtension

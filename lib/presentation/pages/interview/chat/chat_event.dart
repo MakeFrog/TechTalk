@@ -17,6 +17,7 @@ import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/interview_result_page_view_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/is_follow_up_process_active_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/main_input_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
@@ -287,5 +288,17 @@ mixin class ChatEvent {
   ///
   void toggleFollowUpQuestionActiveState(WidgetRef ref) {
     ref.read(isFollowUpProcessActiveProvider.notifier).toggle();
+  }
+
+  ///
+  /// 인터뷰 결과 페이지뷰 인덱스 조정
+  ///
+  void changePageViewIndex(WidgetRef ref, {required int index}) {
+    final controller = ref.read(interviewResultPageViewControllerProvider);
+    controller.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 360),
+      curve: Curves.easeInOut,
+    );
   }
 }

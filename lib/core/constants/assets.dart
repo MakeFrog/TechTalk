@@ -55,6 +55,7 @@ class Assets {
   static const String iconsErrorIndicator = 'assets/icons/error_indicator.svg';
   static const String iconsExpansionArrowIndicator =
       'assets/icons/expansion_arrow_indicator.svg';
+  static const String iconsFailResult = 'assets/icons/fail_result.svg';
   static const String iconsFollowUpQuestion =
       'assets/icons/follow_up_question.svg';
   static const String iconsGoogleLogo = 'assets/icons/google_logo.svg';
