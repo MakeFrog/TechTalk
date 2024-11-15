@@ -31,7 +31,7 @@ export 'repositories/entities/guide_chat_entity.dart';
 export 'repositories/entities/question_chat_entity.dart';
 export 'repositories/enums/ai_answer_progress.enum.dart';
 export 'repositories/enums/answer_state.enum.dart';
-export 'repositories/enums/chat_result.enum.dart';
+export 'repositories/enums/interview_result.dart';
 export 'repositories/enums/chat_room_progress.enum.dart';
 export 'repositories/enums/chat_type.enum.dart';
 export 'repositories/enums/interview_progress.enum.dart';

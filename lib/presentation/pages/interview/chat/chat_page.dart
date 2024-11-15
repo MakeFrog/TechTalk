@@ -11,6 +11,7 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_result/interview_result_dialog.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/interview_tab_view.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/qna_tab_view.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';

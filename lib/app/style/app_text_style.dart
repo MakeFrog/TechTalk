@@ -21,7 +21,7 @@ abstract class AppTextStyle {
 
   static TextStyle pretendardBoldStyle(double size, double? height) =>
       pretendardStyle(size, height).copyWith(
-        fontWeight: FontWeight.w800,
+        fontWeight: FontWeight.w700,
       );
 
   static final TextStyle highlight = pretendardBoldStyle(32, 36);

@@ -37,7 +37,13 @@ class _AppBar extends ConsumerWidget
                     value: isActive,
                     bgColor: AppColor.of.purple2,
                     onTap: (_) {
-                      toggleFollowUpQuestionActiveState(ref);
+                      showAdaptiveDialog(
+                        context: context,
+                        builder: (context) {
+                          return const InterviewResultDialog();
+                        },
+                      );
+                      // toggleFollowUpQuestionActiveState(ref);
                     },
                   );
                 },
