@@ -6,6 +6,7 @@ import 'package:techtalk/features/chat/use_cases/create_chat_room_use_case.dart'
 import 'package:techtalk/features/chat/use_cases/get_chat_message_history_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/get_chat_qnas_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/get_chat_rooms_use_case.dart';
+import 'package:techtalk/features/chat/use_cases/get_one_line_interview_feedback_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/get_random_qnas_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/recrod_to_text_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/report_chat_use_case.dart';
@@ -56,3 +57,4 @@ final getChatQnasUseCase = locator<GetChatQnasUseCase>();
 final reportChatUseCase = locator<ReportChatUseCase>();
 final getRandomQnaUseCase = locator<GetRandomQnasUseCase>();
 final recordToTextUseCase = locator<RecordToTextUseCase>();
+final getOneLineFeedbackUseCase = locator<GetOneLineInterViewFeedbackUseCase>();
