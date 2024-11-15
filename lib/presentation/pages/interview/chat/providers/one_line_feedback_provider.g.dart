@@ -8,7 +8,11 @@ part of 'one_line_feedback_provider.dart';
 
 String _$oneLineFeedbackHash() => r'90bb73c527b736e2fc3e9fbb1f6f5ccea2e26522';
 
-/// See also [OneLineFeedback].
+///
+/// Ai 면접관 한줄 피드백을 stream 형태로 리턴
+///
+///
+/// Copied from [OneLineFeedback].
 @ProviderFor(OneLineFeedback)
 final oneLineFeedbackProvider = AutoDisposeNotifierProvider<OneLineFeedback,
     BehaviorSubject<String>>.internal(

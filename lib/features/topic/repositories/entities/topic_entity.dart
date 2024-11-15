@@ -3,6 +3,7 @@ class TopicEntity {
   final String text;
   final String? imageUrl;
   final List<String> skillIds;
+  final List<String> relatedTopicIds;
   final String categoryId;
   final bool isAvailable;
   final DateTime updatedAt;
@@ -14,6 +15,7 @@ class TopicEntity {
     this.imageUrl,
     required this.skillIds,
     required this.categoryId,
+    required this.relatedTopicIds,
     required this.isAvailable,
     required this.updatedAt,
   });
@@ -36,6 +38,7 @@ class TopicEntity {
       text: map['text'] as String,
       imageUrl: map['imageUrl'] as String,
       skillIds: map['skillIds'] as List<String>,
+      relatedTopicIds: map['relatedTopicIds'] as List<String>,
       categoryId: map['categoryId'] as String,
       isAvailable: map['isAvailable'] as bool,
       updatedAt: map['updatedAt'] as DateTime,
@@ -49,6 +52,7 @@ class TopicEntity {
           runtimeType == other.runtimeType &&
           id == other.id &&
           text == other.text &&
+          relatedTopicIds == other.relatedTopicIds &&
           imageUrl == other.imageUrl &&
           skillIds == other.skillIds &&
           categoryId == other.categoryId &&
@@ -62,6 +66,7 @@ class TopicEntity {
       imageUrl.hashCode ^
       skillIds.hashCode ^
       categoryId.hashCode ^
+      relatedTopicIds.hashCode ^
       isAvailable.hashCode ^
       updatedAt.hashCode;
 
@@ -70,6 +75,7 @@ class TopicEntity {
     String? text,
     String? imageUrl,
     List<String>? skillIds,
+    List<String>? relatedTopicIds,
     String? categoryId,
     bool? isAvailable,
     DateTime? updatedAt,
@@ -77,6 +83,7 @@ class TopicEntity {
     return TopicEntity(
       id: id ?? this.id,
       text: text ?? this.text,
+      relatedTopicIds: relatedTopicIds ?? this.relatedTopicIds,
       imageUrl: imageUrl ?? this.imageUrl,
       skillIds: skillIds ?? this.skillIds,
       categoryId: categoryId ?? this.categoryId,
