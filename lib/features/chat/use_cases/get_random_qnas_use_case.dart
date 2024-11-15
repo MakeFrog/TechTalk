@@ -63,7 +63,8 @@ class GetRandomQnasUseCase
                 resolvedQnas.map(ChatQnaEntity.fromQnaEntity).toList();
 
             return chatQns;
-          }
+          },
+        InterviewType.resume => throw Exception('타입을 지정해줘야 합니다'),
       };
 
       return Result.success(await returnedQnas());

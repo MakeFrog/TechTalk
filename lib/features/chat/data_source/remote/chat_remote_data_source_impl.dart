@@ -30,7 +30,10 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
           .get(),
       InterviewType.practical => await FirestoreChatRoomRef.collection()
           .where(FirestoreChatRoomRef.typeField, isEqualTo: type.name)
-          .get()
+          .get(),
+      InterviewType.resume => await FirestoreChatRoomRef.collection()
+          .where(FirestoreChatRoomRef.typeField, isEqualTo: type.name)
+          .get(),
     };
 
     return [
