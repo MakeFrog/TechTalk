@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
-import 'package:speech_to_text/speech_to_text.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
@@ -26,16 +25,12 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
 
   /// 음성 녹음 컨트롤러
   final recordController = AudioRecorder();
-  late final speechController = Platform.isIOS ? SpeechToText() : null;
 
   //// speech 컨트롤러 listen 가능 상태 여부
   Completer<void> isSpeechListenAvailable = Completer<void>();
 
   /// 음성 인식된 텍스트
   String recognizedText = '';
-
-  /// SpeechToText로 인식된 텍스트
-  String notifyText = '';
 
   /// 음성 녹음 파일이 저장되는 경로
   late String recordPath;
@@ -75,15 +70,6 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
   /// 음성 인식 시작
   ///
   Future<void> startRecord(WidgetRef ref) async {
-    if (Platform.isIOS) {
-      await isSpeechListenAvailable.future;
-
-      /// SPEECH TO TEXT 컨트롤러가 listening 하지 않는다면
-      /// listen하는 로직 실행
-      if (!(speechController?.isListening ?? true)) {
-        await setListeningOnSpeechController(isInitProgress: false);
-      }
-    }
     final chatProgress = ref.read(interviewProgressStateProvider);
     if (chatProgress.isDone) {
       SnackBarService.showSnackBar(tr(LocaleKeys.interview_interviewEnded));
@@ -96,8 +82,6 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
     }
     await Future.microtask(
         () => _updateProgressState(RecordProgressState.loading));
-
-    notifyText = '';
 
     _updateProgressState(RecordProgressState.ready, resetText: true);
     await recordController.start(const RecordConfig(), path: recordPath);
@@ -113,22 +97,11 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
     /// 녹음 중지
     await recordController.stop();
 
-    if (Platform.isIOS) {
-      /// 입력된 텍스트가 없다면 알럿을 노출 후 초기화 상태로 변경
-      if (notifyText.isEmpty) {
-        SnackBarService.showSnackBar(tr(LocaleKeys.interview_noAudioDetected));
-        await File(recordPath).delete();
-        _updateProgressState(RecordProgressState.initial);
-        return;
-      }
-    }
-
     /// 녹음된 텍스트 (Speech To Text)
     final recordedText = await recordToTextUseCase.call(recordPath);
 
     await recordedText.fold(onSuccess: (text) async {
-      if (Platform.isAndroid &&
-          _ghostWords.any((element) => text.contains(element))) {
+      if (_ghostWords.any((element) => text.contains(element))) {
         SnackBarService.showSnackBar(tr(LocaleKeys.interview_noAudioDetected));
         await File(recordPath).delete();
         _updateProgressState(RecordProgressState.initial);
@@ -201,29 +174,6 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
   }
 
   ///
-  /// SpeechToText 컨트롤러 초기화
-  ///
-  Future<void> setListeningOnSpeechController(
-      {bool isInitProgress = true /* 초기 init 설정 여부*/
-      }) async {
-    final isEnabled = await speechController!.initialize();
-    if (isInitProgress ? isEnabled : true) {
-      await speechController!.listen(onResult: (result) {
-        if (progressState.isOnProgress) {
-          notifyText = result.recognizedWords;
-          notifyListeners();
-        }
-      });
-
-      if (isInitProgress) {
-        isSpeechListenAvailable.complete(null);
-      }
-    } else {
-      unawaited(speechController!.cancel());
-    }
-  }
-
-  ///
   /// 각종 컨트롤러 및 path 초기 설정
   ///
   Future<void> initConfigSettings() async {
@@ -240,10 +190,6 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
     if (await File(recordPath).exists()) {
       await File(recordPath).delete();
     }
-
-    if (Platform.isIOS) {
-      await setListeningOnSpeechController();
-    }
   }
 }
 
@@ -252,9 +198,6 @@ final speechToTextProvider = AutoDisposeChangeNotifierProvider((ref) {
   provider.initConfigSettings();
 
   ref.onDispose(() {
-    if (Platform.isIOS) {
-      provider.speechController!.cancel();
-    }
     provider.recordController.dispose();
   });
   return provider;
