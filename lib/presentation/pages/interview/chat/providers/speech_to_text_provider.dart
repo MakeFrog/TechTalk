@@ -81,7 +81,7 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
       /// SPEECH TO TEXT 컨트롤러가 listening 하지 않는다면
       /// listen하는 로직 실행
       if (!(speechController?.isListening ?? true)) {
-        await setListeningOnSpeechController(handleCompleter: false);
+        await setListeningOnSpeechController(isInitProgress: false);
       }
     }
     final chatProgress = ref.read(interviewProgressStateProvider);
@@ -187,10 +187,7 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
       if (progressState.isOnProgress || progressState.isReady) {
         _updateProgressState(RecordProgressState.loading);
         notifyListeners();
-        unawaited(Future.wait([
-          recordController.stop(),
-          if (Platform.isIOS) speechController!.cancel() else Future.value()
-        ]));
+        unawaited(recordController.stop());
       }
 
       _updateProgressState(RecordProgressState.initial, resetText: true);
@@ -207,10 +204,10 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
   /// SpeechToText 컨트롤러 초기화
   ///
   Future<void> setListeningOnSpeechController(
-      {bool handleCompleter = true /* 초기 init 설정 여부*/
+      {bool isInitProgress = true /* 초기 init 설정 여부*/
       }) async {
     final isEnabled = await speechController!.initialize();
-    if (isEnabled) {
+    if (isInitProgress ? isEnabled : true) {
       await speechController!.listen(onResult: (result) {
         if (progressState.isOnProgress) {
           notifyText = result.recognizedWords;
@@ -218,7 +215,7 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
         }
       });
 
-      if (handleCompleter) {
+      if (isInitProgress) {
         isSpeechListenAvailable.complete(null);
       }
     } else {
