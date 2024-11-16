@@ -73,7 +73,7 @@ class GetOneLineInterViewFeedbackUseCase extends BaseNoFutureUseCase<
       Messages(
         role: Role.system,
         content:
-            '면접관으로서 아래 개발자 면접 채팅 기록을 기반으로 종합적인 한 줄 평 피드백을 제공해야 합니다. 면접 주제는 ${param.topic.map((e) => '${StoredTopics.getById(e.id).text}').join(' ')}입니다. 피드백은 ${AppLocale.currentLocale.languageCode} 언어로 제공합니다.',
+            '당신은 면접관으로서 지원자에게 종합적인 한 줄 평 피드백을 제공해야 합니다. 개발자 면접 주제는 ${param.topic.map((e) => '${StoredTopics.getById(e.id).text}').join(' ')}입니다. 피드백은 ${AppLocale.currentLocale.languageCode}로 작성하며, 면접관과 지원자 주고 받은 대화 기록은 아래와 같습니다.',
       ).toJson(),
       ...param.chatHistory.map(
         (element) => switch (element) {
@@ -95,6 +95,10 @@ class GetOneLineInterViewFeedbackUseCase extends BaseNoFutureUseCase<
             ).toJson()
         },
       ),
+      Messages(
+        role: Role.system,
+        content: '위 면접 대화 기록을 바탕으로 반드시 100자 이내의 종합적인 피드백을 문자열로 제공해야 합니다.',
+      ).toJson(),
     ];
   }
 }

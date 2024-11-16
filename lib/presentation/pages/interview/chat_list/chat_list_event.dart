@@ -21,13 +21,6 @@ mixin class ChatListEvent {
     WidgetRef ref, {
     required TopicEntity topic,
   }) {
-    print(GoRouter.of(ref.context)
-        .routerDelegate
-        .currentConfiguration
-        .matches
-        .last
-        .matchedLocation);
-    return;
     const type = InterviewType.singleTopic;
 
     final route = QuestionCountSelectPageRoute(

@@ -25,6 +25,7 @@ import 'package:techtalk/presentation/pages/interview/chat/providers/main_input_
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_to_text_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_result/interview_result_dialog.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
@@ -352,5 +353,17 @@ mixin class ChatEvent {
   ///
   void routeToHome(BuildContext context) {
     GoRouter.of(context).popUntilPath(MainRoute.path);
+  }
+
+  ///
+  /// 인터뷰 결과 다이어로그 노출
+  ///
+  void interviewResultDialog(BuildContext context) {
+    showAdaptiveDialog(
+      context: context,
+      builder: (context) {
+        return const InterviewResultDialog();
+      },
+    );
   }
 }
