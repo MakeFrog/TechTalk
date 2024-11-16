@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:developer';
-import 'dart:isolate';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -9,7 +8,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
-import 'package:techtalk/core/helper/debouncer.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat/constant/recrod_progress_state.dart';
@@ -77,6 +75,15 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
   /// 음성 인식 시작
   ///
   Future<void> startRecord(WidgetRef ref) async {
+    if (Platform.isIOS) {
+      await isSpeechListenAvailable.future;
+
+      /// SPEECH TO TEXT 컨트롤러가 listening 하지 않는다면
+      /// listen하는 로직 실행
+      if (!(speechController?.isListening ?? true)) {
+        await setListeningOnSpeechController(handleCompleter: false);
+      }
+    }
     final chatProgress = ref.read(interviewProgressStateProvider);
     if (chatProgress.isDone) {
       SnackBarService.showSnackBar(tr(LocaleKeys.interview_interviewEnded));
@@ -107,8 +114,6 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
     await recordController.stop();
 
     if (Platform.isIOS) {
-      await isSpeechListenAvailable.future;
-
       /// 입력된 텍스트가 없다면 알럿을 노출 후 초기화 상태로 변경
       if (notifyText.isEmpty) {
         SnackBarService.showSnackBar(tr(LocaleKeys.interview_noAudioDetected));
@@ -201,7 +206,9 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
   ///
   /// SpeechToText 컨트롤러 초기화
   ///
-  Future<void> initializeSpeechController() async {
+  Future<void> setListeningOnSpeechController(
+      {bool handleCompleter = true /* 초기 init 설정 여부*/
+      }) async {
     final isEnabled = await speechController!.initialize();
     if (isEnabled) {
       await speechController!.listen(onResult: (result) {
@@ -211,7 +218,9 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
         }
       });
 
-      isSpeechListenAvailable.complete(null);
+      if (handleCompleter) {
+        isSpeechListenAvailable.complete(null);
+      }
     } else {
       unawaited(speechController!.cancel());
     }
@@ -236,7 +245,7 @@ class SpeechToTextProvider extends ChangeNotifier with ChatEvent {
     }
 
     if (Platform.isIOS) {
-      await initializeSpeechController();
+      await setListeningOnSpeechController();
     }
   }
 }
