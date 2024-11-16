@@ -14,7 +14,7 @@ TopicModel _$TopicModelFromJson(Map<String, dynamic> json) => TopicModel(
       imagePath: json['image_path'] as String?,
       skillIds:
           (json['skill_ids'] as List<dynamic>).map((e) => e as String).toList(),
-      relatedTopics: (json['related_topics'] as List<dynamic>)
+      relatedSkillIds: (json['related_skill_ids'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
       isAvailable: json['is_available'] as bool,
@@ -31,6 +31,6 @@ Map<String, dynamic> _$TopicModelToJson(TopicModel instance) =>
       'en_name': instance.enName,
       'image_path': instance.imagePath,
       'is_available': instance.isAvailable,
-      'related_topics': instance.relatedTopics,
+      'related_topics': instance.relatedSkillIds,
       'updated_at': const TimeStampConverter().toJson(instance.updatedAt),
     };

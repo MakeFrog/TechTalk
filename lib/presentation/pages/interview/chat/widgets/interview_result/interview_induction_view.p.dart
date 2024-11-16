@@ -1,13 +1,14 @@
 part of 'interview_result_dialog.dart';
 
-class _InterviewInductionView extends HookConsumerWidget {
-  const _InterviewInductionView({required this.type, super.key});
-
-  final InterviewType type;
+class _InterviewInductionView extends HookConsumerWidget
+    with ChatState, ChatEvent {
+  const _InterviewInductionView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
+    final relatedTopic = randomRelatedTopicName(ref);
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(
@@ -27,20 +28,20 @@ class _InterviewInductionView extends HookConsumerWidget {
         children: <Widget>[
           /// LEADING
           InterviewType.branch(
-            targetType: type,
+            targetType: room(ref).type,
             singleTopic: (_) => RichText(
               text: TextSpan(
                 children: [
-                  TextSpan(
+                  const TextSpan(
                     text: '같은 직군의 지원자들은\n',
                   ),
                   TextSpan(
-                    text: 'Android',
-                    style: TextStyle(
+                    text: relatedTopic.text,
+                    style: const TextStyle(
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  TextSpan(
+                  const TextSpan(
                     text: '를 같이 공부하고 있어요',
                   ),
                 ],
@@ -98,10 +99,10 @@ class _InterviewInductionView extends HookConsumerWidget {
           /// ILLUSTRATION
           Expanded(
             child: Image.asset(
-              type.illusrationPath,
+              room(ref).type.illusrationPath,
             ),
           ),
-          if (type.isSingleTopic)
+          if (room(ref).type.isSingleTopic)
             Padding(
               padding: const EdgeInsets.only(top: 16),
               child: Text(
@@ -120,7 +121,7 @@ class _InterviewInductionView extends HookConsumerWidget {
                   child: SizedBox(
                     child: FilledButton(
                       onPressed: () {
-                        context.pop();
+                        routeToHome(context);
                       },
                       style: FilledButton.styleFrom(
                         foregroundColor: AppColor.of.brand3,
@@ -131,7 +132,7 @@ class _InterviewInductionView extends HookConsumerWidget {
                         ),
                       ),
                       child: Text(
-                        '취소',
+                        '홈으로',
                         style: AppTextStyle.title1,
                       ),
                     ),
@@ -146,9 +147,21 @@ class _InterviewInductionView extends HookConsumerWidget {
                         vertical: 13,
                       ),
                     ),
-                    onPressed: () {},
-                    child: const Text(
-                      '다음',
+                    onPressed: () {
+                      if (room(ref).type.isSingleTopic) {
+                        startRelatedNewTopicInterview(ref,
+                            targetTopic: relatedTopic);
+                      } else {
+                        retryThisInterview(ref);
+                      }
+                    },
+                    child: Text(
+                      InterviewType.branch(
+                        targetType: room(ref).type,
+                        singleTopic: (_) => '면접보기',
+                        practical: (_) => '다시도전',
+                        resume: (_) => '다시도전',
+                      ),
                     ),
                   ),
                 ),

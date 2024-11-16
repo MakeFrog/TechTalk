@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/features/chat/chat.dart';
@@ -20,6 +21,13 @@ mixin class ChatListEvent {
     WidgetRef ref, {
     required TopicEntity topic,
   }) {
+    print(GoRouter.of(ref.context)
+        .routerDelegate
+        .currentConfiguration
+        .matches
+        .last
+        .matchedLocation);
+    return;
     const type = InterviewType.singleTopic;
 
     final route = QuestionCountSelectPageRoute(

@@ -43,9 +43,7 @@ class InterviewResultDialog extends ConsumerWidget with ChatState {
             _OnLineView(),
 
             /// 다른 면접 유도 뷰
-            _InterviewInductionView(
-              type: InterviewType.resume,
-            ),
+            _InterviewInductionView(),
           ],
         ),
       ),
