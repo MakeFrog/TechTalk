@@ -37,6 +37,8 @@ class _PassOrFailView extends HookConsumerWidget with ChatState, ChatEvent {
             room(ref).interviewResult.isPassed
                 ? tr(LocaleKeys.interview_keepGoing)
                 : tr(LocaleKeys.interview_getCoureage),
+            maxLines: 1,
+            textAlign: TextAlign.center,
             style: AppTextStyle.body1.copyWith(
               color: AppColor.of.gray5,
             ),

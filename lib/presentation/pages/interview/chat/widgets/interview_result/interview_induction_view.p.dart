@@ -134,6 +134,7 @@ class _InterviewInductionView extends HookConsumerWidget
                       child: Text(
                         tr(LocaleKeys.interview_goToHome),
                         style: AppTextStyle.title1,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),
