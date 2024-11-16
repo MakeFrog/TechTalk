@@ -32,8 +32,8 @@ class _InterviewInductionView extends HookConsumerWidget
             singleTopic: (_) => RichText(
               text: TextSpan(
                 children: [
-                  const TextSpan(
-                    text: '같은 직군의 지원자들은\n',
+                  TextSpan(
+                    text: tr(LocaleKeys.interview_suggestSimilarTopicsLeading),
                   ),
                   TextSpan(
                     text: relatedTopic.text,
@@ -41,8 +41,8 @@ class _InterviewInductionView extends HookConsumerWidget
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  const TextSpan(
-                    text: '를 같이 공부하고 있어요',
+                  TextSpan(
+                    text: tr(LocaleKeys.interview_suggestSimilarTopicsEnd),
                   ),
                 ],
                 style: AppTextStyle.body1.copyWith(
@@ -54,7 +54,7 @@ class _InterviewInductionView extends HookConsumerWidget
             practical: (_) => Column(
               children: <Widget>[
                 Text(
-                  '놓친 질문들을\n한 번 더 도전해 보세요',
+                  tr(LocaleKeys.interview_tryRecap),
                   maxLines: 2,
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
@@ -62,7 +62,7 @@ class _InterviewInductionView extends HookConsumerWidget
                 ),
                 const Gap(8),
                 Text(
-                  '다른 새로운 질문들도 받을 수 있어요\n지식을 태산처럼 만들어봐요',
+                  tr(LocaleKeys.interview_retryInterview),
                   style: AppTextStyle.body3.copyWith(
                     color: AppColor.of.gray4,
                   ),
@@ -106,7 +106,7 @@ class _InterviewInductionView extends HookConsumerWidget
             Padding(
               padding: const EdgeInsets.only(top: 16),
               child: Text(
-                '한 번 면접을 진행해 볼까요?',
+                tr(LocaleKeys.interview_letsTryInterviewAgain),
                 style: AppTextStyle.headline3,
               ),
             ),
@@ -132,7 +132,7 @@ class _InterviewInductionView extends HookConsumerWidget
                         ),
                       ),
                       child: Text(
-                        '홈으로',
+                        tr(LocaleKeys.interview_goToHome),
                         style: AppTextStyle.title1,
                       ),
                     ),
@@ -158,9 +158,9 @@ class _InterviewInductionView extends HookConsumerWidget
                     child: Text(
                       InterviewType.branch(
                         targetType: room(ref).type,
-                        singleTopic: (_) => '면접보기',
-                        practical: (_) => '다시도전',
-                        resume: (_) => '다시도전',
+                        singleTopic: (_) => tr(LocaleKeys.home_takeInterview),
+                        practical: (_) => tr(LocaleKeys.interview_tryAgain),
+                        resume: (_) => tr(LocaleKeys.interview_tryAgain),
                       ),
                     ),
                   ),

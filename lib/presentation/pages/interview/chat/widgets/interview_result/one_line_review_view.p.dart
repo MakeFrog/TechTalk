@@ -24,7 +24,7 @@ class _OnLineView extends HookConsumerWidget with ChatState, ChatEvent {
       child: Column(
         children: <Widget>[
           Text(
-            '면접관의 한줄평',
+            tr(LocaleKeys.interview_oneLineFeedback),
             maxLines: 1,
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
@@ -75,7 +75,7 @@ class _OnLineView extends HookConsumerWidget with ChatState, ChatEvent {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return Text(
-                            'AI 면접관의 한줄평을 생성하고 있습니다',
+                            tr(LocaleKeys.interview_generatingOneLineFeedback),
                             style: TextStyle(
                               color: AppColor.of.gray4,
                               fontFamily: 'pretendard',
@@ -94,9 +94,9 @@ class _OnLineView extends HookConsumerWidget with ChatState, ChatEvent {
                         }
 
                         if (snapshot.hasError) {
-                          return const Text(
-                            '한줄평을 생성하는데 오류가 발생했어요',
-                            style: TextStyle(
+                          return Text(
+                            tr(LocaleKeys.common_errorDetectedTryLater),
+                            style: const TextStyle(
                               fontFamily: 'pretendard',
                               leadingDistribution: TextLeadingDistribution.even,
                               letterSpacing: -2 / 100 * 13,
@@ -145,7 +145,7 @@ class _OnLineView extends HookConsumerWidget with ChatState, ChatEvent {
                         ),
                       ),
                       child: Text(
-                        '취소',
+                        tr(LocaleKeys.common_cancel),
                         style: AppTextStyle.title1,
                       ),
                     ),
@@ -163,8 +163,8 @@ class _OnLineView extends HookConsumerWidget with ChatState, ChatEvent {
                     onPressed: () {
                       changePageViewIndex(ref, index: 2);
                     },
-                    child: const Text(
-                      '다음',
+                    child: Text(
+                      tr(LocaleKeys.common_next),
                     ),
                   ),
                 ),

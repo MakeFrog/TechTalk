@@ -26,15 +26,17 @@ class _PassOrFailView extends HookConsumerWidget with ChatState, ChatEvent {
       child: Column(
         children: <Widget>[
           Text(
-            room(ref).interviewResult.isPassed ? '합격했어요!' : '불합격했어요',
+            room(ref).interviewResult.isPassed
+                ? tr(LocaleKeys.interview_hasPassed)
+                : tr(LocaleKeys.interview_hasFailed),
             style: AppTextStyle.headline1,
           ),
           const Spacer(),
           const Gap(4),
           Text(
             room(ref).interviewResult.isPassed
-                ? '앞으로도 꾸준히 해서 취뽀 성공!'
-                : '꾸준히 하면 분명 달라질 거예요',
+                ? tr(LocaleKeys.interview_keepGoing)
+                : tr(LocaleKeys.interview_getCoureage),
             style: AppTextStyle.body1.copyWith(
               color: AppColor.of.gray5,
             ),
@@ -68,7 +70,7 @@ class _PassOrFailView extends HookConsumerWidget with ChatState, ChatEvent {
                         ),
                       ),
                       child: Text(
-                        '취소',
+                        tr(LocaleKeys.common_cancel),
                         style: AppTextStyle.title1,
                       ),
                     ),
@@ -86,8 +88,8 @@ class _PassOrFailView extends HookConsumerWidget with ChatState, ChatEvent {
                     onPressed: () {
                       changePageViewIndex(ref, index: 1);
                     },
-                    child: const Text(
-                      '다음',
+                    child: Text(
+                      tr(LocaleKeys.common_next),
                     ),
                   ),
                 ),
