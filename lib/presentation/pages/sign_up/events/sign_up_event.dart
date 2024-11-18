@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -7,7 +8,9 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/core/services/slack_notification_service.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/provider/selected_job_groups_provider.dart';
@@ -22,7 +25,9 @@ import 'package:techtalk/presentation/providers/user/user_auth_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 part 'job_group_step_event.p.dart';
+
 part 'nickname_step_event.p.dart';
+
 part 'skill_step_event.p.dart';
 
 mixin class SignUpEvent {
@@ -56,7 +61,13 @@ mixin class SignUpEvent {
       );
 
       await ref.read(userInfoProvider.notifier).createData(userData).then(
-        (_) {
+        (_) async {
+          unawaited(
+            SlackNotificationService.sendNotification(
+              targetUserInfo: userData,
+              type: SlackNotificationType.signUp,
+            ),
+          );
           const MainRoute().go(ref.context);
         },
       );

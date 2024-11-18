@@ -25,8 +25,8 @@
       "interviewer": "{} 면접관",
       "interestedJobPositions": "관심 직군",
       "interestedTopics": "관심 주제",
-      "goToInterview": "면접 보기",
-      "startInterview": "면접 보기"
+      "goToInterview": "면접 보러가기",
+      "startInterview": "면접 보러가기"
     },
     "interviewersName": {
       "bitwiseNegation": "비트 단위 부정",
@@ -50,8 +50,8 @@
       "spring": "spring"
     },
     "studyOrMistakeNote": {
-      "previous": "이전 문항",
-      "all": "전체 문항"
+      "previous": "이전",
+      "all": "전체 보기"
     },
     "interestedTopics": {
       "webFrontend": "웹 프론트엔드",
@@ -176,13 +176,14 @@
   "learning": {
     "hideAnswers": "답안 가리기",
     "oneOutOfFifty": "1 / 50 문항",
-    "previous": "이전 문항",
-    "all": "전체 문항",
-    "next": "다음 문항"
+    "previous": "이전",
+    "all": "전체 보기",
+    "all_question": "전체 문항",
+    "next": "다음"
   },
   "mistakeNote": {
-    "noMistakeRecords": "아직 오답 기록이 없어요.",
-    "letsHaveInterview": "Let's have a {tech} interview!",
+    "noMistakeRecords": "아직 오답 기록이 없어요",
+    "letsHaveInterview": "{tech} 주제로 면접을 진행해보세요!",
     "wrongManyTimes": "여러 번 틀린 문제"
   },
   "myInfo": {
@@ -222,7 +223,12 @@
   "permission": {
     "permissionNeeded": "권한 필요",
     "micRequired": "설정에서 마이크 권한을 허용해주세요.",
-    "setUp": "설정하기"
+    "setUp": "설정하기",
+    "alarmSetting" : "알림 설정",
+    "alarmDismissDesc": "알림을 비활성화 하기 위해 권한을 해제 해주세요",
+    "needAlarmPermission" : "알림 수신을 위해서는 권한 동의가 필요해요",
+    "alarm_title": "알림 활성화",
+    "alarm_desc" : "주요 공지, 기능 업데이트 등 알림"
   },
   "errors": {
     "error": "오류",

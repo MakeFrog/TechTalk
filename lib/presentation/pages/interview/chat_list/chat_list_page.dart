@@ -36,6 +36,7 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
           );
         }
         return ListView.builder(
+          physics: const ClampingScrollPhysics(),
           itemCount: chatList.length,
           itemBuilder: (context, index) {
             return ChatRoomItemView.create(
@@ -48,6 +49,7 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
       error: (e, _) => const Text('채팅 6 불러오지 못하였습니다'),
       loading: () {
         return ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: 5,
           itemBuilder: (context, index) {
             return ChatRoomItemView.createSkeleton();

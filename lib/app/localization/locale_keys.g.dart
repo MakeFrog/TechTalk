@@ -163,6 +163,7 @@ abstract class  LocaleKeys {
   static const learning_oneOutOfFifty = 'learning.oneOutOfFifty';
   static const learning_previous = 'learning.previous';
   static const learning_all = 'learning.all';
+  static const learning_all_question = 'learning.all_question';
   static const learning_next = 'learning.next';
   static const learning = 'learning';
   static const mistakeNote_noMistakeRecords = 'mistakeNote.noMistakeRecords';
@@ -200,6 +201,11 @@ abstract class  LocaleKeys {
   static const permission_permissionNeeded = 'permission.permissionNeeded';
   static const permission_micRequired = 'permission.micRequired';
   static const permission_setUp = 'permission.setUp';
+  static const permission_alarmSetting = 'permission.alarmSetting';
+  static const permission_alarmDismissDesc = 'permission.alarmDismissDesc';
+  static const permission_needAlarmPermission = 'permission.needAlarmPermission';
+  static const permission_alarm_title = 'permission.alarm_title';
+  static const permission_alarm_desc = 'permission.alarm_desc';
   static const permission = 'permission';
   static const errors_error = 'errors.error';
   static const errors_photoUploadError = 'errors.photoUploadError';

@@ -16,8 +16,8 @@ class _SettingCard extends ConsumerWidget with MyPageState, MyPageEvent {
         Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 8,
+            horizontal: 20,
+            vertical: 24,
           ),
           decoration: BoxDecoration(
             color: AppColor.of.white,
@@ -26,6 +26,44 @@ class _SettingCard extends ConsumerWidget with MyPageState, MyPageEvent {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Wrap(
+                    direction: Axis.vertical,
+                    alignment: WrapAlignment.center,
+                    spacing: 4,
+                    children: [
+                      Text(
+                        tr(LocaleKeys.permission_alarm_title),
+                        style: AppTextStyle.title3,
+                      ),
+                      Text(
+                        tr(LocaleKeys.permission_alarm_desc),
+                        style: AppTextStyle.body3.copyWith(
+                          color: AppColor.of.gray3,
+                        ),
+                      ),
+                    ],
+                  ),
+                  isNotificationGranted(ref).when(
+                    data: (isGranted) {
+                      return FlatSwitch(
+                        height: 24,
+                        value: isGranted,
+                        bgColor: AppColor.of.blue2,
+                        onTap: (_) {
+                          onNotificationSwitchBtnTapped(ref);
+                        },
+                      );
+                    },
+                    error: (_, __) => const EmptyBox(),
+                    loading: () => const EmptyBox(),
+                  ),
+                ],
+              ),
+              const Gap(12),
               FutureBuilder(
                 future: currentAppVersion(),
                 builder: (context, value) {

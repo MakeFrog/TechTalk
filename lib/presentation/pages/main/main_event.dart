@@ -4,8 +4,9 @@ import 'dart:developer';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:techtalk/app/localization/app_locale.dart';
+import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/features/auth/auth.dart';
+import 'package:techtalk/core/services/slack_notification_service.dart' as noti;
 import 'package:techtalk/features/system/system.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
@@ -17,7 +18,8 @@ mixin class MainEvent {
     WidgetRef ref, {
     required int index,
   }) {
-    ref.read(mainBottomNavigationProvider.notifier).tab = MainNavigationTab.values[index];
+    ref.read(mainBottomNavigationProvider.notifier).tab =
+        MainNavigationTab.values[index];
   }
 
   ///
@@ -33,10 +35,14 @@ mixin class MainEvent {
   Future<void> alertRateAppDialogIfNeeded(WidgetRef ref) async {
     final user = ref.read(userInfoProvider).requireValue!;
 
-    if (user.signUpDate.isOneMonthOrMorePassedFromNow &&  user.signUpDate.isWithin24Hours && user.isReviewRequestAvailable ) {
+    if (user.signUpDate.isOneMonthOrMorePassedFromNow &&
+        user.signUpDate.isWithin24Hours &&
+        user.isReviewRequestAvailable) {
       final InAppReview inAppReview = InAppReview.instance;
       if (await inAppReview.isAvailable()) {
         unawaited(inAppReview.requestReview());
+        unawaited(noti.SlackNotificationService.sendNotification(
+            type: SlackNotificationType.event, message: '유저에게 앱 리뷰를 요청했어요!'));
         final response = await disableReviewAvailableStateUseCase.call();
         response.fold(
           onSuccess: (_) {
@@ -74,7 +80,8 @@ mixin class MainEvent {
   /// 로컬 스토리지에 현재 Locale 정보 삭제
   ///
   Future<void> _storeLocaleToStorage() async {
-    final response = await systemRepository.storeLocale(AppLocale.currentLocale);
+    final response =
+        await systemRepository.storeLocale(AppLocale.currentLocale);
 
     response.fold(onSuccess: (_) {
       log('로컬 스토리지에 locale 정보 저장');

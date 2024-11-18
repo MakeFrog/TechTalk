@@ -37,7 +37,8 @@ class PracticalInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
                     ),
                   ),
                 ),
-                GestureDetector(
+                BounceTapper(
+                  highlightColor: Colors.transparent,
                   onTap: () {
                     routeToTopicSelectPage(
                       context,

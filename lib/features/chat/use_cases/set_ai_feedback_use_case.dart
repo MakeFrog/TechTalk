@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -9,95 +10,98 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/feedback_response_entity.dart';
 
-class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
-    BehaviorSubject<String>> {
+class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam, BehaviorSubject<String>> {
   AiAnswerProgress state = AiAnswerProgress.init;
 
   @override
   BehaviorSubject<String> call(GetQuestionFeedbackParam param) {
-    final BehaviorSubject<String> streamedAdviceResponse =
-        BehaviorSubject<String>();
+    final BehaviorSubject<String> streamedAdviceResponse = BehaviorSubject<String>();
     state = AiAnswerProgress.onProgress;
 
     String response = '';
     String jsonResponse = '';
     bool isCollectingJson = false;
 
-    OpenAI.instance
-        .onChatCompletionSSE(
-      request: ChatCompleteText(
-        functionCall: FunctionCall.auto,
-        messages: _createChatMessage(param),
-        maxToken: 300,
-        model: Gpt4ChatModel(),
-        temperature: 0.5,
-        stream: true,
-        user: FirebaseAuth.instance.currentUser!.uid,
-      ),
-    )
-        .transform(
-      StreamTransformer.fromHandlers(
-        handleError: (error, stackTrace, sink) {
-          param.onError(error, stackTrace);
+    /// OpenAI에서 발생하는 429에러 등등을 잡기 위해서는 runZonedGuarded 로 감싸주어야 함
+    runZonedGuarded(() {
+      OpenAI.instance
+          .onChatCompletionSSE(
+        request: ChatCompleteText(
+          functionCall: FunctionCall.auto,
+          messages: _createChatMessage(param),
+          maxToken: 300,
+          model: Gpt4ChatModel(),
+          temperature: 0.5,
+          stream: true,
+          user: FirebaseAuth.instance.currentUser!.uid,
+        ),
+      )
+          .transform(
+        StreamTransformer.fromHandlers(
+          handleError: (error, stackTrace, sink) {
+            param.onError(error, stackTrace);
+          },
+        ),
+      ).listen(
+        // NOTE: 희한하게 openAI에ㅓ 429 에러같은게 뜨면 여기서는 안잡힌다.
+        onError: param.onError,
+        cancelOnError: true,
+        (it) {
+          it as ChatResponseSSE;
+          final chunk = it.choices?.last.message?.content ?? '';
+
+          if (chunk.isEmpty) return;
+
+          if (_isStartingJsonCollection(chunk, isCollectingJson)) {
+            // JSON 수집 시작
+            isCollectingJson = true;
+            final jsonStartIndex = chunk.indexOf('{');
+            jsonResponse = chunk.substring(jsonStartIndex);
+            response += chunk.substring(0, jsonStartIndex);
+            streamedAdviceResponse.add(response); // JSON 이전의 데이터만 스트림에 추가
+          } else if (isCollectingJson) {
+            // JSON 수집 중
+            jsonResponse += chunk;
+          } else {
+            // JSON이 아닌 일반 텍스트 부분을 사용자에게 스트림으로 전달
+            response += chunk;
+          }
+
+          _setCorrectnessIfNeeded(response, param.checkAnswer);
+          streamedAdviceResponse.add(_formatAdvice(response));
+
+          // JSON 데이터 수집 완료 여부 확인
+          if (_isJsonCollectionComplete(jsonResponse, isCollectingJson)) {
+            final feedbackResponse = _parseAndHandleJsonResponse(
+              jsonResponse: jsonResponse,
+              feedback: _formatAdvice(response),
+              param: param,
+            );
+
+            jsonResponse = ''; // JSON 수집 상태 초기화
+            isCollectingJson = false;
+
+            return param.onFeedBackCompleted(feedbackResponse: feedbackResponse);
+          }
         },
-      ),
-    ).listen(
-      onError: param.onError,
-      cancelOnError: true,
-      (it) {
-        it as ChatResponseSSE;
-        final chunk = it.choices?.last.message?.content ?? '';
-
-        if (chunk.isEmpty) return;
-
-        if (_isStartingJsonCollection(chunk, isCollectingJson)) {
-          // JSON 수집 시작
-          isCollectingJson = true;
-          final jsonStartIndex = chunk.indexOf('{');
-          jsonResponse = chunk.substring(jsonStartIndex);
-          response += chunk.substring(0, jsonStartIndex);
-          streamedAdviceResponse.add(response); // JSON 이전의 데이터만 스트림에 추가
-        } else if (isCollectingJson) {
-          // JSON 수집 중
-          jsonResponse += chunk;
-        } else {
-          // JSON이 아닌 일반 텍스트 부분을 사용자에게 스트림으로 전달
-          response += chunk;
-        }
-
-        _setCorrectnessIfNeeded(response, param.checkAnswer);
-        streamedAdviceResponse.add(_formatAdvice(response));
-
-        // JSON 데이터 수집 완료 여부 확인
-        if (_isJsonCollectionComplete(jsonResponse, isCollectingJson)) {
-          final feedbackResponse = _parseAndHandleJsonResponse(
-            jsonResponse: jsonResponse,
-            feedback: _formatAdvice(response),
-            param: param,
-          );
-
-          jsonResponse = ''; // JSON 수집 상태 초기화
-          isCollectingJson = false;
-
-          return param.onFeedBackCompleted(feedbackResponse: feedbackResponse);
-        }
-      },
-      onDone: () {
-        /// 응답이 종료된 이후
-        /// 1) Stream 닫기
-        /// 2) 응답 진행 상태 초기화
-        state = AiAnswerProgress.init;
-        streamedAdviceResponse.close();
-      },
-    );
+        onDone: () {
+          /// 응답이 종료된 이후
+          /// 1) Stream 닫기
+          /// 2) 응답 진행 상태 초기화
+          state = AiAnswerProgress.init;
+          streamedAdviceResponse.close();
+        },
+      );
+    }, (error, stackTrace) {
+      param.onError(error, stackTrace);
+    });
 
     return streamedAdviceResponse;
   }
 
   /// 프롬프트 메세지 히스토리를 만드는 함수
   /// 추후에 메세지 히스토리 기반으로 채팅을 구현할 수도 있을 것 같아 따로 분리했습니다.
-  List<Map<String, dynamic>> _createChatMessage(
-      GetQuestionFeedbackParam param) {
+  List<Map<String, dynamic>> _createChatMessage(GetQuestionFeedbackParam param) {
     // 프롬프트는 추후 전부 한 언어로 통일할 것이므로 따로 localization은 필요하지 않아 보입니다.
     return [
       Messages(
@@ -149,9 +153,7 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
   }
 
   FeedbackResponseEntity _parseAndHandleJsonResponse(
-      {required String jsonResponse,
-      required String feedback,
-      required GetQuestionFeedbackParam param}) {
+      {required String jsonResponse, required String feedback, required GetQuestionFeedbackParam param}) {
     try {
       final parsedData = jsonDecode(jsonResponse) as Map<String, dynamic>;
       return FeedbackResponseEntity.fromJson(
@@ -227,8 +229,7 @@ typedef GetQuestionFeedbackParam = ({
   List<BaseChatEntity> chatHistory,
   ChatQnaEntity qna,
   String userName,
-  void Function(
-      {required FeedbackResponseEntity feedbackResponse}) onFeedBackCompleted,
+  void Function({required FeedbackResponseEntity feedbackResponse}) onFeedBackCompleted,
   void Function({required AnswerState answerState}) checkAnswer,
   void Function(Object error, StackTrace startTrace) onError,
 });
