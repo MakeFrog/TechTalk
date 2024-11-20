@@ -7,7 +7,7 @@ class _InterviewInductionView extends HookConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
-    final relatedTopic = randomRelatedTopicName(ref);
+    final relatedTopic = useMemoized(() => randomRelatedTopicName(ref));
 
     return Container(
       width: double.infinity,
@@ -23,7 +23,7 @@ class _InterviewInductionView extends HookConsumerWidget
           24,
         ),
       ),
-      margin: const EdgeInsets.only(right: 20),
+      margin: const EdgeInsets.only(left: 20),
       child: Column(
         children: <Widget>[
           /// LEADING
@@ -124,8 +124,8 @@ class _InterviewInductionView extends HookConsumerWidget
                         routeToHome(context);
                       },
                       style: FilledButton.styleFrom(
-                        foregroundColor: AppColor.of.brand3,
-                        backgroundColor: AppColor.of.blue1,
+                        foregroundColor: AppColor.of.gray3,
+                        backgroundColor: AppColor.of.gray1,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 13,

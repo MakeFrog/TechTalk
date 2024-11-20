@@ -20,7 +20,7 @@ class _OnLineView extends HookConsumerWidget with ChatState, ChatEvent {
           24,
         ),
       ),
-      margin: const EdgeInsets.only(right: 20),
+      margin: const EdgeInsets.only(left: 20),
       child: Column(
         children: <Widget>[
           Text(
@@ -137,8 +137,8 @@ class _OnLineView extends HookConsumerWidget with ChatState, ChatEvent {
                         context.pop();
                       },
                       style: FilledButton.styleFrom(
-                        foregroundColor: AppColor.of.brand3,
-                        backgroundColor: AppColor.of.blue1,
+                        foregroundColor: AppColor.of.gray3,
+                        backgroundColor: AppColor.of.gray1,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 13,
