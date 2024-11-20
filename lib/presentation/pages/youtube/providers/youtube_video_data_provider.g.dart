@@ -6,7 +6,7 @@ part of 'youtube_video_data_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$youtubeVideoDataHash() => r'79f5ce6f488244abf59bb714ffc8999e47117601';
+String _$youtubeVideoDataHash() => r'a8b69c7d0169db704aeb995cfc86bbe362fa227b';
 
 /// Copied from Dart SDK
 class _SystemHash {

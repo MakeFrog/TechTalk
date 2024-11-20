@@ -10,11 +10,13 @@ class TopicQnaModel {
     required this.id,
     required this.question,
     required this.answers,
+    this.questionInstruction,
   });
 
   final String id;
   final String question;
   final List<String> answers;
+  final String? questionInstruction;
 
   QnaEntity toEntity() {
     return QnaEntity(

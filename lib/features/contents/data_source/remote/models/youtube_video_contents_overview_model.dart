@@ -5,13 +5,12 @@ import 'package:techtalk/features/contents/data_source/remote/models/contents_au
 import 'package:techtalk/features/contents/data_source/remote/models/skill_model.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_overview_entity.dart';
 
-part 'video_contents_overview_model.g.dart';
+part 'youtube_video_contents_overview_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class VideoContentsOverviewModel {
-  VideoContentsOverviewModel({
+class YoutubeContentsOverviewModel {
+  YoutubeContentsOverviewModel({
     required this.id,
-    required this.contentsId,
     required this.contentsTitle,
     required this.thumbnailImgUrl,
     required this.videoDuration,
@@ -22,8 +21,6 @@ class VideoContentsOverviewModel {
   });
 
   final String id;
-
-  final String contentsId;
 
   final String thumbnailImgUrl;
 
@@ -40,10 +37,10 @@ class VideoContentsOverviewModel {
   final ContentsAuthorModel author;
 
   /// 엔티티로 변환
-  VideoContentsOverviewEntity toEntity() {
-    return VideoContentsOverviewEntity(
+  YoutubeContentsOverviewEntity toEntity() {
+    return YoutubeContentsOverviewEntity(
       id: id,
-      contentsId: contentsId,
+      // contentsId: contentsId,
       thumbnailImgUrl: thumbnailImgUrl,
       contentsTitle: contentsTitle,
       qnaNum: qnaNum,
@@ -55,15 +52,16 @@ class VideoContentsOverviewModel {
   }
 
   /// Firestore에서 가져온 DocumentSnapshot을 모델로 변환
-  factory VideoContentsOverviewModel.fromFirestore(
+  factory YoutubeContentsOverviewModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
   ) =>
-      VideoContentsOverviewModel.fromJson(snapshot.data()!);
+      YoutubeContentsOverviewModel.fromJson(snapshot.data()!);
 
   /// JSON에서 모델로 변환
-  factory VideoContentsOverviewModel.fromJson(Map<String, dynamic> json) => _$VideoContentsOverviewModelFromJson(json);
+  factory YoutubeContentsOverviewModel.fromJson(Map<String, dynamic> json) =>
+      _$YoutubeContentsOverviewModelFromJson(json);
 
   /// 모델을 JSON으로 변환
-  Map<String, dynamic> toJson() => _$VideoContentsOverviewModelToJson(this);
+  Map<String, dynamic> toJson() => _$YoutubeContentsOverviewModelToJson(this);
 }

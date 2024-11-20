@@ -8,19 +8,21 @@ part 'summary_model.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class SummaryModel {
   SummaryModel({
-    required this.mainSummary,
-    required this.additionalSummary,
+    required this.mainTheme,
+    required this.summaries,
   });
 
-  final ParagraphModel mainSummary;
+  /// 핵심주제
+  final List<String> mainTheme;
 
-  final List<ParagraphModel> additionalSummary;
+  /// 요약
+  final List<ParagraphModel> summaries;
 
   /// 엔티티로 변환
   SummaryEntity toEntity() {
     return SummaryEntity(
-      mainSummary: mainSummary.toEntity(),
-      additionalSummary: additionalSummary.map((summary) => summary.toEntity()).toList(),
+      mainTheme: mainTheme,
+      summaryNotes: summaries.map((summary) => summary.toEntity()).toList(),
     );
   }
 

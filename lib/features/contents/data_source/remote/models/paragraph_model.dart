@@ -15,7 +15,7 @@ class ParagraphModel {
 
   final String title;
 
-  final List<String> contents;
+  final String contents;
 
   @DurationConverter()
   final Duration? timestamp;

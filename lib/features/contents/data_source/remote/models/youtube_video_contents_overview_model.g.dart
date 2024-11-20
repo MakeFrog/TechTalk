@@ -1,16 +1,15 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'video_contents_overview_model.dart';
+part of 'youtube_video_contents_overview_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-VideoContentsOverviewModel _$VideoContentsOverviewModelFromJson(
+YoutubeContentsOverviewModel _$YoutubeContentsOverviewModelFromJson(
         Map<String, dynamic> json) =>
-    VideoContentsOverviewModel(
+    YoutubeContentsOverviewModel(
       id: json['id'] as String,
-      contentsId: json['contents_id'] as String,
       contentsTitle: json['contents_title'] as String,
       thumbnailImgUrl: json['thumbnail_img_url'] as String,
       videoDuration:
@@ -26,11 +25,10 @@ VideoContentsOverviewModel _$VideoContentsOverviewModelFromJson(
           ContentsAuthorModel.fromJson(json['author'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$VideoContentsOverviewModelToJson(
-        VideoContentsOverviewModel instance) =>
+Map<String, dynamic> _$YoutubeContentsOverviewModelToJson(
+        YoutubeContentsOverviewModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'contents_id': instance.contentsId,
       'thumbnail_img_url': instance.thumbnailImgUrl,
       'contents_title': instance.contentsTitle,
       'video_duration': instance.videoDuration.inMicroseconds,

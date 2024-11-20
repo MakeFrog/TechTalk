@@ -1,3 +1,5 @@
+import 'package:techtalk/features/contents/data_source/remote/models/contents_author_model.dart';
+
 /// 컨텐츠 저자 정보 인터페이스
 class ContentsAuthorEntity {
   /// 저자 id
@@ -18,4 +20,11 @@ class ContentsAuthorEntity {
     this.profileImgUrl,
     this.homePageUrl,
   });
+
+  ContentsAuthorModel toModel() => ContentsAuthorModel(
+        id: id,
+        name: name,
+        profileImgUrl: profileImgUrl,
+        homePageUrl: homePageUrl,
+      );
 }

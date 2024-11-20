@@ -1,3 +1,5 @@
+import 'package:techtalk/features/contents/data_source/remote/models/skill_model.dart';
+
 class SkillEntity {
   final String id;
   final String name;
@@ -11,10 +13,7 @@ class SkillEntity {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is SkillEntity &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          name == other.name;
+      other is SkillEntity && runtimeType == other.runtimeType && id == other.id && name == other.name;
 
   @override
   int get hashCode => id.hashCode ^ name.hashCode;
@@ -23,4 +22,6 @@ class SkillEntity {
   String toString() {
     return 'SkillEntity{id: $id, name: $name}';
   }
+
+  SkillModel toModel() => SkillModel(id: id, name: name);
 }

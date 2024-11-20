@@ -1,11 +1,11 @@
 import 'package:get_it/get_it.dart';
 import 'package:techtalk/app/di/modules/auth_di.dart';
 import 'package:techtalk/app/di/modules/chat_di.dart';
-import 'package:techtalk/app/di/modules/contents_di.dart';
 import 'package:techtalk/app/di/modules/system_di.dart';
 import 'package:techtalk/app/di/modules/tech_set_di.dart';
 import 'package:techtalk/app/di/modules/topic_di.dart';
 import 'package:techtalk/app/di/modules/user_di.dart';
+import 'package:techtalk/app/di/modules/youtube_di.dart';
 
 final locator = GetIt.I;
 
@@ -42,7 +42,7 @@ final class AppBinder {
       JobDependencyInjection(),
       ChatDependencyInject(),
       TopicDependencyInjection(),
-      ContentsDependencyInjection(),
+      YoutubeContentsDependencyInjection(),
     ]) {
       di.init();
     }
