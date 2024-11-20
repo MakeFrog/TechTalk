@@ -23,6 +23,7 @@ class TopicQnaModel {
       id: id,
       question: question,
       answers: answers,
+      questionInstruction: questionInstruction,
     );
   }
 
