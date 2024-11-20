@@ -44,8 +44,13 @@ class TopicModel {
   factory TopicModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
-  ) =>
-      TopicModel.fromJson(snapshot.data()!);
+  ) {
+    final data = snapshot.data();
+    if (data == null) {
+      throw Exception('Snapshot data is null');
+    }
+    return TopicModel.fromJson(data);
+  }
 
   factory TopicModel.fromJson(Map<String, dynamic> json) {
     return _$TopicModelFromJson(json);
