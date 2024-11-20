@@ -111,3 +111,11 @@ class SystemSomethingWrongException extends CustomException {
 class FetchYoutubeContentsException extends CustomException {
   const FetchYoutubeContentsException() : super('500008', '영상 정보 데이터를 불러오는 데에 실패하였습니다.');
 }
+
+class FetchYoutubeContentsDetailException extends CustomException {
+  const FetchYoutubeContentsDetailException() : super('500009', '영상 정보 상세 데이터를 불러오는 데에 실패하였습니다.');
+}
+
+class FetchYoutubeContentsOverviewException extends CustomException {
+  const FetchYoutubeContentsOverviewException() : super('500009', '영상 정보 리스트를 불러오는 데에 실패하였습니다.');
+}

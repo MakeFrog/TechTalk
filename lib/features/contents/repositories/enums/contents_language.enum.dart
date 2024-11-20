@@ -6,4 +6,9 @@ enum ContentsLanguage {
   final String displayStr;
 
   const ContentsLanguage({required this.id, required this.displayStr});
+
+  static ContentsLanguage getById(String id) => values.firstWhere(
+        (language) => language.id == id,
+        orElse: () => throw Exception('Incorrect Id: $id'),
+      );
 }

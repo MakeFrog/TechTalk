@@ -1,4 +1,5 @@
 import 'package:techtalk/core/constants/job_group.enum.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_author_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skill_entity.dart';
 
@@ -13,7 +14,6 @@ sealed class ContentsOverviewEntity {
   final String id;
 
   /// 컨텐츠 아이디
-  final String contentsId;
 
   /// 컨텐츠 썸네일 이미지 url
   final String thumbnailImgUrl;
@@ -35,7 +35,6 @@ sealed class ContentsOverviewEntity {
 
   ContentsOverviewEntity({
     required this.id,
-    required this.contentsId,
     required this.thumbnailImgUrl,
     required this.contentsTitle,
     required this.author,
@@ -45,13 +44,11 @@ sealed class ContentsOverviewEntity {
   });
 }
 
-class VideoContentsOverviewEntity implements ContentsOverviewEntity {
+class YoutubeContentsOverviewEntity implements ContentsOverviewEntity {
   @override
   final String id;
 
   @override
-  final String contentsId;
-
   @override
   final String thumbnailImgUrl;
 
@@ -73,9 +70,8 @@ class VideoContentsOverviewEntity implements ContentsOverviewEntity {
 
   final Duration videoDuration;
 
-  VideoContentsOverviewEntity({
+  YoutubeContentsOverviewEntity({
     required this.id,
-    required this.contentsId,
     required this.thumbnailImgUrl,
     required this.contentsTitle,
     required this.author,
@@ -84,4 +80,15 @@ class VideoContentsOverviewEntity implements ContentsOverviewEntity {
     required this.videoDuration,
     this.qnaNum = 0,
   });
+
+  YoutubeContentsOverviewModel toModel() => YoutubeContentsOverviewModel(
+        id: id,
+        contentsTitle: contentsTitle,
+        thumbnailImgUrl: thumbnailImgUrl,
+        videoDuration: videoDuration,
+        qnaNum: qnaNum,
+        relatedSkills: relatedSkills.map((skill) => skill.toModel()).toList(),
+        relatedJobGroupIds: relatedJobs.map((job) => job.id).toList(),
+        author: author.toModel(),
+      );
 }

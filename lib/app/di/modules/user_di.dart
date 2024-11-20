@@ -3,16 +3,6 @@ import 'package:techtalk/app/di/feature_di_interface.dart';
 import 'package:techtalk/core/modules/local/app_local.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/features/topic/topic.dart';
-import 'package:techtalk/features/user/data_source/local/user_local_data_source.dart';
-import 'package:techtalk/features/user/data_source/local/user_local_data_source_impl.dart';
-import 'package:techtalk/features/user/data_source/remote/user_remote_data_source_impl.dart';
-import 'package:techtalk/features/user/repositories/user_repository_impl.dart';
-import 'package:techtalk/features/user/usecases/check_nickname_duplication.dart';
-import 'package:techtalk/features/user/usecases/disable_review_available_state_use_case.dart';
-import 'package:techtalk/features/user/usecases/edit_user_profile_use_case.dart';
-import 'package:techtalk/features/user/usecases/increase_completed_interview_count_use_case.dart';
-import 'package:techtalk/features/user/usecases/sotre_user_local_info_use_case.dart';
-import 'package:techtalk/features/user/usecases/update_last_login_date_use_cae.dart';
 import 'package:techtalk/features/user/user.dart';
 
 final class UserDependencyInjection extends FeatureDependencyInjection {

@@ -5,8 +5,8 @@ import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_overview_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
-import 'package:techtalk/presentation/pages/contents/contents_detail_page.dart';
-import 'package:techtalk/presentation/pages/contents/contents_main_page.dart';
+import 'package:techtalk/presentation/pages/youtube/youtube_contents_detail_page.dart';
+import 'package:techtalk/presentation/pages/youtube/youtube_contents_main_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_route_arg.dart';
@@ -234,7 +234,7 @@ class ContentsMainRoute extends GoRouteData {
 }
 
 class ContentsDetailRoute extends GoRouteData {
-  ContentsDetailRoute(this.$extra) : contentsId = $extra.contentsId;
+  ContentsDetailRoute(this.$extra) : contentsId = $extra.id;
 
   static const String path = 'contents-detail/:contentsId';
   static const String name = 'contents-detail';
@@ -245,7 +245,7 @@ class ContentsDetailRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ContentsDetailPage(
+    return YoutubeContentsDetailPage(
       overview: $extra,
     );
   }

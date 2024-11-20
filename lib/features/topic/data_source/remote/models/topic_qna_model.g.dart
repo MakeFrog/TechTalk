@@ -12,6 +12,7 @@ TopicQnaModel _$TopicQnaModelFromJson(Map<String, dynamic> json) =>
       question: json['question'] as String,
       answers:
           (json['answers'] as List<dynamic>).map((e) => e as String).toList(),
+      questionInstruction: json['question_instruction'] as String?,
     );
 
 Map<String, dynamic> _$TopicQnaModelToJson(TopicQnaModel instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$TopicQnaModelToJson(TopicQnaModel instance) =>
       'id': instance.id,
       'question': instance.question,
       'answers': instance.answers,
+      'question_instruction': instance.questionInstruction,
     };

@@ -1,3 +1,5 @@
+import 'package:techtalk/features/topic/data_source/remote/models/topic_qna_model.dart';
+
 class QnaEntity {
   final String id;
   final String question;
@@ -42,4 +44,11 @@ class QnaEntity {
       questionInstruction: questionInstruction ?? this.questionInstruction,
     );
   }
+
+  TopicQnaModel toModel() => TopicQnaModel(
+        id: id,
+        question: question,
+        answers: answers,
+        questionInstruction: questionInstruction,
+      );
 }
