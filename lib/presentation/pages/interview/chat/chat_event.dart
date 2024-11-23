@@ -9,19 +9,24 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
+import 'package:techtalk/app/router/route_extension.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
 import 'package:techtalk/presentation/pages/interview/chat/constant/recrod_progress_state.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/interview_result_page_view_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/is_follow_up_process_active_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/main_input_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_to_text_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_result/interview_result_dialog.dart';
+import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
@@ -287,5 +292,78 @@ mixin class ChatEvent {
   ///
   void toggleFollowUpQuestionActiveState(WidgetRef ref) {
     ref.read(isFollowUpProcessActiveProvider.notifier).toggle();
+  }
+
+  ///
+  /// 인터뷰 결과 페이지뷰 인덱스 조정
+  ///
+  void changePageViewIndex(WidgetRef ref, {required int index}) {
+    final controller = ref.read(interviewResultPageViewControllerProvider);
+    controller.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 360),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  ///
+  /// 연관 스킬과 관련되어 있는 주제로 면접을 새로 시작하기 위해
+  /// 면접 개수 선택 페이지로 이동
+  ///
+  void startRelatedNewTopicInterview(WidgetRef ref,
+      {required TopicEntity targetTopic}) {
+    const type = InterviewType.singleTopic;
+
+    /// 메인까지 pop
+    GoRouter.of(ref.context).popUntilPath(MainRoute.path);
+
+    final route = QuestionCountSelectPageRoute(
+      type,
+      targetTopic.id,
+    );
+
+    route.updateArg(type: type, topics: [targetTopic]);
+    route.push(ref.context);
+  }
+
+  ///
+  /// 현재 면접 형태로 새로운 면접 실행하기
+  /// TODO: 이력서 형태 면접 예외처리 로직 추가 필요
+  ///
+  void retryThisInterview(WidgetRef ref) {
+    /// 메인까지 pop
+    GoRouter.of(ref.context).popUntilPath(MainRoute.path);
+
+    final room = ref.read(selectedChatRoomProvider);
+    if (room.type.isPractical) {
+      final selectedTopics = room.topics;
+      final route = QuestionCountSelectPageRoute(
+        room.type,
+        selectedTopics.singleOrNull?.id ??
+            selectedTopics.map((e) => e.id).toString(),
+      );
+
+      route.updateArg(type: room.type, topics: selectedTopics);
+      route.push(ref.context);
+    }
+  }
+
+  ///
+  /// 홈으로 이동
+  ///
+  void routeToHome(BuildContext context) {
+    GoRouter.of(context).popUntilPath(MainRoute.path);
+  }
+
+  ///
+  /// 인터뷰 결과 다이어로그 노출
+  ///
+  void interviewResultDialog(BuildContext context) {
+    showAdaptiveDialog(
+      context: context,
+      builder: (context) {
+        return const InterviewResultDialog();
+      },
+    );
   }
 }

@@ -11,6 +11,7 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_result/interview_result_dialog.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/interview_tab_view.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/qna_tab_view.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
@@ -46,6 +47,9 @@ class ChatPage extends BasePage with ChatEvent, ChatState {
   bool get wrapWithSafeArea => true;
 
   @override
+  bool get setBottomSafeArea => false;
+
+  @override
   void onWillPop(WidgetRef ref) {
     onAppbarBackBtnTapped(ref);
   }
@@ -70,7 +74,7 @@ class ChatPage extends BasePage with ChatEvent, ChatState {
     FirebaseAnalytics.instance.logEvent(
       name: 'Interview Created',
       parameters: {
-        'user_id': ref.read(userInfoProvider).requireValue?.uid  ?? '',
+        'user_id': ref.read(userInfoProvider).requireValue?.uid ?? '',
         'user_name': ref.read(userInfoProvider).requireValue?.nickname ?? '',
         'interview_type': ref.read(selectedChatRoomProvider).type.name,
         'topics': ref

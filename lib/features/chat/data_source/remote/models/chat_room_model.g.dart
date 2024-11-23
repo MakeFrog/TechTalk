@@ -32,4 +32,5 @@ Map<String, dynamic> _$ChatRoomModelToJson(ChatRoomModel instance) =>
 const _$InterviewTypeEnumMap = {
   InterviewType.singleTopic: 'singleTopic',
   InterviewType.practical: 'practical',
+  InterviewType.resume: 'resume',
 };

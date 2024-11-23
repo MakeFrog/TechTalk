@@ -1,16 +1,26 @@
 import 'dart:developer';
+import 'dart:math' as math;
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
+import 'package:techtalk/core/constants/stored_topic.dart';
+import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/use_cases/get_one_line_interview_feedback_use_case.dart';
+import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_async_adapter_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/interview_result_page_view_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/is_follow_up_process_active_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/main_input_controller_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/one_line_feedback_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/recognized_text_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
@@ -116,5 +126,31 @@ mixin class ChatState {
   ///
   /// 꼬리 질문 활성화 여부
   ///
-  bool isFollowUpProcessActive(WidgetRef ref) => ref.watch(isFollowUpProcessActiveProvider);
+  bool isFollowUpProcessActive(WidgetRef ref) =>
+      ref.watch(isFollowUpProcessActiveProvider);
+
+  ///
+  /// 페이지뷰 컨트롤러
+  ///
+  PageController chatResultPageViewController(WidgetRef ref) =>
+      ref.watch(interviewResultPageViewControllerProvider);
+
+  ///
+  /// 한줄평 피드백
+  ///
+  BehaviorSubject<String> oneLineStreamFeedback(WidgetRef ref) =>
+      ref.watch(oneLineFeedbackProvider);
+
+  ///
+  /// 현재 선택된 주제와 관련된 주제 (여러개 중 하나를 랜덤으로 추출)
+  ///
+  TopicEntity randomRelatedTopicName(WidgetRef ref) {
+    final relatedTopics =
+        ref.read(selectedChatRoomProvider).topics.first.relatedSkillIds;
+
+    final math.Random random = math.Random();
+    final int randomIndex = random.nextInt(relatedTopics.length);
+
+    return StoredTopics.getById(relatedTopics[randomIndex]);
+  }
 }

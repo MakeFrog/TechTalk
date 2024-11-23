@@ -15,7 +15,7 @@ class ResponseIndicator extends StatelessWidget {
     required this.text,
   }) : super(key: key);
 
-  final ChatResult chatResult;
+  final InterviewResult chatResult;
   final String text;
   final FollowupStatus followupStatus;
 

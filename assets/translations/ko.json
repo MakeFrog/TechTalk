@@ -163,7 +163,20 @@
     "interviewHasEnd": "종료된 면접입니다",
     "errorHasDetected": "오류가 발생하여 답변을 전송할 수 없습니다",
     "waitForReply": "면접관의 응답이 마무리된 이후 답변을 전송해주세요.",
-    "recordFailed": "음성 인식에 실패했어요. 다시 시도해주세요"
+    "recordFailed": "음성 인식에 실패했어요. 다시 시도해주세요",
+    "hasPassed" : "합격했어요!",
+    "keepGoing" : "앞으로도 꾸준히 해서 취뽀 성공!",
+    "hasFailed": "불합격했어요",
+    "getCoureage" :  "꾸준히 하면 분명 달라질 거예요",
+    "oneLineFeedback" : "면접관의 한줄평",
+    "tryRecap": "놓친 질문들을\n한 번 더 도전해 보세요",
+    "retryInterview": "다른 새로운 질문들도 받을 수 있어요 지식을 태산처럼 만들어봐요",
+    "tryAgain" : "다시 도전",
+    "goToHome": "홈으로",
+    "suggestSimilarTopicsLeading": "같은 직군의 지원자들은\n",
+    "suggestSimilarTopicsEnd": "를 같이 공부하고 있어요",
+    "letsTryInterviewAgain" : "한 번 면접을 진행해 볼까요?",
+    "generatingOneLineFeedback": "AI 면접관의 한줄평을 생성하고 있습니다"
   },
   "qa": {
     "numberOfQa": "개의 문답",

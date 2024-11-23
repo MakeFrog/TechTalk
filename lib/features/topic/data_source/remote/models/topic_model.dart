@@ -15,6 +15,7 @@ class TopicModel {
     required this.enName,
     this.imagePath,
     required this.skillIds,
+    required this.relatedSkillIds,
     required this.isAvailable,
     required this.updatedAt,
   });
@@ -26,6 +27,7 @@ class TopicModel {
   final String enName;
   final String? imagePath;
   final bool isAvailable;
+  final List<String> relatedSkillIds;
   @TimeStampConverter()
   final DateTime updatedAt;
 
@@ -38,6 +40,7 @@ class TopicModel {
       imageUrl: imagePath,
       isAvailable: isAvailable,
       updatedAt: updatedAt,
+      relatedSkillIds: relatedSkillIds,
     );
   }
 
