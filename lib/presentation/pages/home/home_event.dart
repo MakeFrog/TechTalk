@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/use_cases/set_ai_resume_question_use_case.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/practical_chat_room_list_provider.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
 import 'package:techtalk/presentation/providers/system/notification_status_provider.dart';
@@ -18,6 +19,39 @@ import 'package:techtalk/presentation/providers/user/user_topics_provider.dart';
 part 'internal_home_event.p.dart';
 
 mixin class HomeEvent {
+  ///
+  /// [SetAiResumeQuestionUseCase]를 호출하여 결과를 출력하는 테스트 메서드
+  /// 테스트를 위한 임시 코드
+  ///
+  Future<void> testSetAiResumeQuestionUseCase({
+    required bool isFile,
+    String? resumeOrPortfolioContent,
+  }) async {
+    final useCase = SetAiResumeQuestionUseCase();
+
+    // 입력 파라미터 생성
+    final param = (
+      isFile: isFile,
+      resumeOrPortfolioContent: resumeOrPortfolioContent,
+    );
+
+    print('===== GPT에 응답을 요청했습니다 잠시만 기다려주세요 =====');
+
+    try {
+      final result = await useCase.call(param);
+      result.fold(
+        onSuccess: (qnaEntities) {
+          print("AI 분석 성공: $qnaEntities");
+        },
+        onFailure: (error) {
+          print("AI 분석 실패: $error");
+        },
+      );
+    } catch (e) {
+      log("UseCase 실행 중 예외 발생: $e");
+    }
+  }
+
   ///
   /// 실전 면접 카드(전체 영역)가 클릭 되었을 때
   /// 실전 면접 기록 여부에 따라 라우팅을 다르게 진행
