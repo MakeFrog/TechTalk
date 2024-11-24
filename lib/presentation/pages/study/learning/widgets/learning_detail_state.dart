@@ -10,7 +10,7 @@ mixin class LearningDetailState {
   ///
   /// 선택된 주제의 문답 리스트
   ///
-  AsyncValue<List<QnaEntity>> qnasAsync(WidgetRef ref) {
+  AsyncValue<List<CommonQnaEntity>> qnasAsync(WidgetRef ref) {
     return ref.watch(studyQnasProvider(selectedTopic(ref).id));
   }
 
@@ -28,7 +28,7 @@ mixin class LearningDetailState {
   ///
   /// 문답 목록
   ///
-  List<QnaEntity> qnas(WidgetRef ref) =>
+  List<CommonQnaEntity> qnas(WidgetRef ref) =>
       ref.watch(studyQnasProvider(selectedTopic(ref).id)).requireValue;
 
   ///
