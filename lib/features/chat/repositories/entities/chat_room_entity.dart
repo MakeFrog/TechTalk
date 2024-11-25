@@ -41,14 +41,14 @@ class ChatRoomEntity {
 
   int get completedQuestionCount => progressInfo.completedQuestionCount;
 
-  ChatResult get chatResult {
+  InterviewResult get interviewResult {
     if (progressState.isCompleted) {
       if (progressInfo.correctAnswerCount >=
           progressInfo.incorrectAnswerCount) {
-        return ChatResult.pass;
+        return InterviewResult.pass;
       } else if (progressInfo.correctAnswerCount <
           progressInfo.incorrectAnswerCount) {
-        return ChatResult.failed;
+        return InterviewResult.failed;
       } else {
         throw UnimplementedError('유효하지 않은 [passOrFail]값 입니다.');
       }
@@ -57,7 +57,7 @@ class ChatRoomEntity {
     }
   }
 
-  ChatResult get passOrFail => chatResult;
+  InterviewResult get passOrFail => interviewResult;
 
   TopicEntity get singleTopic => topics.first;
 
@@ -84,7 +84,8 @@ class ChatRoomEntity {
           StoredTopics.getById(roomModel.topicIds.first)
         ],
       InterviewType.practical =>
-        roomModel.topicIds.map(StoredTopics.getById).toList()
+        roomModel.topicIds.map(StoredTopics.getById).toList(),
+      InterviewType.resume => throw Exception('타입을 지정해주어야 합니다'),
     };
 
     final progress = roomModel.totalQuestionCount ==

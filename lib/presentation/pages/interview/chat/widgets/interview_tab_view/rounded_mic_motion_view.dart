@@ -127,40 +127,16 @@ class RoundedMicMotionView extends HookConsumerWidget {
                               RecordProgressState.onProgress:
                           return HookConsumer(
                             builder: (context, ref, _) {
-                              final debouncer =
-                                  Debouncer(const Duration(milliseconds: 500));
-
                               // AnimationController 설정
                               final animationController =
                                   useAnimationController(
                                 duration: const Duration(milliseconds: 1650),
                               );
 
-                              if (Platform.isIOS) {
-                                ref.listen(
-                                    speechToTextProvider.select(
-                                        (p) => p.notifyText), (prev, now) {
-                                  if (now.isNotEmpty) {
-                                    // 텍스트가 입력되면 애니메이션 반복 실행
-
-                                    if (!animationController.isAnimating) {
-                                      animationController.repeat();
-                                    }
-
-                                    debouncer.run(() async {
-                                      if (animationController.isAnimating) {
-                                        await animationController.forward();
-                                        animationController.stop();
-                                      }
-                                    });
-                                  }
-                                });
-                              } else {
-                                useEffect(() {
-                                  animationController.repeat();
-                                  return null;
-                                }, []);
-                              }
+                              useEffect(() {
+                                animationController.repeat();
+                                return null;
+                              }, []);
 
                               return StaggeredDotsWave(
                                 size: 24,

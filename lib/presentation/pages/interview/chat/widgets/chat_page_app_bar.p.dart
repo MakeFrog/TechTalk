@@ -8,8 +8,7 @@ class _AppBar extends ConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final firstTopic = ref.watch(selectedChatRoomProvider).topics.first.text;
-    final otherTopicCount =
-        ref.watch(selectedChatRoomProvider).topics.length - 1;
+    final otherTopicCount = room(ref).topics.length - 1;
 
     return BackButtonAppBar(
       title:
@@ -36,7 +35,7 @@ class _AppBar extends ConsumerWidget
                     height: 24,
                     value: isActive,
                     bgColor: AppColor.of.purple2,
-                    onTap: (_) {
+                    onTap: (_) async {
                       toggleFollowUpQuestionActiveState(ref);
                     },
                   );

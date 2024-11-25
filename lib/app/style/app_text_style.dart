@@ -4,7 +4,7 @@ abstract class AppTextStyle {
   static TextStyle pretendardStyle(double size, double? height) => TextStyle(
         fontFamily: 'pretendard',
         leadingDistribution: TextLeadingDistribution.even,
-        letterSpacing: -0.02 / 100 * size,
+        letterSpacing: -2 / 100 * size,
         fontSize: size,
         height: height == null ? null : height / size,
       );
@@ -21,7 +21,7 @@ abstract class AppTextStyle {
 
   static TextStyle pretendardBoldStyle(double size, double? height) =>
       pretendardStyle(size, height).copyWith(
-        fontWeight: FontWeight.w800,
+        fontWeight: FontWeight.w700,
       );
 
   static final TextStyle highlight = pretendardBoldStyle(32, 36);
@@ -32,6 +32,8 @@ abstract class AppTextStyle {
   static final TextStyle title2 = pretendardSemiBoldStyle(16, 22);
   static final TextStyle title3 = pretendardBoldStyle(14, 20);
   static final TextStyle body1 = pretendardSemiBoldStyle(14, 20);
+  static final TextStyle newBody = pretendardSemiBoldStyle(15, 22);
+
   static final TextStyle body2 = pretendardMediumStyle(14, 20);
   static final TextStyle body3 = pretendardMediumStyle(13, 18);
   static final TextStyle alert1 = pretendardSemiBoldStyle(12, 17);

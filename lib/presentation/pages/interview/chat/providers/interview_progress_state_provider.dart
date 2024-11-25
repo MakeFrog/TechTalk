@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/app/router/navigation_context.dart';
 import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/core/services/slack_notification_service.dart' as noti;
@@ -13,6 +15,7 @@ import 'package:techtalk/presentation/pages/interview/chat/providers/chat_messag
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_result/interview_result_dialog.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 part 'interview_progress_state_provider.g.dart';
@@ -107,8 +110,8 @@ class InterviewProgressState extends _$InterviewProgressState {
     unawaited(FirebaseAnalytics.instance.logEvent(
       name: 'Interview Completed',
       parameters: {
-        'user_id': ref.read(userInfoProvider).requireValue?.uid,
-        'user_name': ref.read(userInfoProvider).requireValue?.nickname,
+        'user_id': ref.read(userInfoProvider).requireValue?.uid ?? '',
+        'user_name': ref.read(userInfoProvider).requireValue?.nickname ?? '',
         'topics': ref
             .read(selectedChatRoomProvider)
             .topics
@@ -126,6 +129,7 @@ class InterviewProgressState extends _$InterviewProgressState {
   ///
   Future<void> _increaseCompletedCountAndAlertAppReview() async {
     final response = await increaseCompletedInterviewCountUseCase.call();
+    final context = await navigationContext;
 
     unawaited(
       response.fold(
@@ -133,11 +137,20 @@ class InterviewProgressState extends _$InterviewProgressState {
           ref
               .read(userInfoProvider.notifier)
               .increaseCompletedInterviewCount(increasedCount);
+
+          /// 인터뷰 결과 다이어로 노출
+          await showAdaptiveDialog(
+            context: context,
+            builder: (context) {
+              return const InterviewResultDialog();
+            },
+          );
           if (ref
               .read(userInfoProvider)
               .requireValue!
               .isReviewRequestAvailable) {
-            if (increasedCount == 1 ||
+            /// 앱 리뷰 요청
+            if (increasedCount == 2 ||
                 increasedCount == 6 ||
                 increasedCount == 12 ||
                 increasedCount == 20) {

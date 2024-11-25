@@ -1,5 +1,6 @@
 {
   "common": {
+
     "errorDetectedTryLater": "An error occurred.\nPlease try again later.",
     "emptyName": "Anonymous",
     "next": "Next",
@@ -138,8 +139,8 @@
     "noSearchResults": "Sorry, there are no search results"
   },
   "interview": {
-    "loadingFollowUpQuestion" : "Loading Follow-up Question...",
-    "followUpQuestion" : "Follow-up Questions",
+    "loadingFollowUpQuestion": "Loading Follow-up Question...",
+    "followUpQuestion": "Follow-up Questions",
     "aiFeedbackErrorOccured": "An error occurred in verifying the answer. Please try again later.",
     "noAudioDetected": "No input audio detected",
     "answerVocally": "Answer vocally!",
@@ -163,7 +164,20 @@
     "interviewHasEnd": "The interview has ended",
     "errorHasDetected": "An error occurred, unable to send the response",
     "waitForReply": "Wait for the interviewer to finish before replying",
-    "recordFailed": "Failed to recognize the voice. Please try again."
+    "recordFailed": "Failed to recognize the voice. Please try again.",
+    "hasPassed" : "You passed!",
+    "keepGoing" : "Keep going, and you'll keep growing!",
+    "hasFailed": "You didn’t pass",
+    "getCoureage" :  "Keep trying, and things will change!",
+    "oneLineFeedback" : "Feedback",
+    "tryRecap": "Retry the questions\nyou missed.",
+    "retryInterview": "Get new questions and build a mountain of knowledge!",
+    "tryAgain" : "Try Again",
+    "goToHome": "Go Home",
+    "suggestSimilarTopicsLeading": "Candidates in your field are studying\n",
+    "suggestSimilarTopicsEnd": " together",
+    "letsTryInterviewAgain" : "Ready for an interview?",
+    "generatingOneLineFeedback": "Generating Feedback"
   },
   "qa": {
     "numberOfQa": " items",
@@ -178,6 +192,7 @@
     "oneOutOfFifty": "1/50 Questions",
     "previous": "Prev",
     "all": "All",
+    "all_question": "All",
     "next": "Next"
   },
   "mistakeNote": {
@@ -222,7 +237,12 @@
   "permission": {
     "permissionNeeded": "Permission Required",
     "micRequired": "Please allow microphone permission in the settings.",
-    "setUp": "Go to Settings"
+    "setUp": "Go to Settings",
+    "alarmSetting": "Settings",
+    "alarmDismissDesc": "Please disable the permission to turn off the alarm",
+    "needAlarmPermission": "Permission is required to receive alarms",
+    "alarm_title": "Notification",
+    "alarm_desc": "Important updates and announcements"
   },
   "errors": {
     "error": "error",

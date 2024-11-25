@@ -6,6 +6,7 @@ import 'package:techtalk/features/contents/data_source/remote/youtube_contents_r
 import 'package:techtalk/features/contents/repositories/entities/youtube_contents_detail_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_video_data_entity.dart';
 import 'package:techtalk/features/contents/repositories/youtube_contents_repository.dart';
+import 'package:techtalk/features/topic/topic.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
@@ -48,6 +49,20 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
       log('getYoutubeContentsDetail : $e');
       return Result.failure(
         const FetchYoutubeContentsDetailException(),
+      );
+    }
+  }
+
+  @override
+  Future<Result<List<QnaEntity>>> getYoutubeContentsDetailQnas(String videoId) async {
+    try {
+      final remoteResponse = await _youtubeRemoteDataSource.getYoutubeContentsDetailQnas(videoId);
+
+      return Result.success(remoteResponse.map((data) => data.toEntity()).toList());
+    } on Exception catch (e) {
+      log('getYoutubeContentsDetailQnas : $e');
+      return Result.failure(
+        const FetchYoutubeContentsQnaException(),
       );
     }
   }

@@ -3,6 +3,7 @@ import 'package:dart_openai/dart_openai.dart' as forWhisper;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:techtalk/app/di/app_binding.dart';
@@ -41,6 +42,14 @@ class Flavor {
     /// FireBase 초기화
     await Firebase.initializeApp(
       options: option,
+    );
+
+    FirebaseMessaging.onBackgroundMessage((_) async {});
+
+    OpenAI.instance.build(
+      token: env.openApiKey,
+      baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 10), connectTimeout: const Duration(seconds: 10)),
+      enableLog: true,
     );
 
     /// 채팅 면접에서 사용되는 OepnAI SK

@@ -10,7 +10,7 @@ import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/enums/follow_up_status.enum.dart';
-import 'package:techtalk/features/chat/repositories/enums/chat_result.enum.dart';
+import 'package:techtalk/features/chat/repositories/enums/interview_result.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/widgets/common/indicator/response_indicator.dart';
 import 'package:techtalk/presentation/widgets/common/tile/flexible_expansion_tile.dart';
@@ -42,8 +42,8 @@ class QnAExpansionTile extends HookConsumerWidget with ChatState {
                     ? FollowupStatus.yes
                     : FollowupStatus.no,
                 chatResult: item.message!.answerState.isCorrect
-                    ? ChatResult.pass
-                    : ChatResult.failed,
+                    ? InterviewResult.pass
+                    : InterviewResult.failed,
                 text: item.message!.answerState.isCorrect
                     ? context.tr(LocaleKeys.common_responseResult_correct)
                     : context.tr(LocaleKeys.common_responseResult_incorrect),

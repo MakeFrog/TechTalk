@@ -119,3 +119,7 @@ class FetchYoutubeContentsDetailException extends CustomException {
 class FetchYoutubeContentsOverviewException extends CustomException {
   const FetchYoutubeContentsOverviewException() : super('500009', '영상 정보 리스트를 불러오는 데에 실패하였습니다.');
 }
+
+class FetchYoutubeContentsQnaException extends CustomException {
+  const FetchYoutubeContentsQnaException() : super('500009', '영상 관련 질문 리스트를 불러오는 데에 실패하였습니다.');
+}

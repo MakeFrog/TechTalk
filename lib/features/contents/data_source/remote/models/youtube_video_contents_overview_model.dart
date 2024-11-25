@@ -40,7 +40,6 @@ class YoutubeContentsOverviewModel {
   YoutubeContentsOverviewEntity toEntity() {
     return YoutubeContentsOverviewEntity(
       id: id,
-      // contentsId: contentsId,
       thumbnailImgUrl: thumbnailImgUrl,
       contentsTitle: contentsTitle,
       qnaNum: qnaNum,

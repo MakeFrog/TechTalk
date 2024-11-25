@@ -1,8 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:techtalk/features/system/repositories/entities/version_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
-import 'package:techtalk/presentation/providers/system/app_version_provider.dart';
+import 'package:techtalk/presentation/providers/system/notification_status_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 mixin class MyPageState {
@@ -18,4 +17,11 @@ mixin class MyPageState {
     final packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.version;
   }
+
+
+  ///
+  /// 알람 권한 허용 여부
+  ///
+  AsyncValue<bool> isNotificationGranted(WidgetRef ref) =>
+      ref.watch(notificationStatusProvider);
 }
