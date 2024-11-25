@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:techtalk/core/helper/duration_extension.dart';
 
 /// 요약 노트 아이템 위젯
 class SummaryNoteFoldableItem extends HookWidget {
@@ -42,7 +43,7 @@ class SummaryNoteFoldableItem extends HookWidget {
                     color: Colors.blueGrey,
                     alignment: Alignment.center,
                     child: Text(
-                      timestamp.toString(),
+                      timestamp?.formatTimestamp ?? '',
                     ),
                   ),
                 ),
