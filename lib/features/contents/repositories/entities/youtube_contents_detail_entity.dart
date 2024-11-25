@@ -4,7 +4,6 @@ import 'package:techtalk/features/contents/data_source/remote/models/youtube_con
 import 'package:techtalk/features/contents/repositories/entities/summary_entity.dart';
 import 'package:techtalk/features/contents/repositories/enums/contents_language.enum.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skill_entity.dart';
-import 'package:techtalk/features/topic/repositories/entities/qna_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
 
 /// 앱에서 학습을 위해 제공하는 컨텐츠의 상세 정보
@@ -30,9 +29,6 @@ class YoutubeContentsDetailEntity {
   /// 컨텐츠 언어
   final Set<ContentsLanguage> contentsLanguage;
 
-  /// 생성된 관련 질문
-  final List<QnaEntity> relatedQna;
-
   /// 생성된 컨텐츠 요약
   final SummaryEntity summary;
 
@@ -46,7 +42,6 @@ class YoutubeContentsDetailEntity {
     required this.relatedSkills,
     required this.relatedJobs,
     required this.contentsLanguage,
-    required this.relatedQna,
     required this.summary,
     this.uploadUser,
   });
@@ -58,7 +53,6 @@ class YoutubeContentsDetailEntity {
         relatedSkills: relatedSkills.map((skill) => SkillModel(id: skill.id, name: skill.name)).toList(),
         relatedJobGroupIds: relatedJobs.map((job) => job.id).toList(),
         contentsLanguageIds: contentsLanguage.map((language) => language.id).toList(),
-        relatedQnas: relatedQna.map((qna) => qna.toModel()).toList(),
         summary: summary.toModel(),
         uploadUserId: uploadUser?.uid,
       );

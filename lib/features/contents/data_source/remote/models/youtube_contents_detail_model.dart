@@ -18,7 +18,6 @@ class YoutubeContentsDetailModel {
     required this.relatedSkills,
     required this.relatedJobGroupIds,
     required this.contentsLanguageIds,
-    required this.relatedQnas,
     required this.summary,
     this.uploadUserId,
   });
@@ -29,20 +28,17 @@ class YoutubeContentsDetailModel {
   final List<SkillModel> relatedSkills;
   final List<String> relatedJobGroupIds;
   final List<String> contentsLanguageIds;
-  final List<TopicQnaModel> relatedQnas;
   final SummaryModel summary;
   final String? uploadUserId;
 
   YoutubeContentsDetailEntity toEntity() {
     return YoutubeContentsDetailEntity(
       id: id,
-      // contentsId: contentsId,
       title: title,
       authorId: authorId,
       relatedSkills: relatedSkills.map((skill) => skill.toEntity()).toSet(),
       relatedJobs: relatedJobGroupIds.map(JobGroup.getById).toSet(),
       contentsLanguage: contentsLanguageIds.map(ContentsLanguage.getById).toSet(),
-      relatedQna: relatedQnas.map((qna) => qna.toEntity()).toList(),
       summary: summary.toEntity(),
     );
   }

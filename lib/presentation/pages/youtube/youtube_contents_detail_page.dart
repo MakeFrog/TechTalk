@@ -231,15 +231,15 @@ class YoutubeContentsDetailPage extends BasePage with YoutubeContentsDetailEvent
                 padding: const EdgeInsets.all(16),
                 children: [
                   AsyncSkeletonWidgetBuilder(
-                    asyncValue: youtubeContentsDetailAsync(ref, overview.id),
+                    asyncValue: youtubeContentsDetailQnasAsync(ref, overview.id),
                     skeletonBuilder: (p0) => const Center(
                       child: CircularProgressIndicator(),
                     ),
                     dataBuilder: (context, data) => Wrap(
                       runSpacing: 20,
                       children: [
-                        if (data.relatedQna.isNotEmpty)
-                          ...data.relatedQna
+                        if (data.isNotEmpty)
+                          ...data
                               .map(
                                 (qna) => Column(
                                   children: [
