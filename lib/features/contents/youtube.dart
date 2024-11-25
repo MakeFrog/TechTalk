@@ -17,4 +17,4 @@ export 'youtube.dart';
 final youtubeRepository = locator<YoutubeContentsRepository>();
 final youtubeRemoteDataSource = locator<YoutubeContentsRemoteDataSource>();
 final getYoutubeVideoDataUseCase = locator<GetYoutubeVideoDataUseCase>();
-final getYoutubeContentsDetailDataUseCase = locator<GetYoutubeContentsDetailDataUseCase>();
+final getYoutubeContentsDetailUseCase = locator<GetYoutubeContentsDetailUseCase>();

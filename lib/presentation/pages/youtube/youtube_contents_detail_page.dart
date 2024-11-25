@@ -171,7 +171,7 @@ class YoutubeContentsDetailPage extends BasePage with YoutubeContentsDetailEvent
                 padding: const EdgeInsets.all(16),
                 children: [
                   AsyncSkeletonWidgetBuilder(
-                    asyncValue: youtubeContentsDetailDataAsync(ref, overview.id),
+                    asyncValue: youtubeContentsDetailAsync(ref, overview.id),
                     skeletonBuilder: (p0) => const Center(
                       child: CircularProgressIndicator(),
                     ),
@@ -231,7 +231,7 @@ class YoutubeContentsDetailPage extends BasePage with YoutubeContentsDetailEvent
                 padding: const EdgeInsets.all(16),
                 children: [
                   AsyncSkeletonWidgetBuilder(
-                    asyncValue: youtubeContentsDetailDataAsync(ref, overview.id),
+                    asyncValue: youtubeContentsDetailAsync(ref, overview.id),
                     skeletonBuilder: (p0) => const Center(
                       child: CircularProgressIndicator(),
                     ),

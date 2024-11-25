@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'youtube_contents_detail_data_provider.dart';
+part of 'youtube_contents_detail_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$youtubeContentsDetailDataHash() =>
-    r'2e92095ff1a4c6929a2f7678b33aa1984d34ec8b';
+String _$youtubeContentsDetailHash() =>
+    r'a084cbbc9be944761c4f573833db7b20590738e4';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,7 +30,7 @@ class _SystemHash {
   }
 }
 
-abstract class _$YoutubeContentsDetailData
+abstract class _$YoutubeContentsDetail
     extends BuildlessAutoDisposeAsyncNotifier<YoutubeContentsDetailEntity> {
   late final String videoId;
 
@@ -39,28 +39,28 @@ abstract class _$YoutubeContentsDetailData
   );
 }
 
-/// See also [YoutubeContentsDetailData].
-@ProviderFor(YoutubeContentsDetailData)
-const youtubeContentsDetailDataProvider = YoutubeContentsDetailDataFamily();
+/// See also [YoutubeContentsDetail].
+@ProviderFor(YoutubeContentsDetail)
+const youtubeContentsDetailProvider = YoutubeContentsDetailFamily();
 
-/// See also [YoutubeContentsDetailData].
-class YoutubeContentsDetailDataFamily
+/// See also [YoutubeContentsDetail].
+class YoutubeContentsDetailFamily
     extends Family<AsyncValue<YoutubeContentsDetailEntity>> {
-  /// See also [YoutubeContentsDetailData].
-  const YoutubeContentsDetailDataFamily();
+  /// See also [YoutubeContentsDetail].
+  const YoutubeContentsDetailFamily();
 
-  /// See also [YoutubeContentsDetailData].
-  YoutubeContentsDetailDataProvider call(
+  /// See also [YoutubeContentsDetail].
+  YoutubeContentsDetailProvider call(
     String videoId,
   ) {
-    return YoutubeContentsDetailDataProvider(
+    return YoutubeContentsDetailProvider(
       videoId,
     );
   }
 
   @override
-  YoutubeContentsDetailDataProvider getProviderOverride(
-    covariant YoutubeContentsDetailDataProvider provider,
+  YoutubeContentsDetailProvider getProviderOverride(
+    covariant YoutubeContentsDetailProvider provider,
   ) {
     return call(
       provider.videoId,
@@ -79,31 +79,31 @@ class YoutubeContentsDetailDataFamily
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'youtubeContentsDetailDataProvider';
+  String? get name => r'youtubeContentsDetailProvider';
 }
 
-/// See also [YoutubeContentsDetailData].
-class YoutubeContentsDetailDataProvider
-    extends AutoDisposeAsyncNotifierProviderImpl<YoutubeContentsDetailData,
+/// See also [YoutubeContentsDetail].
+class YoutubeContentsDetailProvider
+    extends AutoDisposeAsyncNotifierProviderImpl<YoutubeContentsDetail,
         YoutubeContentsDetailEntity> {
-  /// See also [YoutubeContentsDetailData].
-  YoutubeContentsDetailDataProvider(
+  /// See also [YoutubeContentsDetail].
+  YoutubeContentsDetailProvider(
     String videoId,
   ) : this._internal(
-          () => YoutubeContentsDetailData()..videoId = videoId,
-          from: youtubeContentsDetailDataProvider,
-          name: r'youtubeContentsDetailDataProvider',
+          () => YoutubeContentsDetail()..videoId = videoId,
+          from: youtubeContentsDetailProvider,
+          name: r'youtubeContentsDetailProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$youtubeContentsDetailDataHash,
-          dependencies: YoutubeContentsDetailDataFamily._dependencies,
+                  : _$youtubeContentsDetailHash,
+          dependencies: YoutubeContentsDetailFamily._dependencies,
           allTransitiveDependencies:
-              YoutubeContentsDetailDataFamily._allTransitiveDependencies,
+              YoutubeContentsDetailFamily._allTransitiveDependencies,
           videoId: videoId,
         );
 
-  YoutubeContentsDetailDataProvider._internal(
+  YoutubeContentsDetailProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -117,7 +117,7 @@ class YoutubeContentsDetailDataProvider
 
   @override
   FutureOr<YoutubeContentsDetailEntity> runNotifierBuild(
-    covariant YoutubeContentsDetailData notifier,
+    covariant YoutubeContentsDetail notifier,
   ) {
     return notifier.build(
       videoId,
@@ -125,10 +125,10 @@ class YoutubeContentsDetailDataProvider
   }
 
   @override
-  Override overrideWith(YoutubeContentsDetailData Function() create) {
+  Override overrideWith(YoutubeContentsDetail Function() create) {
     return ProviderOverride(
       origin: this,
-      override: YoutubeContentsDetailDataProvider._internal(
+      override: YoutubeContentsDetailProvider._internal(
         () => create()..videoId = videoId,
         from: from,
         name: null,
@@ -141,15 +141,14 @@ class YoutubeContentsDetailDataProvider
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<YoutubeContentsDetailData,
+  AutoDisposeAsyncNotifierProviderElement<YoutubeContentsDetail,
       YoutubeContentsDetailEntity> createElement() {
-    return _YoutubeContentsDetailDataProviderElement(this);
+    return _YoutubeContentsDetailProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is YoutubeContentsDetailDataProvider &&
-        other.videoId == videoId;
+    return other is YoutubeContentsDetailProvider && other.videoId == videoId;
   }
 
   @override
@@ -161,19 +160,19 @@ class YoutubeContentsDetailDataProvider
   }
 }
 
-mixin YoutubeContentsDetailDataRef
+mixin YoutubeContentsDetailRef
     on AutoDisposeAsyncNotifierProviderRef<YoutubeContentsDetailEntity> {
   /// The parameter `videoId` of this provider.
   String get videoId;
 }
 
-class _YoutubeContentsDetailDataProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<YoutubeContentsDetailData,
-        YoutubeContentsDetailEntity> with YoutubeContentsDetailDataRef {
-  _YoutubeContentsDetailDataProviderElement(super.provider);
+class _YoutubeContentsDetailProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<YoutubeContentsDetail,
+        YoutubeContentsDetailEntity> with YoutubeContentsDetailRef {
+  _YoutubeContentsDetailProviderElement(super.provider);
 
   @override
-  String get videoId => (origin as YoutubeContentsDetailDataProvider).videoId;
+  String get videoId => (origin as YoutubeContentsDetailProvider).videoId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

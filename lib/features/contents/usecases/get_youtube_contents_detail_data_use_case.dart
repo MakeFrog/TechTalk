@@ -7,8 +7,8 @@ import 'package:techtalk/features/contents/repositories/youtube_contents_reposit
 ///
 /// 특정 영상 관련 컨텐츠 데이터 가져오기 - 요약, 관련 질문 등
 ///
-final class GetYoutubeContentsDetailDataUseCase extends BaseUseCase<String, Result<YoutubeContentsDetailEntity>> {
-  GetYoutubeContentsDetailDataUseCase(this._repository);
+final class GetYoutubeContentsDetailUseCase extends BaseUseCase<String, Result<YoutubeContentsDetailEntity>> {
+  GetYoutubeContentsDetailUseCase(this._repository);
 
   final YoutubeContentsRepository _repository;
 

@@ -35,7 +35,7 @@ final class YoutubeContentsDependencyInjection extends FeatureDependencyInjectio
         ),
       )
       ..registerFactory(
-        () => GetYoutubeContentsDetailDataUseCase(
+        () => GetYoutubeContentsDetailUseCase(
           youtubeRepository,
         ),
       );
