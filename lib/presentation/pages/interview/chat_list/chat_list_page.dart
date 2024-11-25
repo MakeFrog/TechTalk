@@ -36,6 +36,7 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
           );
         }
         return ListView.builder(
+          physics: const ClampingScrollPhysics(),
           itemCount: chatList.length,
           itemBuilder: (context, index) {
             return ChatRoomItemView.create(
@@ -72,6 +73,8 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
                 );
               case InterviewType.practical:
                 routeToTopicSelectPage(ref);
+              case InterviewType.resume:
+                throw Exception('타입을 지정해주어야 합니다');
             }
           },
           height: 56,
@@ -91,10 +94,14 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
   }
 
   @override
-  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) => BackButtonAppBar(
+  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
+      BackButtonAppBar(
         title: switch (selectedInterviewType(ref)) {
-          InterviewType.singleTopic => selectedTopic(ref)?.text ?? ref.read(selectedChatRoomProvider).singleTopic.text,
-          InterviewType.practical => tr(LocaleKeys.undefined_realWorldInterview),
+          InterviewType.singleTopic => selectedTopic(ref)?.text ??
+              ref.read(selectedChatRoomProvider).singleTopic.text,
+          InterviewType.practical =>
+            tr(LocaleKeys.undefined_realWorldInterview),
+          InterviewType.resume => throw Exception('타입을 지정해주어야 합니다'),
         },
       );
 

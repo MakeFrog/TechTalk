@@ -24,9 +24,9 @@ mixin class WrongAnswerNoteEvent {
     FirebaseAnalytics.instance.logEvent(
       name: 'Go to Wrong Answer Detail',
       parameters: {
-        'user_id': ref.read(userInfoProvider).requireValue?.uid,
-        'user_name': ref.read(userInfoProvider).requireValue?.nickname,
-        'topic': ref.read(selectedWrongAnswerTopicProvider)?.text,
+        'user_id': ref.read(userInfoProvider).requireValue?.uid ?? '',
+        'user_name': ref.read(userInfoProvider).requireValue?.nickname ?? '',
+        'topic': ref.read(selectedWrongAnswerTopicProvider)?.text ?? '',
       },
     );
   }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -23,73 +24,80 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
     String jsonResponse = '';
     bool isCollectingJson = false;
 
-    OpenAI.instance
-        .onChatCompletionSSE(
-      request: ChatCompleteText(
-        functionCall: FunctionCall.auto,
-        messages: _createChatMessage(param),
-        maxToken: 300,
-        model: Gpt4ChatModel(),
-        temperature: 0.5,
-        stream: true,
-        user: FirebaseAuth.instance.currentUser!.uid,
-      ),
-    )
-        .transform(
-      StreamTransformer.fromHandlers(
-        handleError: (error, stackTrace, sink) {
-          param.onError(error, stackTrace);
+    /// OpenAI에서 발생하는 429에러 등등을 잡기 위해서는 runZonedGuarded 로 감싸주어야 함
+    runZonedGuarded(() {
+      OpenAI.instance
+          .onChatCompletionSSE(
+        request: ChatCompleteText(
+          functionCall: FunctionCall.auto,
+          messages: _createChatMessage(param),
+          maxToken: 300,
+          model: Gpt4ChatModel(),
+          temperature: 0.5,
+          stream: true,
+          user: FirebaseAuth.instance.currentUser!.uid,
+        ),
+      )
+          .transform(
+        StreamTransformer.fromHandlers(
+          handleError: (error, stackTrace, sink) {
+            param.onError(error, stackTrace);
+          },
+        ),
+      ).listen(
+        // NOTE: 희한하게 openAI에ㅓ 429 에러같은게 뜨면 여기서는 안잡힌다.
+        onError: param.onError,
+        cancelOnError: true,
+        (it) {
+          it as ChatResponseSSE;
+          final chunk = it.choices?.last.message?.content ?? '';
+
+          if (chunk.isEmpty) return;
+
+          if (_isStartingJsonCollection(chunk, isCollectingJson)) {
+            // JSON 수집 시작
+            isCollectingJson = true;
+            final jsonStartIndex = chunk.indexOf('{');
+            jsonResponse = chunk.substring(jsonStartIndex);
+            response += chunk.substring(0, jsonStartIndex);
+            streamedAdviceResponse.add(response); // JSON 이전의 데이터만 스트림에 추가
+          } else if (isCollectingJson) {
+            // JSON 수집 중
+            jsonResponse += chunk;
+          } else {
+            // JSON이 아닌 일반 텍스트 부분을 사용자에게 스트림으로 전달
+            response += chunk;
+          }
+
+          _setCorrectnessIfNeeded(response, param.checkAnswer);
+          streamedAdviceResponse.add(_formatAdvice(response));
+
+          // JSON 데이터 수집 완료 여부 확인
+          if (_isJsonCollectionComplete(jsonResponse, isCollectingJson)) {
+            final feedbackResponse = _parseAndHandleJsonResponse(
+              jsonResponse: jsonResponse,
+              feedback: _formatAdvice(response),
+              param: param,
+            );
+
+            jsonResponse = ''; // JSON 수집 상태 초기화
+            isCollectingJson = false;
+
+            return param.onFeedBackCompleted(
+                feedbackResponse: feedbackResponse);
+          }
         },
-      ),
-    ).listen(
-      onError: param.onError,
-      cancelOnError: true,
-      (it) {
-        it as ChatResponseSSE;
-        final chunk = it.choices?.last.message?.content ?? '';
-
-        if (chunk.isEmpty) return;
-
-        if (_isStartingJsonCollection(chunk, isCollectingJson)) {
-          // JSON 수집 시작
-          isCollectingJson = true;
-          final jsonStartIndex = chunk.indexOf('{');
-          jsonResponse = chunk.substring(jsonStartIndex);
-          response += chunk.substring(0, jsonStartIndex);
-          streamedAdviceResponse.add(response); // JSON 이전의 데이터만 스트림에 추가
-        } else if (isCollectingJson) {
-          // JSON 수집 중
-          jsonResponse += chunk;
-        } else {
-          // JSON이 아닌 일반 텍스트 부분을 사용자에게 스트림으로 전달
-          response += chunk;
-        }
-
-        _setCorrectnessIfNeeded(response, param.checkAnswer);
-        streamedAdviceResponse.add(_formatAdvice(response));
-
-        // JSON 데이터 수집 완료 여부 확인
-        if (_isJsonCollectionComplete(jsonResponse, isCollectingJson)) {
-          final feedbackResponse = _parseAndHandleJsonResponse(
-            jsonResponse: jsonResponse,
-            feedback: _formatAdvice(response),
-            param: param,
-          );
-
-          jsonResponse = ''; // JSON 수집 상태 초기화
-          isCollectingJson = false;
-
-          return param.onFeedBackCompleted(feedbackResponse: feedbackResponse);
-        }
-      },
-      onDone: () {
-        /// 응답이 종료된 이후
-        /// 1) Stream 닫기
-        /// 2) 응답 진행 상태 초기화
-        state = AiAnswerProgress.init;
-        streamedAdviceResponse.close();
-      },
-    );
+        onDone: () {
+          /// 응답이 종료된 이후
+          /// 1) Stream 닫기
+          /// 2) 응답 진행 상태 초기화
+          state = AiAnswerProgress.init;
+          streamedAdviceResponse.close();
+        },
+      );
+    }, (error, stackTrace) {
+      param.onError(error, stackTrace);
+    });
 
     return streamedAdviceResponse;
   }
@@ -127,7 +135,8 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
       ),
       Messages(
         role: Role.system,
-        content: '면접 질문에 대한 모범답안은 다음과 같습니다: ${param.qna.qna.answers.map((str) => '-$str').join(' ')}',
+        content:
+            '면접 질문에 대한 모범답안은 다음과 같습니다: ${param.qna.qna.answers.map((str) => '-$str').join(' ')}',
       ).toJson(),
       Messages(
         role: Role.system,

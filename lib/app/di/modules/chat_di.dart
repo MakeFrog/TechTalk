@@ -1,6 +1,7 @@
 import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/app/di/feature_di_interface.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/use_cases/get_one_line_interview_feedback_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/set_ai_feedback_use_case.dart';
 import 'package:techtalk/features/chat/use_cases/recrod_to_text_use_case.dart';
 
@@ -65,6 +66,9 @@ final class ChatDependencyInject extends FeatureDependencyInjection {
       )
       ..registerFactory(
         () => RecordToTextUseCase(),
+      )
+      ..registerFactory(
+        () => GetOneLineInterViewFeedbackUseCase(),
       );
   }
 }

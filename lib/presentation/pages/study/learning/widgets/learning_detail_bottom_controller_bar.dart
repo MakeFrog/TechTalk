@@ -12,7 +12,7 @@ class _BottomControllerBar extends ConsumerWidget
         data: (_) {
           return Container(
             color: Colors.white,
-            height: 72,
+            height: 74,
             width: double.infinity,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -23,24 +23,50 @@ class _BottomControllerBar extends ConsumerWidget
                   icon: Assets.iconsArrowLeft,
                   onTap: () => onTapPrevQuestion(ref),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconFlashAreaButton.assetIcon(
-                      iconPath: Assets.iconsMenu,
-                      size: 24,
-                      activatedColor: AppColor.of.gray4,
-                      enabledColor: AppColor.of.gray2,
-                      onIconTapped: () => onTapEntireQuestion(ref),
-                    ),
-                    const Gap(12),
-                    Text(
-                      tr(LocaleKeys.learning_all),
-                      style: AppTextStyle.alert1.copyWith(
-                        color: AppColor.of.gray4,
+                BounceTapper(
+                  highlightColor: Colors.transparent,
+                  onTap: () {
+                    onTapEntireQuestion(ref);
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 60,
+                        height: 28,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: AppColor.of.background1,
+                          borderRadius: BorderRadius.circular(99),
+                        ),
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '${currentIndex(ref) + 1}',
+                                style: AppTextStyle.title3.copyWith(
+                                  color: AppColor.of.gray6,
+                                ),
+                              ),
+                              TextSpan(
+                                text: '/${qnas(ref).length}',
+                                style: AppTextStyle.body2.copyWith(
+                                  color: AppColor.of.gray6,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                      const Gap(6),
+                      Text(
+                        tr(LocaleKeys.learning_all),
+                        style: AppTextStyle.body3.copyWith(
+                          color: AppColor.of.gray4,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 UnderLabelIconButton(
                   isActive: currentIndex(ref) + 1 != qnas(ref).length,

@@ -26,7 +26,7 @@ class ClosableRectFilledChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         onTap: onTap,
         child: Container(
-          height: height ?? 36,
+          height: height ?? 34,
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Center(
             child: Row(
@@ -34,7 +34,7 @@ class ClosableRectFilledChip extends StatelessWidget {
                 Text(
                   label,
                   textAlign: TextAlign.center,
-                  style: AppTextStyle.body1.copyWith(
+                  style: AppTextStyle.newBody.copyWith(
                     color: Colors.white,
                   ),
                 ),

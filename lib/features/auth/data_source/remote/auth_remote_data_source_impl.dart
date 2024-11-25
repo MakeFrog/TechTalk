@@ -32,6 +32,7 @@ final class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     );
 
     final oauthCredential = OAuthProvider("apple.com").credential(
+      accessToken: credential.authorizationCode,
       idToken: credential.identityToken,
       rawNonce: rawNonce,
     );

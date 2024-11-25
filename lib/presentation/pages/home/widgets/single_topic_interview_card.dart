@@ -1,6 +1,7 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -10,7 +11,9 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/home/home_event.dart';
+import 'package:techtalk/presentation/pages/home/home_page.dart';
 import 'package:techtalk/presentation/pages/home/widgets/home_state.dart';
+import 'package:techtalk/presentation/widgets/base/controller_holder.dart';
 
 class SingleTopicInterviewCard extends ConsumerWidget
     with HomeState, HomeEvent {
@@ -87,7 +90,10 @@ class SingleTopicInterviewCard extends ConsumerWidget
     const double imgSize = 40;
     return Consumer(
       builder: (context, ref, _) {
+        final passedScrollController =
+            context.getController<ScrollController>();
         return BounceTapper(
+          scrollController: passedScrollController,
           onTap: () {
             routeToChatListPage(
               context,

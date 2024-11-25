@@ -15,8 +15,8 @@ mixin class StudyTopicSelectionEvent {
     FirebaseAnalytics.instance.logEvent(
       name: 'Go to Study Detail',
       parameters: {
-        'user_id': ref.read(userInfoProvider).requireValue?.uid,
-        'user_name': ref.read(userInfoProvider).requireValue?.nickname,
+        'user_id': ref.read(userInfoProvider).requireValue?.uid ?? '',
+        'user_name': ref.read(userInfoProvider).requireValue?.nickname ?? '',
         'topic': topic.text,
       },
     );

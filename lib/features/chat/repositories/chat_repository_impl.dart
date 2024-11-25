@@ -21,6 +21,7 @@ final class ChatRepositoryImpl implements ChatRepository {
     final rooms = await switch (room.type) {
       InterviewType.singleTopic => getChatRooms(room.type, room.topics.single),
       InterviewType.practical => getChatRooms(room.type),
+      InterviewType.resume => throw Exception('타입을 지정해줘야 합니다'),
     }
         .then((value) => value.getOrThrow());
 

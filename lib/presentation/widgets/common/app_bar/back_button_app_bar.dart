@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
+import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/presentation/widgets/common/button/app_back_button.dart';
+import 'package:techtalk/presentation/widgets/common/button/icon_flash_area_button.dart';
 
 class BackButtonAppBar extends StatelessWidget implements PreferredSizeWidget {
   const BackButtonAppBar({
@@ -20,20 +22,30 @@ class BackButtonAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      titleSpacing: 0,
-      backgroundColor: AppColor.of.white,
-      centerTitle: false,
-      automaticallyImplyLeading: false,
-      leadingWidth: 56,
-      actions: actions,
-      title: Text(
-        title ?? '',
-        style: AppTextStyle.headline2,
-      ),
-      toolbarHeight: appbarHeight,
-      leading: AppBackButton(
-        onBackBtnTapped: onBackBtnTapped ?? context.pop,
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(56),
+      child: Stack(
+        alignment: Alignment.centerLeft,
+        children: [
+          AppBar(
+            titleSpacing: 0,
+            backgroundColor: AppColor.of.white,
+            centerTitle: false,
+            automaticallyImplyLeading: false,
+            actions: actions,
+            toolbarHeight: appbarHeight,
+            leading: AppBackButton(
+              onBackBtnTapped: onBackBtnTapped ?? context.pop,
+            ),
+          ),
+          Positioned(
+            left: 48,
+            child: Text(
+              title ?? '',
+              style: AppTextStyle.headline2,
+            ),
+          ),
+        ],
       ),
     );
   }
