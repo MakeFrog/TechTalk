@@ -25,7 +25,7 @@ mixin class HomeEvent {
   ///
   Future<void> testSetAiResumeQuestionUseCase({
     required bool isFile,
-    String? resumeOrPortfolioContent,
+    required String resumeOrPortfolioContent,
   }) async {
     final useCase = SetAiResumeQuestionUseCase();
 
