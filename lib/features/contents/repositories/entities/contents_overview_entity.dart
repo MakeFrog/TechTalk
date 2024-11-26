@@ -1,7 +1,6 @@
 import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_author_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skill_entity.dart';
 
 ///
 /// 컨텐츠의 오버뷰 정보, 리스트 같은 곳에서 보기 위함
@@ -27,11 +26,15 @@ sealed class ContentsOverviewEntity {
   /// 컨텐츠 저자 정보
   final ContentsAuthorEntity author;
 
-  /// 관련 기술 스킬
-  final Set<SkillEntity> relatedSkills;
+  /// 관련 기술 스킬 id
+  final Set<String> relatedSkillIds;
 
   /// 관련 직군
   final Set<JobGroup> relatedJobs;
+
+  final DateTime createdAt;
+
+  final DateTime uploadAt;
 
   ContentsOverviewEntity({
     required this.id,
@@ -39,7 +42,9 @@ sealed class ContentsOverviewEntity {
     required this.contentsTitle,
     required this.author,
     required this.relatedJobs,
-    required this.relatedSkills,
+    required this.relatedSkillIds,
+    required this.createdAt,
+    required this.uploadAt,
     this.qnaNum = 0,
   });
 }
@@ -62,11 +67,17 @@ class YoutubeContentsOverviewEntity implements ContentsOverviewEntity {
   final ContentsAuthorEntity author;
 
   @override
-  final Set<SkillEntity> relatedSkills;
+  final Set<String> relatedSkillIds;
 
   /// 관련 직군
   @override
   final Set<JobGroup> relatedJobs;
+
+  @override
+  final DateTime uploadAt;
+
+  @override
+  final DateTime createdAt;
 
   final Duration videoDuration;
 
@@ -76,8 +87,10 @@ class YoutubeContentsOverviewEntity implements ContentsOverviewEntity {
     required this.contentsTitle,
     required this.author,
     required this.relatedJobs,
-    required this.relatedSkills,
+    required this.relatedSkillIds,
     required this.videoDuration,
+    required this.createdAt,
+    required this.uploadAt,
     this.qnaNum = 0,
   });
 
@@ -87,8 +100,10 @@ class YoutubeContentsOverviewEntity implements ContentsOverviewEntity {
         thumbnailImgUrl: thumbnailImgUrl,
         videoDuration: videoDuration,
         qnaNum: qnaNum,
-        relatedSkills: relatedSkills.map((skill) => skill.toModel()).toList(),
+        relatedSkillIds: relatedSkillIds.toList(),
         relatedJobGroupIds: relatedJobs.map((job) => job.id).toList(),
         author: author.toModel(),
+        uploadAt: uploadAt,
+        createdAt: createdAt,
       );
 }

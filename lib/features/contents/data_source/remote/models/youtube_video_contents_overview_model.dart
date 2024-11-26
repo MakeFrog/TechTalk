@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:techtalk/core/constants/job_group.enum.dart';
+import 'package:techtalk/core/modules/converter/time_stamp_converter.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/contents_author_model.dart';
-import 'package:techtalk/features/contents/data_source/remote/models/skill_model.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_overview_entity.dart';
 
 part 'youtube_video_contents_overview_model.g.dart';
@@ -15,9 +15,11 @@ class YoutubeContentsOverviewModel {
     required this.thumbnailImgUrl,
     required this.videoDuration,
     required this.qnaNum,
-    required this.relatedSkills,
+    required this.relatedSkillIds,
     required this.relatedJobGroupIds,
     required this.author,
+    required this.uploadAt,
+    required this.createdAt,
   });
 
   final String id;
@@ -30,11 +32,17 @@ class YoutubeContentsOverviewModel {
 
   final int qnaNum;
 
-  final List<SkillModel> relatedSkills;
+  final List<String> relatedSkillIds;
 
   final List<String> relatedJobGroupIds;
 
   final ContentsAuthorModel author;
+
+  @TimeStampConverter()
+  final DateTime createdAt;
+
+  @TimeStampConverter()
+  final DateTime uploadAt;
 
   /// 엔티티로 변환
   YoutubeContentsOverviewEntity toEntity() {
@@ -44,9 +52,11 @@ class YoutubeContentsOverviewModel {
       contentsTitle: contentsTitle,
       qnaNum: qnaNum,
       author: author.toEntity(),
-      relatedSkills: relatedSkills.map((skill) => skill.toEntity()).toSet(),
+      relatedSkillIds: relatedSkillIds.toSet(),
       relatedJobs: relatedJobGroupIds.map(JobGroup.getById).toSet(),
       videoDuration: videoDuration,
+      uploadAt: uploadAt,
+      createdAt: createdAt,
     );
   }
 

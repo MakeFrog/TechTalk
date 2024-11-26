@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:techtalk/core/constants/job_group.enum.dart';
-import 'package:techtalk/features/contents/data_source/remote/models/skill_model.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/summary_model.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_contents_detail_entity.dart';
 import 'package:techtalk/features/contents/repositories/enums/contents_language.enum.dart';
-import 'package:techtalk/features/topic/topic.dart';
 
 part 'youtube_contents_detail_model.g.dart';
 
@@ -15,31 +13,42 @@ class YoutubeContentsDetailModel {
     required this.id,
     required this.title,
     required this.authorId,
-    required this.relatedSkills,
+    required this.relatedSkillIds,
     required this.relatedJobGroupIds,
     required this.contentsLanguageIds,
     required this.summary,
+    required this.createdAt,
+    required this.uploadAt,
     this.uploadUserId,
   });
 
   final String id;
   final String title;
   final String authorId;
-  final List<SkillModel> relatedSkills;
+  final List<String> relatedSkillIds;
   final List<String> relatedJobGroupIds;
   final List<String> contentsLanguageIds;
   final SummaryModel summary;
   final String? uploadUserId;
+
+  @TimeStampConverter()
+  final DateTime uploadAt;
+
+  @TimeStampConverter()
+  final DateTime createdAt;
 
   YoutubeContentsDetailEntity toEntity() {
     return YoutubeContentsDetailEntity(
       id: id,
       title: title,
       authorId: authorId,
-      relatedSkills: relatedSkills.map((skill) => skill.toEntity()).toSet(),
+      relatedSkillIds: relatedSkillIds.toSet(),
       relatedJobs: relatedJobGroupIds.map(JobGroup.getById).toSet(),
       contentsLanguage: contentsLanguageIds.map(ContentsLanguage.getById).toSet(),
+      createdAt: createdAt,
+      uploadAt: uploadAt,
       summary: summary.toEntity(),
+      uploadUserId: uploadUserId,
     );
   }
 

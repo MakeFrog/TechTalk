@@ -3,6 +3,7 @@ import 'package:techtalk/features/contents/data_source/remote/youtube_contents_r
 import 'package:techtalk/features/contents/repositories/youtube_contents_repository.dart';
 import 'package:techtalk/features/contents/usecases/get_youtube_contents_detail_qnas_use_case.dart';
 import 'package:techtalk/features/contents/usecases/get_youtube_contents_detail_use_case.dart';
+import 'package:techtalk/features/contents/usecases/get_youtube_overview_list_use_case.dart';
 import 'package:techtalk/features/contents/usecases/get_youtube_video_data_use_case.dart';
 
 export 'repositories/entities/contents_author_entity.dart';
@@ -20,3 +21,4 @@ final youtubeRemoteDataSource = locator<YoutubeContentsRemoteDataSource>();
 final getYoutubeVideoDataUseCase = locator<GetYoutubeVideoDataUseCase>();
 final getYoutubeContentsDetailUseCase = locator<GetYoutubeContentsDetailUseCase>();
 final getYoutubeContentsDetailQnasUseCase = locator<GetYoutubeContentsDetailQnasUseCase>();
+final getYoutubeOverviewListUseCase = locator<GetYoutubeOverviewListUseCase>();

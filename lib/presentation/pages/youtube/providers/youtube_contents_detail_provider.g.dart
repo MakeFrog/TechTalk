@@ -7,7 +7,7 @@ part of 'youtube_contents_detail_provider.dart';
 // **************************************************************************
 
 String _$youtubeContentsDetailHash() =>
-    r'a084cbbc9be944761c4f573833db7b20590738e4';
+    r'ddf5f60a5e2826ec8bcde605e6697b50be84e2dd';
 
 /// Copied from Dart SDK
 class _SystemHash {

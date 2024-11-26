@@ -12,8 +12,8 @@ YoutubeContentsDetailModel _$YoutubeContentsDetailModelFromJson(
       id: json['id'] as String,
       title: json['title'] as String,
       authorId: json['author_id'] as String,
-      relatedSkills: (json['related_skills'] as List<dynamic>)
-          .map((e) => SkillModel.fromJson(e as Map<String, dynamic>))
+      relatedSkillIds: (json['related_skill_ids'] as List<dynamic>)
+          .map((e) => e as String)
           .toList(),
       relatedJobGroupIds: (json['related_job_group_ids'] as List<dynamic>)
           .map((e) => e as String)
@@ -22,6 +22,10 @@ YoutubeContentsDetailModel _$YoutubeContentsDetailModelFromJson(
           .map((e) => e as String)
           .toList(),
       summary: SummaryModel.fromJson(json['summary'] as Map<String, dynamic>),
+      createdAt:
+          const TimeStampConverter().fromJson(json['created_at'] as Timestamp),
+      uploadAt:
+          const TimeStampConverter().fromJson(json['upload_at'] as Timestamp),
       uploadUserId: json['upload_user_id'] as String?,
     );
 
@@ -31,9 +35,11 @@ Map<String, dynamic> _$YoutubeContentsDetailModelToJson(
       'id': instance.id,
       'title': instance.title,
       'author_id': instance.authorId,
-      'related_skills': instance.relatedSkills.map((e) => e.toJson()).toList(),
+      'related_skill_ids': instance.relatedSkillIds,
       'related_job_group_ids': instance.relatedJobGroupIds,
       'contents_language_ids': instance.contentsLanguageIds,
       'summary': instance.summary.toJson(),
       'upload_user_id': instance.uploadUserId,
+      'upload_at': const TimeStampConverter().toJson(instance.uploadAt),
+      'created_at': const TimeStampConverter().toJson(instance.createdAt),
     };

@@ -133,9 +133,9 @@ class YoutubeContentsDetailPage extends BasePage with YoutubeContentsDetailEvent
                     ),
                     Wrap(
                       spacing: 8.0,
-                      children: overview.relatedSkills
+                      children: overview.relatedSkillIds
                           .map(
-                            (skill) => Chip(label: Text(skill.name)),
+                            (skill) => Chip(label: Text(skill)),
                           )
                           .toList(),
                     ),

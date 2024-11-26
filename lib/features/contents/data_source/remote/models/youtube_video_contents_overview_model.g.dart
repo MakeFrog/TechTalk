@@ -15,14 +15,18 @@ YoutubeContentsOverviewModel _$YoutubeContentsOverviewModelFromJson(
       videoDuration:
           Duration(microseconds: (json['video_duration'] as num).toInt()),
       qnaNum: (json['qna_num'] as num).toInt(),
-      relatedSkills: (json['related_skills'] as List<dynamic>)
-          .map((e) => SkillModel.fromJson(e as Map<String, dynamic>))
+      relatedSkillIds: (json['related_skill_ids'] as List<dynamic>)
+          .map((e) => e as String)
           .toList(),
       relatedJobGroupIds: (json['related_job_group_ids'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
       author:
           ContentsAuthorModel.fromJson(json['author'] as Map<String, dynamic>),
+      uploadAt:
+          const TimeStampConverter().fromJson(json['upload_at'] as Timestamp),
+      createdAt:
+          const TimeStampConverter().fromJson(json['created_at'] as Timestamp),
     );
 
 Map<String, dynamic> _$YoutubeContentsOverviewModelToJson(
@@ -33,7 +37,9 @@ Map<String, dynamic> _$YoutubeContentsOverviewModelToJson(
       'contents_title': instance.contentsTitle,
       'video_duration': instance.videoDuration.inMicroseconds,
       'qna_num': instance.qnaNum,
-      'related_skills': instance.relatedSkills.map((e) => e.toJson()).toList(),
+      'related_skill_ids': instance.relatedSkillIds,
       'related_job_group_ids': instance.relatedJobGroupIds,
       'author': instance.author.toJson(),
+      'created_at': const TimeStampConverter().toJson(instance.createdAt),
+      'upload_at': const TimeStampConverter().toJson(instance.uploadAt),
     };

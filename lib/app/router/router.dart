@@ -5,8 +5,6 @@ import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_overview_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
-import 'package:techtalk/presentation/pages/youtube/youtube_contents_detail_page.dart';
-import 'package:techtalk/presentation/pages/youtube/youtube_contents_main_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_route_arg.dart';
@@ -22,6 +20,8 @@ import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
 import 'package:techtalk/presentation/pages/study/learning/learning_detail_page.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_detail_page.dart';
+import 'package:techtalk/presentation/pages/youtube/youtube_contents_detail_page.dart';
+import 'package:techtalk/presentation/pages/youtube/youtube_contents_main_list_page.dart';
 
 part 'router.g.dart';
 
@@ -156,9 +156,9 @@ class SignUpRoute extends GoRouteData {
       path: StudyRoute.path,
       name: StudyRoute.name,
     ),
-    TypedGoRoute<ContentsMainRoute>(
-      path: ContentsMainRoute.path,
-      name: ContentsMainRoute.name,
+    TypedGoRoute<YoutubeContentsMainListRoute>(
+      path: YoutubeContentsMainListRoute.path,
+      name: YoutubeContentsMainListRoute.name,
     ),
     TypedGoRoute<ContentsDetailRoute>(
       path: ContentsDetailRoute.path,
@@ -221,15 +221,15 @@ class StudyRoute extends GoRouteData {
   }
 }
 
-class ContentsMainRoute extends GoRouteData {
-  ContentsMainRoute();
+class YoutubeContentsMainListRoute extends GoRouteData {
+  YoutubeContentsMainListRoute();
 
-  static const String path = 'contents';
-  static const String name = 'contents';
+  static const String path = 'contents-main-list';
+  static const String name = 'contents-main-list';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const ContentsMainPage();
+    return const YoutubeContentsMainListPage();
   }
 }
 
