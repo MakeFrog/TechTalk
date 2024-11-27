@@ -4,7 +4,7 @@ import 'package:techtalk/features/chat/repositories/entities/follow_up_qna_entit
 import 'package:techtalk/features/topic/topic.dart';
 
 class ChatQnaEntity {
-  final QnaEntity qna; // 문답
+  final CommonQnaEntity qna; // 문답
   final AnswerChatEntity? message; // 유저 응답
   final FollowUpQnaEntity? followUpQna; // 꼬리 질문 응답
 
@@ -16,10 +16,11 @@ class ChatQnaEntity {
     this.followUpQna,
   });
 
-  factory ChatQnaEntity.fromQnaEntity(QnaEntity entity) => ChatQnaEntity(qna: entity);
+  factory ChatQnaEntity.fromQnaEntity(CommonQnaEntity entity) =>
+      ChatQnaEntity(qna: entity);
 
   ChatQnaEntity copyWith({
-    QnaEntity? qna,
+    CommonQnaEntity? qna,
     AnswerChatEntity? message,
     FollowUpQnaEntity? followUpQna,
   }) {

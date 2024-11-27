@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:techtalk/core/modules/converter/time_stamp_converter.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/topic/repositories/entities/qna_entity.dart';
+import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.dart';
 import 'package:techtalk/features/topic/repositories/entities/wrong_answer_entity.dart';
 
 part 'wrong_answer_model.g.dart';
@@ -29,7 +29,7 @@ class WrongAnswerModel {
         wrongAnswerCount: 1,
       );
 
-  WrongAnswerEntity toEntity(QnaEntity qnaEntity) => WrongAnswerEntity(
+  WrongAnswerEntity toEntity(CommonQnaEntity qnaEntity) => WrongAnswerEntity(
       qna: qnaEntity,
       updatedAt: updatedAt,
       userAnswer: userAnswer,

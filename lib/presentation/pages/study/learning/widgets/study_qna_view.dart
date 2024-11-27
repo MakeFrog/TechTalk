@@ -7,7 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/features/topic/repositories/entities/qna_entity.dart';
+import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.dart';
 import 'package:techtalk/presentation/pages/study/learning/learning_detail_event.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/learning_detail_state.dart';
@@ -38,7 +38,7 @@ class _StudyQna extends HookWidget {
     required this.question,
   });
 
-  final QnaEntity question;
+  final CommonQnaEntity question;
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +60,9 @@ class _StudyQna extends HookWidget {
   Widget _buildQuestion() {
     return Padding(
       padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-      ) + const EdgeInsets.only(right: 24),
+            horizontal: 16,
+          ) +
+          const EdgeInsets.only(right: 24),
       child: Text(
         question.question,
         style: AppTextStyle.headline3,
@@ -83,7 +84,7 @@ class _StudyQna extends HookWidget {
           padding: const EdgeInsets.all(16),
           physics: const NeverScrollableScrollPhysics(),
           itemCount: question.answers.length,
-          separatorBuilder: (_, __) =>const ListViewDivider(),
+          separatorBuilder: (_, __) => const ListViewDivider(),
           itemBuilder: (context, index) {
             final answer = answers[index];
             return Consumer(
