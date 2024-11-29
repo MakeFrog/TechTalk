@@ -36,7 +36,7 @@ class GetRandomQnasUseCase
         /// 실전 면접
         InterviewType.practical => () async {
             final shuffledTopics = room.topics.toList()..shuffle();
-            final List<QnaEntity> resolvedQnas = [];
+            final List<CommonQnaEntity> resolvedQnas = [];
             final topicCount = shuffledTopics.length;
             final qnaCount = room.progressInfo.totalQuestionCount;
             final qnaCountPerTopic = qnaCount ~/ topicCount;

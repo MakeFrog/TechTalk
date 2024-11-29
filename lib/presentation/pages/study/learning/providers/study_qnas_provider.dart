@@ -6,7 +6,7 @@ part 'study_qnas_provider.g.dart';
 @riverpod
 class StudyQnas extends _$StudyQnas {
   @override
-  FutureOr<List<QnaEntity>> build(String topicId) async {
+  FutureOr<List<CommonQnaEntity>> build(String topicId) async {
     return (await getTopicQnasUseCase(topicId)).getOrThrow();
   }
 }

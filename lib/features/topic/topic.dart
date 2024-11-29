@@ -17,7 +17,7 @@ export 'data_source/remote/models/wrong_answer_model.dart';
 export 'data_source/remote/topic_remote_data_source.dart';
 export 'data_source/remote/topic_remote_data_source_impl.dart';
 export 'data_source/remote/topics_ref.dart';
-export 'repositories/entities/qna_entity.dart';
+export 'repositories/entities/common_qna_entity.dart';
 export 'repositories/entities/topic_category_entity.dart';
 export 'repositories/entities/topic_entity.dart';
 export 'repositories/entities/wrong_answer_entity.dart';
