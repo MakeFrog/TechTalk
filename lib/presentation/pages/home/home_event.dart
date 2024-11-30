@@ -31,7 +31,6 @@ mixin class HomeEvent {
 
     // 입력 파라미터 생성
     final param = (
-      isFile: isFile,
       resumeOrPortfolioContent: resumeOrPortfolioContent,
     );
 
