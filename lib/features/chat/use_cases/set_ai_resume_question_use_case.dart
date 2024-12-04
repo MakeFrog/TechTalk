@@ -8,7 +8,7 @@ import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.d
 
 import 'package:techtalk/features/chat/repositories/enums/resume_question_type.enum.dart';
 
-class SetAiResumeQuestionUseCase
+class CreateResumeQuestionUseCase
     extends BaseUseCase<GetResumeParam, Result<List<ResumeQnaEntity>>> {
   @override
   Future<Result<List<ResumeQnaEntity>>> call(GetResumeParam request) async {
@@ -16,68 +16,77 @@ class SetAiResumeQuestionUseCase
       // GPT 응답 대기
       final response = await OpenAI.instance.onChatCompletion(
         request: ChatCompleteText(
-          messages: createResumeChatMessage(request),
-          maxToken: 800,
+          messages: _createResumeChatMessage(request),
+          maxToken: 1000,
           temperature: 0.5,
           user: FirebaseAuth.instance.currentUser!.uid,
           model: Gpt4OChatModel(),
         ),
       );
 
-      // 응답의 토큰 정보 출력
-      if (response != null) {
-        final totalTokens = response.usage?.totalTokens ?? 0;
-        final promptTokens = response.usage?.promptTokens ?? 0;
-        final completionTokens = response.usage?.completionTokens ?? 0;
-
-        debugPrint('===== 토큰 사용량 =====');
-        debugPrint('총 토큰 수: $totalTokens');
-        debugPrint('프롬프트 토큰 수: $promptTokens');
-        debugPrint('완성 토큰 수: $completionTokens');
-      } else {
-        debugPrint('GPT 응답이 없습니다.');
+      // 응답과 메시지에 대한 예외처리
+      if (response == null) {
+        throw Exception('GPT 응답이 없습니다.');
+      }
+      if (response.choices.isEmpty ||
+          response.choices[0].message == null ||
+          response.choices[0].message!.content.isEmpty) {
+        throw Exception('GPT 응답 메시지가 없습니다.');
       }
 
-      // JSON 파싱 및 결과 매핑
-      final parsedResponse = jsonDecode(response!.choices[0].message!.content);
-      final List<ResumeQnaEntity> qnaList = (parsedResponse as List)
-          .map(
-            (json) => ResumeQnaEntity(
-              id: json['id'] ?? '',
-              question: json['question'],
-              questionType: json['type'] == 'hardSkill'
-                  ? ResumeQuestionType.hardSkill
-                  : ResumeQuestionType.softSkill,
-              evaluationPoint: json['evaluationPoint'] ?? '',
-            ),
-          )
-          .toList();
+      // 예외 처리 조건을 거친 응답
+      final rawContent = response.choices[0].message!.content;
 
-      debugPrint(
-        const JsonEncoder.withIndent('').convert(
-          qnaList.map((qna) {
-            return {
-              "id": qna.id,
-              "question": qna.question,
-              "type": qna.questionType == ResumeQuestionType.hardSkill
-                  ? "hardSkill"
-                  : "softSkill",
-              "evaluationPoint": qna.evaluationPoint,
-            };
-          }).toList(),
-        ),
-      );
+      try {
+        // JSON 파싱 및 결과 매핑
+        final parsedResponse = jsonDecode(rawContent);
+        final List<ResumeQnaEntity> qnaList = (parsedResponse as List)
+            .map(
+              (json) => ResumeQnaEntity(
+                id: json['id'] ?? '',
+                question: json['question'],
+                questionType: json['type'] == 'hardSkill'
+                    ? ResumeQuestionType.hardSkill
+                    : ResumeQuestionType.softSkill,
+                evaluationPoint: json['evaluationPoint'] ?? '',
+              ),
+            )
+            .toList();
 
-      // 성공적으로 결과 반환
-      return Result.success(qnaList);
+        // 디버깅용 프롬프트 출력
+        debugPrint(
+          const JsonEncoder.withIndent('').convert(
+            qnaList.map((qna) {
+              return {
+                "id": qna.id,
+                "question": qna.question,
+                "type": qna.questionType == ResumeQuestionType.hardSkill
+                    ? "hardSkill"
+                    : "softSkill",
+                "evaluationPoint": qna.evaluationPoint,
+              };
+            }).toList(),
+          ),
+        );
+
+        return Result.success(qnaList);
+      }
+
+      // 실패 예외처리
+      on FormatException catch (e) {
+        debugPrint('JSON 포맷 오류: $e');
+
+        return Result.failure(
+          Exception('응답을 처리할 수 없습니다. 다시 시도해주세요.'),
+        );
+      }
     } catch (error) {
-      // 에러 발생 시 Exception으로 변환하여 Result.failure로 반환
       return Result.failure(Exception(error.toString()));
     }
   }
 
   /// GPT 프롬프트 메시지 생성
-  List<Map<String, dynamic>> createResumeChatMessage(GetResumeParam request) {
+  List<Map<String, dynamic>> _createResumeChatMessage(GetResumeParam request) {
     final String promptContent = '''
   당신은 개발자를 채용하는 회사의 채용 전문가입니다. 아래는 회사에 지원한 지원자의 이력서와 포트폴리오 내용입니다.
 
@@ -114,7 +123,6 @@ class SetAiResumeQuestionUseCase
 
     return [
       {"role": "system", "content": promptContent},
-      {"role": "user", "content": "위 내용을 바탕으로 질문을 작성해주세요."},
     ];
   }
 }

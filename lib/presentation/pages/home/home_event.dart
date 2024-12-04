@@ -21,7 +21,7 @@ part 'internal_home_event.p.dart';
 
 mixin class HomeEvent {
   ///
-  /// [SetAiResumeQuestionUseCase]를 호출하여 결과를 출력하는 테스트 메서드
+  /// [CreateResumeQuestionUseCase]를 호출하여 결과를 출력하는 테스트 메서드
   /// 테스트를 위한 임시 코드
   ///
   Future<void> testSetAiResumeQuestionUseCase() async {
@@ -132,7 +132,7 @@ Firestore, Authentication, Storage.
 Postman, GitHub, Figma, Jira, Slack.
 ''';
 
-    final useCase = SetAiResumeQuestionUseCase();
+    final useCase = CreateResumeQuestionUseCase();
 
     // 입력 파라미터 생성
     const param =
