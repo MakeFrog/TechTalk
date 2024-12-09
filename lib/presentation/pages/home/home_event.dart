@@ -23,6 +23,20 @@ mixin class HomeEvent {
   /// 실전 면접 기록 여부에 따라 라우팅을 다르게 진행
   ///
   Future<void> onPracticalCardTapped(WidgetRef ref) async {
+    /// TODO : XIMYA
+    /// 임시 코드
+
+    final room = ChatRoomEntity.random(
+      type: InterviewType.resume,
+      topics: [],
+      questionCount: 8,
+    );
+
+    final route = ChatPageRoute(roomId: room.id, type: room.type);
+    route.updateArg(room: room);
+    route.push(ref.context);
+    return;
+
     await EasyLoading.show();
 
     final hasNotPracticalInterviewRecord =

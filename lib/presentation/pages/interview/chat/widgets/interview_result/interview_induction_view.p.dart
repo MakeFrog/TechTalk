@@ -27,73 +27,73 @@ class _InterviewInductionView extends HookConsumerWidget
       child: Column(
         children: <Widget>[
           /// LEADING
-          InterviewType.branch(
-            targetType: room(ref).type,
-            singleTopic: (_) => RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: tr(LocaleKeys.interview_suggestSimilarTopicsLeading),
-                  ),
-                  TextSpan(
-                    text: relatedTopic.text,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w700,
+          room(ref).type.branch(
+                singleTopic: (_) => RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: tr(
+                            LocaleKeys.interview_suggestSimilarTopicsLeading),
+                      ),
+                      TextSpan(
+                        text: relatedTopic.text,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      TextSpan(
+                        text: tr(LocaleKeys.interview_suggestSimilarTopicsEnd),
+                      ),
+                    ],
+                    style: AppTextStyle.body1.copyWith(
+                      color: AppColor.of.gray6,
                     ),
                   ),
-                  TextSpan(
-                    text: tr(LocaleKeys.interview_suggestSimilarTopicsEnd),
-                  ),
-                ],
-                style: AppTextStyle.body1.copyWith(
-                  color: AppColor.of.gray6,
+                  textAlign: TextAlign.center,
+                ),
+                practical: (_) => Column(
+                  children: <Widget>[
+                    Text(
+                      tr(LocaleKeys.interview_tryRecap),
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyle.headline2,
+                    ),
+                    const Gap(8),
+                    Text(
+                      tr(LocaleKeys.interview_retryInterview),
+                      style: AppTextStyle.body3.copyWith(
+                        color: AppColor.of.gray4,
+                      ),
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+                resume: (_) => Column(
+                  children: <Widget>[
+                    Text(
+                      '이력서를 점검하고\n다시 도전해 보세요',
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyle.headline2,
+                    ),
+                    const Gap(8),
+                    Text(
+                      '완성도를 높이면 더 구체적이고\n심층적인 질문을 받을 수 있어요',
+                      style: AppTextStyle.body3.copyWith(
+                        color: AppColor.of.gray4,
+                      ),
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
                 ),
               ),
-              textAlign: TextAlign.center,
-            ),
-            practical: (_) => Column(
-              children: <Widget>[
-                Text(
-                  tr(LocaleKeys.interview_tryRecap),
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyle.headline2,
-                ),
-                const Gap(8),
-                Text(
-                  tr(LocaleKeys.interview_retryInterview),
-                  style: AppTextStyle.body3.copyWith(
-                    color: AppColor.of.gray4,
-                  ),
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-            resume: (_) => Column(
-              children: <Widget>[
-                Text(
-                  '이력서를 점검하고\n다시 도전해 보세요',
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyle.headline2,
-                ),
-                const Gap(8),
-                Text(
-                  '완성도를 높이면 더 구체적이고\n심층적인 질문을 받을 수 있어요',
-                  style: AppTextStyle.body3.copyWith(
-                    color: AppColor.of.gray4,
-                  ),
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
           const Gap(16),
 
           /// ILLUSTRATION
@@ -157,12 +157,12 @@ class _InterviewInductionView extends HookConsumerWidget
                       }
                     },
                     child: Text(
-                      InterviewType.branch(
-                        targetType: room(ref).type,
-                        singleTopic: (_) => tr(LocaleKeys.home_takeInterview),
-                        practical: (_) => tr(LocaleKeys.interview_tryAgain),
-                        resume: (_) => tr(LocaleKeys.interview_tryAgain),
-                      ),
+                      room(ref).type.branch(
+                            singleTopic: (_) =>
+                                tr(LocaleKeys.home_takeInterview),
+                            practical: (_) => tr(LocaleKeys.interview_tryAgain),
+                            resume: (_) => tr(LocaleKeys.interview_tryAgain),
+                          ),
                     ),
                   ),
                 ),

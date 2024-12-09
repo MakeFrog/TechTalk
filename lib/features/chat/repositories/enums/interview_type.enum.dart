@@ -13,21 +13,20 @@ enum InterviewType {
 
   final String illusrationPath;
 
-  static R branch<R>({
-    required InterviewType targetType,
+  R branch<R>({
     required R Function(InterviewType type) singleTopic,
     required R Function(InterviewType type) practical,
     required R Function(InterviewType type) resume,
   }) {
-    switch (targetType) {
+    switch (this) {
       case InterviewType.singleTopic:
-        return singleTopic(targetType);
+        return singleTopic(this);
       case InterviewType.practical:
-        return practical(targetType);
+        return practical(this);
       case InterviewType.resume:
-        return resume(targetType);
+        return resume(this);
       default:
-        throw Exception('잘못된 타입입니다 : $targetType');
+        throw Exception('잘못된 타입입니다 : $this');
     }
   }
 }
