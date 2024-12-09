@@ -9,6 +9,7 @@ import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/feedback_response_entity.dart';
+import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.dart';
 
 class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
     BehaviorSubject<String>> {
@@ -107,6 +108,7 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
   List<Map<String, dynamic>> _createChatMessage(
       GetQuestionFeedbackParam param) {
     // 프롬프트는 추후 전부 한 언어로 통일할 것이므로 따로 localization은 필요하지 않아 보입니다.
+
     return [
       Messages(
         role: Role.system,
@@ -136,7 +138,7 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
       Messages(
         role: Role.system,
         content:
-            '면접 질문에 대한 모범답안은 다음과 같습니다: ${param.qna.qna.answers.map((str) => '-$str').join(' ')}',
+            '면접 질문에 대한 모범답안은 다음과 같습니다: ${(param.qna.qna as CommonQnaEntity).answers.map((str) => '-$str').join(' ')}',
       ).toJson(),
       Messages(
         role: Role.system,

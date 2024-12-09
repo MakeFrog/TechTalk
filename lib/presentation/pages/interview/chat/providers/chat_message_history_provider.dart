@@ -21,6 +21,7 @@ import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:uuid/uuid.dart';
 
 part 'common_type_chat_message_history.dart';
+
 part 'resume_type_chat_message_history_internal_event.p.dart';
 
 part 'chat_message_history_provider.g.dart';
@@ -120,7 +121,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
 
     final rootQna = ref
         .read(chatQnasProvider.notifier)
-        .getQnaById(userAnswer.rootQnaId ?? userAnswer.qnaId);
+        .getCommonQnaById(userAnswer.rootQnaId ?? userAnswer.qnaId);
 
     isFollowUpProcessActive = Completer<bool>();
 
@@ -340,13 +341,13 @@ class ChatMessageHistory extends _$ChatMessageHistory {
     return false;
   }
 
-  CommonQnaEntity getCurrentQna() {
+  CommonQnaEntity getCurrentCommonQna() {
     final targetQuestion = state.requireValue
         .firstWhere((chat) => chat is QuestionChatEntity) as QuestionChatEntity;
 
-    return ref
+    return (ref
         .read(chatQnasProvider.notifier)
-        .getQnaById(targetQuestion.qnaId)
-        .qna;
+        .getCommonQnaById(targetQuestion.qnaId)
+        .qna) as CommonQnaEntity;
   }
 }

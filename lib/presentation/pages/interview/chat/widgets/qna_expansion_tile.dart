@@ -11,6 +11,7 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/enums/follow_up_status.enum.dart';
 import 'package:techtalk/features/chat/repositories/enums/interview_result.dart';
+import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/widgets/common/indicator/response_indicator.dart';
 import 'package:techtalk/presentation/widgets/common/tile/flexible_expansion_tile.dart';
@@ -86,31 +87,40 @@ class QnAExpansionTile extends HookConsumerWidget with ChatState {
             ),
 
             /// 모범 답변
-            _buildAnswerContainer(
-              backgroundColor: AppColor.of.brand5,
-              title: tr(LocaleKeys.qa_modelAnswer),
-              children: List.generate(
-                item.qna.answers.length,
-                (index) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Text(
-                        item.qna.answers[index],
-                        style: AppTextStyle.body3,
+            /// TODO: XIMYA
+            /// 예외처리 필요
+            /// 임시 로직임
+            if (item.qna.type.isCommon)
+              Builder(
+                builder: (context) {
+                  final targetQna = item.qna as CommonQnaEntity;
+                  return _buildAnswerContainer(
+                    backgroundColor: AppColor.of.brand5,
+                    title: tr(LocaleKeys.qa_modelAnswer),
+                    children: List.generate(
+                      targetQna.answers.length,
+                      (index) => Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Text(
+                              targetQna.answers[index],
+                              style: AppTextStyle.body3,
+                            ),
+                          ),
+                          if (index != targetQna.answers.length - 1)
+                            Divider(
+                              thickness: 0.7,
+                              color: AppColor.of.gray1,
+                              height: 24,
+                            ),
+                        ],
                       ),
                     ),
-                    if (index != item.qna.answers.length - 1)
-                      Divider(
-                        thickness: 0.7,
-                        color: AppColor.of.gray1,
-                        height: 24,
-                      ),
-                  ],
-                ),
+                  );
+                },
               ),
-            ),
 
             // TODO : 꼬리질문 기능 구현시 적용할 예정
             if (item.followUpQna?.question != null)
