@@ -20,7 +20,8 @@ import 'package:techtalk/presentation/pages/interview/chat/providers/selected_ch
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:uuid/uuid.dart';
 
-part 'chat_message_history_internal_event.dart';
+part 'common_type_chat_message_history.dart';
+part 'resume_type_chat_message_history_internal_event.p.dart';
 
 part 'chat_message_history_provider.g.dart';
 
@@ -34,31 +35,37 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   @override
   FutureOr<List<BaseChatEntity>> build() async {
     final room = ref.read(selectedChatRoomProvider);
-    final getChatList = switch (room.progressState) {
-      ChatRoomProgress.initial => () async {
-          await _showIntroAndQuestionMessages();
 
-          return <BaseChatEntity>[];
-        },
-      ChatRoomProgress.ongoing || ChatRoomProgress.completed => () async {
-          final response = await getChatMessageHistoryUseCase(room.id);
-          return response.fold(
-            onSuccess: (chatCollection) {
-              ref
-                  .read(chatQnasProvider.notifier)
-                  .arrangeQnasInOrder(chatCollection.progressQnaIds);
-              return chatCollection.chatHistories;
-            },
-            onFailure: (e) {
-              log(e.toString());
+    if (room.type.isResume) {
+      return [];
+    } else {
+      // 단골 질문 (주제별, 실전형)
+      final getChatList = switch (room.progressState) {
+        ChatRoomProgress.initial => () async {
+            await _showIntroAndQuestionMessages();
 
-              throw e;
-            },
-          );
-        },
-    };
+            return <BaseChatEntity>[];
+          },
+        ChatRoomProgress.ongoing || ChatRoomProgress.completed => () async {
+            final response = await getChatMessageHistoryUseCase(room.id);
+            return response.fold(
+              onSuccess: (chatCollection) {
+                ref
+                    .read(chatQnasProvider.notifier)
+                    .arrangeQnasInOrder(chatCollection.progressQnaIds);
+                return chatCollection.chatHistories;
+              },
+              onFailure: (e) {
+                log(e.toString());
 
-    return getChatList();
+                throw e;
+              },
+            );
+          },
+      };
+
+      return getChatList();
+    }
   }
 
   ///

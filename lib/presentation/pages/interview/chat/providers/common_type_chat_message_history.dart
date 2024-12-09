@@ -1,6 +1,9 @@
 part of 'chat_message_history_provider.dart';
 
-extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
+///
+/// 단골질문 관련 provider event
+///
+extension CommonTypeChatMessageHistory on ChatMessageHistory {
   ///
   /// 꼬리질문 생성
   ///
@@ -246,6 +249,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
     _rollbackToPreviousChatStep();
     SnackBarService.showSnackBar(
         tr(LocaleKeys.interview_aiFeedbackErrorOccured));
+
     /// NOTE 임시 주석
     // await _rollbackToPreviousChatStep();
     // final context = rootNavigatorKey.currentContext!;
