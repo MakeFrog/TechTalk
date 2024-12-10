@@ -246,6 +246,7 @@ extension CommonTypeChatMessageHistory on ChatMessageHistory {
   /// AI 응답 과정에서 에러 발생했을 때 실행하는 프로세스
   ///
   void _onAiFeedbackErrorOccured([Object? error, StackTrace? startTrace]) {
+    print('아랑이 : ${error}');
     _rollbackToPreviousChatStep();
     SnackBarService.showSnackBar(
         tr(LocaleKeys.interview_aiFeedbackErrorOccured));
@@ -271,10 +272,10 @@ extension CommonTypeChatMessageHistory on ChatMessageHistory {
     final chatList = state.requireValue;
 
     final targetIndex =
-        chatList.firstIndexWhereOrNull((chat) => chat.type.isQuestionMessage);
+        chatList.indexWhere((chat) => chat.type.isQuestionMessage);
 
     await update((previous) {
-      return [...chatList.sublist(targetIndex!, chatList.length - 1)];
+      return [...chatList.sublist(targetIndex, chatList.length)];
     });
   }
 }
