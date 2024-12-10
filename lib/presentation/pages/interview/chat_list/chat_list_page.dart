@@ -66,12 +66,12 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
         return MaterialButton(
           onPressed: () {
             switch (selectedInterviewType(ref)) {
-              case InterviewType.singleTopic:
+              case InterviewType.commonSingleTopic:
                 routeToQuestionCountSelectPage(
                   ref,
                   topic: selectedTopic(ref)!,
                 );
-              case InterviewType.practical:
+              case InterviewType.commonPracticalTopic:
                 routeToTopicSelectPage(ref);
               case InterviewType.resume:
                 throw Exception('타입을 지정해주어야 합니다');
@@ -97,9 +97,9 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
       BackButtonAppBar(
         title: switch (selectedInterviewType(ref)) {
-          InterviewType.singleTopic => selectedTopic(ref)?.text ??
+          InterviewType.commonSingleTopic => selectedTopic(ref)?.text ??
               ref.read(selectedChatRoomProvider).singleTopic.text,
-          InterviewType.practical =>
+          InterviewType.commonPracticalTopic =>
             tr(LocaleKeys.undefined_realWorldInterview),
           InterviewType.resume => throw Exception('타입을 지정해주어야 합니다'),
         },

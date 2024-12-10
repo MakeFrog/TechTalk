@@ -22,6 +22,8 @@ part 'widgets/chat_page_scaffold.dart';
 
 part 'widgets/chat_page_app_bar.p.dart';
 
+part 'widgets/chat_page_watch_view.p.dart';
+
 class ChatPage extends BasePage with ChatEvent, ChatState {
   const ChatPage({Key? key}) : super(key: key);
 
@@ -33,6 +35,7 @@ class ChatPage extends BasePage with ChatEvent, ChatState {
       chatTabView: const InterviewTabView(),
       summaryTabView: const QnaTabView(),
       tabController: tabController,
+      watchView: const _WatchView(),
     );
   }
 

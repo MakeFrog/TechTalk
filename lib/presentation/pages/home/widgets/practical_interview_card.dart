@@ -42,7 +42,7 @@ class PracticalInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
                   onTap: () {
                     routeToTopicSelectPage(
                       context,
-                      type: InterviewType.practical,
+                      type: InterviewType.commonPracticalTopic,
                     );
                   },
                   child: SvgPicture.asset(Assets.iconsRoundBlueCircle),

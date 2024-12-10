@@ -45,16 +45,18 @@ mixin class HomeEvent {
     if (hasNotPracticalInterviewRecord) {
       final chatRooms = await ref.read(practicalChatRoomListProvider.future);
       if (chatRooms.isEmpty) {
-        routeToTopicSelectPage(ref.context, type: InterviewType.practical);
+        routeToTopicSelectPage(ref.context,
+            type: InterviewType.commonPracticalTopic);
       } else {
         routeToChatListPage(ref.context,
-            type: InterviewType.practical, rooms: chatRooms);
+            type: InterviewType.commonPracticalTopic, rooms: chatRooms);
         unawaited(ref
             .read(userInfoProvider.notifier)
             .storeUserPracticalRecordExistInfo());
       }
     } else {
-      routeToChatListPage(ref.context, type: InterviewType.practical);
+      routeToChatListPage(ref.context,
+          type: InterviewType.commonPracticalTopic);
     }
 
     unawaited(EasyLoading.dismiss());

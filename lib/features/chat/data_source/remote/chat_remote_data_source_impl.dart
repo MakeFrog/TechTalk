@@ -24,13 +24,14 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
     TopicEntity? topic,
   ]) async {
     final snapshot = switch (type) {
-      InterviewType.singleTopic => await FirestoreChatRoomRef.collection()
+      InterviewType.commonSingleTopic => await FirestoreChatRoomRef.collection()
           .where(FirestoreChatRoomRef.typeField, isEqualTo: type.name)
           .where(FirestoreChatRoomRef.topicIdsField, arrayContains: topic!.id)
           .get(),
-      InterviewType.practical => await FirestoreChatRoomRef.collection()
-          .where(FirestoreChatRoomRef.typeField, isEqualTo: type.name)
-          .get(),
+      InterviewType.commonPracticalTopic =>
+        await FirestoreChatRoomRef.collection()
+            .where(FirestoreChatRoomRef.typeField, isEqualTo: type.name)
+            .get(),
       InterviewType.resume => await FirestoreChatRoomRef.collection()
           .where(FirestoreChatRoomRef.typeField, isEqualTo: type.name)
           .get(),

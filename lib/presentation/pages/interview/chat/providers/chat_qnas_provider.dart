@@ -21,19 +21,26 @@ class ChatQnas extends _$ChatQnas {
   FutureOr<List<ChatQnaEntity>> build() async {
     final room = ref.read(selectedChatRoomProvider);
 
-    if (room.progressState.isInitial) {
-      final response = await getRandomQnaUseCase.call(room);
-      return response.fold(
-        onSuccess: (randomQnas) => randomQnas,
-        onFailure: (e) => _onError(e),
-      );
-    } else {
-      final response = await getChatQnasUseCase.call(room);
-      return response.fold(
-        onSuccess: (qnas) => qnas,
-        onFailure: (e) => _onError(e),
-      );
-    }
+    return room.type.typedBranch(
+      resume: (_) {
+        return [];
+      },
+      common: (_) async {
+        if (room.progressState.isInitial) {
+          final response = await getRandomQnaUseCase.call(room);
+          return response.fold(
+            onSuccess: (randomQnas) => randomQnas,
+            onFailure: (e) => _onError(e),
+          );
+        } else {
+          final response = await getChatQnasUseCase.call(room);
+          return response.fold(
+            onSuccess: (qnas) => qnas,
+            onFailure: (e) => _onError(e),
+          );
+        }
+      },
+    );
   }
 
   ///

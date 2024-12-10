@@ -80,10 +80,10 @@ class ChatRoomEntity {
 
   factory ChatRoomEntity.fromModel(ChatRoomModel roomModel) {
     final topics = switch (roomModel.type) {
-      InterviewType.singleTopic => [
+      InterviewType.commonSingleTopic => [
           StoredTopics.getById(roomModel.topicIds.first)
         ],
-      InterviewType.practical =>
+      InterviewType.commonPracticalTopic =>
         roomModel.topicIds.map(StoredTopics.getById).toList(),
       InterviewType.resume => throw Exception('타입을 지정해주어야 합니다'),
     };

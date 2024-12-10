@@ -22,7 +22,7 @@ class GetRandomQnasUseCase
     try {
       final returnedQnas = switch (room.type) {
         /// 주제별 면접
-        InterviewType.singleTopic => () async {
+        InterviewType.commonSingleTopic => () async {
             final qnas = await _topicRepository
                 .getTopicQnas(room.singleTopic.id)
                 .then((value) => value.getOrThrow());
@@ -34,7 +34,7 @@ class GetRandomQnasUseCase
           },
 
         /// 실전 면접
-        InterviewType.practical => () async {
+        InterviewType.commonPracticalTopic => () async {
             final shuffledTopics = room.topics.toList()..shuffle();
             final List<CommonQnaEntity> resolvedQnas = [];
             final topicCount = shuffledTopics.length;
