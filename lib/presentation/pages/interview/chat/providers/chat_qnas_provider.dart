@@ -23,7 +23,7 @@ class ChatQnas extends _$ChatQnas {
 
     return room.type.typedBranch(
       resume: (_) {
-        return [];
+        return room.qnas.map((e) => ChatQnaEntity(qna: e)).toList()..shuffle();
       },
       common: (_) async {
         if (room.progressState.isInitial) {

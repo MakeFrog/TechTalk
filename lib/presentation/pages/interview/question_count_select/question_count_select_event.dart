@@ -24,7 +24,7 @@ mixin class QuestionCountSelectEvent {
     final questionCount = ref.read(selectedQuestionCountProvider) +
         SelectedQuestionCount.defaultPlusCount;
 
-    final room = ChatRoomEntity.random(
+    final room = ChatRoomEntity.generateCommonInterview(
       type: type,
       topics: topics,
       questionCount: questionCount,

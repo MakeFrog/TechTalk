@@ -2,7 +2,7 @@ import 'package:techtalk/features/chat/repositories/entities/base_qna_entity.dar
 import 'package:techtalk/features/chat/repositories/enums/qna_type.enum.dart';
 import 'package:techtalk/features/chat/repositories/enums/resume_question_type.enum.dart';
 
-const List<ResumeQnaEntity> _temp = [
+final List<ResumeQnaEntity> tempResumeQnaList = [
   // 하드스킬 질문 1
   ResumeQnaEntity(
     id: '1',
@@ -90,7 +90,7 @@ class ResumeQnaEntity extends BaseQnaEntity {
   /// 하드스킬, 소프스킬 질문 타입
   final ResumeQuestionType questionType;
 
-  const ResumeQnaEntity({
+  ResumeQnaEntity({
     required super.id,
     required super.question,
     required this.questionType,

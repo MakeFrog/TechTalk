@@ -38,6 +38,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
     final room = ref.read(selectedChatRoomProvider);
 
     if (room.type.isResume) {
+      await _showResumeTypeIntroMessages();
       return [];
     } else {
       // 단골 질문 (주제별, 실전형)
@@ -129,6 +130,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
       (
         chatHistory: chatHistory,
         qna: rootQna,
+        interviewType: room.type,
         userName: ref.read(userInfoProvider).requireValue!.nickname!,
         onError: _onAiFeedbackErrorOccured,
         checkAnswer: ({required AnswerState answerState}) async {
@@ -299,24 +301,6 @@ class ChatMessageHistory extends _$ChatMessageHistory {
         rootQnaId: rootQna.qna.id,
       ),
     );
-
-    // await response.fold(
-    //   onSuccess: (feedbackStreamedChat) async {
-    //     /// 3) 유저 답변에 대한 피드백 채팅 전달
-    //     await showMessage(
-    //       message: FeedbackChatEntity(
-    //         message: feedbackStreamedChat,
-    //         qnaId: rootQna.qna.id,
-    //         rootQnaId:  rootQna.qna.id,
-    //       ),
-    //     );
-    //   },
-    //   onFailure: (e) {
-    //     _rollbackToPreviousChatStep();
-    //     SnackBarService.showSnackBar(
-    //         '정답 여부를 판별하는 과정에서 오류가 발생했습니다. 잠시후 다시 시도해주세요.');
-    //   },
-    // );
   }
 
   ///

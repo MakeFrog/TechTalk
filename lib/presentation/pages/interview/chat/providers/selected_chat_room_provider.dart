@@ -22,7 +22,6 @@ class SelectedChatRoom extends _$SelectedChatRoom {
     final updatedRoom = state.copyWith(
       lastChatDate: lastChat.timestamp,
       lastChatMessage: lastChat.message.value,
-      chatProgressState: ChatRoomProgress.ongoing,
     );
 
     state = updatedRoom;

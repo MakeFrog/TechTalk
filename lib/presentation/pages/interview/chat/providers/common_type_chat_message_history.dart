@@ -246,7 +246,7 @@ extension CommonTypeChatMessageHistory on ChatMessageHistory {
   /// AI 응답 과정에서 에러 발생했을 때 실행하는 프로세스
   ///
   void _onAiFeedbackErrorOccured([Object? error, StackTrace? startTrace]) {
-    print('아랑이 : ${error}');
+    print('이그놀드 : ${error}');
     _rollbackToPreviousChatStep();
     SnackBarService.showSnackBar(
         tr(LocaleKeys.interview_aiFeedbackErrorOccured));

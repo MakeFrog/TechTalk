@@ -7,7 +7,7 @@ import 'package:techtalk/features/chat/repositories/enums/qna_type.enum.dart';
 class CommonQnaEntity extends BaseQnaEntity {
   final List<String> answers; // 모범 답변 리스트
 
-  const CommonQnaEntity({
+  CommonQnaEntity({
     required super.id,
     required super.question,
     required this.answers,
