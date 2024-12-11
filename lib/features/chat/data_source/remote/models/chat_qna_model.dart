@@ -12,6 +12,8 @@ class ChatQnaModel {
     this.messageId,
     this.state,
     this.followUpQnas,
+    this.question,
+    this.evaluationPoint,
   });
 
   final String id;
@@ -19,15 +21,21 @@ class ChatQnaModel {
   final String? state;
   final List<FollowUpQnaModel>? followUpQnas;
 
+  /// 1.1.0 (이력서 면접)
+  final String? question;
+  final String? evaluationPoint;
+
   String get topicId => id.split('-').first;
 
-  factory ChatQnaModel.fromEntity(ChatQnaEntity entity) {
-    return ChatQnaModel(
-      id: entity.qna.id,
-      messageId: entity.message?.id,
-      state: entity.message?.answerState.tag,
-    );
-  }
+  // factory ChatQnaModel.fromEntity(ChatQnaEntity entity) {
+  //   return ChatQnaModel(
+  //     id: entity.qna.id,
+  //     messageId: entity.message?.id,
+  //     state: entity.message?.answerState.tag,
+  //     question: entity.question,
+  //     evaluationPoint: entity.evaluationPoint,
+  //   );
+  // }
 
   factory ChatQnaModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,

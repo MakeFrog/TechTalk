@@ -6,6 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/follow_up_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answers_provider.dart';
@@ -23,7 +24,10 @@ class ChatQnas extends _$ChatQnas {
 
     return room.type.typedBranch(
       resume: (_) {
-        return room.qnas.map((e) => ChatQnaEntity(qna: e)).toList()..shuffle();
+        return room.qnas
+            .map((e) => ChatQnaEntity.fromResumeQnaEntity(e as ResumeQnaEntity))
+            .toList()
+          ..shuffle();
       },
       common: (_) async {
         if (room.progressState.isInitial) {
@@ -47,6 +51,8 @@ class ChatQnas extends _$ChatQnas {
   /// qna 상태 업데이트
   ///
   Future<void> updateState(AnswerChatEntity message) async {
+    final room = ref.read(selectedChatRoomProvider);
+
     final qnas = state.requireValue;
     final targetQnaIndex =
         qnas.indexWhere((e) => e.qna.id == message.rootQnaId);
@@ -69,7 +75,7 @@ class ChatQnas extends _$ChatQnas {
               previous.removeAt(targetQnaIndex);
               return [...previous, resolvedQna];
             }),
-            _updateWrongAnswer(resolvedQna),
+            if (room.type.isCommonQuestionType) _updateWrongAnswer(resolvedQna),
           ],
         ),
       );

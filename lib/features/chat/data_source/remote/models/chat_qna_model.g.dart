@@ -13,6 +13,8 @@ ChatQnaModel _$ChatQnaModelFromJson(Map<String, dynamic> json) => ChatQnaModel(
       followUpQnas: (json['follow_up_qnas'] as List<dynamic>?)
           ?.map((e) => FollowUpQnaModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      question: json['question'] as String?,
+      evaluationPoint: json['evaluation_point'] as String?,
     );
 
 Map<String, dynamic> _$ChatQnaModelToJson(ChatQnaModel instance) =>
@@ -21,4 +23,6 @@ Map<String, dynamic> _$ChatQnaModelToJson(ChatQnaModel instance) =>
       'message_id': instance.messageId,
       'state': instance.state,
       'follow_up_qnas': instance.followUpQnas?.map((e) => e.toJson()).toList(),
+      'question': instance.question,
+      'evaluation_point': instance.evaluationPoint,
     };

@@ -177,8 +177,8 @@ extension $InterviewTopicSelectRouteExtension on InterviewTopicSelectRoute {
 }
 
 const _$InterviewTypeEnumMap = {
-  InterviewType.commonSingleTopic: 'single-topic',
-  InterviewType.commonPracticalTopic: 'practical',
+  InterviewType.commonSingleTopic: 'common-single-topic',
+  InterviewType.commonPracticalTopic: 'common-practical-topic',
   InterviewType.resume: 'resume',
 };
 

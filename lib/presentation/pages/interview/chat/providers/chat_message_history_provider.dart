@@ -37,37 +37,38 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   FutureOr<List<BaseChatEntity>> build() async {
     final room = ref.read(selectedChatRoomProvider);
 
-    if (room.type.isResume) {
-      await _showResumeTypeIntroMessages();
-      return [];
-    } else {
-      // 단골 질문 (주제별, 실전형)
-      final getChatList = switch (room.progressState) {
-        ChatRoomProgress.initial => () async {
-            await _showIntroAndQuestionMessages();
+    // 단골 질문 (주제별, 실전형)
+    final getChatList = switch (room.progressState) {
+      ChatRoomProgress.initial => () async {
+          await room.type.typedBranch(
+            common: (_) async {
+              await _showIntroAndQuestionMessages();
+            },
+            resume: (_) async {
+              await _showResumeTypeIntroMessages();
+            },
+          );
 
-            return <BaseChatEntity>[];
-          },
-        ChatRoomProgress.ongoing || ChatRoomProgress.completed => () async {
-            final response = await getChatMessageHistoryUseCase(room.id);
-            return response.fold(
-              onSuccess: (chatCollection) {
-                ref
-                    .read(chatQnasProvider.notifier)
-                    .arrangeQnasInOrder(chatCollection.progressQnaIds);
-                return chatCollection.chatHistories;
-              },
-              onFailure: (e) {
-                log(e.toString());
+          return <BaseChatEntity>[];
+        },
+      ChatRoomProgress.ongoing || ChatRoomProgress.completed => () async {
+          final response = await getChatMessageHistoryUseCase(room.id);
+          return response.fold(
+            onSuccess: (chatCollection) {
+              ref
+                  .read(chatQnasProvider.notifier)
+                  .arrangeQnasInOrder(chatCollection.progressQnaIds);
+              return chatCollection.chatHistories;
+            },
+            onFailure: (e) {
+              log(e.toString());
 
-                throw e;
-              },
-            );
-          },
-      };
-
-      return getChatList();
-    }
+              throw e;
+            },
+          );
+        },
+    };
+    return getChatList();
   }
 
   ///

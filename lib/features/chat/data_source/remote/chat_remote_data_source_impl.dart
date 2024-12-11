@@ -176,6 +176,8 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
           qnaDoc,
           ChatQnaModel(
             id: qnaDoc.id,
+            question: chatQna.question,
+            evaluationPoint: chatQna.evaluationPoint,
           ),
         );
       }
