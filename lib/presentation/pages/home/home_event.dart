@@ -9,6 +9,7 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/enums/resume_question_type.enum.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/practical_chat_room_list_provider.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
 import 'package:techtalk/presentation/providers/system/notification_status_provider.dart';
@@ -24,18 +25,6 @@ mixin class HomeEvent {
   /// 실전 면접 기록 여부에 따라 라우팅을 다르게 진행
   ///
   Future<void> onPracticalCardTapped(WidgetRef ref) async {
-    /// TODO : XIMYA
-    /// 임시 코드
-
-    final room = ChatRoomEntity.generateResumeInterview(
-      qnas: tempResumeQnaList,
-    );
-
-    final route = ChatPageRoute(roomId: room.id, type: room.type);
-    route.updateArg(room: room);
-    route.push(ref.context);
-    return;
-
     await EasyLoading.show();
 
     final hasNotPracticalInterviewRecord =
@@ -90,4 +79,26 @@ mixin class HomeEvent {
     ref.invalidate(userTopicsProvider);
     SplashRoute().go(ref.context);
   }
+
+  ///
+  ///
+  ///
+  void routeToResumeChatList(WidgetRef ref) {
+    /// TODO : XIMYA
+    /// 임시 코드
+
+    final room = ChatRoomEntity.generateResumeInterview(
+      qnas: tempResumeQnaList,
+    );
+
+    final route = ChatPageRoute(roomId: room.id, type: room.type);
+    route.updateArg(room: room);
+    route.go(ref.context);
+    return;
+  }
+
+  ///
+  /// 이력서 채팅 면접 페이지로 이동
+  ///
+  void routeToResumeInterviewChat(WidgetRef ref) {}
 }

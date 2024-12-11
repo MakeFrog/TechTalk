@@ -109,7 +109,7 @@ class ChatRoomEntity {
         ],
       InterviewType.commonPracticalTopic =>
         roomModel.topicIds.map(StoredTopics.getById).toList(),
-      InterviewType.resume => throw Exception('타입을 지정해주어야 합니다'),
+      InterviewType.resume => <TopicEntity>[],
     };
 
     return ChatRoomEntity(

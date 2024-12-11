@@ -74,7 +74,7 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
               case InterviewType.commonPracticalTopic:
                 routeToTopicSelectPage(ref);
               case InterviewType.resume:
-                throw Exception('타입을 지정해주어야 합니다');
+                throw Exception('타입을 지정해주어야 합니다1');
             }
           },
           height: 56,
@@ -101,7 +101,7 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
               ref.read(selectedChatRoomProvider).singleTopic.text,
           InterviewType.commonPracticalTopic =>
             tr(LocaleKeys.undefined_realWorldInterview),
-          InterviewType.resume => throw Exception('타입을 지정해주어야 합니다'),
+          InterviewType.resume => '',
         },
       );
 

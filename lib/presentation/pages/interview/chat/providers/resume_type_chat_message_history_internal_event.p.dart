@@ -49,14 +49,14 @@ extension ResumeTypeChatMessageHistoryInternalEvent on ChatMessageHistory {
               showMessage(
                 message: firstQuestionChat.overwriteToStream(),
                 onDone: () {
-                  ref
-                      .read(userInfoProvider.notifier)
-                      .updateTopicRecordsOnCondition(room.topics);
-                  if (room.type.isPractical) {
-                    ref
-                        .read(userInfoProvider.notifier)
-                        .storeUserPracticalRecordExistInfo();
-                  }
+                  // ref
+                  //     .read(userInfoProvider.notifier)
+                  //     .updateTopicRecordsOnCondition(room.topics);
+                  // if (room.type.isPractical) {
+                  //   ref
+                  //       .read(userInfoProvider.notifier)
+                  //       .storeUserPracticalRecordExistInfo();
+                  // }
                 },
               );
             },

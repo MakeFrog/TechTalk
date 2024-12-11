@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/follow_up_qna_entity.dart';
@@ -22,7 +24,8 @@ final class ChatRepositoryImpl implements ChatRepository {
       InterviewType.commonSingleTopic =>
         getChatRooms(room.type, room.topics.single),
       InterviewType.commonPracticalTopic => getChatRooms(room.type),
-      InterviewType.resume => throw Exception('타입을 지정해줘야 합니다'),
+      InterviewType.resume => getChatRooms(room.type),
+      // InterviewType.resume => throw Exception('타입을 지정해줘야 합니다'),
     }
         .then((value) => value.getOrThrow());
 
@@ -65,6 +68,7 @@ final class ChatRepositoryImpl implements ChatRepository {
 
       return Result.success(rooms);
     } on Exception catch (e) {
+      log('채팅방 목록 호출 실패 : ${e}');
       return Result.failure(const ChatRoomsFetchedFailedException());
     }
   }

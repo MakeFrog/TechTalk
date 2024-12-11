@@ -59,6 +59,9 @@ class SelectedChatRoom extends _$SelectedChatRoom {
     );
 
     state = updatedRoom;
-    ref.read(interviewRoomsProvider.notifier).synchronizeRooms(updatedRoom);
+
+    if (ref.exists(interviewRoomsProvider)) {
+      ref.read(interviewRoomsProvider.notifier).synchronizeRooms(updatedRoom);
+    }
   }
 }

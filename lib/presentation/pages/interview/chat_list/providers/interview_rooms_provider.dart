@@ -14,28 +14,44 @@ class InterviewRooms extends _$InterviewRooms {
   FutureOr<List<ChatRoomEntity>> build() async {
     final passedArg = ref.read(chatListRouteArgProvider);
 
-    final type = passedArg.interviewType;
-    final topic = passedArg.topic;
-    final passedChatRooms = passedArg.chatRooms;
+    return passedArg.interviewType.typedBranch(
+      common: (_) async {
+        final type = passedArg.interviewType;
+        final topic = passedArg.topic;
+        final passedChatRooms = passedArg.chatRooms;
 
-    if (passedArg.interviewType.isPractical) {
-      if (passedChatRooms != null && passedChatRooms.isNotEmpty) {
-        return passedChatRooms;
-      } else {
-        return ref.watch(practicalChatRoomListProvider.future);
-      }
-    } else {
-      final response = await getChatRoomsUseCase(
-          type, topic ?? ref.read(selectedChatRoomProvider).singleTopic);
+        if (passedArg.interviewType.isPractical) {
+          if (passedChatRooms != null && passedChatRooms.isNotEmpty) {
+            return passedChatRooms;
+          } else {
+            return ref.watch(practicalChatRoomListProvider.future);
+          }
+        } else {
+          final response = await getChatRoomsUseCase(
+              type, topic ?? ref.read(selectedChatRoomProvider).singleTopic);
 
-      return response.fold(
-        onSuccess: (chatList) => chatList,
-        onFailure: (e) {
-          log(e.toString());
-          throw e;
-        },
-      );
-    }
+          return response.fold(
+            onSuccess: (chatList) => chatList,
+            onFailure: (e) {
+              log(e.toString());
+              throw e;
+            },
+          );
+        }
+      },
+      resume: (_) async {
+        final response =
+            await getChatRoomsUseCase(passedArg.interviewType, null);
+
+        return response.fold(
+          onSuccess: (chatList) => chatList,
+          onFailure: (e) {
+            log(e.toString());
+            throw e;
+          },
+        );
+      },
+    );
   }
 
   void synchronizeRooms(ChatRoomEntity currentRoom) {
