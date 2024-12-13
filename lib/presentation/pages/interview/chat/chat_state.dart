@@ -144,9 +144,13 @@ mixin class ChatState {
   ///
   /// 현재 선택된 주제와 관련된 주제 (여러개 중 하나를 랜덤으로 추출)
   ///
-  TopicEntity randomRelatedTopicName(WidgetRef ref) {
-    final relatedTopics =
-        ref.read(selectedChatRoomProvider).topics.first.relatedSkillIds;
+  TopicEntity? randomRelatedTopicName(WidgetRef ref) {
+    final room = ref.read(selectedChatRoomProvider);
+
+    //// 단골 면접 질문 타입이 아닌 경우 리턴
+    if (!room.type.isCommonQuestionType) return null;
+
+    final relatedTopics = room.topics.first.relatedSkillIds;
 
     final math.Random random = math.Random();
     final int randomIndex = random.nextInt(relatedTopics.length);

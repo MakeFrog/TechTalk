@@ -37,6 +37,7 @@ class ChatQnaEntity {
       evaluationPoint: resumeField.evaluationPoint,
       id: model.id,
     );
+
     return ChatQnaEntity(
       qna: targetQna,
       message: answerChatEntity,

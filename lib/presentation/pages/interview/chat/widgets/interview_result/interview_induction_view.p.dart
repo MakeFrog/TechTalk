@@ -7,6 +7,7 @@ class _InterviewInductionView extends HookConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
+
     final relatedTopic = useMemoized(() => randomRelatedTopicName(ref));
 
     return Container(
@@ -36,7 +37,7 @@ class _InterviewInductionView extends HookConsumerWidget
                             LocaleKeys.interview_suggestSimilarTopicsLeading),
                       ),
                       TextSpan(
-                        text: relatedTopic.text,
+                        text: relatedTopic?.text ?? '',
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
                         ),
@@ -149,12 +150,22 @@ class _InterviewInductionView extends HookConsumerWidget
                       ),
                     ),
                     onPressed: () {
-                      if (room(ref).type.isSingleTopic) {
-                        startRelatedNewTopicInterview(ref,
-                            targetTopic: relatedTopic);
-                      } else {
-                        retryThisInterview(ref);
-                      }
+                      room(ref).type.branch(
+                        singleTopic: (_) {
+                          startRelatedNewTopicInterview(
+                            ref,
+                            targetTopic: relatedTopic!,
+                          );
+                        },
+                        practical: (_) {
+                          retryThisInterview(ref);
+                        },
+                        resume: (_) {
+                          /// TODO : XIMYA
+                          /// 테스트 필요
+                          retryThisInterview(ref);
+                        },
+                      );
                     },
                     child: Text(
                       room(ref).type.branch(
