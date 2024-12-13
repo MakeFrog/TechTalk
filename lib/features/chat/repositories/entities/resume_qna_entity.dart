@@ -26,36 +26,36 @@ final List<ResumeQnaEntity> tempResumeQnaList = [
     questionType: ResumeQuestionType.hardSkill,
     evaluationPoint: '상태 관리와 아키텍처 설계에 대한 이해, 실무 적용 능력, 협업 및 코드 유지보수성',
   ),
-  // 하드스킬 질문 4
-  ResumeQnaEntity(
-    id: 'resume-4',
-    question:
-        'Flutter와 네이티브 코드를 통합하여 로그인 기능을 구현할 때 어떤 접근을 사용했으며, 이를 통해 얻은 결과는 무엇인가요?',
-    questionType: ResumeQuestionType.hardSkill,
-    evaluationPoint:
-        'Flutter와 네이티브 코드 통합 기술, Firebase Auth 활용 능력, 테스트 코드 작성 및 검증 경험',
-  ),
-  // 하드스킬 질문 5
-  ResumeQnaEntity(
-    id: 'resume-5',
-    question: 'go_router를 활용한 Nested Navigation을 구현하며 겪은 기술적 도전과 해결 방법은 무엇인가요?',
-    questionType: ResumeQuestionType.hardSkill,
-    evaluationPoint: '복잡한 네비게이션 구현 능력, 코드 구조 개선 및 문제 해결 능력',
-  ),
-  // 소프트스킬 질문 1
-  ResumeQnaEntity(
-    id: 'resume-6',
-    question: '협업 과정에서 겪은 가장 어려운 상황과 이를 해결하기 위해 사용한 방법은 무엇인가요?',
-    questionType: ResumeQuestionType.softSkill,
-    evaluationPoint: '팀워크 및 커뮤니케이션 능력, 갈등 해결 및 문제 극복 역량',
-  ),
-  // 소프트스킬 질문 2
-  ResumeQnaEntity(
-    id: 'resume-7',
-    question: '"기획 변경에도 유연하게 대처할 수 있는 코드를 작성했다"고 했는데, 이를 위해 어떤 노력을 기울였나요?',
-    questionType: ResumeQuestionType.softSkill,
-    evaluationPoint: '변화에 적응할 수 있는 유연성, 코드 품질과 설계 역량',
-  ),
+  // // 하드스킬 질문 4
+  // ResumeQnaEntity(
+  //   id: 'resume-4',
+  //   question:
+  //       'Flutter와 네이티브 코드를 통합하여 로그인 기능을 구현할 때 어떤 접근을 사용했으며, 이를 통해 얻은 결과는 무엇인가요?',
+  //   questionType: ResumeQuestionType.hardSkill,
+  //   evaluationPoint:
+  //       'Flutter와 네이티브 코드 통합 기술, Firebase Auth 활용 능력, 테스트 코드 작성 및 검증 경험',
+  // ),
+  // // 하드스킬 질문 5
+  // ResumeQnaEntity(
+  //   id: 'resume-5',
+  //   question: 'go_router를 활용한 Nested Navigation을 구현하며 겪은 기술적 도전과 해결 방법은 무엇인가요?',
+  //   questionType: ResumeQuestionType.hardSkill,
+  //   evaluationPoint: '복잡한 네비게이션 구현 능력, 코드 구조 개선 및 문제 해결 능력',
+  // ),
+  // // 소프트스킬 질문 1
+  // ResumeQnaEntity(
+  //   id: 'resume-6',
+  //   question: '협업 과정에서 겪은 가장 어려운 상황과 이를 해결하기 위해 사용한 방법은 무엇인가요?',
+  //   questionType: ResumeQuestionType.softSkill,
+  //   evaluationPoint: '팀워크 및 커뮤니케이션 능력, 갈등 해결 및 문제 극복 역량',
+  // ),
+  // // 소프트스킬 질문 2
+  // ResumeQnaEntity(
+  //   id: 'resume-7',
+  //   question: '"기획 변경에도 유연하게 대처할 수 있는 코드를 작성했다"고 했는데, 이를 위해 어떤 노력을 기울였나요?',
+  //   questionType: ResumeQuestionType.softSkill,
+  //   evaluationPoint: '변화에 적응할 수 있는 유연성, 코드 품질과 설계 역량',
+  // ),
   // 소프트스킬 질문 3
   ResumeQnaEntity(
     id: 'resume-8',

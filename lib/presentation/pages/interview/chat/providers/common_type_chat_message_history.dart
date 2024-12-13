@@ -29,6 +29,7 @@ extension CommonTypeChatMessageHistory on ChatMessageHistory {
     QuestionChatEntity? followUpQuestionChat;
 
     final response = SetAiFollowUpQuestionUseCase().call((
+      interviewType: ref.read(selectedChatRoomProvider).type,
       chatHistory: chatHistory,
       onFollowUpQuestionCompleted: ({required String followUpQuestion}) async {
         followUpQuestionChat = QuestionChatEntity.createStatic(
