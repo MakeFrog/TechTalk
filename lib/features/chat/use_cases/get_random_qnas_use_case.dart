@@ -30,7 +30,9 @@ class GetRandomQnasUseCase
             final filteredQnas = qnas.extractFromFirstAndShuffle(
                 room.progressInfo.totalQuestionCount);
 
-            return filteredQnas.map(ChatQnaEntity.fromCommonQnaEntity).toList();
+            return filteredQnas
+                .map(ChatQnaEntity.fromQnaEntityAtInitial)
+                .toList();
           },
 
         /// 실전 면접
@@ -60,7 +62,7 @@ class GetRandomQnasUseCase
             resolvedQnas.shuffle();
 
             final chatQns =
-                resolvedQnas.map(ChatQnaEntity.fromCommonQnaEntity).toList();
+                resolvedQnas.map(ChatQnaEntity.fromQnaEntityAtInitial).toList();
 
             return chatQns;
           },

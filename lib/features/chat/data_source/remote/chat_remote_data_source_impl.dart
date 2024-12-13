@@ -3,6 +3,8 @@ import 'package:techtalk/app/di/modules/system_di.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data_source/remote/models/follow_up_qna_model.dart';
+import 'package:techtalk/features/chat/data_source/remote/models/resume_field_model.dart';
+import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
@@ -172,12 +174,18 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
     await FirebaseFirestore.instance.runTransaction((transaction) async {
       for (final chatQna in chatQnas) {
         final qnaDoc = FirestoreChatQnaRef.doc(roomModel.id, chatQna.qna.id);
+        final qna = chatQna.qna;
         transaction.set(
           qnaDoc,
           ChatQnaModel(
             id: qnaDoc.id,
-            question: chatQna.question,
-            evaluationPoint: chatQna.evaluationPoint,
+            resumeField: qna.type.isResume
+                ? ResumeFieldModel(
+                    question: qna.question,
+                    evaluationPoint: (qna as ResumeQnaEntity).evaluationPoint,
+                    questionType: qna.questionType,
+                  )
+                : null,
           ),
         );
       }

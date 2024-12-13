@@ -121,7 +121,51 @@ final class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<Result<List<ChatQnaEntity>>> getChatQnas(ChatRoomEntity room) async {
+  Future<Result<List<ChatQnaEntity>>> getResumeChatQnas(
+      ChatRoomEntity room) async {
+    try {
+      final fetchedQnas = await _remoteDataSource.getChatQnas(room.id);
+
+      final List<ChatQnaEntity> result = [];
+
+      await Future.forEach(
+        fetchedQnas,
+        (element) async {
+          // 응답 id가 있으면 응답 데이터 조회
+          final AnswerChatEntity? answer;
+
+          if (element.messageId != null) {
+            final message = await _remoteDataSource.getChat(
+              room.id,
+              element.messageId!,
+            );
+
+            answer = message.toEntity() as AnswerChatEntity;
+          } else {
+            answer = null;
+          }
+
+          result.add(
+            ChatQnaEntity.fromModelToResumeEntity(
+              model: element,
+              answerChatEntity: answer,
+              followUpQnaEntity: element.followUpQnas?.first != null
+                  ? FollowUpQnaEntity.fromModel(element.followUpQnas!.first)
+                  : null,
+            ),
+          );
+        },
+      );
+
+      return Result.success(result);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<List<ChatQnaEntity>>> getCommonChatQnas(
+      ChatRoomEntity room) async {
     final roomQnAs = await _remoteDataSource.getChatQnas(room.id);
 
     final qnas = <ChatQnaEntity>[];

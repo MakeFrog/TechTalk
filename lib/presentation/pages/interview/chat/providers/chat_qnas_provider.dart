@@ -23,11 +23,20 @@ class ChatQnas extends _$ChatQnas {
     final room = ref.read(selectedChatRoomProvider);
 
     return room.type.typedBranch(
-      resume: (_) {
-        return room.qnas
-            .map((e) => ChatQnaEntity.fromResumeQnaEntity(e as ResumeQnaEntity))
-            .toList()
-          ..shuffle();
+      resume: (_) async {
+        if (room.progressState.isInitial) {
+          return room.qnas
+              .map((e) => ChatQnaEntity.fromResumeQnaEntityAtInitial(
+                  e as ResumeQnaEntity))
+              .toList()
+            ..shuffle();
+        } else {
+          final response = await getChatQnasUseCase.call(room);
+          return response.fold(
+            onSuccess: (qnas) => qnas,
+            onFailure: (e) => _onError(e),
+          );
+        }
       },
       common: (_) async {
         if (room.progressState.isInitial) {
