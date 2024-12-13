@@ -64,7 +64,7 @@ class QnaTabView extends HookConsumerWidget with ChatState {
                 color: AppColor.of.gray2,
               ),
               itemBuilder: (context, index) {
-                return QnAExpansionTile(qnaList[index]);
+                return QnaExpansionTile(qnaList[index]);
               },
             );
           },

@@ -56,6 +56,11 @@ mixin class ChatState {
   ChatRoomEntity room(WidgetRef ref) => ref.watch(selectedChatRoomProvider);
 
   ///
+  /// 채팅방 (Read)
+  ///
+  ChatRoomEntity readRoom(WidgetRef ref) => ref.read(selectedChatRoomProvider);
+
+  ///
   /// 인터뷰 진행 상태
   ///
   InterviewProgress interviewProgressState(WidgetRef ref) =>
