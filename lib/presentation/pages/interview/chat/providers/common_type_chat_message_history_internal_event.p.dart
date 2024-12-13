@@ -1,19 +1,38 @@
 part of 'chat_message_history_provider.dart';
 
 ///
-/// 이력서(+포트폴리오) 면접
-/// [ChatMessageHistory] 내부 event + notifier 메소드
+/// 단골질문 > 내부 메소드
 ///
-extension ResumeTypeChatMessageHistoryInternalEvent on ChatMessageHistory {
+extension CommonTypeChatMessageHistoryInternalEvent on ChatMessageHistory {
   ///
   /// 초기 인트로 메시지와
   /// 처음으로 질문을 제시
   ///
-  Future<void> _showResumeTypeIntroMessages() async {
+  Future<void> _showIntroAndCommonQuestionMessages() async {
+    final room = ref.read(selectedChatRoomProvider);
+
     final nickname = ref.watch(userInfoProvider).requireValue!.nickname!;
     final firstQna = _getNewQna()!;
-    final String introMessage =
-        '안녕하세요 $nickname님 제출해주신 이력서, 포트폴리오 기반으로 면접 질문을 전달해 드릴게요';
+    final String introMessage;
+
+    if (room.type.isSingleTopic) {
+      introMessage = rootNavigatorKey.currentContext!.tr(
+        LocaleKeys.undefined_greetingMessageSingleTopic,
+        namedArgs: {
+          'nickname': nickname,
+          'topic': room.topics.first.text,
+        },
+      );
+    } else {
+      introMessage = rootNavigatorKey.currentContext!.tr(
+        LocaleKeys.undefined_greetingMessageMultipleTopics,
+        namedArgs: {
+          'nickname': nickname,
+          'firstTopic':
+              StoredTopics.getById(firstQna.qna.id.getFirstPartOfSpliited).text,
+        },
+      );
+    }
 
     final introChat = GuideChatEntity.createStatic(
       message: introMessage,
@@ -46,6 +65,16 @@ extension ResumeTypeChatMessageHistoryInternalEvent on ChatMessageHistory {
             onDone: () {
               showMessage(
                 message: firstQuestionChat.overwriteToStream(),
+                onDone: () {
+                  ref
+                      .read(userInfoProvider.notifier)
+                      .updateTopicRecordsOnCondition(room.topics);
+                  if (room.type.isPractical) {
+                    ref
+                        .read(userInfoProvider.notifier)
+                        .storeUserPracticalRecordExistInfo();
+                  }
+                },
               );
             },
           ),

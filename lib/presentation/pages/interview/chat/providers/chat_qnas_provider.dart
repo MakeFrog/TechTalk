@@ -26,8 +26,11 @@ class ChatQnas extends _$ChatQnas {
       resume: (_) async {
         if (room.progressState.isInitial) {
           return room.qnas
-              .map((e) => ChatQnaEntity.fromResumeQnaEntityAtInitial(
-                  e as ResumeQnaEntity))
+              .map(
+                (e) => ChatQnaEntity.fromResumeQnaEntityAtInitial(
+                  e as ResumeQnaEntity,
+                ),
+              )
               .toList()
             ..shuffle();
         } else {

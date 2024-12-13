@@ -13,17 +13,15 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/feedback_response_entity.dart';
 import 'package:techtalk/features/chat/use_cases/set_ai_follow_up_question_use_case.dart';
-import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/is_follow_up_process_active_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:uuid/uuid.dart';
 
-part 'common_type_chat_message_history.dart';
-
+part 'chat_message_history_internal_event.p.dart';
 part 'resume_type_chat_message_history_internal_event.p.dart';
-
+part 'common_type_chat_message_history_internal_event.p.dart';
 part 'chat_message_history_provider.g.dart';
 
 @riverpod
@@ -42,7 +40,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
       ChatRoomProgress.initial => () async {
           await room.type.typedBranch(
             common: (_) async {
-              await _showIntroAndQuestionMessages();
+              await _showIntroAndCommonQuestionMessages();
             },
             resume: (_) async {
               await _showResumeTypeIntroMessages();
@@ -324,15 +322,5 @@ class ChatMessageHistory extends _$ChatMessageHistory {
     }
 
     return false;
-  }
-
-  CommonQnaEntity getCurrentCommonQna() {
-    final targetQuestion = state.requireValue
-        .firstWhere((chat) => chat is QuestionChatEntity) as QuestionChatEntity;
-
-    return (ref
-        .read(chatQnasProvider.notifier)
-        .getCommonQnaById(targetQuestion.qnaId)
-        .qna) as CommonQnaEntity;
   }
 }
