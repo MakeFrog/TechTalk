@@ -46,20 +46,13 @@ class Flavor {
 
     FirebaseMessaging.onBackgroundMessage((_) async {});
 
-    OpenAI.instance.build(
-      token: env.openApiKey,
-      baseOption: HttpSetup(
-          receiveTimeout: const Duration(seconds: 10),
-          connectTimeout: const Duration(seconds: 10)),
-      enableLog: true,
-    );
-
     /// 채팅 면접에서 사용되는 OepnAI SK
     OpenAI.instance.build(
       token: env.openApiKey,
       baseOption: HttpSetup(
-          receiveTimeout: const Duration(seconds: 10),
-          connectTimeout: const Duration(seconds: 10)),
+        receiveTimeout: const Duration(seconds: 30),
+        connectTimeout: const Duration(seconds: 10),
+      ),
       enableLog: true,
     );
 
