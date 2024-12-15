@@ -12,7 +12,7 @@ class ResumeInterviewCard extends ConsumerWidget with HomeEvent {
     return InterviewIndicatorCard(
       title: '이력서 면접',
       onCardTapped: () {
-        routeToResumeChatList(ref);
+        onResumeCardTapped(ref);
       },
       onPlusSuffixedBtnTapped: () {
         routeToChatListPage(context, type: InterviewType.resume);

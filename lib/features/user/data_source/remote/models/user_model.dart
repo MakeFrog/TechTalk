@@ -21,6 +21,7 @@ class UserModel {
     this.recordedTopicIds,
     this.completedInterviewCount,
     this.techSkills,
+    this.resumeUrl,
   });
 
   /// 유저 UID
@@ -61,6 +62,9 @@ class UserModel {
   @TimeStampConverter()
   final DateTime lastLoginDate;
 
+  /// 이력서 downloadUrl
+  final String? resumeUrl;
+
   factory UserModel.fromEntity(UserEntity entity) {
     return UserModel(
       uid: entity.uid,
@@ -97,5 +101,6 @@ class UserModel {
         'locale_code': locale,
         'recorded_topic_ids': recordedTopicIds,
         'completed_interview_count': completedInterviewCount,
+        'resume_url': resumeUrl,
       };
 }

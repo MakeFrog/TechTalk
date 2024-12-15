@@ -28,6 +28,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       techSkills: (json['tech_skills'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
+      resumeUrl: json['resume_url'] as String?,
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -44,4 +45,5 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'sign_up_date': const TimeStampConverter().toJson(instance.signUpDate),
       'last_login_date':
           const TimeStampConverter().toJson(instance.lastLoginDate),
+      'resume_url': instance.resumeUrl,
     };

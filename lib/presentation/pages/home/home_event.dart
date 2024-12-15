@@ -3,10 +3,13 @@ import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/enums/resume_question_type.enum.dart';
@@ -78,6 +81,27 @@ mixin class HomeEvent {
     ref.invalidate(mainBottomNavigationProvider);
     ref.invalidate(userTopicsProvider);
     SplashRoute().go(ref.context);
+  }
+
+  ///
+  /// '이력서 면접' 카드가 탭 되었을 때
+  ///
+  Future<void> onResumeCardTapped(WidgetRef ref) async {
+    final userInfo = await ref.read(userInfoProvider.future);
+
+    if (userInfo == null) {
+      /// TODO : XIMYA
+      /// LOCALIZATION
+      SnackBarService.showSnackBar('데이터를 불러오고 있습니다. 잠시만 기다려 주세요');
+      return;
+    }
+
+    /// 등록된 이력서가 있다면
+    if (userInfo.hasLeastOnFetchedDocument) {
+      routeToResumeChatList(ref);
+    } else {
+      ResumeInductionRoute().push(ref.context);
+    }
   }
 
   ///

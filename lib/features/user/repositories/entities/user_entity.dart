@@ -1,6 +1,8 @@
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 
 class UserEntity {
@@ -43,11 +45,23 @@ class UserEntity {
   /// 로그인 횟수
   final int? loginCount;
 
+  /// 이력서 파일
+  final ResumeEntity resume;
+
+  /// 포트폴리오
+  final PortfolioEntity portfolio;
+
+  /// 이력서 + 포트폴리오 중 최소 1개 문서가 저장되었는지 여부
+  bool get hasLeastOnFetchedDocument =>
+      resume.file != null || portfolio.file != null;
+
   const UserEntity({
     required this.uid,
     this.profileImgUrl,
     this.nickname,
     this.email,
+    this.resume = const ResumeEntity(downloadUrl: null, file: null),
+    this.portfolio = const PortfolioEntity(downloadUrl: null, file: null),
     this.loginCount,
     required this.signUpDate,
     required this.completedInterviewCount,
@@ -82,6 +96,14 @@ class UserEntity {
       completedInterviewCount: model.completedInterviewCount ?? 0,
       isReviewRequestAvailable: box.isReviewRequestAvailable,
       signUpDate: model.signUpDate,
+      resume: ResumeEntity(
+        downloadUrl: model.resumeUrl,
+        file: box.resume,
+      ),
+      portfolio: PortfolioEntity(
+        downloadUrl: model.resumeUrl,
+        file: box.resume,
+      ),
     );
   }
 
