@@ -121,6 +121,8 @@ flutter:
     - assets/character/
     - assets/json/
     - assets/translations/
+    - assets/skills/
+
 
   fonts:
     - family: pretendard

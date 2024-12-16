@@ -1,5 +1,6 @@
 import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
+import 'package:techtalk/features/tech_set/usecases/get_searched_skill_sets_use_case.dart';
 
 export 'data_source/local/tech_set_data_source_impl.dart';
 export 'data_source/local/tech_set_local_data_source.dart';
@@ -16,3 +17,4 @@ final techSetLocalDataSource = locator<TechSetLocalDataSource>();
 final techSetRepository = locator<TechSetRepository>();
 final getJobsUseCase = locator<GetJobsUseCase>();
 final getSearchedSkills = locator<GetSearchedSkills>();
+final getSearchedSkillSetUseCase = locator<GetSearchedSkillSetUseCase>();

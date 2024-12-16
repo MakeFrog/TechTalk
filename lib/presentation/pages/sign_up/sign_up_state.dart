@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skill_set_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/provider/selected_job_groups_provider.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/searched_skills_provider.dart';
@@ -39,8 +40,12 @@ mixin class SignUpState {
   ///
   /// 검색된 스킬 리스트
   ///
-  List<SkillEntity> searchedSkills(WidgetRef ref) =>
+  List<SkillSetEntity> searchedSkills(WidgetRef ref) =>
       ref.watch(searchedSkillsProvider);
+
+  /// TODO : XIMYA
+  /// 임시코드
+  // ref.watch(searchedSkillsProvider);
 
   ///
   /// 선택된 스킬 리스트

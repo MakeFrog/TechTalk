@@ -1,0 +1,622 @@
+{
+  "data": [
+    {
+      "name": "Airflow"
+    },
+    {
+      "name": "AWS Athena"
+    },
+    {
+      "name": "AWS Redshift"
+    },
+    {
+      "name": "Clickhouse"
+    },
+    {
+      "name": "Druid"
+    },
+    {
+      "name": "Flink"
+    },
+    {
+      "name": "Fluentd"
+    },
+    {
+      "name": "Google BigQuery"
+    },
+    {
+      "name": "Google Data Studio"
+    },
+    {
+      "name": "Grafana"
+    },
+    {
+      "name": "Hadoop"
+    },
+    {
+      "name": "Hazelcast"
+    },
+    {
+      "name": "HBase"
+    },
+    {
+      "name": "Hive"
+    },
+    {
+      "name": "Impala"
+    },
+    {
+      "name": "Kafka"
+    },
+    {
+      "name": "Keras"
+    },
+    {
+      "name": "Kibana"
+    },
+    {
+      "name": "Kubeflow"
+    },
+    {
+      "name": "Kudu"
+    },
+    {
+      "name": "Looker"
+    },
+    {
+      "name": "Luigi"
+    },
+    {
+      "name": "Metabase"
+    },
+    {
+      "name": "MLflow"
+    },
+    {
+      "name": "NIFI"
+    },
+    {
+      "name": "Presto"
+    },
+    {
+      "name": "Prometheus"
+    },
+    {
+      "name": "Pytorch"
+    },
+    {
+      "name": "Ranger"
+    },
+    {
+      "name": "Ray"
+    },
+    {
+      "name": "Redash"
+    },
+    {
+      "name": "Snowflake"
+    },
+    {
+      "name": "Spark"
+    },
+    {
+      "name": "Superset"
+    },
+    {
+      "name": "Tableau"
+    },
+    {
+      "name": "Tensorflow"
+    },
+    {
+      "name": "Trino"
+    },
+    {
+      "name": "Zeppelin"
+    },
+    {
+      "name": "Zipkin"
+    }
+  ],
+  "mobile": [
+    {
+      "name": "Alamofire"
+    },
+    {
+      "name": "Bazel"
+    },
+    {
+      "name": "Bitrise"
+    },
+    {
+      "name": "Dagger"
+    },
+    {
+      "name": "ExoPlayer"
+    },
+    {
+      "name": "Fastlane"
+    },
+    {
+      "name": "Flutter"
+    },
+    {
+      "name": "Glide"
+    },
+    {
+      "name": "Google Firebase"
+    },
+    {
+      "name": "Google Firestore"
+    },
+    {
+      "name": "Lottie"
+    },
+    {
+      "name": "Moya"
+    },
+    {
+      "name": "React Native"
+    },
+    {
+      "name": "ReactorKit"
+    },
+    {
+      "name": "Realm"
+    },
+    {
+      "name": "Retrofit"
+    },
+    {
+      "name": "RIBs"
+    },
+    {
+      "name": "SnapKit"
+    },
+    {
+      "name": "Tuist"
+    },
+    {
+      "name": "Android"
+    },
+    {
+      "name": "iOS"
+    }
+  ],
+  "frontend": [
+    {
+      "name": "Angular"
+    },
+    {
+      "name": "BackboneJS"
+    },
+    {
+      "name": "Docusaurus"
+    },
+    {
+      "name": "Electron"
+    },
+    {
+      "name": "EmberJS"
+    },
+    {
+      "name": "Emotion"
+    },
+    {
+      "name": "Gatsby"
+    },
+    {
+      "name": "GraphQL"
+    },
+    {
+      "name": "Hugo"
+    },
+    {
+      "name": "Immer"
+    },
+    {
+      "name": "Jotai"
+    },
+    {
+      "name": "Meteor"
+    },
+    {
+      "name": "MobX"
+    },
+    {
+      "name": "NextJS"
+    },
+    {
+      "name": "NuxtJS"
+    },
+    {
+      "name": "OpenGL"
+    },
+    {
+      "name": "ReactiveX"
+    },
+    {
+      "name": "React"
+    },
+    {
+      "name": "React Query"
+    },
+    {
+      "name": "Recoil"
+    },
+    {
+      "name": "Redux"
+    },
+    {
+      "name": "Relay"
+    },
+    {
+      "name": "Storybook"
+    },
+    {
+      "name": "Styled-Components"
+    },
+    {
+      "name": "Svelte"
+    },
+    {
+      "name": "Tailwind"
+    },
+    {
+      "name": "Unity"
+    },
+    {
+      "name": "VueJS"
+    },
+    {
+      "name": "Vuex"
+    },
+    {
+      "name": "Zustand"
+    },
+    {
+      "name": "Web Frontend"
+    }
+  ],
+  "backend": [
+    {
+      "name": "Apollo"
+    },
+    {
+      "name": "Armeria"
+    },
+    {
+      "name": "ASP.NET"
+    },
+    {
+      "name": "AWS Kinesis"
+    },
+    {
+      "name": "AWS SES"
+    },
+    {
+      "name": "AWS SNS"
+    },
+    {
+      "name": "AWS SQS"
+    },
+    {
+      "name": "Celery"
+    },
+    {
+      "name": "CodeIgniter"
+    },
+    {
+      "name": "Django"
+    },
+    {
+      "name": "Dropwizard"
+    },
+    {
+      "name": "Echo"
+    },
+    {
+      "name": "ExpressJS"
+    },
+    {
+      "name": "Falcon"
+    },
+    {
+      "name": "FastAPI"
+    },
+    {
+      "name": "Fastify"
+    },
+    {
+      "name": "Fiber"
+    },
+    {
+      "name": "Flask"
+    },
+    {
+      "name": "Gin"
+    },
+    {
+      "name": "GRPC"
+    },
+    {
+      "name": "Hibernate"
+    },
+    {
+      "name": "Koa"
+    },
+    {
+      "name": "Ktor"
+    },
+    {
+      "name": "Laravel"
+    },
+    {
+      "name": "Liquibase"
+    },
+    {
+      "name": "MyBatis"
+    },
+    {
+      "name": "NestJS"
+    },
+    {
+      "name": "Netty"
+    },
+    {
+      "name": "NodeJS"
+    },
+    {
+      "name": "Phoenix"
+    },
+    {
+      "name": "RabbitMQ"
+    },
+    {
+      "name": "Ruby on Rails"
+    },
+    {
+      "name": "Sanic"
+    },
+    {
+      "name": "Spring"
+    },
+    {
+      "name": "SpringBoot"
+    },
+    {
+      "name": "Swagger"
+    },
+    {
+      "name": "Thrift"
+    },
+    {
+      "name": "WebRTC"
+    }
+  ],
+  "testing": [
+    {
+      "name": "Appium"
+    },
+    {
+      "name": "Cucumber"
+    },
+    {
+      "name": "Cypress"
+    },
+    {
+      "name": "Enzyme"
+    },
+    {
+      "name": "Jasmine"
+    },
+    {
+      "name": "Jest"
+    },
+    {
+      "name": "JUnit"
+    },
+    {
+      "name": "Karma"
+    },
+    {
+      "name": "Kotest"
+    },
+    {
+      "name": "Locust"
+    },
+    {
+      "name": "Mocha"
+    },
+    {
+      "name": "Mockito"
+    },
+    {
+      "name": "nGrinder"
+    },
+    {
+      "name": "Playwright"
+    },
+    {
+      "name": "Puppeteer"
+    },
+    {
+      "name": "Rest-Assured"
+    },
+    {
+      "name": "Selenium"
+    },
+    {
+      "name": "Sinon"
+    },
+    {
+      "name": "Sonarqube"
+    },
+    {
+      "name": "Testing Library"
+    }
+  ],
+  "database": [
+    {
+      "name": "ArangoDB"
+    },
+    {
+      "name": "Arcus"
+    },
+    {
+      "name": "AWS AuroraDB"
+    },
+    {
+      "name": "AWS DocumentDB"
+    },
+    {
+      "name": "AWS DynamoDB"
+    },
+    {
+      "name": "AWS MariaDB"
+    },
+    {
+      "name": "CassandraDB"
+    },
+    {
+      "name": "Ceph"
+    },
+    {
+      "name": "CockroachDB"
+    },
+    {
+      "name": "Couchbase"
+    },
+    {
+      "name": "Cubrid"
+    },
+    {
+      "name": "ElasticSearch"
+    },
+    {
+      "name": "Greenplum"
+    },
+    {
+      "name": "H2"
+    },
+    {
+      "name": "InfluxDB"
+    },
+    {
+      "name": "Memcached"
+    },
+    {
+      "name": "MongoDB"
+    },
+    {
+      "name": "MSSQL"
+    },
+    {
+      "name": "MySQL"
+    },
+    {
+      "name": "Neo4j"
+    },
+    {
+      "name": "OracleDB"
+    },
+    {
+      "name": "PostgreSQL"
+    },
+    {
+      "name": "Redis"
+    },
+    {
+      "name": "RocksDB"
+    },
+    {
+      "name": "Solr"
+    }
+  ],
+  "language": [
+    {
+      "name": "Clojure"
+    },
+    {
+      "name": "C++"
+    },
+    {
+      "name": "C#"
+    },
+    {
+      "name": "Dart"
+    },
+    {
+      "name": "Elixir"
+    },
+    {
+      "name": "Go"
+    },
+    {
+      "name": "Groovy"
+    },
+    {
+      "name": "Java"
+    },
+    {
+      "name": "Javascript"
+    },
+    {
+      "name": "Kotlin"
+    },
+    {
+      "name": "Lua"
+    },
+    {
+      "name": "Objective-C"
+    },
+    {
+      "name": "Perl"
+    },
+    {
+      "name": "PHP"
+    },
+    {
+      "name": "Python"
+    },
+    {
+      "name": "R"
+    },
+    {
+      "name": "ReScript"
+    },
+    {
+      "name": "Ruby"
+    },
+    {
+      "name": "Rust"
+    },
+    {
+      "name": "Scala"
+    },
+    {
+      "name": "Swift"
+    },
+    {
+      "name": "Typescript"
+    }
+  ],
+  "cs": [
+    {
+      "name": "Data Structure"
+    },
+    {
+      "name": "Data Base"
+    },
+    {
+      "name": "Algorithm"
+    },
+    {
+      "name": "Operating System"
+    },
+    {
+      "name": "Computer Network"
+    }
+  ],
+  "design_pattern": []
+}

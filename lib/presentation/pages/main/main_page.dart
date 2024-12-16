@@ -11,6 +11,7 @@ import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/presentation/pages/home/home_page.dart';
 import 'package:techtalk/presentation/pages/main/main_event.dart';
 import 'package:techtalk/presentation/pages/my_info/my_page/my_page.dart';
+import 'package:techtalk/presentation/pages/skill_list_page.dart';
 import 'package:techtalk/presentation/pages/study/topic_selection/study_topic_selection_page.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_note_page.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
@@ -22,7 +23,7 @@ class MainPage extends BasePage with MainEvent {
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
     const _pages = [
-      HomePage(
+      SkillListPage(
         key: ValueKey(MainNavigationTab.home),
       ),
       StudyTopicSelectionPage(
@@ -86,7 +87,8 @@ class MainPage extends BasePage with MainEvent {
   bool get canPop => false;
 
   @override
-  Widget buildBottomNavigationBar(BuildContext context) => const _BottomNavigationBar();
+  Widget buildBottomNavigationBar(BuildContext context) =>
+      const _BottomNavigationBar();
 }
 
 class _BottomNavigationBar extends ConsumerWidget with MainEvent {
@@ -117,7 +119,9 @@ class _BottomNavigationBar extends ConsumerWidget with MainEvent {
             icon: SvgPicture.asset(
               e.iconPath,
               colorFilter: ColorFilter.mode(
-                currentTab.index == index ? AppColor.of.gray5 : AppColor.of.gray2,
+                currentTab.index == index
+                    ? AppColor.of.gray5
+                    : AppColor.of.gray2,
                 BlendMode.srcIn,
               ),
             ),

@@ -3,7 +3,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skill_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skill_set_entity.dart';
 import 'package:techtalk/presentation/pages/sign_up/events/sign_up_event.dart';
+import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 
 class SearchedSkillListView extends ConsumerWidget with SignUpEvent {
   const SearchedSkillListView(
@@ -12,7 +14,7 @@ class SearchedSkillListView extends ConsumerWidget with SignUpEvent {
       required this.onItemTapped,
       super.key});
 
-  final List<SkillEntity> items;
+  final List<SkillSetEntity> items;
   final String searchedTerm;
   final Function(SkillEntity item) onItemTapped;
 
@@ -36,27 +38,40 @@ class SearchedSkillListView extends ConsumerWidget with SignUpEvent {
 
           return ListTile(
             minVerticalPadding: 0,
-            title: Align(
-              alignment: Alignment.centerLeft,
-              child: Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(
-                      text: separatedString.$1,
-                    ),
-                    TextSpan(
-                      text: separatedString.$2,
-                      style: TextStyle(
-                        color: AppColor.of.gray4,
-                      ),
-                    ),
-                  ],
+            title: Row(
+              children: [
+                Image.asset(
+                  'assets/skills/${skill.imagePath}',
+                  height: 30,
+                  width: 30,
+                  errorBuilder: (_, __, ___) {
+                    return EmptyBox();
+                  },
                 ),
-                style: AppTextStyle.body2,
-              ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: separatedString.$1,
+                        ),
+                        TextSpan(
+                          text: separatedString.$2,
+                          style: TextStyle(
+                            color: AppColor.of.gray4,
+                          ),
+                        ),
+                      ],
+                    ),
+                    style: AppTextStyle.body2,
+                  ),
+                ),
+              ],
             ),
             onTap: () {
-              onItemTapped(skill);
+              // onItemTapped(skill);
+              /// TODO : XIMYA
             },
           );
         },

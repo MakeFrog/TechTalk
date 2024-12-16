@@ -81,4 +81,13 @@ extension StringExtensions on String {
   bool get isNotEntirelyEmpty {
     return isNotEmpty && this != '';
   }
+
+  ///
+  /// 스킬이름
+  /// 1.lowercase
+  /// 2.'-' to ''
+  /// 3.'.' to ''
+  /// ==> id
+  String get skillNameToId =>
+      toLowerCase().replaceAll(' ', '').replaceAll('-', '').replaceAll('.', '');
 }
