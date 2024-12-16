@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skill_set_entity.dart';
+import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'dart:convert';
 
@@ -14,14 +15,7 @@ class SkillListPage extends BasePage {
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
     final targetList = useMemoized(() async {
-      final jsonString = await rootBundle.loadString(Assets.jsonStack);
-
-      // json.decode 결과를 적절히 캐스팅
-      final List<dynamic> parsedJson = json.decode(jsonString);
-      final jsonData = parsedJson
-          .whereType<Map<String, dynamic>>() // Map<String, dynamic>만 필터링
-          .toList();
-      return jsonData.map(SkillSetEntity.fromJson).toList();
+      return techSetRepository.getSkills();
     });
 
     return FutureBuilder(

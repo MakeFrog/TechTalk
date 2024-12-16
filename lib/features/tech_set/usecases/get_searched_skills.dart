@@ -1,15 +1,16 @@
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skill_set_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 class GetSearchedSkills
-    extends BaseNoFutureUseCase<String, Result<List<SkillEntity>>> {
+    extends BaseNoFutureUseCase<String, Result<List<SkillSetEntity>>> {
   GetSearchedSkills(this.repository);
 
   final TechSetRepository repository;
   SkillCollectionEntity? _cachedSearchedTerm;
 
   @override
-  Result<List<SkillEntity>> call(String searchedTerm) {
+  Result<List<SkillSetEntity>> call(String searchedTerm) {
     final firstLetter = searchedTerm[0].toLowerCase();
 
     if (_cachedSearchedTerm != null &&
@@ -35,8 +36,8 @@ class GetSearchedSkills
   /// 검색어를 기반으로 연속된 문자열을
   /// 가지고 있는 리스트를 반환
   ///
-  List<SkillEntity> _filterSkillsByTerm(
-      {required List<SkillEntity> skills, required String searchedTerm}) {
+  List<SkillSetEntity> _filterSkillsByTerm(
+      {required List<SkillSetEntity> skills, required String searchedTerm}) {
     final filteredTerm = searchedTerm.toLowerCase();
     final result = skills.where((e) {
       String filteredName = e.name.toLowerCase();

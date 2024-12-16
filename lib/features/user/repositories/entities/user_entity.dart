@@ -1,4 +1,5 @@
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skill_set_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/user/user.dart';
@@ -20,7 +21,7 @@ class UserEntity {
   final List<JobGroup> jobGroups;
 
   /// 유저의 관심 테크 스킬 ID 목록
-  final List<SkillEntity> skills;
+  final List<SkillSetEntity> skills;
 
   /// 면접을 진행한 면접 주제
   final List<TopicEntity> recordedTopics;
@@ -61,7 +62,7 @@ class UserEntity {
 
   factory UserEntity.fromModel(
     UserModel model, {
-    required List<SkillEntity> skills,
+    required List<SkillSetEntity> skills,
     required UserBox box,
   }) {
     return UserEntity(
@@ -91,7 +92,7 @@ class UserEntity {
     String? nickname,
     String? email,
     List<JobGroup>? jobGroups,
-    List<SkillEntity>? skills,
+    List<SkillSetEntity>? skills,
     List<TopicEntity>? recordedTopics,
     bool? hasPracticalInterviewRecord,
     int? completedInterviewCount,

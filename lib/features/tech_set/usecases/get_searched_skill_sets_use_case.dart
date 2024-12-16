@@ -26,7 +26,9 @@ final class GetSearchedSkillSetUseCase {
       final result = jsonData
           .where((item) =>
               item['name'].toString().toLowerCase().contains(lowerCaseQuery))
-          .map(SkillSetEntity.fromJson)
+
+          /// TODO : XIMYA
+          .map((e) => SkillSetEntity.fromJson(json: e, category: ''))
           .toList();
 
       return Result.success(result);

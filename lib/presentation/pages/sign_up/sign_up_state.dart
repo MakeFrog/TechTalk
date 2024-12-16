@@ -50,7 +50,7 @@ mixin class SignUpState {
   ///
   /// 선택된 스킬 리스트
   ///
-  List<SkillEntity> selectedSkills(WidgetRef ref) =>
+  List<SkillSetEntity> selectedSkills(WidgetRef ref) =>
       ref.watch(selectedSkillsProvider);
 
   ///

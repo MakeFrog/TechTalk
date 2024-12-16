@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:techtalk/core/modules/error_handling/result.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skill_set_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 abstract interface class TechSetRepository {
@@ -14,5 +15,7 @@ abstract interface class TechSetRepository {
   Result<SkillCollectionEntity> getSkillsByFirstLetter(String letter);
 
   /// id 값을 기반으로 [SkillEntity]을 리턴
-  SkillEntity getSkillById(String id);
+  SkillSetEntity getSkillById(String id);
+
+  List<SkillSetEntity> getSkills();
 }

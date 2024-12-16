@@ -1,10 +1,10 @@
-import 'package:techtalk/app/di/modules/system_di.dart';
 import 'package:techtalk/core/helper/string_extension.dart';
+import 'package:techtalk/features/tech_set/repositories/enums/skill_category.enum.dart';
 
 class SkillSetEntity {
   final String id;
   final String name;
-  final String category;
+  final SkillCategory category;
   final String imagePath;
 
   SkillSetEntity(
@@ -13,10 +13,11 @@ class SkillSetEntity {
       required this.imagePath,
       required this.category});
 
-  SkillSetEntity.fromJson(Map<String, dynamic> json)
+  SkillSetEntity.fromJson(
+      {required Map<String, dynamic> json, required String category})
       : id = (json['name'] as String).skillNameToId,
         name = json['name'] as String,
-        category = json['category'] as String,
+        category = SkillCategory.fromKey(category),
         imagePath =
             '${(json['name'] as String).skillNameToId.replaceAll('+', 'plus').replaceAll('#', 'sharp')}.png';
 }

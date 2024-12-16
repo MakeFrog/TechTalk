@@ -609,14 +609,11 @@
       "name": "Data Base"
     },
     {
-      "name": "Algorithm"
-    },
-    {
       "name": "Operating System"
     },
     {
-      "name": "Computer Network"
+      "name": "Network"
     }
   ],
-  "design_pattern": []
+  "pattern": []
 }

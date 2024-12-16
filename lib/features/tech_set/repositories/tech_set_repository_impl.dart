@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skill_set_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 final class TechSetRepositoryImpl implements TechSetRepository {
@@ -9,7 +10,7 @@ final class TechSetRepositoryImpl implements TechSetRepository {
 
   final TechSetLocalDataSource _techSetLocalDataSource;
 
-  final List<SkillCollectionEntity> _cachedSkillCollection = [];
+  final List<SkillSetEntity> _cachedSkillCollection = [];
 
   @override
   List<Job> getJobs() {
@@ -19,19 +20,18 @@ final class TechSetRepositoryImpl implements TechSetRepository {
   @override
   Future<void> initSkills() async {
     try {
-      final jsonData = await _techSetLocalDataSource.loadSkills();
+      // final jsonData = await _techSetLocalDataSource.loadSkills();
+      final jsonData = await _techSetLocalDataSource.loadNewSkills();
+      print('아랑이 2  :${jsonData}');
 
-      _cachedSkillCollection.addAll(
-        jsonData.entries.map(
-          (entry) {
-            List<SkillEntity> skills =
-                entry.value.map(SkillEntity.fromJson).toList();
-
-            return SkillCollectionEntity(firstLetter: entry.key, items: skills);
-          },
-        ),
-      );
+      for (var entry in jsonData.entries) {
+        final List<SkillSetEntity> skills = entry.value
+            .map((e) => SkillSetEntity.fromJson(json: e, category: entry.key))
+            .toList();
+        _cachedSkillCollection.addAll(skills);
+      }
     } catch (e) {
+      print('아랑이 : ${e}');
       throw const MappingFailedException();
     }
   }
@@ -39,10 +39,11 @@ final class TechSetRepositoryImpl implements TechSetRepository {
   @override
   Result<SkillCollectionEntity> getSkillsByFirstLetter(String letter) {
     try {
-      final response =
-          _cachedSkillCollection.firstWhere((e) => e.firstLetter == letter);
+      // final response =
+      //     _cachedSkillCollection.firstWhere((e) => e.firstLetter == letter);
 
-      return Result.success(response);
+      return Result.success(
+          SkillCollectionEntity(firstLetter: 'firstLetter', items: []));
     } on Exception catch (e) {
       if (e is MappingFailedException) {
         return Result.failure(e);
@@ -53,13 +54,12 @@ final class TechSetRepositoryImpl implements TechSetRepository {
   }
 
   @override
-  SkillEntity getSkillById(String id) {
-    final firstLetter = id[0];
+  SkillSetEntity getSkillById(String id) {
+    return _cachedSkillCollection.firstWhere((e) => e.id == id);
+  }
 
-    final collection =
-        _cachedSkillCollection.firstWhere((e) => e.firstLetter == firstLetter);
-    final specificSkill = collection.items.firstWhere((e) => e.id == id);
-
-    return specificSkill;
+  @override
+  List<SkillSetEntity> getSkills() {
+    return _cachedSkillCollection;
   }
 }

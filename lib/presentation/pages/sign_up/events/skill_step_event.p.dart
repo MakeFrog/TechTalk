@@ -22,7 +22,7 @@ extension SkillStepEvent on SignUpEvent {
   /// 선택된 스킬에 추가
   ///
   void onSearchedSkillTapped(WidgetRef ref,
-      {required SkillEntity targetSkill}) {
+      {required SkillSetEntity targetSkill}) {
     ref.read(searchedSkillsProvider.notifier).clear();
     ref.read(skillTextFieldControllerProvider).clear();
     ref

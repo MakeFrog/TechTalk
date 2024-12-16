@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skill_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skill_set_entity.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/searched_skills_provider.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/selected_skills_provider.dart';
 import 'package:techtalk/presentation/providers/input/skill_text_field_controller_provider.dart';
@@ -39,7 +40,7 @@ mixin class SkillSettingEvent {
   /// 선택된 스킬에 추가
   ///
   void onSearchedSkillTapped(WidgetRef ref,
-      {required SkillEntity targetSkill}) {
+      {required SkillSetEntity targetSkill}) {
     ref.read(skillTextFieldControllerProvider).clear();
     ref.read(searchedSkillsProvider.notifier).clear();
     ref.read(selectedSkillsProvider.notifier).add(
@@ -68,7 +69,8 @@ mixin class SkillSettingEvent {
     ref.read(userInfoProvider.notifier).updateData(user).whenComplete(() {
       EasyLoading.dismiss();
       ref.context.pop();
-      SnackBarService.showSnackBar(ref.context.tr(LocaleKeys.myInfo_editMyInfo_topicsUpdated));
+      SnackBarService.showSnackBar(
+          ref.context.tr(LocaleKeys.myInfo_editMyInfo_topicsUpdated));
     });
   }
 }

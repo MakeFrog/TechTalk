@@ -16,7 +16,7 @@ class SearchedSkillListView extends ConsumerWidget with SignUpEvent {
 
   final List<SkillSetEntity> items;
   final String searchedTerm;
-  final Function(SkillEntity item) onItemTapped;
+  final Function(SkillSetEntity item) onItemTapped;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

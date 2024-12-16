@@ -6,4 +6,7 @@ abstract interface class TechSetLocalDataSource {
 
   /// 스킬(Json String) 호출
   Future<Map<String, List<Map<String, String>>>> loadSkills();
+
+  /// NEW : 스킬(Json String) 호출
+  Future<Map<String, List<Map<String, String>>>> loadNewSkills();
 }

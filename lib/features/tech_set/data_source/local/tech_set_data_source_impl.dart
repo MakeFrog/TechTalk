@@ -26,4 +26,20 @@ final class TechSetLocalDataSourceImpl implements TechSetLocalDataSource {
 
     return convertedData;
   }
+
+  @override
+  Future<Map<String, List<Map<String, String>>>> loadNewSkills() async {
+    final jsonString = await rootBundle.loadString(Assets.jsonNewJson);
+    Map<String, dynamic> jsonData = json.decode(jsonString);
+
+    Map<String, List<Map<String, String>>> convertedData = {};
+
+    jsonData.forEach((key, value) {
+      convertedData[key] = List<Map<String, String>>.from(
+        value.map((item) => Map<String, String>.from(item)),
+      );
+    });
+
+    return convertedData;
+  }
 }
