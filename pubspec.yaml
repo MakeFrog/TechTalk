@@ -94,6 +94,8 @@ dependencies:
   connectivity_plus: ^5.0.2 # 네트워크 연결 상태 관리합
   easy_localization: ^3.0.0 # 다국어 지원
   collection: ^1.18.0 # 콜렉션 타입 익스텐션 지원 메소드
+  infinite_scroll_pagination: ^4.1.0 # 무한스크롤 페이지네이션
+
   # 앱 정보
   package_info_plus: ^8.0.2 # 현재 앱 버전 정보
   pub_semver: ^2.1.4 # 주부수 버전 비교 연산

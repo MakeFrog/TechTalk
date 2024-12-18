@@ -120,9 +120,9 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $StudyRouteExtension._fromState,
         ),
         GoRouteData.$route(
-          path: 'contents',
-          name: 'contents',
-          factory: $ContentsMainRouteExtension._fromState,
+          path: 'contents-main-list',
+          name: 'contents-main-list',
+          factory: $YoutubeContentsMainListRouteExtension._fromState,
         ),
         GoRouteData.$route(
           path: 'contents-detail/:contentsId',
@@ -289,12 +289,13 @@ extension $StudyRouteExtension on StudyRoute {
       context.replace(location, extra: $extra);
 }
 
-extension $ContentsMainRouteExtension on ContentsMainRoute {
-  static ContentsMainRoute _fromState(GoRouterState state) =>
-      ContentsMainRoute();
+extension $YoutubeContentsMainListRouteExtension
+    on YoutubeContentsMainListRoute {
+  static YoutubeContentsMainListRoute _fromState(GoRouterState state) =>
+      YoutubeContentsMainListRoute();
 
   String get location => GoRouteData.$location(
-        '/contents',
+        '/contents-main-list',
       );
 
   void go(BuildContext context) => context.go(location);
