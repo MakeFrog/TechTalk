@@ -11,6 +11,7 @@ import 'package:techtalk/presentation/pages/home/widgets/home_state.dart';
 import 'package:techtalk/presentation/pages/home/widgets/practical_interview_card.dart';
 import 'package:techtalk/presentation/pages/home/widgets/resume_interview_card.dart';
 import 'package:techtalk/presentation/pages/home/widgets/single_topic_interview_card.dart';
+import 'package:techtalk/presentation/pages/home/widgets/test_resume_interview_card.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/base/controller_holder.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
