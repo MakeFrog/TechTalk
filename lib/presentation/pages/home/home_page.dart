@@ -9,6 +9,7 @@ import 'package:techtalk/presentation/pages/home/home_event.dart';
 import 'package:techtalk/presentation/pages/home/widgets/cheer_up_message_card.dart';
 import 'package:techtalk/presentation/pages/home/widgets/home_state.dart';
 import 'package:techtalk/presentation/pages/home/widgets/practical_interview_card.dart';
+import 'package:techtalk/presentation/pages/home/widgets/resume_interview_card.dart';
 import 'package:techtalk/presentation/pages/home/widgets/single_topic_interview_card.dart';
 import 'package:techtalk/presentation/pages/home/widgets/test_resume_interview_card.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
@@ -41,7 +42,7 @@ class HomePage extends BasePage with HomeState, HomeEvent {
             children: const [
               CheerUpMessageCard(),
               Gap(16),
-              TestResumeInterviewCard(),
+              ResumeInterviewCard(),
               Gap(16),
               PracticalInterviewCard(),
               Gap(16),

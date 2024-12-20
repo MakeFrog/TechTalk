@@ -9,6 +9,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/enums/resume_question_type.enum.dart';
 import 'package:techtalk/features/chat/use_cases/create_resume_question_use_case.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/practical_chat_room_list_provider.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
@@ -177,16 +179,18 @@ Postman, GitHub, Figma, Jira, Slack.
     if (hasNotPracticalInterviewRecord) {
       final chatRooms = await ref.read(practicalChatRoomListProvider.future);
       if (chatRooms.isEmpty) {
-        routeToTopicSelectPage(ref.context, type: InterviewType.practical);
+        routeToTopicSelectPage(ref.context,
+            type: InterviewType.commonPracticalTopic);
       } else {
         routeToChatListPage(ref.context,
-            type: InterviewType.practical, rooms: chatRooms);
+            type: InterviewType.commonPracticalTopic, rooms: chatRooms);
         unawaited(ref
             .read(userInfoProvider.notifier)
             .storeUserPracticalRecordExistInfo());
       }
     } else {
-      routeToChatListPage(ref.context, type: InterviewType.practical);
+      routeToChatListPage(ref.context,
+          type: InterviewType.commonPracticalTopic);
     }
 
     unawaited(EasyLoading.dismiss());
@@ -221,4 +225,26 @@ Postman, GitHub, Figma, Jira, Slack.
     ref.invalidate(userTopicsProvider);
     SplashRoute().go(ref.context);
   }
+
+  ///
+  ///
+  ///
+  void routeToResumeChatList(WidgetRef ref) {
+    /// TODO : XIMYA
+    /// 임시 코드
+
+    final room = ChatRoomEntity.generateResumeInterview(
+      qnas: tempResumeQnaList,
+    );
+
+    final route = ChatPageRoute(roomId: room.id, type: room.type);
+    route.updateArg(room: room);
+    route.go(ref.context);
+    return;
+  }
+
+  ///
+  /// 이력서 채팅 면접 페이지로 이동
+  ///
+  void routeToResumeInterviewChat(WidgetRef ref) {}
 }

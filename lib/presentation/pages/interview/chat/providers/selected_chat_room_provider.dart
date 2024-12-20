@@ -22,7 +22,6 @@ class SelectedChatRoom extends _$SelectedChatRoom {
     final updatedRoom = state.copyWith(
       lastChatDate: lastChat.timestamp,
       lastChatMessage: lastChat.message.value,
-      chatProgressState: ChatRoomProgress.ongoing,
     );
 
     state = updatedRoom;
@@ -60,6 +59,9 @@ class SelectedChatRoom extends _$SelectedChatRoom {
     );
 
     state = updatedRoom;
-    ref.read(interviewRoomsProvider.notifier).synchronizeRooms(updatedRoom);
+
+    if (ref.exists(interviewRoomsProvider)) {
+      ref.read(interviewRoomsProvider.notifier).synchronizeRooms(updatedRoom);
+    }
   }
 }

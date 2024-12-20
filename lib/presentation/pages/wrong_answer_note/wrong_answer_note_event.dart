@@ -36,7 +36,7 @@ mixin class WrongAnswerNoteEvent {
   ///
   void routeToSingleSubjectQuestionCount(WidgetRef ref) {
     final selectedTopic = ref.read(selectedWrongAnswerTopicProvider);
-    const type = InterviewType.singleTopic;
+    const type = InterviewType.commonSingleTopic;
 
     final route = QuestionCountSelectPageRoute(type, selectedTopic!.id);
 

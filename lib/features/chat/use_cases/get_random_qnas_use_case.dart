@@ -22,7 +22,7 @@ class GetRandomQnasUseCase
     try {
       final returnedQnas = switch (room.type) {
         /// 주제별 면접
-        InterviewType.singleTopic => () async {
+        InterviewType.commonSingleTopic => () async {
             final qnas = await _topicRepository
                 .getTopicQnas(room.singleTopic.id)
                 .then((value) => value.getOrThrow());
@@ -30,11 +30,13 @@ class GetRandomQnasUseCase
             final filteredQnas = qnas.extractFromFirstAndShuffle(
                 room.progressInfo.totalQuestionCount);
 
-            return filteredQnas.map(ChatQnaEntity.fromQnaEntity).toList();
+            return filteredQnas
+                .map(ChatQnaEntity.fromQnaEntityAtInitial)
+                .toList();
           },
 
         /// 실전 면접
-        InterviewType.practical => () async {
+        InterviewType.commonPracticalTopic => () async {
             final shuffledTopics = room.topics.toList()..shuffle();
             final List<CommonQnaEntity> resolvedQnas = [];
             final topicCount = shuffledTopics.length;
@@ -60,7 +62,7 @@ class GetRandomQnasUseCase
             resolvedQnas.shuffle();
 
             final chatQns =
-                resolvedQnas.map(ChatQnaEntity.fromQnaEntity).toList();
+                resolvedQnas.map(ChatQnaEntity.fromQnaEntityAtInitial).toList();
 
             return chatQns;
           },

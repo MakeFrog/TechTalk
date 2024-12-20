@@ -6,10 +6,12 @@ class _Scaffold extends StatelessWidget {
     required this.chatTabView,
     required this.summaryTabView,
     required this.tabController,
+    required this.watchView,
   }) : super(key: key);
 
   final Widget chatTabView;
   final Widget summaryTabView;
+  final Widget watchView;
   final TabController tabController;
 
   @override
@@ -36,7 +38,9 @@ class _Scaffold extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       controller: tabController,
                       tabs: [
-                       Tab(text: tr(LocaleKeys.common_interviewTerms_interview)),
+                        Tab(
+                            text:
+                                tr(LocaleKeys.common_interviewTerms_interview)),
                         Tab(text: tr(LocaleKeys.common_interviewTerms_qa)),
                       ],
                       indicator: UnderlineTabIndicator(
@@ -71,7 +75,8 @@ class _Scaffold extends StatelessWidget {
               summaryTabView,
             ],
           ),
-        )
+        ),
+        watchView,
       ],
     );
   }
