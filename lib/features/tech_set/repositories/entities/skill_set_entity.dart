@@ -20,4 +20,17 @@ class SkillSetEntity {
         category = SkillCategory.fromKey(category),
         imagePath =
             '${(json['name'] as String).skillNameToId.replaceAll('+', 'plus').replaceAll('#', 'sharp')}.png';
+
+  // factory SkillSetEntity.fromBoxModel({
+  //   required SkillItemModel item,
+  //   required String categoryName,
+  // }) {
+  //   return SkillSetEntity(
+  //     id: item.name.skillNameToId,
+  //     name: item.name,
+  //     imagePath:
+  //         '${item.name.skillNameToId.replaceAll('+', 'plus').replaceAll('#', 'sharp')}.png',
+  //     category: SkillCategory.fromKey(categoryName),
+  //   );
+  // }
 }

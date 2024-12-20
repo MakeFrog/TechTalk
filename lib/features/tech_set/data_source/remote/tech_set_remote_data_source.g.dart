@@ -19,20 +19,46 @@ class _TechSetRemoteDataSource implements TechSetRemoteDataSource {
   String? baseUrl;
 
   @override
-  Future<SkillsResultModel> getSkills() async {
+  Future<dynamic> getSkills() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/skills.json',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<TechSetKeysModel> getKeys() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<SkillsResultModel>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<TechSetKeysModel>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/skills.json',
+              '/keys.json',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -41,7 +67,7 @@ class _TechSetRemoteDataSource implements TechSetRemoteDataSource {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = SkillsResultModel.fromJson(_result.data!);
+    final value = TechSetKeysModel.fromJson(_result.data!);
     return value;
   }
 

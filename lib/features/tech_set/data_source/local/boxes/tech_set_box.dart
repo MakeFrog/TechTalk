@@ -1,7 +1,4 @@
 import 'package:hive/hive.dart';
-import 'package:techtalk/features/tech_set/data_source/remote/model/skills_result_model.dart';
-import 'package:techtalk/features/topic/data_source/local/boxes/qna_box.dart';
-import 'package:techtalk/features/topic/data_source/remote/models/topic_qna_model.dart';
 
 part 'tech_set_box.g.dart';
 
@@ -9,17 +6,15 @@ part 'tech_set_box.g.dart';
 class TechSetBox extends HiveObject {
   /// 테크 스킬
   @HiveField(0)
-  final SkillsResultModel skill;
+  final Map<String, Map<String, List<Map<String, String>>>>? skillJson;
 
-  TechSetBox({required this.skill});
+  TechSetBox({required this.skillJson});
 
-// factory QnaListBox.fromModel(List<TopicQnaModel> entity) => QnaListBox(
-//   updatedAt: DateTime.now(),
-//   items: entity.map(QnaBox.fromModel).toList(),
-// );
-//
-// QnaListBox addItemFromModel(TopicQnaModel entity) => QnaListBox(
-//   updatedAt: updatedAt,
-//   items: [...items, QnaBox.fromModel(entity)],
-// );
+  TechSetBox copyWith({
+    Map<String, Map<String, List<Map<String, String>>>>? skillJson,
+  }) {
+    return TechSetBox(
+      skillJson: skillJson ?? this.skillJson,
+    );
+  }
 }

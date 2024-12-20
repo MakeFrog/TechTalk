@@ -17,7 +17,13 @@ class TechSetBoxAdapter extends TypeAdapter<TechSetBox> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TechSetBox(
-      skill: fields[0] as SkillsResultModel,
+      skillJson: (fields[0] as Map?)?.map((dynamic k, dynamic v) => MapEntry(
+          k as String,
+          (v as Map).map((dynamic k, dynamic v) => MapEntry(
+              k as String,
+              (v as List)
+                  .map((dynamic e) => (e as Map).cast<String, String>())
+                  .toList())))),
     );
   }
 
@@ -26,7 +32,7 @@ class TechSetBoxAdapter extends TypeAdapter<TechSetBox> {
     writer
       ..writeByte(1)
       ..writeByte(0)
-      ..write(obj.skill);
+      ..write(obj.skillJson);
   }
 
   @override

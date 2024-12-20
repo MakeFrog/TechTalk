@@ -38,7 +38,7 @@ final class AppBinder {
       SystemDependencyInjection(),
       AuthDependencyInjection(),
       UserDependencyInjection(),
-      JobDependencyInjection(),
+      TechSetDependencyInjection(),
       ChatDependencyInject(),
       TopicDependencyInjection(),
     ]) {

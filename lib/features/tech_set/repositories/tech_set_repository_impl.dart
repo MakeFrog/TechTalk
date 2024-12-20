@@ -1,56 +1,68 @@
 import 'dart:async';
+import 'dart:developer';
+import 'package:techtalk/app/util/app_format_handler.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/tech_set/data_source/remote/model/tech_set_keys_model.dart';
+import 'package:techtalk/features/tech_set/data_source/remote/tech_set_remote_data_source.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skill_set_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 final class TechSetRepositoryImpl implements TechSetRepository {
   TechSetRepositoryImpl(
-    this._techSetLocalDataSource,
+    this._localDataSource,
+    this._remoteDataSource,
   );
 
-  final TechSetLocalDataSource _techSetLocalDataSource;
+  final TechSetRemoteDataSource _remoteDataSource;
+  final TechSetLocalDataSource _localDataSource;
 
   final List<SkillSetEntity> _cachedSkillCollection = [];
 
   @override
-  List<Job> getJobs() {
-    return Job.values;
-  }
+  List<Job> getJobs() => Job.values;
 
   @override
   Future<void> initSkills() async {
     try {
-      // final jsonData = await _techSetLocalDataSource.loadSkills();
-      final jsonData = await _techSetLocalDataSource.loadNewSkills();
-      print('아랑이 2  :${jsonData}');
+      final cachedSkillSet = _localDataSource.loadCachedSkillSet();
+      final remoteKey =
+          (await _remoteDataSource.getKeys()).skill ?? 'undefined';
+      final localKey = cachedSkillSet?.keys.first;
 
-      for (var entry in jsonData.entries) {
-        final List<SkillSetEntity> skills = entry.value
-            .map((e) => SkillSetEntity.fromJson(json: e, category: entry.key))
-            .toList();
-        _cachedSkillCollection.addAll(skills);
+      /// 원격 호출
+      if (cachedSkillSet == null || remoteKey != localKey) {
+        final remoteRes = await _remoteDataSource.getSkills();
+        final convertedData = AppFormatHandler.parseMapSLMaSSJson(remoteRes);
+
+        for (var entry in convertedData.entries) {
+          _cachedSkillCollection.addAll(entry.value.map(
+              (e) => SkillSetEntity.fromJson(json: e, category: entry.key)));
+        }
+
+        /// 로컬스터리지에 스킬 데이터 저장
+        unawaited(
+          _localDataSource.storeSkillSet(
+            skillSet: {remoteKey: convertedData},
+          ),
+        );
+      }
+
+      /// 캐싱된 데이터 호출
+      else {
+        for (var entry in cachedSkillSet.values.first.entries) {
+          _cachedSkillCollection.addAll(entry.value.map(
+              (e) => SkillSetEntity.fromJson(json: e, category: entry.key)));
+        }
       }
     } catch (e) {
-      print('아랑이 : ${e}');
-      throw const MappingFailedException();
+      log('Error initializing skills: $e');
+      rethrow;
     }
   }
 
   @override
   Result<SkillCollectionEntity> getSkillsByFirstLetter(String letter) {
-    try {
-      // final response =
-      //     _cachedSkillCollection.firstWhere((e) => e.firstLetter == letter);
-
-      return Result.success(
-          SkillCollectionEntity(firstLetter: 'firstLetter', items: []));
-    } on Exception catch (e) {
-      if (e is MappingFailedException) {
-        return Result.failure(e);
-      }
-
-      return Result.failure(const FetchSkillsFailedException());
-    }
+    throw Exception('');
   }
 
   @override
@@ -59,7 +71,15 @@ final class TechSetRepositoryImpl implements TechSetRepository {
   }
 
   @override
-  List<SkillSetEntity> getSkills() {
-    return _cachedSkillCollection;
+  List<SkillSetEntity> getSkills() => _cachedSkillCollection;
+
+  @override
+  Future<Result<TechSetKeysModel>> getKeys() async {
+    try {
+      final response = await _remoteDataSource.getKeys();
+      return Result.success(response);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
   }
 }

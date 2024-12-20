@@ -152,6 +152,7 @@ class Assets {
   static const String jsonNewJson = 'assets/json/new_json.json';
   static const String jsonSkills = 'assets/json/skills.json';
   static const String jsonStack = 'assets/json/stack.json';
+  static const String jsonTemp = 'assets/json/temp.json';
   static const String jsonTopicCategoriesData =
       'assets/json/topic_categories_data.json';
   static const String pretendardPretendardBold =
