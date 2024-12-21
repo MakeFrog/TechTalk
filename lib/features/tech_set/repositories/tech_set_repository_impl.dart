@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:collection/collection.dart';
 import 'package:techtalk/app/util/app_format_handler.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/tech_set/data_source/remote/model/tech_set_keys_model.dart';
@@ -62,7 +63,9 @@ final class TechSetRepositoryImpl implements TechSetRepository {
 
   @override
   SkillEntity getSkillById(String id) {
-    return _cachedSkillCollection.firstWhere((e) => e.id == id);
+    final targetSkill =
+        _cachedSkillCollection.firstWhereOrNull((e) => e.id == id);
+    return targetSkill ?? SkillEntity.undefined();
   }
 
   @override

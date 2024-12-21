@@ -36,6 +36,8 @@ final class UserRepositoryImpl implements UserRepository {
           ? remoteRes.techSkills!.map(_techSetRepository.getSkillById).toList()
           : [];
 
+      skills.removeWhere((e) => e.id == SkillEntity.undefinedKey);
+
       final result = UserEntity.fromModel(
         remoteRes,
         skills: skills,

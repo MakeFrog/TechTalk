@@ -20,4 +20,15 @@ class SkillEntity {
         category = SkillCategory.fromKey(category),
         imagePath =
             '${(json['name'] as String).skillNameToId.replaceAll('+', 'plus').replaceAll('#', 'sharp')}.png';
+
+  /// 1.0.12
+  /// 마이그레이션 이후 존재하지 않은 skill일 경우 사용
+  static String undefinedKey = 'undefined';
+
+  factory SkillEntity.undefined() => SkillEntity(
+        id: undefinedKey,
+        name: undefinedKey,
+        imagePath: undefinedKey,
+        category: SkillCategory.none,
+      );
 }
