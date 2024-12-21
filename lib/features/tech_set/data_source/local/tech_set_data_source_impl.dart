@@ -17,20 +17,6 @@ final class TechSetLocalDataSourceImpl implements TechSetLocalDataSource {
   Future<List<Job>> getJobs() async => Job.values;
 
   @override
-  Future<Map<String, List<Map<String, String>>>> loadSkills() async {
-    final jsonString = await rootBundle.loadString(Assets.jsonSkills);
-    final jsonData = json.decode(jsonString) as Map<String, dynamic>;
-    return AppFormatHandler.parseMapSLMaSSJson(jsonData);
-  }
-
-  @override
-  Future<Map<String, List<Map<String, String>>>> loadNewSkills() async {
-    final jsonString = await rootBundle.loadString(Assets.jsonNewJson);
-    final jsonData = json.decode(jsonString) as Map<String, dynamic>;
-    return AppFormatHandler.parseMapSLMaSSJson(jsonData);
-  }
-
-  @override
   Map<String, Map<String, List<Map<String, String>>>>? loadCachedSkillSet() {
     return _box.get(AppLocal.techSetBoxName)?.skillJson;
   }
