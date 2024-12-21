@@ -90,4 +90,17 @@ extension StringExtensions on String {
   /// ==> id
   String get skillNameToId =>
       toLowerCase().replaceAll(' ', '').replaceAll('-', '').replaceAll('.', '');
+
+  ///
+  /// 검색 조건을 위해
+  /// (-), '(공백)'을 제거하고
+  /// lowerCase
+  ///
+  String get normalizeSearchString =>
+      replaceAll(RegExp(r'[- ]'), '').toLowerCase();
+
+  ///
+  /// 스킬 경로 image path를 prefix하는 메소드
+  ///
+  String get skillImagePathPrefix => 'assets/skills/$this';
 }

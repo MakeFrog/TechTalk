@@ -4,7 +4,7 @@ import 'package:techtalk/app/util/app_format_handler.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/tech_set/data_source/remote/model/tech_set_keys_model.dart';
 import 'package:techtalk/features/tech_set/data_source/remote/tech_set_remote_data_source.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skill_set_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 final class TechSetRepositoryImpl implements TechSetRepository {
@@ -16,7 +16,7 @@ final class TechSetRepositoryImpl implements TechSetRepository {
   final TechSetRemoteDataSource _remoteDataSource;
   final TechSetLocalDataSource _localDataSource;
 
-  final List<SkillSetEntity> _cachedSkillCollection = [];
+  final List<SkillEntity> _cachedSkillCollection = [];
 
   @override
   List<Job> getJobs() => Job.values;
@@ -35,8 +35,8 @@ final class TechSetRepositoryImpl implements TechSetRepository {
         final convertedData = AppFormatHandler.parseMapSLMaSSJson(remoteRes);
 
         for (var entry in convertedData.entries) {
-          _cachedSkillCollection.addAll(entry.value.map(
-              (e) => SkillSetEntity.fromJson(json: e, category: entry.key)));
+          _cachedSkillCollection.addAll(entry.value
+              .map((e) => SkillEntity.fromJson(json: e, category: entry.key)));
         }
 
         /// 로컬스터리지에 스킬 데이터 저장
@@ -50,8 +50,8 @@ final class TechSetRepositoryImpl implements TechSetRepository {
       /// 캐싱된 데이터 호출
       else {
         for (var entry in cachedSkillSet.values.first.entries) {
-          _cachedSkillCollection.addAll(entry.value.map(
-              (e) => SkillSetEntity.fromJson(json: e, category: entry.key)));
+          _cachedSkillCollection.addAll(entry.value
+              .map((e) => SkillEntity.fromJson(json: e, category: entry.key)));
         }
       }
     } catch (e) {
@@ -61,17 +61,12 @@ final class TechSetRepositoryImpl implements TechSetRepository {
   }
 
   @override
-  Result<SkillCollectionEntity> getSkillsByFirstLetter(String letter) {
-    throw Exception('');
-  }
-
-  @override
-  SkillSetEntity getSkillById(String id) {
+  SkillEntity getSkillById(String id) {
     return _cachedSkillCollection.firstWhere((e) => e.id == id);
   }
 
   @override
-  List<SkillSetEntity> getSkills() => _cachedSkillCollection;
+  List<SkillEntity> getSkills() => _cachedSkillCollection;
 
   @override
   Future<Result<TechSetKeysModel>> getKeys() async {

@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/helper/list_extension.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skill_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skill_set_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/searched_skills_provider.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/selected_skills_provider.dart';
 import 'package:techtalk/presentation/providers/input/skill_text_field_controller_provider.dart';
@@ -13,7 +12,7 @@ mixin class SkillSettingState {
   ///
   /// 검색된 스킬 리스트
   ///
-  List<SkillSetEntity> searchedSkills(WidgetRef ref) =>
+  List<SkillEntity> searchedSkills(WidgetRef ref) =>
       ref.watch(searchedSkillsProvider);
 
   ///
@@ -25,7 +24,7 @@ mixin class SkillSettingState {
   ///
   /// 선택된 스킬 리스트
   ///
-  List<SkillSetEntity> selectedSkills(WidgetRef ref) =>
+  List<SkillEntity> selectedSkills(WidgetRef ref) =>
       ref.watch(selectedSkillsProvider);
 
   ///

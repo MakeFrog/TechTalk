@@ -26,6 +26,7 @@ class UserInfo extends _$UserInfo {
         return value;
       },
       onFailure: (e) {
+        print('아랑이 : ${e}');
         return null;
       },
     );

@@ -3,17 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/presentation/pages/my_info/my_page/my_page_event.dart';
 import 'package:techtalk/presentation/widgets/common/chip/rounded_filled_chip.dart';
+import 'package:techtalk/presentation/widgets/common/chip/rounded_skill_filled_chip.dart';
 
 ///
 /// 전달받은 데이터를 기반으로 Wrap 위젯이 단일 행으로 구성되어 있는지 판별하여 (check if it's overflowed),
 /// Expandable 로직을 적용하는 위젯
 ///
 
-class ExpandableWrappedListview extends HookWidget with MyPageEvent {
-  ExpandableWrappedListview({super.key, required List<String> items})
-      : itemCollection = items.map((e) => (text: e, key: GlobalKey())).toList();
+class ExpandableSkillWrappedListview extends HookWidget with MyPageEvent {
+  ExpandableSkillWrappedListview({super.key, required List<SkillEntity> items})
+      : itemCollection =
+            items.map((e) => (skill: e, key: GlobalKey())).toList();
 
   /// 현재 위젯의 notifier 변수
   ValueNotifier<Size> notifier = ValueNotifier(const Size(0, 0));
@@ -24,7 +27,7 @@ class ExpandableWrappedListview extends HookWidget with MyPageEvent {
   final double runSpacing = 12;
 
   /// 전달 받은 데이터를 globalKey값과 매핑
-  final List<({String text, GlobalKey key})> itemCollection;
+  final List<({SkillEntity skill, GlobalKey key})> itemCollection;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +51,7 @@ class ExpandableWrappedListview extends HookWidget with MyPageEvent {
       getWrapWidgetSize(context, notifier, originHeight);
       if (notifier.value.height < rowHeight) return;
       isOverflowed.value = true;
-      _getListItemPosition(
+      _getListSkillItemPosition(
           itemCollection, firstRowElementY, lastRowElementY, spacing);
     }, [itemCollection]);
 
@@ -86,8 +89,8 @@ class ExpandableWrappedListview extends HookWidget with MyPageEvent {
                             ...List.generate(
                               itemCollection.length,
                               (index) {
-                                return RoundedFilledChip(
-                                  text: itemCollection[index].text,
+                                return RoundedSkillFilledChip(
+                                  skill: itemCollection[index].skill,
                                 );
                               },
                             )
@@ -137,8 +140,8 @@ class ExpandableWrappedListview extends HookWidget with MyPageEvent {
           ...List.generate(
             itemCollection.length,
             (index) {
-              return RoundedFilledChip(
-                text: itemCollection[index].text,
+              return RoundedSkillFilledChip(
+                skill: itemCollection[index].skill,
                 key: itemCollection[index].key,
               );
             },
@@ -152,8 +155,8 @@ class ExpandableWrappedListview extends HookWidget with MyPageEvent {
   /// 첫 번째 행의 끝 위치와
   /// 마지막 행의 끝 위치를 구하는 메소드
   ///
-  void _getListItemPosition(
-      List<({String text, GlobalKey key})> itemCollection,
+  void _getListSkillItemPosition(
+      List<({SkillEntity skill, GlobalKey key})> itemCollection,
       ValueNotifier<double> firstRowElementY,
       ValueNotifier<double> lastRowElementY,
       double spacing) {

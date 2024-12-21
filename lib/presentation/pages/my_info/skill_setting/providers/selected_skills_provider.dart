@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skill_set_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
+import 'package:techtalk/presentation/providers/scroll/selected_skill_scroll_controller.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 part 'selected_skills_provider.g.dart';
@@ -10,12 +11,12 @@ part 'selected_skills_provider.g.dart';
 @riverpod
 class SelectedSkills extends _$SelectedSkills {
   @override
-  List<SkillSetEntity> build() {
+  List<SkillEntity> build() {
     final userSkills = ref.read(userInfoProvider).value?.skills;
     return userSkills?.toList() ?? [];
   }
 
-  void add(SkillSetEntity item, ScrollController scrollController) {
+  void add(SkillEntity item) {
     if (state.contains(item)) {
       SnackBarService.showSnackBar('이미 선택된 기술입니다.');
       return;
@@ -23,6 +24,8 @@ class SelectedSkills extends _$SelectedSkills {
     state = [...state, item];
     SchedulerBinding.instance.addPostFrameCallback(
       (_) {
+        final scrollController =
+            ref.read(selectedSkillScrollControllerProvider);
         scrollController.animateTo(
           scrollController.position.maxScrollExtent,
           duration: const Duration(milliseconds: 260),

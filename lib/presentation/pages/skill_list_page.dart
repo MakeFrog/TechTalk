@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/assets.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skill_set_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'dart:convert';

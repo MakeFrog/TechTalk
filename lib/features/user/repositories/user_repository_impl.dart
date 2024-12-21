@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skill_set_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/features/user/user.dart';
 
@@ -32,7 +32,7 @@ final class UserRepositoryImpl implements UserRepository {
     try {
       final remoteRes = await _userRemoteDataSource.getUser();
       final localRes = _userLocalDataSource.loadUserLocalInfo();
-      final List<SkillSetEntity> skills = remoteRes.techSkills != null
+      final List<SkillEntity> skills = remoteRes.techSkills != null
           ? remoteRes.techSkills!.map(_techSetRepository.getSkillById).toList()
           : [];
 

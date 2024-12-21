@@ -6,12 +6,12 @@ part of 'selected_skills_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$selectedSkillsHash() => r'd0d52a4312b2cac51bfe0d95c699ae0df555ee4a';
+String _$selectedSkillsHash() => r'b67e6027cd48fc934a5e85428b915beecd2e7a38';
 
 /// See also [SelectedSkills].
 @ProviderFor(SelectedSkills)
 final selectedSkillsProvider =
-    AutoDisposeNotifierProvider<SelectedSkills, List<SkillSetEntity>>.internal(
+    AutoDisposeNotifierProvider<SelectedSkills, List<SkillEntity>>.internal(
   SelectedSkills.new,
   name: r'selectedSkillsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -21,6 +21,6 @@ final selectedSkillsProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$SelectedSkills = AutoDisposeNotifier<List<SkillSetEntity>>;
+typedef _$SelectedSkills = AutoDisposeNotifier<List<SkillEntity>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

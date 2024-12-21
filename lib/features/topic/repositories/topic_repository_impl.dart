@@ -19,6 +19,7 @@ class TopicRepositoryImpl implements TopicRepository {
   ) async {
     try {
       final targetTopic = StoredTopics.getById(topicId);
+
       final localResponse = _localDataSource.loadQnas(topicId);
 
       if (localResponse != null &&

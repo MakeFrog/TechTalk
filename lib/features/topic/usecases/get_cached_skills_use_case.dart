@@ -1,7 +1,7 @@
 // import 'dart:async';
 //
 // import 'package:techtalk/core/index.dart';
-// import 'package:techtalk/features/tech_set/repositories/entities/skill_set_entity.dart';
+// import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 // import 'package:techtalk/features/tech_set/tech_set.dart';
 //
 // final class GetCachedSkillsUseCase
