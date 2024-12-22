@@ -31,6 +31,6 @@ Map<String, dynamic> _$TopicModelToJson(TopicModel instance) =>
       'en_name': instance.enName,
       'image_path': instance.imagePath,
       'is_available': instance.isAvailable,
-      'related_topics': instance.relatedSkillIds,
+      'related_skill_ids': instance.relatedSkillIds,
       'updated_at': const TimeStampConverter().toJson(instance.updatedAt),
     };

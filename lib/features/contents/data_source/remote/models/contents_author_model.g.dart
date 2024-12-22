@@ -11,7 +11,6 @@ ContentsAuthorModel _$ContentsAuthorModelFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       name: json['name'] as String,
       profileImgUrl: json['profile_img_url'] as String?,
-      homePageUrl: json['home_page_url'] as String?,
     );
 
 Map<String, dynamic> _$ContentsAuthorModelToJson(
@@ -20,5 +19,4 @@ Map<String, dynamic> _$ContentsAuthorModelToJson(
       'id': instance.id,
       'name': instance.name,
       'profile_img_url': instance.profileImgUrl,
-      'home_page_url': instance.homePageUrl,
     };

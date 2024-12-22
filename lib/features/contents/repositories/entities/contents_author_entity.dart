@@ -11,20 +11,15 @@ class ContentsAuthorEntity {
   /// 저자의 프로필 이미지 url
   final String? profileImgUrl;
 
-  /// 저자의 메인 홈페이지 url
-  final String? homePageUrl;
-
   ContentsAuthorEntity({
     required this.id,
     required this.name,
     this.profileImgUrl,
-    this.homePageUrl,
   });
 
   ContentsAuthorModel toModel() => ContentsAuthorModel(
         id: id,
         name: name,
         profileImgUrl: profileImgUrl,
-        homePageUrl: homePageUrl,
       );
 }

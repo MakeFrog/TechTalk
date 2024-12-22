@@ -7,7 +7,7 @@ part of 'youtube_contents_overviews_provider.dart';
 // **************************************************************************
 
 String _$youtubeContentsOverviewsHash() =>
-    r'63fd4f304892e0cfdb9e39435f1dd8a784a92254';
+    r'41ccd057c51a322b2035a6033bfb97ab4cb89e46';
 
 /// See also [youtubeContentsOverviews].
 @ProviderFor(youtubeContentsOverviews)

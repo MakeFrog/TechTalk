@@ -10,16 +10,11 @@ class ContentsAuthorModel {
     required this.id,
     required this.name,
     required this.profileImgUrl,
-    required this.homePageUrl,
   });
 
   final String id;
-
   final String name;
-
   final String? profileImgUrl;
-
-  final String? homePageUrl;
 
   /// 엔티티로 변환
 
@@ -28,7 +23,6 @@ class ContentsAuthorModel {
       id: id,
       name: name,
       profileImgUrl: profileImgUrl,
-      homePageUrl: homePageUrl,
     );
   }
 
@@ -40,7 +34,8 @@ class ContentsAuthorModel {
       ContentsAuthorModel.fromJson(snapshot.data()!);
 
   /// JSON에서 모델로 변환
-  factory ContentsAuthorModel.fromJson(Map<String, dynamic> json) => _$ContentsAuthorModelFromJson(json);
+  factory ContentsAuthorModel.fromJson(Map<String, dynamic> json) =>
+      _$ContentsAuthorModelFromJson(json);
 
   /// 모델을 JSON으로 변환
   Map<String, dynamic> toJson() => _$ContentsAuthorModelToJson(this);
