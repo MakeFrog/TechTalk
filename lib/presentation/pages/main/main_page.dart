@@ -11,7 +11,6 @@ import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/presentation/pages/home/home_page.dart';
 import 'package:techtalk/presentation/pages/main/main_event.dart';
 import 'package:techtalk/presentation/pages/my_info/my_page/my_page.dart';
-import 'package:techtalk/presentation/pages/skill_list_page.dart';
 import 'package:techtalk/presentation/pages/study/topic_selection/study_topic_selection_page.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_note_page.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
@@ -23,7 +22,7 @@ class MainPage extends BasePage with MainEvent {
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
     const _pages = [
-      SkillListPage(
+      HomePage(
         key: ValueKey(MainNavigationTab.home),
       ),
       StudyTopicSelectionPage(
