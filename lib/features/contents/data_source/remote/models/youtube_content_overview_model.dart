@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
+import 'package:techtalk/features/contents/data_source/remote/youtube_contents_overview_ref.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_author_entity.dart';
 
 class YoutubeContentOverviewEntity {
@@ -47,5 +49,7 @@ class YoutubeContentOverviewEntity {
         channel: channel.toModel(),
         uploadAt: uploadAt,
         createdAt: createdAt,
+        channelRef:
+            FirestoreYoutubeContentsOverviewRef.channelDocumentRef(channel.id),
       );
 }

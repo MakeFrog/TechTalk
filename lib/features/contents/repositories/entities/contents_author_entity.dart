@@ -22,6 +22,12 @@ class ChannelEntity {
     this.logoUrl,
   });
 
+  ///
+  /// 호출에 실패했을 경우
+  ///
+  factory ChannelEntity.undefined() =>
+      ChannelEntity(id: 'undefined', name: '알 수 없는 채널');
+
   ChannelModel toModel() => ChannelModel(
         id: id,
         name: name,
