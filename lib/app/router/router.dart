@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_overview_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
@@ -239,7 +240,7 @@ class ContentsDetailRoute extends GoRouteData {
   static const String path = 'contents-detail/:contentsId';
   static const String name = 'contents-detail';
 
-  final ContentsOverviewEntity $extra;
+  final YoutubeContentOverviewEntity $extra;
 
   final String contentsId;
 
@@ -299,7 +300,8 @@ class QuestionCountSelectPageRoute extends GoRouteData {
   }
 
   /// NOTE: $extra 이슈로 직접 업데이트
-  void updateArg({required InterviewType type, required List<TopicEntity> topics}) {
+  void updateArg(
+      {required InterviewType type, required List<TopicEntity> topics}) {
     arg = (topics: topics, type: type);
   }
 }
@@ -351,7 +353,11 @@ class ChatListRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    arg = (topic: StoredTopics.getByIdOrNull(topicId), interviewType: type, chatRooms: $extra);
+    arg = (
+      topic: StoredTopics.getByIdOrNull(topicId),
+      interviewType: type,
+      chatRooms: $extra
+    );
     return ChatListPage();
   }
 }
@@ -376,7 +382,8 @@ class ChatPageRoute extends GoRouteData {
         var end = Offset.zero;
         var curve = Curves.ease;
 
-        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
         return SlideTransition(
           position: animation.drive(tween),

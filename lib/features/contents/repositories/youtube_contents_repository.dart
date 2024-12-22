@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_overview_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_contents_detail_entity.dart';
@@ -39,8 +40,10 @@ abstract interface class YoutubeContentsRepository {
   /// [limit] - 한 페이지당 가져올 항목 수
   /// [queryConstraints] - 추가적인 Firestore 쿼리 제약 조건
   ///
-  Future<Result<FirebasePaginatedResult<YoutubeContentsOverviewEntity, YoutubeContentsOverviewModel>>>
-      getYoutubeContentsOverviews({
+  Future<
+      Result<
+          FirebasePaginatedResult<YoutubeContentOverviewEntity,
+              YoutubeContentsOverviewModel>>> getYoutubeContentsOverviews({
     required int limit,
     required String orderByField,
     DocumentSnapshot<YoutubeContentsOverviewModel>? lastDocument,

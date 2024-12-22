@@ -3,6 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/core/modules/converter/time_stamp_converter.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/contents_author_model.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_overview_entity.dart';
 
 part 'youtube_video_contents_overview_model.g.dart';
@@ -17,7 +18,7 @@ class YoutubeContentsOverviewModel {
     required this.qnaNum,
     required this.relatedSkillIds,
     required this.relatedJobGroupIds,
-    required this.author,
+    required this.channel,
     required this.uploadAt,
     required this.createdAt,
   });
@@ -36,7 +37,10 @@ class YoutubeContentsOverviewModel {
 
   final List<String> relatedJobGroupIds;
 
-  final ContentsAuthorModel author;
+  /// TODO : XIMYA
+  /// 추후 필드명 변경
+  @JsonKey(name: 'author')
+  final ChannelModel channel;
 
   @TimeStampConverter()
   final DateTime createdAt;
@@ -45,13 +49,13 @@ class YoutubeContentsOverviewModel {
   final DateTime uploadAt;
 
   /// 엔티티로 변환
-  YoutubeContentsOverviewEntity toEntity() {
-    return YoutubeContentsOverviewEntity(
+  YoutubeContentOverviewEntity toEntity() {
+    return YoutubeContentOverviewEntity(
       id: id,
       thumbnailImgUrl: thumbnailImgUrl,
       contentsTitle: contentsTitle,
       qnaNum: qnaNum,
-      author: author.toEntity(),
+      channel: channel.toEntity(),
       relatedSkillIds: relatedSkillIds.toSet(),
       relatedJobs: relatedJobGroupIds.map(JobGroup.getById).toSet(),
       videoDuration: videoDuration,

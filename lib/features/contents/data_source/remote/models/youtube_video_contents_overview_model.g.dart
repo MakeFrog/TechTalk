@@ -21,8 +21,7 @@ YoutubeContentsOverviewModel _$YoutubeContentsOverviewModelFromJson(
       relatedJobGroupIds: (json['related_job_group_ids'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
-      author:
-          ContentsAuthorModel.fromJson(json['author'] as Map<String, dynamic>),
+      channel: ChannelModel.fromJson(json['author'] as Map<String, dynamic>),
       uploadAt:
           const TimeStampConverter().fromJson(json['upload_at'] as Timestamp),
       createdAt:
@@ -39,7 +38,7 @@ Map<String, dynamic> _$YoutubeContentsOverviewModelToJson(
       'qna_num': instance.qnaNum,
       'related_skill_ids': instance.relatedSkillIds,
       'related_job_group_ids': instance.relatedJobGroupIds,
-      'author': instance.author.toJson(),
+      'author': instance.channel.toJson(),
       'created_at': const TimeStampConverter().toJson(instance.createdAt),
       'upload_at': const TimeStampConverter().toJson(instance.uploadAt),
     };

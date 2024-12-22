@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_overview_entity.dart';
 import 'package:techtalk/presentation/pages/youtube/constants/contents_detail_tab_type.enum.dart';
 import 'package:techtalk/presentation/pages/youtube/widgets/summary_note_foldable_item.dart';
@@ -13,10 +14,11 @@ import 'package:techtalk/presentation/widgets/common/box/async_skeleton_widget_b
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 /// 유튜브 컨텐츠 상세 페이지
-class YoutubeContentsDetailPage extends BasePage with YoutubeContentsDetailEvent, YoutubeContentsDetailState {
+class YoutubeContentsDetailPage extends BasePage
+    with YoutubeContentsDetailEvent, YoutubeContentsDetailState {
   const YoutubeContentsDetailPage({super.key, required this.overview});
 
-  final ContentsOverviewEntity overview;
+  final YoutubeContentOverviewEntity overview;
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
@@ -61,7 +63,8 @@ class YoutubeContentsDetailPage extends BasePage with YoutubeContentsDetailEvent
             // 콘텐츠 영역을 SliverToBoxAdapter로 감싸기
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                 child: Wrap(
                   runSpacing: 5,
                   children: [
@@ -107,12 +110,13 @@ class YoutubeContentsDetailPage extends BasePage with YoutubeContentsDetailEvent
                       skeletonBuilder: (_) => Row(
                         children: [
                           CircleAvatar(
-                            backgroundImage: NetworkImage(overview.author.profileImgUrl ?? ''),
+                            backgroundImage:
+                                NetworkImage(overview.channel.logoUrl ?? ''),
                             radius: 15,
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            overview.author.name,
+                            overview.channel.name,
                           ),
                           const SizedBox(width: 8),
                         ],
@@ -120,7 +124,8 @@ class YoutubeContentsDetailPage extends BasePage with YoutubeContentsDetailEvent
                       dataBuilder: (context, data) => Row(
                         children: [
                           CircleAvatar(
-                            backgroundImage: NetworkImage(data.channelInfo.logoUrl),
+                            backgroundImage:
+                                NetworkImage(data.channelInfo.logoUrl),
                             radius: 15,
                           ),
                           const SizedBox(width: 8),
@@ -151,8 +156,10 @@ class YoutubeContentsDetailPage extends BasePage with YoutubeContentsDetailEvent
                   labelColor: Colors.black,
                   unselectedLabelColor: Colors.grey,
                   indicator: const UnderlineTabIndicator(
-                    borderSide: BorderSide(width: 2.0, color: Colors.black), // 인디케이터 두께와 색상
-                    insets: EdgeInsets.symmetric(horizontal: 70.0), // 인디케이터의 가로 여백 조정
+                    borderSide: BorderSide(
+                        width: 2.0, color: Colors.black), // 인디케이터 두께와 색상
+                    insets: EdgeInsets.symmetric(
+                        horizontal: 70.0), // 인디케이터의 가로 여백 조정
                   ),
                   tabs: ContentsDetailTabType.values
                       .map((tab) => Tab(
@@ -231,7 +238,8 @@ class YoutubeContentsDetailPage extends BasePage with YoutubeContentsDetailEvent
                 padding: const EdgeInsets.all(16),
                 children: [
                   AsyncSkeletonWidgetBuilder(
-                    asyncValue: youtubeContentsDetailQnasAsync(ref, overview.id),
+                    asyncValue:
+                        youtubeContentsDetailQnasAsync(ref, overview.id),
                     skeletonBuilder: (p0) => const Center(
                       child: CircularProgressIndicator(),
                     ),
@@ -288,7 +296,8 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => _tabBar.preferredSize.height;
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       color: AppColor.of.white,
       child: _tabBar,
