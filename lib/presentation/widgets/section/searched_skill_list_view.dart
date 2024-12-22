@@ -5,7 +5,7 @@ import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/presentation/pages/sign_up/events/sign_up_event.dart';
-import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
+import 'package:techtalk/presentation/widgets/common/image/rounded_skill_image.dart';
 
 class SearchedSkillListView extends ConsumerWidget with SignUpEvent {
   const SearchedSkillListView(
@@ -39,18 +39,11 @@ class SearchedSkillListView extends ConsumerWidget with SignUpEvent {
             minVerticalPadding: 0,
             title: Row(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Image.asset(
-                    'assets/skills/${skill.imagePath}',
-                    height: 30,
-                    width: 30,
-                    errorBuilder: (_, __, ___) {
-                      return EmptyBox();
-                    },
-                  ),
+                RoundedSkillImage(
+                  imagePath: skill.imagePath,
+                  size: 30,
                 ),
-                Gap(4),
+                const Gap(4),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text.rich(

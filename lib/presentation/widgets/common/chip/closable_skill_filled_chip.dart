@@ -5,6 +5,7 @@ import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
+import 'package:techtalk/presentation/widgets/common/image/rounded_skill_image.dart';
 
 class ClosableSkillFilledChip extends StatelessWidget {
   const ClosableSkillFilledChip({
@@ -32,16 +33,8 @@ class ClosableSkillFilledChip extends StatelessWidget {
           child: Center(
             child: Row(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Transform.scale(
-                    scale: 1.1,
-                    child: Image.asset(
-                      skill.imagePath.skillImagePathPrefix,
-                      height: 20,
-                      width: 20,
-                    ),
-                  ),
+                RoundedSkillImage(
+                  imagePath: skill.imagePath,
                 ),
                 const Gap(6),
                 Text(

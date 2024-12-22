@@ -4,6 +4,7 @@ import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
+import 'package:techtalk/presentation/widgets/common/image/rounded_skill_image.dart';
 
 ///
 /// 텍스트 카드뷰
@@ -35,16 +36,8 @@ class RoundedSkillFilledChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: Transform.scale(
-              scale: 1.1,
-              child: Image.asset(
-                skill.imagePath.skillImagePathPrefix,
-                height: 20,
-                width: 20,
-              ),
-            ),
+          RoundedSkillImage(
+            imagePath: skill.imagePath,
           ),
           const Gap(6),
           Text(
