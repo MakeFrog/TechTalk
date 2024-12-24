@@ -4,9 +4,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
-import 'package:techtalk/features/contents/repositories/entities/contents_overview_entity.dart';
-import 'package:techtalk/presentation/pages/youtube/youtube_contents_main_event.dart';
-import 'package:techtalk/presentation/pages/youtube/youtube_contents_overviews_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/explore/provider/youtube_contents_overviews_provider.dart';
+
+import 'package:techtalk/presentation/pages/youtube/explore/youtube_contents_main_event.dart';
+
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 
 class YoutubeContentsMainListPage extends BasePage
