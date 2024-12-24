@@ -13,18 +13,6 @@ class TopicLocalDataSourceImpl implements TopicLocalDataSource {
   QnaListBox? get localQnas => box.values.firstOrNull;
 
   @override
-  Future<List<TopicCategoryModel>> getTopicCategories() async {
-    final topicCategoriesJsonString =
-        await rootBundle.loadString(Assets.jsonTopicCategoriesData);
-    final topicCategoriesJson = jsonDecode(topicCategoriesJsonString) as List;
-
-    return topicCategoriesJson
-        .cast<Map<String, dynamic>>()
-        .map(TopicCategoryModel.fromJson)
-        .toList();
-  }
-
-  @override
   QnaListBox? loadQnas(String topicId) {
     return box.get(topicId);
   }

@@ -43,3 +43,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# assets/skills 폴더 내 모든 파일 제외
+/assets/skills/*

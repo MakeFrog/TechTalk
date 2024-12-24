@@ -11,6 +11,7 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/core/services/slack_notification_service.dart' as noti;
+import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_blur_provider.dart';
@@ -23,11 +24,10 @@ import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 mixin class MyPageEvent {
-
   ///
   /// 알럼 활성화 스위치 버튼이 클릭 되었을 때
   ///
-  void onNotificationSwitchBtnTapped(WidgetRef ref){
+  void onNotificationSwitchBtnTapped(WidgetRef ref) {
     ref.read(notificationStatusProvider.notifier).toggle();
   }
 
@@ -72,7 +72,8 @@ mixin class MyPageEvent {
         rightBtnContent: tr(LocaleKeys.myInfo_others_logout),
         showContentImg: false,
         onRightBtnClicked: () {
-          unawaited(noti.SlackNotificationService.sendNotification(type: SlackNotificationType.logOut));
+          unawaited(noti.SlackNotificationService.sendNotification(
+              type: SlackNotificationType.logOut));
           _clearKeepAliveModules(ref);
           const SignInRoute().go(ref.context);
         },
@@ -180,43 +181,6 @@ mixin class MyPageEvent {
         );
       },
     );
-  }
-
-  ///
-  /// [ExpandableWrappedListview]
-  /// Wrap위젯이 overflow 되었을 때,
-  /// 첫 번째 행의 끝 위치와
-  /// 마지막 행의 끝 위치를 구하는 메소드
-  ///
-  void getListItemPosition(
-      List<({String text, GlobalKey key})> itemCollection,
-      ValueNotifier<double> firstRowElementY,
-      ValueNotifier<double> lastRowElementY,
-      double spacing) {
-    int firstRowElementCount = 0;
-    int lastRowElementCount = 0;
-    final firstRowY = itemCollection[0].key.top;
-    final lastRowY = itemCollection.last.key.top;
-
-    for (var e in itemCollection) {
-      if (e.key.top == firstRowY) {
-        firstRowElementY.value += e.key.width;
-        firstRowElementCount++;
-      } else {
-        if (e.key.top == lastRowY) {
-          lastRowElementY.value += e.key.width;
-          lastRowElementCount++;
-        }
-      }
-    }
-
-    if (firstRowElementCount > 0) {
-      firstRowElementY.value += spacing * (firstRowElementCount - 1);
-    }
-
-    if (lastRowElementCount > 0) {
-      lastRowElementY.value += spacing * (lastRowElementCount - 1);
-    }
   }
 
   ///

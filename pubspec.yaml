@@ -119,8 +119,9 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/character/
-    - assets/json/
     - assets/translations/
+    - assets/skills/
+
 
   fonts:
     - family: pretendard

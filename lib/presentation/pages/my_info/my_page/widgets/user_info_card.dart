@@ -55,8 +55,8 @@ class _UserInfoCard extends ConsumerWidget with MyPageState, MyPageEvent {
                     style: AppTextStyle.body3,
                   ),
                   const Gap(8),
-                  ExpandableWrappedListview(
-                    items: user.skills.map((e) => e.name).toList(),
+                  ExpandableSkillWrappedListview(
+                    items: user.skills,
                   ),
                 ],
               );
