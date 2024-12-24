@@ -5,7 +5,7 @@ import 'package:techtalk/presentation/pages/youtube/constants/contents_detail_ta
 mixin class YoutubeContentsDetailEvent {
   tabChanged(ContentsDetailTabType tabType) {}
 
-  onTapAuthorProfile(ContentsAuthorEntity author) {}
+  onTapAuthorProfile(ChannelEntity author) {}
 
   onTapUploaderProfile(UserEntity uploader) {}
 }

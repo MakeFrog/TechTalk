@@ -311,7 +311,7 @@ extension $YoutubeContentsMainListRouteExtension
 extension $ContentsDetailRouteExtension on ContentsDetailRoute {
   static ContentsDetailRoute _fromState(GoRouterState state) =>
       ContentsDetailRoute(
-        state.extra as ContentsOverviewEntity,
+        state.extra as YoutubeContentOverviewEntity,
       );
 
   String get location => GoRouteData.$location(

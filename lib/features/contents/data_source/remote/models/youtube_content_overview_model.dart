@@ -1,0 +1,55 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:techtalk/core/constants/job_group.enum.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
+import 'package:techtalk/features/contents/data_source/remote/youtube_contents_overview_ref.dart';
+import 'package:techtalk/features/contents/repositories/entities/contents_author_entity.dart';
+
+class YoutubeContentOverviewEntity {
+  final String id;
+
+  final String thumbnailImgUrl;
+
+  final String contentsTitle;
+
+  final int qnaNum; // 아직 등록되지 않은 비디오면 0이 기본값
+
+  final ChannelEntity channel;
+
+  final Set<String> relatedSkillIds;
+
+  final Set<JobGroup> relatedJobs;
+
+  final DateTime uploadAt;
+
+  final DateTime createdAt;
+
+  final Duration videoDuration;
+
+  YoutubeContentOverviewEntity({
+    required this.id,
+    required this.thumbnailImgUrl,
+    required this.contentsTitle,
+    required this.channel,
+    required this.relatedJobs,
+    required this.relatedSkillIds,
+    required this.videoDuration,
+    required this.createdAt,
+    required this.uploadAt,
+    this.qnaNum = 0,
+  });
+
+  YoutubeContentsOverviewModel toModel() => YoutubeContentsOverviewModel(
+        id: id,
+        contentsTitle: contentsTitle,
+        thumbnailImgUrl: thumbnailImgUrl,
+        videoDuration: videoDuration,
+        qnaNum: qnaNum,
+        relatedSkillIds: relatedSkillIds.toList(),
+        relatedJobGroupIds: relatedJobs.map((job) => job.id).toList(),
+        channel: channel.toModel(),
+        uploadAt: uploadAt,
+        createdAt: createdAt,
+        channelRef:
+            FirestoreYoutubeContentsOverviewRef.channelDocumentRef(channel.id),
+      );
+}

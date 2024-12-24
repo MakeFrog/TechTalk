@@ -5,43 +5,38 @@ import 'package:techtalk/features/contents/repositories/entities/contents_author
 part 'contents_author_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class ContentsAuthorModel {
-  ContentsAuthorModel({
+class ChannelModel {
+  ChannelModel({
     required this.id,
     required this.name,
-    required this.profileImgUrl,
-    required this.homePageUrl,
+    required this.logoUrl,
   });
 
   final String id;
-
   final String name;
-
-  final String? profileImgUrl;
-
-  final String? homePageUrl;
+  final String? logoUrl;
 
   /// 엔티티로 변환
 
-  ContentsAuthorEntity toEntity() {
-    return ContentsAuthorEntity(
+  ChannelEntity toEntity() {
+    return ChannelEntity(
       id: id,
       name: name,
-      profileImgUrl: profileImgUrl,
-      homePageUrl: homePageUrl,
+      logoUrl: logoUrl,
     );
   }
 
   /// Firestore에서 가져온 DocumentSnapshot을 모델로 변환
-  factory ContentsAuthorModel.fromFirestore(
+  factory ChannelModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
   ) =>
-      ContentsAuthorModel.fromJson(snapshot.data()!);
+      ChannelModel.fromJson(snapshot.data()!);
 
   /// JSON에서 모델로 변환
-  factory ContentsAuthorModel.fromJson(Map<String, dynamic> json) => _$ContentsAuthorModelFromJson(json);
+  factory ChannelModel.fromJson(Map<String, dynamic> json) =>
+      _$ChannelModelFromJson(json);
 
   /// 모델을 JSON으로 변환
-  Map<String, dynamic> toJson() => _$ContentsAuthorModelToJson(this);
+  Map<String, dynamic> toJson() => _$ChannelModelToJson(this);
 }

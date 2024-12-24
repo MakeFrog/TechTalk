@@ -11,15 +11,23 @@ abstract class FirestoreYoutubeContentsOverviewRef {
           );
 
   static DocumentReference<YoutubeContentsOverviewModel> doc(String id) =>
-      FirebaseFirestore.instance.collection(_collectionName).doc(id).withConverter(
+      FirebaseFirestore.instance
+          .collection(_collectionName)
+          .doc(id)
+          .withConverter(
             fromFirestore: YoutubeContentsOverviewModel.fromFirestore,
             toFirestore: (value, options) => value.toJson(),
           );
+
+  static DocumentReference channelDocumentRef(String channelId) =>
+      FirebaseFirestore.instance.collection('Channel').doc(channelId);
 }
 
 @override
-Future<void> addYoutubeContentsOverview(String contentsId, YoutubeContentsOverviewModel overviewModel) async {
-  final ref = FirebaseFirestore.instance.collection('YoutubeOverview').doc(contentsId);
+Future<void> addYoutubeContentsOverview(
+    String contentsId, YoutubeContentsOverviewModel overviewModel) async {
+  final ref =
+      FirebaseFirestore.instance.collection('YoutubeOverview').doc(contentsId);
 
   await ref.set(overviewModel.toJson());
 }

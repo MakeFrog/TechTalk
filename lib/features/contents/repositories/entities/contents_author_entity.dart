@@ -1,30 +1,36 @@
 import 'package:techtalk/features/contents/data_source/remote/models/contents_author_model.dart';
 
-/// 컨텐츠 저자 정보 인터페이스
-class ContentsAuthorEntity {
-  /// 저자 id
+///
+/// 유튜브 채널 정보
+///
+class ChannelEntity {
+  /// 채널 id
   final String id;
 
-  /// 저자 이름/닉네임
+  /// 채널명
   final String name;
 
-  /// 저자의 프로필 이미지 url
-  final String? profileImgUrl;
+  /// 채널의 로고 이미지
+  final String? logoUrl;
 
-  /// 저자의 메인 홈페이지 url
-  final String? homePageUrl;
+  /// 채널 url
+  String get url => 'https://www.youtube.com/channel/$id';
 
-  ContentsAuthorEntity({
+  ChannelEntity({
     required this.id,
     required this.name,
-    this.profileImgUrl,
-    this.homePageUrl,
+    this.logoUrl,
   });
 
-  ContentsAuthorModel toModel() => ContentsAuthorModel(
+  ///
+  /// 호출에 실패했을 경우
+  ///
+  factory ChannelEntity.undefined() =>
+      ChannelEntity(id: 'undefined', name: '알 수 없는 채널');
+
+  ChannelModel toModel() => ChannelModel(
         id: id,
         name: name,
-        profileImgUrl: profileImgUrl,
-        homePageUrl: homePageUrl,
+        logoUrl: logoUrl,
       );
 }
