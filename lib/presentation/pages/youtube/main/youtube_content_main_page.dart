@@ -8,6 +8,7 @@ import 'package:techtalk/features/contents/data_source/remote/models/youtube_vid
 import 'package:techtalk/presentation/pages/youtube/main/youtube_content_main_event.dart';
 import 'package:techtalk/presentation/pages/youtube/main/youtube_content_main_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
+import 'package:techtalk/presentation/widgets/common/chip/selectable_chip.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 part 'widgets/scaffold.p.dart';

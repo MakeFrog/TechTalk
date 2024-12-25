@@ -19,7 +19,7 @@ class _Scaffold extends StatelessWidget {
           pinned: true,
           delegate: StickyDelegateContainer(
             minHeight: 0,
-            maxHeight: 70,
+            maxHeight: 42,
             child: categorySliderBar,
           ),
         ),

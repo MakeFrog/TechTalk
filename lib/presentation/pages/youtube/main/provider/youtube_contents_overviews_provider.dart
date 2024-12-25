@@ -9,7 +9,7 @@ import 'package:techtalk/features/contents/data_source/remote/models/youtube_con
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
 import 'package:techtalk/features/contents/usecases/get_youtube_overview_list_use_case.dart';
 import 'package:techtalk/features/contents/youtube.dart';
-import 'package:techtalk/presentation/pages/youtube/main/constant/yotubue_content_filter.dart';
+import 'package:techtalk/presentation/pages/youtube/main/constant/yotubue_content_category.dart';
 
 part 'youtube_contents_overviews_provider.g.dart';
 
@@ -18,7 +18,7 @@ Raw<
     PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
         YoutubeContentOverviewEntity>> youtubeContentsOverviews(
   YoutubeContentsOverviewsRef ref, {
-  required YoutubeContentFiler filterArg,
+  required YoutubeContentCategory filterArg,
 }) {
   final pagingController = PagingController<
       DocumentSnapshot<YoutubeContentsOverviewModel>?,

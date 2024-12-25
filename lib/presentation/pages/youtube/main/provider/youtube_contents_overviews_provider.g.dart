@@ -7,7 +7,7 @@ part of 'youtube_contents_overviews_provider.dart';
 // **************************************************************************
 
 String _$youtubeContentsOverviewsHash() =>
-    r'1c7fa7fc1565a367748fb02a7babeafd01458263';
+    r'563399e8f6cfac0650deb9bf38849caed8852f4c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -44,7 +44,7 @@ class YoutubeContentsOverviewsFamily extends Family<
 
   /// See also [youtubeContentsOverviews].
   YoutubeContentsOverviewsProvider call({
-    required YoutubeContentFiler filterArg,
+    required YoutubeContentCategory filterArg,
   }) {
     return YoutubeContentsOverviewsProvider(
       filterArg: filterArg,
@@ -82,7 +82,7 @@ class YoutubeContentsOverviewsProvider extends AutoDisposeProvider<
             YoutubeContentOverviewEntity>>> {
   /// See also [youtubeContentsOverviews].
   YoutubeContentsOverviewsProvider({
-    required YoutubeContentFiler filterArg,
+    required YoutubeContentCategory filterArg,
   }) : this._internal(
           (ref) => youtubeContentsOverviews(
             ref as YoutubeContentsOverviewsRef,
@@ -110,7 +110,7 @@ class YoutubeContentsOverviewsProvider extends AutoDisposeProvider<
     required this.filterArg,
   }) : super.internal();
 
-  final YoutubeContentFiler filterArg;
+  final YoutubeContentCategory filterArg;
 
   @override
   Override overrideWith(
@@ -163,7 +163,7 @@ mixin YoutubeContentsOverviewsRef on AutoDisposeProviderRef<
         PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
             YoutubeContentOverviewEntity>>> {
   /// The parameter `filterArg` of this provider.
-  YoutubeContentFiler get filterArg;
+  YoutubeContentCategory get filterArg;
 }
 
 class _YoutubeContentsOverviewsProviderElement
@@ -175,7 +175,7 @@ class _YoutubeContentsOverviewsProviderElement
   _YoutubeContentsOverviewsProviderElement(super.provider);
 
   @override
-  YoutubeContentFiler get filterArg =>
+  YoutubeContentCategory get filterArg =>
       (origin as YoutubeContentsOverviewsProvider).filterArg;
 }
 // ignore_for_file: type=lint

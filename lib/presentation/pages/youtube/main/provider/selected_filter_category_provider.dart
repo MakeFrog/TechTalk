@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/content_filter_category_type.enum.dart';
-import 'package:techtalk/presentation/pages/youtube/main/constant/yotubue_content_filter.dart';
+import 'package:techtalk/presentation/pages/youtube/main/constant/yotubue_content_category.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 ///
@@ -9,15 +9,26 @@ import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 ///
 class YoutubeContentCategoryProvider extends ChangeNotifier {
   ///
-  /// 선택된 필터 카테고리
+  /// 선택된 카테고리
   ///
-  final YoutubeContentFiler selectedCategory;
+  YoutubeContentCategory selectedCategory;
 
-  final List<YoutubeContentFiler> totalCategory;
+  ///
+  /// 전체 카티고리 리스트
+  ///
+  final List<YoutubeContentCategory> totalCategories;
+
+  ///
+  /// 선택된 카테고리 토글
+  ///
+  void toggleCategorySelection(YoutubeContentCategory targetCategory) {
+    selectedCategory = targetCategory;
+    notifyListeners();
+  }
 
   YoutubeContentCategoryProvider({
     required this.selectedCategory,
-    required this.totalCategory,
+    required this.totalCategories,
   });
 }
 
@@ -29,10 +40,10 @@ final youtubeContentCategoryProvider =
     final skills = userInfo.skills;
     final jobGroups = userInfo.jobGroups;
 
-    final List<YoutubeContentFiler> combined = [
+    final List<YoutubeContentCategory> combined = [
       /// TODO : XIMYA
       /// LOCALIZATION 필요
-      const YoutubeContentFiler(
+      const YoutubeContentCategory(
         id: 'all',
         name: '전체',
         type: ContentFilterCategoryType.all,
@@ -40,16 +51,16 @@ final youtubeContentCategoryProvider =
     ];
 
     for (var skill in skills) {
-      combined.add(YoutubeContentFiler.fromSkill(skill));
+      combined.add(YoutubeContentCategory.fromSkill(skill));
     }
 
     for (var job in jobGroups) {
-      combined.add(YoutubeContentFiler.fromJob(job));
+      combined.add(YoutubeContentCategory.fromJob(job));
     }
 
     return YoutubeContentCategoryProvider(
       selectedCategory: combined.first, // '전체' 카테고리는 디폴트 값
-      totalCategory: combined,
+      totalCategories: combined,
     );
   },
 );

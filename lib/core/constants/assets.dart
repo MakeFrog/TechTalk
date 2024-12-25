@@ -35,7 +35,8 @@ class Assets {
   static const String iconsArrowLeft = 'assets/icons/arrow_left.svg';
   static const String iconsArrowLeftThick = 'assets/icons/arrow_left_thick.svg';
   static const String iconsArrowRight = 'assets/icons/arrow_right.svg';
-  static const String iconsArrowRightThick = 'assets/icons/arrow_right_thick.svg';
+  static const String iconsArrowRightThick =
+      'assets/icons/arrow_right_thick.svg';
   static const String iconsArrowUp = 'assets/icons/arrow_up.svg';
   static const String iconsArrowUpThick = 'assets/icons/arrow_up_thick.svg';
   static const String iconsAvatar1 = 'assets/icons/avatar_1.svg';
@@ -47,16 +48,20 @@ class Assets {
   static const String iconsClose = 'assets/icons/close.svg';
   static const String iconsCloseThick = 'assets/icons/close_thick.svg';
   static const String iconsCorrect = 'assets/icons/correct.svg';
-  static const String iconsCorrectIndicator = 'assets/icons/correct_indicator.svg';
+  static const String iconsCorrectIndicator =
+      'assets/icons/correct_indicator.svg';
   static const String iconsDataStructure = 'assets/icons/data_structure.svg';
   static const String iconsDeleteOrWrong = 'assets/icons/delete_or_wrong.svg';
   static const String iconsErrorIndicator = 'assets/icons/error_indicator.svg';
-  static const String iconsExpansionArrowIndicator = 'assets/icons/expansion_arrow_indicator.svg';
+  static const String iconsExpansionArrowIndicator =
+      'assets/icons/expansion_arrow_indicator.svg';
   static const String iconsFailResult = 'assets/icons/fail_result.svg';
-  static const String iconsFollowUpQuestion = 'assets/icons/follow_up_question.svg';
+  static const String iconsFollowUpQuestion =
+      'assets/icons/follow_up_question.svg';
   static const String iconsGoogleLogo = 'assets/icons/google_logo.svg';
   static const String iconsHome = 'assets/icons/home.svg';
-  static const String iconsIconAppBarLeft = 'assets/icons/icon_app_bar_left.svg';
+  static const String iconsIconAppBarLeft =
+      'assets/icons/icon_app_bar_left.svg';
   static const String iconsIconMic = 'assets/icons/icon_mic.svg';
   static const String iconsIncorrect = 'assets/icons/incorrect.svg';
   static const String iconsMenuThick = 'assets/icons/menu_thick.svg';
@@ -66,26 +71,37 @@ class Assets {
   static const String iconsPencil = 'assets/icons/pencil.svg';
   static const String iconsPlus = 'assets/icons/plus.svg';
   static const String iconsPlusThick = 'assets/icons/plus_thick.svg';
-  static const String iconsPonderingIllusration = 'assets/icons/pondering_illusration.svg';
+  static const String iconsPonderingIllusration =
+      'assets/icons/pondering_illusration.svg';
   static const String iconsRedAlert = 'assets/icons/red_alert.svg';
-  static const String iconsRoundBlueCircle = 'assets/icons/round_blue_circle.svg';
-  static const String iconsRoundedBlueExclamation = 'assets/icons/rounded_blue_exclamation.svg';
+  static const String iconsRoundBlueCircle =
+      'assets/icons/round_blue_circle.svg';
+  static const String iconsRoundedBlueExclamation =
+      'assets/icons/rounded_blue_exclamation.svg';
   static const String iconsRoundedCamera = 'assets/icons/rounded_camera.svg';
   static const String iconsRoundedCheck = 'assets/icons/rounded_check.svg';
-  static const String iconsRoundedCheckSmallBlue = 'assets/icons/rounded_check_small_blue.svg';
-  static const String iconsRoundedCheckThick = 'assets/icons/rounded_check_thick.svg';
+  static const String iconsRoundedCheckSmallBlue =
+      'assets/icons/rounded_check_small_blue.svg';
+  static const String iconsRoundedCheckThick =
+      'assets/icons/rounded_check_thick.svg';
   static const String iconsRoundedClose = 'assets/icons/rounded_close.svg';
-  static const String iconsRoundedCloseBlue = 'assets/icons/rounded_close_blue.svg';
-  static const String iconsRoundedCloseSmallRed = 'assets/icons/rounded_close_small_red.svg';
-  static const String iconsRoundedCloseThick = 'assets/icons/rounded_close_thick.svg';
-  static const String iconsRoundedExclamation = 'assets/icons/rounded_exclamation.svg';
+  static const String iconsRoundedCloseBlue =
+      'assets/icons/rounded_close_blue.svg';
+  static const String iconsRoundedCloseSmallRed =
+      'assets/icons/rounded_close_small_red.svg';
+  static const String iconsRoundedCloseThick =
+      'assets/icons/rounded_close_thick.svg';
+  static const String iconsRoundedExclamation =
+      'assets/icons/rounded_exclamation.svg';
   static const String iconsRoundedMore = 'assets/icons/rounded_more.svg';
   static const String iconsRoundedOs = 'assets/icons/rounded_os.svg';
   static const String iconsRoundedPlusBig = 'assets/icons/rounded_plus_big.svg';
   static const String iconsRoundedSend = 'assets/icons/rounded_send.svg';
-  static const String iconsRoundedSendInactive = 'assets/icons/rounded_send_inactive.svg';
+  static const String iconsRoundedSendInactive =
+      'assets/icons/rounded_send_inactive.svg';
   static const String iconsRoundedTop = 'assets/icons/rounded_top.svg';
-  static const String iconsRoundedWarnningSmallRed = 'assets/icons/rounded_warnning_small_red.svg';
+  static const String iconsRoundedWarnningSmallRed =
+      'assets/icons/rounded_warnning_small_red.svg';
   static const String iconsSearch = 'assets/icons/search.svg';
   static const String iconsSearchThick = 'assets/icons/search_thick.svg';
   static const String iconsSend = 'assets/icons/send.svg';
@@ -97,37 +113,50 @@ class Assets {
   static const String iconsTechTalkLogo = 'assets/icons/tech_talk_logo.svg';
   static const String iconsTextFieldMic = 'assets/icons/text_field_mic.svg';
   static const String iconsTypingModeAa = 'assets/icons/typing_mode_aa.svg';
-  static const String iconsTypingModeTooltip = 'assets/icons/typing_mode_tooltip.svg';
+  static const String iconsTypingModeTooltip =
+      'assets/icons/typing_mode_tooltip.svg';
   static const String iconsUser = 'assets/icons/user.svg';
   static const String iconsWarning = 'assets/icons/warning.svg';
   static const String iconsWrongIndicator = 'assets/icons/wrong_indicator.svg';
   static const String imagesAppIcon = 'assets/images/app_icon.png';
   static const String imagesAvatar1 = 'assets/images/avatar_1.png';
   static const String imagesBlankProfile = 'assets/images/blank_profile.png';
-  static const String imagesInductionPractical = 'assets/images/induction_practical.png';
-  static const String imagesInductionResume = 'assets/images/induction_resume.png';
-  static const String imagesInductionSingle = 'assets/images/induction_single.png';
+  static const String imagesInductionPractical =
+      'assets/images/induction_practical.png';
+  static const String imagesInductionResume =
+      'assets/images/induction_resume.png';
+  static const String imagesInductionSingle =
+      'assets/images/induction_single.png';
   static const String imagesSparkle = 'assets/images/sparkle.svg';
   static const String imagesSplashImage = 'assets/images/splash_image.png';
   static const String imagesTopicAndroid = 'assets/images/topic_android.png';
-  static const String imagesTopicDataStructure = 'assets/images/topic_data_structure.png';
+  static const String imagesTopicDataStructure =
+      'assets/images/topic_data_structure.png';
   static const String imagesTopicDatabase = 'assets/images/topic_database.png';
   static const String imagesTopicFlutter = 'assets/images/topic_flutter.png';
   static const String imagesTopicIos = 'assets/images/topic_ios.png';
   static const String imagesTopicJava = 'assets/images/topic_java.png';
-  static const String imagesTopicJavascript = 'assets/images/topic_javascript.png';
+  static const String imagesTopicJavascript =
+      'assets/images/topic_javascript.png';
   static const String imagesTopicNestJs = 'assets/images/topic_nest_js.png';
   static const String imagesTopicNetwork = 'assets/images/topic_network.png';
-  static const String imagesTopicOperatingSystem = 'assets/images/topic_operating_system.png';
+  static const String imagesTopicOperatingSystem =
+      'assets/images/topic_operating_system.png';
   static const String imagesTopicReact = 'assets/images/topic_react.png';
   static const String imagesTopicSpring = 'assets/images/topic_spring.png';
   static const String imagesTopicSwift = 'assets/images/topic_swift.png';
-  static const String imagesTopicWebFrontend = 'assets/images/topic_webFrontend.png';
-  static const String imagesWelcomeTechtalk = 'assets/images/welcome_techtalk.svg';
-  static const String pretendardPretendardBold = 'assets/fonts/pretendard/Pretendard-Bold.otf';
-  static const String pretendardPretendardMedium = 'assets/fonts/pretendard/Pretendard-Medium.otf';
-  static const String pretendardPretendardRegular = 'assets/fonts/pretendard/Pretendard-Regular.otf';
-  static const String pretendardPretendardSemiBold = 'assets/fonts/pretendard/Pretendard-SemiBold.otf';
+  static const String imagesTopicWebFrontend =
+      'assets/images/topic_webFrontend.png';
+  static const String imagesWelcomeTechtalk =
+      'assets/images/welcome_techtalk.svg';
+  static const String pretendardPretendardBold =
+      'assets/fonts/pretendard/Pretendard-Bold.otf';
+  static const String pretendardPretendardMedium =
+      'assets/fonts/pretendard/Pretendard-Medium.otf';
+  static const String pretendardPretendardRegular =
+      'assets/fonts/pretendard/Pretendard-Regular.otf';
+  static const String pretendardPretendardSemiBold =
+      'assets/fonts/pretendard/Pretendard-SemiBold.otf';
   static const String skillsAirflow = 'assets/skills/airflow.png';
   static const String skillsAlamofire = 'assets/skills/alamofire.png';
   static const String skillsAndroid = 'assets/skills/android.png';
@@ -144,7 +173,8 @@ class Assets {
   static const String skillsAwsauroradb = 'assets/skills/awsauroradb.png';
   static const String skillsAwscodebuild = 'assets/skills/awscodebuild.png';
   static const String skillsAwscodedeploy = 'assets/skills/awscodedeploy.png';
-  static const String skillsAwscodepipeline = 'assets/skills/awscodepipeline.png';
+  static const String skillsAwscodepipeline =
+      'assets/skills/awscodepipeline.png';
   static const String skillsAwsdocumentdb = 'assets/skills/awsdocumentdb.png';
   static const String skillsAwsdynamodb = 'assets/skills/awsdynamodb.png';
   static const String skillsAwskinesis = 'assets/skills/awskinesis.png';
@@ -212,10 +242,13 @@ class Assets {
   static const String skillsGo = 'assets/skills/go.png';
   static const String skillsGocd = 'assets/skills/gocd.png';
   static const String skillsGooglebigquery = 'assets/skills/googlebigquery.png';
-  static const String skillsGooglecodebuild = 'assets/skills/googlecodebuild.png';
-  static const String skillsGoogledatastudio = 'assets/skills/googledatastudio.png';
+  static const String skillsGooglecodebuild =
+      'assets/skills/googlecodebuild.png';
+  static const String skillsGoogledatastudio =
+      'assets/skills/googledatastudio.png';
   static const String skillsGooglefirebase = 'assets/skills/googlefirebase.png';
-  static const String skillsGooglefirestore = 'assets/skills/googlefirestore.png';
+  static const String skillsGooglefirestore =
+      'assets/skills/googlefirestore.png';
   static const String skillsGrafana = 'assets/skills/grafana.png';
   static const String skillsGraphql = 'assets/skills/graphql.png';
   static const String skillsGreenplum = 'assets/skills/greenplum.png';
@@ -290,7 +323,8 @@ class Assets {
   static const String skillsObjectivec = 'assets/skills/objectivec.png';
   static const String skillsOpenebs = 'assets/skills/openebs.png';
   static const String skillsOpengl = 'assets/skills/opengl.png';
-  static const String skillsOperatingsystem = 'assets/skills/operatingsystem.png';
+  static const String skillsOperatingsystem =
+      'assets/skills/operatingsystem.png';
   static const String skillsOracledb = 'assets/skills/oracledb.png';
   static const String skillsPacker = 'assets/skills/packer.png';
   static const String skillsPerl = 'assets/skills/perl.png';
@@ -343,7 +377,8 @@ class Assets {
   static const String skillsSpring = 'assets/skills/spring.png';
   static const String skillsSpringboot = 'assets/skills/springboot.png';
   static const String skillsStorybook = 'assets/skills/storybook.png';
-  static const String skillsStyledcomponents = 'assets/skills/styledcomponents.png';
+  static const String skillsStyledcomponents =
+      'assets/skills/styledcomponents.png';
   static const String skillsSuperset = 'assets/skills/superset.png';
   static const String skillsSvelte = 'assets/skills/svelte.png';
   static const String skillsSwagger = 'assets/skills/swagger.png';
@@ -372,5 +407,4 @@ class Assets {
   static const String techTalk = '.env';
   static const String translationsEn = 'assets/translations/en.json';
   static const String translationsKo = 'assets/translations/ko.json';
-
 }

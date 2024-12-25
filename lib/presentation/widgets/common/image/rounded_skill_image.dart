@@ -21,12 +21,19 @@ class RoundedSkillImage extends StatelessWidget {
         color: AppColor.of.white,
         child: Transform.scale(
           scale: 1.1,
-          child: Image.asset(
-            imagePath?.skillImagePathPrefix ?? Assets.imagesAppIcon,
-            height: size,
+          child: SizedBox(
             width: size,
-            fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => Image.asset(Assets.imagesAppIcon),
+            height: size,
+            child: Image.asset(
+              imagePath?.skillImagePathPrefix ?? Assets.imagesAppIcon,
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => ColoredBox(
+                color: Colors.white,
+                child: Image.asset(
+                  Assets.imagesAppIcon,
+                ),
+              ),
+            ),
           ),
         ),
       ),
