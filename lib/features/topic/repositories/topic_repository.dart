@@ -6,14 +6,14 @@ abstract interface class TopicRepository {
   ///
   /// 문답 리스트 호출
   ///
-  Future<Result<List<QnaEntity>>> getTopicQnas(
+  Future<Result<List<CommonQnaEntity>>> getTopicQnas(
     String topicId,
   );
 
   ///
   /// 단일 문답 호출
   ///
-  Future<Result<QnaEntity>> getTopicQna(
+  Future<Result<CommonQnaEntity>> getTopicQna(
     String topicId,
     String questionId,
   );

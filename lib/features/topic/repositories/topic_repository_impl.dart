@@ -14,11 +14,12 @@ class TopicRepositoryImpl implements TopicRepository {
   final TopicRemoteDataSource _remoteDataSource;
 
   @override
-  Future<Result<List<QnaEntity>>> getTopicQnas(
+  Future<Result<List<CommonQnaEntity>>> getTopicQnas(
     String topicId,
   ) async {
     try {
       final targetTopic = StoredTopics.getById(topicId);
+
       final localResponse = _localDataSource.loadQnas(topicId);
 
       if (localResponse != null &&
@@ -43,7 +44,7 @@ class TopicRepositoryImpl implements TopicRepository {
   }
 
   @override
-  Future<Result<QnaEntity>> getTopicQna(
+  Future<Result<CommonQnaEntity>> getTopicQna(
     String topicId,
     String questionId,
   ) async {

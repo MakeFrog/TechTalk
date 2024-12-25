@@ -56,7 +56,7 @@ class _SearchBar extends ConsumerWidget with SignUpState, SignUpEvent {
     return Form(
       key: formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      child: ClearableTextField(
+      child: TechtalkTextField(
         controller: controller,
         textInputAction: TextInputAction.done,
         validator: (input) => nicknameValidation(ref, input: input),

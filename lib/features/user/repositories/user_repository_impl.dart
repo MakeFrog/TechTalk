@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/features/user/user.dart';
 
@@ -34,6 +35,8 @@ final class UserRepositoryImpl implements UserRepository {
       final List<SkillEntity> skills = remoteRes.techSkills != null
           ? remoteRes.techSkills!.map(_techSetRepository.getSkillById).toList()
           : [];
+
+      skills.removeWhere((e) => e.id == SkillEntity.undefinedKey);
 
       final result = UserEntity.fromModel(
         remoteRes,
@@ -135,9 +138,10 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Result<bool> hasEnteredFirstInterview()  {
+  Result<bool> hasEnteredFirstInterview() {
     try {
-      final response = _userLocalDataSource.loadUserLocalInfo().hasEnteredFirstInterview;
+      final response =
+          _userLocalDataSource.loadUserLocalInfo().hasEnteredFirstInterview;
       return Result.success(response);
     } on Exception catch (e) {
       return Result.failure(e);
@@ -145,13 +149,12 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<void>> changeFirstEnteredFieldToTrue() async{
+  Future<Result<void>> changeFirstEnteredFieldToTrue() async {
     try {
       await _userLocalDataSource.changeFirstEnteredFieldToTrue();
       return Result.success(null);
-    } on Exception catch(e) {
+    } on Exception catch (e) {
       return Result.failure(e);
     }
   }
-
 }

@@ -1,7 +1,7 @@
-import 'package:techtalk/features/topic/repositories/entities/qna_entity.dart';
+import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.dart';
 
 class WrongAnswerEntity {
-  final QnaEntity qna;
+  final CommonQnaEntity qna;
   final DateTime updatedAt;
   final String userAnswer;
   final int wrongAnswerCount;

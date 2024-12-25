@@ -8,7 +8,7 @@ final class GetTopicQnasUseCase {
 
   final TopicRepository _topicRepository;
 
-  Future<Result<List<QnaEntity>>> call(String topicId) async {
+  Future<Result<List<CommonQnaEntity>>> call(String topicId) async {
     return _topicRepository.getTopicQnas(topicId);
   }
 }

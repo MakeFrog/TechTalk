@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:techtalk/features/topic/data_source/remote/models/topic_qna_model.dart';
-import 'package:techtalk/features/topic/repositories/entities/qna_entity.dart';
+import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.dart';
 
 part 'qna_box.g.dart';
 
@@ -20,8 +20,8 @@ class QnaBox extends HiveObject {
   factory QnaBox.fromModel(TopicQnaModel entity) =>
       QnaBox(id: entity.id, question: entity.question, answers: entity.answers);
 
-  QnaEntity toEntity() {
-    return QnaEntity(
+  CommonQnaEntity toEntity() {
+    return CommonQnaEntity(
       id: id,
       question: question,
       answers: answers,

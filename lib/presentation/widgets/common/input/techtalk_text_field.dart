@@ -3,10 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:techtalk/app/style/app_color.dart';
+import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 
-class ClearableTextField extends HookWidget {
-  const ClearableTextField({
+class TechtalkTextField extends HookWidget {
+  const TechtalkTextField({
     super.key,
     this.focusNode,
     this.controller,
@@ -62,6 +64,18 @@ class ClearableTextField extends HookWidget {
           suffixIcon: activeSuffixIcon && !isFieldEmpty(controller)
               ? _buildClearIcon(controller)
               : null,
+          errorStyle: AppTextStyle.body2.copyWith(
+            color: AppColor.of.red2,
+          ),
+          contentPadding: const EdgeInsets.symmetric(
+                vertical: 14,
+              ) +
+              const EdgeInsets.only(right: 16),
+          prefix: const Padding(
+            padding: EdgeInsets.only(
+              left: 16.0,
+            ),
+          ),
         );
 
     return TextFormField(

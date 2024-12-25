@@ -6,7 +6,7 @@ part of 'study_qnas_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$studyQnasHash() => r'74c8ed4640bcbff51e51b30129be15986ceffe2b';
+String _$studyQnasHash() => r'cf18ae5315255a38ca17e0e7e4c8a0fc8e069959';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,10 +30,10 @@ class _SystemHash {
 }
 
 abstract class _$StudyQnas
-    extends BuildlessAutoDisposeAsyncNotifier<List<QnaEntity>> {
+    extends BuildlessAutoDisposeAsyncNotifier<List<CommonQnaEntity>> {
   late final String topicId;
 
-  FutureOr<List<QnaEntity>> build(
+  FutureOr<List<CommonQnaEntity>> build(
     String topicId,
   );
 }
@@ -43,7 +43,7 @@ abstract class _$StudyQnas
 const studyQnasProvider = StudyQnasFamily();
 
 /// See also [StudyQnas].
-class StudyQnasFamily extends Family<AsyncValue<List<QnaEntity>>> {
+class StudyQnasFamily extends Family<AsyncValue<List<CommonQnaEntity>>> {
   /// See also [StudyQnas].
   const StudyQnasFamily();
 
@@ -81,8 +81,8 @@ class StudyQnasFamily extends Family<AsyncValue<List<QnaEntity>>> {
 }
 
 /// See also [StudyQnas].
-class StudyQnasProvider
-    extends AutoDisposeAsyncNotifierProviderImpl<StudyQnas, List<QnaEntity>> {
+class StudyQnasProvider extends AutoDisposeAsyncNotifierProviderImpl<StudyQnas,
+    List<CommonQnaEntity>> {
   /// See also [StudyQnas].
   StudyQnasProvider(
     String topicId,
@@ -112,7 +112,7 @@ class StudyQnasProvider
   final String topicId;
 
   @override
-  FutureOr<List<QnaEntity>> runNotifierBuild(
+  FutureOr<List<CommonQnaEntity>> runNotifierBuild(
     covariant StudyQnas notifier,
   ) {
     return notifier.build(
@@ -137,7 +137,7 @@ class StudyQnasProvider
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<StudyQnas, List<QnaEntity>>
+  AutoDisposeAsyncNotifierProviderElement<StudyQnas, List<CommonQnaEntity>>
       createElement() {
     return _StudyQnasProviderElement(this);
   }
@@ -156,14 +156,14 @@ class StudyQnasProvider
   }
 }
 
-mixin StudyQnasRef on AutoDisposeAsyncNotifierProviderRef<List<QnaEntity>> {
+mixin StudyQnasRef
+    on AutoDisposeAsyncNotifierProviderRef<List<CommonQnaEntity>> {
   /// The parameter `topicId` of this provider.
   String get topicId;
 }
 
-class _StudyQnasProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<StudyQnas, List<QnaEntity>>
-    with StudyQnasRef {
+class _StudyQnasProviderElement extends AutoDisposeAsyncNotifierProviderElement<
+    StudyQnas, List<CommonQnaEntity>> with StudyQnasRef {
   _StudyQnasProviderElement(super.provider);
 
   @override
