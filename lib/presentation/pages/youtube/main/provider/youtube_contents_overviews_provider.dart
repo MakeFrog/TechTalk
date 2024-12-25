@@ -3,11 +3,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
 import 'package:techtalk/features/contents/usecases/get_youtube_overview_list_use_case.dart';
 import 'package:techtalk/features/contents/youtube.dart';
+import 'package:techtalk/presentation/pages/youtube/main/constant/yotubue_content_filter.dart';
 
 part 'youtube_contents_overviews_provider.g.dart';
 
@@ -15,7 +17,9 @@ part 'youtube_contents_overviews_provider.g.dart';
 Raw<
     PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
         YoutubeContentOverviewEntity>> youtubeContentsOverviews(
-    YoutubeContentsOverviewsRef ref) {
+  YoutubeContentsOverviewsRef ref, {
+  required YoutubeContentFiler filterArg,
+}) {
   final pagingController = PagingController<
       DocumentSnapshot<YoutubeContentsOverviewModel>?,
       YoutubeContentOverviewEntity>(

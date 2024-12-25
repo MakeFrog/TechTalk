@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
+import 'package:techtalk/presentation/pages/youtube/main/provider/selected_filter_category_provider.dart';
 
 import 'provider/youtube_contents_overviews_provider.dart';
 
@@ -12,7 +13,10 @@ mixin class YoutubeContentMainState {
   ///
   PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
       YoutubeContentOverviewEntity> pagingController(WidgetRef ref) {
-    final pagingController = ref.watch(youtubeContentsOverviewsProvider);
+    final selectedFilter = ref.read(selectedFilterCategoryProvider);
+
+    final pagingController =
+        ref.watch(youtubeContentsOverviewsProvider(filterArg: selectedFilter));
     return pagingController;
   }
 }
