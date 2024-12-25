@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'youtube_contents_overviews_provider.dart';
+part of 'youtube_content_pagination_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$youtubeContentsOverviewsHash() =>
-    r'c52eb0919487578a018ded8aa2ff3bdd90920a06';
+String _$youtubeContentPaginationHash() =>
+    r'a9ba0bcc4c6ca2c99bc2e819e99185a16882e1ed';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,30 +30,30 @@ class _SystemHash {
   }
 }
 
-/// See also [youtubeContentsOverviews].
-@ProviderFor(youtubeContentsOverviews)
-const youtubeContentsOverviewsProvider = YoutubeContentsOverviewsFamily();
+/// See also [youtubeContentPagination].
+@ProviderFor(youtubeContentPagination)
+const youtubeContentPaginationProvider = YoutubeContentPaginationFamily();
 
-/// See also [youtubeContentsOverviews].
-class YoutubeContentsOverviewsFamily extends Family<
+/// See also [youtubeContentPagination].
+class YoutubeContentPaginationFamily extends Family<
     Raw<
         PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
             YoutubeContentOverviewEntity>>> {
-  /// See also [youtubeContentsOverviews].
-  const YoutubeContentsOverviewsFamily();
+  /// See also [youtubeContentPagination].
+  const YoutubeContentPaginationFamily();
 
-  /// See also [youtubeContentsOverviews].
-  YoutubeContentsOverviewsProvider call({
+  /// See also [youtubeContentPagination].
+  YoutubeContentPaginationProvider call({
     required YoutubeContentCategory category,
   }) {
-    return YoutubeContentsOverviewsProvider(
+    return YoutubeContentPaginationProvider(
       category: category,
     );
   }
 
   @override
-  YoutubeContentsOverviewsProvider getProviderOverride(
-    covariant YoutubeContentsOverviewsProvider provider,
+  YoutubeContentPaginationProvider getProviderOverride(
+    covariant YoutubeContentPaginationProvider provider,
   ) {
     return call(
       category: provider.category,
@@ -72,35 +72,35 @@ class YoutubeContentsOverviewsFamily extends Family<
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'youtubeContentsOverviewsProvider';
+  String? get name => r'youtubeContentPaginationProvider';
 }
 
-/// See also [youtubeContentsOverviews].
-class YoutubeContentsOverviewsProvider extends AutoDisposeProvider<
+/// See also [youtubeContentPagination].
+class YoutubeContentPaginationProvider extends Provider<
     Raw<
         PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
             YoutubeContentOverviewEntity>>> {
-  /// See also [youtubeContentsOverviews].
-  YoutubeContentsOverviewsProvider({
+  /// See also [youtubeContentPagination].
+  YoutubeContentPaginationProvider({
     required YoutubeContentCategory category,
   }) : this._internal(
-          (ref) => youtubeContentsOverviews(
-            ref as YoutubeContentsOverviewsRef,
+          (ref) => youtubeContentPagination(
+            ref as YoutubeContentPaginationRef,
             category: category,
           ),
-          from: youtubeContentsOverviewsProvider,
-          name: r'youtubeContentsOverviewsProvider',
+          from: youtubeContentPaginationProvider,
+          name: r'youtubeContentPaginationProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$youtubeContentsOverviewsHash,
-          dependencies: YoutubeContentsOverviewsFamily._dependencies,
+                  : _$youtubeContentPaginationHash,
+          dependencies: YoutubeContentPaginationFamily._dependencies,
           allTransitiveDependencies:
-              YoutubeContentsOverviewsFamily._allTransitiveDependencies,
+              YoutubeContentPaginationFamily._allTransitiveDependencies,
           category: category,
         );
 
-  YoutubeContentsOverviewsProvider._internal(
+  YoutubeContentPaginationProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -118,13 +118,13 @@ class YoutubeContentsOverviewsProvider extends AutoDisposeProvider<
                 PagingController<
                     DocumentSnapshot<YoutubeContentsOverviewModel>?,
                     YoutubeContentOverviewEntity>>
-            Function(YoutubeContentsOverviewsRef provider)
+            Function(YoutubeContentPaginationRef provider)
         create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: YoutubeContentsOverviewsProvider._internal(
-        (ref) => create(ref as YoutubeContentsOverviewsRef),
+      override: YoutubeContentPaginationProvider._internal(
+        (ref) => create(ref as YoutubeContentPaginationRef),
         from: from,
         name: null,
         dependencies: null,
@@ -136,16 +136,16 @@ class YoutubeContentsOverviewsProvider extends AutoDisposeProvider<
   }
 
   @override
-  AutoDisposeProviderElement<
+  ProviderElement<
       Raw<
           PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
               YoutubeContentOverviewEntity>>> createElement() {
-    return _YoutubeContentsOverviewsProviderElement(this);
+    return _YoutubeContentPaginationProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is YoutubeContentsOverviewsProvider &&
+    return other is YoutubeContentPaginationProvider &&
         other.category == category;
   }
 
@@ -158,7 +158,7 @@ class YoutubeContentsOverviewsProvider extends AutoDisposeProvider<
   }
 }
 
-mixin YoutubeContentsOverviewsRef on AutoDisposeProviderRef<
+mixin YoutubeContentPaginationRef on ProviderRef<
     Raw<
         PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
             YoutubeContentOverviewEntity>>> {
@@ -166,17 +166,15 @@ mixin YoutubeContentsOverviewsRef on AutoDisposeProviderRef<
   YoutubeContentCategory get category;
 }
 
-class _YoutubeContentsOverviewsProviderElement
-    extends AutoDisposeProviderElement<
-        Raw<
-            PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
-                YoutubeContentOverviewEntity>>>
-    with YoutubeContentsOverviewsRef {
-  _YoutubeContentsOverviewsProviderElement(super.provider);
+class _YoutubeContentPaginationProviderElement extends ProviderElement<
+    Raw<
+        PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
+            YoutubeContentOverviewEntity>>> with YoutubeContentPaginationRef {
+  _YoutubeContentPaginationProviderElement(super.provider);
 
   @override
   YoutubeContentCategory get category =>
-      (origin as YoutubeContentsOverviewsProvider).category;
+      (origin as YoutubeContentPaginationProvider).category;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

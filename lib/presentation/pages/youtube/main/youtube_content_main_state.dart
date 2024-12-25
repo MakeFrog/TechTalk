@@ -7,7 +7,7 @@ import 'package:techtalk/features/contents/data_source/remote/models/youtube_vid
 import 'package:techtalk/presentation/pages/youtube/main/constant/yotubue_content_category.dart';
 import 'package:techtalk/presentation/pages/youtube/main/provider/selected_filter_category_provider.dart';
 
-import 'provider/youtube_contents_overviews_provider.dart';
+import 'provider/youtube_content_pagination_provider.dart';
 
 mixin class YoutubeContentMainState {
   ///
@@ -19,7 +19,7 @@ mixin class YoutubeContentMainState {
         ref.watch(youtubeContentCategoryProvider).selectedCategory;
 
     final pagingController =
-        ref.watch(youtubeContentsOverviewsProvider(category: selectedCategory));
+        ref.watch(youtubeContentPaginationProvider(category: selectedCategory));
     return pagingController;
   }
 

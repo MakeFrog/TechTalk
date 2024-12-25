@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/content_filter_category_type.enum.dart';
+import 'package:techtalk/core/helper/list_extension.dart';
 import 'package:techtalk/presentation/pages/youtube/main/constant/yotubue_content_category.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
@@ -45,15 +46,7 @@ final youtubeContentCategoryProvider =
     final skills = userInfo.skills;
     final jobGroups = userInfo.jobGroups;
 
-    final List<YoutubeContentCategory> combined = [
-      /// TODO : XIMYA
-      /// LOCALIZATION 필요
-      const YoutubeContentCategory(
-        id: 'all',
-        name: '전체',
-        type: ContentFilterCategoryType.all,
-      )
-    ];
+    final List<YoutubeContentCategory> combined = [];
 
     for (var skill in skills) {
       combined.add(YoutubeContentCategory.fromSkill(skill));
@@ -62,6 +55,18 @@ final youtubeContentCategoryProvider =
     for (var job in jobGroups) {
       combined.add(YoutubeContentCategory.fromJob(job));
     }
+
+    combined.shuffle();
+
+    combined.addFirst(
+      /// TODO : XIMYA
+      /// LOCALIZATION 필요
+      const YoutubeContentCategory(
+        id: 'all',
+        name: '전체',
+        type: ContentFilterCategoryType.all,
+      ),
+    );
 
     return YoutubeContentCategoryProvider(
       selectedCategory: combined.first, // '전체' 카테고리는 디폴트 값

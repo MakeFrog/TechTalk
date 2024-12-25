@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/core/constants/content_filter_category_type.enum.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
@@ -9,13 +8,13 @@ import 'package:techtalk/features/contents/usecases/get_youtube_overview_list_us
 import 'package:techtalk/features/contents/youtube.dart';
 import 'package:techtalk/presentation/pages/youtube/main/constant/yotubue_content_category.dart';
 
-part 'youtube_contents_overviews_provider.g.dart';
+part 'youtube_content_pagination_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 Raw<
     PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
-        YoutubeContentOverviewEntity>> youtubeContentsOverviews(
-  YoutubeContentsOverviewsRef ref, {
+        YoutubeContentOverviewEntity>> youtubeContentPagination(
+  YoutubeContentPaginationRef ref, {
   required YoutubeContentCategory category,
 }) {
   final pagingController = PagingController<
@@ -29,7 +28,7 @@ Raw<
     // TODO: 추후 필터 UI 구현되면 선택한 파라미터로 구성하도록 변경 필요
     final params = GetYoutubeContentsOverviewsListParams(
       lastDocument: pageKey,
-      limit: 2,
+      limit: 10,
       orderByField: 'upload_at',
       queryConstraints: !category.type.isAll
           ? [
