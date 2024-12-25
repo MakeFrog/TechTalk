@@ -64,6 +64,15 @@ final class YoutubeContentsRemoteDataSourceImpl
 
       QuerySnapshot<YoutubeContentsOverviewModel> snapshot = await query.get();
 
+      if (snapshot.docs.isEmpty) {
+        return FirebasePaginatedResult<YoutubeContentsOverviewModel,
+            YoutubeContentsOverviewModel>(
+          items: [],
+          lastDocument: null,
+          hasMore: false,
+        );
+      }
+
       final items = await Future.wait(snapshot.docs.map((doc) async {
         final targetData = doc.data();
         // channel_ref를 통해 [ChannelModel] 데이터를 가져옴
@@ -85,7 +94,7 @@ final class YoutubeContentsRemoteDataSourceImpl
       return FirebasePaginatedResult<YoutubeContentsOverviewModel,
           YoutubeContentsOverviewModel>(
         items: items,
-        lastDocument: newLastDocument!,
+        lastDocument: newLastDocument,
         hasMore: hasMore,
       );
     } catch (e) {
