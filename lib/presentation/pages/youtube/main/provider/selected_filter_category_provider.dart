@@ -9,6 +9,11 @@ import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 ///
 class YoutubeContentCategoryProvider extends ChangeNotifier {
   ///
+  /// 페이지 컨트롤러
+  ///
+  PageController pageController = PageController();
+
+  ///
   /// 선택된 카테고리
   ///
   YoutubeContentCategory selectedCategory;

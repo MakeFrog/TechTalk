@@ -33,4 +33,18 @@ final class YoutubeContentCategory {
         name: job.name,
         type: ContentFilterCategoryType.jobGroup,
       );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is YoutubeContentCategory &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          type == other.type &&
+          imagePath == other.imagePath;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^ name.hashCode ^ type.hashCode ^ imagePath.hashCode;
 }

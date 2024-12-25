@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
@@ -14,13 +15,19 @@ mixin class YoutubeContentMainState {
   ///
   PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
       YoutubeContentOverviewEntity> pagingController(WidgetRef ref) {
-    final selectedFilter =
-        ref.read(youtubeContentCategoryProvider).selectedCategory;
+    final selectedCategory =
+        ref.watch(youtubeContentCategoryProvider).selectedCategory;
 
     final pagingController =
-        ref.watch(youtubeContentsOverviewsProvider(filterArg: selectedFilter));
+        ref.watch(youtubeContentsOverviewsProvider(category: selectedCategory));
     return pagingController;
   }
+
+  ///
+  /// 페이지 컨트롤러
+  ///
+  PageController pageController(WidgetRef ref) =>
+      ref.watch(youtubeContentCategoryProvider.select((p) => p.pageController));
 
   ///
   /// 콘텐츠 카테고리 리스트

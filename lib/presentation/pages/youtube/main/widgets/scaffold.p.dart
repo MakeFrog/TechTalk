@@ -1,6 +1,6 @@
 part of '../youtube_content_main_page.dart';
 
-class _Scaffold extends StatelessWidget {
+class _Scaffold extends HookWidget {
   const _Scaffold({
     super.key,
     required this.categorySliderBar,
@@ -12,19 +12,20 @@ class _Scaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverPersistentHeader(
-          floating: true,
-          pinned: true,
-          delegate: StickyDelegateContainer(
-            minHeight: 0,
-            maxHeight: 42,
-            child: categorySliderBar,
+    return NestedScrollView(
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return <Widget>[
+          SliverAppBar(
+            floating: true,
+            snap: true,
+            elevation: 0.0,
+            titleSpacing: 0,
+            toolbarHeight: 42,
+            title: categorySliderBar,
           ),
-        ),
-        contentListView,
-      ],
+        ];
+      },
+      body: contentListView,
     );
   }
 }

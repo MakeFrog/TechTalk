@@ -1,9 +1,7 @@
-// lib/providers/youtube_contents_overviews_provider.dart
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/core/constants/job_group.enum.dart';
+import 'package:techtalk/core/constants/content_filter_category_type.enum.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
@@ -18,7 +16,7 @@ Raw<
     PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
         YoutubeContentOverviewEntity>> youtubeContentsOverviews(
   YoutubeContentsOverviewsRef ref, {
-  required YoutubeContentCategory filterArg,
+  required YoutubeContentCategory category,
 }) {
   final pagingController = PagingController<
       DocumentSnapshot<YoutubeContentsOverviewModel>?,
@@ -31,12 +29,19 @@ Raw<
     // TODO: 추후 필터 UI 구현되면 선택한 파라미터로 구성하도록 변경 필요
     final params = GetYoutubeContentsOverviewsListParams(
       lastDocument: pageKey,
-      limit: 10,
+      limit: 2,
       orderByField: 'upload_at',
-      queryConstraints: [
-        ArrayContainsAnyConstraint(
-            fieldPath: 'related_skill_ids', values: ['android']),
-      ],
+      queryConstraints: !category.type.isAll
+          ? [
+              // '전체' 카테고리가 아닐 경우 '필터링' 항목 설정
+              ArrayContainsAnyConstraint(
+                fieldPath: category.type.documentFieldName,
+                values: [
+                  category.id,
+                ],
+              ),
+            ]
+          : null,
     );
 
     final result = await getYoutubeOverviewListUseCase.call(params);

@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:techtalk/app/di/modules/system_di.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
 import 'package:techtalk/presentation/pages/youtube/main/youtube_content_main_event.dart';
@@ -23,6 +26,8 @@ class YoutubeContentMainPage extends BasePage
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
+    useAutomaticKeepAlive();
+
     return const _Scaffold(
       categorySliderBar: _CategorySliderBar(),
       contentListView: _ContentListView(),

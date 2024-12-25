@@ -21,9 +21,17 @@ mixin class YoutubeContentMainEvent {
   /// 컨텐츠 카테고리 chip이 클릭 되었을 때
   ///
   void onCategoryChipTapped(WidgetRef ref,
-      {required YoutubeContentCategory targetCategory}) {
+      {required YoutubeContentCategory targetCategory, required int index}) {
     ref
         .read(youtubeContentCategoryProvider.notifier)
         .toggleCategorySelection(targetCategory);
+
+    final pageController = ref
+        .read(youtubeContentCategoryProvider.select((p) => p.pageController));
+    pageController.animateToPage(
+      index,
+      duration: const Duration(microseconds: 1),
+      curve: Curves.bounceIn,
+    );
   }
 }

@@ -7,7 +7,7 @@ part of 'youtube_contents_overviews_provider.dart';
 // **************************************************************************
 
 String _$youtubeContentsOverviewsHash() =>
-    r'563399e8f6cfac0650deb9bf38849caed8852f4c';
+    r'c52eb0919487578a018ded8aa2ff3bdd90920a06';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -44,10 +44,10 @@ class YoutubeContentsOverviewsFamily extends Family<
 
   /// See also [youtubeContentsOverviews].
   YoutubeContentsOverviewsProvider call({
-    required YoutubeContentCategory filterArg,
+    required YoutubeContentCategory category,
   }) {
     return YoutubeContentsOverviewsProvider(
-      filterArg: filterArg,
+      category: category,
     );
   }
 
@@ -56,7 +56,7 @@ class YoutubeContentsOverviewsFamily extends Family<
     covariant YoutubeContentsOverviewsProvider provider,
   ) {
     return call(
-      filterArg: provider.filterArg,
+      category: provider.category,
     );
   }
 
@@ -82,11 +82,11 @@ class YoutubeContentsOverviewsProvider extends AutoDisposeProvider<
             YoutubeContentOverviewEntity>>> {
   /// See also [youtubeContentsOverviews].
   YoutubeContentsOverviewsProvider({
-    required YoutubeContentCategory filterArg,
+    required YoutubeContentCategory category,
   }) : this._internal(
           (ref) => youtubeContentsOverviews(
             ref as YoutubeContentsOverviewsRef,
-            filterArg: filterArg,
+            category: category,
           ),
           from: youtubeContentsOverviewsProvider,
           name: r'youtubeContentsOverviewsProvider',
@@ -97,7 +97,7 @@ class YoutubeContentsOverviewsProvider extends AutoDisposeProvider<
           dependencies: YoutubeContentsOverviewsFamily._dependencies,
           allTransitiveDependencies:
               YoutubeContentsOverviewsFamily._allTransitiveDependencies,
-          filterArg: filterArg,
+          category: category,
         );
 
   YoutubeContentsOverviewsProvider._internal(
@@ -107,10 +107,10 @@ class YoutubeContentsOverviewsProvider extends AutoDisposeProvider<
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.filterArg,
+    required this.category,
   }) : super.internal();
 
-  final YoutubeContentCategory filterArg;
+  final YoutubeContentCategory category;
 
   @override
   Override overrideWith(
@@ -130,7 +130,7 @@ class YoutubeContentsOverviewsProvider extends AutoDisposeProvider<
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        filterArg: filterArg,
+        category: category,
       ),
     );
   }
@@ -146,13 +146,13 @@ class YoutubeContentsOverviewsProvider extends AutoDisposeProvider<
   @override
   bool operator ==(Object other) {
     return other is YoutubeContentsOverviewsProvider &&
-        other.filterArg == filterArg;
+        other.category == category;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, filterArg.hashCode);
+    hash = _SystemHash.combine(hash, category.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -162,8 +162,8 @@ mixin YoutubeContentsOverviewsRef on AutoDisposeProviderRef<
     Raw<
         PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
             YoutubeContentOverviewEntity>>> {
-  /// The parameter `filterArg` of this provider.
-  YoutubeContentCategory get filterArg;
+  /// The parameter `category` of this provider.
+  YoutubeContentCategory get category;
 }
 
 class _YoutubeContentsOverviewsProviderElement
@@ -175,8 +175,8 @@ class _YoutubeContentsOverviewsProviderElement
   _YoutubeContentsOverviewsProviderElement(super.provider);
 
   @override
-  YoutubeContentCategory get filterArg =>
-      (origin as YoutubeContentsOverviewsProvider).filterArg;
+  YoutubeContentCategory get category =>
+      (origin as YoutubeContentsOverviewsProvider).category;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
