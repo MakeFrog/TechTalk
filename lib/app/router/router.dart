@@ -21,7 +21,7 @@ import 'package:techtalk/presentation/pages/splash/splash_page.dart';
 import 'package:techtalk/presentation/pages/study/learning/learning_detail_page.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_detail_page.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/youtube_contents_detail_page.dart';
-import 'package:techtalk/presentation/pages/youtube/explore/youtube_contents_main_list_page.dart';
+import 'package:techtalk/presentation/pages/youtube/main/youtube_content_main_page.dart';
 
 part 'router.g.dart';
 
@@ -229,7 +229,7 @@ class YoutubeContentsMainListRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const YoutubeContentsMainListPage();
+    return const YoutubeContentMainPage();
   }
 }
 

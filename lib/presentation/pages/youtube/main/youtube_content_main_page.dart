@@ -4,23 +4,20 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
-import 'package:techtalk/presentation/pages/youtube/explore/provider/youtube_contents_overviews_provider.dart';
-
-import 'package:techtalk/presentation/pages/youtube/explore/youtube_contents_main_event.dart';
-
+import 'package:techtalk/presentation/pages/youtube/main/youtube_content_main_event.dart';
+import 'package:techtalk/presentation/pages/youtube/main/youtube_content_main_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 
-class YoutubeContentsMainListPage extends BasePage
-    with YoutubeContentsMainListEvent {
-  const YoutubeContentsMainListPage({super.key});
+class YoutubeContentMainPage extends BasePage
+    with YoutubeContentMainState, YoutubeContentMainEvent {
+  const YoutubeContentMainPage({super.key});
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
-    final pagingController = ref.watch(youtubeContentsOverviewsProvider);
-
+    final targetController = pagingController(ref);
     return PagedListView<DocumentSnapshot<YoutubeContentsOverviewModel>?,
         YoutubeContentOverviewEntity>(
-      pagingController: pagingController,
+      pagingController: targetController,
       builderDelegate: PagedChildBuilderDelegate<YoutubeContentOverviewEntity>(
         itemBuilder: (context, item, index) => ListTile(
           leading: Image.network(
@@ -49,7 +46,7 @@ class YoutubeContentsMainListPage extends BasePage
               Text('데이터 로딩 중 오류가 발생했습니다.'),
               SizedBox(height: 8),
               ElevatedButton(
-                onPressed: () => pagingController.refresh(),
+                onPressed: () => targetController.refresh(),
                 child: Text('다시 시도'),
               ),
             ],
@@ -62,7 +59,7 @@ class YoutubeContentsMainListPage extends BasePage
               Text('추가 데이터 로딩 중 오류가 발생했습니다.'),
               SizedBox(height: 8),
               ElevatedButton(
-                onPressed: () => pagingController.retryLastFailedRequest(),
+                onPressed: () => targetController.retryLastFailedRequest(),
                 child: Text('다시 시도'),
               ),
             ],
