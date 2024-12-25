@@ -7,7 +7,7 @@ part of 'youtube_contents_detail_qnas_provider.dart';
 // **************************************************************************
 
 String _$youtubeContentsDetailQnasHash() =>
-    r'783511e0d357a25ef8d8e81bfc76e8693715aa66';
+    r'02286b4dfa2c606661171535692bfe1785cd9e2d';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,10 +31,10 @@ class _SystemHash {
 }
 
 abstract class _$YoutubeContentsDetailQnas
-    extends BuildlessAutoDisposeAsyncNotifier<List<QnaEntity>> {
+    extends BuildlessAutoDisposeAsyncNotifier<List<YoutubeQnaEntity>> {
   late final String videoId;
 
-  FutureOr<List<QnaEntity>> build(
+  FutureOr<List<YoutubeQnaEntity>> build(
     String videoId,
   );
 }
@@ -45,7 +45,7 @@ const youtubeContentsDetailQnasProvider = YoutubeContentsDetailQnasFamily();
 
 /// See also [YoutubeContentsDetailQnas].
 class YoutubeContentsDetailQnasFamily
-    extends Family<AsyncValue<List<QnaEntity>>> {
+    extends Family<AsyncValue<List<YoutubeQnaEntity>>> {
   /// See also [YoutubeContentsDetailQnas].
   const YoutubeContentsDetailQnasFamily();
 
@@ -85,7 +85,7 @@ class YoutubeContentsDetailQnasFamily
 /// See also [YoutubeContentsDetailQnas].
 class YoutubeContentsDetailQnasProvider
     extends AutoDisposeAsyncNotifierProviderImpl<YoutubeContentsDetailQnas,
-        List<QnaEntity>> {
+        List<YoutubeQnaEntity>> {
   /// See also [YoutubeContentsDetailQnas].
   YoutubeContentsDetailQnasProvider(
     String videoId,
@@ -116,7 +116,7 @@ class YoutubeContentsDetailQnasProvider
   final String videoId;
 
   @override
-  FutureOr<List<QnaEntity>> runNotifierBuild(
+  FutureOr<List<YoutubeQnaEntity>> runNotifierBuild(
     covariant YoutubeContentsDetailQnas notifier,
   ) {
     return notifier.build(
@@ -142,7 +142,7 @@ class YoutubeContentsDetailQnasProvider
 
   @override
   AutoDisposeAsyncNotifierProviderElement<YoutubeContentsDetailQnas,
-      List<QnaEntity>> createElement() {
+      List<YoutubeQnaEntity>> createElement() {
     return _YoutubeContentsDetailQnasProviderElement(this);
   }
 
@@ -162,14 +162,14 @@ class YoutubeContentsDetailQnasProvider
 }
 
 mixin YoutubeContentsDetailQnasRef
-    on AutoDisposeAsyncNotifierProviderRef<List<QnaEntity>> {
+    on AutoDisposeAsyncNotifierProviderRef<List<YoutubeQnaEntity>> {
   /// The parameter `videoId` of this provider.
   String get videoId;
 }
 
 class _YoutubeContentsDetailQnasProviderElement
     extends AutoDisposeAsyncNotifierProviderElement<YoutubeContentsDetailQnas,
-        List<QnaEntity>> with YoutubeContentsDetailQnasRef {
+        List<YoutubeQnaEntity>> with YoutubeContentsDetailQnasRef {
   _YoutubeContentsDetailQnasProviderElement(super.provider);
 
   @override

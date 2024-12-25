@@ -7,6 +7,8 @@ import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
 import 'package:techtalk/core/modules/exceptions/custom_exception.dart';
+import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/youtube_contents_remote_data_source.dart';
@@ -66,14 +68,14 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
   }
 
   @override
-  Future<Result<List<QnaEntity>>> getYoutubeContentsDetailQnas(
+  Future<Result<List<YoutubeQnaEntity>>> getYoutubeContentsDetailQnas(
       String videoId) async {
     try {
       final remoteResponse =
           await _youtubeRemoteDataSource.getYoutubeContentsDetailQnas(videoId);
 
       return Result.success(
-          remoteResponse.map((data) => data.toEntity()).toList());
+          remoteResponse.map(YoutubeQnaEntity.fromModel).toList());
     } on Exception catch (e) {
       log('getYoutubeContentsDetailQnas : $e');
       return Result.failure(

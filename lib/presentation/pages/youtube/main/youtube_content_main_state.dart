@@ -13,7 +13,8 @@ mixin class YoutubeContentMainState {
   ///
   PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
       YoutubeContentOverviewEntity> pagingController(WidgetRef ref) {
-    final selectedFilter = ref.read(selectedFilterCategoryProvider);
+    final selectedFilter =
+        ref.read(youtubeContentCategoryProvider).selectedCategory;
 
     final pagingController =
         ref.watch(youtubeContentsOverviewsProvider(filterArg: selectedFilter));

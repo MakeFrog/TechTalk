@@ -20,7 +20,7 @@ final class TechSetRepositoryImpl implements TechSetRepository {
   final List<SkillEntity> _cachedSkillCollection = [];
 
   @override
-  List<Job> getJobs() => Job.values;
+  List<JobGroup> getJobs() => JobGroup.values;
 
   @override
   Future<void> initSkills() async {

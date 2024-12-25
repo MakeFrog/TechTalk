@@ -14,7 +14,7 @@ final class TechSetLocalDataSourceImpl implements TechSetLocalDataSource {
   final Box<TechSetBox> _box;
 
   @override
-  Future<List<Job>> getJobs() async => Job.values;
+  Future<List<JobGroup>> getJobs() async => JobGroup.values;
 
   @override
   Map<String, Map<String, List<Map<String, String>>>>? loadCachedSkillSet() {

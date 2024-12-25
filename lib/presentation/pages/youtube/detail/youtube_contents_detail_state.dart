@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_contents_detail_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_video_data_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
@@ -24,7 +25,7 @@ mixin class YoutubeContentsDetailState {
   ///
   /// 테크톡 DB에서 불러오는 해당 비디오 컨텐츠 데이터
   ///
-  AsyncValue<List<QnaEntity>> youtubeContentsDetailQnasAsync(
+  AsyncValue<List<YoutubeQnaEntity>> youtubeContentsDetailQnasAsync(
           WidgetRef ref, String contentsId) =>
       ref.watch(youtubeContentsDetailQnasProvider(contentsId));
 }

@@ -1,9 +1,8 @@
-import 'package:techtalk/features/tech_set/data_source/local/boxes/tech_set_box.dart';
-import 'package:techtalk/features/tech_set/repositories/enums/job.enum.dart';
+import 'package:techtalk/core/constants/job_group.enum.dart';
 
 abstract interface class TechSetLocalDataSource {
   /// 개발 직군 리스트 호출
-  Future<List<Job>> getJobs();
+  Future<List<JobGroup>> getJobs();
 
   /// 캐싱된 스킬 리스트 호출
   Map<String, Map<String, List<Map<String, String>>>>? loadCachedSkillSet();

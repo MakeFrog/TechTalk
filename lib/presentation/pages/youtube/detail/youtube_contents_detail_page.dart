@@ -253,9 +253,9 @@ class YoutubeContentsDetailPage extends BasePage
                                     Text(
                                       qna.question,
                                     ),
-                                    if (qna.questionInstruction != null)
+                                    if (qna.evaluationPoint != null)
                                       Text(
-                                        qna.questionInstruction!,
+                                        qna.evaluationPoint!,
                                       ),
                                   ],
                                 ),
