@@ -139,7 +139,7 @@ class YoutubeContentsDetailPage extends BasePage
                       spacing: 8.0,
                       children: overview.relatedSkillIds
                           .map(
-                            (skill) => Chip(label: Text(skill)),
+                            (skill) => Chip(label: Text(skill.name)),
                           )
                           .toList(),
                     ),

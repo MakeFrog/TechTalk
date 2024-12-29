@@ -25,7 +25,13 @@ class _ContentListView extends HookConsumerWidget
                   height: 56,
                   fit: BoxFit.cover,
                 ),
-                title: Text(item.contentsTitle),
+                title: Wrap(
+                  children: [
+                    Text(item.contentsTitle),
+                    ...item.relatedSkillIds.map((e) => Text(e.name)),
+                    Text('질문 개수 : ${item.qnaNum}'),
+                  ],
+                ),
                 subtitle: Text('Author: ${item.channel.name}'),
                 trailing: Text(
                   '${item.videoDuration.inMinutes}m ${item.videoDuration.inSeconds % 60}s',

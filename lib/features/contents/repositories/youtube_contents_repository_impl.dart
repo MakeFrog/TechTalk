@@ -16,15 +16,17 @@ import 'package:techtalk/features/contents/repositories/entities/contents_overvi
 import 'package:techtalk/features/contents/repositories/entities/youtube_contents_detail_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_video_data_entity.dart';
 import 'package:techtalk/features/contents/repositories/youtube_contents_repository.dart';
+import 'package:techtalk/features/tech_set/repositories/tech_set_repository.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
-  YoutubeContentsRepositoryImpl(
-      this._youtubeApiDataSource, this._youtubeRemoteDataSource);
+  YoutubeContentsRepositoryImpl(this._youtubeApiDataSource,
+      this._youtubeRemoteDataSource, this._techSetRepository);
 
   final YoutubeExplode _youtubeApiDataSource;
   final YoutubeContentsRemoteDataSource _youtubeRemoteDataSource;
+  final TechSetRepository _techSetRepository;
 
   @override
   Future<Result<YouTubeVideoDataEntity>> getYoutubeVideoData(
@@ -105,8 +107,11 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
       );
 
       // 모델을 엔티티로 변환
-      final entities =
-          remotePaginatedResult.items.map((model) => model.toEntity()).toList();
+      final entities = remotePaginatedResult.items.map((model) {
+        final skills =
+            model.relatedSkillIds.map(_techSetRepository.getSkillById).toList();
+        return model.toEntity(skills);
+      }).toList();
 
       // 엔티티로 페이징된 결과 생성
       final paginatedResult = FirebasePaginatedResult<

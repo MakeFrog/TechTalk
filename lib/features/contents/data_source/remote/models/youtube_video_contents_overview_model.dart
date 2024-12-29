@@ -6,6 +6,7 @@ import 'package:techtalk/features/contents/data_source/remote/models/contents_au
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_author_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_overview_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 
 part 'youtube_video_contents_overview_model.g.dart';
 
@@ -54,14 +55,14 @@ class YoutubeContentsOverviewModel {
   final ChannelModel? channel;
 
   /// 엔티티로 변환
-  YoutubeContentOverviewEntity toEntity() {
+  YoutubeContentOverviewEntity toEntity(List<SkillEntity> skills) {
     return YoutubeContentOverviewEntity(
       id: id,
       thumbnailImgUrl: thumbnailImgUrl,
       contentsTitle: contentsTitle,
       qnaNum: qnaNum,
       channel: channel?.toEntity() ?? ChannelEntity.undefined(),
-      relatedSkillIds: relatedSkillIds.toSet(),
+      relatedSkillIds: skills.toSet(),
       relatedJobs: relatedJobGroupIds.map(JobGroup.getById).toSet(),
       videoDuration: videoDuration,
       uploadAt: uploadAt,
