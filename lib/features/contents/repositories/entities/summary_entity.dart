@@ -4,7 +4,7 @@ import 'package:techtalk/features/contents/repositories/entities/paragraph_entit
 /// 요약 엔티티
 class SummaryEntity {
   /// 핵심 요약
-  final List<String> mainTheme;
+  final String mainTheme;
 
   /// 요약 노트
   final List<ParagraphEntity> summaryNotes;

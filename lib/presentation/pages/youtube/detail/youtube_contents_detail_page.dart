@@ -30,35 +30,32 @@ class YoutubeContentsDetailPage extends BasePage
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             // AppBar 대체
-            SliverAppBar(
-              leading: const AppBackButton(),
-              titleSpacing: 0,
-              backgroundColor: AppColor.of.white,
-              pinned: true,
-              expandedHeight: 210.0,
-              flexibleSpace: FlexibleSpaceBar(
-                background: AsyncSkeletonWidgetBuilder(
-                  asyncValue: youtubeVideoDataAsync(ref, overview.id),
-                  skeletonBuilder: (p0) => SizedBox(
-                    height: 210,
-                    width: double.infinity,
-                    child: Image.network(
-                      overview.thumbnailImgUrl,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  dataBuilder: (context, data) => SizedBox(
-                    height: 210,
-                    width: double.infinity,
-                    // TODO: 이미지 캐싱 기능 구현
-                    child: Image.network(
-                      data.thumnailSet.highResUrl,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            // SliverAppBar(
+            //   leading: const AppBackButton(),
+            //   titleSpacing: 0,
+            //   backgroundColor: AppColor.of.white,
+            //   pinned: true,
+            //   expandedHeight: 210.0,
+            //   flexibleSpace: FlexibleSpaceBar(
+            //     background: AsyncSkeletonWidgetBuilder(
+            //       asyncValue: youtubeVideoDataAsync(ref, overview.id),
+            //       skeletonBuilder: (p0) => SizedBox(
+            //         height: 210,
+            //         width: double.infinity,
+            //         child: SkeletonBox(),
+            //       ),
+            //       dataBuilder: (context, data) => SizedBox(
+            //         height: 210,
+            //         width: double.infinity,
+            //         // TODO: 이미지 캐싱 기능 구현
+            //         child: Image.network(
+            //           data.thumnailSet.lowResUrl,
+            //           fit: BoxFit.cover,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
             // 콘텐츠 영역을 SliverToBoxAdapter로 감싸기
             SliverToBoxAdapter(
               child: Padding(
@@ -173,64 +170,65 @@ class YoutubeContentsDetailPage extends BasePage
             children: [
               // 첫 번째 탭 내용
               // 각 탭의 내용을 스크롤 가능한 위젯으로 감싸기
-              ListView(
-                padding: const EdgeInsets.all(16),
-                children: [
-                  AsyncSkeletonWidgetBuilder(
-                    asyncValue: youtubeContentsDetailAsync(ref, overview.id),
-                    skeletonBuilder: (p0) => const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                    dataBuilder: (context, data) => Wrap(
-                      runSpacing: 50,
-                      children: [
-                        if (data.summary.mainTheme.isNotEmpty)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '핵심 주제',
-                              ),
-                              const SizedBox(height: 8),
-                              ...data.summary.mainTheme
-                                  .map(
-                                    (contents) => Text(
-                                      contents,
-                                    ),
-                                  )
-                                  .toList(),
-                            ],
-                          ),
-                        if (data.summary.summaryNotes.isNotEmpty)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '요약 노트',
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              Wrap(
-                                runSpacing: 10,
+              Consumer(
+                builder: (context, ref, _) {
+                  final targetAsync = summaryAsync(ref, contentId: overview.id);
+
+                  return ListView(
+                    padding: const EdgeInsets.all(16),
+                    children: [
+                      AsyncSkeletonWidgetBuilder(
+                        asyncValue: targetAsync,
+                        skeletonBuilder: (p0) => const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        dataBuilder: (context, data) => Wrap(
+                          runSpacing: 50,
+                          children: [
+                            if (data.mainTheme.isNotEmpty)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  ...data.summary.summaryNotes
-                                      .map(
-                                        (summary) => SummaryNoteFoldableItem(
-                                          timestamp: summary.timestamp,
-                                          title: summary.title,
-                                          contents: summary.contents,
-                                        ),
-                                      )
-                                      .toList(),
+                                  Text(
+                                    '핵심 주제',
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(data.mainTheme),
                                 ],
-                              )
-                            ],
-                          ),
-                      ],
-                    ),
-                  ),
-                ],
+                              ),
+                            if (data.summaryNotes.isNotEmpty)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '요약 노트',
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Wrap(
+                                    runSpacing: 10,
+                                    children: [
+                                      ...data.summaryNotes
+                                          .map(
+                                            (summary) =>
+                                                SummaryNoteFoldableItem(
+                                              timestamp: summary.timestamp,
+                                              title: summary.title,
+                                              contents: summary.contents,
+                                            ),
+                                          )
+                                          .toList(),
+                                    ],
+                                  )
+                                ],
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
               // 두 번째 탭 내용
               ListView(
@@ -291,6 +289,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   double get minExtent => _tabBar.preferredSize.height;
+
   @override
   double get maxExtent => _tabBar.preferredSize.height;
 

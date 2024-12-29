@@ -13,7 +13,7 @@ class SummaryModel {
   });
 
   /// 핵심주제
-  final List<String> mainTheme;
+  final String mainTheme;
 
   /// 요약
   final List<ParagraphModel> summaries;
@@ -34,7 +34,8 @@ class SummaryModel {
       SummaryModel.fromJson(snapshot.data()!);
 
   /// JSON에서 모델로 변환
-  factory SummaryModel.fromJson(Map<String, dynamic> json) => _$SummaryModelFromJson(json);
+  factory SummaryModel.fromJson(Map<String, dynamic> json) =>
+      _$SummaryModelFromJson(json);
 
   /// 모델을 JSON으로 변환
   Map<String, dynamic> toJson() => _$SummaryModelToJson(this);

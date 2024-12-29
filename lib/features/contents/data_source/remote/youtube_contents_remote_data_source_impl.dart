@@ -4,6 +4,8 @@ import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/core/query_constraints_applier.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/contents_author_model.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/summary_model.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_detail_new_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_contents_detail_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/youtube_contents_detail_ref.dart';
@@ -97,6 +99,22 @@ final class YoutubeContentsRemoteDataSourceImpl
         lastDocument: newLastDocument,
         hasMore: hasMore,
       );
+    } catch (e) {
+      throw Exception('Failed to fetch Youtube Contents: $e');
+    }
+  }
+
+  @override
+  Future<YoutubeContentsDetailNewModel> getContentDetail(
+      String contentId) async {
+    try {
+      final doc =
+          await FirestoreYoutubeDetailNewRef.collection(contentId).get();
+      if (!doc.exists) {
+        throw const FetchYoutubeContentsDetailException();
+      }
+
+      return doc.data()!;
     } catch (e) {
       throw Exception('Failed to fetch Youtube Contents: $e');
     }

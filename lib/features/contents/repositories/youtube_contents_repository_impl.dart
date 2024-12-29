@@ -9,10 +9,12 @@ import 'package:techtalk/core/modules/error_handling/result.dart';
 import 'package:techtalk/core/modules/exceptions/custom_exception.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/summary_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/youtube_contents_remote_data_source.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_overview_entity.dart';
+import 'package:techtalk/features/contents/repositories/entities/summary_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_contents_detail_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_video_data_entity.dart';
 import 'package:techtalk/features/contents/repositories/youtube_contents_repository.dart';
@@ -127,6 +129,20 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
       return Result.failure(
         const FetchYoutubeContentsOverviewException(),
       );
+    }
+  }
+
+  @override
+  Future<Result<SummaryEntity>> getYoutubeSummary(String contentId) async {
+    try {
+      final response =
+          await _youtubeRemoteDataSource.getContentDetail(contentId);
+
+      final result = response.summary.toEntity();
+
+      return Result.success(result);
+    } on Exception catch (e) {
+      return Result.failure(e);
     }
   }
 }

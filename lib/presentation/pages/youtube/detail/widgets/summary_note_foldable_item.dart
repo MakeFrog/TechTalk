@@ -15,7 +15,7 @@ class SummaryNoteFoldableItem extends HookWidget {
 
   final Duration? timestamp;
   final String title;
-  final String contents;
+  final List<String> contents;
   final void Function(Duration?)? onTapTimestamp;
   final double height;
 
@@ -60,11 +60,16 @@ class SummaryNoteFoldableItem extends HookWidget {
             duration: const Duration(milliseconds: 300),
             curve: Curves.fastOutSlowIn,
             child: ConstrainedBox(
-              constraints: isExpanded.value ? const BoxConstraints() : const BoxConstraints(maxHeight: 0),
+              constraints: isExpanded.value
+                  ? const BoxConstraints()
+                  : const BoxConstraints(maxHeight: 0),
               child: Padding(
                 padding: const EdgeInsets.only(top: 8.0),
-                child: Text(
-                  contents,
+                child: Wrap(
+                  direction: Axis.vertical,
+                  children: [
+                    ...contents.map((e) => Text(e)),
+                  ],
                 ),
               ),
             ),

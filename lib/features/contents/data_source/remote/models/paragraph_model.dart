@@ -15,7 +15,7 @@ class ParagraphModel {
 
   final String title;
 
-  final String contents;
+  final List<String> contents;
 
   @DurationConverter()
   final Duration? timestamp;
@@ -36,7 +36,8 @@ class ParagraphModel {
       ParagraphModel.fromJson(snapshot.data()!);
 
   /// JSON에서 모델로 변환
-  factory ParagraphModel.fromJson(Map<String, dynamic> json) => _$ParagraphModelFromJson(json);
+  factory ParagraphModel.fromJson(Map<String, dynamic> json) =>
+      _$ParagraphModelFromJson(json);
 
   /// 모델을 JSON으로 변환
   Map<String, dynamic> toJson() => _$ParagraphModelToJson(this);

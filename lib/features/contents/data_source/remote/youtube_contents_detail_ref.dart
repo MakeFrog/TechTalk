@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/summary_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_contents_detail_model.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
@@ -12,7 +13,10 @@ abstract class FirestoreYoutubeDetailRef {
           );
 
   static DocumentReference<YoutubeContentsDetailModel> doc(String contentsId) =>
-      FirebaseFirestore.instance.collection(_collectionName).doc(contentsId).withConverter(
+      FirebaseFirestore.instance
+          .collection(_collectionName)
+          .doc(contentsId)
+          .withConverter(
             fromFirestore: YoutubeContentsDetailModel.fromFirestore,
             toFirestore: (value, options) => value.toJson(),
           );
@@ -32,15 +36,22 @@ abstract class FirestoreYoutubeDetailQuestionRef {
 }
 
 @override
-Future<void> addYoutubeContentsDetail(String contentsId, YoutubeContentsDetailModel detailModel) async {
-  final ref = FirebaseFirestore.instance.collection('YoutubeDetail').doc(contentsId);
+Future<void> addYoutubeContentsDetail(
+    String contentsId, YoutubeContentsDetailModel detailModel) async {
+  final ref =
+      FirebaseFirestore.instance.collection('YoutubeDetail').doc(contentsId);
 
   await ref.set(detailModel.toJson());
 }
 
 @override
-Future<void> addYoutubeContentsQnas(String contentsId, List<TopicQnaModel> qnas) async {
+Future<void> addYoutubeContentsQnas(
+    String contentsId, List<TopicQnaModel> qnas) async {
   for (var qna in qnas) {
-    await FirebaseFirestore.instance.collection('YoutubeDetail').doc(contentsId).collection('Qna').add(qna.toJson());
+    await FirebaseFirestore.instance
+        .collection('YoutubeDetail')
+        .doc(contentsId)
+        .collection('Qna')
+        .add(qna.toJson());
   }
 }

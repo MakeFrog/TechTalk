@@ -6,9 +6,11 @@ import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/summary_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_overview_entity.dart';
+import 'package:techtalk/features/contents/repositories/entities/summary_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_contents_detail_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_video_data_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
@@ -20,6 +22,11 @@ abstract interface class YoutubeContentsRepository {
   Future<Result<YouTubeVideoDataEntity>> getYoutubeVideoData(
     String videoId,
   );
+
+  ///
+  /// 유튜브 콘텐츠의 요약 정보를 가져옴
+  ///
+  Future<Result<SummaryEntity>> getYoutubeSummary(String contentId);
 
   ///
   /// 유튜브 컨텐츠 상세 정보 가져오기
