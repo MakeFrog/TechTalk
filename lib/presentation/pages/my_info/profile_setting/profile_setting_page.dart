@@ -16,7 +16,7 @@ import 'package:techtalk/presentation/providers/input/nickname_input_provider.da
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 import 'package:techtalk/presentation/widgets/common/image/round_profile_image.dart';
-import 'package:techtalk/presentation/widgets/common/input/clearable_text_field.dart';
+import 'package:techtalk/presentation/widgets/common/input/techtalk_text_field.dart';
 
 part 'widgets/nickname_input_field.dart';
 part 'widgets/profile_img_button.dart';

@@ -1,6 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/app/localization/app_locale.dart';
+import 'package:techtalk/core/helper/string_extension.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
-import 'package:techtalk/presentation/providers/input/skill_text_field_controller_provider.dart';
 
 part 'searched_skills_provider.g.dart';
 
@@ -11,18 +13,14 @@ class SearchedSkills extends _$SearchedSkills {
     return [];
   }
 
-  void updateSearchedList(String searchedTerm) {
-    if (ref
-                .read(skillTextFieldControllerProvider.notifier)
-                .skillInputValidation(searchedTerm) !=
-            null ||
+  void updateSearchedList(String searchedTerm) async {
+    if (searchedTerm.containsKorean ||
         searchedTerm.replaceAll(' ', '').isEmpty) {
       state = [];
-
       return;
     }
 
-    final response = getSearchedSkills.call(searchedTerm);
+    final response = getSearchedSkillSetUseCase.call(searchedTerm);
     response.fold(
       onSuccess: (e) {
         state = e;

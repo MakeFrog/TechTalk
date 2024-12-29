@@ -8,6 +8,6 @@ class FirebasePaginatedResult<Data, PageKey> {
   });
 
   final List<Data> items;
-  final DocumentSnapshot<PageKey> lastDocument;
+  final DocumentSnapshot<PageKey>? lastDocument;
   final bool hasMore;
 }

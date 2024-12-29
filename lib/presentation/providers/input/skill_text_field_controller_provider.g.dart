@@ -7,7 +7,7 @@ part of 'skill_text_field_controller_provider.dart';
 // **************************************************************************
 
 String _$skillTextFieldControllerHash() =>
-    r'f50f2dd35b170dbf114684d8e84f55f305a57d9f';
+    r'248aada29a458754e76300992400351734a1dbe0';
 
 /// See also [SkillTextFieldController].
 @ProviderFor(SkillTextFieldController)

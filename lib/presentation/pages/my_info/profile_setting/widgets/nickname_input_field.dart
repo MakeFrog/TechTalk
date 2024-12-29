@@ -11,7 +11,7 @@ class _NicknameInputField extends ConsumerWidget
     return Form(
       key: formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      child: ClearableTextField(
+      child: TechtalkTextField(
         textInputAction: TextInputAction.done,
         validator: (input) => nicknameValidation(ref, input: input),
         initialValue: nickname(ref),

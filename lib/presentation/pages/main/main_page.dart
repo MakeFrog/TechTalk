@@ -12,8 +12,7 @@ import 'package:techtalk/presentation/pages/home/home_page.dart';
 import 'package:techtalk/presentation/pages/main/main_event.dart';
 import 'package:techtalk/presentation/pages/my_info/my_page/my_page.dart';
 import 'package:techtalk/presentation/pages/study/topic_selection/study_topic_selection_page.dart';
-import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_note_page.dart';
-import 'package:techtalk/presentation/pages/youtube/youtube_contents_main_list_page.dart';
+import 'package:techtalk/presentation/pages/youtube/main/youtube_content_main_page.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 
@@ -29,11 +28,8 @@ class MainPage extends BasePage with MainEvent {
       StudyTopicSelectionPage(
         key: ValueKey(MainNavigationTab.study),
       ),
-      YoutubeContentsMainListPage(
+      YoutubeContentMainPage(
         key: ValueKey(MainNavigationTab.contents),
-      ),
-      WrongAnswerNotePage(
-        key: ValueKey(MainNavigationTab.note),
       ),
       MyPage(
         key: ValueKey(MainNavigationTab.myInfo),
@@ -90,7 +86,8 @@ class MainPage extends BasePage with MainEvent {
   bool get canPop => false;
 
   @override
-  Widget buildBottomNavigationBar(BuildContext context) => const _BottomNavigationBar();
+  Widget buildBottomNavigationBar(BuildContext context) =>
+      const _BottomNavigationBar();
 }
 
 class _BottomNavigationBar extends ConsumerWidget with MainEvent {
@@ -121,7 +118,9 @@ class _BottomNavigationBar extends ConsumerWidget with MainEvent {
             icon: SvgPicture.asset(
               e.iconPath,
               colorFilter: ColorFilter.mode(
-                currentTab.index == index ? AppColor.of.gray5 : AppColor.of.gray2,
+                currentTab.index == index
+                    ? AppColor.of.gray5
+                    : AppColor.of.gray2,
                 BlendMode.srcIn,
               ),
             ),
