@@ -30,32 +30,32 @@ class YoutubeContentsDetailPage extends BasePage
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             // AppBar 대체
-            // SliverAppBar(
-            //   leading: const AppBackButton(),
-            //   titleSpacing: 0,
-            //   backgroundColor: AppColor.of.white,
-            //   pinned: true,
-            //   expandedHeight: 210.0,
-            //   flexibleSpace: FlexibleSpaceBar(
-            //     background: AsyncSkeletonWidgetBuilder(
-            //       asyncValue: youtubeVideoDataAsync(ref, overview.id),
-            //       skeletonBuilder: (p0) => SizedBox(
-            //         height: 210,
-            //         width: double.infinity,
-            //         child: SkeletonBox(),
-            //       ),
-            //       dataBuilder: (context, data) => SizedBox(
-            //         height: 210,
-            //         width: double.infinity,
-            //         // TODO: 이미지 캐싱 기능 구현
-            //         child: Image.network(
-            //           data.thumnailSet.lowResUrl,
-            //           fit: BoxFit.cover,
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            SliverAppBar(
+              leading: const AppBackButton(),
+              titleSpacing: 0,
+              backgroundColor: AppColor.of.white,
+              pinned: true,
+              expandedHeight: 210.0,
+              flexibleSpace: FlexibleSpaceBar(
+                background: AsyncSkeletonWidgetBuilder(
+                  asyncValue: youtubeVideoDataAsync(ref, overview.id),
+                  skeletonBuilder: (p0) => SizedBox(
+                    height: 210,
+                    width: double.infinity,
+                    child: SkeletonBox(),
+                  ),
+                  dataBuilder: (context, data) => SizedBox(
+                    height: 210,
+                    width: double.infinity,
+                    // TODO: 이미지 캐싱 기능 구현
+                    child: Image.network(
+                      data.thumnailSet.lowResUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+            ),
             // 콘텐츠 영역을 SliverToBoxAdapter로 감싸기
             SliverToBoxAdapter(
               child: Padding(
@@ -235,8 +235,7 @@ class YoutubeContentsDetailPage extends BasePage
                 padding: const EdgeInsets.all(16),
                 children: [
                   AsyncSkeletonWidgetBuilder(
-                    asyncValue:
-                        youtubeContentsDetailQnasAsync(ref, overview.id),
+                    asyncValue: qnasAsync(ref, contentId: overview.id),
                     skeletonBuilder: (p0) => const Center(
                       child: CircularProgressIndicator(),
                     ),

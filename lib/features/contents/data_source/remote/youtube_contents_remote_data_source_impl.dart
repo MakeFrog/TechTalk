@@ -7,6 +7,7 @@ import 'package:techtalk/features/contents/data_source/remote/models/contents_au
 import 'package:techtalk/features/contents/data_source/remote/models/summary_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_detail_new_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_contents_detail_model.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/youtube_qna_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/youtube_contents_detail_ref.dart';
 import 'package:techtalk/features/contents/data_source/remote/youtube_contents_overview_ref.dart';
@@ -105,8 +106,7 @@ final class YoutubeContentsRemoteDataSourceImpl
   }
 
   @override
-  Future<YoutubeContentsDetailNewModel> getContentDetail(
-      String contentId) async {
+  Future<YoutubeContentsDetailNewModel> getDetail(String contentId) async {
     try {
       final doc =
           await FirestoreYoutubeDetailNewRef.collection(contentId).get();
@@ -115,6 +115,18 @@ final class YoutubeContentsRemoteDataSourceImpl
       }
 
       return doc.data()!;
+    } catch (e) {
+      throw Exception('Failed to fetch Youtube Contents: $e');
+    }
+  }
+
+  @override
+  Future<List<YoutubeQnaModel>> getQnas(String contentId) async {
+    try {
+      final collection =
+          await FirestoreYoutubeQnaNewRef.collection(contentId).get();
+
+      return collection.docs.map((doc) => doc.data()).toList();
     } catch (e) {
       throw Exception('Failed to fetch Youtube Contents: $e');
     }

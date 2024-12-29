@@ -3,6 +3,7 @@ import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_detail_new_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_contents_detail_model.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/youtube_qna_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
@@ -13,14 +14,20 @@ abstract interface class YoutubeContentsRemoteDataSource {
   ///
   /// [contentsId] - 조회할 컨텐츠의 고유 ID
   ///
+  @Deprecated('[YoutubeContentsDetailNewModel]로 교체 예정')
   Future<YoutubeContentsDetailModel> getYoutubeContentsDetail(
       String contentsId);
 
   ///
-  /// 유튜브 콘텐츠 상세 정보를 가져옴
+  /// 유튜브 콘텐츠 qna 호출
+  ///
+  Future<List<YoutubeQnaModel>> getQnas(String contentId);
+
+  ///
+  /// 유튜브 콘텐츠 상세 정보 호출
   /// (현재는 상세 정보에 요약 정보밖에 존재하지 않음)
   ///
-  Future<YoutubeContentsDetailNewModel> getContentDetail(String contentId);
+  Future<YoutubeContentsDetailNewModel> getDetail(String contentId);
 
   ///
   /// 특정 유튜브 컨텐츠와 관련된 질문 목록을 가져옵니다.

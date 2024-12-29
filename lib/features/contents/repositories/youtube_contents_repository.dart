@@ -24,9 +24,14 @@ abstract interface class YoutubeContentsRepository {
   );
 
   ///
-  /// 유튜브 콘텐츠의 요약 정보를 가져옴
+  /// 유튜브 콘텐츠의 요약 정보 호출
   ///
   Future<Result<SummaryEntity>> getYoutubeSummary(String contentId);
+
+  ///
+  /// 유튜브 콘텐츠 qna 호출
+  ///
+  Future<Result<List<YoutubeQnaEntity>>> getQnas(String contentId);
 
   ///
   /// 유튜브 컨텐츠 상세 정보 가져오기

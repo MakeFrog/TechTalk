@@ -135,10 +135,21 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
   @override
   Future<Result<SummaryEntity>> getYoutubeSummary(String contentId) async {
     try {
-      final response =
-          await _youtubeRemoteDataSource.getContentDetail(contentId);
+      final response = await _youtubeRemoteDataSource.getDetail(contentId);
 
       final result = response.summary.toEntity();
+
+      return Result.success(result);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<List<YoutubeQnaEntity>>> getQnas(String contentId) async {
+    try {
+      final response = await _youtubeRemoteDataSource.getQnas(contentId);
+      final result = response.map((e) => e.toEntity()).toList();
 
       return Result.success(result);
     } on Exception catch (e) {
