@@ -22,6 +22,7 @@ import 'package:techtalk/presentation/pages/study/learning/learning_detail_page.
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_detail_page.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/youtube_contents_detail_page.dart';
 import 'package:techtalk/presentation/pages/youtube/main/youtube_content_main_page.dart';
+import 'package:techtalk/presentation/pages/youtube/upload/youtube_content_upload_page.dart';
 
 part 'router.g.dart';
 
@@ -164,6 +165,10 @@ class SignUpRoute extends GoRouteData {
       path: ContentsDetailRoute.path,
       name: ContentsDetailRoute.name,
     ),
+    TypedGoRoute<YoutubeContentUploadRoute>(
+      path: YoutubeContentUploadRoute.path,
+      name: YoutubeContentUploadRoute.name,
+    ),
     TypedGoRoute<WrongAnswerRoute>(
       path: WrongAnswerRoute.path,
       name: WrongAnswerRoute.name,
@@ -248,6 +253,18 @@ class ContentsDetailRoute extends GoRouteData {
     return YoutubeContentsDetailPage(
       overview: $extra,
     );
+  }
+}
+
+class YoutubeContentUploadRoute extends GoRouteData {
+  const YoutubeContentUploadRoute();
+
+  static const String path = 'youtube-content-upload';
+  static const String name = 'youtube content upload';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const YoutubeContentUploadPage();
   }
 }
 

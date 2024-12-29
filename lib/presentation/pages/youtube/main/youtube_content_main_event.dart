@@ -18,6 +18,15 @@ mixin class YoutubeContentMainEvent {
   }
 
   ///
+  /// 업로드 버튼이 클릭되었을 때
+  /// 영상 업로드 페이지로 이동
+  ///
+  void onVideoUploadBtnTapped(BuildContext context) {
+    final route = const YoutubeContentUploadRoute();
+    route.push(context);
+  }
+
+  ///
   /// 컨텐츠 카테고리 chip이 클릭 되었을 때
   ///
   void onCategoryChipTapped(WidgetRef ref,

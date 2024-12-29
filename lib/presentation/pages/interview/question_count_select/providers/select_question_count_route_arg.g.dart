@@ -11,8 +11,8 @@ String _$selectedQuestionCountRouteArgHash() =>
 
 /// See also [selectedQuestionCountRouteArg].
 @ProviderFor(selectedQuestionCountRouteArg)
-final selectedQuestionCountRouteArgProvider =
-    AutoDisposeProvider<SelectQuestionCountRouteArg>.internal(
+final selectedQuestionCountRouteArgProvider = AutoDisposeProvider<
+    ({List<TopicEntity> topics, InterviewType type})>.internal(
   selectedQuestionCountRouteArg,
   name: r'selectedQuestionCountRouteArgProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -23,6 +23,6 @@ final selectedQuestionCountRouteArgProvider =
 );
 
 typedef SelectedQuestionCountRouteArgRef
-    = AutoDisposeProviderRef<SelectQuestionCountRouteArg>;
+    = AutoDisposeProviderRef<({List<TopicEntity> topics, InterviewType type})>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

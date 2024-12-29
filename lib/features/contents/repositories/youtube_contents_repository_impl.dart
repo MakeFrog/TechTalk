@@ -3,6 +3,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
@@ -17,6 +18,7 @@ import 'package:techtalk/features/contents/repositories/entities/contents_overvi
 import 'package:techtalk/features/contents/repositories/entities/summary_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_contents_detail_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_video_data_entity.dart';
+import 'package:techtalk/features/contents/repositories/entities/youtube_video_entity.dart';
 import 'package:techtalk/features/contents/repositories/youtube_contents_repository.dart';
 import 'package:techtalk/features/tech_set/repositories/tech_set_repository.dart';
 import 'package:techtalk/features/topic/topic.dart';
@@ -34,8 +36,9 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
   Future<Result<YouTubeVideoDataEntity>> getYoutubeVideoData(
       String videoId) async {
     try {
-      final video = await _youtubeApiDataSource.videos.get(videoId);
-      final channel = await _youtubeApiDataSource.channels.get(video.channelId);
+      final Video video = await _youtubeApiDataSource.videos.get(videoId);
+      final Channel channel =
+          await _youtubeApiDataSource.channels.get(video.channelId);
 
       return Result.success(
         YouTubeVideoDataEntity(
@@ -154,6 +157,30 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
       return Result.success(result);
     } on Exception catch (e) {
       return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<YoutubeVideoAndCaptionEntity>> getVideoAndCaption(
+      String videoId) async {
+    try {
+      final Video video = await _youtubeApiDataSource.videos.get(videoId);
+
+      final caption = await _youtubeApiDataSource.videos.closedCaptions
+          .getManifest(videoId);
+
+      final ClosedCaptionTrack tracks = await _youtubeApiDataSource
+          .videos.closedCaptions
+          .get(caption.tracks.first);
+
+      final result = YoutubeVideoAndCaptionEntity.fromExplore(
+          video: video, captions: tracks.captions.toList());
+      return Result.success(result);
+    } on Exception catch (e) {
+      log('getYoutubeVideoData : $e');
+      return Result.failure(
+        const FetchYoutubeContentsException(),
+      );
     }
   }
 }

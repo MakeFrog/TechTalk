@@ -12,7 +12,7 @@ String _$studyTopicSelectionScrollControllerHash() =>
 /// See also [studyTopicSelectionScrollController].
 @ProviderFor(studyTopicSelectionScrollController)
 final studyTopicSelectionScrollControllerProvider =
-    AutoDisposeProvider<Raw<ScrollController>>.internal(
+    AutoDisposeProvider<ScrollController>.internal(
   studyTopicSelectionScrollController,
   name: r'studyTopicSelectionScrollControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -23,6 +23,6 @@ final studyTopicSelectionScrollControllerProvider =
 );
 
 typedef StudyTopicSelectionScrollControllerRef
-    = AutoDisposeProviderRef<Raw<ScrollController>>;
+    = AutoDisposeProviderRef<ScrollController>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

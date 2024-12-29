@@ -130,6 +130,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $ContentsDetailRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: 'youtube-content-upload',
+          name: 'youtube content upload',
+          factory: $YoutubeContentUploadRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'wrong-answer/:index',
           name: 'wrong answer',
           factory: $WrongAnswerRouteExtension._fromState,
@@ -328,6 +333,24 @@ extension $ContentsDetailRouteExtension on ContentsDetailRoute {
 
   void replace(BuildContext context) =>
       context.replace(location, extra: $extra);
+}
+
+extension $YoutubeContentUploadRouteExtension on YoutubeContentUploadRoute {
+  static YoutubeContentUploadRoute _fromState(GoRouterState state) =>
+      const YoutubeContentUploadRoute();
+
+  String get location => GoRouteData.$location(
+        '/youtube-content-upload',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
 }
 
 extension $WrongAnswerRouteExtension on WrongAnswerRoute {
