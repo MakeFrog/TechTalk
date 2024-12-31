@@ -19,6 +19,9 @@ class YoutubeVideoAndCaptionEntity {
   /// Video author Id.
   final String channelId;
 
+  /// 영상 설명
+  final String description;
+
   /// Video upload date.
   /// Note: For search queries it is calculated with:
   ///   DateTime.now() - how much time is was published.
@@ -37,6 +40,7 @@ class YoutubeVideoAndCaptionEntity {
   YoutubeVideoAndCaptionEntity({
     required this.id,
     required this.title,
+    required this.description,
     required this.channelName,
     required this.channelId,
     required this.uploadDate,
@@ -59,6 +63,7 @@ class YoutubeVideoAndCaptionEntity {
     return YoutubeVideoAndCaptionEntity(
       id: video.id.value,
       title: video.title,
+      description: video.description,
       channelName: video.author,
       channelId: video.channelId.value,
       uploadDate: video.uploadDate,

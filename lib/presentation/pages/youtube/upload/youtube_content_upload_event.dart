@@ -1,6 +1,10 @@
 import 'package:flutter/animation.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/features/contents/usecases/get_qnas_from_youtube_content_use_case.dart';
+import 'package:techtalk/features/contents/usecases/get_summary_from_youtube_content_use_case.dart';
+import 'package:techtalk/presentation/pages/youtube/upload/provider/target_youtube_info_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/provider/upload_step_page_controller.dart';
 
 mixin class YoutubeContentUploadEvent {
@@ -16,10 +20,20 @@ mixin class YoutubeContentUploadEvent {
     );
   }
 
+  //// 비디오 정보를 호출하는데 성공 했을 때
+  void onVideoFetchConfirmed(WidgetRef ref) {
+    final pageController = ref.read(uploadStepPageControllerProvider);
+    pageController.animateToPage(
+      2,
+      duration: const Duration(milliseconds: 220),
+      curve: Curves.easeOut,
+    );
+  }
+
   ///
   /// 뒤로가기 버튼이 클릭 되었을 때
   ///
-  void onBackBtnTapped(WidgetRef ref) {
+  Future<void> onBackBtnTapped(WidgetRef ref) async {
     final pageController = ref.read(uploadStepPageControllerProvider);
     final currentPageIndex = pageController.page?.toInt() ?? 0;
 
@@ -34,7 +48,7 @@ mixin class YoutubeContentUploadEvent {
         /// TODO : XIMYA 분석도중 이탈 시 어떻게 처리할지 기획적 고민필요
         /// 아래는 임시코드
 
-        pageController.animateToPage(
+        await pageController.animateToPage(
           0,
           duration: const Duration(milliseconds: 220),
           curve: Curves.easeIn,
@@ -42,9 +56,9 @@ mixin class YoutubeContentUploadEvent {
         break;
 
       case 2:
-        pageController.animateToPage(
+        await pageController.animateToPage(
           0,
-          duration: const Duration(milliseconds: 220),
+          duration: const Duration(microseconds: 1),
           curve: Curves.easeIn,
         );
         break;
@@ -58,5 +72,19 @@ mixin class YoutubeContentUploadEvent {
       default:
         ref.context.pop();
     }
+  }
+
+  Future<void> startAnalyze(WidgetRef ref) async {
+    final targetVideo = await ref.watch(targetYoutubeInfoProvider.future);
+
+    EasyLoading.show();
+    await Future.wait([
+      GetSummaryFromYoutubeContentUseCase().call(targetVideo),
+      GetQnasFromYoutubeContentUseCase().call(targetVideo),
+    ]);
+    // final response =
+    //     await GetSummaryFromYoutubeContentUseCase().call(targetVideo);
+
+    EasyLoading.dismiss();
   }
 }

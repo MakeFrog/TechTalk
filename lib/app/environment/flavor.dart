@@ -48,7 +48,9 @@ class Flavor {
 
     OpenAI.instance.build(
       token: env.openApiKey,
-      baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 10), connectTimeout: const Duration(seconds: 10)),
+      baseOption: HttpSetup(
+          receiveTimeout: const Duration(seconds: 10),
+          connectTimeout: const Duration(seconds: 10)),
       enableLog: true,
     );
 
@@ -56,22 +58,23 @@ class Flavor {
     OpenAI.instance.build(
       token: env.openApiKey,
       baseOption: HttpSetup(
-        receiveTimeout: const Duration(seconds: 10),
-        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 60),
+        connectTimeout: const Duration(seconds: 60),
       ),
       enableLog: true,
     );
 
     /// whisper 모델을 제공하는 OpenAI SDK
     forWhisper.OpenAI.apiKey = env.openApiKey;
-    forWhisper.OpenAI.requestsTimeOut = const Duration(seconds: 12);
+    forWhisper.OpenAI.requestsTimeOut = const Duration(seconds: 30);
 
     /// 앱 DI 실행
     await AppBinder.init();
 
     await EasyLocalization.ensureInitialized();
 
-    await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(_env == Environment.prod ? true : false);
+    await FirebaseAnalytics.instance
+        .setAnalyticsCollectionEnabled(_env == Environment.prod ? true : false);
     if (_env == Environment.prod) {
       await FirebaseAnalytics.instance.logAppOpen();
     }

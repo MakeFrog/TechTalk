@@ -196,7 +196,7 @@ class YoutubeContentsDetailPage extends BasePage
                                   Text(data.mainTheme),
                                 ],
                               ),
-                            if (data.summaryNotes.isNotEmpty)
+                            if (data.summaries.isNotEmpty)
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -209,7 +209,7 @@ class YoutubeContentsDetailPage extends BasePage
                                   Wrap(
                                     runSpacing: 10,
                                     children: [
-                                      ...data.summaryNotes
+                                      ...data.summaries
                                           .map(
                                             (summary) =>
                                                 SummaryNoteFoldableItem(
@@ -250,9 +250,9 @@ class YoutubeContentsDetailPage extends BasePage
                                     Text(
                                       qna.question,
                                     ),
-                                    if (qna.evaluationPoint != null)
+                                    if (qna.answer != null)
                                       Text(
-                                        qna.evaluationPoint!,
+                                        qna.answer!,
                                       ),
                                   ],
                                 ),

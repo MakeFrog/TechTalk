@@ -1,7 +1,7 @@
 part of '../../youtube_content_upload_page.dart';
 
 class _ConfirmContentView extends ConsumerWidget
-    with YoutubeContentUploadState {
+    with YoutubeContentUploadState, YoutubeContentUploadEvent {
   const _ConfirmContentView({super.key});
 
   @override
@@ -27,16 +27,25 @@ class _ConfirmContentView extends ConsumerWidget
             flex: 121,
             child: SizedBox(),
           ),
-          targetYoutubeInfoAsync(ref).when(
-            data: (video) {
-              return YoutubeContentItemView(
-                thumbnailImgUrl: video.thumbnails.highResUrl,
-                title: video.title,
-                channelName: video.channelName,
+          HookBuilder(
+            builder: (context) {
+              return targetYoutubeInfoAsync(ref).when(
+                data: (video) {
+                  useEffect(() {
+                    video.captions.forEach((e) {
+                      log(e.toMap().toString());
+                    });
+                  }, []);
+                  return YoutubeContentItemView(
+                    thumbnailImgUrl: video.thumbnails.highResUrl,
+                    title: video.title,
+                    channelName: video.channelName,
+                  );
+                },
+                error: (_, __) => const EmptyBox(),
+                loading: EmptyBox.new,
               );
             },
-            error: (_, __) => const EmptyBox(),
-            loading: EmptyBox.new,
           ),
           const Expanded(
             flex: 136,
@@ -48,7 +57,9 @@ class _ConfirmContentView extends ConsumerWidget
               child: HookBuilder(
                 builder: (context) {
                   return FilledButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      startAnalyze(ref);
+                    },
                     child: const Text(
                       '다음',
                     ),

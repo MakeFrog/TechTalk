@@ -22,7 +22,7 @@ class SummaryModel {
   SummaryEntity toEntity() {
     return SummaryEntity(
       mainTheme: mainTheme,
-      summaryNotes: summaries.map((summary) => summary.toEntity()).toList(),
+      summaries: summaries.map((summary) => summary.toEntity()).toList(),
     );
   }
 

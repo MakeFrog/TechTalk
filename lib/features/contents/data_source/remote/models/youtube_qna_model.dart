@@ -15,13 +15,15 @@ class YoutubeQnaModel {
 
   final String id;
   final String question;
+
+  /// TODO : 모범답안으로 변경
   final String? evaluationPoint;
 
   YoutubeQnaEntity toEntity() {
     return YoutubeQnaEntity(
       id: id,
       question: question,
-      evaluationPoint: evaluationPoint,
+      answer: evaluationPoint ?? '모범답안 없음',
     );
   }
 

@@ -16,53 +16,59 @@ class GetQnasFromYoutubeContentUseCase
   @override
   Future<YoutubeAiQnaResponse> call(
       YoutubeVideoAndCaptionEntity request) async {
+    final allSkills = techSetRepository.getSkills();
     // the system message that will be sent to the request.
     final systemMessage = OpenAIChatCompletionChoiceMessageModel(
       content: [
         OpenAIChatCompletionChoiceMessageContentItemModel.text(
           '''
-프로그래밍 관련 유튜브 영상을 기반으로 기술 면접 질문을 생성하세요.
-
 영상의 제목과 내용을 바탕으로 적합한 면접 질문과 모범답안을 작성하세요.
+영상의 제목과 내용을 바탕으로 주어진 개발 스킬 id 리스트와 개발 직군 id 리스트를 기반으로 영상에 해당되는 id 값을 전달하세요.
 
 ### 요구사항:
 1. **응답 유형 (`type`) 지정**:
    - **`notTech`**: 영상 내용이 프로그래밍과 관련이 없는 경우.
-   - **`lackOfContent`**: 영상 내용이 충분히 기술적이지 않거나, 면접 질문을 만들기에 적합하지 않은 경우. ex) 개발자 인터뷰, 브이로그.
+   - **`lackOfContent`**: 영상 내용이 충분히 기술적이지 않거나, 면접 질문을 만들기에 적합하지 않은 경우.
    - **`isValid`**: 영상 내용에서 기술 면접 질문을 생성할 수 있는 경우.
 
 2. **질문(`qnas`) 작성**:
-   - 영상에서 다루고 있는 프로그래밍 개념을 기반으로 면접 질문을 최소 4개에서 최대 12개까지 작성하세요.
-   - 질문은 영상에서 다루는 프로그래밍 개념을 물어보는 내용으로 구성하세요.
-   - 모범답안은 영상의 내용을 기반으로 명확하고 구체적으로 작성하세요.
-   - 적절한 질문이 없을 경우 빈 배열을 반환하세요.
+   - 최소 4개에서 최대 12개의 질문을 작성하세요.
+   - 질문은 영상의 프로그래밍 개념과 직접적으로 연관되도록 구성하세요.
+   - 각 질문에 명확하고 구체적인 모범 답안을 작성하세요.
+   - 적절한 질문이 없을 경우 빈 배열(`[]`)을 반환하세요.
+
+3. **개발 스킬 id 리스트(`skillIds`) 작성**:
+4. **개발 직군 id 리스트(`jobGroupIds`) 작성**:
+   - 영상의 내용과 관련된 스킬, 직군 id를 각각 반환하세요.
+   - 해당되는 id가 없으면 빈 배열(`[]`)을 반환하세요.
+   - 관련되어 있는 id를 최대한 많이 반환하는것이 중요합니다.
 
 ---
 
 ### 입력 데이터 형식:
-- **제목**: `${request.title}`
+- **제목**: `${request.title}`  
 - **내용**: `${request.script}`
+- **개발 스킬 id 리스트**: `${allSkills.map((e) => e.id).toList()}`
+- **개발 직군 id 리스트**: `${JobGroup.values.map((e) => e.id).toList()}`
 
 ### 응답 언어:
 - 언어 코드에 해당되는 언어로 응답하세요.
 - 언어 코드: `${AppLocale.currentLocale.languageCode}`
 
-### 응답 어체:
-- 경어체를 사용합니다.(존댓말)
-
 ### 응답 형식:
-아래 JSON 구조를 따르세요.
-  
+아래 JSON 구조를 따르세요:
 ```json
 {
-  "type": "notTech | lackOfContent | isValid", // 필수
-  "qnas": [ // 필수
+  "type": "notTech | lackOfContent | isValid",
+  "qnas": [
     { 
-      "question": "면접 질문", // 필수
-      "answer": "모범 답안" // 필수
+      "question": "면접 질문",
+      "answer": "모범 답안"
     }
-  ]
-} 
+  ],
+  "skillIds": ["skillId1", "skillId2", ...],
+  "jobGroupIds": ["jobGroupId1", "jobGroupId2", ...]
+}
           ''',
         ),
       ],
