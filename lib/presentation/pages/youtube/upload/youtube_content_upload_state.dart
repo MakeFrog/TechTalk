@@ -50,7 +50,7 @@ mixin class YoutubeContentUploadState {
   ///
   /// 분석이 완료된 유튜브 콘텐츠
   ///
-  AsyncValue<YoutubeVideoAndCaptionEntity> analyzedYoutubeAsync(
+  AsyncValue<YoutubeVideoAndCaptionEntity> targetYoutubeInfoAsync(
           WidgetRef ref) =>
       ref.watch(targetYoutubeInfoProvider);
 }

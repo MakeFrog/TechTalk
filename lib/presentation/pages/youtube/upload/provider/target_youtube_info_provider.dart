@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/animation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_video_entity.dart';
 import 'package:techtalk/features/contents/youtube.dart';
@@ -14,7 +15,10 @@ class TargetYoutubeInfo extends _$TargetYoutubeInfo {
   Future<YoutubeVideoAndCaptionEntity> build() async {
     final videoId = ref.read(urlInputTextEditingControllerProvider).text;
     final response = await youtubeRepository.getVideoAndCaption(videoId);
-    return response.fold(onSuccess: (e) {
+    return response.fold(onSuccess: (e) async {
+      final pageController = ref.read(uploadStepPageControllerProvider);
+      await pageController.animateToPage(2,
+          duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
       return e;
     }, onFailure: (e) {
       log('유튜브 explore 데이터 호출 실패');

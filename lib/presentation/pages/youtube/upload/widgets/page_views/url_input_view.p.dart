@@ -1,11 +1,12 @@
 part of '../../youtube_content_upload_page.dart';
 
-class _UrlInputView extends ConsumerWidget
+class _UrlInputView extends HookConsumerWidget
     with YoutubeContentUploadState, YoutubeContentUploadEvent {
   const _UrlInputView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useAutomaticKeepAlive();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(

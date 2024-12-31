@@ -1,6 +1,7 @@
 part of '../../youtube_content_upload_page.dart';
 
-class _AnalyzingView extends ConsumerWidget with YoutubeContentUploadState {
+class _AnalyzingView extends ConsumerWidget
+    with YoutubeContentUploadState, YoutubeContentUploadEvent {
   const _AnalyzingView({super.key});
 
   @override
@@ -16,23 +17,20 @@ class _AnalyzingView extends ConsumerWidget with YoutubeContentUploadState {
             style: AppTextStyle.headline1,
           ),
           const Gap(100),
-          analyzedYoutubeAsync(ref).when(
-            data: (info) {
-              print('아랑이 : ${info.title}');
-              info.captions.forEach((e) {
-                log('아랑이 : ${e.toMap()}');
-              });
-
-              log('종합 : ${info.script}');
-
-              return Text('성공');
+          HookConsumer(
+            builder: (context, ref, _) {
+              return targetYoutubeInfoAsync(ref).when(
+                data: (info) {
+                  return Center(child: Text('분석중(성공)'));
+                },
+                error: (e, __) => Text('에러'),
+                loading: () => Center(
+                  child: Text(
+                    '분석중',
+                  ),
+                ),
+              );
             },
-            error: (e, __) => Text('에러'),
-            loading: () => Center(
-              child: Text(
-                '분석중',
-              ),
-            ),
           )
         ],
       ),
