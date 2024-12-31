@@ -1,12 +1,13 @@
 import 'package:techtalk/features/contents/repositories/entities/caption_entity.dart';
+import 'package:techtalk/features/contents/repositories/entities/contents_author_entity.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 ///
 /// [YoutubeExplode]의
-/// [Video]속성으로 매핑되는 entity
+/// [Video] / [Channel] / [ClosedCaptionManifest] 속성으로 매핑되는 entity
 /// 현재는 [Upload] 섹션에서만 사용되는 프로퍼티만 매핑되어 있음.
 ///
-class YoutubeVideoAndCaptionEntity {
+class YoutubeVideoEntity {
   /// Video ID.
   final String id;
 
@@ -25,7 +26,7 @@ class YoutubeVideoAndCaptionEntity {
   /// Video upload date.
   /// Note: For search queries it is calculated with:
   ///   DateTime.now() - how much time is was published.
-  final DateTime? uploadDate;
+  final DateTime? publishedDate;
 
   /// Duration of the video.
   final Duration? duration;
@@ -33,25 +34,34 @@ class YoutubeVideoAndCaptionEntity {
   /// Available thumbnails for this video.
   final ThumbnailSet thumbnails;
 
+  /// 자막 리스트
   final List<CaptionEntity> captions;
 
+  /// 전체 스크립(본문)
   final String script;
 
-  YoutubeVideoAndCaptionEntity({
+  /// 채널 정보
+  final ChannelEntity channel;
+
+  YoutubeVideoEntity({
     required this.id,
     required this.title,
     required this.description,
     required this.channelName,
     required this.channelId,
-    required this.uploadDate,
+    required this.publishedDate,
     required this.duration,
     required this.thumbnails,
     required this.captions,
     required this.script,
+    required this.channel,
   });
 
-  factory YoutubeVideoAndCaptionEntity.fromExplore(
-      {required Video video, required List<ClosedCaption> captions}) {
+  factory YoutubeVideoEntity.fromExplore({
+    required Video video,
+    required List<ClosedCaption> captions,
+    required Channel channel,
+  }) {
     final List<CaptionEntity> targetCaptions = [];
     String totalScript = '';
 
@@ -60,17 +70,50 @@ class YoutubeVideoAndCaptionEntity {
       totalScript += ' ${e.text}';
     }
 
-    return YoutubeVideoAndCaptionEntity(
+    return YoutubeVideoEntity(
       id: video.id.value,
       title: video.title,
       description: video.description,
       channelName: video.author,
       channelId: video.channelId.value,
-      uploadDate: video.uploadDate,
+      publishedDate: video.publishDate,
       duration: video.duration,
       thumbnails: video.thumbnails,
       captions: targetCaptions,
       script: totalScript,
+      channel: ChannelEntity(
+        id: channel.id.value,
+        name: channel.title,
+        logoUrl: channel.logoUrl,
+      ),
+    );
+  }
+
+  YoutubeVideoEntity copyWith({
+    String? id,
+    String? title,
+    String? channelName,
+    String? channelId,
+    String? description,
+    DateTime? uploadDate,
+    Duration? duration,
+    ThumbnailSet? thumbnails,
+    List<CaptionEntity>? captions,
+    String? script,
+    ChannelEntity? channel,
+  }) {
+    return YoutubeVideoEntity(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      channelName: channelName ?? this.channelName,
+      channelId: channelId ?? this.channelId,
+      description: description ?? this.description,
+      publishedDate: uploadDate ?? this.publishedDate,
+      duration: duration ?? this.duration,
+      thumbnails: thumbnails ?? this.thumbnails,
+      captions: captions ?? this.captions,
+      script: script ?? this.script,
+      channel: channel ?? this.channel,
     );
   }
 }

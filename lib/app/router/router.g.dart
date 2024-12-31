@@ -133,6 +133,13 @@ RouteBase get $mainRoute => GoRouteData.$route(
           path: 'youtube-content-upload',
           name: 'youtube content upload',
           factory: $YoutubeContentUploadRouteExtension._fromState,
+          routes: [
+            GoRouteData.$route(
+              path: 'youtube-content-upload-failed',
+              name: 'youtube content upload failed',
+              factory: $YoutubeContentUploadFailedRouteExtension._fromState,
+            ),
+          ],
         ),
         GoRouteData.$route(
           path: 'wrong-answer/:index',
@@ -316,7 +323,7 @@ extension $YoutubeContentsMainListRouteExtension
 extension $ContentsDetailRouteExtension on ContentsDetailRoute {
   static ContentsDetailRoute _fromState(GoRouterState state) =>
       ContentsDetailRoute(
-        state.extra as YoutubeContentOverviewEntity,
+        state.extra as YoutubeDetailArg,
       );
 
   String get location => GoRouteData.$location(
@@ -341,6 +348,25 @@ extension $YoutubeContentUploadRouteExtension on YoutubeContentUploadRoute {
 
   String get location => GoRouteData.$location(
         '/youtube-content-upload',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $YoutubeContentUploadFailedRouteExtension
+    on YoutubeContentUploadFailedRoute {
+  static YoutubeContentUploadFailedRoute _fromState(GoRouterState state) =>
+      const YoutubeContentUploadFailedRoute();
+
+  String get location => GoRouteData.$location(
+        '/youtube-content-upload/youtube-content-upload-failed',
       );
 
   void go(BuildContext context) => context.go(location);

@@ -65,8 +65,8 @@ class YoutubeContentsOverviewModel {
       relatedSkillIds: skills.toSet(),
       relatedJobs: relatedJobGroupIds.map(JobGroup.getById).toSet(),
       videoDuration: videoDuration,
-      uploadAt: uploadAt,
-      createdAt: createdAt,
+      techtalkUploadDate: uploadAt,
+      videoPublishDate: createdAt,
     );
   }
 
