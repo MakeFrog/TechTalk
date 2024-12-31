@@ -8,6 +8,7 @@ import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_content_qna_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_contents_detail_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_contents_detail_qnas_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_summary_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_video_data_provider.dart';
 
@@ -39,15 +40,23 @@ mixin class YoutubeContentsDetailState {
   ///
   AsyncValue<SummaryEntity> summaryAsync(WidgetRef ref,
       {required String contentId}) {
-    return ref.watch(youtubeSummaryProvider(contentId));
+    final passedSummary = ref.read(youtubeDetailRouteArgProvider).summary;
+
+    return passedSummary != null
+        ? AsyncData(passedSummary)
+        : ref.watch(youtubeSummaryProvider(contentId));
   }
 
   ///
   /// 콘텐츠 문답 리스트
   ///
-  AsyncValue<List<YoutubeQnaEntity>> qnasAsync(
+  AsyncValue<Set<YoutubeQnaEntity>> qnasAsync(
     WidgetRef ref, {
     required String contentId,
-  }) =>
-      ref.watch(youtubeContentQnaProvider(contentId));
+  }) {
+    final passedQnas = ref.read(youtubeDetailRouteArgProvider).qnas;
+    return passedQnas != null
+        ? AsyncData(passedQnas)
+        : ref.watch(youtubeContentQnaProvider(contentId));
+  }
 }

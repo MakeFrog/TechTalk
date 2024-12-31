@@ -161,20 +161,27 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
   }
 
   @override
-  Future<Result<YoutubeVideoAndCaptionEntity>> getVideoAndCaption(
-      String videoId) async {
+  Future<Result<YoutubeVideoEntity>> getVideoAndCaption(String videoId) async {
     try {
       final Video video = await _youtubeApiDataSource.videos.get(videoId);
 
-      final caption = await _youtubeApiDataSource.videos.closedCaptions
-          .getManifest(videoId);
+      final responses = await Future.wait([
+        _youtubeApiDataSource.channels.get(video.channelId),
+        _youtubeApiDataSource.videos.closedCaptions.getManifest(videoId),
+      ]);
+
+      final channel = responses[0] as Channel;
+      final caption = responses[1] as ClosedCaptionManifest;
 
       final ClosedCaptionTrack tracks = await _youtubeApiDataSource
           .videos.closedCaptions
           .get(caption.tracks.first);
 
-      final result = YoutubeVideoAndCaptionEntity.fromExplore(
-          video: video, captions: tracks.captions.toList());
+      final result = YoutubeVideoEntity.fromExplore(
+        video: video,
+        captions: tracks.captions.toList(),
+        channel: channel,
+      );
       return Result.success(result);
     } on Exception catch (e) {
       log('getYoutubeVideoData : $e');

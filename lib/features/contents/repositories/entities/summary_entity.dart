@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/summary_model.dart';
 import 'package:techtalk/features/contents/repositories/entities/paragraph_entity.dart';
+import 'package:techtalk/features/contents/repositories/entities/youtube_ai_summary_response_entity.dart';
 
 part 'summary_entity.g.dart';
 
@@ -20,6 +21,12 @@ class SummaryEntity {
   SummaryModel toModel() => SummaryModel(
         mainTheme: mainTheme,
         summaries: summaries.map((summary) => summary.toModel()).toList(),
+      );
+
+  factory SummaryEntity.fromUploadResponse(YoutubeAiSummaryResponse response) =>
+      SummaryEntity(
+        mainTheme: response.summary.mainTheme,
+        summaries: response.summary.summaries,
       );
 
   /// JSON에서 모델로 변환

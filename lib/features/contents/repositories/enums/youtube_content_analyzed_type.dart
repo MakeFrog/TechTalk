@@ -23,4 +23,6 @@ enum YoutubeContentAnalyzedType {
   }
 
   bool get isValidContent => this == YoutubeContentAnalyzedType.isValid;
+
+  bool get isInvalid => !(this == YoutubeContentAnalyzedType.isValid);
 }

@@ -27,7 +27,7 @@ abstract interface class YoutubeContentsRepository {
   ///
   /// 유튜브 API를 통해 [Video] 관련 정보와 caption 정보를 호출하는 메소드
   ///
-  Future<Result<YoutubeVideoAndCaptionEntity>> getVideoAndCaption(
+  Future<Result<YoutubeVideoEntity>> getVideoAndCaption(
     String videoId,
   );
 

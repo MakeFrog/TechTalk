@@ -9,11 +9,10 @@ import 'package:techtalk/features/contents/repositories/entities/youtube_ai_summ
 import 'package:techtalk/features/contents/repositories/entities/youtube_video_entity.dart';
 import 'package:techtalk/features/contents/usecases/exception/youtube_ai_analyze_exception.dart';
 
-class GetSummaryFromYoutubeContentUseCase extends BaseUseCase<
-    YoutubeVideoAndCaptionEntity, YoutubeAiSummaryResponse> {
+class GetSummaryFromYoutubeContentUseCase
+    extends BaseUseCase<YoutubeVideoEntity, YoutubeAiSummaryResponse> {
   @override
-  Future<YoutubeAiSummaryResponse> call(
-      YoutubeVideoAndCaptionEntity request) async {
+  Future<YoutubeAiSummaryResponse> call(YoutubeVideoEntity request) async {
     // the system message that will be sent to the request.
     final systemMessage = OpenAIChatCompletionChoiceMessageModel(
       content: [

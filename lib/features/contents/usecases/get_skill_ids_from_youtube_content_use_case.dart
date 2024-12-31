@@ -6,9 +6,9 @@ import 'package:techtalk/features/contents/repositories/entities/youtube_video_e
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 class GetSkillIdsFromYoutubeContentUseCase
-    extends BaseUseCase<YoutubeVideoAndCaptionEntity, void> {
+    extends BaseUseCase<YoutubeVideoEntity, void> {
   @override
-  FutureOr<void> call(YoutubeVideoAndCaptionEntity request) async {
+  FutureOr<void> call(YoutubeVideoEntity request) async {
     final allSkills = techSetRepository.getSkills();
     // the system message that will be sent to the request.
     final systemMessage = OpenAIChatCompletionChoiceMessageModel(

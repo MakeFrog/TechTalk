@@ -21,7 +21,7 @@ class YtInvalidVideoContent extends YoutubeAiAnalyzeException {
 }
 
 class YtToManyTokenRequired extends YoutubeAiAnalyzeException {
-  const YtToManyTokenRequired() : super('3', '분석 가능한 영상이 아님');
+  const YtToManyTokenRequired() : super('3', '영상 길이가 너무 길음');
 }
 
 class YtUnknownException extends YoutubeAiAnalyzeException {

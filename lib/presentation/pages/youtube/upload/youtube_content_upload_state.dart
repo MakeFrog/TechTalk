@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/modules/regex/app_validator.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_video_entity.dart';
+import 'package:techtalk/presentation/pages/youtube/upload/provider/analyzed_youtube_content_fetcher_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/provider/target_youtube_info_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/provider/upload_step_page_controller.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/provider/url_input_text_editing_controller_provider.dart';
@@ -48,9 +49,18 @@ mixin class YoutubeContentUploadState {
       ref.read(urlInputTextEditingControllerProvider).text;
 
   ///
-  /// 분석이 완료된 유튜브 콘텐츠
+  /// 업로드할 유튜브 콘텐츠
   ///
-  AsyncValue<YoutubeVideoAndCaptionEntity> targetYoutubeInfoAsync(
-          WidgetRef ref) =>
+  AsyncValue<YoutubeVideoEntity> targetYoutubeInfoAsync(WidgetRef ref) =>
       ref.watch(targetYoutubeInfoProvider);
+
+  ///
+  /// 분석 진행중인 유튜브 fetcher
+  ///
+  /// [NOTE]
+  /// 값을 리턴하지 않고 provider 안에서 로직을 처리함.
+  ///
+  AsyncValue<void> analyzedYoutubeFetcherAsync(WidgetRef ref) {
+    return ref.watch(analyzedYoutubeFetcherProvider);
+  }
 }

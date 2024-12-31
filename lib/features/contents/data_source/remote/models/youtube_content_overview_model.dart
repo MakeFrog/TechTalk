@@ -2,6 +2,8 @@ import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/youtube_contents_overview_ref.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_author_entity.dart';
+import 'package:techtalk/features/contents/repositories/entities/youtube_ai_qna_response.dart';
+import 'package:techtalk/features/contents/repositories/entities/youtube_video_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 
 class YoutubeContentOverviewEntity {
@@ -19,9 +21,9 @@ class YoutubeContentOverviewEntity {
 
   final Set<JobGroup> relatedJobs;
 
-  final DateTime uploadAt;
+  final DateTime techtalkUploadDate;
 
-  final DateTime createdAt;
+  final DateTime videoPublishDate;
 
   final Duration videoDuration;
 
@@ -33,8 +35,8 @@ class YoutubeContentOverviewEntity {
     required this.relatedJobs,
     required this.relatedSkillIds,
     required this.videoDuration,
-    required this.createdAt,
-    required this.uploadAt,
+    required this.videoPublishDate,
+    required this.techtalkUploadDate,
     this.qnaNum = 0,
   });
 
@@ -47,9 +49,27 @@ class YoutubeContentOverviewEntity {
         relatedSkillIds: relatedSkillIds.map((skill) => skill.id).toList(),
         relatedJobGroupIds: relatedJobs.map((job) => job.id).toList(),
         channel: channel.toModel(),
-        uploadAt: uploadAt,
-        createdAt: createdAt,
+        uploadAt: techtalkUploadDate,
+        createdAt: videoPublishDate,
         channelRef:
             FirestoreYoutubeContentsOverviewRef.channelDocumentRef(channel.id),
       );
+
+  factory YoutubeContentOverviewEntity.fromUploadResponse({
+    required YoutubeVideoEntity video,
+    required YoutubeAiQnaAndIdsResponse qnaAndIds,
+  }) {
+    return YoutubeContentOverviewEntity(
+      id: video.id,
+      thumbnailImgUrl: video.thumbnails.highResUrl,
+      contentsTitle: video.title,
+      channel: video.channel,
+      qnaNum: qnaAndIds.qnas.length,
+      relatedJobs: qnaAndIds.jogGroups,
+      relatedSkillIds: qnaAndIds.skills,
+      videoDuration: video.duration ?? Duration.zero,
+      videoPublishDate: video.publishedDate ?? DateTime.now(),
+      techtalkUploadDate: DateTime.now(),
+    );
+  }
 }

@@ -1,26 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'target_youtube_info_provider.dart';
+part of 'youtube_detail_route_arg_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$targetYoutubeInfoHash() => r'686cb0006b1fd82807ea32fd17349236179d0e7f';
+String _$youtubeDetailRouteArgHash() =>
+    r'287c6eb6d2e4126b9b543d0ac3a5dc065cd3dae5';
 
-/// See also [TargetYoutubeInfo].
-@ProviderFor(TargetYoutubeInfo)
-final targetYoutubeInfoProvider = AutoDisposeAsyncNotifierProvider<
-    TargetYoutubeInfo, YoutubeVideoEntity>.internal(
-  TargetYoutubeInfo.new,
-  name: r'targetYoutubeInfoProvider',
+/// See also [youtubeDetailRouteArg].
+@ProviderFor(youtubeDetailRouteArg)
+final youtubeDetailRouteArgProvider =
+    AutoDisposeProvider<YoutubeDetailArg>.internal(
+  youtubeDetailRouteArg,
+  name: r'youtubeDetailRouteArgProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$targetYoutubeInfoHash,
+      : _$youtubeDetailRouteArgHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$TargetYoutubeInfo = AutoDisposeAsyncNotifier<YoutubeVideoEntity>;
+typedef YoutubeDetailRouteArgRef = AutoDisposeProviderRef<YoutubeDetailArg>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -67,6 +67,11 @@ mixin class YoutubeContentUploadEvent {
 
         /// 분석 화면
         /// TODO: 영상 업로드 도중 이탈 시 어떻게 처리할지 기획적 고민필요
+        await pageController.animateToPage(
+          0,
+          duration: const Duration(microseconds: 1),
+          curve: Curves.easeIn,
+        );
         break;
 
       default:
@@ -74,17 +79,16 @@ mixin class YoutubeContentUploadEvent {
     }
   }
 
-  Future<void> startAnalyze(WidgetRef ref) async {
-    final targetVideo = await ref.watch(targetYoutubeInfoProvider.future);
-
-    EasyLoading.show();
-    await Future.wait([
-      GetSummaryFromYoutubeContentUseCase().call(targetVideo),
-      GetQnasFromYoutubeContentUseCase().call(targetVideo),
-    ]);
-    // final response =
-    //     await GetSummaryFromYoutubeContentUseCase().call(targetVideo);
-
-    EasyLoading.dismiss();
+  ///
+  /// 영상 확인 단계에서
+  /// '다음' (영상 분석 시작) 버튼이 클릭 되었을 때
+  ///
+  void onStartAnalyzedBtnTapped(WidgetRef ref) {
+    final pageController = ref.read(uploadStepPageControllerProvider);
+    pageController.animateToPage(
+      3,
+      duration: const Duration(microseconds: 1),
+      curve: Curves.easeIn,
+    );
   }
 }

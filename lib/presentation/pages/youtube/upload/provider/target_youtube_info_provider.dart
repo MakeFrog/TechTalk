@@ -12,7 +12,7 @@ part 'target_youtube_info_provider.g.dart';
 @riverpod
 class TargetYoutubeInfo extends _$TargetYoutubeInfo {
   @override
-  Future<YoutubeVideoAndCaptionEntity> build() async {
+  Future<YoutubeVideoEntity> build() async {
     final videoId = ref.read(urlInputTextEditingControllerProvider).text;
     final response = await youtubeRepository.getVideoAndCaption(videoId);
     return response.fold(onSuccess: (e) async {

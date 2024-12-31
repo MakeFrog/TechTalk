@@ -12,10 +12,9 @@ import 'package:techtalk/features/contents/usecases/exception/youtube_ai_analyze
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 class GetQnasFromYoutubeContentUseCase
-    extends BaseUseCase<YoutubeVideoAndCaptionEntity, YoutubeAiQnaResponse> {
+    extends BaseUseCase<YoutubeVideoEntity, YoutubeAiQnaAndIdsResponse> {
   @override
-  Future<YoutubeAiQnaResponse> call(
-      YoutubeVideoAndCaptionEntity request) async {
+  Future<YoutubeAiQnaAndIdsResponse> call(YoutubeVideoEntity request) async {
     final allSkills = techSetRepository.getSkills();
     // the system message that will be sent to the request.
     final systemMessage = OpenAIChatCompletionChoiceMessageModel(
@@ -39,7 +38,8 @@ class GetQnasFromYoutubeContentUseCase
 
 3. **개발 스킬 id 리스트(`skillIds`) 작성**:
 4. **개발 직군 id 리스트(`jobGroupIds`) 작성**:
-   - 영상의 내용과 관련된 스킬, 직군 id를 각각 반환하세요.
+   - 영상의 내용과 관련된 스킬, 직군 id를 주어진 리스트에서 찾아 각각 반환하세요.
+   - 꼭 주어진 리스트에 있는 id들만 반환해야 됩니다. 
    - 해당되는 id가 없으면 빈 배열(`[]`)을 반환하세요.
    - 관련되어 있는 id를 최대한 많이 반환하는것이 중요합니다.
 
@@ -100,7 +100,7 @@ class GetQnasFromYoutubeContentUseCase
 
       final targetJson = jsonDecode(response);
 
-      final targetEntity = YoutubeAiQnaResponse.fromJson(targetJson);
+      final targetEntity = YoutubeAiQnaAndIdsResponse.fromJson(targetJson);
       print('이찌방 qna 성공 : ${targetEntity}');
       return targetEntity;
     } on RequestFailedException catch (e) {

@@ -57,8 +57,8 @@ class _ConfirmContentView extends ConsumerWidget
               child: HookBuilder(
                 builder: (context) {
                   return FilledButton(
-                    onPressed: () async {
-                      startAnalyze(ref);
+                    onPressed: () {
+                      onStartAnalyzedBtnTapped(ref);
                     },
                     child: const Text(
                       '다음',

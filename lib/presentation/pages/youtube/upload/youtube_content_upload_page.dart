@@ -24,6 +24,7 @@ part 'widgets/page_views/url_input_view.p.dart';
 part 'widgets/page_views/analyzing_view.p.dart';
 
 part 'widgets/page_views/confirm_content_view.p.dart';
+part 'widgets/page_views/analyzing_content_view.p.dart';
 
 class YoutubeContentUploadPage extends BasePage
     with YoutubeContentUploadState, YoutubeContentUploadEvent {
@@ -38,6 +39,7 @@ class YoutubeContentUploadPage extends BasePage
         _UrlInputView(),
         _AnalyzingView(),
         _ConfirmContentView(),
+        _AnalyzingContentView(),
       ],
     );
   }
