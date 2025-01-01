@@ -29,11 +29,12 @@ class TargetYoutubeInfo extends _$TargetYoutubeInfo {
       log('유튜브 explore 데이터 호출 실패');
 
       final targetException =
-          e is YoutubeUploadException ? e : YtUnknownException();
+          e is YoutubeUploadException ? e : const YtUnknownException();
 
       final targetFailedType =
           YoutubeUploadFailedType.getByErrorCode(targetException.code);
 
+      /// 실패 페이지로 이동
       YoutubeContentUploadFailedRoute(targetFailedType)
           .go(await navigationContext);
 

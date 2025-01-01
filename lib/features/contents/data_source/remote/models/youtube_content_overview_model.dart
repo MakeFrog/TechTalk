@@ -65,8 +65,9 @@ class YoutubeContentOverviewEntity {
       contentsTitle: video.title,
       channel: video.channel,
       qnaNum: qnaAndIds.qnas.length,
-      relatedJobs: qnaAndIds.jogGroups,
-      relatedSkillIds: qnaAndIds.skills,
+      relatedJobs: qnaAndIds.jogGroups.toSet()
+        ..removeWhere((e) => e.isUndefined),
+      relatedSkillIds: qnaAndIds.skills..removeWhere((e) => e.isUndefined),
       videoDuration: video.duration ?? Duration.zero,
       videoPublishDate: video.publishedDate ?? DateTime.now(),
       techtalkUploadDate: DateTime.now(),

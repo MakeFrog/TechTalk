@@ -46,4 +46,6 @@ class SkillEntity {
       imagePath: map['imagePath'] as String,
     );
   }
+
+  bool get isUndefined => id == SkillEntity.undefinedKey;
 }

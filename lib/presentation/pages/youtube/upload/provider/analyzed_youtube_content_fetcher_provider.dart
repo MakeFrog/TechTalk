@@ -12,7 +12,6 @@ import 'package:techtalk/features/contents/usecases/enums/youtube_upload_failed_
 import 'package:techtalk/features/contents/usecases/exception/youtube_upload_exception.dart';
 import 'package:techtalk/features/contents/usecases/get_qnas_from_youtube_content_use_case.dart';
 import 'package:techtalk/features/contents/usecases/get_summary_from_youtube_content_use_case.dart';
-import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_contents_detail_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/provider/target_youtube_info_provider.dart';
 
@@ -49,11 +48,13 @@ class AnalyzedYoutubeFetcher extends _$AnalyzedYoutubeFetcher {
         qnaAndIds: qnaAndIdsResult,
       );
 
-      ContentsDetailRoute(YoutubeDetailArg.entryFromUpload(
-        overView: targetOverView,
-        summary: SummaryEntity.fromUploadResponse(summaryResult),
-        qnas: qnaAndIdsResult.qnas,
-      )).go(await navigationContext);
+      ContentsDetailRoute(
+        YoutubeDetailArg.entryFromUpload(
+          overView: targetOverView,
+          summary: SummaryEntity.fromUploadResponse(summaryResult),
+          qnas: qnaAndIdsResult.qnas,
+        ),
+      ).go(await navigationContext);
     } catch (e) {
       log('유튜브 AI 분석 실패 : ${e}');
       final targetException =

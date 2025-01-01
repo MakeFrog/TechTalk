@@ -60,11 +60,6 @@ enum JobGroup {
         (job) => job.id == id,
         orElse: () => JobGroup.UNDEFINED,
       );
-}
 
-class TestWidget {
-  final GlobalKey<AnimatedListState> animatedlistKey;
-  final JobGroup job;
-
-  TestWidget(this.animatedlistKey, this.job);
+  bool get isUndefined => this == JobGroup.UNDEFINED;
 }

@@ -6,7 +6,7 @@ part of 'target_youtube_info_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$targetYoutubeInfoHash() => r'b76a8ee5f2ed753d0a6185f14a822fc66d81e37b';
+String _$targetYoutubeInfoHash() => r'ebb8c824b8646cd431b4e575b659b0a07005d781';
 
 /// See also [TargetYoutubeInfo].
 @ProviderFor(TargetYoutubeInfo)
