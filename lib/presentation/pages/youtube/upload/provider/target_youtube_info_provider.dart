@@ -18,27 +18,31 @@ class TargetYoutubeInfo extends _$TargetYoutubeInfo {
   @override
   Future<YoutubeVideoEntity> build() async {
     final videoId = ref.read(urlInputTextEditingControllerProvider).text;
-    final response = await youtubeRepository.getVideoAndCaption(videoId);
-    return response.fold(onSuccess: (youtube) async {
-      final pageController = ref.read(uploadStepPageControllerProvider);
-      await pageController.animateToPage(2,
-          duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
+    final response = await youtubeRepository.getVideoInfoForUpload(videoId);
+    return response.fold(
+      onSuccess: (youtube) async {
+        final pageController = ref.read(uploadStepPageControllerProvider);
+        await pageController.animateToPage(2,
+            duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
 
-      return youtube;
-    }, onFailure: (e) async {
-      log('유튜브 explore 데이터 호출 실패');
+        return youtube;
+      },
+      onFailure: (e) async {
+        log('유튜브 explore 데이터 호출 실패');
 
-      final targetException =
-          e is YoutubeUploadException ? e : const YtUnknownException();
+        final targetException =
+            e is YoutubeUploadException ? e : const YtUnknownException();
 
-      final targetFailedType =
-          YoutubeUploadFailedType.getByErrorCode(targetException.code);
+        final targetFailedType =
+            YoutubeUploadFailedType.getByErrorCode(targetException.code);
 
-      /// 실패 페이지로 이동
-      YoutubeContentUploadFailedRoute(targetFailedType)
-          .go(await navigationContext);
+        /// 실패 페이지로 이동
+        YoutubeContentUploadFailedRoute(
+                contentId: null, failedType: targetFailedType)
+            .go(await navigationContext);
 
-      throw e;
-    });
+        throw e;
+      },
+    );
   }
 }

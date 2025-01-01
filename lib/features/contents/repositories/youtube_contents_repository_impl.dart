@@ -98,7 +98,7 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
   Future<
       Result<
           FirebasePaginatedResult<YoutubeContentOverviewEntity,
-              YoutubeContentsOverviewModel>>> getYoutubeContentsOverviews({
+              YoutubeContentsOverviewModel>>> getPagedYoutubeMainContents({
     required int limit,
     required String orderByField,
     DocumentSnapshot<YoutubeContentsOverviewModel>? lastDocument,
@@ -107,7 +107,7 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
     try {
       // Remote DataSource에서 페이징된 데이터 가져오기
       final remotePaginatedResult =
-          await _youtubeRemoteDataSource.getYoutubeContentsOverviews(
+          await _youtubeRemoteDataSource.getPagedYoutubeMainContents(
         limit: limit,
         orderByField: orderByField,
         lastDocument: lastDocument,
@@ -164,9 +164,17 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
   }
 
   @override
-  Future<Result<YoutubeVideoEntity>> getVideoAndCaption(String videoId) async {
+  Future<Result<YoutubeVideoEntity>> getVideoInfoForUpload(
+      String videoId) async {
     try {
       final Video video = await _youtubeApiDataSource.videos.get(videoId);
+
+      final isAlreadyUploaded = await _youtubeRemoteDataSource
+          .isYoutubeAlreadyUploaded(video.id.value);
+
+      if (isAlreadyUploaded) {
+        throw YtAlreadyUploadedException(video.id.value);
+      }
 
       final responses = await Future.wait([
         _youtubeApiDataSource.channels.get(video.channelId),
@@ -182,7 +190,7 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
       }
 
       if (video.duration != null && video.duration!.inSeconds <= 60) {
-        throw const YtNotEnoughContentDuration();
+        throw const YtNotEnoughContentDurationException();
       }
 
       final ClosedCaptionTrack tracks = await _youtubeApiDataSource
@@ -224,6 +232,21 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
       return Result.failure(e);
     } catch (e) {
       return Result.failure(UnExceptedErrorException(e.toString()));
+    }
+  }
+
+  @override
+  Future<Result<YoutubeContentOverviewEntity>> getYoutubeMainInfo(
+      {required String contentId}) async {
+    try {
+      final response = await _youtubeRemoteDataSource
+          .getSingleYoutubeMainContent(contentId: contentId);
+      final skills = response.relatedSkillIds
+          .map(_techSetRepository.getSkillById)
+          .toList();
+      return Result.success(response.toEntity(skills));
+    } on Exception catch (e) {
+      return Result.failure(e);
     }
   }
 }

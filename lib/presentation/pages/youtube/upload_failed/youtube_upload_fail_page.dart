@@ -14,13 +14,13 @@ import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 
 class YoutubeUploadFailedPage extends BasePage with YoutubeUploadFailedEvent {
-  const YoutubeUploadFailedPage({super.key, required this.exception});
+  const YoutubeUploadFailedPage({super.key, required this.arg});
 
-  final YoutubeUploadFailedType exception;
+  final YoutubeUploadFailedArg arg;
 
   @override
   Override? get argProviderOverrides =>
-      youtubeUploadFailedRouteArgProvider.overrideWithValue(exception);
+      youtubeUploadFailedRouteArgProvider.overrideWithValue(arg);
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
@@ -34,12 +34,12 @@ class YoutubeUploadFailedPage extends BasePage with YoutubeUploadFailedEvent {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                exception.title,
+                arg.type.title,
                 style: AppTextStyle.headline1,
               ),
               const Gap(12),
               Text(
-                exception.description,
+                arg.type.description,
                 style: AppTextStyle.body1.copyWith(color: AppColor.of.gray4),
               ),
             ],
@@ -58,7 +58,7 @@ class YoutubeUploadFailedPage extends BasePage with YoutubeUploadFailedEvent {
                 onPressed: () {
                   onBottomFixedBtnTapped(ref);
                 },
-                child: Text(exception == YoutubeUploadFailedType.alreadyUploaded
+                child: Text(arg == YoutubeUploadFailedType.alreadyUploaded
                     ? '바로가기'
                     : '다른 영상 가져오기'),
               ),

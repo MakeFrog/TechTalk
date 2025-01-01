@@ -28,7 +28,7 @@ abstract interface class YoutubeContentsRepository {
   ///
   /// 유튜브 API를 통해 [Video] 관련 정보와 caption 정보를 호출하는 메소드
   ///
-  Future<Result<YoutubeVideoEntity>> getVideoAndCaption(
+  Future<Result<YoutubeVideoEntity>> getVideoInfoForUpload(
     String videoId,
   );
 
@@ -66,7 +66,7 @@ abstract interface class YoutubeContentsRepository {
   Future<
       Result<
           FirebasePaginatedResult<YoutubeContentOverviewEntity,
-              YoutubeContentsOverviewModel>>> getYoutubeContentsOverviews({
+              YoutubeContentsOverviewModel>>> getPagedYoutubeMainContents({
     required int limit,
     required String orderByField,
     DocumentSnapshot<YoutubeContentsOverviewModel>? lastDocument,
@@ -80,4 +80,7 @@ abstract interface class YoutubeContentsRepository {
       {required YoutubeContentOverviewEntity contentMainInfo,
       required SummaryEntity summary,
       required Set<YoutubeQnaEntity> qnas});
+
+  Future<Result<YoutubeContentOverviewEntity>> getYoutubeMainInfo(
+      {required String contentId});
 }

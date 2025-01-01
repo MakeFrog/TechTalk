@@ -84,7 +84,13 @@ class AnalyzedYoutubeFetcher extends _$AnalyzedYoutubeFetcher {
 
       final targetType =
           YoutubeUploadFailedType.getByErrorCode(targetException.code);
-      YoutubeContentUploadFailedRoute(targetType).go(await navigationContext);
+      final String? targetCardId = targetException is YtAlreadyUploadedException
+          ? (e as YtAlreadyUploadedException).contentId
+          : null;
+
+      YoutubeContentUploadFailedRoute(
+              contentId: targetCardId, failedType: targetType)
+          .go(await navigationContext);
       throw e;
     }
   }

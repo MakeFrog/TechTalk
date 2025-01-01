@@ -11,8 +11,10 @@ YoutubeDetailArg youtubeDetailRouteArg(YoutubeDetailRouteArgRef ref) {
 }
 
 final class YoutubeDetailArg {
+  final String contentId;
+
   /// Overview 섹션에서 보여지는 데이터
-  final YoutubeContentOverviewEntity overView;
+  final YoutubeContentOverviewEntity? overView;
 
   /// 요약 정보
   final SummaryEntity? summary;
@@ -20,8 +22,12 @@ final class YoutubeDetailArg {
   /// 문답 리스트
   final Set<YoutubeQnaEntity>? qnas;
 
-  const YoutubeDetailArg._(
-      {required this.overView, required this.summary, required this.qnas});
+  const YoutubeDetailArg._({
+    required this.overView,
+    required this.summary,
+    required this.qnas,
+    required this.contentId,
+  });
 
   /// [summary] / [qnas]
   /// 메인 리스트에서 진입하는 경우 null
@@ -31,6 +37,7 @@ final class YoutubeDetailArg {
       overView: overView,
       summary: null,
       qnas: null,
+      contentId: overView.id,
     );
   }
 
@@ -45,6 +52,21 @@ final class YoutubeDetailArg {
       overView: overView,
       summary: summary,
       qnas: qnas,
+      contentId: overView.id,
+    );
+  }
+
+  ///
+  /// 딥링크 또는 argument가 id밖에 없는 진입점
+  ///
+  factory YoutubeDetailArg.deeplinkOrHasSingleIdArg({
+    required String contentId,
+  }) {
+    return YoutubeDetailArg._(
+      contentId: contentId,
+      overView: null,
+      summary: null,
+      qnas: null,
     );
   }
 }

@@ -47,7 +47,7 @@ abstract interface class YoutubeContentsRemoteDataSource {
   ///
   Future<
       FirebasePaginatedResult<YoutubeContentsOverviewModel,
-          YoutubeContentsOverviewModel>> getYoutubeContentsOverviews({
+          YoutubeContentsOverviewModel>> getPagedYoutubeMainContents({
     required int limit,
     required String orderByField,
     DocumentSnapshot<YoutubeContentsOverviewModel>? lastDocument,
@@ -62,5 +62,17 @@ abstract interface class YoutubeContentsRemoteDataSource {
     required List<YoutubeQnaModel> qnas,
     required YoutubeContentsOverviewModel mainInfo,
     required SummaryModel summary,
+  });
+
+  ///
+  /// 유튜브 콘텐츠가 이미지 업로드되어 있는지 여부
+  ///
+  Future<bool> isYoutubeAlreadyUploaded(String contentId);
+
+  ///
+  /// 유튜브 메인 콘텐츠 정호 호출 (단일)
+  ///
+  Future<YoutubeContentsOverviewModel> getSingleYoutubeMainContent({
+    required String contentId,
   });
 }

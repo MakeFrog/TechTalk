@@ -28,6 +28,7 @@ import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_det
 import 'package:techtalk/presentation/pages/youtube/detail/youtube_contents_detail_page.dart';
 import 'package:techtalk/presentation/pages/youtube/main/youtube_content_main_page.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/youtube_content_upload_page.dart';
+import 'package:techtalk/presentation/pages/youtube/upload_failed/provider/youtube_upload_failed_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload_failed/youtube_upload_fail_page.dart';
 
 part 'router.g.dart';
@@ -249,7 +250,7 @@ class YoutubeContentsMainListRoute extends GoRouteData {
 }
 
 class ContentsDetailRoute extends GoRouteData {
-  ContentsDetailRoute(this.$extra) : contentsId = $extra.overView.id;
+  ContentsDetailRoute(this.$extra) : contentsId = $extra.contentId;
 
   static const String path = 'contents-detail/:contentsId';
   static const String name = 'contents-detail';
@@ -279,17 +280,21 @@ class YoutubeContentUploadRoute extends GoRouteData {
 }
 
 class YoutubeContentUploadFailedRoute extends GoRouteData {
-  const YoutubeContentUploadFailedRoute(this.failedType);
+  const YoutubeContentUploadFailedRoute({
+    required this.failedType,
+    required this.contentId,
+  });
 
   static const String path = 'youtube-content-upload-failed';
   static const String name = 'youtube content upload failed';
 
   final YoutubeUploadFailedType failedType;
+  final String? contentId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return YoutubeUploadFailedPage(
-      exception: failedType,
+      arg: YoutubeUploadFailedArg(type: failedType, contentId: contentId),
     );
   }
 }

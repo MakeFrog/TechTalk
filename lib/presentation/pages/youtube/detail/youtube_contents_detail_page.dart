@@ -42,9 +42,21 @@ class YoutubeContentsDetailPage extends BasePage
               pinned: true,
               expandedHeight: 210.0,
               flexibleSpace: FlexibleSpaceBar(
-                background: Image.network(
-                  argument.overView.thumbnailImgUrl,
-                  fit: BoxFit.cover,
+                background: Consumer(
+                  builder: (context, ref, _) {
+                    return AsyncSkeletonWidgetBuilder(
+                      asyncValue: mainInfo(ref),
+                      dataBuilder: (context, mainInfo) {
+                        return SizedBox(
+                          width: double.infinity,
+                          child: Image.network(
+                            mainInfo.thumbnailImgUrl,
+                            fit: BoxFit.fitWidth,
+                          ),
+                        );
+                      },
+                    );
+                  },
                 ),
               ),
             ),
@@ -56,21 +68,20 @@ class YoutubeContentsDetailPage extends BasePage
                 child: Wrap(
                   runSpacing: 5,
                   children: [
-                    AsyncSkeletonWidgetBuilder(
-                      asyncValue:
-                          youtubeVideoDataAsync(ref, argument.overView.id),
-                      skeletonBuilder: (p0) => Text(
-                        argument.overView.contentsTitle,
-                        style: AppTextStyle.headline3,
-                      ),
-                      dataBuilder: (context, data) => Text(
-                        data.title,
-                        style: AppTextStyle.headline3,
-                      ),
+                    Consumer(
+                      builder: (context, ref, _) {
+                        return AsyncSkeletonWidgetBuilder(
+                          asyncValue: mainInfo(ref),
+                          dataBuilder: (context, mainInfo) => Text(
+                            mainInfo.contentsTitle,
+                            style: AppTextStyle.headline3,
+                          ),
+                        );
+                      },
                     ),
                     AsyncSkeletonWidgetBuilder(
                       asyncValue:
-                          youtubeVideoDataAsync(ref, argument.overView.id),
+                          youtubeVideoDataAsync(ref, argument.contentId),
                       skeletonBuilder: (_) => const SkeletonBox(
                         height: 20,
                       ),
@@ -96,51 +107,48 @@ class YoutubeContentsDetailPage extends BasePage
                       ),
                     ),
                     AsyncSkeletonWidgetBuilder(
-                      asyncValue:
-                          youtubeVideoDataAsync(ref, argument.overView.id),
-                      skeletonBuilder: (_) => Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundImage: NetworkImage(
-                                argument.overView.channel.logoUrl ?? ''),
-                            radius: 15,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            argument.overView.channel.name,
-                          ),
-                          const SizedBox(width: 8),
-                        ],
-                      ),
-                      dataBuilder: (context, data) => Row(
+                      asyncValue: mainInfo(ref),
+                      dataBuilder: (context, mainInfo) => Row(
                         children: [
                           CircleAvatar(
                             backgroundImage:
-                                NetworkImage(data.channelInfo.logoUrl),
+
+                                /// TODO : XIMYA
+                                /// 예외처리 모듈 만들기
+                                NetworkImage(mainInfo.channel.logoUrl ?? ''),
                             radius: 15,
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            data.channelInfo.title,
+                            mainInfo.channel.name,
                           ),
                           const SizedBox(width: 8),
                         ],
                       ),
                     ),
-                    Wrap(
-                      spacing: 8.0,
-                      children: [
-                        ...argument.overView.relatedSkillIds
-                            .map(
-                              (skill) => Chip(label: Text(skill.name)),
-                            )
-                            .toList(),
-                        ...argument.overView.relatedJobs
-                            .map(
-                              (job) => Chip(label: Text(job.name)),
-                            )
-                            .toList(),
-                      ],
+                    Consumer(
+                      builder: (context, ref, _) {
+                        return AsyncSkeletonWidgetBuilder(
+                            asyncValue: mainInfo(ref),
+                            dataBuilder: (context, mainInfo) {
+                              return Wrap(
+                                spacing: 8.0,
+                                children: [
+                                  ...mainInfo.relatedSkillIds
+                                      .map(
+                                        (skill) =>
+                                            Chip(label: Text(skill.name)),
+                                      )
+                                      .toList(),
+                                  ...mainInfo.relatedJobs
+                                      .map(
+                                        (job) => Chip(label: Text(job.name)),
+                                      )
+                                      .toList(),
+                                ],
+                              );
+                            });
+                      },
                     ),
                   ],
                 ),
@@ -174,8 +182,7 @@ class YoutubeContentsDetailPage extends BasePage
               // 각 탭의 내용을 스크롤 가능한 위젯으로 감싸기
               Consumer(
                 builder: (context, ref, _) {
-                  final targetAsync =
-                      summaryAsync(ref, contentId: argument.overView.id);
+                  final targetAsync = summaryAsync(ref);
 
                   return ListView(
                     padding: const EdgeInsets.all(16),
@@ -238,7 +245,7 @@ class YoutubeContentsDetailPage extends BasePage
                 padding: const EdgeInsets.all(16),
                 children: [
                   AsyncSkeletonWidgetBuilder(
-                    asyncValue: qnasAsync(ref, contentId: argument.overView.id),
+                    asyncValue: qnasAsync(ref),
                     skeletonBuilder: (p0) => const Center(
                       child: CircularProgressIndicator(),
                     ),

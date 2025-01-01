@@ -46,7 +46,7 @@ final class YoutubeContentsRemoteDataSourceImpl
   @override
   Future<
       FirebasePaginatedResult<YoutubeContentsOverviewModel,
-          YoutubeContentsOverviewModel>> getYoutubeContentsOverviews({
+          YoutubeContentsOverviewModel>> getPagedYoutubeMainContents({
     required int limit,
     required String orderByField,
     DocumentSnapshot<YoutubeContentsOverviewModel>? lastDocument,
@@ -203,5 +203,32 @@ final class YoutubeContentsRemoteDataSourceImpl
       FirestoreYoutubeDetailNewRef.doc(contentId),
       YoutubeContentsDetailNewModel(summary: summary),
     );
+  }
+
+  @override
+  Future<bool> isYoutubeAlreadyUploaded(String contentId) async {
+    final doc = await FirestoreYoutubeContentsOverviewRef.doc(contentId).get();
+    return doc.exists;
+  }
+
+  @override
+  Future<YoutubeContentsOverviewModel> getSingleYoutubeMainContent(
+      {required String contentId}) async {
+    try {
+      final doc =
+          await FirestoreYoutubeContentsOverviewRef.doc(contentId).get();
+      final targetDoc = doc.data();
+      if (targetDoc == null) {
+        throw Exception('콘텐츠가 존재하지 않음');
+      }
+      // channel_ref를 통해 [ChannelModel] 데이터를 가져옴
+      final channelSnapshot = await targetDoc.channelRef?.get()
+          as DocumentSnapshot<Map<String, dynamic>>; // 타입 캐스팅
+      final channelModel = ChannelModel.fromFirestore(channelSnapshot, null);
+
+      return targetDoc.copyWith(channel: channelModel);
+    } catch (e) {
+      rethrow;
+    }
   }
 }

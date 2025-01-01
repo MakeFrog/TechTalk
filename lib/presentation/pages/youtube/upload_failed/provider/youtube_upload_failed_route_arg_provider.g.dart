@@ -7,12 +7,12 @@ part of 'youtube_upload_failed_route_arg_provider.dart';
 // **************************************************************************
 
 String _$youtubeUploadFailedRouteArgHash() =>
-    r'4db2b5ccd4c7ed831ed4aeb259be6154e1a98d89';
+    r'20874c734958075f3da561109ee5ee8407cf98a2';
 
 /// See also [youtubeUploadFailedRouteArg].
 @ProviderFor(youtubeUploadFailedRouteArg)
 final youtubeUploadFailedRouteArgProvider =
-    AutoDisposeProvider<YoutubeUploadFailedType>.internal(
+    AutoDisposeProvider<YoutubeUploadFailedArg>.internal(
   youtubeUploadFailedRouteArg,
   name: r'youtubeUploadFailedRouteArgProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -23,6 +23,6 @@ final youtubeUploadFailedRouteArgProvider =
 );
 
 typedef YoutubeUploadFailedRouteArgRef
-    = AutoDisposeProviderRef<YoutubeUploadFailedType>;
+    = AutoDisposeProviderRef<YoutubeUploadFailedArg>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

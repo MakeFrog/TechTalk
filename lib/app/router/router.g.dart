@@ -362,14 +362,16 @@ extension $YoutubeContentUploadFailedRouteExtension
     on YoutubeContentUploadFailedRoute {
   static YoutubeContentUploadFailedRoute _fromState(GoRouterState state) =>
       YoutubeContentUploadFailedRoute(
-        _$YoutubeUploadFailedTypeEnumMap
+        failedType: _$YoutubeUploadFailedTypeEnumMap
             ._$fromName(state.uri.queryParameters['failed-type']!),
+        contentId: state.uri.queryParameters['content-id'],
       );
 
   String get location => GoRouteData.$location(
         '/youtube-content-upload-failed',
         queryParams: {
           'failed-type': _$YoutubeUploadFailedTypeEnumMap[failedType],
+          if (contentId != null) 'content-id': contentId,
         },
       );
 

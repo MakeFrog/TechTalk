@@ -45,6 +45,12 @@ class YtVideoInfoFetchedFailedException extends YoutubeUploadException {
   const YtVideoInfoFetchedFailedException() : super('8', '유튜브 콘텐츠 정보 fetch 실패');
 }
 
-class YtNotEnoughContentDuration extends YoutubeUploadException {
-  const YtNotEnoughContentDuration() : super('9', '영상 길이가 짧음 (쇼츠)');
+class YtNotEnoughContentDurationException extends YoutubeUploadException {
+  const YtNotEnoughContentDurationException() : super('9', '영상 길이가 짧음 (쇼츠)');
+}
+
+class YtAlreadyUploadedException extends YoutubeUploadException {
+  final String contentId;
+  const YtAlreadyUploadedException(this.contentId)
+      : super('10', '이미 테크톡에 업로드된 영상');
 }
