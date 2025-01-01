@@ -15,6 +15,7 @@ import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/job_group_setting_page.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_setting_page.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/skill_setting_page.dart';
+import 'package:techtalk/presentation/pages/resume_manage/resume_manage_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
@@ -171,6 +172,10 @@ class SignUpRoute extends GoRouteData {
         ),
       ],
     ),
+    TypedGoRoute<ResumeManageRoute>(
+      path: ResumeManageRoute.path,
+      name: ResumeManageRoute.name,
+    )
   ],
 )
 class MainRoute extends GoRouteData {
@@ -356,5 +361,17 @@ class ChatPageRoute extends GoRouteData {
   /// NOTE: $extra 이슈로 직접 업데이트
   void updateArg({required ChatRoomEntity room}) {
     arg = room;
+  }
+}
+
+class ResumeManageRoute extends GoRouteData {
+  const ResumeManageRoute();
+
+  static const String path = 'resume-manage';
+  static const String name = 'resume manage';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ResumeManagePage();
   }
 }

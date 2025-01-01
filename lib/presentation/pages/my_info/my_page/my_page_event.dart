@@ -23,11 +23,10 @@ import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 mixin class MyPageEvent {
-
   ///
   /// 알럼 활성화 스위치 버튼이 클릭 되었을 때
   ///
-  void onNotificationSwitchBtnTapped(WidgetRef ref){
+  void onNotificationSwitchBtnTapped(WidgetRef ref) {
     ref.read(notificationStatusProvider.notifier).toggle();
   }
 
@@ -72,7 +71,8 @@ mixin class MyPageEvent {
         rightBtnContent: tr(LocaleKeys.myInfo_others_logout),
         showContentImg: false,
         onRightBtnClicked: () {
-          unawaited(noti.SlackNotificationService.sendNotification(type: SlackNotificationType.logOut));
+          unawaited(noti.SlackNotificationService.sendNotification(
+              type: SlackNotificationType.logOut));
           _clearKeepAliveModules(ref);
           const SignInRoute().go(ref.context);
         },
@@ -228,5 +228,12 @@ mixin class MyPageEvent {
       ValueNotifier<double> originHeight) {
     notifier.value = (context.findRenderObject() as RenderBox).size;
     originHeight.value = notifier.value.height;
+  }
+
+  /// 
+  /// 이력서 관리 페이지로 이동
+  /// 
+  void routeToResumeManagePage(BuildContext context) {
+    const ResumeManageRoute().push(context);
   }
 }

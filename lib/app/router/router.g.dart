@@ -136,6 +136,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
             ),
           ],
         ),
+        GoRouteData.$route(
+          path: 'resume-manage',
+          name: 'resume manage',
+          factory: $ResumeManageRouteExtension._fromState,
+        ),
       ],
     );
 
@@ -332,6 +337,24 @@ extension $ChatPageRouteExtension on ChatPageRoute {
 
   String get location => GoRouteData.$location(
         '/chats/${Uri.encodeComponent(_$InterviewTypeEnumMap[type]!)}/${Uri.encodeComponent(roomId)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $ResumeManageRouteExtension on ResumeManageRoute {
+  static ResumeManageRoute _fromState(GoRouterState state) =>
+      const ResumeManageRoute();
+
+  String get location => GoRouteData.$location(
+        '/resume-manage',
       );
 
   void go(BuildContext context) => context.go(location);
