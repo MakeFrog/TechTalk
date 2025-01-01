@@ -39,7 +39,9 @@ class _UrlInputView extends HookConsumerWidget
           ),
           const Spacer(),
           SafeArea(
-            child: SizedBox(
+            child: Container(
+              margin:
+                  EdgeInsets.only(bottom: AppSize.bottomInset == 0 ? 16 : 0),
               width: double.infinity,
               child: HookBuilder(
                 builder: (context) {

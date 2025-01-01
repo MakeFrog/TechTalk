@@ -23,36 +23,23 @@ class _ConfirmContentView extends ConsumerWidget
               color: AppColor.of.gray4,
             ),
           ),
-          const Expanded(
-            flex: 121,
-            child: SizedBox(),
-          ),
-          HookBuilder(
-            builder: (context) {
-              return targetYoutubeInfoAsync(ref).when(
-                data: (video) {
-                  useEffect(() {
-                    video.captions.forEach((e) {
-                      log(e.toMap().toString());
-                    });
-                  }, []);
-                  return YoutubeContentItemView(
-                    thumbnailImgUrl: video.thumbnails.highResUrl,
-                    title: video.title,
-                    channelName: video.channelName,
-                  );
-                },
-                error: (_, __) => const EmptyBox(),
-                loading: EmptyBox.new,
+          const Spacer(flex: 121),
+          targetYoutubeInfoAsync(ref).when(
+            data: (video) {
+              return YoutubeContentItemView(
+                thumbnailImgUrl: video.thumbnails.highResUrl,
+                title: video.title,
+                channelName: video.channelName,
               );
             },
+            error: (_, __) => const EmptyBox(),
+            loading: EmptyBox.new,
           ),
-          const Expanded(
-            flex: 136,
-            child: SizedBox(),
-          ),
+          const Spacer(flex: 136),
           SafeArea(
-            child: SizedBox(
+            child: Container(
+              margin:
+                  EdgeInsets.only(bottom: AppSize.bottomInset == 0 ? 16 : 0),
               width: double.infinity,
               child: HookBuilder(
                 builder: (context) {

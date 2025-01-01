@@ -74,6 +74,7 @@ class Assets {
   static const String iconsPonderingIllusration =
       'assets/icons/pondering_illusration.svg';
   static const String iconsRedAlert = 'assets/icons/red_alert.svg';
+  static const String iconsRedWarnningBig = 'assets/icons/red_warnning_big.svg';
   static const String iconsRoundBlueCircle =
       'assets/icons/round_blue_circle.svg';
   static const String iconsRoundedBlueExclamation =

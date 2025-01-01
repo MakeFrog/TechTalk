@@ -17,20 +17,16 @@ class _AnalyzingView extends ConsumerWidget
             style: AppTextStyle.headline1,
           ),
           const Gap(100),
-          HookConsumer(
-            builder: (context, ref, _) {
-              return targetYoutubeInfoAsync(ref).when(
-                data: (info) {
-                  return Center(child: Text('분석중(성공)'));
-                },
-                error: (e, __) => Text('에러'),
-                loading: () => Center(
-                  child: Text(
-                    '분석중',
-                  ),
-                ),
-              );
+          targetYoutubeInfoAsync(ref).when(
+            data: (info) {
+              return Center(child: Text('분석중(성공)'));
             },
+            error: (e, __) => Text('에러'),
+            loading: () => Center(
+              child: Text(
+                '분석중',
+              ),
+            ),
           )
         ],
       ),

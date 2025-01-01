@@ -8,7 +8,7 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_ai_qna_response.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_video_entity.dart';
-import 'package:techtalk/features/contents/usecases/exception/youtube_ai_analyze_exception.dart';
+import 'package:techtalk/features/contents/usecases/exception/youtube_upload_exception.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 class GetQnasFromYoutubeContentUseCase
@@ -89,7 +89,6 @@ class GetQnasFromYoutubeContentUseCase
 
       log('Qna 토큰사용량 : ${completion.usage}'); // 응답 결과 출력
       log('Qna 시간 : ${DateTime.now().difference(startTime).inSeconds}'); // 응답 결과 출력
-      log('Qna 결과랑이 : ${completion.choices.first.message.content?.first.text}'); // 응답 결과 출력
       log('Qna 결과 : ${completion.choices.first.message.content}'); // 응답 결과 출력
 
       final response = completion.choices.first.message.content?.first.text;
@@ -101,9 +100,12 @@ class GetQnasFromYoutubeContentUseCase
       final targetJson = jsonDecode(response);
 
       final targetEntity = YoutubeAiQnaAndIdsResponse.fromJson(targetJson);
-      print('이찌방 qna 성공 : ${targetEntity}');
       return targetEntity;
     } on RequestFailedException catch (e) {
+      log('GetSummaryFromYoutubeContentUseCase / RequestFailedException / $e');
+      if (e.message.contains('Please reduce the length of the messages')) {
+        throw const YtToManyTokenRequiredException();
+      }
       log('GetSummaryFromYoutubeContentUseCase : $e');
       throw const YtUnexceptedGptException();
     } catch (e) {

@@ -7,7 +7,7 @@ import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_ai_summary_response_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_video_entity.dart';
-import 'package:techtalk/features/contents/usecases/exception/youtube_ai_analyze_exception.dart';
+import 'package:techtalk/features/contents/usecases/exception/youtube_upload_exception.dart';
 
 class GetSummaryFromYoutubeContentUseCase
     extends BaseUseCase<YoutubeVideoEntity, YoutubeAiSummaryResponse> {
@@ -98,7 +98,9 @@ class GetSummaryFromYoutubeContentUseCase
       }
 
       final targetJson = jsonDecode(response);
+
       final targetEntity = YoutubeAiSummaryResponse.fromJson(targetJson);
+
       return targetEntity;
     } on RequestFailedException catch (e) {
       log('GetSummaryFromYoutubeContentUseCase : $e');

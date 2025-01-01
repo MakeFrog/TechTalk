@@ -1,12 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 
-@JsonEnum(alwaysCreate: true)
 enum YoutubeContentAnalyzedType {
-  @JsonValue('isValid')
   isValid,
-  @JsonValue('notTech')
   notTech,
-  @JsonValue('lackOfContent')
   lackOfContent,
   undefined;
 
@@ -14,7 +10,7 @@ enum YoutubeContentAnalyzedType {
     return YoutubeContentAnalyzedType.values.firstWhere(
       (e) {
         final safeElement = e.name.toLowerCase();
-        final safeId = e.name.toLowerCase();
+        final safeId = id.toLowerCase();
 
         return safeElement == safeId;
       },

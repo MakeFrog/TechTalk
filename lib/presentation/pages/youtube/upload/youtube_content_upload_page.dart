@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/contents/usecases/exception/youtube_upload_exception.dart';
 import 'package:techtalk/features/contents/usecases/get_skill_ids_from_youtube_content_use_case.dart';
 import 'package:techtalk/features/contents/usecases/get_qnas_from_youtube_content_use_case.dart';
 import 'package:techtalk/features/contents/usecases/get_summary_from_youtube_content_use_case.dart';

@@ -20,6 +20,7 @@ import 'package:techtalk/features/contents/repositories/entities/youtube_content
 import 'package:techtalk/features/contents/repositories/entities/youtube_video_data_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_video_entity.dart';
 import 'package:techtalk/features/contents/repositories/youtube_contents_repository.dart';
+import 'package:techtalk/features/contents/usecases/exception/youtube_upload_exception.dart';
 import 'package:techtalk/features/tech_set/repositories/tech_set_repository.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -173,6 +174,15 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
       final channel = responses[0] as Channel;
       final caption = responses[1] as ClosedCaptionManifest;
 
+      /// 자막이 없는 영상
+      if (caption.tracks.isEmpty) {
+        throw const YtNoCaptionException();
+      }
+
+      if (video.duration != null && video.duration!.inSeconds <= 60) {
+        throw const YtNotEnoughContentDuration();
+      }
+
       final ClosedCaptionTrack tracks = await _youtubeApiDataSource
           .videos.closedCaptions
           .get(caption.tracks.first);
@@ -183,10 +193,12 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
         channel: channel,
       );
       return Result.success(result);
-    } on Exception catch (e) {
+    } on YoutubeUploadException catch (e) {
+      return Result.failure(e);
+    } catch (e) {
       log('getYoutubeVideoData : $e');
       return Result.failure(
-        const FetchYoutubeContentsException(),
+        const YtVideoInfoFetchedFailedException(),
       );
     }
   }

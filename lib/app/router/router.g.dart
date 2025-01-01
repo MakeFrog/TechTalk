@@ -133,13 +133,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           path: 'youtube-content-upload',
           name: 'youtube content upload',
           factory: $YoutubeContentUploadRouteExtension._fromState,
-          routes: [
-            GoRouteData.$route(
-              path: 'youtube-content-upload-failed',
-              name: 'youtube content upload failed',
-              factory: $YoutubeContentUploadFailedRouteExtension._fromState,
-            ),
-          ],
+        ),
+        GoRouteData.$route(
+          path: 'youtube-content-upload-failed',
+          name: 'youtube content upload failed',
+          factory: $YoutubeContentUploadFailedRouteExtension._fromState,
         ),
         GoRouteData.$route(
           path: 'wrong-answer/:index',
@@ -363,10 +361,16 @@ extension $YoutubeContentUploadRouteExtension on YoutubeContentUploadRoute {
 extension $YoutubeContentUploadFailedRouteExtension
     on YoutubeContentUploadFailedRoute {
   static YoutubeContentUploadFailedRoute _fromState(GoRouterState state) =>
-      const YoutubeContentUploadFailedRoute();
+      YoutubeContentUploadFailedRoute(
+        _$YoutubeUploadFailedTypeEnumMap
+            ._$fromName(state.uri.queryParameters['failed-type']!),
+      );
 
   String get location => GoRouteData.$location(
-        '/youtube-content-upload/youtube-content-upload-failed',
+        '/youtube-content-upload-failed',
+        queryParams: {
+          'failed-type': _$YoutubeUploadFailedTypeEnumMap[failedType],
+        },
       );
 
   void go(BuildContext context) => context.go(location);
@@ -378,6 +382,21 @@ extension $YoutubeContentUploadFailedRouteExtension
 
   void replace(BuildContext context) => context.replace(location);
 }
+
+const _$YoutubeUploadFailedTypeEnumMap = {
+  YoutubeUploadFailedType.timeout: 'timeout',
+  YoutubeUploadFailedType.jsonFormatError: 'json-format-error',
+  YoutubeUploadFailedType.invalidVideoContent: 'invalid-video-content',
+  YoutubeUploadFailedType.tooManyTokensRequired: 'too-many-tokens-required',
+  YoutubeUploadFailedType.unknownError: 'unknown-error',
+  YoutubeUploadFailedType.unexpectedGptError: 'unexpected-gpt-error',
+  YoutubeUploadFailedType.isNotTechContent: 'is-not-tech-content',
+  YoutubeUploadFailedType.noCaption: 'no-caption',
+  YoutubeUploadFailedType.youtubeVideoFetchedFailed:
+      'youtube-video-fetched-failed',
+  YoutubeUploadFailedType.tooShortVideo: 'too-short-video',
+  YoutubeUploadFailedType.alreadyUploaded: 'already-uploaded',
+};
 
 extension $WrongAnswerRouteExtension on WrongAnswerRoute {
   static WrongAnswerRoute _fromState(GoRouterState state) => WrongAnswerRoute(
