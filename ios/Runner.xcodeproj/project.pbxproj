@@ -491,7 +491,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = 25;
-				DEVELOPMENT_TEAM = YD8Z9K9UT3;
+				DEVELOPMENT_TEAM = YRPYBFPPCT;
 				ENABLE_BITCODE = NO;
 				FLUTTER_TARGET = lib/app/entrypoints/main_dev.dart;
 				GOOGLE_SCHEME = "com.googleusercontent.apps.481445661271-evtbkarml9forfmlkmacvfouj0sas1k8";
@@ -502,7 +502,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.9;
-				PRODUCT_BUNDLE_IDENTIFIER = com.techtalk.dev;
+				PRODUCT_BUNDLE_IDENTIFIER = com.techtalk.dev5;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -575,7 +575,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = 25;
-				DEVELOPMENT_TEAM = YD8Z9K9UT3;
+				DEVELOPMENT_TEAM = YRPYBFPPCT;
 				ENABLE_BITCODE = NO;
 				FLUTTER_TARGET = lib/app/entrypoints/main_dev.dart;
 				GOOGLE_SCHEME = "com.googleusercontent.apps.481445661271-evtbkarml9forfmlkmacvfouj0sas1k8";
@@ -586,7 +586,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.9;
-				PRODUCT_BUNDLE_IDENTIFIER = com.techtalk.dev;
+				PRODUCT_BUNDLE_IDENTIFIER = com.techtalk.dev5;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -658,7 +658,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = 25;
-				DEVELOPMENT_TEAM = YD8Z9K9UT3;
+				DEVELOPMENT_TEAM = YRPYBFPPCT;
 				ENABLE_BITCODE = NO;
 				FLUTTER_TARGET = lib/app/entrypoints/main_prod.dart;
 				GOOGLE_SCHEME = "com.googleusercontent.apps.680296657690-p43ha52vgppgbf76dmgq7tmepnu270pj";
@@ -741,7 +741,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = 25;
-				DEVELOPMENT_TEAM = YD8Z9K9UT3;
+				DEVELOPMENT_TEAM = YRPYBFPPCT;
 				ENABLE_BITCODE = NO;
 				FLUTTER_TARGET = lib/app/entrypoints/main_dev.dart;
 				GOOGLE_SCHEME = "com.googleusercontent.apps.481445661271-evtbkarml9forfmlkmacvfouj0sas1k8";
@@ -752,7 +752,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.9;
-				PRODUCT_BUNDLE_IDENTIFIER = com.techtalk.dev;
+				PRODUCT_BUNDLE_IDENTIFIER = com.techtalk.dev5;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -881,7 +881,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = 25;
-				DEVELOPMENT_TEAM = YD8Z9K9UT3;
+				DEVELOPMENT_TEAM = YRPYBFPPCT;
 				ENABLE_BITCODE = NO;
 				FLUTTER_TARGET = lib/app/entrypoints/main_prod.dart;
 				GOOGLE_SCHEME = "com.googleusercontent.apps.680296657690-p43ha52vgppgbf76dmgq7tmepnu270pj";
@@ -911,7 +911,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = 25;
-				DEVELOPMENT_TEAM = YD8Z9K9UT3;
+				DEVELOPMENT_TEAM = YRPYBFPPCT;
 				ENABLE_BITCODE = NO;
 				FLUTTER_TARGET = lib/app/entrypoints/main_prod.dart;
 				GOOGLE_SCHEME = "com.googleusercontent.apps.680296657690-p43ha52vgppgbf76dmgq7tmepnu270pj";
