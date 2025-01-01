@@ -80,6 +80,7 @@ final class YoutubeContentsRemoteDataSourceImpl
 
       final items = await Future.wait(snapshot.docs.map((doc) async {
         final targetData = doc.data();
+
         // channel_ref를 통해 [ChannelModel] 데이터를 가져옴
         final channelSnapshot = await targetData.channelRef?.get()
             as DocumentSnapshot<Map<String, dynamic>>; // 타입 캐스팅

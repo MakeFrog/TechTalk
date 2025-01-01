@@ -12,7 +12,7 @@ abstract class FirestoreYoutubeContentsOverviewRef {
   static CollectionReference<YoutubeContentsOverviewModel> collection() =>
       FirebaseFirestore.instance.collection(collectionName).withConverter(
             fromFirestore: YoutubeContentsOverviewModel.fromFirestore,
-            toFirestore: (value, options) => value.toJson(),
+            toFirestore: YoutubeContentsOverviewModel.toFiresTore,
           );
 
   static DocumentReference<YoutubeContentsOverviewModel> doc(

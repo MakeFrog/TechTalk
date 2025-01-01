@@ -90,6 +90,7 @@ class YoutubeContentsOverviewModel {
   ) {
     final channelRef =
         snapshot.data()!['channel_ref'] as DocumentReference?; // 수동으로 처리
+
     return YoutubeContentsOverviewModel.fromJson(snapshot.data()!)
         .copyWith(channelRef: channelRef);
   }
@@ -124,6 +125,8 @@ class YoutubeContentsOverviewModel {
       'video_published_date':
           const TimeStampConverter().toJson(videoPublishedDate),
       'upload_at': const TimeStampConverter().toJson(uploadAt),
+      'upload_language_code': uploadLanguageCode,
+      'uploader_id': uploaderId,
       'channel_ref':
           FirestoreYoutubeChannelRef.document(channel?.id ?? 'undefined'),
     };
