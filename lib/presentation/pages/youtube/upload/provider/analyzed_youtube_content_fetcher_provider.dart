@@ -6,7 +6,7 @@ import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/app/router/navigation_context.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
-import 'package:techtalk/features/contents/repositories/entities/summary_entity.dart';
+import 'package:techtalk/features/contents/index.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_ai_qna_response.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_ai_summary_response_entity.dart';
 import 'package:techtalk/features/contents/repositories/enums/youtube_content_analyzed_type.dart';
@@ -14,7 +14,6 @@ import 'package:techtalk/features/contents/usecases/enums/youtube_upload_failed_
 import 'package:techtalk/features/contents/usecases/exception/youtube_upload_exception.dart';
 import 'package:techtalk/features/contents/usecases/get_qnas_from_youtube_content_use_case.dart';
 import 'package:techtalk/features/contents/usecases/get_summary_from_youtube_content_use_case.dart';
-import 'package:techtalk/features/contents/youtube.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/provider/target_youtube_info_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';

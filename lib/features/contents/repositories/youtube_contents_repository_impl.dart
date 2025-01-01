@@ -62,39 +62,6 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
   }
 
   @override
-  Future<Result<YoutubeContentsDetailEntity>> getYoutubeContentsDetail(
-      String videoId) async {
-    try {
-      final remoteResponse =
-          await _youtubeRemoteDataSource.getYoutubeContentsDetail(videoId);
-
-      return Result.success(remoteResponse.toEntity());
-    } on Exception catch (e) {
-      log('getYoutubeContentsDetail : $e');
-      return Result.failure(
-        const FetchYoutubeContentsDetailException(),
-      );
-    }
-  }
-
-  @override
-  Future<Result<List<YoutubeQnaEntity>>> getYoutubeContentsDetailQnas(
-      String videoId) async {
-    try {
-      final remoteResponse =
-          await _youtubeRemoteDataSource.getYoutubeContentsDetailQnas(videoId);
-
-      return Result.success(
-          remoteResponse.map(YoutubeQnaEntity.fromModel).toList());
-    } on Exception catch (e) {
-      log('getYoutubeContentsDetailQnas : $e');
-      return Result.failure(
-        const FetchYoutubeContentsQnaException(),
-      );
-    }
-  }
-
-  @override
   Future<
       Result<
           FirebasePaginatedResult<YoutubeContentOverviewEntity,

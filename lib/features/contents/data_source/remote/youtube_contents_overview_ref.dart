@@ -6,7 +6,7 @@ import 'package:techtalk/features/contents/data_source/remote/models/youtube_qna
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
 import 'package:techtalk/features/topic/data_source/remote/models/topic_qna_model.dart';
 
-abstract class FirestoreYoutubeContentsOverviewRef {
+abstract class FirestoreYoutubeRef {
   static const String collectionName = 'Youtube';
 
   static CollectionReference<YoutubeContentsOverviewModel> collection() =>
@@ -35,7 +35,7 @@ abstract class FirestoreYoutubeDetailNewRef {
   static DocumentReference<YoutubeContentsDetailNewModel> doc(
           String contentId) =>
       FirebaseFirestore.instance
-          .collection(FirestoreYoutubeContentsOverviewRef.collectionName)
+          .collection(FirestoreYoutubeRef.collectionName)
           .doc(contentId)
           .collection(name)
           .doc(contentId)
@@ -53,22 +53,13 @@ abstract class FirestoreYoutubeQnaNewRef {
 
   static CollectionReference<YoutubeQnaModel> collection(String contentsId) =>
       FirebaseFirestore.instance
-          .collection(FirestoreYoutubeContentsOverviewRef.collectionName)
+          .collection(FirestoreYoutubeRef.collectionName)
           .doc(contentsId)
           .collection(name)
           .withConverter(
             fromFirestore: YoutubeQnaModel.fromFirestore,
             toFirestore: (value, options) => value.toJson(),
           );
-
-  Future<void> addYoutubeContentsOverview(
-      String contentsId, YoutubeContentsOverviewModel overviewModel) async {
-    final ref = FirebaseFirestore.instance
-        .collection('YoutubeOverview')
-        .doc(contentsId);
-
-    await ref.set(overviewModel.toJson());
-  }
 }
 
 ///
@@ -82,14 +73,4 @@ abstract class FirestoreYoutubeChannelRef {
             fromFirestore: ChannelModel.fromFirestore,
             toFirestore: (value, options) => value.toJson(),
           );
-
-  @override
-  Future<void> addYoutubeContentsOverview(
-      String contentsId, YoutubeContentsOverviewModel overviewModel) async {
-    final ref = FirebaseFirestore.instance
-        .collection('YoutubeOverview')
-        .doc(contentsId);
-
-    await ref.set(overviewModel.toJson());
-  }
 }

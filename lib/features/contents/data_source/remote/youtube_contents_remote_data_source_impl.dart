@@ -23,27 +23,6 @@ final class YoutubeContentsRemoteDataSourceImpl
   YoutubeContentsRemoteDataSourceImpl(this._constraintApplier);
 
   @override
-  Future<YoutubeContentsDetailModel> getYoutubeContentsDetail(
-      String contentsId) async {
-    final detailDoc = await FirestoreYoutubeDetailRef.doc(contentsId).get();
-
-    if (!detailDoc.exists) {
-      throw const FetchYoutubeContentsDetailException();
-    }
-
-    return detailDoc.data()!;
-  }
-
-  @override
-  Future<List<TopicQnaModel>> getYoutubeContentsDetailQnas(
-      String contentsId) async {
-    final collection =
-        await FirestoreYoutubeDetailQuestionRef.collection(contentsId).get();
-
-    return collection.docs.map((doc) => doc.data()).toList();
-  }
-
-  @override
   Future<
       FirebasePaginatedResult<YoutubeContentsOverviewModel,
           YoutubeContentsOverviewModel>> getPagedYoutubeMainContents({
@@ -54,9 +33,7 @@ final class YoutubeContentsRemoteDataSourceImpl
   }) async {
     try {
       Query<YoutubeContentsOverviewModel> query =
-          FirestoreYoutubeContentsOverviewRef.collection()
-              .orderBy(orderByField)
-              .limit(limit);
+          FirestoreYoutubeRef.collection().orderBy(orderByField).limit(limit);
 
       if (lastDocument != null) {
         query = query.startAfterDocument(lastDocument);
@@ -187,7 +164,7 @@ final class YoutubeContentsRemoteDataSourceImpl
     required YoutubeContentsOverviewModel mainInfo,
   }) async {
     transaction.set(
-      FirestoreYoutubeContentsOverviewRef.doc(mainInfo.id),
+      FirestoreYoutubeRef.doc(mainInfo.id),
       mainInfo,
     );
   }
@@ -206,7 +183,7 @@ final class YoutubeContentsRemoteDataSourceImpl
 
   @override
   Future<bool> isYoutubeAlreadyUploaded(String contentId) async {
-    final doc = await FirestoreYoutubeContentsOverviewRef.doc(contentId).get();
+    final doc = await FirestoreYoutubeRef.doc(contentId).get();
     return doc.exists;
   }
 
@@ -214,8 +191,7 @@ final class YoutubeContentsRemoteDataSourceImpl
   Future<YoutubeContentsOverviewModel> getSingleYoutubeMainContent(
       {required String contentId}) async {
     try {
-      final doc =
-          await FirestoreYoutubeContentsOverviewRef.doc(contentId).get();
+      final doc = await FirestoreYoutubeRef.doc(contentId).get();
       final targetDoc = doc.data();
       if (targetDoc == null) {
         throw Exception('콘텐츠가 존재하지 않음');

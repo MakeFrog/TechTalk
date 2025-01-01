@@ -4,18 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
-import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
-import 'package:techtalk/features/contents/data_source/remote/models/summary_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
-import 'package:techtalk/features/contents/repositories/entities/contents_overview_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/summary_entity.dart';
-import 'package:techtalk/features/contents/repositories/entities/youtube_ai_qna_response.dart';
-import 'package:techtalk/features/contents/repositories/entities/youtube_contents_detail_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_video_data_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_video_entity.dart';
-import 'package:techtalk/features/topic/topic.dart';
 
 abstract interface class YoutubeContentsRepository {
   ///
@@ -41,20 +35,6 @@ abstract interface class YoutubeContentsRepository {
   /// 유튜브 콘텐츠 qna 호출
   ///
   Future<Result<List<YoutubeQnaEntity>>> getQnas(String contentId);
-
-  ///
-  /// 유튜브 컨텐츠 상세 정보 가져오기
-  ///
-  Future<Result<YoutubeContentsDetailEntity>> getYoutubeContentsDetail(
-    String videoId,
-  );
-
-  ///
-  /// 유튜브 컨텐츠 관련 질문 가져오기
-  ///
-  Future<Result<List<YoutubeQnaEntity>>> getYoutubeContentsDetailQnas(
-    String videoId,
-  );
 
   ///
   /// Firestore로부터 페이징된 유튜브 컨텐츠 개요 목록 가져오기

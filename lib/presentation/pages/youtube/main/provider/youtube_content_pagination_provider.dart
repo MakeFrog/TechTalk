@@ -5,7 +5,7 @@ import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
 import 'package:techtalk/features/contents/usecases/get_youtube_overview_list_use_case.dart';
-import 'package:techtalk/features/contents/youtube.dart';
+import 'package:techtalk/features/contents/index.dart';
 import 'package:techtalk/presentation/pages/youtube/main/constant/yotubue_content_category.dart';
 
 part 'youtube_content_pagination_provider.g.dart';

@@ -3,10 +3,8 @@ import 'package:techtalk/app/di/feature_di_interface.dart';
 import 'package:techtalk/core/query_constraints_applier.dart';
 import 'package:techtalk/features/contents/data_source/remote/youtube_contents_remote_data_source.dart';
 import 'package:techtalk/features/contents/data_source/remote/youtube_contents_remote_data_source_impl.dart';
-import 'package:techtalk/features/contents/usecases/get_youtube_contents_detail_qnas_use_case.dart';
-import 'package:techtalk/features/contents/usecases/get_youtube_contents_detail_use_case.dart';
+import 'package:techtalk/features/contents/index.dart';
 import 'package:techtalk/features/contents/usecases/get_youtube_overview_list_use_case.dart';
-import 'package:techtalk/features/contents/youtube.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
@@ -36,16 +34,6 @@ final class YoutubeContentsDependencyInjection
     locator
       ..registerFactory(
         () => GetYoutubeVideoDataUseCase(
-          youtubeRepository,
-        ),
-      )
-      ..registerFactory(
-        () => GetYoutubeContentsDetailUseCase(
-          youtubeRepository,
-        ),
-      )
-      ..registerFactory(
-        () => GetYoutubeContentsDetailQnasUseCase(
           youtubeRepository,
         ),
       )
