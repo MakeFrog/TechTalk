@@ -17,7 +17,6 @@ class YoutubeMainModel {
     required this.qnaNum,
     this.channelRef,
     this.channel,
-    required this.uploaderId,
     required this.relatedSkillIds,
     required this.relatedJobGroupIds,
     required this.uploadAt,
@@ -57,11 +56,6 @@ class YoutubeMainModel {
   /// 업로드 될 때 적용된 언어코드
   ///
   final String uploadLanguageCode;
-
-  ///
-  /// 업로드한 유저 id
-  ///
-  final String uploaderId;
 
   /// 엔티티로 변환
   YoutubeContentOverviewEntity toEntity(List<SkillEntity> skills) {
@@ -122,7 +116,6 @@ class YoutubeMainModel {
           const TimeStampConverter().toJson(videoPublishedDate),
       'upload_at': const TimeStampConverter().toJson(uploadAt),
       'upload_language_code': uploadLanguageCode,
-      'uploader_id': uploaderId,
       'channel_ref':
           FirestoreYoutubeChannelRef.document(channel?.id ?? 'undefined'),
     };
@@ -156,7 +149,6 @@ class YoutubeMainModel {
       channelRef: channelRef ?? this.channelRef,
       channel: channel ?? this.channel,
       uploadLanguageCode: uploadLanguageCode ?? this.uploadLanguageCode,
-      uploaderId: uploaderId ?? this.uploaderId,
     );
   }
 }

@@ -52,7 +52,6 @@ class YoutubeContentOverviewEntity {
         uploadAt: techtalkUploadDate,
         videoPublishedDate: videoPublishDate,
         channelRef: FirestoreYoutubeChannelRef.document(channel.id),
-        uploaderId: uploaderId,
         uploadLanguageCode: uploadLanguageCode,
       );
 

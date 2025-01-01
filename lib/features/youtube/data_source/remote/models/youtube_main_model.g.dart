@@ -17,7 +17,6 @@ YoutubeMainModel _$YoutubeMainModelFromJson(Map<String, dynamic> json) =>
       channel: json['channel'] == null
           ? null
           : ChannelModel.fromJson(json['channel'] as Map<String, dynamic>),
-      uploaderId: json['uploader_id'] as String,
       relatedSkillIds: (json['related_skill_ids'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
@@ -45,5 +44,4 @@ Map<String, dynamic> _$YoutubeMainModelToJson(YoutubeMainModel instance) =>
       'upload_at': const TimeStampConverter().toJson(instance.uploadAt),
       'channel': instance.channel?.toJson(),
       'upload_language_code': instance.uploadLanguageCode,
-      'uploader_id': instance.uploaderId,
     };

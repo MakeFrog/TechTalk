@@ -2,11 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/core/query_constraints_applier.dart';
+import 'package:techtalk/features/user/data_source/remote/users_ref.dart';
 import 'package:techtalk/features/youtube/data_source/remote/models/channel_model.dart';
 import 'package:techtalk/features/youtube/data_source/remote/models/summary_model.dart';
 import 'package:techtalk/features/youtube/data_source/remote/models/youtube_detail_model.dart';
-import 'package:techtalk/features/youtube/data_source/remote/models/youtube_qna_model.dart';
 import 'package:techtalk/features/youtube/data_source/remote/models/youtube_main_model.dart';
+import 'package:techtalk/features/youtube/data_source/remote/models/youtube_qna_model.dart';
 import 'package:techtalk/features/youtube/data_source/remote/youtube_ref.dart';
 import 'package:techtalk/features/youtube/data_source/remote/youtube_remote_data_source.dart';
 
@@ -105,6 +106,7 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
     required List<YoutubeQnaModel> qnas,
     required YoutubeMainModel mainInfo,
     required SummaryModel summary,
+    required String uploaderId,
   }) async {
     try {
       final batch = FirebaseFirestore.instance.batch();
@@ -113,7 +115,8 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
 
       await Future.wait([
         _updateQnas(batch, contentId: mainInfo.id, qnas: qnas),
-        _updateSummary(batch, contentId: mainInfo.id, summary: summary),
+        _updateDetail(batch,
+            contentId: mainInfo.id, summary: summary, uploaderId: uploaderId),
         _updateChannel(batch, channel: channel)
       ]);
       await batch.commit();
@@ -159,15 +162,25 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
     );
   }
 
-  /// 유튜브 메인 정보 업데이트
-  Future<void> _updateSummary(
+  /// 유튜브 상세(요약,업로더) 정보 업데이트
+  Future<void> _updateDetail(
     WriteBatch transaction, {
     required String contentId,
     required SummaryModel summary,
+    required String uploaderId,
   }) async {
     transaction.set(
       FirestoreYoutubeDetailNewRef.doc(contentId),
-      YoutubeDetailModel(summary: summary),
+      YoutubeDetailModel(summary: summary, uploaderId: uploaderId),
+    );
+
+    Map<String, dynamic> data = {
+      'upload_at': FieldValue.serverTimestamp(),
+      'id': contentId,
+    };
+    transaction.set(
+      FirestoreUsersRef.youtubeDoc(contentId),
+      data,
     );
   }
 

@@ -8,9 +8,12 @@ part 'youtube_detail_model.g.dart';
 class YoutubeDetailModel {
   YoutubeDetailModel({
     required this.summary,
+    required this.uploaderId,
   });
 
   final SummaryModel summary;
+
+  final String uploaderId;
 
   factory YoutubeDetailModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,

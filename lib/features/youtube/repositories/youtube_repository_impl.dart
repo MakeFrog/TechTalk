@@ -182,6 +182,7 @@ class YoutubeRepositoryImpl implements YoutubeRepository {
           uploadLanguageCode: uploadLanguageCode,
         ),
         summary: summary.toModel(),
+        uploaderId: uploaderId,
       );
 
       return Result.success(null);
