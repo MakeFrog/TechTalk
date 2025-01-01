@@ -218,12 +218,17 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
     required YoutubeContentOverviewEntity contentMainInfo,
     required SummaryEntity summary,
     required Set<YoutubeQnaEntity> qnas,
+    required String uploaderId,
+    required String uploadLanguageCode,
   }) async {
     try {
       await _youtubeRemoteDataSource.uploadYoutube(
         channel: ChannelModel.fromEntity(contentMainInfo.channel),
         qnas: qnas.map((e) => YoutubeQnaModel.fromEntity(e)).toList(),
-        mainInfo: contentMainInfo.toModel(),
+        mainInfo: contentMainInfo.toModel(
+          uploaderId: uploaderId,
+          uploadLanguageCode: uploadLanguageCode,
+        ),
         summary: summary.toModel(),
       );
 

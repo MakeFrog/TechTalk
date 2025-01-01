@@ -111,12 +111,10 @@ final class YoutubeContentsRemoteDataSourceImpl
   Future<YoutubeContentsDetailNewModel> getDetail(String contentId) async {
     try {
       final doc = await FirestoreYoutubeDetailNewRef.doc(contentId).get();
-      if (!doc.exists) {
-        throw const FetchYoutubeContentsDetailException();
-      }
 
       return doc.data()!;
     } catch (e) {
+      print('이씨방 : ${e}');
       throw Exception('Failed to fetch Youtube Contents: $e');
     }
   }

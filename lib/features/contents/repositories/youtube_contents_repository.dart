@@ -76,10 +76,13 @@ abstract interface class YoutubeContentsRepository {
   ///
   /// 유튜브 콘텐츠 업로드
   ///
-  Future<Result<void>> uploadYoutube(
-      {required YoutubeContentOverviewEntity contentMainInfo,
-      required SummaryEntity summary,
-      required Set<YoutubeQnaEntity> qnas});
+  Future<Result<void>> uploadYoutube({
+    required YoutubeContentOverviewEntity contentMainInfo,
+    required SummaryEntity summary,
+    required Set<YoutubeQnaEntity> qnas,
+    required String uploaderId,
+    required String uploadLanguageCode,
+  });
 
   Future<Result<YoutubeContentOverviewEntity>> getYoutubeMainInfo(
       {required String contentId});

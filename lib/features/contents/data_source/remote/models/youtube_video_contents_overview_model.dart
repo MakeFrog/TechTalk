@@ -15,23 +15,25 @@ part 'youtube_video_contents_overview_model.g.dart';
 class YoutubeContentsOverviewModel {
   YoutubeContentsOverviewModel({
     required this.id,
-    required this.contentsTitle,
+    required this.title,
     required this.thumbnailImgUrl,
     required this.videoDuration,
     required this.qnaNum,
     this.channelRef,
     this.channel,
+    required this.uploaderId,
     required this.relatedSkillIds,
     required this.relatedJobGroupIds,
     required this.uploadAt,
-    required this.createdAt,
+    required this.videoPublishedDate,
+    required this.uploadLanguageCode,
   });
 
   final String id;
 
   final String thumbnailImgUrl;
 
-  final String contentsTitle;
+  final String title;
 
   final Duration videoDuration;
 
@@ -42,7 +44,7 @@ class YoutubeContentsOverviewModel {
   final List<String> relatedJobGroupIds;
 
   @TimeStampConverter()
-  final DateTime createdAt;
+  final DateTime videoPublishedDate;
 
   @TimeStampConverter()
   final DateTime uploadAt;
@@ -55,19 +57,29 @@ class YoutubeContentsOverviewModel {
   /// [channelRef]를 통해 참조된 데이터로 필드가 갱신됨
   final ChannelModel? channel;
 
+  ///
+  /// 업로드 될 때 적용된 언어코드
+  ///
+  final String uploadLanguageCode;
+
+  ///
+  /// 업로드한 유저 id
+  ///
+  final String uploaderId;
+
   /// 엔티티로 변환
   YoutubeContentOverviewEntity toEntity(List<SkillEntity> skills) {
     return YoutubeContentOverviewEntity(
       id: id,
       thumbnailImgUrl: thumbnailImgUrl,
-      contentsTitle: contentsTitle,
+      contentsTitle: title,
       qnaNum: qnaNum,
       channel: channel?.toEntity() ?? ChannelEntity.undefined(),
       relatedSkillIds: skills.toSet(),
       relatedJobs: relatedJobGroupIds.map(JobGroup.getById).toSet(),
       videoDuration: videoDuration,
       techtalkUploadDate: uploadAt,
-      videoPublishDate: createdAt,
+      videoPublishDate: videoPublishedDate,
     );
   }
 
@@ -104,12 +116,13 @@ class YoutubeContentsOverviewModel {
     return <String, dynamic>{
       'id': id,
       'thumbnail_img_url': thumbnailImgUrl,
-      'contents_title': contentsTitle,
+      'title': title,
       'video_duration': videoDuration.inMicroseconds,
       'qna_num': qnaNum,
       'related_skill_ids': relatedSkillIds,
       'related_job_group_ids': relatedJobGroupIds,
-      'created_at': const TimeStampConverter().toJson(createdAt),
+      'video_published_date':
+          const TimeStampConverter().toJson(videoPublishedDate),
       'upload_at': const TimeStampConverter().toJson(uploadAt),
       'channel_ref':
           FirestoreYoutubeChannelRef.document(channel?.id ?? 'undefined'),
@@ -119,28 +132,32 @@ class YoutubeContentsOverviewModel {
   YoutubeContentsOverviewModel copyWith({
     String? id,
     String? thumbnailImgUrl,
-    String? contentsTitle,
+    String? title,
     Duration? videoDuration,
     int? qnaNum,
     List<String>? relatedSkillIds,
     List<String>? relatedJobGroupIds,
-    ChannelModel? channel,
-    DateTime? createdAt,
+    DateTime? videoPublishedDate,
     DateTime? uploadAt,
     DocumentReference? channelRef,
+    ChannelModel? channel,
+    String? uploadLanguageCode,
+    String? uploaderId,
   }) {
     return YoutubeContentsOverviewModel(
       id: id ?? this.id,
       thumbnailImgUrl: thumbnailImgUrl ?? this.thumbnailImgUrl,
-      contentsTitle: contentsTitle ?? this.contentsTitle,
+      title: title ?? this.title,
       videoDuration: videoDuration ?? this.videoDuration,
       qnaNum: qnaNum ?? this.qnaNum,
       relatedSkillIds: relatedSkillIds ?? this.relatedSkillIds,
       relatedJobGroupIds: relatedJobGroupIds ?? this.relatedJobGroupIds,
-      channel: channel ?? this.channel,
-      createdAt: createdAt ?? this.createdAt,
+      videoPublishedDate: videoPublishedDate ?? this.videoPublishedDate,
       uploadAt: uploadAt ?? this.uploadAt,
       channelRef: channelRef ?? this.channelRef,
+      channel: channel ?? this.channel,
+      uploadLanguageCode: uploadLanguageCode ?? this.uploadLanguageCode,
+      uploaderId: uploaderId ?? this.uploaderId,
     );
   }
 }

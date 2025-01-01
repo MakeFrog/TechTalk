@@ -40,9 +40,13 @@ class YoutubeContentOverviewEntity {
     this.qnaNum = 0,
   });
 
-  YoutubeContentsOverviewModel toModel() => YoutubeContentsOverviewModel(
+  YoutubeContentsOverviewModel toModel({
+    required String uploaderId,
+    required String uploadLanguageCode,
+  }) =>
+      YoutubeContentsOverviewModel(
         id: id,
-        contentsTitle: contentsTitle,
+        title: contentsTitle,
         thumbnailImgUrl: thumbnailImgUrl,
         videoDuration: videoDuration,
         qnaNum: qnaNum,
@@ -50,9 +54,10 @@ class YoutubeContentOverviewEntity {
         relatedJobGroupIds: relatedJobs.map((job) => job.id).toList(),
         channel: channel.toModel(),
         uploadAt: techtalkUploadDate,
-        createdAt: videoPublishDate,
-        channelRef:
-            FirestoreYoutubeContentsOverviewRef.channelDocumentRef(channel.id),
+        videoPublishedDate: videoPublishDate,
+        channelRef: FirestoreYoutubeChannelRef.document(channel.id),
+        uploaderId: uploaderId,
+        uploadLanguageCode: uploadLanguageCode,
       );
 
   factory YoutubeContentOverviewEntity.fromUploadResponse({

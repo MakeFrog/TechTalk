@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/app/router/navigation_context.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
@@ -16,6 +17,7 @@ import 'package:techtalk/features/contents/usecases/get_summary_from_youtube_con
 import 'package:techtalk/features/contents/youtube.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/provider/target_youtube_info_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 part 'analyzed_youtube_content_fetcher_provider.g.dart';
 
@@ -49,6 +51,8 @@ class AnalyzedYoutubeFetcher extends _$AnalyzedYoutubeFetcher {
         video: targetVideo,
         qnaAndIds: qnaAndIdsResult,
       );
+      final userId =
+          (await ref.read(userInfoProvider.future))?.uid ?? 'undefined';
 
       ContentsDetailRoute(
         YoutubeDetailArg.entryFromUpload(
@@ -65,6 +69,8 @@ class AnalyzedYoutubeFetcher extends _$AnalyzedYoutubeFetcher {
               contentMainInfo: targetOverView,
               summary: SummaryEntity.fromUploadResponse(summaryResult),
               qnas: qnaAndIdsResult.qnas,
+              uploaderId: userId,
+              uploadLanguageCode: AppLocale.currentLocale.languageCode,
             )
             .then(
               (response) => response.fold(

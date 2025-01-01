@@ -31,39 +31,6 @@ mixin class HomeEvent {
   /// 실전 면접 기록 여부에 따라 라우팅을 다르게 진행
   ///
   Future<void> onPracticalCardTapped(WidgetRef ref) async {
-    EasyLoading.show();
-    final response = await youtubeRepository.uploadYoutube(
-      contentMainInfo: YoutubeContentOverviewEntity(
-          id: 'id',
-          thumbnailImgUrl: 'thumbnailImgUrl',
-          contentsTitle: 'contentsTitle',
-          channel: ChannelEntity.undefined(),
-          relatedJobs: <JobGroup>[].toSet(),
-          relatedSkillIds: <SkillEntity>[].toSet(),
-          videoDuration: Duration.zero,
-          videoPublishDate: DateTime.now(),
-          techtalkUploadDate: DateTime.now()),
-      summary: SummaryEntity.fromUploadResponse(YoutubeAiSummaryResponse(
-        type: YoutubeContentAnalyzedType.isValid,
-        summary: SummaryEntity.unDefined(),
-      )),
-      qnas: <YoutubeQnaEntity>[
-        YoutubeQnaEntity(id: 'id-1', question: 'question', answer: 'answer')
-      ].toSet(),
-    );
-
-    EasyLoading.dismiss();
-
-    response.fold(
-      onSuccess: (_) {
-        log('유튜브 영상 업로드 성공');
-      },
-      onFailure: (e) {
-        log('유튜브 영상 업로드 실패 : $e');
-      },
-    );
-
-    return;
     await EasyLoading.show();
 
     final hasNotPracticalInterviewRecord =

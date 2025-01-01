@@ -7,7 +7,7 @@ import 'package:techtalk/features/contents/data_source/remote/models/youtube_vid
 import 'package:techtalk/features/topic/data_source/remote/models/topic_qna_model.dart';
 
 abstract class FirestoreYoutubeContentsOverviewRef {
-  static const String collectionName = 'YoutubeOverview';
+  static const String collectionName = 'Youtube';
 
   static CollectionReference<YoutubeContentsOverviewModel> collection() =>
       FirebaseFirestore.instance.collection(collectionName).withConverter(
@@ -24,9 +24,6 @@ abstract class FirestoreYoutubeContentsOverviewRef {
             fromFirestore: YoutubeContentsOverviewModel.fromFirestore,
             toFirestore: YoutubeContentsOverviewModel.toFiresTore,
           );
-
-  static DocumentReference channelDocumentRef(String channelId) =>
-      FirebaseFirestore.instance.collection('Channel').doc(channelId);
 }
 
 ///
