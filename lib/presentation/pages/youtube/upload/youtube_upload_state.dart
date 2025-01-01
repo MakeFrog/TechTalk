@@ -7,7 +7,7 @@ import 'package:techtalk/presentation/pages/youtube/upload/provider/target_youtu
 import 'package:techtalk/presentation/pages/youtube/upload/provider/upload_step_page_controller.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/provider/url_input_text_editing_controller_provider.dart';
 
-mixin class YoutubeContentUploadState {
+mixin class YoutubeUploadState {
   ///
   /// 페이지뷰 컨트롤러
   ///

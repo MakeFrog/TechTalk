@@ -8,11 +8,11 @@ import 'package:techtalk/presentation/pages/youtube/main/provider/selected_filte
 
 import 'provider/youtube_content_pagination_provider.dart';
 
-mixin class YoutubeContentMainState {
+mixin class YoutubeMainState {
   ///
   /// 페이지네이션 컨트롤러
   ///
-  PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
+  PagingController<DocumentSnapshot<YoutubeMainModel>?,
       YoutubeContentOverviewEntity> pagingController(WidgetRef ref) {
     final selectedCategory =
         ref.watch(youtubeContentCategoryProvider).selectedCategory;

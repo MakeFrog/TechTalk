@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
-
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
@@ -24,9 +21,9 @@ import 'package:techtalk/presentation/pages/splash/splash_page.dart';
 import 'package:techtalk/presentation/pages/study/learning/learning_detail_page.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_detail_page.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
-import 'package:techtalk/presentation/pages/youtube/detail/youtube_contents_detail_page.dart';
-import 'package:techtalk/presentation/pages/youtube/main/youtube_content_main_page.dart';
-import 'package:techtalk/presentation/pages/youtube/upload/youtube_content_upload_page.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/youtube_detail_page.dart';
+import 'package:techtalk/presentation/pages/youtube/main/youtube_main_page.dart';
+import 'package:techtalk/presentation/pages/youtube/upload/youtube_upload_page.dart';
 import 'package:techtalk/presentation/pages/youtube/upload_failed/provider/youtube_upload_failed_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload_failed/youtube_upload_fail_page.dart';
 
@@ -244,7 +241,7 @@ class YoutubeContentsMainListRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const YoutubeContentMainPage();
+    return const YoutubeMainPage();
   }
 }
 
@@ -260,7 +257,7 @@ class ContentsDetailRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return YoutubeContentsDetailPage(
+    return YoutubeDetailPage(
       argument: $extra,
     );
   }
@@ -274,7 +271,7 @@ class YoutubeContentUploadRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const YoutubeContentUploadPage();
+    return const YoutubeUploadPage();
   }
 }
 

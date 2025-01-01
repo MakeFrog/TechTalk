@@ -1,4 +1,4 @@
-import 'package:techtalk/features/youtube/data_source/remote/models/contents_author_model.dart';
+import 'package:techtalk/features/youtube/data_source/remote/models/channel_model.dart';
 
 ///
 /// 유튜브 채널 정보

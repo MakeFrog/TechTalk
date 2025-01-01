@@ -9,13 +9,12 @@ part 'youtube_content_pagination_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 Raw<
-    PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
+    PagingController<DocumentSnapshot<YoutubeMainModel>?,
         YoutubeContentOverviewEntity>> youtubeContentPagination(
   YoutubeContentPaginationRef ref, {
   required YoutubeContentCategory category,
 }) {
-  final pagingController = PagingController<
-      DocumentSnapshot<YoutubeContentsOverviewModel>?,
+  final pagingController = PagingController<DocumentSnapshot<YoutubeMainModel>?,
       YoutubeContentOverviewEntity>(
     firstPageKey: null,
   );

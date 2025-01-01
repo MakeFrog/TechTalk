@@ -9,16 +9,16 @@ final class YoutubeContentsDependencyInjection
     extends FeatureDependencyInjection {
   @override
   void dataSources() {
-    locator.registerLazySingleton<YoutubeContentsRemoteDataSource>(
-      () => YoutubeContentsRemoteDataSourceImpl(QueryConstraintApplier()),
+    locator.registerLazySingleton<YoutubeRemoteDataSource>(
+      () => YoutubeRemoteDataSourceImpl(QueryConstraintApplier()),
     );
   }
 
   /// TODO: 추후에 다른 repository 추가 예정
   @override
   void repositories() {
-    locator.registerLazySingleton<YoutubeContentsRepository>(
-      () => YoutubeContentsRepositoryImpl(
+    locator.registerLazySingleton<YoutubeRepository>(
+      () => YoutubeRepositoryImpl(
         YoutubeExplode(),
         youtubeRemoteDataSource,
         techSetRepository,

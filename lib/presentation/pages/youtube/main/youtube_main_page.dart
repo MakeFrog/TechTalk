@@ -7,8 +7,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/features/youtube/index.dart';
-import 'package:techtalk/presentation/pages/youtube/main/youtube_content_main_event.dart';
-import 'package:techtalk/presentation/pages/youtube/main/youtube_content_main_state.dart';
+import 'package:techtalk/presentation/pages/youtube/main/youtube_main_event.dart';
+import 'package:techtalk/presentation/pages/youtube/main/youtube_main_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/chip/selectable_chip.dart';
 
@@ -18,9 +18,8 @@ part 'widgets/content_list_view.p.dart';
 
 part 'widgets/scaffold.p.dart';
 
-class YoutubeContentMainPage extends BasePage
-    with YoutubeContentMainState, YoutubeContentMainEvent {
-  const YoutubeContentMainPage({super.key});
+class YoutubeMainPage extends BasePage with YoutubeMainState, YoutubeMainEvent {
+  const YoutubeMainPage({super.key});
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {

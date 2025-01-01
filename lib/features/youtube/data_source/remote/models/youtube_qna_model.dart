@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
-import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.dart';
 
 part 'youtube_qna_model.g.dart';
 

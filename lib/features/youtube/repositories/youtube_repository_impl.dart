@@ -1,4 +1,4 @@
-// youtube_contents_repository_impl.dart
+// youtube_repository_impl.dart
 
 import 'dart:developer';
 
@@ -12,16 +12,16 @@ import 'package:techtalk/features/tech_set/repositories/tech_set_repository.dart
 import 'package:techtalk/features/youtube/index.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
-  YoutubeContentsRepositoryImpl(this._youtubeApiDataSource,
+class YoutubeRepositoryImpl implements YoutubeRepository {
+  YoutubeRepositoryImpl(this._youtubeApiDataSource,
       this._youtubeRemoteDataSource, this._techSetRepository);
 
   final YoutubeExplode _youtubeApiDataSource;
-  final YoutubeContentsRemoteDataSource _youtubeRemoteDataSource;
+  final YoutubeRemoteDataSource _youtubeRemoteDataSource;
   final TechSetRepository _techSetRepository;
 
   @override
-  Future<Result<YouTubeVideoDataEntity>> getYoutubeVideoData(
+  Future<Result<YoutubeCoreVideoEntity>> getYoutubeVideoData(
       String videoId) async {
     try {
       final Video video = await _youtubeApiDataSource.videos.get(videoId);
@@ -29,7 +29,7 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
           await _youtubeApiDataSource.channels.get(video.channelId);
 
       return Result.success(
-        YouTubeVideoDataEntity(
+        YoutubeCoreVideoEntity(
           id: video.id.value,
           url: video.url,
           title: video.title,
@@ -50,10 +50,10 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
   Future<
       Result<
           FirebasePaginatedResult<YoutubeContentOverviewEntity,
-              YoutubeContentsOverviewModel>>> getPagedYoutubeMainContents({
+              YoutubeMainModel>>> getPagedYoutubeMainContents({
     required int limit,
     required String orderByField,
-    DocumentSnapshot<YoutubeContentsOverviewModel>? lastDocument,
+    DocumentSnapshot<YoutubeMainModel>? lastDocument,
     List<FirestoreQueryConstraint>? queryConstraints,
   }) async {
     try {
@@ -75,7 +75,7 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
 
       // 엔티티로 페이징된 결과 생성
       final paginatedResult = FirebasePaginatedResult<
-          YoutubeContentOverviewEntity, YoutubeContentsOverviewModel>(
+          YoutubeContentOverviewEntity, YoutubeMainModel>(
         items: entities,
         lastDocument: remotePaginatedResult.lastDocument,
         hasMore: remotePaginatedResult.hasMore,

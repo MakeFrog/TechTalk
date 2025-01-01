@@ -10,7 +10,7 @@ import 'package:techtalk/features/youtube/index.dart';
 /// 유튜브 컨텐츠 리스트를 불러오는 파라미터
 ///
 final class GetYoutubeContentsOverviewsListParams {
-  final DocumentSnapshot<YoutubeContentsOverviewModel>? lastDocument;
+  final DocumentSnapshot<YoutubeMainModel>? lastDocument;
   final int limit;
   final List<FirestoreQueryConstraint>? queryConstraints;
   final String orderByField;
@@ -30,16 +30,16 @@ final class GetYoutubeOverviewListUseCase extends BaseUseCase<
     GetYoutubeContentsOverviewsListParams,
     Result<
         FirebasePaginatedResult<YoutubeContentOverviewEntity,
-            YoutubeContentsOverviewModel>>> {
+            YoutubeMainModel>>> {
   GetYoutubeOverviewListUseCase(this._repository);
 
-  final YoutubeContentsRepository _repository;
+  final YoutubeRepository _repository;
 
   @override
   Future<
       Result<
           FirebasePaginatedResult<YoutubeContentOverviewEntity,
-              YoutubeContentsOverviewModel>>> call(
+              YoutubeMainModel>>> call(
     GetYoutubeContentsOverviewsListParams request,
   ) =>
       _repository.getPagedYoutubeMainContents(

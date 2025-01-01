@@ -1,4 +1,4 @@
-// youtube_contents_repository.dart
+// youtube_repository.dart
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
@@ -7,11 +7,11 @@ import 'package:techtalk/core/modules/error_handling/result.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/youtube/index.dart';
 
-abstract interface class YoutubeContentsRepository {
+abstract interface class YoutubeRepository {
   ///
   /// 유튜브 API를 통해 동영상 관련 데이터 가져오기
   ///
-  Future<Result<YouTubeVideoDataEntity>> getYoutubeVideoData(
+  Future<Result<YoutubeCoreVideoEntity>> getYoutubeVideoData(
     String videoId,
   );
 
@@ -42,10 +42,10 @@ abstract interface class YoutubeContentsRepository {
   Future<
       Result<
           FirebasePaginatedResult<YoutubeContentOverviewEntity,
-              YoutubeContentsOverviewModel>>> getPagedYoutubeMainContents({
+              YoutubeMainModel>>> getPagedYoutubeMainContents({
     required int limit,
     required String orderByField,
-    DocumentSnapshot<YoutubeContentsOverviewModel>? lastDocument,
+    DocumentSnapshot<YoutubeMainModel>? lastDocument,
     List<FirestoreQueryConstraint>? queryConstraints,
   });
 

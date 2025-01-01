@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/provider/upload_step_page_controller.dart';
 
-mixin class YoutubeContentUploadEvent {
+mixin class YoutubeUploadEvent {
   ///
   /// [_UrlInputView] > 첫 번째 단계에서 '다음(확인)' 버튼이 클릭되었을 때
   ///

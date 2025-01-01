@@ -6,7 +6,7 @@ import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_det
 import 'package:techtalk/presentation/pages/youtube/main/constant/yotubue_content_category.dart';
 import 'package:techtalk/presentation/pages/youtube/main/provider/selected_filter_category_provider.dart';
 
-mixin class YoutubeContentMainEvent {
+mixin class YoutubeMainEvent {
   ///
   /// 유튜브 상세 페이지로 이동
   ///

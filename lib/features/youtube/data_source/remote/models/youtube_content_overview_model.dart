@@ -36,11 +36,11 @@ class YoutubeContentOverviewEntity {
     this.qnaNum = 0,
   });
 
-  YoutubeContentsOverviewModel toModel({
+  YoutubeMainModel toModel({
     required String uploaderId,
     required String uploadLanguageCode,
   }) =>
-      YoutubeContentsOverviewModel(
+      YoutubeMainModel(
         id: id,
         title: contentsTitle,
         thumbnailImgUrl: thumbnailImgUrl,

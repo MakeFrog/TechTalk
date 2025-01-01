@@ -6,16 +6,16 @@ import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/widgets/constants/contents_detail_tab_type.enum.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/widgets/summary_note_foldable_item.dart';
-import 'package:techtalk/presentation/pages/youtube/detail/youtube_contents_detail_event.dart';
-import 'package:techtalk/presentation/pages/youtube/detail/youtube_contents_detail_state.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/youtube_detail_event.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/youtube_detail_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/box/async_skeleton_widget_builder.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 /// 유튜브 컨텐츠 상세 페이지
-class YoutubeContentsDetailPage extends BasePage
-    with YoutubeContentsDetailEvent, YoutubeContentsDetailState {
-  const YoutubeContentsDetailPage({super.key, required this.argument});
+class YoutubeDetailPage extends BasePage
+    with YoutubeDetailEvent, YoutubeDetailState {
+  const YoutubeDetailPage({super.key, required this.argument});
 
   final YoutubeDetailArg argument;
 

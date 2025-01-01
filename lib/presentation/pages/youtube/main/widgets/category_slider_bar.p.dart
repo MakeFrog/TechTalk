@@ -1,7 +1,7 @@
-part of '../youtube_content_main_page.dart';
+part of '../youtube_main_page.dart';
 
 class _CategorySliderBar extends ConsumerWidget
-    with YoutubeContentMainState, YoutubeContentMainEvent {
+    with YoutubeMainState, YoutubeMainEvent {
   const _CategorySliderBar({super.key});
 
   @override

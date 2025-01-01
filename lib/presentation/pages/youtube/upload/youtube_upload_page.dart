@@ -5,8 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/presentation/pages/youtube/upload/youtube_content_upload_event.dart';
-import 'package:techtalk/presentation/pages/youtube/upload/youtube_content_upload_state.dart';
+import 'package:techtalk/presentation/pages/youtube/upload/youtube_upload_event.dart';
+import 'package:techtalk/presentation/pages/youtube/upload/youtube_upload_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/common/item/youtube_content_item_view.dart';
@@ -16,9 +16,9 @@ part 'widgets/page_views/analyzing_view.p.dart';
 part 'widgets/page_views/confirm_content_view.p.dart';
 part 'widgets/page_views/url_input_view.p.dart';
 
-class YoutubeContentUploadPage extends BasePage
-    with YoutubeContentUploadState, YoutubeContentUploadEvent {
-  const YoutubeContentUploadPage({super.key});
+class YoutubeUploadPage extends BasePage
+    with YoutubeUploadState, YoutubeUploadEvent {
+  const YoutubeUploadPage({super.key});
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {

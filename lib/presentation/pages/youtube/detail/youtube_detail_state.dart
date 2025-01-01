@@ -7,7 +7,7 @@ import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_mai
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_summary_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_video_data_provider.dart';
 
-mixin class YoutubeContentsDetailState {
+mixin class YoutubeDetailState {
   ///
   /// 메인 유튜브 콘텐츠 정보
   /// 전달 받은 argument에 정보가 있는 여부에 따라서
@@ -27,7 +27,7 @@ mixin class YoutubeContentsDetailState {
   ///
   /// 유튜브 api에서 불러오는 비디오 관련 데이터
   ///
-  AsyncValue<YouTubeVideoDataEntity> youtubeVideoDataAsync(
+  AsyncValue<YoutubeCoreVideoEntity> youtubeVideoDataAsync(
           WidgetRef ref, String contentsId) =>
       ref.watch(youtubeVideoDataProvider(contentsId));
 

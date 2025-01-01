@@ -2,31 +2,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/core/query_constraints_applier.dart';
-import 'package:techtalk/features/youtube/data_source/remote/models/contents_author_model.dart';
+import 'package:techtalk/features/youtube/data_source/remote/models/channel_model.dart';
 import 'package:techtalk/features/youtube/data_source/remote/models/summary_model.dart';
-import 'package:techtalk/features/youtube/data_source/remote/models/youtube_content_detail_new_model.dart';
+import 'package:techtalk/features/youtube/data_source/remote/models/youtube_detail_model.dart';
 import 'package:techtalk/features/youtube/data_source/remote/models/youtube_qna_model.dart';
-import 'package:techtalk/features/youtube/data_source/remote/models/youtube_video_contents_overview_model.dart';
-import 'package:techtalk/features/youtube/data_source/remote/youtube_contents_overview_ref.dart';
-import 'package:techtalk/features/youtube/data_source/remote/youtube_contents_remote_data_source.dart';
+import 'package:techtalk/features/youtube/data_source/remote/models/youtube_main_model.dart';
+import 'package:techtalk/features/youtube/data_source/remote/youtube_ref.dart';
+import 'package:techtalk/features/youtube/data_source/remote/youtube_remote_data_source.dart';
 
-final class YoutubeContentsRemoteDataSourceImpl
-    implements YoutubeContentsRemoteDataSource {
+final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
   final QueryConstraintApplier _constraintApplier;
 
-  YoutubeContentsRemoteDataSourceImpl(this._constraintApplier);
+  YoutubeRemoteDataSourceImpl(this._constraintApplier);
 
   @override
-  Future<
-      FirebasePaginatedResult<YoutubeContentsOverviewModel,
-          YoutubeContentsOverviewModel>> getPagedYoutubeMainContents({
+  Future<FirebasePaginatedResult<YoutubeMainModel, YoutubeMainModel>>
+      getPagedYoutubeMainContents({
     required int limit,
     required String orderByField,
-    DocumentSnapshot<YoutubeContentsOverviewModel>? lastDocument,
+    DocumentSnapshot<YoutubeMainModel>? lastDocument,
     List<FirestoreQueryConstraint>? queryConstraints,
   }) async {
     try {
-      Query<YoutubeContentsOverviewModel> query =
+      Query<YoutubeMainModel> query =
           FirestoreYoutubeRef.collection().orderBy(orderByField).limit(limit);
 
       if (lastDocument != null) {
@@ -38,11 +36,10 @@ final class YoutubeContentsRemoteDataSourceImpl
         query = _constraintApplier.applyConstraints(query, queryConstraints);
       }
 
-      QuerySnapshot<YoutubeContentsOverviewModel> snapshot = await query.get();
+      QuerySnapshot<YoutubeMainModel> snapshot = await query.get();
 
       if (snapshot.docs.isEmpty) {
-        return FirebasePaginatedResult<YoutubeContentsOverviewModel,
-            YoutubeContentsOverviewModel>(
+        return FirebasePaginatedResult<YoutubeMainModel, YoutubeMainModel>(
           items: [],
           lastDocument: null,
           hasMore: false,
@@ -68,8 +65,7 @@ final class YoutubeContentsRemoteDataSourceImpl
         throw Exception('Last document is null after fetching data.');
       }
 
-      return FirebasePaginatedResult<YoutubeContentsOverviewModel,
-          YoutubeContentsOverviewModel>(
+      return FirebasePaginatedResult<YoutubeMainModel, YoutubeMainModel>(
         items: items,
         lastDocument: newLastDocument,
         hasMore: hasMore,
@@ -80,7 +76,7 @@ final class YoutubeContentsRemoteDataSourceImpl
   }
 
   @override
-  Future<YoutubeContentsDetailNewModel> getDetail(String contentId) async {
+  Future<YoutubeDetailModel> getDetail(String contentId) async {
     try {
       final doc = await FirestoreYoutubeDetailNewRef.doc(contentId).get();
 
@@ -95,7 +91,7 @@ final class YoutubeContentsRemoteDataSourceImpl
   Future<List<YoutubeQnaModel>> getQnas(String contentId) async {
     try {
       final collection =
-          await FirestoreYoutubeQnaNewRef.collection(contentId).get();
+          await FirestoreYoutubeQnaRef.collection(contentId).get();
 
       return collection.docs.map((doc) => doc.data()).toList();
     } catch (e) {
@@ -107,7 +103,7 @@ final class YoutubeContentsRemoteDataSourceImpl
   Future<void> uploadYoutube({
     required ChannelModel channel,
     required List<YoutubeQnaModel> qnas,
-    required YoutubeContentsOverviewModel mainInfo,
+    required YoutubeMainModel mainInfo,
     required SummaryModel summary,
   }) async {
     try {
@@ -144,7 +140,7 @@ final class YoutubeContentsRemoteDataSourceImpl
   }) async {
     for (var e in qnas) {
       batch.set(
-        FirestoreYoutubeQnaNewRef.collection(contentId).doc(e.id).withConverter(
+        FirestoreYoutubeQnaRef.collection(contentId).doc(e.id).withConverter(
             fromFirestore: YoutubeQnaModel.fromFirestore,
             toFirestore: (value, _) => value.toJson()),
         e,
@@ -155,7 +151,7 @@ final class YoutubeContentsRemoteDataSourceImpl
   /// 유튜브 메인 정보 업데이트
   Future<void> _updateYoutubeMainInfo(
     WriteBatch transaction, {
-    required YoutubeContentsOverviewModel mainInfo,
+    required YoutubeMainModel mainInfo,
   }) async {
     transaction.set(
       FirestoreYoutubeRef.doc(mainInfo.id),
@@ -171,7 +167,7 @@ final class YoutubeContentsRemoteDataSourceImpl
   }) async {
     transaction.set(
       FirestoreYoutubeDetailNewRef.doc(contentId),
-      YoutubeContentsDetailNewModel(summary: summary),
+      YoutubeDetailModel(summary: summary),
     );
   }
 
@@ -182,7 +178,7 @@ final class YoutubeContentsRemoteDataSourceImpl
   }
 
   @override
-  Future<YoutubeContentsOverviewModel> getSingleYoutubeMainContent(
+  Future<YoutubeMainModel> getSingleYoutubeMainContent(
       {required String contentId}) async {
     try {
       final doc = await FirestoreYoutubeRef.doc(contentId).get();

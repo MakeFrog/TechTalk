@@ -5,11 +5,11 @@ import 'package:techtalk/core/modules/converter/time_stamp_converter.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/youtube/index.dart';
 
-part 'youtube_video_contents_overview_model.g.dart';
+part 'youtube_main_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class YoutubeContentsOverviewModel {
-  YoutubeContentsOverviewModel({
+class YoutubeMainModel {
+  YoutubeMainModel({
     required this.id,
     required this.title,
     required this.thumbnailImgUrl,
@@ -80,19 +80,19 @@ class YoutubeContentsOverviewModel {
   }
 
   /// Firestore에서 가져온 DocumentSnapshot을 모델로 변환
-  factory YoutubeContentsOverviewModel.fromFirestore(
+  factory YoutubeMainModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
   ) {
     final channelRef =
         snapshot.data()!['channel_ref'] as DocumentReference?; // 수동으로 처리
 
-    return YoutubeContentsOverviewModel.fromJson(snapshot.data()!)
+    return YoutubeMainModel.fromJson(snapshot.data()!)
         .copyWith(channelRef: channelRef);
   }
 
   static Map<String, Object?> toFiresTore(
-    YoutubeContentsOverviewModel model,
+    YoutubeMainModel model,
     SetOptions? options,
   ) {
     final data = model.toJson();
@@ -103,8 +103,8 @@ class YoutubeContentsOverviewModel {
   }
 
   /// JSON에서 모델로 변환
-  factory YoutubeContentsOverviewModel.fromJson(Map<String, dynamic> json) =>
-      _$YoutubeContentsOverviewModelFromJson(json);
+  factory YoutubeMainModel.fromJson(Map<String, dynamic> json) =>
+      _$YoutubeMainModelFromJson(json);
 
   /// 모델을 JSON으로 변환
   // Map<String, dynamic> toJson() => _$YoutubeContentsOverviewModelToJson(this);
@@ -128,7 +128,7 @@ class YoutubeContentsOverviewModel {
     };
   }
 
-  YoutubeContentsOverviewModel copyWith({
+  YoutubeMainModel copyWith({
     String? id,
     String? thumbnailImgUrl,
     String? title,
@@ -143,7 +143,7 @@ class YoutubeContentsOverviewModel {
     String? uploadLanguageCode,
     String? uploaderId,
   }) {
-    return YoutubeContentsOverviewModel(
+    return YoutubeMainModel(
       id: id ?? this.id,
       thumbnailImgUrl: thumbnailImgUrl ?? this.thumbnailImgUrl,
       title: title ?? this.title,

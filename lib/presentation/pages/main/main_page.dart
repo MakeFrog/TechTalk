@@ -12,7 +12,7 @@ import 'package:techtalk/presentation/pages/home/home_page.dart';
 import 'package:techtalk/presentation/pages/main/main_event.dart';
 import 'package:techtalk/presentation/pages/my_info/my_page/my_page.dart';
 import 'package:techtalk/presentation/pages/study/topic_selection/study_topic_selection_page.dart';
-import 'package:techtalk/presentation/pages/youtube/main/youtube_content_main_page.dart';
+import 'package:techtalk/presentation/pages/youtube/main/youtube_main_page.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 
@@ -28,7 +28,7 @@ class MainPage extends BasePage with MainEvent {
       StudyTopicSelectionPage(
         key: ValueKey(MainNavigationTab.study),
       ),
-      YoutubeContentMainPage(
+      YoutubeMainPage(
         key: ValueKey(MainNavigationTab.contents),
       ),
       MyPage(

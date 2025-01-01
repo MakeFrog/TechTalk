@@ -1,7 +1,7 @@
-part of '../youtube_content_main_page.dart';
+part of '../youtube_main_page.dart';
 
 class _ContentListView extends HookConsumerWidget
-    with YoutubeContentMainState, YoutubeContentMainEvent {
+    with YoutubeMainState, YoutubeMainEvent {
   const _ContentListView({super.key});
 
   @override
@@ -12,7 +12,7 @@ class _ContentListView extends HookConsumerWidget
         itemCount: totalCategories(ref).length,
         itemBuilder: (context, index) {
           final targetController = pagingController(ref);
-          return PagedListView<DocumentSnapshot<YoutubeContentsOverviewModel>?,
+          return PagedListView<DocumentSnapshot<YoutubeMainModel>?,
               YoutubeContentOverviewEntity>(
             pagingController: targetController,
             physics: const NeverScrollableScrollPhysics(),

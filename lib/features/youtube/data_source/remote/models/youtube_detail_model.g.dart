@@ -1,19 +1,17 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'youtube_content_detail_new_model.dart';
+part of 'youtube_detail_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-YoutubeContentsDetailNewModel _$YoutubeContentsDetailNewModelFromJson(
-        Map<String, dynamic> json) =>
-    YoutubeContentsDetailNewModel(
+YoutubeDetailModel _$YoutubeDetailModelFromJson(Map<String, dynamic> json) =>
+    YoutubeDetailModel(
       summary: SummaryModel.fromJson(json['summary'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$YoutubeContentsDetailNewModelToJson(
-        YoutubeContentsDetailNewModel instance) =>
+Map<String, dynamic> _$YoutubeDetailModelToJson(YoutubeDetailModel instance) =>
     <String, dynamic>{
       'summary': instance.summary.toJson(),
     };

@@ -1,14 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'youtube_video_contents_overview_model.dart';
+part of 'youtube_main_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-YoutubeContentsOverviewModel _$YoutubeContentsOverviewModelFromJson(
-        Map<String, dynamic> json) =>
-    YoutubeContentsOverviewModel(
+YoutubeMainModel _$YoutubeMainModelFromJson(Map<String, dynamic> json) =>
+    YoutubeMainModel(
       id: json['id'] as String,
       title: json['title'] as String,
       thumbnailImgUrl: json['thumbnail_img_url'] as String,
@@ -32,8 +31,7 @@ YoutubeContentsOverviewModel _$YoutubeContentsOverviewModelFromJson(
       uploadLanguageCode: json['upload_language_code'] as String,
     );
 
-Map<String, dynamic> _$YoutubeContentsOverviewModelToJson(
-        YoutubeContentsOverviewModel instance) =>
+Map<String, dynamic> _$YoutubeMainModelToJson(YoutubeMainModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'thumbnail_img_url': instance.thumbnailImgUrl,
