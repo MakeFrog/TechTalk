@@ -22,4 +22,6 @@ enum YoutubeUploadFailedType {
   }
 
   const YoutubeUploadFailedType(this.code, this.title, this.description);
+
+  bool get isAlreadyUploaded => this == YoutubeUploadFailedType.alreadyUploaded;
 }

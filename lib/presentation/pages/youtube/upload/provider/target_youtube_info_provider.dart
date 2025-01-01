@@ -36,9 +36,15 @@ class TargetYoutubeInfo extends _$TargetYoutubeInfo {
         final targetFailedType =
             YoutubeUploadFailedType.getByErrorCode(targetException.code);
 
+        /// 이미 업로드된 영상이라 떨어진 exception 이라면
+        /// exception에서 콘텐츠 id를 반환
+        final targetContentId = targetFailedType.isAlreadyUploaded
+            ? (targetException as YtAlreadyUploadedException).contentId
+            : null;
+
         /// 실패 페이지로 이동
         YoutubeContentUploadFailedRoute(
-                contentId: null, failedType: targetFailedType)
+                contentId: targetContentId, failedType: targetFailedType)
             .go(await navigationContext);
 
         throw e;

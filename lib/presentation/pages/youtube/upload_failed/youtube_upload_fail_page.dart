@@ -58,7 +58,7 @@ class YoutubeUploadFailedPage extends BasePage with YoutubeUploadFailedEvent {
                 onPressed: () {
                   onBottomFixedBtnTapped(ref);
                 },
-                child: Text(arg == YoutubeUploadFailedType.alreadyUploaded
+                child: Text(arg.type == YoutubeUploadFailedType.alreadyUploaded
                     ? '바로가기'
                     : '다른 영상 가져오기'),
               ),
