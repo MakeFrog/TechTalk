@@ -1,8 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
-import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
-import 'package:techtalk/features/contents/repositories/entities/summary_entity.dart';
-import 'package:techtalk/features/contents/repositories/entities/youtube_video_data_entity.dart';
+import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_content_qna_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_main_info_provider.dart';

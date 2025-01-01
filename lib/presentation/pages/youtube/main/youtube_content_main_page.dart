@@ -1,27 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:techtalk/app/di/modules/system_di.dart';
 import 'package:techtalk/core/constants/assets.dart';
-import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
-import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
+import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/presentation/pages/youtube/main/youtube_content_main_event.dart';
 import 'package:techtalk/presentation/pages/youtube/main/youtube_content_main_state.dart';
-import 'package:techtalk/presentation/pages/youtube/upload/youtube_content_upload_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/chip/selectable_chip.dart';
-import 'package:techtalk/presentation/widgets/common/common.dart';
-
-part 'widgets/scaffold.p.dart';
 
 part 'widgets/category_slider_bar.p.dart';
 
 part 'widgets/content_list_view.p.dart';
+
+part 'widgets/scaffold.p.dart';
 
 class YoutubeContentMainPage extends BasePage
     with YoutubeContentMainState, YoutubeContentMainEvent {

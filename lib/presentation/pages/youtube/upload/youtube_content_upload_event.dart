@@ -1,15 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/animation.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/app/router/router.dart';
-import 'package:techtalk/features/contents/usecases/enums/youtube_upload_failed_type.dart';
-import 'package:techtalk/features/contents/usecases/exception/youtube_upload_exception.dart';
-import 'package:techtalk/features/contents/usecases/get_qnas_from_youtube_content_use_case.dart';
-import 'package:techtalk/features/contents/usecases/get_summary_from_youtube_content_use_case.dart';
-import 'package:techtalk/presentation/pages/youtube/upload/provider/target_youtube_info_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/provider/upload_step_page_controller.dart';
 
 mixin class YoutubeContentUploadEvent {

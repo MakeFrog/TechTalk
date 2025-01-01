@@ -4,10 +4,7 @@ import 'package:flutter/animation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/router/navigation_context.dart';
 import 'package:techtalk/app/router/router.dart';
-import 'package:techtalk/features/contents/index.dart';
-import 'package:techtalk/features/contents/repositories/entities/youtube_video_entity.dart';
-import 'package:techtalk/features/contents/usecases/enums/youtube_upload_failed_type.dart';
-import 'package:techtalk/features/contents/usecases/exception/youtube_upload_exception.dart';
+import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/provider/upload_step_page_controller.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/provider/url_input_text_editing_controller_provider.dart';
 

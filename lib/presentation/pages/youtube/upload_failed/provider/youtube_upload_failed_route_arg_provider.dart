@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/features/contents/usecases/enums/youtube_upload_failed_type.dart';
+import 'package:techtalk/features/youtube/index.dart';
 
 part 'youtube_upload_failed_route_arg_provider.g.dart';
 

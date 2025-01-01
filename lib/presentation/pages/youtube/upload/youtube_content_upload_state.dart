@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/modules/regex/app_validator.dart';
-import 'package:techtalk/features/contents/repositories/entities/youtube_video_entity.dart';
+import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/provider/analyzed_youtube_content_fetcher_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/provider/target_youtube_info_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/provider/upload_step_page_controller.dart';
