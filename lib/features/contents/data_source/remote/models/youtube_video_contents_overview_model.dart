@@ -4,6 +4,7 @@ import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/core/modules/converter/time_stamp_converter.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/contents_author_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
+import 'package:techtalk/features/contents/data_source/remote/youtube_contents_overview_ref.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_author_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_overview_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
@@ -81,12 +82,39 @@ class YoutubeContentsOverviewModel {
         .copyWith(channelRef: channelRef);
   }
 
+  static Map<String, Object?> toFiresTore(
+    YoutubeContentsOverviewModel model,
+    SetOptions? options,
+  ) {
+    final data = model.toJson();
+    data['channel_ref'] = model.channel != null
+        ? FirestoreYoutubeChannelRef.document(model.channel!.id)
+        : null;
+    return data;
+  }
+
   /// JSON에서 모델로 변환
   factory YoutubeContentsOverviewModel.fromJson(Map<String, dynamic> json) =>
       _$YoutubeContentsOverviewModelFromJson(json);
 
   /// 모델을 JSON으로 변환
-  Map<String, dynamic> toJson() => _$YoutubeContentsOverviewModelToJson(this);
+  // Map<String, dynamic> toJson() => _$YoutubeContentsOverviewModelToJson(this);
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'id': id,
+      'thumbnail_img_url': thumbnailImgUrl,
+      'contents_title': contentsTitle,
+      'video_duration': videoDuration.inMicroseconds,
+      'qna_num': qnaNum,
+      'related_skill_ids': relatedSkillIds,
+      'related_job_group_ids': relatedJobGroupIds,
+      'created_at': const TimeStampConverter().toJson(createdAt),
+      'upload_at': const TimeStampConverter().toJson(uploadAt),
+      'channel_ref':
+          FirestoreYoutubeChannelRef.document(channel?.id ?? 'undefined'),
+    };
+  }
 
   YoutubeContentsOverviewModel copyWith({
     String? id,

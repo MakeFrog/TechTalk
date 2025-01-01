@@ -10,12 +10,12 @@ YoutubeQnaModel _$YoutubeQnaModelFromJson(Map<String, dynamic> json) =>
     YoutubeQnaModel(
       id: json['id'] as String,
       question: json['question'] as String,
-      evaluationPoint: json['evaluation_point'] as String?,
+      answer: json['answer'] as String?,
     );
 
 Map<String, dynamic> _$YoutubeQnaModelToJson(YoutubeQnaModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'question': instance.question,
-      'evaluation_point': instance.evaluationPoint,
+      'answer': instance.answer,
     };

@@ -66,7 +66,7 @@ class Flavor {
 
     /// whisper 모델을 제공하는 OpenAI SDK
     forWhisper.OpenAI.apiKey = env.openApiKey;
-    forWhisper.OpenAI.requestsTimeOut = const Duration(seconds: 30);
+    forWhisper.OpenAI.requestsTimeOut = const Duration(seconds: 60);
 
     /// 앱 DI 실행
     await AppBinder.init();

@@ -10,8 +10,10 @@ import 'package:techtalk/core/modules/error_handling/result.dart';
 import 'package:techtalk/core/modules/exceptions/custom_exception.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/contents_author_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/summary_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/youtube_qna_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/youtube_contents_remote_data_source.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_overview_entity.dart';
@@ -200,6 +202,28 @@ class YoutubeContentsRepositoryImpl implements YoutubeContentsRepository {
       return Result.failure(
         const YtVideoInfoFetchedFailedException(),
       );
+    }
+  }
+
+  @override
+  Future<Result<void>> uploadYoutube({
+    required YoutubeContentOverviewEntity contentMainInfo,
+    required SummaryEntity summary,
+    required Set<YoutubeQnaEntity> qnas,
+  }) async {
+    try {
+      await _youtubeRemoteDataSource.uploadYoutube(
+        channel: ChannelModel.fromEntity(contentMainInfo.channel),
+        qnas: qnas.map((e) => YoutubeQnaModel.fromEntity(e)).toList(),
+        mainInfo: contentMainInfo.toModel(),
+        summary: summary.toModel(),
+      );
+
+      return Result.success(null);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    } catch (e) {
+      return Result.failure(UnExceptedErrorException(e.toString()));
     }
   }
 }

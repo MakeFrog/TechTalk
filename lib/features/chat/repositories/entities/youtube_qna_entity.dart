@@ -33,8 +33,11 @@ class YoutubeQnaEntity extends BaseQnaEntity {
   }
 
   factory YoutubeQnaEntity.fromJson(Map<String, dynamic> json) {
+    ///[NOTE]
+    ///Uuid 생성시 const를 사용하면
+    ///컴파일 타임에 값이 생성됨.
     return YoutubeQnaEntity(
-      id: const Uuid().v1(),
+      id: Uuid().v1(),
       question: json['question'] as String,
       answer: json['answer'] as String,
     );

@@ -13,7 +13,8 @@ class GetSummaryFromYoutubeContentUseCase
     extends BaseUseCase<YoutubeVideoEntity, YoutubeAiSummaryResponse> {
   @override
   Future<YoutubeAiSummaryResponse> call(YoutubeVideoEntity request) async {
-    // the system message that will be sent to the request.
+    // - 주제를 설명할 때 '영상'이라는 단어를 사용하지 마세요.
+
     final systemMessage = OpenAIChatCompletionChoiceMessageModel(
       content: [
         OpenAIChatCompletionChoiceMessageContentItemModel.text(
@@ -30,10 +31,10 @@ class GetSummaryFromYoutubeContentUseCase
    - `isValid` 타입이 아니면 `main_theme`과 `summaries`를 빈문자열, 빈배열을 반환합니다.
 
 2. **핵심 주제 (`main_theme`) 작성**:
-   - 영상에서 다루고 있는 프로그래밍 개념에 대한 내용을 3~5문장으로 요약하세요.
-   - 주제를 설명할 때 '영상'이라는 단어를 사용하지 마세요.
+   - 영상에서 다루고 있는 핵심 프로그래밍 개념에 대한 내용을 3~5문장으로 요약하세요.
+   - 프로그래밍 주제를 설명할 때 '영상'이라는 단어를 절대 사용하지 마세요. 
+   
   
-
 3. **세부 요약 목록 (`summaries`) 작성**:
    - 영상에서 다루고 있는 섹션별로 제목(`title`)과 요약 내용(`contents`)을 구성하세요.
    - 요약 내용(`contents`)은 영상에서 다루고 있는 프로그래밍 내용을 상세히 설명해야 합니다.

@@ -39,4 +39,10 @@ class ChannelModel {
 
   /// 모델을 JSON으로 변환
   Map<String, dynamic> toJson() => _$ChannelModelToJson(this);
+
+  factory ChannelModel.fromEntity(ChannelEntity entity) => ChannelModel(
+        id: entity.id,
+        name: entity.name,
+        logoUrl: entity.logoUrl,
+      );
 }

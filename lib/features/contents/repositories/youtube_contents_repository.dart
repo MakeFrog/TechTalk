@@ -11,6 +11,7 @@ import 'package:techtalk/features/contents/data_source/remote/models/youtube_con
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_overview_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/summary_entity.dart';
+import 'package:techtalk/features/contents/repositories/entities/youtube_ai_qna_response.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_contents_detail_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_video_data_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_video_entity.dart';
@@ -71,4 +72,12 @@ abstract interface class YoutubeContentsRepository {
     DocumentSnapshot<YoutubeContentsOverviewModel>? lastDocument,
     List<FirestoreQueryConstraint>? queryConstraints,
   });
+
+  ///
+  /// 유튜브 콘텐츠 업로드
+  ///
+  Future<Result<void>> uploadYoutube(
+      {required YoutubeContentOverviewEntity contentMainInfo,
+      required SummaryEntity summary,
+      required Set<YoutubeQnaEntity> qnas});
 }

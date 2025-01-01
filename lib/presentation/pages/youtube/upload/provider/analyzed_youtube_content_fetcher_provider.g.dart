@@ -7,7 +7,7 @@ part of 'analyzed_youtube_content_fetcher_provider.dart';
 // **************************************************************************
 
 String _$analyzedYoutubeFetcherHash() =>
-    r'a7bb1d6fe3190794991608179bb65f2c57242179';
+    r'e4e32cb7a333a18bc1c23bf702413a97ab47069c';
 
 /// See also [AnalyzedYoutubeFetcher].
 @ProviderFor(AnalyzedYoutubeFetcher)
