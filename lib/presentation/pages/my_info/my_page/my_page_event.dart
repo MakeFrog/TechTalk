@@ -15,6 +15,8 @@ import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.d
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_blur_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/main/provider/selected_filter_category_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/main/provider/youtube_content_pagination_provider.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
 import 'package:techtalk/presentation/providers/system/notification_status_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_auth_provider.dart';
@@ -74,8 +76,9 @@ mixin class MyPageEvent {
         onRightBtnClicked: () {
           unawaited(noti.SlackNotificationService.sendNotification(
               type: SlackNotificationType.logOut));
-          _clearKeepAliveModules(ref);
+
           const SignInRoute().go(ref.context);
+          _clearKeepAliveModules(ref);
         },
         onLeftBtnClicked: ref.context.pop,
       ),
@@ -145,6 +148,14 @@ mixin class MyPageEvent {
     ref.invalidate(mainBottomNavigationProvider);
     ref.invalidate(studyAnswerBlurProvider);
     ref.invalidate(wrongAnswerBlurProvider);
+    if (ref.exists(youtubeContentCategoryProvider)) {
+      final categories = ref.read(youtubeContentCategoryProvider);
+      categories.totalCategories.forEach((e) {
+        if (ref.exists(youtubeContentPaginationProvider(category: e))) {
+          ref.invalidate(youtubeContentPaginationProvider(category: e));
+        }
+      });
+    }
   }
 
   ///
