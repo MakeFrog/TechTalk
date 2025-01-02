@@ -12,18 +12,18 @@ part 'youtube_main_model.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class YoutubeMainModel {
   YoutubeMainModel({
-    required this.id,
-    required this.title,
-    required this.thumbnailImgUrl,
-    required this.videoDuration,
-    required this.qnaNum,
+    this.id = 'undefined',
+    this.title = '제목없음',
+    this.thumbnailImgUrl = 'undefined',
+    this.videoDuration = Duration.zero,
+    this.qnaNum = 0,
     this.channelRef,
     this.channel,
-    required this.relatedSkillIds,
-    required this.relatedJobGroupIds,
-    required this.uploadAt,
-    required this.videoPublishedDate,
-    required this.uploadLanguageCode,
+    this.relatedSkillIds = const [],
+    this.relatedJobGroupIds = const [],
+    this.uploadAt,
+    this.videoPublishedDate,
+    this.uploadLanguageCode = 'ko',
   });
 
   final String id;
@@ -41,10 +41,10 @@ class YoutubeMainModel {
   final List<String> relatedJobGroupIds;
 
   @TimeStampConverter()
-  final DateTime videoPublishedDate;
+  final DateTime? videoPublishedDate;
 
   @TimeStampConverter()
-  final DateTime uploadAt;
+  final DateTime? uploadAt;
 
   /// Firestore의 DocumentReference 필드
   @JsonKey(includeFromJson: false) // JSON 직렬화에서 무시
@@ -64,14 +64,14 @@ class YoutubeMainModel {
     return YoutubeContentOverviewEntity(
       id: id,
       thumbnailImgUrl: thumbnailImgUrl,
-      contentsTitle: title,
+      contentsTitle: title ?? '제목 없음',
       qnaNum: qnaNum,
       channel: channel?.toEntity() ?? ChannelEntity.undefined(),
       relatedSkillIds: skills.toSet(),
       relatedJobs: relatedJobGroupIds.map(JobGroup.getById).toSet(),
       videoDuration: videoDuration,
-      techtalkUploadDate: uploadAt,
-      videoPublishDate: videoPublishedDate,
+      techtalkUploadDate: uploadAt ?? DateTime.now(),
+      videoPublishDate: videoPublishedDate ?? DateTime.now(),
     );
   }
 
@@ -114,9 +114,11 @@ class YoutubeMainModel {
       'qna_num': qnaNum,
       'related_skill_ids': relatedSkillIds,
       'related_job_group_ids': relatedJobGroupIds,
-      'video_published_date':
-          const TimeStampConverter().toJson(videoPublishedDate),
-      'upload_at': const TimeStampConverter().toJson(uploadAt),
+      'video_published_date': const TimeStampConverter()
+          .toJson(videoPublishedDate ?? DateTime.now()),
+      'upload_at': const TimeStampConverter().toJson(
+        uploadAt ?? DateTime.now(),
+      ),
       'upload_language_code': uploadLanguageCode,
       'channel_ref':
           FirestoreYoutubeChannelRef.document(channel?.id ?? 'undefined'),
