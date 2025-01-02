@@ -12,6 +12,7 @@ import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/presentation/pages/youtube/main/youtube_main_event.dart';
 import 'package:techtalk/presentation/pages/youtube/main/youtube_main_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
+import 'package:techtalk/presentation/widgets/common/animated/animated_size_and_fade.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/techtalk_app_bar.dart';
 import 'package:techtalk/presentation/widgets/common/chip/selectable_category_chip.dart';
 import 'package:techtalk/presentation/widgets/common/item/youtube_content_item_view.dart';

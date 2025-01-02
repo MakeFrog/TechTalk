@@ -22,7 +22,7 @@ class _ContentListView extends HookConsumerWidget
                   PagedChildBuilderDelegate<YoutubeContentOverviewEntity>(
                 itemBuilder: (context, item, index) {
                   return Container(
-                    margin: EdgeInsets.only(bottom: 16),
+                    margin: const EdgeInsets.only(bottom: 16),
                     child: BounceTapper(
                       onTap: () {
                         routeToDetailPage(context, overview: item);
@@ -39,8 +39,17 @@ class _ContentListView extends HookConsumerWidget
                     ),
                   );
                 },
-                firstPageProgressIndicatorBuilder: (context) =>
-                    Center(child: CircularProgressIndicator()),
+                firstPageProgressIndicatorBuilder: (context) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ...List.generate(
+                      6,
+                      (_) => Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: YoutubeContentItemView.createSkeleton()),
+                    ),
+                  ],
+                ),
                 newPageProgressIndicatorBuilder: (context) =>
                     Center(child: CircularProgressIndicator()),
                 firstPageErrorIndicatorBuilder: (context) => Center(

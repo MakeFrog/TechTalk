@@ -4,9 +4,11 @@ abstract class AppValidator {
   ///
   static bool isYoutubeUrl(String? url) {
     if (url == null) return false;
+
     final regex = RegExp(
-      r'^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)[a-zA-Z0-9_-]{11}(&[^\s]*)?$',
+      r'^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)[a-zA-Z0-9_-]+(\?.*)?$',
     );
+
     return regex.hasMatch(url);
   }
 
