@@ -55,6 +55,8 @@ class YoutubeRepositoryImpl implements YoutubeRepository {
     required String orderByField,
     DocumentSnapshot<YoutubeMainModel>? lastDocument,
     List<FirestoreQueryConstraint>? queryConstraints,
+    required bool hasReversedQueryCallProceeded,
+    required double random,
   }) async {
     try {
       // Remote DataSource에서 페이징된 데이터 가져오기
@@ -64,6 +66,8 @@ class YoutubeRepositoryImpl implements YoutubeRepository {
         orderByField: orderByField,
         lastDocument: lastDocument,
         queryConstraints: queryConstraints,
+        hasReversedQueryCallProceeded: hasReversedQueryCallProceeded,
+        random: random,
       );
 
       // 모델을 엔티티로 변환
@@ -79,6 +83,8 @@ class YoutubeRepositoryImpl implements YoutubeRepository {
         items: entities,
         lastDocument: remotePaginatedResult.lastDocument,
         hasMore: remotePaginatedResult.hasMore,
+        hasReversedQueryCallProceeded:
+            remotePaginatedResult.hasReversedQueryCallProceeded,
       );
 
       return Result.success(paginatedResult);

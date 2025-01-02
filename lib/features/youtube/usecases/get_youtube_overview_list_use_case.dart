@@ -14,10 +14,14 @@ final class GetYoutubeContentsOverviewsListParams {
   final int limit;
   final List<FirestoreQueryConstraint>? queryConstraints;
   final String orderByField;
+  final bool isHalfOfRandomCalled;
+  final double random;
 
   GetYoutubeContentsOverviewsListParams({
     required this.limit,
     required this.orderByField,
+    required this.isHalfOfRandomCalled,
+    required this.random,
     this.lastDocument,
     this.queryConstraints,
   });
@@ -47,5 +51,7 @@ final class GetYoutubeOverviewListUseCase extends BaseUseCase<
         limit: request.limit,
         orderByField: request.orderByField,
         queryConstraints: request.queryConstraints,
+        hasReversedQueryCallProceeded: request.isHalfOfRandomCalled,
+        random: request.random,
       );
 }

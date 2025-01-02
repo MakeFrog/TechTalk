@@ -45,6 +45,8 @@ abstract interface class YoutubeRepository {
               YoutubeMainModel>>> getPagedYoutubeMainContents({
     required int limit,
     required String orderByField,
+    required bool hasReversedQueryCallProceeded,
+    required double random,
     DocumentSnapshot<YoutubeMainModel>? lastDocument,
     List<FirestoreQueryConstraint>? queryConstraints,
   });

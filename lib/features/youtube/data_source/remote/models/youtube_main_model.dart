@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:techtalk/core/constants/job_group.enum.dart';
@@ -118,6 +120,7 @@ class YoutubeMainModel {
       'upload_language_code': uploadLanguageCode,
       'channel_ref':
           FirestoreYoutubeChannelRef.document(channel?.id ?? 'undefined'),
+      'random': Random().nextDouble(),
     };
   }
 

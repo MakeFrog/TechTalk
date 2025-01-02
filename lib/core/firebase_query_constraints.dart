@@ -28,7 +28,8 @@ class ArrayContainsConstraint extends FirestoreQueryConstraint {
 
   @override
   Query<T> apply<T>(Query<T> query) {
-    return query.where(fieldPath, arrayContains: value); // 배열에 값이 포함되어 있는지 조건 추가
+    return query.where(fieldPath,
+        arrayContains: value); // 배열에 값이 포함되어 있는지 조건 추가
   }
 }
 
@@ -41,7 +42,8 @@ class ArrayContainsAnyConstraint extends FirestoreQueryConstraint {
 
   @override
   Query<T> apply<T>(Query<T> query) {
-    return query.where(fieldPath, arrayContainsAny: values); // 배열에 값들 중 하나 이상이 포함되어 있는지 조건 추가
+    return query.where(fieldPath,
+        arrayContainsAny: values); // 배열에 값들 중 하나 이상이 포함되어 있는지 조건 추가
   }
 }
 
