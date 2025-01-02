@@ -15,6 +15,7 @@ class _Scaffold extends HookWidget {
     return NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
+          const SliverGap(8),
           SliverAppBar(
             backgroundColor: AppColor.of.background1,
             floating: true,
@@ -24,6 +25,7 @@ class _Scaffold extends HookWidget {
             toolbarHeight: 42,
             title: categorySliderBar,
           ),
+          const SliverGap(20),
         ];
       },
       body: contentListView,
