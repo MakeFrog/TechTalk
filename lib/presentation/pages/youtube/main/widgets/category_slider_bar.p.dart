@@ -6,25 +6,29 @@ class _CategorySliderBar extends ConsumerWidget
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SizedBox(
-      height: 42,
-      child: ListView.separated(
-        shrinkWrap: true,
-        padding: const EdgeInsets.only(left: 16, right: 32),
-        scrollDirection: Axis.horizontal,
-        itemCount: totalCategories(ref).length,
-        separatorBuilder: (_, __) => const Gap(8),
-        itemBuilder: (context, index) {
-          final category = totalCategories(ref)[index];
-          return SelectableChip(
-            isSelected: category.id == selectedCategory(ref).id,
-            onTap: () {
-              onCategoryChipTapped(ref, targetCategory: category, index: index);
-            },
-            imagePath: category.imagePath,
-            label: category.name,
-          );
-        },
+    return Container(
+      color: AppColor.of.background1,
+      height: 34,
+      child: SizedBox(
+        child: ListView.separated(
+          shrinkWrap: true,
+          padding: const EdgeInsets.only(left: 16, right: 32),
+          scrollDirection: Axis.horizontal,
+          itemCount: totalCategories(ref).length,
+          separatorBuilder: (_, __) => const Gap(8),
+          itemBuilder: (context, index) {
+            final category = totalCategories(ref)[index];
+
+            return SelectableCategoryChip(
+              isSelected: category.id == selectedCategory(ref).id,
+              onTap: () {
+                onCategoryChipTapped(ref,
+                    targetCategory: category, index: index);
+              },
+              item: category,
+            );
+          },
+        ),
       ),
     );
   }

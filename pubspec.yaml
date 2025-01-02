@@ -31,6 +31,7 @@ dependencies:
   cached_network_image: ^3.3.0 # 네트워크 이미지 캐싱
   bounce_tapper: ^1.0.9
   expandable_page_view: ^1.0.17
+  measure_size_builder: ^1.0.3
   local_hero: ^0.3.0
   defer_pointer: ^0.0.2 # Overflow 영역에도 터치를 보장할 수 있도록 도와주는 패키지
   gap: ^3.0.1 # 간격 위젯

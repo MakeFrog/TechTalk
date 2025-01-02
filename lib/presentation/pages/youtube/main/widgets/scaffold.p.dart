@@ -16,6 +16,7 @@ class _Scaffold extends HookWidget {
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
           SliverAppBar(
+            backgroundColor: AppColor.of.background1,
             floating: true,
             snap: true,
             elevation: 0.0,

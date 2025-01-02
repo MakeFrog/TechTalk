@@ -1229,6 +1229,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.11.1"
+  measure_size_builder:
+    dependency: "direct main"
+    description:
+      name: measure_size_builder
+      sha256: "7fd2f4840f6315af6f60b465d9c5f312d2ff4442a63a46eb92f14b90cc4c4496"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.3"
   meta:
     dependency: transitive
     description:
