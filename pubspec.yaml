@@ -31,12 +31,13 @@ dependencies:
   cached_network_image: ^3.3.0 # 네트워크 이미지 캐싱
   bounce_tapper: ^1.0.9
   expandable_page_view: ^1.0.17
+  measure_size_builder: ^1.0.3
   local_hero: ^0.3.0
   defer_pointer: ^0.0.2 # Overflow 영역에도 터치를 보장할 수 있도록 도와주는 패키지
   gap: ^3.0.1 # 간격 위젯
   # 상태관리
   provider: ^6.0.5
-  hooks_riverpod: ^2.4.0
+  hooks_riverpod: "2.4.0"
   riverpod_annotation: "2.1.5"
   rxdart: ^0.27.7
   flutter_hooks: ^0.20.1
@@ -102,10 +103,10 @@ dependencies:
 
 dev_dependencies:
   flutter_lints: ^2.0.1
-  build_runner: ^2.4.6
+  build_runner: ^2.4.11
   go_router_builder: ^2.4.1
   build_verify: any
-  riverpod_generator: ^2.3.2
+  riverpod_generator: "^2.3.2"
   custom_lint: ^0.5.3
   riverpod_lint: ^2.1.0
   retrofit_generator: ^7.0.8

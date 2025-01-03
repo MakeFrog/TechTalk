@@ -34,6 +34,18 @@ final class YoutubeContentCategory {
         type: ContentFilterCategoryType.jobGroup,
       );
 
+  factory YoutubeContentCategory.fromSkillOrJobGroup(
+          {JobGroup? job, SkillEntity? skill}) =>
+      YoutubeContentCategory(
+        id: job?.id ?? skill?.id ?? 'undefined',
+        name: job?.name ?? skill?.name ?? '잘못된값',
+        type: (job == null && skill == null)
+            ? ContentFilterCategoryType.all
+            : (job != null
+                ? ContentFilterCategoryType.jobGroup
+                : ContentFilterCategoryType.skill),
+      );
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

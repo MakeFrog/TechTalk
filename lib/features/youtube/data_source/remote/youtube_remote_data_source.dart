@@ -4,8 +4,8 @@ import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/features/youtube/data_source/remote/models/channel_model.dart';
 import 'package:techtalk/features/youtube/data_source/remote/models/summary_model.dart';
 import 'package:techtalk/features/youtube/data_source/remote/models/youtube_detail_model.dart';
-import 'package:techtalk/features/youtube/data_source/remote/models/youtube_qna_model.dart';
 import 'package:techtalk/features/youtube/data_source/remote/models/youtube_main_model.dart';
+import 'package:techtalk/features/youtube/data_source/remote/models/youtube_qna_model.dart';
 
 /// 유튜브 컨텐츠 관련 원격 데이터 소스 인터페이스
 abstract interface class YoutubeRemoteDataSource {
@@ -33,6 +33,9 @@ abstract interface class YoutubeRemoteDataSource {
     required String orderByField,
     DocumentSnapshot<YoutubeMainModel>? lastDocument,
     List<FirestoreQueryConstraint>? queryConstraints,
+    required bool hasReversedQueryCallProceeded,
+    List<QueryDocumentSnapshot<YoutubeMainModel>>? prevSnapshots,
+    required double random,
   });
 
   ///
@@ -43,6 +46,7 @@ abstract interface class YoutubeRemoteDataSource {
     required List<YoutubeQnaModel> qnas,
     required YoutubeMainModel mainInfo,
     required SummaryModel summary,
+    required String uploaderId,
   });
 
   ///

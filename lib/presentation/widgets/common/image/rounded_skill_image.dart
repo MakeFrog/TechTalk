@@ -8,19 +8,28 @@ import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.d
 /// [SkillEntity] 이미지를 보여주는 원형 뷰
 ///
 class RoundedSkillImage extends StatelessWidget {
-  const RoundedSkillImage({super.key, required this.imagePath, this.size = 20});
+  const RoundedSkillImage({
+    super.key,
+    required this.imagePath,
+    this.size = 20,
+    this.disableRound = false,
+    this.scale = 1.1,
+  });
 
   final String? imagePath;
   final double size;
+  final bool disableRound;
+  final double scale;
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(size / 2),
+      borderRadius:
+          disableRound ? BorderRadius.zero : BorderRadius.circular(size / 2),
       child: ColoredBox(
         color: AppColor.of.white,
         child: Transform.scale(
-          scale: 1.1,
+          scale: scale,
           child: SizedBox(
             width: size,
             height: size,

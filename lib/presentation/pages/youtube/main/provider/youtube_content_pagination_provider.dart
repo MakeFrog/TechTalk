@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -19,6 +21,10 @@ Raw<
     firstPageKey: null,
   );
 
+  final random = Random().nextDouble();
+
+  bool hasReversedQueryCallProceeded = false;
+
   // 페이지 요청 리스너 추가
   pagingController.addPageRequestListener((pageKey) async {
     // TODO: 추후 필터 UI 구현되면 선택한 파라미터로 구성하도록 변경 필요
@@ -37,14 +43,20 @@ Raw<
               ),
             ]
           : null,
+      isHalfOfRandomCalled: hasReversedQueryCallProceeded,
+      random: random,
     );
 
     final result = await getYoutubeOverviewListUseCase.call(params);
 
     result.fold(
       onSuccess: (paginatedResult) {
-        final newItems = paginatedResult.items;
+        final newItems = paginatedResult.items..shuffle();
         final isLastPage = !paginatedResult.hasMore;
+
+        if (paginatedResult.hasReversedQueryCallProceeded == true) {
+          hasReversedQueryCallProceeded = true;
+        }
 
         if (isLastPage) {
           print('마지막 페이징 호출');
