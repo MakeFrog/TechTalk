@@ -130,6 +130,16 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $ContentsDetailRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: 'youtube-content-upload',
+          name: 'youtube content upload',
+          factory: $YoutubeContentUploadRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'youtube-content-upload-failed',
+          name: 'youtube content upload failed',
+          factory: $YoutubeContentUploadFailedRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'wrong-answer/:index',
           name: 'wrong answer',
           factory: $WrongAnswerRouteExtension._fromState,
@@ -311,7 +321,7 @@ extension $YoutubeContentsMainListRouteExtension
 extension $ContentsDetailRouteExtension on ContentsDetailRoute {
   static ContentsDetailRoute _fromState(GoRouterState state) =>
       ContentsDetailRoute(
-        state.extra as YoutubeContentOverviewEntity,
+        state.extra as YoutubeDetailArg,
       );
 
   String get location => GoRouteData.$location(
@@ -329,6 +339,66 @@ extension $ContentsDetailRouteExtension on ContentsDetailRoute {
   void replace(BuildContext context) =>
       context.replace(location, extra: $extra);
 }
+
+extension $YoutubeContentUploadRouteExtension on YoutubeContentUploadRoute {
+  static YoutubeContentUploadRoute _fromState(GoRouterState state) =>
+      const YoutubeContentUploadRoute();
+
+  String get location => GoRouteData.$location(
+        '/youtube-content-upload',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $YoutubeContentUploadFailedRouteExtension
+    on YoutubeContentUploadFailedRoute {
+  static YoutubeContentUploadFailedRoute _fromState(GoRouterState state) =>
+      YoutubeContentUploadFailedRoute(
+        failedType: _$YoutubeUploadFailedTypeEnumMap
+            ._$fromName(state.uri.queryParameters['failed-type']!),
+        contentId: state.uri.queryParameters['content-id'],
+      );
+
+  String get location => GoRouteData.$location(
+        '/youtube-content-upload-failed',
+        queryParams: {
+          'failed-type': _$YoutubeUploadFailedTypeEnumMap[failedType],
+          if (contentId != null) 'content-id': contentId,
+        },
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+const _$YoutubeUploadFailedTypeEnumMap = {
+  YoutubeUploadFailedType.timeout: 'timeout',
+  YoutubeUploadFailedType.jsonFormatError: 'json-format-error',
+  YoutubeUploadFailedType.invalidVideoContent: 'invalid-video-content',
+  YoutubeUploadFailedType.tooManyTokensRequired: 'too-many-tokens-required',
+  YoutubeUploadFailedType.unknownError: 'unknown-error',
+  YoutubeUploadFailedType.unexpectedGptError: 'unexpected-gpt-error',
+  YoutubeUploadFailedType.isNotTechContent: 'is-not-tech-content',
+  YoutubeUploadFailedType.noCaption: 'no-caption',
+  YoutubeUploadFailedType.youtubeVideoFetchedFailed:
+      'youtube-video-fetched-failed',
+  YoutubeUploadFailedType.tooShortVideo: 'too-short-video',
+  YoutubeUploadFailedType.alreadyUploaded: 'already-uploaded',
+};
 
 extension $WrongAnswerRouteExtension on WrongAnswerRoute {
   static WrongAnswerRoute _fromState(GoRouterState state) => WrongAnswerRoute(

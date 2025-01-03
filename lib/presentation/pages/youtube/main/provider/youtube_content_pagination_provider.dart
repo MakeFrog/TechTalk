@@ -51,8 +51,10 @@ Raw<
         final isLastPage = !paginatedResult.hasMore;
 
         if (isLastPage) {
+          print('마지막 페이징 호출');
           pagingController.appendLastPage(newItems);
         } else {
+          print('일반 페이징 호출');
           final nextPageKey = paginatedResult.lastDocument;
           pagingController.appendPage(newItems, nextPageKey);
         }

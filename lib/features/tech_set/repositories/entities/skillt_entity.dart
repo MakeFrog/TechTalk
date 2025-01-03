@@ -31,4 +31,21 @@ class SkillEntity {
         imagePath: undefinedKey,
         category: SkillCategory.none,
       );
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': this.id,
+    };
+  }
+
+  factory SkillEntity.fromMap(Map<String, dynamic> map) {
+    return SkillEntity(
+      id: map['id'] as String,
+      name: map['name'] as String,
+      category: map['category'] as SkillCategory,
+      imagePath: map['imagePath'] as String,
+    );
+  }
+
+  bool get isUndefined => id == SkillEntity.undefinedKey;
 }

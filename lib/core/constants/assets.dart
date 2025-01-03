@@ -74,6 +74,7 @@ class Assets {
   static const String iconsPonderingIllusration =
       'assets/icons/pondering_illusration.svg';
   static const String iconsRedAlert = 'assets/icons/red_alert.svg';
+  static const String iconsRedWarnningBig = 'assets/icons/red_warnning_big.svg';
   static const String iconsRoundBlueCircle =
       'assets/icons/round_blue_circle.svg';
   static const String iconsRoundedBlueExclamation =
@@ -116,6 +117,7 @@ class Assets {
   static const String iconsTypingModeTooltip =
       'assets/icons/typing_mode_tooltip.svg';
   static const String iconsUser = 'assets/icons/user.svg';
+  static const String iconsVideoUpload = 'assets/icons/video_upload.svg';
   static const String iconsWarning = 'assets/icons/warning.svg';
   static const String iconsWrongIndicator = 'assets/icons/wrong_indicator.svg';
   static const String imagesAppIcon = 'assets/images/app_icon.png';

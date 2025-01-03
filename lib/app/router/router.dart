@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
+import 'package:techtalk/features/contents/usecases/enums/youtube_upload_failed_type.dart';
+import 'package:techtalk/features/contents/usecases/exception/youtube_upload_exception.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
@@ -20,8 +24,12 @@ import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
 import 'package:techtalk/presentation/pages/study/learning/learning_detail_page.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_detail_page.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/youtube_contents_detail_page.dart';
 import 'package:techtalk/presentation/pages/youtube/main/youtube_content_main_page.dart';
+import 'package:techtalk/presentation/pages/youtube/upload/youtube_content_upload_page.dart';
+import 'package:techtalk/presentation/pages/youtube/upload_failed/provider/youtube_upload_failed_route_arg_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/upload_failed/youtube_upload_fail_page.dart';
 
 part 'router.g.dart';
 
@@ -164,6 +172,14 @@ class SignUpRoute extends GoRouteData {
       path: ContentsDetailRoute.path,
       name: ContentsDetailRoute.name,
     ),
+    TypedGoRoute<YoutubeContentUploadRoute>(
+      path: YoutubeContentUploadRoute.path,
+      name: YoutubeContentUploadRoute.name,
+    ),
+    TypedGoRoute<YoutubeContentUploadFailedRoute>(
+      path: YoutubeContentUploadFailedRoute.path,
+      name: YoutubeContentUploadFailedRoute.name,
+    ),
     TypedGoRoute<WrongAnswerRoute>(
       path: WrongAnswerRoute.path,
       name: WrongAnswerRoute.name,
@@ -234,19 +250,51 @@ class YoutubeContentsMainListRoute extends GoRouteData {
 }
 
 class ContentsDetailRoute extends GoRouteData {
-  ContentsDetailRoute(this.$extra) : contentsId = $extra.id;
+  ContentsDetailRoute(this.$extra) : contentsId = $extra.contentId;
 
   static const String path = 'contents-detail/:contentsId';
   static const String name = 'contents-detail';
 
-  final YoutubeContentOverviewEntity $extra;
+  final YoutubeDetailArg $extra;
 
   final String contentsId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return YoutubeContentsDetailPage(
-      overview: $extra,
+      argument: $extra,
+    );
+  }
+}
+
+class YoutubeContentUploadRoute extends GoRouteData {
+  const YoutubeContentUploadRoute();
+
+  static const String path = 'youtube-content-upload';
+  static const String name = 'youtube content upload';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const YoutubeContentUploadPage();
+  }
+}
+
+class YoutubeContentUploadFailedRoute extends GoRouteData {
+  const YoutubeContentUploadFailedRoute({
+    required this.failedType,
+    required this.contentId,
+  });
+
+  static const String path = 'youtube-content-upload-failed';
+  static const String name = 'youtube content upload failed';
+
+  final YoutubeUploadFailedType failedType;
+  final String? contentId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return YoutubeUploadFailedPage(
+      arg: YoutubeUploadFailedArg(type: failedType, contentId: contentId),
     );
   }
 }

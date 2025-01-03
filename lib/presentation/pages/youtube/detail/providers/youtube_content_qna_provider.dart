@@ -9,10 +9,10 @@ part 'youtube_content_qna_provider.g.dart';
 @riverpod
 class YoutubeContentQna extends _$YoutubeContentQna {
   @override
-  FutureOr<List<YoutubeQnaEntity>> build(String contentId) async {
+  FutureOr<Set<YoutubeQnaEntity>> build(String contentId) async {
     final response = await youtubeRepository.getQnas(contentId);
     return response.fold(
-        onSuccess: (qnas) => qnas,
+        onSuccess: (qnas) => qnas.toSet(),
         onFailure: (e) {
           log('유튜브 콘텐츠 qna 정보 호출 실패 : $e');
           throw e;

@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/widgets/constants/contents_detail_tab_type.enum.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/widgets/summary_note_foldable_item.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/youtube_contents_detail_event.dart';
@@ -15,9 +16,13 @@ import 'package:techtalk/presentation/widgets/common/common.dart';
 /// 유튜브 컨텐츠 상세 페이지
 class YoutubeContentsDetailPage extends BasePage
     with YoutubeContentsDetailEvent, YoutubeContentsDetailState {
-  const YoutubeContentsDetailPage({super.key, required this.overview});
+  const YoutubeContentsDetailPage({super.key, required this.argument});
 
-  final YoutubeContentOverviewEntity overview;
+  final YoutubeDetailArg argument;
+
+  @override
+  Override? get argProviderOverrides =>
+      youtubeDetailRouteArgProvider.overrideWithValue(argument);
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
@@ -37,22 +42,21 @@ class YoutubeContentsDetailPage extends BasePage
               pinned: true,
               expandedHeight: 210.0,
               flexibleSpace: FlexibleSpaceBar(
-                background: AsyncSkeletonWidgetBuilder(
-                  asyncValue: youtubeVideoDataAsync(ref, overview.id),
-                  skeletonBuilder: (p0) => SizedBox(
-                    height: 210,
-                    width: double.infinity,
-                    child: SkeletonBox(),
-                  ),
-                  dataBuilder: (context, data) => SizedBox(
-                    height: 210,
-                    width: double.infinity,
-                    // TODO: 이미지 캐싱 기능 구현
-                    child: Image.network(
-                      data.thumnailSet.lowResUrl,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                background: Consumer(
+                  builder: (context, ref, _) {
+                    return AsyncSkeletonWidgetBuilder(
+                      asyncValue: mainInfo(ref),
+                      dataBuilder: (context, mainInfo) {
+                        return SizedBox(
+                          width: double.infinity,
+                          child: Image.network(
+                            mainInfo.thumbnailImgUrl,
+                            fit: BoxFit.fitWidth,
+                          ),
+                        );
+                      },
+                    );
+                  },
                 ),
               ),
             ),
@@ -64,19 +68,20 @@ class YoutubeContentsDetailPage extends BasePage
                 child: Wrap(
                   runSpacing: 5,
                   children: [
-                    AsyncSkeletonWidgetBuilder(
-                      asyncValue: youtubeVideoDataAsync(ref, overview.id),
-                      skeletonBuilder: (p0) => Text(
-                        overview.contentsTitle,
-                        style: AppTextStyle.headline3,
-                      ),
-                      dataBuilder: (context, data) => Text(
-                        data.title,
-                        style: AppTextStyle.headline3,
-                      ),
+                    Consumer(
+                      builder: (context, ref, _) {
+                        return AsyncSkeletonWidgetBuilder(
+                          asyncValue: mainInfo(ref),
+                          dataBuilder: (context, mainInfo) => Text(
+                            mainInfo.contentsTitle,
+                            style: AppTextStyle.headline3,
+                          ),
+                        );
+                      },
                     ),
                     AsyncSkeletonWidgetBuilder(
-                      asyncValue: youtubeVideoDataAsync(ref, overview.id),
+                      asyncValue:
+                          youtubeVideoDataAsync(ref, argument.contentId),
                       skeletonBuilder: (_) => const SkeletonBox(
                         height: 20,
                       ),
@@ -102,43 +107,48 @@ class YoutubeContentsDetailPage extends BasePage
                       ),
                     ),
                     AsyncSkeletonWidgetBuilder(
-                      asyncValue: youtubeVideoDataAsync(ref, overview.id),
-                      skeletonBuilder: (_) => Row(
+                      asyncValue: mainInfo(ref),
+                      dataBuilder: (context, mainInfo) => Row(
                         children: [
                           CircleAvatar(
                             backgroundImage:
-                                NetworkImage(overview.channel.logoUrl ?? ''),
+
+                                /// TODO : XIMYA
+                                /// 예외처리 모듈 만들기
+                                NetworkImage(mainInfo.channel.logoUrl ?? ''),
                             radius: 15,
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            overview.channel.name,
-                          ),
-                          const SizedBox(width: 8),
-                        ],
-                      ),
-                      dataBuilder: (context, data) => Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundImage:
-                                NetworkImage(data.channelInfo.logoUrl),
-                            radius: 15,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            data.channelInfo.title,
+                            mainInfo.channel.name,
                           ),
                           const SizedBox(width: 8),
                         ],
                       ),
                     ),
-                    Wrap(
-                      spacing: 8.0,
-                      children: overview.relatedSkillIds
-                          .map(
-                            (skill) => Chip(label: Text(skill.name)),
-                          )
-                          .toList(),
+                    Consumer(
+                      builder: (context, ref, _) {
+                        return AsyncSkeletonWidgetBuilder(
+                            asyncValue: mainInfo(ref),
+                            dataBuilder: (context, mainInfo) {
+                              return Wrap(
+                                spacing: 8.0,
+                                children: [
+                                  ...mainInfo.relatedSkillIds
+                                      .map(
+                                        (skill) =>
+                                            Chip(label: Text(skill.name)),
+                                      )
+                                      .toList(),
+                                  ...mainInfo.relatedJobs
+                                      .map(
+                                        (job) => Chip(label: Text(job.name)),
+                                      )
+                                      .toList(),
+                                ],
+                              );
+                            });
+                      },
                     ),
                   ],
                 ),
@@ -172,7 +182,7 @@ class YoutubeContentsDetailPage extends BasePage
               // 각 탭의 내용을 스크롤 가능한 위젯으로 감싸기
               Consumer(
                 builder: (context, ref, _) {
-                  final targetAsync = summaryAsync(ref, contentId: overview.id);
+                  final targetAsync = summaryAsync(ref);
 
                   return ListView(
                     padding: const EdgeInsets.all(16),
@@ -196,7 +206,7 @@ class YoutubeContentsDetailPage extends BasePage
                                   Text(data.mainTheme),
                                 ],
                               ),
-                            if (data.summaryNotes.isNotEmpty)
+                            if (data.summaries.isNotEmpty)
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -209,7 +219,7 @@ class YoutubeContentsDetailPage extends BasePage
                                   Wrap(
                                     runSpacing: 10,
                                     children: [
-                                      ...data.summaryNotes
+                                      ...data.summaries
                                           .map(
                                             (summary) =>
                                                 SummaryNoteFoldableItem(
@@ -235,7 +245,7 @@ class YoutubeContentsDetailPage extends BasePage
                 padding: const EdgeInsets.all(16),
                 children: [
                   AsyncSkeletonWidgetBuilder(
-                    asyncValue: qnasAsync(ref, contentId: overview.id),
+                    asyncValue: qnasAsync(ref),
                     skeletonBuilder: (p0) => const Center(
                       child: CircularProgressIndicator(),
                     ),
@@ -250,9 +260,9 @@ class YoutubeContentsDetailPage extends BasePage
                                     Text(
                                       qna.question,
                                     ),
-                                    if (qna.evaluationPoint != null)
+                                    if (qna.answer != null)
                                       Text(
-                                        qna.evaluationPoint!,
+                                        qna.answer!,
                                       ),
                                   ],
                                 ),

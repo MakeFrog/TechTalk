@@ -17,7 +17,7 @@ String _$chatAsyncAdapterHash() => r'8ed2774012a905f885ba38bb6b0919d5effaf8cc';
 /// Copied from [ChatAsyncAdapter].
 @ProviderFor(ChatAsyncAdapter)
 final chatAsyncAdapterProvider =
-    AutoDisposeNotifierProvider<ChatAsyncAdapter, AsyncValue>.internal(
+    AutoDisposeNotifierProvider<ChatAsyncAdapter, AsyncValue<dynamic>>.internal(
   ChatAsyncAdapter.new,
   name: r'chatAsyncAdapterProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -27,6 +27,6 @@ final chatAsyncAdapterProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$ChatAsyncAdapter = AutoDisposeNotifier<AsyncValue>;
+typedef _$ChatAsyncAdapter = AutoDisposeNotifier<AsyncValue<dynamic>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

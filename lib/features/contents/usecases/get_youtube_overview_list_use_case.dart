@@ -44,7 +44,7 @@ final class GetYoutubeOverviewListUseCase extends BaseUseCase<
               YoutubeContentsOverviewModel>>> call(
     GetYoutubeContentsOverviewsListParams request,
   ) =>
-      _repository.getYoutubeContentsOverviews(
+      _repository.getPagedYoutubeMainContents(
         lastDocument: request.lastDocument,
         limit: request.limit,
         orderByField: request.orderByField,

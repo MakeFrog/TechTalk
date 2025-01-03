@@ -34,7 +34,7 @@ abstract class _$YoutubeContentsDetail
     extends BuildlessAutoDisposeAsyncNotifier<YoutubeContentsDetailEntity> {
   late final String videoId;
 
-  FutureOr<YoutubeContentsDetailEntity> build(
+  Future<YoutubeContentsDetailEntity> build(
     String videoId,
   );
 }
@@ -116,7 +116,7 @@ class YoutubeContentsDetailProvider
   final String videoId;
 
   @override
-  FutureOr<YoutubeContentsDetailEntity> runNotifierBuild(
+  Future<YoutubeContentsDetailEntity> runNotifierBuild(
     covariant YoutubeContentsDetail notifier,
   ) {
     return notifier.build(

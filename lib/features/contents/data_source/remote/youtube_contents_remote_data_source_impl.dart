@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:techtalk/app/entrypoints/main_prod.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/core/index.dart';
@@ -44,7 +46,7 @@ final class YoutubeContentsRemoteDataSourceImpl
   @override
   Future<
       FirebasePaginatedResult<YoutubeContentsOverviewModel,
-          YoutubeContentsOverviewModel>> getYoutubeContentsOverviews({
+          YoutubeContentsOverviewModel>> getPagedYoutubeMainContents({
     required int limit,
     required String orderByField,
     DocumentSnapshot<YoutubeContentsOverviewModel>? lastDocument,
@@ -108,8 +110,7 @@ final class YoutubeContentsRemoteDataSourceImpl
   @override
   Future<YoutubeContentsDetailNewModel> getDetail(String contentId) async {
     try {
-      final doc =
-          await FirestoreYoutubeDetailNewRef.collection(contentId).get();
+      final doc = await FirestoreYoutubeDetailNewRef.doc(contentId).get();
       if (!doc.exists) {
         throw const FetchYoutubeContentsDetailException();
       }
@@ -129,6 +130,105 @@ final class YoutubeContentsRemoteDataSourceImpl
       return collection.docs.map((doc) => doc.data()).toList();
     } catch (e) {
       throw Exception('Failed to fetch Youtube Contents: $e');
+    }
+  }
+
+  @override
+  Future<void> uploadYoutube({
+    required ChannelModel channel,
+    required List<YoutubeQnaModel> qnas,
+    required YoutubeContentsOverviewModel mainInfo,
+    required SummaryModel summary,
+  }) async {
+    try {
+      final batch = FirebaseFirestore.instance.batch();
+
+      await _updateYoutubeMainInfo(batch, mainInfo: mainInfo);
+
+      await Future.wait([
+        _updateQnas(batch, contentId: mainInfo.id, qnas: qnas),
+        _updateSummary(batch, contentId: mainInfo.id, summary: summary),
+        _updateChannel(batch, channel: channel)
+      ]);
+      await batch.commit();
+    } catch (e) {
+      throw Exception('Failed to fetch Youtube Contents: $e');
+    }
+  }
+
+  /// 채널정보 업데이트
+  /// [.set]을 사용하여 기존 데이터가 있다면 엎어 씀.
+  Future<void> _updateChannel(WriteBatch transaction,
+      {required ChannelModel channel}) async {
+    transaction.set(
+      FirestoreYoutubeChannelRef.document(channel.id),
+      channel,
+    );
+  }
+
+  /// 문답 리스트 업데이트
+  Future<void> _updateQnas(
+    WriteBatch batch, {
+    required String contentId,
+    required List<YoutubeQnaModel> qnas,
+  }) async {
+    for (var e in qnas) {
+      batch.set(
+        FirestoreYoutubeQnaNewRef.collection(contentId).doc(e.id).withConverter(
+            fromFirestore: YoutubeQnaModel.fromFirestore,
+            toFirestore: (value, _) => value.toJson()),
+        e,
+      );
+    }
+  }
+
+  /// 유튜브 메인 정보 업데이트
+  Future<void> _updateYoutubeMainInfo(
+    WriteBatch transaction, {
+    required YoutubeContentsOverviewModel mainInfo,
+  }) async {
+    transaction.set(
+      FirestoreYoutubeContentsOverviewRef.doc(mainInfo.id),
+      mainInfo,
+    );
+  }
+
+  /// 유튜브 메인 정보 업데이트
+  Future<void> _updateSummary(
+    WriteBatch transaction, {
+    required String contentId,
+    required SummaryModel summary,
+  }) async {
+    transaction.set(
+      FirestoreYoutubeDetailNewRef.doc(contentId),
+      YoutubeContentsDetailNewModel(summary: summary),
+    );
+  }
+
+  @override
+  Future<bool> isYoutubeAlreadyUploaded(String contentId) async {
+    final doc = await FirestoreYoutubeContentsOverviewRef.doc(contentId).get();
+    return doc.exists;
+  }
+
+  @override
+  Future<YoutubeContentsOverviewModel> getSingleYoutubeMainContent(
+      {required String contentId}) async {
+    try {
+      final doc =
+          await FirestoreYoutubeContentsOverviewRef.doc(contentId).get();
+      final targetDoc = doc.data();
+      if (targetDoc == null) {
+        throw Exception('콘텐츠가 존재하지 않음');
+      }
+      // channel_ref를 통해 [ChannelModel] 데이터를 가져옴
+      final channelSnapshot = await targetDoc.channelRef?.get()
+          as DocumentSnapshot<Map<String, dynamic>>; // 타입 캐스팅
+      final channelModel = ChannelModel.fromFirestore(channelSnapshot, null);
+
+      return targetDoc.copyWith(channel: channelModel);
+    } catch (e) {
+      rethrow;
     }
   }
 }

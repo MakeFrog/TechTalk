@@ -34,7 +34,7 @@ abstract class _$YoutubeContentsDetailQnas
     extends BuildlessAutoDisposeAsyncNotifier<List<YoutubeQnaEntity>> {
   late final String videoId;
 
-  FutureOr<List<YoutubeQnaEntity>> build(
+  Future<List<YoutubeQnaEntity>> build(
     String videoId,
   );
 }
@@ -116,7 +116,7 @@ class YoutubeContentsDetailQnasProvider
   final String videoId;
 
   @override
-  FutureOr<List<YoutubeQnaEntity>> runNotifierBuild(
+  Future<List<YoutubeQnaEntity>> runNotifierBuild(
     covariant YoutubeContentsDetailQnas notifier,
   ) {
     return notifier.build(

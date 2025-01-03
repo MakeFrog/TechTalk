@@ -6,8 +6,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/youtube_qna_model.dart';
+import 'package:techtalk/features/contents/repositories/entities/youtube_ai_summary_response_entity.dart';
+import 'package:techtalk/features/contents/repositories/enums/youtube_content_analyzed_type.dart';
+import 'package:techtalk/features/contents/youtube.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/practical_chat_room_list_provider.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
 import 'package:techtalk/presentation/providers/system/notification_status_provider.dart';
@@ -23,6 +31,39 @@ mixin class HomeEvent {
   /// 실전 면접 기록 여부에 따라 라우팅을 다르게 진행
   ///
   Future<void> onPracticalCardTapped(WidgetRef ref) async {
+    EasyLoading.show();
+    final response = await youtubeRepository.uploadYoutube(
+      contentMainInfo: YoutubeContentOverviewEntity(
+          id: 'id',
+          thumbnailImgUrl: 'thumbnailImgUrl',
+          contentsTitle: 'contentsTitle',
+          channel: ChannelEntity.undefined(),
+          relatedJobs: <JobGroup>[].toSet(),
+          relatedSkillIds: <SkillEntity>[].toSet(),
+          videoDuration: Duration.zero,
+          videoPublishDate: DateTime.now(),
+          techtalkUploadDate: DateTime.now()),
+      summary: SummaryEntity.fromUploadResponse(YoutubeAiSummaryResponse(
+        type: YoutubeContentAnalyzedType.isValid,
+        summary: SummaryEntity.unDefined(),
+      )),
+      qnas: <YoutubeQnaEntity>[
+        YoutubeQnaEntity(id: 'id-1', question: 'question', answer: 'answer')
+      ].toSet(),
+    );
+
+    EasyLoading.dismiss();
+
+    response.fold(
+      onSuccess: (_) {
+        log('유튜브 영상 업로드 성공');
+      },
+      onFailure: (e) {
+        log('유튜브 영상 업로드 실패 : $e');
+      },
+    );
+
+    return;
     await EasyLoading.show();
 
     final hasNotPracticalInterviewRecord =

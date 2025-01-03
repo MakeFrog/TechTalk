@@ -10,20 +10,29 @@ class YoutubeQnaModel {
   const YoutubeQnaModel({
     required this.id,
     required this.question,
-    required this.evaluationPoint,
+    required this.answer,
   });
 
   final String id;
   final String question;
-  final String? evaluationPoint;
+
+  /// TODO : 모범답안으로 변경
+  final String? answer;
 
   YoutubeQnaEntity toEntity() {
     return YoutubeQnaEntity(
       id: id,
       question: question,
-      evaluationPoint: evaluationPoint,
+      answer: answer ?? '모범답안 없음',
     );
   }
+
+  factory YoutubeQnaModel.fromEntity(YoutubeQnaEntity entity) =>
+      YoutubeQnaModel(
+        id: entity.id,
+        question: entity.question,
+        answer: entity.answer,
+      );
 
   factory YoutubeQnaModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,

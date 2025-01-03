@@ -11,8 +11,10 @@ import 'package:techtalk/features/contents/data_source/remote/models/youtube_con
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_video_contents_overview_model.dart';
 import 'package:techtalk/features/contents/repositories/entities/contents_overview_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/summary_entity.dart';
+import 'package:techtalk/features/contents/repositories/entities/youtube_ai_qna_response.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_contents_detail_entity.dart';
 import 'package:techtalk/features/contents/repositories/entities/youtube_video_data_entity.dart';
+import 'package:techtalk/features/contents/repositories/entities/youtube_video_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 abstract interface class YoutubeContentsRepository {
@@ -20,6 +22,13 @@ abstract interface class YoutubeContentsRepository {
   /// 유튜브 API를 통해 동영상 관련 데이터 가져오기
   ///
   Future<Result<YouTubeVideoDataEntity>> getYoutubeVideoData(
+    String videoId,
+  );
+
+  ///
+  /// 유튜브 API를 통해 [Video] 관련 정보와 caption 정보를 호출하는 메소드
+  ///
+  Future<Result<YoutubeVideoEntity>> getVideoInfoForUpload(
     String videoId,
   );
 
@@ -57,10 +66,21 @@ abstract interface class YoutubeContentsRepository {
   Future<
       Result<
           FirebasePaginatedResult<YoutubeContentOverviewEntity,
-              YoutubeContentsOverviewModel>>> getYoutubeContentsOverviews({
+              YoutubeContentsOverviewModel>>> getPagedYoutubeMainContents({
     required int limit,
     required String orderByField,
     DocumentSnapshot<YoutubeContentsOverviewModel>? lastDocument,
     List<FirestoreQueryConstraint>? queryConstraints,
   });
+
+  ///
+  /// 유튜브 콘텐츠 업로드
+  ///
+  Future<Result<void>> uploadYoutube(
+      {required YoutubeContentOverviewEntity contentMainInfo,
+      required SummaryEntity summary,
+      required Set<YoutubeQnaEntity> qnas});
+
+  Future<Result<YoutubeContentOverviewEntity>> getYoutubeMainInfo(
+      {required String contentId});
 }

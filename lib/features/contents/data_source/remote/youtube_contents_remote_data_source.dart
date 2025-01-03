@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/contents_author_model.dart';
+import 'package:techtalk/features/contents/data_source/remote/models/summary_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_detail_new_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_contents_detail_model.dart';
 import 'package:techtalk/features/contents/data_source/remote/models/youtube_qna_model.dart';
@@ -45,10 +47,32 @@ abstract interface class YoutubeContentsRemoteDataSource {
   ///
   Future<
       FirebasePaginatedResult<YoutubeContentsOverviewModel,
-          YoutubeContentsOverviewModel>> getYoutubeContentsOverviews({
+          YoutubeContentsOverviewModel>> getPagedYoutubeMainContents({
     required int limit,
     required String orderByField,
     DocumentSnapshot<YoutubeContentsOverviewModel>? lastDocument,
     List<FirestoreQueryConstraint>? queryConstraints,
+  });
+
+  ///
+  /// 유튜브 콘텐츠 업로드
+  ///
+  Future<void> uploadYoutube({
+    required ChannelModel channel,
+    required List<YoutubeQnaModel> qnas,
+    required YoutubeContentsOverviewModel mainInfo,
+    required SummaryModel summary,
+  });
+
+  ///
+  /// 유튜브 콘텐츠가 이미지 업로드되어 있는지 여부
+  ///
+  Future<bool> isYoutubeAlreadyUploaded(String contentId);
+
+  ///
+  /// 유튜브 메인 콘텐츠 정호 호출 (단일)
+  ///
+  Future<YoutubeContentsOverviewModel> getSingleYoutubeMainContent({
+    required String contentId,
   });
 }
