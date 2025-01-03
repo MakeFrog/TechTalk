@@ -8,7 +8,7 @@ import 'package:techtalk/features/topic/data_source/remote/models/topic_qna_mode
 
 class YoutubeQnaEntity extends BaseQnaEntity {
   /// 평가 요소
-  final String evaluationPoint;
+  final String? evaluationPoint;
 
   const YoutubeQnaEntity({
     required super.id,

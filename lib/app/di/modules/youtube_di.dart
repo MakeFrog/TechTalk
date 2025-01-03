@@ -7,9 +7,11 @@ import 'package:techtalk/features/contents/usecases/get_youtube_contents_detail_
 import 'package:techtalk/features/contents/usecases/get_youtube_contents_detail_use_case.dart';
 import 'package:techtalk/features/contents/usecases/get_youtube_overview_list_use_case.dart';
 import 'package:techtalk/features/contents/youtube.dart';
+import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-final class YoutubeContentsDependencyInjection extends FeatureDependencyInjection {
+final class YoutubeContentsDependencyInjection
+    extends FeatureDependencyInjection {
   @override
   void dataSources() {
     locator.registerLazySingleton<YoutubeContentsRemoteDataSource>(
@@ -24,6 +26,7 @@ final class YoutubeContentsDependencyInjection extends FeatureDependencyInjectio
       () => YoutubeContentsRepositoryImpl(
         YoutubeExplode(),
         youtubeRemoteDataSource,
+        techSetRepository,
       ),
     );
   }

@@ -9,7 +9,8 @@ part of 'paragraph_model.dart';
 ParagraphModel _$ParagraphModelFromJson(Map<String, dynamic> json) =>
     ParagraphModel(
       title: json['title'] as String,
-      contents: json['contents'] as String,
+      contents:
+          (json['contents'] as List<dynamic>).map((e) => e as String).toList(),
       timestamp: const DurationConverter()
           .fromJson((json['timestamp'] as num?)?.toInt()),
     );

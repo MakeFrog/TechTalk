@@ -57,7 +57,8 @@ class YoutubeContentsDetailEntity {
         authorId: authorId,
         relatedSkillIds: relatedSkillIds.toList(),
         relatedJobGroupIds: relatedJobs.map((job) => job.id).toList(),
-        contentsLanguageIds: contentsLanguage.map((language) => language.id).toList(),
+        contentsLanguageIds:
+            contentsLanguage.map((language) => language.id).toList(),
         summary: summary.toModel(),
         createdAt: createdAt,
         uploadAt: uploadAt,
