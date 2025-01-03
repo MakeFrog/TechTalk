@@ -1,4 +1,4 @@
-part of '../youtube_content_main_page.dart';
+part of '../youtube_main_page.dart';
 
 class _Scaffold extends HookWidget {
   const _Scaffold({

@@ -1,7 +1,7 @@
-part of '../../youtube_content_upload_page.dart';
+part of '../../youtube_upload_page.dart';
 
 class _ConfirmContentView extends ConsumerWidget
-    with YoutubeContentUploadState, YoutubeContentUploadEvent {
+    with YoutubeUploadState, YoutubeUploadEvent {
   const _ConfirmContentView({super.key});
 
   @override

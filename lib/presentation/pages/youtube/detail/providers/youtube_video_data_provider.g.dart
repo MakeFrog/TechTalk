@@ -6,7 +6,7 @@ part of 'youtube_video_data_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$youtubeVideoDataHash() => r'a8b69c7d0169db704aeb995cfc86bbe362fa227b';
+String _$youtubeVideoDataHash() => r'97a25e247571c18cd75accfbb3f205663ec1b2b6';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,10 +30,10 @@ class _SystemHash {
 }
 
 abstract class _$YoutubeVideoData
-    extends BuildlessAutoDisposeAsyncNotifier<YouTubeVideoDataEntity> {
+    extends BuildlessAutoDisposeAsyncNotifier<YoutubeCoreVideoEntity> {
   late final String videoId;
 
-  Future<YouTubeVideoDataEntity> build(
+  Future<YoutubeCoreVideoEntity> build(
     String videoId,
   );
 }
@@ -44,7 +44,7 @@ const youtubeVideoDataProvider = YoutubeVideoDataFamily();
 
 /// See also [YoutubeVideoData].
 class YoutubeVideoDataFamily
-    extends Family<AsyncValue<YouTubeVideoDataEntity>> {
+    extends Family<AsyncValue<YoutubeCoreVideoEntity>> {
   /// See also [YoutubeVideoData].
   const YoutubeVideoDataFamily();
 
@@ -83,7 +83,7 @@ class YoutubeVideoDataFamily
 
 /// See also [YoutubeVideoData].
 class YoutubeVideoDataProvider extends AutoDisposeAsyncNotifierProviderImpl<
-    YoutubeVideoData, YouTubeVideoDataEntity> {
+    YoutubeVideoData, YoutubeCoreVideoEntity> {
   /// See also [YoutubeVideoData].
   YoutubeVideoDataProvider(
     String videoId,
@@ -114,7 +114,7 @@ class YoutubeVideoDataProvider extends AutoDisposeAsyncNotifierProviderImpl<
   final String videoId;
 
   @override
-  Future<YouTubeVideoDataEntity> runNotifierBuild(
+  Future<YoutubeCoreVideoEntity> runNotifierBuild(
     covariant YoutubeVideoData notifier,
   ) {
     return notifier.build(
@@ -140,7 +140,7 @@ class YoutubeVideoDataProvider extends AutoDisposeAsyncNotifierProviderImpl<
 
   @override
   AutoDisposeAsyncNotifierProviderElement<YoutubeVideoData,
-      YouTubeVideoDataEntity> createElement() {
+      YoutubeCoreVideoEntity> createElement() {
     return _YoutubeVideoDataProviderElement(this);
   }
 
@@ -159,14 +159,14 @@ class YoutubeVideoDataProvider extends AutoDisposeAsyncNotifierProviderImpl<
 }
 
 mixin YoutubeVideoDataRef
-    on AutoDisposeAsyncNotifierProviderRef<YouTubeVideoDataEntity> {
+    on AutoDisposeAsyncNotifierProviderRef<YoutubeCoreVideoEntity> {
   /// The parameter `videoId` of this provider.
   String get videoId;
 }
 
 class _YoutubeVideoDataProviderElement
     extends AutoDisposeAsyncNotifierProviderElement<YoutubeVideoData,
-        YouTubeVideoDataEntity> with YoutubeVideoDataRef {
+        YoutubeCoreVideoEntity> with YoutubeVideoDataRef {
   _YoutubeVideoDataProviderElement(super.provider);
 
   @override

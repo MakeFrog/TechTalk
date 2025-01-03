@@ -7,7 +7,7 @@ import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/services/app_size.dart';
-import 'package:techtalk/features/contents/usecases/enums/youtube_upload_failed_type.dart';
+import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/presentation/pages/youtube/upload_failed/provider/youtube_upload_failed_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload_failed/youtube_upload_failed_event.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';

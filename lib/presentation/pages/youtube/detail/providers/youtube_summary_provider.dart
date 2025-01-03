@@ -1,7 +1,7 @@
 import 'dart:developer';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/features/contents/youtube.dart';
-import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
+import 'package:techtalk/features/youtube/index.dart';
 
 part 'youtube_summary_provider.g.dart';
 

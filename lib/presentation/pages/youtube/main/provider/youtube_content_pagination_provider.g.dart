@@ -7,7 +7,7 @@ part of 'youtube_content_pagination_provider.dart';
 // **************************************************************************
 
 String _$youtubeContentPaginationHash() =>
-    r'368c56970353f5c13c179fd4fcf9fb44c7f2f402';
+    r'c04c9c7cabf9605f267caebfd3ed20e7ddf06d65';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -36,7 +36,7 @@ const youtubeContentPaginationProvider = YoutubeContentPaginationFamily();
 
 /// See also [youtubeContentPagination].
 class YoutubeContentPaginationFamily extends Family<
-    PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
+    PagingController<DocumentSnapshot<YoutubeMainModel>?,
         YoutubeContentOverviewEntity>> {
   /// See also [youtubeContentPagination].
   const YoutubeContentPaginationFamily();
@@ -76,7 +76,7 @@ class YoutubeContentPaginationFamily extends Family<
 
 /// See also [youtubeContentPagination].
 class YoutubeContentPaginationProvider extends Provider<
-    PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
+    PagingController<DocumentSnapshot<YoutubeMainModel>?,
         YoutubeContentOverviewEntity>> {
   /// See also [youtubeContentPagination].
   YoutubeContentPaginationProvider({
@@ -112,7 +112,7 @@ class YoutubeContentPaginationProvider extends Provider<
 
   @override
   Override overrideWith(
-    PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
+    PagingController<DocumentSnapshot<YoutubeMainModel>?,
                 YoutubeContentOverviewEntity>
             Function(YoutubeContentPaginationRef provider)
         create,
@@ -133,7 +133,7 @@ class YoutubeContentPaginationProvider extends Provider<
 
   @override
   ProviderElement<
-      PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
+      PagingController<DocumentSnapshot<YoutubeMainModel>?,
           YoutubeContentOverviewEntity>> createElement() {
     return _YoutubeContentPaginationProviderElement(this);
   }
@@ -154,14 +154,14 @@ class YoutubeContentPaginationProvider extends Provider<
 }
 
 mixin YoutubeContentPaginationRef on ProviderRef<
-    PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
+    PagingController<DocumentSnapshot<YoutubeMainModel>?,
         YoutubeContentOverviewEntity>> {
   /// The parameter `category` of this provider.
   YoutubeContentCategory get category;
 }
 
 class _YoutubeContentPaginationProviderElement extends ProviderElement<
-    PagingController<DocumentSnapshot<YoutubeContentsOverviewModel>?,
+    PagingController<DocumentSnapshot<YoutubeMainModel>?,
         YoutubeContentOverviewEntity>> with YoutubeContentPaginationRef {
   _YoutubeContentPaginationProviderElement(super.provider);
 

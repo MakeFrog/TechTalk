@@ -1,7 +1,7 @@
-part of '../../youtube_content_upload_page.dart';
+part of '../../youtube_upload_page.dart';
 
 class _AnalyzingView extends ConsumerWidget
-    with YoutubeContentUploadState, YoutubeContentUploadEvent {
+    with YoutubeUploadState, YoutubeUploadEvent {
   const _AnalyzingView({super.key});
 
   @override

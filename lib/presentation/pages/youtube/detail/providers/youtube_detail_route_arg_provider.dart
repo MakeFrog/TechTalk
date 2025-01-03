@@ -1,7 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
-import 'package:techtalk/features/contents/data_source/remote/models/youtube_content_overview_model.dart';
-import 'package:techtalk/features/contents/repositories/entities/summary_entity.dart';
+import 'package:techtalk/features/youtube/index.dart';
 
 part 'youtube_detail_route_arg_provider.g.dart';
 

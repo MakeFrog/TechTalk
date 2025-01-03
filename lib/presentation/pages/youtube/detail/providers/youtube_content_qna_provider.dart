@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
-import 'package:techtalk/features/contents/youtube.dart';
+import 'package:techtalk/features/youtube/index.dart';
 
 part 'youtube_content_qna_provider.g.dart';
 
