@@ -3,6 +3,7 @@ import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/helper/string_extension.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
+import 'package:techtalk/presentation/widgets/common/common.dart';
 
 ///
 /// [SkillEntity] 이미지를 보여주는 원형 뷰
@@ -33,15 +34,31 @@ class RoundedSkillImage extends StatelessWidget {
           child: SizedBox(
             width: size,
             height: size,
-            child: Image.asset(
-              imagePath?.skillImagePathPrefix ?? Assets.imagesAppIcon,
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => ColoredBox(
-                color: Colors.white,
-                child: Image.asset(
-                  Assets.imagesAppIcon,
-                ),
-              ),
+            child: Builder(
+              builder: (context) {
+                try {
+                  return Image.asset(
+                    imagePath?.skillImagePathPrefix ?? Assets.imagesAppIcon,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => KeepAliveView(
+                      child: ColoredBox(
+                        color: Colors.white,
+                        child: Image.asset(
+                          Assets.imagesAppIcon,
+                        ),
+                      ),
+                    ),
+                  );
+                } catch (e) {
+                  debugPrint("Image loading error: $e");
+                  return ColoredBox(
+                    color: Colors.white,
+                    child: Image.asset(
+                      Assets.imagesAppIcon,
+                    ),
+                  );
+                }
+              },
             ),
           ),
         ),

@@ -1,4 +1,5 @@
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dart_openai/dart_openai.dart' as forWhisper;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -43,6 +44,8 @@ class Flavor {
     await Firebase.initializeApp(
       options: option,
     );
+    await FirebaseFirestore.instanceFor(
+        app: Firebase.app(), databaseId: 'techtalk-dev');
 
     FirebaseMessaging.onBackgroundMessage((_) async {});
 

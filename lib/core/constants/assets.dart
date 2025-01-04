@@ -64,9 +64,13 @@ class Assets {
       'assets/icons/icon_app_bar_left.svg';
   static const String iconsIconMic = 'assets/icons/icon_mic.svg';
   static const String iconsIncorrect = 'assets/icons/incorrect.svg';
+  static const String iconsLilinedBookmark =
+      'assets/icons/lilined_bookmark.svg';
   static const String iconsMenuThick = 'assets/icons/menu_thick.svg';
   static const String iconsMoreCircle = 'assets/icons/more_circle.svg';
   static const String iconsNote = 'assets/icons/note.svg';
+  static const String iconsOutlinedBookmark =
+      'assets/icons/outlined_bookmark.svg';
   static const String iconsPassResult = 'assets/icons/pass_result.svg';
   static const String iconsPencil = 'assets/icons/pencil.svg';
   static const String iconsPlus = 'assets/icons/plus.svg';

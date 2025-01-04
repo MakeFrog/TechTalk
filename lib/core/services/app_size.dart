@@ -1,11 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:techtalk/features/system/system.dart';
 
 class AppSize {
   AppSize._();
 
+  static late double originScreenWidth;
   static late double statusBarHeight; // Safe Area 상단 Inset
   static late double bottomInset; // Safe Area 하단 Inset
   static late double screenWidth; // 디바이스 넓이
@@ -27,6 +25,7 @@ class AppSize {
     bottomInset = MediaQuery.paddingOf(context).bottom;
     screenWidth = isTablet ? 375 : MediaQuery.sizeOf(context).width;
     screenHeight = isTablet ? 812 : MediaQuery.sizeOf(context).height;
+    originScreenWidth = MediaQuery.sizeOf(context).width;
     responsiveBottomInset = MediaQuery.paddingOf(context).bottom == 0
         ? 16
         : MediaQuery.paddingOf(context).bottom;

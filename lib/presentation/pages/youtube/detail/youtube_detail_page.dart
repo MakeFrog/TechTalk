@@ -1,292 +1,337 @@
+import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/widgets/constants/contents_detail_tab_type.enum.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/widgets/summary_note_foldable_item.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/youtube_detail_event.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/youtube_detail_state.dart';
-import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/box/async_skeleton_widget_builder.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-/// 유튜브 컨텐츠 상세 페이지
-class YoutubeDetailPage extends BasePage
-    with YoutubeDetailEvent, YoutubeDetailState {
+class YoutubeDetailPage extends ConsumerStatefulWidget {
   const YoutubeDetailPage({super.key, required this.argument});
 
   final YoutubeDetailArg argument;
 
   @override
-  Override? get argProviderOverrides =>
-      youtubeDetailRouteArgProvider.overrideWithValue(argument);
+  ConsumerState createState() => _YoutubeDetailPageState();
+}
 
+class _YoutubeDetailPageState extends ConsumerState<YoutubeDetailPage>
+    with YoutubeDetailEvent, YoutubeDetailState {
   @override
-  Widget buildPage(BuildContext context, WidgetRef ref) {
-    useAutomaticKeepAlive();
+  void dispose() {
+    super.dispose();
 
-    return DefaultTabController(
-      length: ContentsDetailTabType.values.length, // 탭의 개수
-      child: Scaffold(
-        backgroundColor: AppColor.of.white,
-        body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            // AppBar 대체
-            SliverAppBar(
-              leading: const AppBackButton(),
-              titleSpacing: 0,
-              backgroundColor: AppColor.of.white,
-              pinned: true,
-              expandedHeight: 210.0,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Consumer(
-                  builder: (context, ref, _) {
-                    return AsyncSkeletonWidgetBuilder(
-                      asyncValue: mainInfo(ref),
-                      dataBuilder: (context, mainInfo) {
-                        return SizedBox(
-                          width: double.infinity,
-                          child: Image.network(
-                            mainInfo.thumbnailImgUrl,
-                            fit: BoxFit.fitWidth,
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
-            ),
-            // 콘텐츠 영역을 SliverToBoxAdapter로 감싸기
-            SliverToBoxAdapter(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                child: Wrap(
-                  runSpacing: 5,
-                  children: [
-                    Consumer(
-                      builder: (context, ref, _) {
-                        return AsyncSkeletonWidgetBuilder(
-                          asyncValue: mainInfo(ref),
-                          dataBuilder: (context, mainInfo) => Text(
-                            mainInfo.contentsTitle,
-                            style: AppTextStyle.headline3,
-                          ),
-                        );
-                      },
-                    ),
-                    AsyncSkeletonWidgetBuilder(
-                      asyncValue:
-                          youtubeVideoDataAsync(ref, argument.contentId),
-                      skeletonBuilder: (_) => const SkeletonBox(
-                        height: 20,
-                      ),
-                      dataBuilder: (context, data) => Row(
-                        children: [
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.thumb_up,
-                                size: 15,
-                              ),
-                              const SizedBox(
-                                width: 2,
-                              ),
-                              Text(data.likeCountStr),
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 9,
-                          ),
-                          Text('조회수 ${data.viewCountStr}'),
-                        ],
-                      ),
-                    ),
-                    AsyncSkeletonWidgetBuilder(
-                      asyncValue: mainInfo(ref),
-                      dataBuilder: (context, mainInfo) => Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundImage:
-
-                                /// TODO : XIMYA
-                                /// 예외처리 모듈 만들기
-                                NetworkImage(mainInfo.channel.logoUrl ?? ''),
-                            radius: 15,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            mainInfo.channel.name,
-                          ),
-                          const SizedBox(width: 8),
-                        ],
-                      ),
-                    ),
-                    Consumer(
-                      builder: (context, ref, _) {
-                        return AsyncSkeletonWidgetBuilder(
-                            asyncValue: mainInfo(ref),
-                            dataBuilder: (context, mainInfo) {
-                              return Wrap(
-                                spacing: 8.0,
-                                children: [
-                                  ...mainInfo.relatedSkillIds
-                                      .map(
-                                        (skill) =>
-                                            Chip(label: Text(skill.name)),
-                                      )
-                                      .toList(),
-                                  ...mainInfo.relatedJobs
-                                      .map(
-                                        (job) => Chip(label: Text(job.name)),
-                                      )
-                                      .toList(),
-                                ],
-                              );
-                            });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            // TabBar를 SliverPersistentHeader로 감싸기
-            SliverPersistentHeader(
-              pinned: true,
-              delegate: _SliverAppBarDelegate(
-                TabBar(
-                  labelColor: Colors.black,
-                  unselectedLabelColor: Colors.grey,
-                  indicator: const UnderlineTabIndicator(
-                    borderSide: BorderSide(
-                        width: 2.0, color: Colors.black), // 인디케이터 두께와 색상
-                    insets: EdgeInsets.symmetric(
-                        horizontal: 70.0), // 인디케이터의 가로 여백 조정
-                  ),
-                  tabs: ContentsDetailTabType.values
-                      .map((tab) => Tab(
-                            text: tab.displayStr,
-                          ))
-                      .toList(),
-                ),
-              ),
-            ),
-          ],
-          body: TabBarView(
-            children: [
-              // 첫 번째 탭 내용
-              // 각 탭의 내용을 스크롤 가능한 위젯으로 감싸기
-              Consumer(
-                builder: (context, ref, _) {
-                  final targetAsync = summaryAsync(ref);
-
-                  return ListView(
-                    padding: const EdgeInsets.all(16),
-                    children: [
-                      AsyncSkeletonWidgetBuilder(
-                        asyncValue: targetAsync,
-                        skeletonBuilder: (p0) => const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                        dataBuilder: (context, data) => Wrap(
-                          runSpacing: 50,
-                          children: [
-                            if (data.mainTheme.isNotEmpty)
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '핵심 주제',
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(data.mainTheme),
-                                ],
-                              ),
-                            if (data.summaries.isNotEmpty)
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '요약 노트',
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  Wrap(
-                                    runSpacing: 10,
-                                    children: [
-                                      ...data.summaries
-                                          .map(
-                                            (summary) =>
-                                                SummaryNoteFoldableItem(
-                                              timestamp: summary.timestamp,
-                                              title: summary.title,
-                                              contents: summary.contents,
-                                            ),
-                                          )
-                                          .toList(),
-                                    ],
-                                  )
-                                ],
-                              ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
-              // 두 번째 탭 내용
-              ListView(
-                padding: const EdgeInsets.all(16),
-                children: [
-                  AsyncSkeletonWidgetBuilder(
-                    asyncValue: qnasAsync(ref),
-                    skeletonBuilder: (p0) => const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                    dataBuilder: (context, data) => Wrap(
-                      runSpacing: 20,
-                      children: [
-                        if (data.isNotEmpty)
-                          ...data
-                              .map(
-                                (qna) => Column(
-                                  children: [
-                                    Text(
-                                      qna.question,
-                                    ),
-                                    if (qna.answer != null)
-                                      Text(
-                                        qna.answer!,
-                                      ),
-                                  ],
-                                ),
-                              )
-                              .toList(),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
   }
 
   @override
-  bool get canPop => false;
+  Widget build(BuildContext context) {
+    return ProviderScope(
+      overrides: [
+        // ignore: scoped_providers_should_specify_dependencies
+        youtubeDetailRouteArgProvider.overrideWithValue(widget.argument)
+      ],
+      child: Consumer(
+        builder: (context, ref, _) {
+          return YoutubePlayerScaffold(
+            fullscreenOrientations: AppSize.originScreenWidth > 600
+                ? [
+                    DeviceOrientation.landscapeLeft,
+                    DeviceOrientation.landscapeRight,
+                  ]
+                : [
+                    DeviceOrientation.landscapeLeft,
+                    DeviceOrientation.landscapeRight,
+                  ],
+            controller: youtubeController(ref),
+            autoFullScreen: false,
+            builder: (context, player) {
+              return KeepAliveView(
+                child: DefaultTabController(
+                  length: ContentsDetailTabType.values.length, // 탭의 개수
+                  child: Scaffold(
+                    backgroundColor: AppColor.of.white,
+                    body: NestedScrollView(
+                      controller: scrollController(ref),
+                      headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                        /// SAFRE AREA 영역
+                        SliverAppBar(
+                          primary: false,
+                          pinned: true,
+                          expandedHeight: 56,
+                          leadingWidth: double.infinity,
+                          leading: Gap(
+                            AppSize.statusBarHeight,
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: FoldableAppBar(
+                            scrollController: scrollController(ref),
+                            showBackButton: true,
+                            animatedPosition: 2,
+                            actions: [
+                              Consumer(
+                                builder: (context, ref, child) {
+                                  return AsyncSkeletonWidgetBuilder(
+                                    asyncValue: isBookMarkCheckedAsync(ref),
+                                    dataBuilder: (context, isChecked) {
+                                      return BounceTapper(
+                                        highlightBorderRadius:
+                                            BorderRadius.circular(52),
+                                        onTap: () {
+                                          onBookmarkBtnTapped(ref);
+                                        },
+                                        child: Container(
+                                          height: 56,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16),
+                                          child: SvgPicture.asset(
+                                            isChecked
+                                                ? Assets.iconsLilinedBookmark
+                                                : Assets.iconsOutlinedBookmark,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    skeletonBuilder: (_) => const EmptyBox(),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
 
-  @override
-  Color? get screenBackgroundColor => AppColor.of.white;
+                        SliverPersistentHeader(
+                          pinned: true,
+                          delegate: StickyDelegateContainer(
+                            minHeight: AppSize.screenWidth * 9 / 16,
+                            maxHeight: AppSize.screenWidth * 9 / 16,
+                            child: player,
+                          ),
+                        ),
 
-  @override
-  Color? get unSafeAreaColor => AppColor.of.white;
+                        // 콘텐츠 영역을 SliverToBoxAdapter로 감싸기
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 20),
+                            child: Wrap(
+                              runSpacing: 5,
+                              children: [
+                                Consumer(
+                                  builder: (context, ref, _) {
+                                    return AsyncSkeletonWidgetBuilder(
+                                      asyncValue: mainInfo(ref),
+                                      dataBuilder: (context, mainInfo) => Text(
+                                        mainInfo.contentsTitle,
+                                        style: AppTextStyle.headline3,
+                                      ),
+                                    );
+                                  },
+                                ),
+                                AsyncSkeletonWidgetBuilder(
+                                  asyncValue: mainInfo(ref),
+                                  dataBuilder: (context, mainInfo) => Row(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage:
+
+                                            /// TODO : XIMYA
+                                            /// 예외처리 모듈 만들기
+                                            NetworkImage(
+                                                mainInfo.channel.logoUrl ?? ''),
+                                        radius: 15,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        mainInfo.channel.name,
+                                      ),
+                                      const SizedBox(width: 8),
+                                    ],
+                                  ),
+                                ),
+                                Consumer(
+                                  builder: (context, ref, _) {
+                                    return AsyncSkeletonWidgetBuilder(
+                                        asyncValue: mainInfo(ref),
+                                        dataBuilder: (context, mainInfo) {
+                                          return Wrap(
+                                            spacing: 8.0,
+                                            children: [
+                                              ...mainInfo.relatedSkillIds
+                                                  .map(
+                                                    (skill) => Chip(
+                                                        label:
+                                                            Text(skill.name)),
+                                                  )
+                                                  .toList(),
+                                              ...mainInfo.relatedJobs
+                                                  .map(
+                                                    (job) => Chip(
+                                                        label: Text(job.name)),
+                                                  )
+                                                  .toList(),
+                                            ],
+                                          );
+                                        });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // TabBar를 SliverPersistentHeader로 감싸기
+                        SliverPersistentHeader(
+                          pinned: true,
+                          delegate: _SliverAppBarDelegate(
+                            TabBar(
+                              labelColor: Colors.black,
+                              unselectedLabelColor: Colors.grey,
+                              indicator: const UnderlineTabIndicator(
+                                borderSide: BorderSide(
+                                    width: 2.0,
+                                    color: Colors.black), // 인디케이터 두께와 색상
+                                insets: EdgeInsets.symmetric(
+                                    horizontal: 70.0), // 인디케이터의 가로 여백 조정
+                              ),
+                              tabs: ContentsDetailTabType.values
+                                  .map((tab) => Tab(
+                                        text: tab.displayStr,
+                                      ))
+                                  .toList(),
+                            ),
+                          ),
+                        ),
+                      ],
+                      body: TabBarView(
+                        children: [
+                          // 첫 번째 탭 내용
+                          // 각 탭의 내용을 스크롤 가능한 위젯으로 감싸기
+                          Consumer(
+                            builder: (context, ref, _) {
+                              final targetAsync = summaryAsync(ref);
+
+                              return ListView(
+                                padding: const EdgeInsets.all(16),
+                                children: [
+                                  AsyncSkeletonWidgetBuilder(
+                                    asyncValue: targetAsync,
+                                    skeletonBuilder: (p0) => const Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                    dataBuilder: (context, data) => Wrap(
+                                      runSpacing: 50,
+                                      children: [
+                                        if (data.mainTheme.isNotEmpty)
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                '핵심 주제',
+                                              ),
+                                              const SizedBox(height: 8),
+                                              Text(data.mainTheme),
+                                            ],
+                                          ),
+                                        if (data.summaries.isNotEmpty)
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                '요약 노트',
+                                              ),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              Wrap(
+                                                runSpacing: 10,
+                                                children: [
+                                                  ...data.summaries
+                                                      .map(
+                                                        (summary) =>
+                                                            SummaryNoteFoldableItem(
+                                                          timestamp:
+                                                              summary.timestamp,
+                                                          title: summary.title,
+                                                          contents:
+                                                              summary.contents,
+                                                        ),
+                                                      )
+                                                      .toList(),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                          // 두 번째 탭 내용
+                          ListView(
+                            padding: const EdgeInsets.all(16),
+                            children: [
+                              Consumer(
+                                builder: (context, ref, child) {
+                                  return AsyncSkeletonWidgetBuilder(
+                                    asyncValue: qnasAsync(ref),
+                                    skeletonBuilder: (p0) => const Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                    dataBuilder: (context, data) => Wrap(
+                                      runSpacing: 20,
+                                      children: [
+                                        if (data.isNotEmpty)
+                                          ...data
+                                              .map(
+                                                (qna) => Column(
+                                                  children: [
+                                                    Text(
+                                                      qna.question,
+                                                    ),
+                                                    if (qna.answer != null)
+                                                      Text(
+                                                        qna.answer!,
+                                                      ),
+                                                  ],
+                                                ),
+                                              )
+                                              .toList(),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
 }
 
 /// SliverPersistentHeaderDelegate 구현

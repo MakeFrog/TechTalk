@@ -31,7 +31,6 @@ mixin class SplashEvent {
 
     await response.fold(
       onSuccess: (_) async {
-
         await initStaticData(ref);
         final auth = ref.read(userAuthProvider);
 
@@ -45,8 +44,6 @@ mixin class SplashEvent {
           return;
         }
 
-
-
         await ref.read(userInfoProvider.future).then(
           (userData) async {
             SlackNotificationService.updateUserInfo(userData);
@@ -59,14 +56,13 @@ mixin class SplashEvent {
             if (userData == null) {
               const SignUpRoute().go(ref.context);
             } else {
-
               const MainRoute().go(ref.context);
             }
           },
         );
       },
       onFailure: (e) {
-        log('버전 정보 및 네트워크 확인 실패');
+        log('버전 정보 및 네트워크 확인 실패 : $e');
       },
     );
   }
