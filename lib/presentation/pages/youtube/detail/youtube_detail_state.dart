@@ -71,7 +71,7 @@ mixin class YoutubeDetailState {
       ref.watch(isBookmarkCheckedProvider);
 
   ///
-  /// 스크롤 컨트롤러
+  ///  스크롤 컨트롤러
   ///
   ScrollController scrollController(WidgetRef ref) {
     final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
