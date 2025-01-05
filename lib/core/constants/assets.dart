@@ -73,6 +73,7 @@ class Assets {
       'assets/icons/outlined_bookmark.svg';
   static const String iconsPassResult = 'assets/icons/pass_result.svg';
   static const String iconsPencil = 'assets/icons/pencil.svg';
+  static const String iconsPlay = 'assets/icons/play.svg';
   static const String iconsPlus = 'assets/icons/plus.svg';
   static const String iconsPlusThick = 'assets/icons/plus_thick.svg';
   static const String iconsPonderingIllusration =

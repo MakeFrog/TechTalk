@@ -38,16 +38,20 @@ class FoldableAppBar extends HookWidget implements PreferredSizeWidget {
           final isFold = useState(false);
 
           scrollController.addListener(() {
-            final scrollPosition = scrollController.offset;
+            try {
+              final scrollPosition = scrollController.offset;
 
-            if (animatedPosition < scrollPosition && !isFold.value) {
-              isFold.value = true;
-              return;
-            }
+              if (animatedPosition < scrollPosition && !isFold.value) {
+                isFold.value = true;
+                return;
+              }
 
-            if (animatedPosition >= scrollPosition && isFold.value) {
-              isFold.value = false;
-              return;
+              if (animatedPosition >= scrollPosition && isFold.value) {
+                isFold.value = false;
+                return;
+              }
+            } catch (e) {
+              print('화면이 roatate 경우 \'isFold\' state이 해제될 수 있습니다 $e');
             }
           });
 

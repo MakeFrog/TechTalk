@@ -18,6 +18,7 @@ import 'package:techtalk/presentation/widgets/common/chip/outlined_chip.dart';
 class YoutubeContentItemView extends StatelessWidget {
   const YoutubeContentItemView({
     super.key,
+    required this.videoId,
     required this.thumbnailImgUrl,
     required this.title,
     required this.channelName,
@@ -27,6 +28,7 @@ class YoutubeContentItemView extends StatelessWidget {
     this.skills = const [],
     this.isLoaded = true,
     this.showCategorySkeleton = true,
+    this.heroEnabled = false,
   });
 
   final String thumbnailImgUrl;
@@ -39,10 +41,13 @@ class YoutubeContentItemView extends StatelessWidget {
 
   final bool isLoaded;
   final bool showCategorySkeleton;
+  final bool heroEnabled;
+  final String videoId;
 
   factory YoutubeContentItemView.createSkeleton(
           {bool exposeCategories = true}) =>
       YoutubeContentItemView(
+        videoId: '',
         thumbnailImgUrl: '',
         title: '',
         channelName: '',
@@ -68,9 +73,12 @@ class YoutubeContentItemView extends StatelessWidget {
                 AspectRatio(
                   aspectRatio: 343 / 192,
                   child: isLoaded
-                      ? Image.network(
-                          thumbnailImgUrl,
-                          fit: BoxFit.fitWidth,
+                      ? Hero(
+                          tag: videoId,
+                          child: Image.network(
+                            thumbnailImgUrl,
+                            fit: BoxFit.fitWidth,
+                          ),
                         )
                       : const SkeletonBox(),
                 ),

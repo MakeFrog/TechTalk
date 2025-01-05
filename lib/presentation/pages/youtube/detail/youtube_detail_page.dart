@@ -1,12 +1,16 @@
+import 'dart:async';
+
 import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/constant/youtube_play_state.enum.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/widgets/constants/contents_detail_tab_type.enum.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/widgets/summary_note_foldable_item.dart';
@@ -76,6 +80,7 @@ class _YoutubeDetailPageState extends ConsumerState<YoutubeDetailPage>
                             AppSize.statusBarHeight,
                           ),
                         ),
+
                         SliverToBoxAdapter(
                           child: FoldableAppBar(
                             scrollController: scrollController(ref),
@@ -118,7 +123,141 @@ class _YoutubeDetailPageState extends ConsumerState<YoutubeDetailPage>
                           delegate: StickyDelegateContainer(
                             minHeight: AppSize.screenWidth * 9 / 16,
                             maxHeight: AppSize.screenWidth * 9 / 16,
-                            child: player,
+                            child: Stack(
+                              children: [
+                                SizedBox(
+                                  height: double.infinity,
+                                  width: double.infinity,
+                                  child: player,
+                                ),
+                                Positioned.fill(
+                                  child: YoutubeValueBuilder(
+                                    controller: youtubeController(ref),
+                                    builder: (context, value) {
+                                      return HookBuilder(
+                                        builder: (context) {
+                                          final state = useState(
+                                              YoutubePlaySate.unStarted);
+                                          final timer =
+                                              useState<Timer?>(null); // 타이머를 관리
+
+                                          useEffect(() {
+                                            // 상태가 변경될 때 실행되는 로직
+                                            final changedState =
+                                                YoutubePlaySate.fromCode(
+                                                    value.playerState.code);
+
+                                            if (state.value != changedState) {
+                                              state.value = changedState;
+
+                                              // unStarted 상태에서 cued로 변경되기 전에 타이머 설정
+                                              if (changedState ==
+                                                      YoutubePlaySate
+                                                          .unStarted ||
+                                                  changedState ==
+                                                      YoutubePlaySate.unknown) {
+                                                timer.value
+                                                    ?.cancel(); // 기존 타이머 취소
+                                                timer.value = Timer(
+                                                    const Duration(seconds: 2),
+                                                    () {
+                                                  if (state.value !=
+                                                      YoutubePlaySate.cued) {
+                                                    state.value = YoutubePlaySate
+                                                        .errorOccured; // cued로 변하지 않으면 에러 상태로 변경
+                                                    // 다른 상태가 되면 타이머 취소
+                                                  }
+                                                });
+                                              }
+
+                                              timer.value?.cancel();
+                                            }
+
+                                            return () => timer.value
+                                                ?.cancel(); // 컴포넌트 dispose 시 타이머 취소
+                                          }, [value.playerState]);
+
+                                          // 상태에 따라 다른 위젯 반환
+                                          if (state.value ==
+                                                  YoutubePlaySate.unStarted ||
+                                              state.value ==
+                                                  YoutubePlaySate.unknown ||
+                                              state.value ==
+                                                  YoutubePlaySate.cued) {
+                                            return AspectRatio(
+                                              aspectRatio: 9 / 16,
+                                              child: SizedBox(
+                                                height: double.infinity,
+                                                width: double.infinity,
+                                                child: Stack(
+                                                  children: [
+                                                    Image.network(
+                                                      widget.argument.overView!
+                                                          .thumbnailImgUrl,
+                                                      width: double.infinity,
+                                                      fit: BoxFit.fitWidth,
+                                                    ),
+                                                    const Positioned.fill(
+                                                      child: ColoredBox(
+                                                        color: Color.fromRGBO(
+                                                            0, 0, 0, 0.5),
+                                                      ),
+                                                    ),
+                                                    Center(
+                                                      child: Builder(
+                                                        builder: (context) {
+                                                          if (state.value ==
+                                                              YoutubePlaySate
+                                                                  .cued) {
+                                                            return IconButton(
+                                                              onPressed: () {},
+                                                              icon: SvgPicture
+                                                                  .asset(
+                                                                Assets
+                                                                    .iconsPlay,
+                                                              ),
+                                                            );
+                                                          } else {
+                                                            return const CircularProgressIndicator(
+                                                              strokeWidth: 2.5,
+                                                              color:
+                                                                  Colors.white,
+                                                            );
+                                                          }
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          } else if (state.value ==
+                                              YoutubePlaySate.errorOccured) {
+                                            return Container(
+                                              height: double.infinity,
+                                              width: double.infinity,
+                                              color: Colors.yellow,
+                                              child: const Center(
+                                                child: Text(
+                                                  "예상하지 못한 오류가 발생했어요",
+                                                  style: TextStyle(
+                                                      color: Colors.red,
+                                                      fontSize: 16),
+                                                ),
+                                              ),
+                                            );
+                                          } else {
+                                            return const IgnorePointer(
+                                              child: EmptyBox(),
+                                            );
+                                          }
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
 

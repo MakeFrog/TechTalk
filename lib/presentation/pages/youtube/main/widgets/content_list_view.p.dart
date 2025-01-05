@@ -35,6 +35,7 @@ class _ContentListView extends HookConsumerWidget
                         questionCount: item.qnaNum,
                         skills: item.relatedSkillIds.toList(),
                         jobGroups: item.relatedJobs.toList(),
+                        videoId: item.id,
                       ),
                     ),
                   );

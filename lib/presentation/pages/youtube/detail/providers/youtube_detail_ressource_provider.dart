@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class YoutubeDetailResourceProvider extends ChangeNotifier {
@@ -20,8 +21,9 @@ class YoutubeDetailResourceProvider extends ChangeNotifier {
   void _onInit() {
     youtubeController = YoutubePlayerController.fromVideoId(
       videoId: videoId,
-      autoPlay: false,
-      params: const YoutubePlayerParams(
+      params: YoutubePlayerParams(
+        captionLanguage: AppLocale.currentLocale.languageCode,
+        enableCaption: false,
         showFullscreenButton: true,
       ),
     );

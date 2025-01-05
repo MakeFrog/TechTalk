@@ -30,6 +30,7 @@ class _ConfirmContentView extends ConsumerWidget
                 thumbnailImgUrl: video.thumbnails.highResUrl,
                 title: video.title,
                 channelName: video.channelName,
+                videoId: video.id,
               );
             },
             error: (_, __) => const EmptyBox(),
