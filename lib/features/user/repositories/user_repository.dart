@@ -63,4 +63,9 @@ abstract interface class UserRepository {
   /// 면접을 처음 실행했는지 여부 값 업데이트
   ///
   Future<Result<void>> changeFirstEnteredFieldToTrue();
+
+  ///
+  /// 로컬 저장소의 PDF 메타 데이터 호출
+  ///
+  Result<Map<String, String?>> getPdfMetaData();
 }

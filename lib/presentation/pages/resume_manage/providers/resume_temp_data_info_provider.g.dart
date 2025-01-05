@@ -1,27 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'chat_message_history_provider.dart';
+part of 'resume_temp_data_info_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chatMessageHistoryHash() =>
-    r'3928d1fc98b7d5184b2a49bcce8a32a21e75b849';
+String _$resumeTempDataInfoHash() =>
+    r'fb0acc718cafbfdc9253c79878992c6ed7266c07';
 
-/// See also [ChatMessageHistory].
-@ProviderFor(ChatMessageHistory)
-final chatMessageHistoryProvider = AutoDisposeAsyncNotifierProvider<
-    ChatMessageHistory, List<BaseChatEntity>>.internal(
-  ChatMessageHistory.new,
-  name: r'chatMessageHistoryProvider',
+/// See also [ResumeTempDataInfo].
+@ProviderFor(ResumeTempDataInfo)
+final resumeTempDataInfoProvider =
+    NotifierProvider<ResumeTempDataInfo, ResumeTempState>.internal(
+  ResumeTempDataInfo.new,
+  name: r'resumeTempDataInfoProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$chatMessageHistoryHash,
+      : _$resumeTempDataInfoHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$ChatMessageHistory = AutoDisposeAsyncNotifier<List<BaseChatEntity>>;
+typedef _$ResumeTempDataInfo = Notifier<ResumeTempState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

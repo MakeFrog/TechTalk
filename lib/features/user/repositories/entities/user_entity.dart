@@ -1,62 +1,52 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/user/user.dart';
 
 class UserEntity {
-  /// 유저 UID
   final String uid;
-
-  /// 유저 프로필 이미지 URL
   final String? profileImgUrl;
-
-  /// 유저 닉네임
   final String? nickname;
-
-  /// 유저 이메일
   final String? email;
-
-  /// 유저 관심 직군 ID 목록
   final List<JobGroup> jobGroups;
-
-  /// 유저의 관심 테크 스킬 ID 목록
   final List<SkillEntity> skills;
-
-  /// 면접을 진행한 면접 주제
   final List<TopicEntity> recordedTopics;
-
-  /// 실전 면접 기록 존재 여부;
   final bool hasPracticalInterviewRecord;
-
-  /// 완료된 면접 개수
   final int completedInterviewCount;
-
-  /// 마지막 접속 일자
   final DateTime lastLoginDate;
-
-  /// 가입 일자
   final DateTime signUpDate;
-
-  /// 앱 리뷰 가능 여부
   final bool isReviewRequestAvailable;
-
-  /// 로그인 횟수
   final int? loginCount;
+
+  // 이력서
+  final String? resumePdfPath;
+  final String? resumePdfTitle;
+  final String? resumePdfDate;
+  final String? portfolioPdfPath;
+  final String? portfolioPdfTitle;
+  final String? portfolioPdfDate;
 
   const UserEntity({
     required this.uid,
     this.profileImgUrl,
     this.nickname,
     this.email,
-    this.loginCount,
-    required this.signUpDate,
-    required this.completedInterviewCount,
-    required this.isReviewRequestAvailable,
-    required this.hasPracticalInterviewRecord,
-    required this.recordedTopics,
-    required this.lastLoginDate,
     required this.jobGroups,
     required this.skills,
+    required this.recordedTopics,
+    required this.hasPracticalInterviewRecord,
+    required this.completedInterviewCount,
+    required this.lastLoginDate,
+    required this.signUpDate,
+    required this.isReviewRequestAvailable,
+    this.loginCount,
+    this.resumePdfPath,
+    this.resumePdfTitle,
+    this.resumePdfDate,
+    this.portfolioPdfPath,
+    this.portfolioPdfTitle,
+    this.portfolioPdfDate,
   });
 
   factory UserEntity.fromModel(
@@ -82,6 +72,9 @@ class UserEntity {
       completedInterviewCount: model.completedInterviewCount ?? 0,
       isReviewRequestAvailable: box.isReviewRequestAvailable,
       signUpDate: model.signUpDate,
+      resumePdfPath: box.resumePdfPath,
+      resumePdfTitle: box.resumePdfTitle,
+      resumePdfDate: box.resumePdfDate,
     );
   }
 
@@ -98,6 +91,13 @@ class UserEntity {
     DateTime? lastLoginDate,
     DateTime? signUpDate,
     bool? isReviewRequestAvailable,
+    int? loginCount,
+    String? resumePdfPath,
+    String? resumePdfTitle,
+    String? resumePdfDate,
+    String? portfolioPdfPath,
+    String? portfolioPdfTitle,
+    String? portfolioPdfDate,
   }) {
     return UserEntity(
       uid: uid ?? this.uid,
@@ -107,14 +107,18 @@ class UserEntity {
       jobGroups: jobGroups ?? this.jobGroups,
       skills: skills ?? this.skills,
       recordedTopics: recordedTopics ?? this.recordedTopics,
-      hasPracticalInterviewRecord:
-          hasPracticalInterviewRecord ?? this.hasPracticalInterviewRecord,
-      completedInterviewCount:
-          completedInterviewCount ?? this.completedInterviewCount,
+      hasPracticalInterviewRecord: hasPracticalInterviewRecord ?? this.hasPracticalInterviewRecord,
+      completedInterviewCount: completedInterviewCount ?? this.completedInterviewCount,
       lastLoginDate: lastLoginDate ?? this.lastLoginDate,
       signUpDate: signUpDate ?? this.signUpDate,
-      isReviewRequestAvailable:
-          isReviewRequestAvailable ?? this.isReviewRequestAvailable,
+      isReviewRequestAvailable: isReviewRequestAvailable ?? this.isReviewRequestAvailable,
+      loginCount: loginCount ?? this.loginCount,
+      resumePdfPath: resumePdfPath ?? this.resumePdfPath,
+      resumePdfTitle: resumePdfTitle ?? this.resumePdfTitle,
+      resumePdfDate: resumePdfDate ?? this.resumePdfDate,
+      portfolioPdfPath: portfolioPdfPath ?? this.portfolioPdfPath,
+      portfolioPdfTitle: portfolioPdfTitle ?? this.portfolioPdfTitle,
+      portfolioPdfDate: portfolioPdfDate ?? this.portfolioPdfDate,
     );
   }
 }
