@@ -3,6 +3,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_isolate_mixin/easy_isolate_mixin.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
@@ -10,9 +11,12 @@ import 'package:techtalk/core/modules/exceptions/custom_exception.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/tech_set_repository.dart';
 import 'package:techtalk/features/youtube/index.dart';
+import 'package:techtalk/features/youtube/repositories/entities/youtube_related_vido_entity.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-class YoutubeRepositoryImpl implements YoutubeRepository {
+class YoutubeRepositoryImpl
+    with IsolateHelperMixin
+    implements YoutubeRepository {
   YoutubeRepositoryImpl(this._youtubeApiDataSource,
       this._youtubeRemoteDataSource, this._techSetRepository);
 
@@ -213,4 +217,42 @@ class YoutubeRepositoryImpl implements YoutubeRepository {
       return Result.failure(e);
     }
   }
+
+  @override
+  Future<Result<List<RelatedVideoEntity>>> getRelatedVideo(
+      String contentId) async {
+    try {
+      // Top-level 함수로 contentId를 이용해 비디오를 가져옴
+      final video = await loadWithIsolate(() => fetchVideo(contentId));
+
+      // Top-level 함수로 관련 비디오 리스트를 가져옴
+      // final response = await compute(fetchRelatedVideos, video);
+      final relatedVideos =
+          await loadWithIsolate(() => fetchRelatedVideos(video));
+
+      if (relatedVideos?.isEmpty ?? true) {
+        return Result.success([]);
+      }
+
+      final result = relatedVideos!
+          .map((e) => RelatedVideoEntity.fromVideoExplore(e))
+          .toList();
+      return Result.success(result);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+}
+
+/* Top level 호출문 / [getRelatedVideo]에서 사용됨 */
+Future<List<Video>?> fetchRelatedVideos(Video video) async {
+  final youtube = YoutubeExplode(); // YoutubeExplode 인스턴스 생성
+  final relatedVideosList = await youtube.videos.getRelatedVideos(video);
+
+  return relatedVideosList?.toList();
+}
+
+Future<Video> fetchVideo(String contentId) async {
+  final youtube = YoutubeExplode(); // YoutubeExplode 인스턴스 생성
+  return youtube.videos.get(contentId); // 비디오 객체 반환
 }
