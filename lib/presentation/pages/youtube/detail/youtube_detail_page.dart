@@ -24,19 +24,12 @@ import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 part 'widgets/app_bar.p.dart';
-
 part 'widgets/bottom_floating_View.p.dart';
-
 part 'widgets/content_info_view.p.dart';
-
 part 'widgets/interview_tab_bar_view.p.dart';
-
 part 'widgets/scaffold.p.dart';
-
 part 'widgets/summary_tab_bar_view.p.dart';
-
 part 'widgets/tab_bar.p.dart';
-
 part 'widgets/youtube_player_place_holder.p.dart';
 
 class YoutubeDetailPage extends ConsumerStatefulWidget {
@@ -56,7 +49,7 @@ class _YoutubeDetailPageState extends ConsumerState<YoutubeDetailPage>
       argOverride:
           youtubeDetailRouteArgProvider.overrideWithValue(widget.argument),
       appBar: const _AppBar(),
-      youtubePlayer: const _YoutubePlayerPlaceHolder(),
+      youtubePlayerPlaceHolder: const _YoutubePlayerPlaceHolder(),
       contentInfoView: const _ContentInfoView(),
       tabBar: const _TabBar(),
       summaryTabBarView: const _SummaryTabBarView(),

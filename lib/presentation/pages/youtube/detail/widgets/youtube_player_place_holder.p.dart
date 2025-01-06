@@ -26,7 +26,6 @@ class _YoutubePlayerPlaceHolder extends ConsumerWidget
 
               if (state.value != changedState) {
                 state.value = changedState;
-
                 // unStarted 상태에서 cued로 변경되기 전에 타이머 설정
                 if (changedState == YoutubePlaySate.unStarted ||
                     changedState == YoutubePlaySate.unknown) {
@@ -34,7 +33,7 @@ class _YoutubePlayerPlaceHolder extends ConsumerWidget
                   /// [NOTE]
                   /// 2초가 지나도 [cued] 상태로 변경되지 않는다면,
                   /// iframe으로 지원하지 않는 영상이라고 판단
-                  timer.value = Timer(const Duration(seconds: 2), () {
+                  timer.value = Timer(const Duration(seconds: 3), () {
                     if (state.value != YoutubePlaySate.cued) {
                       state.value = YoutubePlaySate
                           .errorOccured; // cued로 변하지 않으면 에러 상태로 변경
@@ -115,7 +114,8 @@ class _YoutubePlayerPlaceHolder extends ConsumerWidget
                       ),
                       const Gap(6),
                       Text(
-                        '재생할 수 없는 영상입니다',
+                        '네트워크 상태가 좋지 않거나\n재생할 수 없는 영상입니다',
+                        textAlign: TextAlign.center,
                         style: AppTextStyle.body1.copyWith(
                           color: AppColor.of.gray4,
                         ),

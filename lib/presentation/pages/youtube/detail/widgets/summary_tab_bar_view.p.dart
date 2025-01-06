@@ -15,12 +15,9 @@ class _SummaryTabBarView extends HookConsumerWidget
             bottom: 212,
           ),
       children: [
-        _buildMainThemeView(),
+        _buildSummaryView(),
 
         const Gap(32),
-        _buildSummaryListView(),
-
-        const Gap(8),
 
         /// 관련 영상
         _buildRelatedVideosView(),
@@ -29,7 +26,7 @@ class _SummaryTabBarView extends HookConsumerWidget
   }
 
   /// 핵심주제
-  Widget _buildMainThemeView() {
+  Widget _buildSummaryView() {
     return Consumer(
       child: _buildTitle(
         title: '핵심 주제',
@@ -72,8 +69,8 @@ class _SummaryTabBarView extends HookConsumerWidget
             ),
 
             /// 요약노트
-            HookConsumer(
-              builder: (context, ref, _) {
+            HookBuilder(
+              builder: (context) {
                 final triggerSeeAllNotifier = useState(0);
                 return Consumer(
                   child: Row(
@@ -150,40 +147,42 @@ class _SummaryTabBarView extends HookConsumerWidget
 
                                         final selectedNoteIndex =
                                             useState<int?>(null);
-                                        return ListView.builder(
-                                          shrinkWrap: true,
-                                          padding: EdgeInsets.zero,
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          itemCount: filteredSummaries.length,
-                                          itemBuilder: (context, index) {
-                                            final item =
-                                                filteredSummaries[index];
-                                            return SummaryNoteFoldableItem(
-                                              onTapTimestamp:
-                                                  (timeStamp) async {
-                                                await onTimeStampTapped(
-                                                  ref,
-                                                  timeStamp: timeStamp,
-                                                );
+                                        return KeepAliveView(
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            padding: EdgeInsets.zero,
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            itemCount: filteredSummaries.length,
+                                            itemBuilder: (context, index) {
+                                              final item =
+                                                  filteredSummaries[index];
+                                              return SummaryNoteFoldableItem(
+                                                onTapTimestamp:
+                                                    (timeStamp) async {
+                                                  await onTimeStampTapped(
+                                                    ref,
+                                                    timeStamp: timeStamp,
+                                                  );
 
-                                                //// 항목 active 상태 toggle
-                                                if (selectedNoteIndex.value !=
-                                                    index) {
-                                                  selectedNoteIndex.value =
-                                                      index;
-                                                }
-                                              },
-                                              timestamp: item.timestamp,
-                                              title: item.title,
-                                              contents: item.contents,
-                                              isActivated:
-                                                  selectedNoteIndex.value ==
-                                                      index,
-                                              seeAllNotifier:
-                                                  triggerSeeAllNotifier,
-                                            );
-                                          },
+                                                  //// 항목 active 상태 toggle
+                                                  if (selectedNoteIndex.value !=
+                                                      index) {
+                                                    selectedNoteIndex.value =
+                                                        index;
+                                                  }
+                                                },
+                                                timestamp: item.timestamp,
+                                                title: item.title,
+                                                contents: item.contents,
+                                                isActivated:
+                                                    selectedNoteIndex.value ==
+                                                        index,
+                                                seeAllNotifier:
+                                                    triggerSeeAllNotifier,
+                                              );
+                                            },
+                                          ),
                                         );
                                       },
                                     ),
@@ -204,24 +203,11 @@ class _SummaryTabBarView extends HookConsumerWidget
     );
   }
 
-  /// 요약노트
-  Widget _buildSummaryListView() {
-    return Consumer(
-      builder: (context, ref, _) {
-        final videos = relatedVideoAsync(ref).valueOrNull;
-        if (videos == null || videos.isNotEmpty) {
-          return _buildTitle(title: '관련 영상', iconPath: Assets.iconsSparkle);
-        } else {
-          return const EmptyBox();
-        }
-      },
-    );
-  }
-
   /// 관련 영상
   Widget _buildRelatedVideosView() {
     return Consumer(
-      builder: (context, ref, _) {
+      child: _buildTitle(title: '관련 영상', iconPath: Assets.iconsSparkle),
+      builder: (context, ref, title) {
         const gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 8,
@@ -229,59 +215,72 @@ class _SummaryTabBarView extends HookConsumerWidget
           childAspectRatio: 167.54 / 138,
         );
 
-        return AsyncSkeletonWidgetBuilder(
-          asyncValue: relatedVideoAsync(ref),
-          skeletonBuilder: (_) => _buildRelatedGridViewSkeleton(gridDelegate),
-          dataBuilder: (context, relatedVideos) {
-            return GridView.builder(
-              padding: EdgeInsets.zero,
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              gridDelegate: gridDelegate,
-              itemCount: relatedVideos.length,
-              itemBuilder: (context, index) {
-                final video = relatedVideos[index];
+        return Column(
+          children: [
+            if (relatedVideoAsync(ref).isLoading ||
+                (relatedVideoAsync(ref).hasValue &&
+                    (relatedVideoAsync(ref).value?.isNotEmpty ?? false))) ...[
+              title!,
+              const Gap(8),
+            ],
+            AsyncSkeletonWidgetBuilder(
+              asyncValue: relatedVideoAsync(ref),
+              skeletonBuilder: (_) =>
+                  _buildRelatedGridViewSkeleton(gridDelegate),
+              dataBuilder: (context, relatedVideos) {
+                return KeepAliveView(
+                  child: GridView.builder(
+                    padding: EdgeInsets.zero,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate: gridDelegate,
+                    itemCount: relatedVideos.length,
+                    itemBuilder: (context, index) {
+                      final video = relatedVideos[index];
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: AspectRatio(
-                        aspectRatio: 167.54 / 94,
-                        child: Image.network(
-                          video.thumbnailImgUrl,
-                          fit: BoxFit.fitWidth,
-                        ),
-                      ),
-                    ),
-                    const MaxGap(8),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 2),
-                      child: Text(
-                        video.title,
-                        style: AppTextStyle.body1,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 2),
-                      child: Text(
-                        video.channelName,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: AppTextStyle.alert2.copyWith(
-                          color: AppColor.of.gray3,
-                        ),
-                      ),
-                    ),
-                  ],
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: AspectRatio(
+                              aspectRatio: 167.54 / 94,
+                              child: Image.network(
+                                video.thumbnailImgUrl,
+                                fit: BoxFit.fitWidth,
+                              ),
+                            ),
+                          ),
+                          const MaxGap(8),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 2),
+                            child: Text(
+                              video.title,
+                              style: AppTextStyle.body1,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 2),
+                            child: Text(
+                              video.channelName,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: AppTextStyle.alert2.copyWith(
+                                color: AppColor.of.gray3,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
                 );
               },
-            );
-          },
+            ),
+          ],
         );
       },
     );
@@ -304,6 +303,7 @@ class _SummaryTabBarView extends HookConsumerWidget
     );
   }
 
+  /// 그리드뷰 스켈레톤
   Widget _buildRelatedGridViewSkeleton(
       SliverGridDelegateWithFixedCrossAxisCount gridDelegate) {
     return GridView.builder(

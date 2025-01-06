@@ -4,7 +4,7 @@ class _Scaffold extends StatelessWidget with YoutubeDetailState {
   const _Scaffold({
     required this.argOverride,
     required this.appBar,
-    required this.youtubePlayer,
+    required this.youtubePlayerPlaceHolder,
     required this.contentInfoView,
     required this.tabBar,
     required this.summaryTabBarView,
@@ -14,7 +14,7 @@ class _Scaffold extends StatelessWidget with YoutubeDetailState {
 
   final Override argOverride;
   final Widget appBar;
-  final Widget youtubePlayer;
+  final Widget youtubePlayerPlaceHolder;
   final Widget contentInfoView;
   final Widget tabBar;
   final Widget summaryTabBarView;
@@ -86,7 +86,7 @@ class _Scaffold extends StatelessWidget with YoutubeDetailState {
                                 child: player,
                               ),
                               Positioned.fill(
-                                child: youtubePlayer,
+                                child: youtubePlayerPlaceHolder,
                               ),
                             ],
                           ),
