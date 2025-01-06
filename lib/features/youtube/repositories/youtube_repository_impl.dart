@@ -14,6 +14,8 @@ import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/features/youtube/repositories/entities/youtube_related_vido_entity.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
+part 'youtube_repository_impl_internal.p.dart';
+
 class YoutubeRepositoryImpl
     with IsolateHelperMixin
     implements YoutubeRepository {
@@ -223,12 +225,12 @@ class YoutubeRepositoryImpl
       String contentId) async {
     try {
       // Top-level 함수로 contentId를 이용해 비디오를 가져옴
-      final video = await loadWithIsolate(() => fetchVideo(contentId));
+      final video = await loadWithIsolate(() => _fetchVideo(contentId));
 
       // Top-level 함수로 관련 비디오 리스트를 가져옴
       // final response = await compute(fetchRelatedVideos, video);
       final relatedVideos =
-          await loadWithIsolate(() => fetchRelatedVideos(video));
+          await loadWithIsolate(() => _fetchRelatedVideos(video));
 
       if (relatedVideos?.isEmpty ?? true) {
         return Result.success([]);
@@ -242,17 +244,4 @@ class YoutubeRepositoryImpl
       return Result.failure(e);
     }
   }
-}
-
-/* Top level 호출문 / [getRelatedVideo]에서 사용됨 */
-Future<List<Video>?> fetchRelatedVideos(Video video) async {
-  final youtube = YoutubeExplode(); // YoutubeExplode 인스턴스 생성
-  final relatedVideosList = await youtube.videos.getRelatedVideos(video);
-
-  return relatedVideosList?.toList();
-}
-
-Future<Video> fetchVideo(String contentId) async {
-  final youtube = YoutubeExplode(); // YoutubeExplode 인스턴스 생성
-  return youtube.videos.get(contentId); // 비디오 객체 반환
 }
