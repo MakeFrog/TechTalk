@@ -71,8 +71,6 @@ class SummaryNoteFoldableItem extends HookWidget {
                 alignment: Alignment.centerLeft,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  // crossAxisAlignment: WrapCrossAlignment.center,
-                  // runSpacing: 6,
                   children: [
                     GestureDetector(
                       onTap: () => onTapTimestamp?.call(timestamp),

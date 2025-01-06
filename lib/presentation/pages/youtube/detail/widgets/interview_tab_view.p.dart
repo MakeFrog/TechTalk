@@ -29,10 +29,9 @@ class _InterviewTabView extends HookConsumerWidget
                               Text(
                                 qna.question,
                               ),
-                              if (qna.answer != null)
-                                Text(
-                                  qna.answer!,
-                                ),
+                              Text(
+                                qna.answer,
+                              ),
                             ],
                           ),
                         )
