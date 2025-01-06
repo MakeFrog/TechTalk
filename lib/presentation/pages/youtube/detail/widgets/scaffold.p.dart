@@ -56,7 +56,7 @@ class _Scaffold extends StatelessWidget with YoutubeDetailState {
                     child: bottomFloatingView,
                   ),
                   body: NestedScrollView(
-                    physics: const BouncingScrollPhysics(),
+                    physics: const ScrollPhysics(),
                     controller: scrollController(ref),
                     headerSliverBuilder: (context, innerBoxIsScrolled) => [
                       SliverPersistentHeader(

@@ -228,7 +228,6 @@ class YoutubeRepositoryImpl
       final video = await loadWithIsolate(() => _fetchVideo(contentId));
 
       // Top-level 함수로 관련 비디오 리스트를 가져옴
-      // final response = await compute(fetchRelatedVideos, video);
       final relatedVideos =
           await loadWithIsolate(() => _fetchRelatedVideos(video));
 
