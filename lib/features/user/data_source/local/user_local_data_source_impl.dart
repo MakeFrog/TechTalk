@@ -41,4 +41,36 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
         userLocalInfo ??
             UserBox.defaultValue().copyWith(hasEnteredFirstInterview: true));
   }
+
+  @override
+  Future<void> storeResumePdfMetaData({
+    required String localResumePath,
+    required String localResumeTitle,
+    required String localResumeDate,
+  }) async {
+    final userLocalInfo = localUser ?? UserBox.defaultValue();
+
+    final updated = userLocalInfo.copyWith(
+      resumePdfPath: localResumePath,
+      resumePdfTitle: localResumeTitle,
+      resumePdfDate: localResumeDate,
+    );
+    await box.put(AppLocal.userBoxName, updated);
+  }
+
+  @override
+  Future<void> storePortfolioPdfMetaData({
+    required String localPortfolioPath,
+    required String localPortfolioTitle,
+    required String localPortfolioDate,
+  }) async {
+    final userLocalInfo = localUser ?? UserBox.defaultValue();
+
+    final updated = userLocalInfo.copyWith(
+      portfolioPdfPath: localPortfolioPath,
+      portfolioPdfTitle: localPortfolioTitle,
+      portfolioPdfDate: localPortfolioDate,
+    );
+    await box.put(AppLocal.userBoxName, updated);
+  }
 }

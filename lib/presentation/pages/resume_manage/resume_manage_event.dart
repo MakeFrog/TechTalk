@@ -2,10 +2,12 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
+import 'package:techtalk/presentation/pages/resume_manage/providers/resume_local_data_info_provider.dart';
 import 'package:techtalk/presentation/pages/resume_manage/providers/resume_temp_data_info_provider.dart';
 import 'package:gap/gap.dart';
 import 'package:techtalk/app/style/app_color.dart';
@@ -54,6 +56,51 @@ mixin class ResumeManageEvent {
 
   void previewFile() {
     debugPrint('미리보기');
+  }
+
+  /// 저장하기 버튼 클릭시
+  Future<void> onClickedSaveButton(WidgetRef ref) async {
+    await EasyLoading.show();
+
+    final tempState = ref.read(resumeTempDataInfoProvider);
+    final localNotifier = ref.read(resumeLocalDataInfoProvider.notifier);
+
+    // 1) 이력서 PDF 업데이트
+    if (tempState.tempResumePath != null) {
+      final appDocDir = await getApplicationDocumentsDirectory();
+      final localResumePath = '${appDocDir.path}/${tempState.tempResumeTitle}';
+
+      // 임시 경로 → 앱 문서 디렉토리로 복사
+      await File(tempState.tempResumePath!).copy(localResumePath);
+
+      // ResumeLocalDataInfoProvider 갱신
+      localNotifier.updateLocalResume(
+        localResumePath,
+        tempState.tempResumeTitle ?? '',
+        tempState.tempResumeDate ?? '',
+      );
+    }
+
+    // 2) 포트폴리오 PDF 업데이트
+    if (tempState.tempPortfolioPath != null) {
+      final appDocDir = await getApplicationDocumentsDirectory();
+      final localPortfolioPath =
+          '${appDocDir.path}/${tempState.tempPortfolioTitle}';
+
+      // 임시 경로 → 앱 문서 디렉토리로 복사
+      await File(tempState.tempPortfolioPath!).copy(localPortfolioPath);
+
+      // ResumeLocalDataInfoProvider 갱신
+      localNotifier.updateLocalPortfolio(
+        localPortfolioPath,
+        tempState.tempPortfolioTitle ?? '',
+        tempState.tempPortfolioDate ?? '',
+      );
+    }
+
+    // 저장 완료 후
+    await EasyLoading.dismiss();
+    ref.context.pop();
   }
 
   /// 이력서 파일 선택시
@@ -129,6 +176,7 @@ mixin class ResumeManageEvent {
 
 ///
 /// 예외 경우라 위젯 따로 만듦
+/// 위젯 폴더로 이동시킬 예정
 ///
 class _OptionListBottomSheet<T extends dynamic> extends StatelessWidget {
   const _OptionListBottomSheet({

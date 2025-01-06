@@ -46,10 +46,14 @@ class ResumeManagePage extends BasePage
             ],
           ),
           const Spacer(),
+
+          // 저장 버튼
           BounceTapper(
             enable: isTempChanged,
             child: FilledButton(
-              onPressed: isTempChanged ? () {} : null,
+              onPressed: isTempChanged 
+              ? () => onClickedSaveButton(ref)
+              : null,
               child: Center(
                 child: Text(
                   context.tr(

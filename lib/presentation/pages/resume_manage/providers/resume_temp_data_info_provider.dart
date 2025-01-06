@@ -27,7 +27,11 @@ class ResumeTempDataInfo extends _$ResumeTempDataInfo {
 }
 
 ///
-/// 이력서 관리 페이지에서만 사용될 임시 상태
+/// [ResumeTempState]
+/// - 이력서 관리 페이지에서만 사용될 임시 상태
+/// 
+/// [ResumeTempStateCopyWith] 
+/// - 클래스의 copywith에서 특정 값(not null)을 기본 값(null)으로 변경할 수 있도록 추상클래스 구현
 ///
 class ResumeTempState {
   final String? tempResumePath;
@@ -51,9 +55,6 @@ class ResumeTempState {
   ResumeTempStateCopyWith get copyWith => _ResumeTempStateCopyWith(this);
 }
 
-///
-/// 클래스의 copywith에서 특정 값(not null)을 기본 값(null)으로 변경할 수 있도록 추상클래스 구현
-///
 abstract class ResumeTempStateCopyWith {
   ResumeTempState call({
     String? tempResumePath,

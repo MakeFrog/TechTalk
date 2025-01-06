@@ -27,6 +27,49 @@ class ResumeLocalDataInfo extends _$ResumeLocalDataInfo {
     );
   }
 
+  /// 이력서 PDF 정보 로컬 업데이트
+  void updateLocalResume(
+    String localResumePath,
+    String localResumeTitle,
+    String localResumeDate,
+  ) {
+    // 1) Riverpod State 갱신
+    state = state.copyWith(
+      localResumePath: localResumePath,
+      localResumeTitle: localResumeTitle,
+      localResumeDate: localResumeDate,
+    );
+
+    // 2) user_box 갱신 (UserRepository 통해서 처리)
+    //    - UserRepositoryImpl -> UserLocalDataSource -> Hive
+    userRepository.storeResumePdfMetaData(
+      localResumePath: localResumePath,
+      localResumeTitle: localResumeTitle,
+      localResumeDate: localResumeDate,
+    );
+  }
+
+  /// 포트폴리오 PDF 정보 로컬 업데이트
+  void updateLocalPortfolio(
+    String localPortfolioPath,
+    String localPortfolioTitle,
+    String localPortfolioDate,
+  ) {
+    // 1) Riverpod State 갱신
+    state = state.copyWith(
+      localPortfolioPath: localPortfolioPath,
+      localPortfolioTitle: localPortfolioTitle,
+      localPortfolioDate: localPortfolioDate,
+    );
+
+    // 2) user_box 갱신
+    userRepository.storePortfolioPdfMetaData(
+      localPortfolioPath: localPortfolioPath,
+      localPortfolioTitle: localPortfolioTitle,
+      localPortfolioDate: localPortfolioDate,
+    );
+  }
+
   /// 로컬 데이터 불러오기
   Result<Map<String, String?>> getPdfMetaData() {
     try {

@@ -172,4 +172,40 @@ final class UserRepositoryImpl implements UserRepository {
       return Result.failure(e);
     }
   }
+
+  @override
+  Future<Result<void>> storeResumePdfMetaData({
+    required String localResumePath,
+    required String localResumeTitle,
+    required String localResumeDate,
+  }) async {
+    try {
+      await _userLocalDataSource.storeResumePdfMetaData(
+        localResumePath: localResumePath,
+        localResumeTitle: localResumeTitle,
+        localResumeDate: localResumeDate,
+      );
+      return Result.success(null);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<void>> storePortfolioPdfMetaData({
+    required String localPortfolioPath,
+    required String localPortfolioTitle,
+    required String localPortfolioDate,
+  }) async {
+    try {
+      await _userLocalDataSource.storePortfolioPdfMetaData(
+        localPortfolioPath: localPortfolioPath,
+        localPortfolioTitle: localPortfolioTitle,
+        localPortfolioDate: localPortfolioDate,
+      );
+      return Result.success(null);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
 }
