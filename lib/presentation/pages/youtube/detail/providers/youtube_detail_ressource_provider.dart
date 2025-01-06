@@ -24,6 +24,7 @@ class YoutubeDetailResourceProvider extends ChangeNotifier {
       params: YoutubePlayerParams(
         captionLanguage: AppLocale.currentLocale.languageCode,
         enableCaption: false,
+        strictRelatedVideos: true,
         showFullscreenButton: true,
       ),
     );

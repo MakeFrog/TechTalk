@@ -40,6 +40,7 @@ class Assets {
   static const String iconsArrowUp = 'assets/icons/arrow_up.svg';
   static const String iconsArrowUpThick = 'assets/icons/arrow_up_thick.svg';
   static const String iconsAvatar1 = 'assets/icons/avatar_1.svg';
+  static const String iconsBoomark = 'assets/icons/boomark.svg';
   static const String iconsBullet = 'assets/icons/bullet.svg';
   static const String iconsCamera = 'assets/icons/camera.svg';
   static const String iconsChatBubbleTale = 'assets/icons/chat_bubble_tale.svg';
@@ -47,6 +48,7 @@ class Assets {
   static const String iconsCheckThick = 'assets/icons/check_thick.svg';
   static const String iconsClose = 'assets/icons/close.svg';
   static const String iconsCloseThick = 'assets/icons/close_thick.svg';
+  static const String iconsCoreCircle = 'assets/icons/core_circle.svg';
   static const String iconsCorrect = 'assets/icons/correct.svg';
   static const String iconsCorrectIndicator =
       'assets/icons/correct_indicator.svg';
@@ -64,13 +66,9 @@ class Assets {
       'assets/icons/icon_app_bar_left.svg';
   static const String iconsIconMic = 'assets/icons/icon_mic.svg';
   static const String iconsIncorrect = 'assets/icons/incorrect.svg';
-  static const String iconsLilinedBookmark =
-      'assets/icons/lilined_bookmark.svg';
   static const String iconsMenuThick = 'assets/icons/menu_thick.svg';
   static const String iconsMoreCircle = 'assets/icons/more_circle.svg';
   static const String iconsNote = 'assets/icons/note.svg';
-  static const String iconsOutlinedBookmark =
-      'assets/icons/outlined_bookmark.svg';
   static const String iconsPassResult = 'assets/icons/pass_result.svg';
   static const String iconsPencil = 'assets/icons/pencil.svg';
   static const String iconsPlay = 'assets/icons/play.svg';
@@ -113,8 +111,10 @@ class Assets {
   static const String iconsSend = 'assets/icons/send.svg';
   static const String iconsSendActivate = 'assets/icons/send_activate.svg';
   static const String iconsSendUp = 'assets/icons/send_up.svg';
+  static const String iconsSparkle = 'assets/icons/sparkle.svg';
   static const String iconsStarDeco = 'assets/icons/star_deco.svg';
   static const String iconsStudy = 'assets/icons/study.svg';
+  static const String iconsSummaryNote = 'assets/icons/summary_note.svg';
   static const String iconsTalker = 'assets/icons/talker.svg';
   static const String iconsTechTalkLogo = 'assets/icons/tech_talk_logo.svg';
   static const String iconsTextFieldMic = 'assets/icons/text_field_mic.svg';

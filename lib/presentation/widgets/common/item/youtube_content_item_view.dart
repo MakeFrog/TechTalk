@@ -92,7 +92,7 @@ class YoutubeContentItemView extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(right: 6),
                             child: DarkTransparentChip(
-                              label: AppFormatter.formatDuration(
+                              label: AppFormatter.formatDurationTommssOrHHmmss(
                                 videoDuration!,
                               ),
                             ),

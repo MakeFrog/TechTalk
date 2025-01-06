@@ -1,5 +1,10 @@
 part of '../youtube_detail_page.dart';
 
+///
+/// youtube iframe 위에 오버레이 되어 보여지는 place holder view
+/// 딤, play, 로딩등의 ui들이
+/// 유튜브 플레이어 상태 [YoutubePlayerState]에 따라 분기됨
+///
 class _YoutubePlayerPlaceHolder extends ConsumerWidget
     with YoutubeDetailState, YoutubeDetailEvent {
   const _YoutubePlayerPlaceHolder({super.key});
@@ -26,6 +31,9 @@ class _YoutubePlayerPlaceHolder extends ConsumerWidget
                 if (changedState == YoutubePlaySate.unStarted ||
                     changedState == YoutubePlaySate.unknown) {
                   timer.value?.cancel(); // 기존 타이머 취소
+                  /// [NOTE]
+                  /// 2초가 지나도 [cued] 상태로 변경되지 않는다면,
+                  /// iframe으로 지원하지 않는 영상이라고 판단
                   timer.value = Timer(const Duration(seconds: 2), () {
                     if (state.value != YoutubePlaySate.cued) {
                       state.value = YoutubePlaySate

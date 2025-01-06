@@ -32,6 +32,7 @@ dependencies:
   bounce_tapper: ^1.0.9
   expandable_page_view: ^1.0.17
   measure_size_builder: ^1.0.3
+
   local_hero: ^0.3.0
   defer_pointer: ^0.0.2 # Overflow 영역에도 터치를 보장할 수 있도록 도와주는 패키지
   gap: ^3.0.1 # 간격 위젯
@@ -92,8 +93,9 @@ dependencies:
   icons_launcher: ^2.1.7 # 앱 아이콘
   in_app_review: ^2.0.8 # 인앱 리뷰
   url_launcher: ^6.2.5 # url 런쳐
+  easy_isolate_mixin: ^1.0.1 # Isolate
   youtube_player_iframe: ^5.2.1 # 유튜브
-
+  device_info_plus: ^11.2.0
   pod_player: ^0.2.2
   connectivity_plus: ^5.0.2 # 네트워크 연결 상태 관리합
   easy_localization: ^3.0.0 # 다국어 지원

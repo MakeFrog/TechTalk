@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/youtube/index.dart';
+import 'package:techtalk/features/youtube/repositories/entities/youtube_related_vido_entity.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/is_bookmark_checked_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/related_youtube_videos_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_content_qna_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_ressource_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
@@ -86,5 +88,13 @@ mixin class YoutubeDetailState {
     final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
     return ref.watch(youtubeDetailResourceProvider(videoId)
         .select((p) => p.youtubeController));
+  }
+
+  ///
+  /// 유튜브 관련 영상 리스트
+  ///
+  AsyncValue<List<RelatedVideoEntity>> relatedVideoAsync(WidgetRef ref) {
+    final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
+    return ref.watch(relatedYoutubeVideoProvider(videoId));
   }
 }

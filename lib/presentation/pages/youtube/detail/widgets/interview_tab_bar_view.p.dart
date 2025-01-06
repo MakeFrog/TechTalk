@@ -1,12 +1,14 @@
 part of '../youtube_detail_page.dart';
 
-class _InterviewTabBarView extends ConsumerWidget
+class _InterviewTabBarView extends HookConsumerWidget
     with YoutubeDetailState, YoutubeDetailEvent {
   const _InterviewTabBarView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useAutomaticKeepAlive();
     return ListView(
+      physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(16),
       children: [
         Consumer(
