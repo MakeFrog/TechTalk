@@ -245,12 +245,25 @@ class _SummaryTabView extends HookConsumerWidget
                           ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: AspectRatio(
-                              aspectRatio: 167.54 / 94,
-                              child: Image.network(
-                                video.thumbnailImgUrl,
-                                fit: BoxFit.fitWidth,
-                              ),
-                            ),
+                                aspectRatio: 167.54 / 94,
+                                child: Image.network(
+                                  video.thumbnailImgUrl,
+                                  width: double.infinity,
+                                  loadingBuilder: (BuildContext context,
+                                      Widget child,
+                                      ImageChunkEvent? loadingProgress) {
+                                    return SizedBox(
+                                      child: AnimatedSwitcher(
+                                        duration:
+                                            const Duration(milliseconds: 120),
+                                        child: loadingProgress == null
+                                            ? child
+                                            : const SkeletonBox(),
+                                      ),
+                                    );
+                                  },
+                                  fit: BoxFit.fitWidth,
+                                )),
                           ),
                           const MaxGap(8),
                           Padding(
@@ -264,12 +277,14 @@ class _SummaryTabView extends HookConsumerWidget
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 2),
-                            child: Text(
-                              video.channelName,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              style: AppTextStyle.alert2.copyWith(
-                                color: AppColor.of.gray3,
+                            child: FittedBox(
+                              child: Text(
+                                video.channelName,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: AppTextStyle.alert2.copyWith(
+                                  color: AppColor.of.gray3,
+                                ),
                               ),
                             ),
                           ),

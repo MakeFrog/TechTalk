@@ -73,12 +73,21 @@ class YoutubeContentItemView extends StatelessWidget {
                 AspectRatio(
                   aspectRatio: 343 / 192,
                   child: isLoaded
-                      ? Hero(
-                          tag: videoId,
-                          child: Image.network(
-                            thumbnailImgUrl,
-                            fit: BoxFit.fitWidth,
-                          ),
+                      ? Image.network(
+                          thumbnailImgUrl,
+                          width: double.infinity,
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            return SizedBox(
+                              child: AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 120),
+                                child: loadingProgress == null
+                                    ? child
+                                    : const SkeletonBox(),
+                              ),
+                            );
+                          },
+                          fit: BoxFit.fitWidth,
                         )
                       : const SkeletonBox(),
                 ),
