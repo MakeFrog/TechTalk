@@ -21,14 +21,15 @@ import 'package:techtalk/presentation/widgets/common/box/async_skeleton_widget_b
 import 'package:techtalk/presentation/widgets/common/box/filled_text_box.dart';
 import 'package:techtalk/presentation/widgets/common/chip/outlined_chip.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
+import 'package:techtalk/presentation/widgets/common/tab_bar/techtalk_tab_bar.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 part 'widgets/app_bar.p.dart';
 part 'widgets/bottom_floating_View.p.dart';
 part 'widgets/content_info_view.p.dart';
-part 'widgets/interview_tab_bar_view.p.dart';
+part 'widgets/interview_tab_view.p.dart';
 part 'widgets/scaffold.p.dart';
-part 'widgets/summary_tab_bar_view.p.dart';
+part 'widgets/summary_tab_view.p.dart';
 part 'widgets/tab_bar.p.dart';
 part 'widgets/youtube_player_place_holder.p.dart';
 
@@ -39,6 +40,8 @@ class YoutubeDetailPage extends ConsumerStatefulWidget {
 
   @override
   ConsumerState createState() => _YoutubeDetailPageState();
+
+  static const double tabBarHeight = 48;
 }
 
 class _YoutubeDetailPageState extends ConsumerState<YoutubeDetailPage>
@@ -52,8 +55,8 @@ class _YoutubeDetailPageState extends ConsumerState<YoutubeDetailPage>
       youtubePlayerPlaceHolder: const _YoutubePlayerPlaceHolder(),
       contentInfoView: const _ContentInfoView(),
       tabBar: const _TabBar(),
-      summaryTabBarView: const _SummaryTabBarView(),
-      interviewTabBarView: const _InterviewTabBarView(),
+      summaryTabView: const _SummaryTabView(),
+      interviewTabView: const _InterviewTabView(),
       bottomFloatingView: const _BottomFloatingView(),
     );
   }

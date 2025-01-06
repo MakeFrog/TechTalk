@@ -1,8 +1,8 @@
 part of '../youtube_detail_page.dart';
 
-class _SummaryTabBarView extends HookConsumerWidget
+class _SummaryTabView extends HookConsumerWidget
     with YoutubeDetailState, YoutubeDetailEvent {
-  const _SummaryTabBarView({super.key});
+  const _SummaryTabView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

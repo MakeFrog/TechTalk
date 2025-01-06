@@ -7,49 +7,44 @@ class _TabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return ColoredBox(
       color: Colors.white,
-      child: TabBar(
-        labelColor: AppColor.of.black,
-        unselectedLabelColor: AppColor.of.gray3,
-        labelStyle: AppTextStyle.title3,
-        unselectedLabelStyle: AppTextStyle.body2,
-        indicator: UnderlineTabIndicator(
-          borderSide: const BorderSide(width: 2.0),
-          insets: EdgeInsets.symmetric(
-            horizontal: AppSize.ratioWidth(
-              162,
+      child: Stack(
+        children: [
+          TabBar(
+            dividerColor: Colors.white,
+            tabs: [
+              ...ContentsDetailTabType.values
+                  .map(
+                    (tab) => Tab(
+                      text: tab.displayStr,
+                    ),
+                  )
+                  .toList()
+            ],
+            indicator: TechtalkTabBar(width: (AppSize.screenWidth - 36) / 2),
+            onTap: (_) {
+              FocusScope.of(context).unfocus();
+            },
+            overlayColor: WidgetStateProperty.all<Color>(Colors.grey.shade200),
+            labelColor: AppColor.of.black,
+            unselectedLabelColor: AppColor.of.gray3,
+            indicatorColor: AppColor.of.black,
+            labelStyle: AppTextStyle.title3,
+            unselectedLabelStyle: AppTextStyle.body2,
+          ),
+
+          /// DIVIDER
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 0.5,
+              color: AppColor.of.gray2,
+              width: double.infinity,
             ),
-          ), // 인디케이터의 가로 여백 조정
-        ),
-        tabs: ContentsDetailTabType.values
-            .map(
-              (tab) => SizedBox(
-                width: double.infinity,
-                child: Tab(
-                  text: tab.displayStr,
-                ),
-              ),
-            )
-            .toList(),
+          ),
+        ],
       ),
     );
   }
 }
-
-///
-/// 탭바
-///
-TabBar _buildTabBar() => TabBar(
-      labelColor: Colors.black,
-      unselectedLabelColor: Colors.grey,
-      indicator: const UnderlineTabIndicator(
-        borderSide: BorderSide(width: 2.0, color: Colors.black), // 인디케이터 두께와 색상
-        insets: EdgeInsets.symmetric(horizontal: 70.0), // 인디케이터의 가로 여백 조정
-      ),
-      tabs: ContentsDetailTabType.values
-          .map(
-            (tab) => Tab(
-              text: tab.displayStr,
-            ),
-          )
-          .toList(),
-    );

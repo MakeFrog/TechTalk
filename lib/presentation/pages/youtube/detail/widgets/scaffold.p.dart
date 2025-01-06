@@ -7,8 +7,8 @@ class _Scaffold extends StatelessWidget with YoutubeDetailState {
     required this.youtubePlayerPlaceHolder,
     required this.contentInfoView,
     required this.tabBar,
-    required this.summaryTabBarView,
-    required this.interviewTabBarView,
+    required this.summaryTabView,
+    required this.interviewTabView,
     required this.bottomFloatingView,
   });
 
@@ -17,8 +17,8 @@ class _Scaffold extends StatelessWidget with YoutubeDetailState {
   final Widget youtubePlayerPlaceHolder;
   final Widget contentInfoView;
   final Widget tabBar;
-  final Widget summaryTabBarView;
-  final Widget interviewTabBarView;
+  final Widget summaryTabView;
+  final Widget interviewTabView;
   final Widget bottomFloatingView;
 
   @override
@@ -102,8 +102,8 @@ class _Scaffold extends StatelessWidget with YoutubeDetailState {
                         pinned: true,
                         delegate: StickyDelegateContainer(
                           child: tabBar,
-                          minHeight: 48,
-                          maxHeight: 48,
+                          minHeight: YoutubeDetailPage.tabBarHeight,
+                          maxHeight: YoutubeDetailPage.tabBarHeight,
                         ),
                       ),
                     ],
@@ -111,9 +111,9 @@ class _Scaffold extends StatelessWidget with YoutubeDetailState {
                       children: [
                         // 첫 번째 탭 내용
                         // 각 탭의 내용을 스크롤 가능한 위젯으로 감싸기
-                        summaryTabBarView,
+                        summaryTabView,
                         // 두 번째 탭 내용
-                        interviewTabBarView,
+                        interviewTabView,
                       ],
                     ),
                   ),
