@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
@@ -45,6 +46,23 @@ mixin class YoutubeDetailEvent {
   Future<void> onStartInterviewBtnTapped(WidgetRef ref) async {
     final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
     final response = await youtubeRepository.getRelatedVideo(videoId);
+  }
+
+  ///
+  /// 화면 회전을 막는 설정
+  /// YoutubePlayer의 '전체 화면' 기능으로
+  /// 페이지 진입하거나 이탈 할 때 Portrait이 가로로 강제되는 경우가 있음
+  /// 이를 방지하고자 아래 메소드를 사용
+  ///
+  /// 아마 웹뷰에 캐시가 남아 있는것으로 예상됨
+  ///
+  void setOrientation() {
+    Future.microtask(() async {
+      await SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+    });
   }
 
   tabChanged(ContentsDetailTabType tabType) {}

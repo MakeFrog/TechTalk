@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -10,7 +9,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/app/router/route_extension.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/app/util/app_formatter.dart';
@@ -29,22 +27,16 @@ import 'package:techtalk/presentation/widgets/common/tab_bar/techtalk_tab_bar.da
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 part 'widgets/app_bar.p.dart';
-
 part 'widgets/bottom_floating_View.p.dart';
-
 part 'widgets/content_info_view.p.dart';
-
 part 'widgets/interview_tab_view.p.dart';
-
 part 'widgets/scaffold.p.dart';
-
 part 'widgets/summary_tab_view.p.dart';
-
 part 'widgets/tab_bar.p.dart';
-
+part 'widgets/watch_view.p.dart';
 part 'widgets/youtube_player_place_holder.p.dart';
 
-class YoutubeDetailPage extends ConsumerStatefulWidget {
+class YoutubeDetailPage extends ConsumerStatefulWidget with YoutubeDetailEvent {
   const YoutubeDetailPage({super.key, required this.argument});
 
   final YoutubeDetailArg argument;
@@ -69,16 +61,19 @@ class _YoutubeDetailPageState extends ConsumerState<YoutubeDetailPage>
       summaryTabView: const _SummaryTabView(),
       interviewTabView: const _InterviewTabView(),
       bottomFloatingView: const _BottomFloatingView(),
+      watchView: const _WatchView(),
     );
   }
 
   @override
   void initState() {
+    setOrientation();
     super.initState();
   }
 
   @override
   void dispose() {
+    setOrientation();
     super.dispose();
 
     /// [NOTE]
@@ -87,9 +82,5 @@ class _YoutubeDetailPageState extends ConsumerState<YoutubeDetailPage>
     /// 다른 콘텐츠에 진입할 때 전체모드가 활성화된 상태로 진입하는 이슈가 존재.
     /// 해당 위젯을 pop할 때 orientation을 재설정해주는 로직 고려
     ///
-
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
   }
 }
