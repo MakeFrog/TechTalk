@@ -30,7 +30,7 @@ Raw<
     // TODO: 추후 필터 UI 구현되면 선택한 파라미터로 구성하도록 변경 필요
     final params = GetYoutubeContentsOverviewsListParams(
       lastDocument: pageKey,
-      limit: 10,
+      limit: 4,
       orderByField: 'upload_at',
       queryConstraints: !category.type.isAll
           ? [
@@ -59,10 +59,8 @@ Raw<
         }
 
         if (isLastPage) {
-          print('마지막 페이징 호출');
           pagingController.appendLastPage(newItems);
         } else {
-          print('일반 페이징 호출');
           final nextPageKey = paginatedResult.lastDocument;
           pagingController.appendPage(newItems, nextPageKey);
         }
