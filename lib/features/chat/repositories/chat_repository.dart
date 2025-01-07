@@ -34,9 +34,14 @@ abstract interface class ChatRepository {
   Future<Result<ChatHistoryCollectionEntity>> getChatHistory(String roomId);
 
   ///
-  /// 채팅 문답 리스트 호출
+  /// 채팅 단골 문답 리스트 호출
   ///
-  Future<Result<List<ChatQnaEntity>>> getChatQnas(ChatRoomEntity room);
+  Future<Result<List<ChatQnaEntity>>> getCommonChatQnas(ChatRoomEntity room);
+
+  ///
+  /// 이력서 문답 리스트 호출
+  ///
+  Future<Result<List<ChatQnaEntity>>> getResumeChatQnas(ChatRoomEntity room);
 
   ///
   /// 리포트 업로드

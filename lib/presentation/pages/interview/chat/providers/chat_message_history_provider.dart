@@ -13,15 +13,15 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/feedback_response_entity.dart';
 import 'package:techtalk/features/chat/use_cases/set_ai_follow_up_question_use_case.dart';
-import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/is_follow_up_process_active_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:uuid/uuid.dart';
 
-part 'chat_message_history_internal_event.dart';
-
+part 'chat_message_history_internal_event.p.dart';
+part 'resume_type_chat_message_history_internal_event.p.dart';
+part 'common_type_chat_message_history_internal_event.p.dart';
 part 'chat_message_history_provider.g.dart';
 
 @riverpod
@@ -34,9 +34,18 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   @override
   FutureOr<List<BaseChatEntity>> build() async {
     final room = ref.read(selectedChatRoomProvider);
+
+    // 단골 질문 (주제별, 실전형)
     final getChatList = switch (room.progressState) {
       ChatRoomProgress.initial => () async {
-          await _showIntroAndQuestionMessages();
+          await room.type.typedBranch(
+            common: (_) async {
+              await _showIntroAndCommonQuestionMessages();
+            },
+            resume: (_) async {
+              await _showResumeTypeIntroMessages();
+            },
+          );
 
           return <BaseChatEntity>[];
         },
@@ -57,7 +66,6 @@ class ChatMessageHistory extends _$ChatMessageHistory {
           );
         },
     };
-
     return getChatList();
   }
 
@@ -113,7 +121,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
 
     final rootQna = ref
         .read(chatQnasProvider.notifier)
-        .getQnaById(userAnswer.rootQnaId ?? userAnswer.qnaId);
+        .getCommonQnaById(userAnswer.rootQnaId ?? userAnswer.qnaId);
 
     isFollowUpProcessActive = Completer<bool>();
 
@@ -121,6 +129,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
       (
         chatHistory: chatHistory,
         qna: rootQna,
+        interviewType: room.type,
         userName: ref.read(userInfoProvider).requireValue!.nickname!,
         onError: _onAiFeedbackErrorOccured,
         checkAnswer: ({required AnswerState answerState}) async {
@@ -291,24 +300,6 @@ class ChatMessageHistory extends _$ChatMessageHistory {
         rootQnaId: rootQna.qna.id,
       ),
     );
-
-    // await response.fold(
-    //   onSuccess: (feedbackStreamedChat) async {
-    //     /// 3) 유저 답변에 대한 피드백 채팅 전달
-    //     await showMessage(
-    //       message: FeedbackChatEntity(
-    //         message: feedbackStreamedChat,
-    //         qnaId: rootQna.qna.id,
-    //         rootQnaId:  rootQna.qna.id,
-    //       ),
-    //     );
-    //   },
-    //   onFailure: (e) {
-    //     _rollbackToPreviousChatStep();
-    //     SnackBarService.showSnackBar(
-    //         '정답 여부를 판별하는 과정에서 오류가 발생했습니다. 잠시후 다시 시도해주세요.');
-    //   },
-    // );
   }
 
   ///
@@ -331,15 +322,5 @@ class ChatMessageHistory extends _$ChatMessageHistory {
     }
 
     return false;
-  }
-
-  CommonQnaEntity getCurrentQna() {
-    final targetQuestion = state.requireValue
-        .firstWhere((chat) => chat is QuestionChatEntity) as QuestionChatEntity;
-
-    return ref
-        .read(chatQnasProvider.notifier)
-        .getQnaById(targetQuestion.qnaId)
-        .qna;
   }
 }

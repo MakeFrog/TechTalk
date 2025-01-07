@@ -1,5 +1,8 @@
 part of 'chat_message_history_provider.dart';
 
+///
+/// 단골질문 관련 provider event
+///
 extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   ///
   /// 꼬리질문 생성
@@ -26,6 +29,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
     QuestionChatEntity? followUpQuestionChat;
 
     final response = SetAiFollowUpQuestionUseCase().call((
+      interviewType: ref.read(selectedChatRoomProvider).type,
       chatHistory: chatHistory,
       onFollowUpQuestionCompleted: ({required String followUpQuestion}) async {
         followUpQuestionChat = QuestionChatEntity.createStatic(
@@ -142,85 +146,6 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   }
 
   ///
-  /// 초기 인트로 메시지와
-  /// 처음으로 질문을 제시
-  ///
-  Future<void> _showIntroAndQuestionMessages() async {
-    final room = ref.read(selectedChatRoomProvider);
-
-    final nickname = ref.watch(userInfoProvider).requireValue!.nickname!;
-    final firstQna = _getNewQna()!;
-    final String introMessage;
-
-    if (room.type.isSingleTopic) {
-      introMessage = rootNavigatorKey.currentContext!.tr(
-        LocaleKeys.undefined_greetingMessageSingleTopic,
-        namedArgs: {
-          'nickname': nickname,
-          'topic': room.topics.first.text,
-        },
-      );
-    } else {
-      introMessage = rootNavigatorKey.currentContext!.tr(
-        LocaleKeys.undefined_greetingMessageMultipleTopics,
-        namedArgs: {
-          'nickname': nickname,
-          'firstTopic':
-              StoredTopics.getById(firstQna.qna.id.getFirstPartOfSpliited).text,
-        },
-      );
-    }
-
-    final introChat = GuideChatEntity.createStatic(
-      message: introMessage,
-      timestamp: DateTime.timestamp(),
-    );
-
-    final firstQuestionChat = QuestionChatEntity.createStatic(
-      qnaId: firstQna.qna.id,
-      rootQnaId: firstQna.qna.id,
-      message: firstQna.qna.question,
-      timestamp: DateTime.timestamp(),
-    );
-
-    unawaited(
-      Future.wait(
-        [
-          createChatRoomUseCase(
-            room: ref.read(selectedChatRoomProvider),
-            messages: [firstQuestionChat, introChat],
-            qnas: ref.read(chatQnasProvider).requireValue,
-          ).then(
-            (_) {
-              ref
-                  .read(selectedChatRoomProvider.notifier)
-                  .updateInitialInfo(firstQuestionChat);
-            },
-          ),
-          showMessage(
-            message: introChat.overwriteToStream(),
-            onDone: () {
-              showMessage(
-                message: firstQuestionChat.overwriteToStream(),
-                onDone: () {
-                  ref
-                      .read(userInfoProvider.notifier)
-                      .updateTopicRecordsOnCondition(room.topics);
-                  if (room.type.isPractical) {
-                    ref
-                        .read(userInfoProvider.notifier)
-                        .storeUserPracticalRecordExistInfo();
-                  }
-                },
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  ///
   /// 새로운 Qna 추출
   ///
   ChatQnaEntity? _getNewQna() {
@@ -243,9 +168,11 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   /// AI 응답 과정에서 에러 발생했을 때 실행하는 프로세스
   ///
   void _onAiFeedbackErrorOccured([Object? error, StackTrace? startTrace]) {
+    print('이그놀드 : ${error}');
     _rollbackToPreviousChatStep();
     SnackBarService.showSnackBar(
         tr(LocaleKeys.interview_aiFeedbackErrorOccured));
+
     /// NOTE 임시 주석
     // await _rollbackToPreviousChatStep();
     // final context = rootNavigatorKey.currentContext!;
@@ -267,10 +194,10 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
     final chatList = state.requireValue;
 
     final targetIndex =
-        chatList.firstIndexWhereOrNull((chat) => chat.type.isQuestionMessage);
+        chatList.indexWhere((chat) => chat.type.isQuestionMessage);
 
     await update((previous) {
-      return [...chatList.sublist(targetIndex!, chatList.length - 1)];
+      return [...chatList.sublist(targetIndex, chatList.length)];
     });
   }
 }

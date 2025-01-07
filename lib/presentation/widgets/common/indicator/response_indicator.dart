@@ -37,7 +37,8 @@ class ResponseIndicator extends StatelessWidget {
   /// 정답,오답 인디케이터
   Widget _buildPassFailIndicator() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(8, 6, 6, 6),
+      height: 30,
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         color: chatResult.isPassed ? AppColor.of.blue1 : AppColor.of.red1,
         borderRadius: BorderRadius.circular(8),
@@ -46,9 +47,10 @@ class ResponseIndicator extends StatelessWidget {
         children: <Widget>[
           Text(
             text,
-            style: AppTextStyle.alert1.copyWith(
+            style: AppTextStyle.body3.copyWith(
               color:
                   chatResult.isPassed ? AppColor.of.brand3 : AppColor.of.red2,
+              fontWeight: FontWeight.w700,
             ),
           ),
           const SizedBox(
@@ -80,8 +82,9 @@ class ResponseIndicator extends StatelessWidget {
         children: <Widget>[
           Text(
             '꼬리질문', //TODO: Localization 적용해야함
-            style: AppTextStyle.alert1.copyWith(
+            style: AppTextStyle.body3.copyWith(
               color: AppColor.of.purple2,
+              fontWeight: FontWeight.w700,
             ),
           ),
           const SizedBox(

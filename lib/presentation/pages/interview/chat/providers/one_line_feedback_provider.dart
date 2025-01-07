@@ -21,15 +21,18 @@ class OneLineFeedback extends _$OneLineFeedback {
       throw Exception();
     }
 
-    final interviewResult = ref.read(selectedChatRoomProvider).interviewResult;
+    final room = ref.read(selectedChatRoomProvider);
+
     final topics = ref.read(selectedChatRoomProvider).topics;
     final param = GetOneLineInterViewFeedbackParam(
-        chatHistory: chatHistory,
-        interviewResult: interviewResult,
-        topic: topics,
-        onError: (e, __) {
-          log('면접관 한줄 피드백 로드 실패 : $e');
-        });
+      chatHistory: chatHistory,
+      interviewResult: room.interviewResult,
+      interviewType: room.type,
+      topic: topics,
+      onError: (e, __) {
+        log('면접관 한줄 피드백 로드 실패 : $e');
+      },
+    );
     final result = getOneLineFeedbackUseCase.call(param);
     return result;
   }

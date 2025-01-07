@@ -312,7 +312,7 @@ mixin class ChatEvent {
   ///
   void startRelatedNewTopicInterview(WidgetRef ref,
       {required TopicEntity targetTopic}) {
-    const type = InterviewType.singleTopic;
+    const type = InterviewType.commonSingleTopic;
 
     /// 메인까지 pop
     GoRouter.of(ref.context).popUntilPath(MainRoute.path);

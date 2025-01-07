@@ -53,7 +53,7 @@ class _EmptyListPlaceholder extends ConsumerWidget
                     onPressed: () {
                       routeToTopicSelection(
                         ref,
-                        type: InterviewType.singleTopic,
+                        type: InterviewType.commonSingleTopic,
                       );
                     },
                     child: Text(
@@ -75,7 +75,7 @@ class _EmptyListPlaceholder extends ConsumerWidget
                     onPressed: () {
                       routeToTopicSelection(
                         ref,
-                        type: InterviewType.practical,
+                        type: InterviewType.commonPracticalTopic,
                       );
                     },
                     child: Text(

@@ -13,6 +13,10 @@ ChatQnaModel _$ChatQnaModelFromJson(Map<String, dynamic> json) => ChatQnaModel(
       followUpQnas: (json['follow_up_qnas'] as List<dynamic>?)
           ?.map((e) => FollowUpQnaModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      resumeField: json['resume_field'] == null
+          ? null
+          : ResumeFieldModel.fromJson(
+              json['resume_field'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ChatQnaModelToJson(ChatQnaModel instance) =>
@@ -21,4 +25,5 @@ Map<String, dynamic> _$ChatQnaModelToJson(ChatQnaModel instance) =>
       'message_id': instance.messageId,
       'state': instance.state,
       'follow_up_qnas': instance.followUpQnas?.map((e) => e.toJson()).toList(),
+      'resume_field': instance.resumeField?.toJson(),
     };
