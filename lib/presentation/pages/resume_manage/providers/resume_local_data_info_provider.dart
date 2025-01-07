@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
 import 'package:techtalk/features/user/user.dart';
@@ -29,10 +30,11 @@ class ResumeLocalDataInfo extends _$ResumeLocalDataInfo {
 
   /// 이력서 PDF 정보 로컬 업데이트
   void updateLocalResume(
-    String localResumePath,
-    String localResumeTitle,
-    String localResumeDate,
+    String? localResumePath,
+    String? localResumeTitle,
+    String? localResumeDate,
   ) {
+    debugPrint('로컬 이력서 업데이트');
     // 1) Riverpod State 갱신
     state = state.copyWith(
       localResumePath: localResumePath,
@@ -51,10 +53,11 @@ class ResumeLocalDataInfo extends _$ResumeLocalDataInfo {
 
   /// 포트폴리오 PDF 정보 로컬 업데이트
   void updateLocalPortfolio(
-    String localPortfolioPath,
-    String localPortfolioTitle,
-    String localPortfolioDate,
+    String? localPortfolioPath,
+    String? localPortfolioTitle,
+    String? localPortfolioDate,
   ) {
+    debugPrint('로컬 포트폴리오 업데이트');
     // 1) Riverpod State 갱신
     state = state.copyWith(
       localPortfolioPath: localPortfolioPath,

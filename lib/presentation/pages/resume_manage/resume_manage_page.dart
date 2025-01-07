@@ -4,10 +4,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
-import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/resume_manage/resume_manage_event.dart';
 import 'package:techtalk/presentation/pages/resume_manage/resume_manage_state.dart';
@@ -15,6 +15,7 @@ import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 
 part 'package:techtalk/presentation/pages/resume_manage/widgets/file_display_card.dart';
+part 'package:techtalk/presentation/pages/resume_manage/widgets/resume_manage_bottom_sheet.dart';
 
 class ResumeManagePage extends BasePage
     with ResumeManageEvent, ResumeManageState {
@@ -51,9 +52,7 @@ class ResumeManagePage extends BasePage
           BounceTapper(
             enable: isTempChanged,
             child: FilledButton(
-              onPressed: isTempChanged 
-              ? () => onClickedSaveButton(ref)
-              : null,
+              onPressed: isTempChanged ? () => onClickedSaveBtn(ref) : null,
               child: Center(
                 child: Text(
                   context.tr(
@@ -83,7 +82,8 @@ class _ResumePdfFileSection extends ConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tempState = fetchTempState(ref);
-    final localState = fetchLocalData(ref);
+    final localState = fetchLocalResumeData(ref);
+    final bool isLocalResumeDataExist = localState.localResumePath != null;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
@@ -100,7 +100,11 @@ class _ResumePdfFileSection extends ConsumerWidget
             tempPath: tempState.tempResumePath,
             tempTitle: tempState.tempResumeTitle,
             tempDate: tempState.tempResumeDate,
-            onFileTap: () => onRegisteredFileBtnTapped(ref, isResume: true),
+            onFileTap: () => onRegisteredFileBtnTapped(
+              ref,
+              isResume: true,
+              isLocal: isLocalResumeDataExist,
+            ),
             onEmptyTap: () => resumePickAndSaveFile(ref),
           ),
         ],
@@ -119,7 +123,9 @@ class _PortfolioPdfFileSection extends ConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tempState = fetchTempState(ref);
-    final localState = fetchLocalData(ref);
+    final localState = fetchLocalResumeData(ref);
+    final bool isLocalPortfolioDataExist =
+        localState.localPortfolioPath != null;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
@@ -136,7 +142,11 @@ class _PortfolioPdfFileSection extends ConsumerWidget
             tempPath: tempState.tempPortfolioPath,
             tempTitle: tempState.tempPortfolioTitle,
             tempDate: tempState.tempPortfolioDate,
-            onFileTap: () => onRegisteredFileBtnTapped(ref, isResume: false),
+            onFileTap: () => onRegisteredFileBtnTapped(
+              ref,
+              isResume: false,
+              isLocal: isLocalPortfolioDataExist,
+            ),
             onEmptyTap: () => portfolioPickAndSaveFile(ref),
           ),
         ],

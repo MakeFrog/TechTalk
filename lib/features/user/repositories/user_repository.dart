@@ -73,17 +73,17 @@ abstract interface class UserRepository {
   /// 이력서 PDF 메타데이터 로컬 저장
   ///
   Future<Result<void>> storeResumePdfMetaData({
-    required String localResumePath,
-    required String localResumeTitle,
-    required String localResumeDate,
+    required String? localResumePath,
+    required String? localResumeTitle,
+    required String? localResumeDate,
   });
 
   ///
   /// 포트폴리오 PDF 메타데이터 로컬 저장
   ///
   Future<Result<void>> storePortfolioPdfMetaData({
-    required String localPortfolioPath,
-    required String localPortfolioTitle,
-    required String localPortfolioDate,
+    required String? localPortfolioPath,
+    required String? localPortfolioTitle,
+    required String? localPortfolioDate,
   });
 }

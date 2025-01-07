@@ -19,8 +19,6 @@ mixin class ResumeManageState {
   ///
   /// 이력서 로컬 데이터 불러오기
   ///
-  ResumeLocalState fetchLocalData(WidgetRef ref) =>
+  ResumeLocalState fetchLocalResumeData(WidgetRef ref) =>
       ref.watch(resumeLocalDataInfoProvider);
-
-
 }

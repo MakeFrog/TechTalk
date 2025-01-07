@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'resume_temp_data_info_provider.g.dart';
@@ -9,6 +10,7 @@ class ResumeTempDataInfo extends _$ResumeTempDataInfo {
 
   /// 이력서 상태 업데이트
   void updateTempResume(String? path, String? title, String? date) {
+    debugPrint('임시 이력서 업데이트');
     state = state.copyWith(
       tempResumePath: path,
       tempResumeTitle: title,
@@ -18,19 +20,26 @@ class ResumeTempDataInfo extends _$ResumeTempDataInfo {
 
   /// 포트폴리오 상태 업데이트
   void updateTempPortfolio(String? path, String? title, String? date) {
+    debugPrint('임시 포트폴리오 업데이트');
     state = state.copyWith(
       tempPortfolioPath: path,
       tempPortfolioTitle: title,
       tempPortfolioDate: date,
     );
   }
+
+  /// Temp State 초기화 메서드
+  void resetTempState() {
+    debugPrint('임시 데이터 초기화');
+    state = const ResumeTempState();
+  }
 }
 
 ///
 /// [ResumeTempState]
 /// - 이력서 관리 페이지에서만 사용될 임시 상태
-/// 
-/// [ResumeTempStateCopyWith] 
+///
+/// [ResumeTempStateCopyWith]
 /// - 클래스의 copywith에서 특정 값(not null)을 기본 값(null)으로 변경할 수 있도록 추상클래스 구현
 ///
 class ResumeTempState {

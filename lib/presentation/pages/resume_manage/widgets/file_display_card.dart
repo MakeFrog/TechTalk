@@ -1,6 +1,5 @@
 part of 'package:techtalk/presentation/pages/resume_manage/resume_manage_page.dart';
 
-
 ///
 /// 실제 파일(이력서/포트폴리오)을 보여주거나, 없으면 업로드 레이아웃을 표시하는 카드 위젯
 ///
@@ -32,14 +31,14 @@ class FileDisplayCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 우선순위: local -> temp
-    final currentPath = localPath ?? tempPath;
-    final currentTitle = localTitle ?? tempTitle;
-    final currentDate = localDate ?? tempDate;
+    // 예외 로직: tempPath가 존재하면 temp 값을 우선
+    final currentPath = tempPath ?? localPath;
+    final currentTitle = tempPath != null ? tempTitle : localTitle;
+    final currentDate = tempPath != null ? tempDate : localDate;
 
     // 파일이 없으면 업로드 컴포넌트
     if (currentPath == null) {
-      return FileUploadPlaceholder(onTap: onEmptyTap);
+      return _FileUploadPlaceholder(onTap: onEmptyTap);
     }
 
     // 파일이 존재하면 해당 파일 정보 표시
@@ -80,8 +79,8 @@ class FileDisplayCard extends StatelessWidget {
 ///
 /// dotted border가 들어간 파일 업로드 placeholder
 ///
-class FileUploadPlaceholder extends StatelessWidget {
-  const FileUploadPlaceholder({super.key, required this.onTap});
+class _FileUploadPlaceholder extends StatelessWidget {
+  const _FileUploadPlaceholder({required this.onTap});
 
   final VoidCallback onTap;
 

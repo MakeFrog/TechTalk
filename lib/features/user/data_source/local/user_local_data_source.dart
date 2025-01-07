@@ -25,17 +25,17 @@ abstract interface class UserLocalDataSource {
   /// 로컬 이력서 PDF 메타데이터 저장
   ///
   Future<void> storeResumePdfMetaData({
-    required String localResumePath,
-    required String localResumeTitle,
-    required String localResumeDate,
+    required String? localResumePath,
+    required String? localResumeTitle,
+    required String? localResumeDate,
   });
 
   ///
   /// 로컬 포트폴리오 PDF 메타데이터 저장
   ///
   Future<void> storePortfolioPdfMetaData({
-    required String localPortfolioPath,
-    required String localPortfolioTitle,
-    required String localPortfolioDate,
+    required String? localPortfolioPath,
+    required String? localPortfolioTitle,
+    required String? localPortfolioDate,
   });
 }

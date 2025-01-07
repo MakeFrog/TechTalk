@@ -175,9 +175,9 @@ final class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<Result<void>> storeResumePdfMetaData({
-    required String localResumePath,
-    required String localResumeTitle,
-    required String localResumeDate,
+    required String? localResumePath,
+    required String? localResumeTitle,
+    required String? localResumeDate,
   }) async {
     try {
       await _userLocalDataSource.storeResumePdfMetaData(
@@ -193,9 +193,9 @@ final class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<Result<void>> storePortfolioPdfMetaData({
-    required String localPortfolioPath,
-    required String localPortfolioTitle,
-    required String localPortfolioDate,
+    required String? localPortfolioPath,
+    required String? localPortfolioTitle,
+    required String? localPortfolioDate,
   }) async {
     try {
       await _userLocalDataSource.storePortfolioPdfMetaData(

@@ -37,16 +37,17 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
     final userLocalInfo = localUser?.copyWith(hasEnteredFirstInterview: true);
 
     await box.put(
-        AppLocal.userBoxName,
-        userLocalInfo ??
-            UserBox.defaultValue().copyWith(hasEnteredFirstInterview: true));
+      AppLocal.userBoxName,
+      userLocalInfo ??
+          UserBox.defaultValue().copyWith(hasEnteredFirstInterview: true),
+    );
   }
 
   @override
   Future<void> storeResumePdfMetaData({
-    required String localResumePath,
-    required String localResumeTitle,
-    required String localResumeDate,
+    required String? localResumePath,
+    required String? localResumeTitle,
+    required String? localResumeDate,
   }) async {
     final userLocalInfo = localUser ?? UserBox.defaultValue();
 
@@ -60,9 +61,9 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
 
   @override
   Future<void> storePortfolioPdfMetaData({
-    required String localPortfolioPath,
-    required String localPortfolioTitle,
-    required String localPortfolioDate,
+    required String? localPortfolioPath,
+    required String? localPortfolioTitle,
+    required String? localPortfolioDate,
   }) async {
     final userLocalInfo = localUser ?? UserBox.defaultValue();
 
