@@ -45,6 +45,7 @@ class Assets {
   static const String iconsCamera = 'assets/icons/camera.svg';
   static const String iconsChatBubbleTale = 'assets/icons/chat_bubble_tale.svg';
   static const String iconsCheck = 'assets/icons/check.svg';
+  static const String iconsCheckNote = 'assets/icons/check_note.svg';
   static const String iconsCheckThick = 'assets/icons/check_thick.svg';
   static const String iconsClose = 'assets/icons/close.svg';
   static const String iconsCloseThick = 'assets/icons/close_thick.svg';
@@ -124,6 +125,7 @@ class Assets {
   static const String iconsUser = 'assets/icons/user.svg';
   static const String iconsVideoUpload = 'assets/icons/video_upload.svg';
   static const String iconsWarning = 'assets/icons/warning.svg';
+  static const String iconsWemoCheck = 'assets/icons/wemo_check.svg';
   static const String iconsWrongIndicator = 'assets/icons/wrong_indicator.svg';
   static const String imagesAppIcon = 'assets/images/app_icon.png';
   static const String imagesAvatar1 = 'assets/images/avatar_1.png';

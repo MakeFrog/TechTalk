@@ -28,7 +28,7 @@ class _SummaryTabView extends HookConsumerWidget
   /// 핵심주제
   Widget _buildSummaryView() {
     return Consumer(
-      child: _buildTitle(
+      child: const SectionTitle(
         title: '핵심 주제',
         iconPath: Assets.iconsCoreCircle,
       ),
@@ -75,32 +75,16 @@ class _SummaryTabView extends HookConsumerWidget
                 return Consumer(
                   child: Row(
                     children: [
-                      _buildTitle(
+                      const SectionTitle(
                         title: '요약 노트',
                         iconPath: Assets.iconsSummaryNote,
                       ),
                       const Spacer(),
-                      BounceTapper(
+                      AllButton(
                         onTap: () {
                           triggerSeeAllNotifier.value =
                               triggerSeeAllNotifier.value + 1;
                         },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            border: Border.all(
-                              color: AppColor.of.gray2,
-                            ),
-                          ),
-                          child: Text(
-                            '전체보기',
-                            style: AppTextStyle.alert1.copyWith(
-                              color: AppColor.of.gray5,
-                            ),
-                          ),
-                        ),
                       ),
                     ],
                   ),
@@ -206,7 +190,10 @@ class _SummaryTabView extends HookConsumerWidget
   /// 관련 영상
   Widget _buildRelatedVideosView() {
     return Consumer(
-      child: _buildTitle(title: '관련 영상', iconPath: Assets.iconsSparkle),
+      child: const SectionTitle(
+        title: '관련 영상',
+        iconPath: Assets.iconsSparkle,
+      ),
       builder: (context, ref, title) {
         const gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
@@ -298,23 +285,6 @@ class _SummaryTabView extends HookConsumerWidget
           ],
         );
       },
-    );
-  }
-
-  /// 제목 섹션
-  Widget _buildTitle({
-    required String title,
-    required String iconPath,
-  }) {
-    return Row(
-      children: [
-        SvgPicture.asset(iconPath),
-        const Gap(2),
-        Text(
-          title,
-          style: AppTextStyle.headline2,
-        ),
-      ],
     );
   }
 

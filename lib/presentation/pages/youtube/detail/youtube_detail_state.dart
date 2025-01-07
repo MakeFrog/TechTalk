@@ -5,6 +5,7 @@ import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/features/youtube/repositories/entities/youtube_related_vido_entity.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/is_bookmark_checked_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/related_youtube_videos_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/selected_youtube_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_content_qna_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_ressource_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
@@ -96,5 +97,14 @@ mixin class YoutubeDetailState {
   AsyncValue<List<RelatedVideoEntity>> relatedVideoAsync(WidgetRef ref) {
     final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
     return ref.watch(relatedYoutubeVideoProvider(videoId));
+  }
+
+  ///
+  /// 선택된 면접 질문
+  ///
+  List<YoutubeQnaEntity> selectedQnas(WidgetRef ref) {
+    final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
+    final selectedQnas = ref.watch(selectedYoutubeQnasProvider(videoId));
+    return selectedQnas;
   }
 }

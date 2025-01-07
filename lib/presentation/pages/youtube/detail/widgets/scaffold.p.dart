@@ -10,7 +10,6 @@ class _Scaffold extends StatelessWidget with YoutubeDetailState {
     required this.summaryTabView,
     required this.interviewTabView,
     required this.bottomFloatingView,
-    required this.watchView,
   });
 
   final Override argOverride;
@@ -21,7 +20,6 @@ class _Scaffold extends StatelessWidget with YoutubeDetailState {
   final Widget summaryTabView;
   final Widget interviewTabView;
   final Widget bottomFloatingView;
-  final Widget watchView;
 
   @override
   Widget build(BuildContext context) {

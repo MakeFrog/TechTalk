@@ -9,35 +9,59 @@ class _InterviewTabView extends HookConsumerWidget
     useAutomaticKeepAlive();
     return ListView(
       physics: const ClampingScrollPhysics(),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16) +
+          const EdgeInsets.only(bottom: 62),
       children: [
+        const Gap(24),
+        Row(
+          children: [
+            const SectionTitle(
+              title: '면접 질문',
+              iconPath: Assets.iconsCheckNote,
+            ),
+            const Spacer(),
+            AllButton(
+              label: '전체선택',
+              onTap: () {
+                onAllSelectBtnTapped(ref);
+              },
+            ),
+          ],
+        ),
+        const Gap(8),
         Consumer(
           builder: (context, ref, child) {
             return AsyncSkeletonWidgetBuilder(
               asyncValue: qnasAsync(ref),
-              skeletonBuilder: (p0) => const Center(
-                child: CircularProgressIndicator(),
-              ),
-              dataBuilder: (context, data) => Wrap(
-                runSpacing: 20,
-                children: [
-                  if (data.isNotEmpty)
-                    ...data
-                        .map(
-                          (qna) => Column(
-                            children: [
-                              Text(
-                                qna.question,
-                              ),
-                              Text(
-                                qna.answer,
-                              ),
-                            ],
-                          ),
-                        )
-                        .toList(),
-                ],
-              ),
+              skeletonBuilder: (_) {
+                return ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: 4,
+                  separatorBuilder: (_, __) => const Gap(12),
+                  itemBuilder: (_, __) => SelectableQnaBox.loading(),
+                );
+              },
+              dataBuilder: (context, qnas) {
+                final activatedQnas = selectedQnas(ref);
+                return ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  separatorBuilder: (_, __) => const Gap(12),
+                  itemCount: qnas.length,
+                  itemBuilder: (context, index) {
+                    final item = qnas.toList()[index];
+                    return SelectableQnaBox(
+                      index: index,
+                      question: item.question,
+                      isSelected: activatedQnas.contains(item),
+                      onTap: () {
+                        onQnaBoxTapped(ref, qna: item);
+                      },
+                    );
+                  },
+                );
+              },
             );
           },
         ),

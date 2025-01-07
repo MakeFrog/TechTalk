@@ -16,11 +16,14 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/constant/youtube_play_state.enum.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/widgets/constants/contents_detail_tab_type.enum.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/widgets/section_title.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/widgets/selectable_qna_box.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/widgets/summary_note_foldable_item.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/youtube_detail_event.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/youtube_detail_state.dart';
 import 'package:techtalk/presentation/widgets/common/box/async_skeleton_widget_builder.dart';
 import 'package:techtalk/presentation/widgets/common/box/filled_text_box.dart';
+import 'package:techtalk/presentation/widgets/common/button/all_button.dart';
 import 'package:techtalk/presentation/widgets/common/chip/outlined_chip.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/common/tab_bar/techtalk_tab_bar.dart';
@@ -33,7 +36,6 @@ part 'widgets/interview_tab_view.p.dart';
 part 'widgets/scaffold.p.dart';
 part 'widgets/summary_tab_view.p.dart';
 part 'widgets/tab_bar.p.dart';
-part 'widgets/watch_view.p.dart';
 part 'widgets/youtube_player_place_holder.p.dart';
 
 class YoutubeDetailPage extends ConsumerStatefulWidget with YoutubeDetailEvent {
@@ -61,7 +63,6 @@ class _YoutubeDetailPageState extends ConsumerState<YoutubeDetailPage>
       summaryTabView: const _SummaryTabView(),
       interviewTabView: const _InterviewTabView(),
       bottomFloatingView: const _BottomFloatingView(),
-      watchView: const _WatchView(),
     );
   }
 
