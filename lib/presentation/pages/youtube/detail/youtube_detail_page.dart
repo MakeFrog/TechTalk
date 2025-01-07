@@ -1,12 +1,16 @@
 import 'dart:async';
 
 import 'package:bounce_tapper/bounce_tapper.dart';
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/router/route_extension.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/app/util/app_formatter.dart';
@@ -25,12 +29,19 @@ import 'package:techtalk/presentation/widgets/common/tab_bar/techtalk_tab_bar.da
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 part 'widgets/app_bar.p.dart';
+
 part 'widgets/bottom_floating_View.p.dart';
+
 part 'widgets/content_info_view.p.dart';
+
 part 'widgets/interview_tab_view.p.dart';
+
 part 'widgets/scaffold.p.dart';
+
 part 'widgets/summary_tab_view.p.dart';
+
 part 'widgets/tab_bar.p.dart';
+
 part 'widgets/youtube_player_place_holder.p.dart';
 
 class YoutubeDetailPage extends ConsumerStatefulWidget {

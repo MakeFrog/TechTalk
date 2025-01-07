@@ -8,7 +8,7 @@ class _SummaryTabView extends HookConsumerWidget
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
     return ListView(
-      physics: const NeverScrollableScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 16) +
           const EdgeInsets.only(
             top: 24,

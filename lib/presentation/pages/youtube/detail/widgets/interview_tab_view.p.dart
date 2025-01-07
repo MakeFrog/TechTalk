@@ -8,7 +8,7 @@ class _InterviewTabView extends HookConsumerWidget
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
     return ListView(
-      physics: const NeverScrollableScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       padding: const EdgeInsets.all(16),
       children: [
         Consumer(
