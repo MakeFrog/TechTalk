@@ -2,8 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/chat/repositories/entities/chat_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
+import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/is_bookmark_checked_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/selected_youtube_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_ressource_provider.dart';
@@ -42,17 +45,7 @@ mixin class YoutubeDetailEvent {
   ///
   /// 면접 시작하기 버튼이 클릭 되었을 떄
   ///
-  // Future<void> onStartInterviewBtnTapped(WidgetRef ref) async {
-  //
-  //   final room = ChatRoomEntity.generateResumeInterview(
-  //     qnas: [],
-  //   );
-  //
-  //   final route = ChatPageRoute(roomId: room.id, type: room.type);
-  //   route.updateArg(room: room);
-  //   route.go(ref.context);
-  //   return;
-  // }
+  Future<void> onStartInterviewBtnTapped(WidgetRef ref) async {}
 
   ///
   /// 화면 회전을 막는 설정
