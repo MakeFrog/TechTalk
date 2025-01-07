@@ -3,6 +3,7 @@ import 'package:techtalk/core/helper/string_generator.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/base_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 class ChatRoomEntity {
@@ -88,6 +89,23 @@ class ChatRoomEntity {
   /// 이력서 면접 질문
   factory ChatRoomEntity.generateResumeInterview({
     required List<ResumeQnaEntity> qnas,
+  }) {
+    return ChatRoomEntity(
+      isTemporary: true,
+      type: InterviewType.resume,
+      id: StringGenerator.generateRandomString(),
+      interviewer: Interviewer.getRandomInterviewer(),
+      qnas: qnas,
+      topics: [],
+      progressInfo: ChatProgressInfoEntity.onInitial(
+        totalQuestionCount: qnas.length,
+      ),
+    );
+  }
+
+  /// 이력서 면접 질문
+  factory ChatRoomEntity.generateYoutubeInterview({
+    required List<YoutubeQnaEntity> qnas,
   }) {
     return ChatRoomEntity(
       isTemporary: true,
