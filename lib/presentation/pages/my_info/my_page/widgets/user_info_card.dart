@@ -5,6 +5,10 @@ class _UserInfoCard extends ConsumerWidget with MyPageState, MyPageEvent {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final fetchLocalResumeData = ref.watch(resumeLocalDataInfoProvider);
+    bool isLocalDataExist = fetchLocalResumeData.localResumePath != null ||
+        fetchLocalResumeData.localPortfolioPath != null;
+
     return Column(
       children: <Widget>[
         Row(
@@ -70,16 +74,30 @@ class _UserInfoCard extends ConsumerWidget with MyPageState, MyPageEvent {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Text(
-                          '내 이력서',
-                          style: AppTextStyle.title2,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '내 이력서',
+                              style: AppTextStyle.title2,
+                            ),
+                            SvgPicture.asset(
+                              Assets.iconsArrowRight,
+                              height: 16,
+                              colorFilter: ColorFilter.mode(
+                                AppColor.of.gray3,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                          ],
                         ),
                         const Gap(4),
-                        Text(
-                          '이력서 등록 후 예상 질문을 경험해 보세요!',
-                          style: AppTextStyle.body3
-                              .copyWith(color: AppColor.of.gray3),
-                        ),
+                        if (!isLocalDataExist)
+                          Text(
+                            '이력서 등록 후 예상 질문을 경험해 보세요!',
+                            style: AppTextStyle.body3
+                                .copyWith(color: AppColor.of.gray3),
+                          ),
                       ],
                     ),
                   ),
