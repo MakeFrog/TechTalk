@@ -72,6 +72,8 @@ class Assets {
   static const String iconsPencil = 'assets/icons/pencil.svg';
   static const String iconsPlus = 'assets/icons/plus.svg';
   static const String iconsPlusThick = 'assets/icons/plus_thick.svg';
+  static const String iconsPolygonWarning =
+      'assets/icons/polygon_warning.svg';
   static const String iconsPonderingIllusration =
       'assets/icons/pondering_illusration.svg';
   static const String iconsRedAlert = 'assets/icons/red_alert.svg';

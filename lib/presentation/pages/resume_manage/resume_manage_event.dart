@@ -184,13 +184,39 @@ mixin class ResumeManageEvent {
 
   /// 이력서 파일 선택시
   Future<void> resumePickAndSaveFile(WidgetRef ref) async {
+    const maxFileSizeInBytes = 50 * 1024 * 1024;
+
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['pdf'],
       );
 
-      if (result != null && result.files.single.path != null) {
+      if (result == null) {
+        return;
+      }
+
+      final pickedFile = File(result.files.single.path!);
+
+      if (pickedFile.lengthSync() > maxFileSizeInBytes) {
+        DialogService.show(
+          dialog: AppDialog.dividedBtn(
+            title: '용량이 초과됐어요',
+            subTitle: '50MB보다 큰 파일은 등록할 수 없어요',
+            leftBtnContent: '취소',
+            rightBtnContent: '다시 올리기',
+            showContentImg: true,
+            onRightBtnClicked: () {
+              ref.context.pop();
+              // 이후 다시 파일 업로드하기
+            },
+            onLeftBtnClicked: ref.context.pop,
+            customAssetPath: Assets.iconsPolygonWarning,
+          ),
+        );
+      }
+
+      if (pickedFile.lengthSync() < maxFileSizeInBytes) {
         Directory tempDocDir = await getTemporaryDirectory();
         String filePath = result.files.single.path!;
         String tempResumeTitle = result.files.single.name;
@@ -217,13 +243,39 @@ mixin class ResumeManageEvent {
 
   /// 포트폴리오 파일 선택시
   Future<void> portfolioPickAndSaveFile(WidgetRef ref) async {
+    const maxFileSizeInBytes = 50 * 1024 * 1024;
+
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['pdf'],
       );
 
-      if (result != null && result.files.single.path != null) {
+      if (result == null) {
+        return;
+      }
+
+      final pickedFile = File(result.files.single.path!);
+
+      if (pickedFile.lengthSync() > maxFileSizeInBytes) {
+        DialogService.show(
+          dialog: AppDialog.dividedBtn(
+            title: '용량이 초과됐어요',
+            subTitle: '50MB보다 큰 파일은 등록할 수 없어요',
+            leftBtnContent: '취소',
+            rightBtnContent: '다시 올리기',
+            showContentImg: true,
+            onRightBtnClicked: () {
+              ref.context.pop();
+              // 이후 다시 파일 업로드하기
+            },
+            onLeftBtnClicked: ref.context.pop,
+            customAssetPath: Assets.iconsPolygonWarning,
+          ),
+        );
+      }
+
+      if (pickedFile.lengthSync() < maxFileSizeInBytes) {
         Directory tempDocDir = await getTemporaryDirectory();
         String filePath = result.files.single.path!;
         String tempPortfolioTitle = result.files.single.name;
