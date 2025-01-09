@@ -40,6 +40,8 @@
 			</array>
 		</dict>
 	</array>
+    <key>com.apple.developer.usernotifications.time-sensitive</key>
+    <true/>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>

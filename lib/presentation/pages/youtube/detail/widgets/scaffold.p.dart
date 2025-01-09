@@ -63,7 +63,7 @@ class _Scaffold extends StatelessWidget with YoutubeDetailState {
                           return AppSize.screenWidth * 9 / 16 +
                               AppSize.statusBarHeight;
                         },
-                        controller: scrollController(ref),
+                        // controller: scrollController(ref),
                         onlyOneScrollInBody: true,
                         physics: const NeverScrollableScrollPhysics(),
                         headerSliverBuilder: (context, innerBoxIsScrolled) => [

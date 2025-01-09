@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dart_openai/dart_openai.dart' as forWhisper;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -12,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/app/environment/environment.enum.dart';
+import 'package:techtalk/app/notification/app_local_notification.dart';
 import 'package:techtalk/core/modules/device/app_device.dart';
 import 'package:techtalk/core/modules/local/app_local.dart';
 
@@ -53,8 +53,6 @@ class Flavor {
     await Firebase.initializeApp(
       options: option,
     );
-    await FirebaseFirestore.instanceFor(
-        app: Firebase.app(), databaseId: 'techtalk-dev');
 
     FirebaseMessaging.onBackgroundMessage((_) async {});
 
@@ -62,6 +60,12 @@ class Flavor {
       await AppDevice.init();
     } catch (e) {
       log('디바이스 정보 호출 실패 :$e');
+    }
+
+    try {
+      await AppLocalNotification().initialize();
+    } catch (e) {
+      print('Local Notification 초기화 실패 :$e');
     }
 
     OpenAI.instance.build(

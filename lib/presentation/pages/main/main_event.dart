@@ -18,8 +18,9 @@ mixin class MainEvent {
     WidgetRef ref, {
     required int index,
   }) {
-    ref.read(mainBottomNavigationProvider.notifier).tab =
-        MainNavigationTab.values[index];
+    ref
+        .read(mainBottomNavigationProvider.notifier)
+        .changeTab(MainNavigationTab.values[index]);
   }
 
   ///

@@ -7,6 +7,7 @@ class _InterviewTabView extends HookConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
+
     return ExtendedVisibilityDetector(
       uniqueKey: Key(ContentsDetailTabType.questions.displayStr),
       child: ListView(
