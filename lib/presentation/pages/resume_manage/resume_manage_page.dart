@@ -9,6 +9,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/presentation/pages/resume_manage/providers/resume_local_data_info_provider.dart';
+import 'package:techtalk/presentation/pages/resume_manage/providers/resume_temp_data_info_provider.dart';
 import 'package:techtalk/presentation/pages/resume_manage/resume_manage_event.dart';
 import 'package:techtalk/presentation/pages/resume_manage/resume_manage_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
@@ -23,12 +25,27 @@ class ResumeManagePage extends BasePage
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
-    final tempResumePath = fetchTempState(ref).tempResumePath;
-    final tempPortfolioPath = fetchTempState(ref).tempPortfolioPath;
+    final tempState = fetchTempState(ref);
+    final localData = fetchLocalResumeData(ref);
 
     // 저장하기 버튼 활성화
     final bool isTempChanged =
-        tempResumePath != null || tempPortfolioPath != null;
+        tempState.tempResumePath != null || tempState.tempPortfolioPath != null;
+
+    bool shouldShowTooltip(
+      ResumeTempState tempState,
+      ResumeLocalState localData, {
+      required bool isTempChanged,
+    }) {
+      final isTempStateNotNull = tempState.tempResumePath != null ||
+          tempState.tempPortfolioPath != null;
+      final isLocalStateNotNull = localData.localResumePath != null ||
+          localData.localPortfolioPath != null;
+
+      // 조건에 따라 true 또는 false 반환
+      return (isTempStateNotNull && !isLocalStateNotNull) ||
+          (!isTempStateNotNull && isLocalStateNotNull) && isTempChanged == true;
+    }
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -49,18 +66,33 @@ class ResumeManagePage extends BasePage
           const Spacer(),
 
           // 저장 버튼
-          BounceTapper(
-            enable: isTempChanged,
-            child: FilledButton(
-              onPressed: isTempChanged ? () => onClickedSaveBtn(ref) : null,
-              child: Center(
-                child: Text(
-                  context.tr(
-                    LocaleKeys.common_save,
+          Column(
+            children: [
+              if (shouldShowTooltip(
+                tempState,
+                localData,
+                isTempChanged: isTempChanged,
+              ))
+                Column(
+                  children: [
+                    SvgPicture.asset(Assets.iconsOneMoreAddTooltip),
+                    const Gap(8),
+                  ],
+                ),
+              BounceTapper(
+                enable: isTempChanged,
+                child: FilledButton(
+                  onPressed: isTempChanged ? () => onClickedSaveBtn(ref) : null,
+                  child: Center(
+                    child: Text(
+                      context.tr(
+                        LocaleKeys.common_save,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
         ],
       ),

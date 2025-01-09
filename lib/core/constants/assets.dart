@@ -68,12 +68,13 @@ class Assets {
   static const String iconsMoreCircle = 'assets/icons/more_circle.svg';
   static const String iconsMoreNoCircle = 'assets/icons/more_no_circle.svg';
   static const String iconsNote = 'assets/icons/note.svg';
+  static const String iconsOneMoreAddTooltip =
+      'assets/icons/one_more_add_tooltip.svg';
   static const String iconsPassResult = 'assets/icons/pass_result.svg';
   static const String iconsPencil = 'assets/icons/pencil.svg';
   static const String iconsPlus = 'assets/icons/plus.svg';
   static const String iconsPlusThick = 'assets/icons/plus_thick.svg';
-  static const String iconsPolygonWarning =
-      'assets/icons/polygon_warning.svg';
+  static const String iconsPolygonWarning = 'assets/icons/polygon_warning.svg';
   static const String iconsPonderingIllusration =
       'assets/icons/pondering_illusration.svg';
   static const String iconsRedAlert = 'assets/icons/red_alert.svg';
