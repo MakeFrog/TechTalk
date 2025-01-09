@@ -59,35 +59,38 @@ class _Scaffold extends StatelessWidget with YoutubeDetailState {
                     child: DefaultTabController(
                       length: ContentsDetailTabType.values.length, // 탭의 개수
                       child: ExtendedNestedScrollView(
-                        // physics: const NeverScrollableScrollPhysics(),
-                        onlyOneScrollInBody: false,
-                        physics: const NeverScrollableScrollPhysics(),
+                        pinnedHeaderSliverHeightBuilder: () {
+                          return AppSize.screenWidth * 9 / 16 +
+                              AppSize.statusBarHeight;
+                        },
                         controller: scrollController(ref),
+                        onlyOneScrollInBody: true,
+                        physics: const NeverScrollableScrollPhysics(),
                         headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                          // SliverToBoxAdapter(
-                          //   child: appBar,
-                          // ),
-                          SliverAppBar(
-                            backgroundColor: Colors.white,
-                            floating: true,
-                            stretchTriggerOffset: 60,
-                            elevation: 0.0,
-                            collapsedHeight: 56,
-                            automaticallyImplyLeading: false,
-                            titleSpacing: 0,
-                            title: SizedBox(
-                              height: 56,
-                              child: Row(
-                                children: [
-                                  AppBackButton(
-                                    onBackBtnTapped: () {
-                                      context.pop();
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
+                          SliverToBoxAdapter(
+                            child: appBar,
                           ),
+                          // SliverAppBar(
+                          //   backgroundColor: Colors.white,
+                          //   floating: true,
+                          //   stretchTriggerOffset: 60,
+                          //   elevation: 0.0,
+                          //   collapsedHeight: 56,
+                          //   automaticallyImplyLeading: false,
+                          //   titleSpacing: 0,
+                          //   title: SizedBox(
+                          //     height: 56,
+                          //     child: Row(
+                          //       children: [
+                          //         AppBackButton(
+                          //           onBackBtnTapped: () {
+                          //             context.pop();
+                          //           },
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
                           SliverPersistentHeader(
                             pinned: true,
                             delegate: StickyDelegateContainer(

@@ -7,21 +7,24 @@ class _SummaryTabView extends HookConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
-    return ListView(
-      physics: const ClampingScrollPhysics(),
-      padding: const EdgeInsets.symmetric(horizontal: 16) +
-          const EdgeInsets.only(
-            top: 24,
-            bottom: 212,
-          ),
-      children: [
-        _buildSummaryView(),
+    return ExtendedVisibilityDetector(
+      uniqueKey: Key(ContentsDetailTabType.summary.displayStr),
+      child: ListView(
+        physics: const ClampingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 16) +
+            const EdgeInsets.only(
+              top: 24,
+              bottom: 102,
+            ),
+        children: [
+          _buildSummaryView(),
 
-        const Gap(32),
+          const Gap(32),
 
-        /// 관련 영상
-        _buildRelatedVideosView(),
-      ],
+          /// 관련 영상
+          _buildRelatedVideosView(),
+        ],
+      ),
     );
   }
 
