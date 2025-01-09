@@ -35,6 +35,8 @@ class ProviderLogger extends ProviderObserver {
   }
 }
 
+final globalContainer = ProviderContainer();
+
 Future<void> runFlavoredApp() async {
   await Flavor.instance.setup();
   // await SystemChrome.setPreferredOrientations([
@@ -44,6 +46,7 @@ Future<void> runFlavoredApp() async {
 
   return runApp(
     ProviderScope(
+      parent: globalContainer,
       observers: [
         ProviderLogger(),
       ],
