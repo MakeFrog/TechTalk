@@ -22,7 +22,7 @@ mixin class YoutubeUploadFailedEvent {
       /// => 상세 페이지로 이동
     } else /* 그외 경우 */ {
       //// 업로드 페이지
-      const YoutubeContentUploadRoute().go(ref.context);
+      const YoutubeLinkSubmitRoute().go(ref.context);
     }
   }
 }

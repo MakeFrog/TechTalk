@@ -130,14 +130,24 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $ContentsDetailRouteExtension._fromState,
         ),
         GoRouteData.$route(
-          path: 'youtube-content-upload',
-          name: 'youtube content upload',
-          factory: $YoutubeContentUploadRouteExtension._fromState,
+          path: 'youtube-link-submit',
+          name: 'youtube link submit',
+          factory: $YoutubeLinkSubmitRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'submitted-youtube-confirm-route',
+          name: 'submitted youtube confirm route',
+          factory: $SubmittedYoutubeConfirmRouteExtension._fromState,
         ),
         GoRouteData.$route(
           path: 'youtube-content-upload-failed',
           name: 'youtube content upload failed',
           factory: $YoutubeContentUploadFailedRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'analyze-youtube',
+          name: 'analyze youtube',
+          factory: $AnalyzeYoutubeRouteExtension._fromState,
         ),
         GoRouteData.$route(
           path: 'wrong-answer/:index',
@@ -340,12 +350,12 @@ extension $ContentsDetailRouteExtension on ContentsDetailRoute {
       context.replace(location, extra: $extra);
 }
 
-extension $YoutubeContentUploadRouteExtension on YoutubeContentUploadRoute {
-  static YoutubeContentUploadRoute _fromState(GoRouterState state) =>
-      const YoutubeContentUploadRoute();
+extension $YoutubeLinkSubmitRouteExtension on YoutubeLinkSubmitRoute {
+  static YoutubeLinkSubmitRoute _fromState(GoRouterState state) =>
+      const YoutubeLinkSubmitRoute();
 
   String get location => GoRouteData.$location(
-        '/youtube-content-upload',
+        '/youtube-link-submit',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -356,6 +366,29 @@ extension $YoutubeContentUploadRouteExtension on YoutubeContentUploadRoute {
       context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
+}
+
+extension $SubmittedYoutubeConfirmRouteExtension
+    on SubmittedYoutubeConfirmRoute {
+  static SubmittedYoutubeConfirmRoute _fromState(GoRouterState state) =>
+      SubmittedYoutubeConfirmRoute(
+        state.extra as SubmittedYoutubeConfirmArg,
+      );
+
+  String get location => GoRouteData.$location(
+        '/submitted-youtube-confirm-route',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
 }
 
 extension $YoutubeContentUploadFailedRouteExtension
@@ -399,6 +432,28 @@ const _$YoutubeUploadFailedTypeEnumMap = {
   YoutubeUploadFailedType.tooShortVideo: 'too-short-video',
   YoutubeUploadFailedType.alreadyUploaded: 'already-uploaded',
 };
+
+extension $AnalyzeYoutubeRouteExtension on AnalyzeYoutubeRoute {
+  static AnalyzeYoutubeRoute _fromState(GoRouterState state) =>
+      AnalyzeYoutubeRoute(
+        state.extra as YoutubeVideoEntity,
+      );
+
+  String get location => GoRouteData.$location(
+        '/analyze-youtube',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
 
 extension $WrongAnswerRouteExtension on WrongAnswerRoute {
   static WrongAnswerRoute _fromState(GoRouterState state) => WrongAnswerRoute(

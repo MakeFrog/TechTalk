@@ -5,7 +5,6 @@ import 'package:dart_openai/dart_openai.dart' as forWhisper;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -53,8 +52,6 @@ class Flavor {
     await Firebase.initializeApp(
       options: option,
     );
-
-    FirebaseMessaging.onBackgroundMessage((_) async {});
 
     try {
       await AppDevice.init();

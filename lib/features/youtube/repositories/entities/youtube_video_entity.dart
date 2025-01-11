@@ -1,4 +1,5 @@
 import 'package:techtalk/features/youtube/index.dart';
+import 'package:techtalk/features/youtube/repositories/entities/youtube_related_vido_entity.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 ///
@@ -18,9 +19,6 @@ class YoutubeVideoEntity {
 
   /// Video author Id.
   final String channelId;
-
-  /// 영상 설명
-  final String description;
 
   /// Video upload date.
   /// Note: For search queries it is calculated with:
@@ -45,7 +43,6 @@ class YoutubeVideoEntity {
   YoutubeVideoEntity({
     required this.id,
     required this.title,
-    required this.description,
     required this.channelName,
     required this.channelId,
     required this.publishedDate,
@@ -72,7 +69,6 @@ class YoutubeVideoEntity {
     return YoutubeVideoEntity(
       id: video.id.value,
       title: video.title,
-      description: video.description,
       channelName: video.author,
       channelId: video.channelId.value,
       publishedDate: video.publishDate,
@@ -85,6 +81,23 @@ class YoutubeVideoEntity {
         name: channel.title,
         logoUrl: channel.logoUrl,
       ),
+    );
+  }
+
+  factory YoutubeVideoEntity.fromRelatedVideoEntity(
+    RelatedVideoEntity entity,
+  ) {
+    return YoutubeVideoEntity(
+      id: entity.id,
+      title: entity.title,
+      channelName: entity.channelName,
+      channelId: '',
+      duration: Duration.zero,
+      thumbnails: ThumbnailSet(entity.id),
+      captions: [],
+      script: '',
+      publishedDate: null,
+      channel: ChannelEntity.undefined(),
     );
   }
 
@@ -106,7 +119,6 @@ class YoutubeVideoEntity {
       title: title ?? this.title,
       channelName: channelName ?? this.channelName,
       channelId: channelId ?? this.channelId,
-      description: description ?? this.description,
       publishedDate: uploadDate ?? this.publishedDate,
       duration: duration ?? this.duration,
       thumbnails: thumbnails ?? this.thumbnails,

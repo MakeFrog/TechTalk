@@ -6,6 +6,7 @@ part of 'deeplink_handler.dart';
 ///
 extension DeeplinkHandlerIntentExt on DeepLinkHandler {
   Future<void> _handleInAppNavigation(Uri uri) async {
+    log('딥링크 진입 : ${uri}');
     final context = await navigationContext;
 
     final host = DeeplinkHost.getByHostName(uri.host);
@@ -40,6 +41,16 @@ extension DeeplinkHandlerIntentExt on DeepLinkHandler {
             .push(context);
 
         return;
+      }
+
+      /// 유튜브 업로드 실패 화면
+      else if (page ==
+          Uri.parse(YoutubeContentUploadFailedRoute.path).pathSegments[0]) {
+        String errorCode = uri.query;
+        await YoutubeContentUploadFailedRoute(
+          failedType: YoutubeUploadFailedType.getByErrorCode(errorCode),
+          contentId: null,
+        ).push(context);
       }
     }
 

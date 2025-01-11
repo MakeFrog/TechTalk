@@ -1,9 +1,10 @@
 import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/app/di/feature_di_interface.dart';
+import 'package:techtalk/app/network/app_youtube_explode.dart';
 import 'package:techtalk/core/query_constraints_applier.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/features/youtube/index.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:techtalk/features/youtube/usecases/analyze_youtube_use_case.dart';
 
 final class YoutubeContentsDependencyInjection
     extends FeatureDependencyInjection {
@@ -19,7 +20,7 @@ final class YoutubeContentsDependencyInjection
   void repositories() {
     locator.registerLazySingleton<YoutubeRepository>(
       () => YoutubeRepositoryImpl(
-        YoutubeExplode(),
+        AppYoutubeExplode.getInstance(),
         youtubeRemoteDataSource,
         techSetRepository,
       ),
@@ -38,6 +39,9 @@ final class YoutubeContentsDependencyInjection
         () => GetYoutubeOverviewListUseCase(
           youtubeRepository,
         ),
+      )
+      ..registerFactory(
+        () => AnalyzeAndUploadYoutubeUseCase(),
       );
   }
 }

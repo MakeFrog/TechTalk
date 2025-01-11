@@ -1,27 +1,21 @@
 import 'dart:developer';
 
-import 'package:flutter/animation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/router/navigation_context.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/features/youtube/index.dart';
-import 'package:techtalk/presentation/pages/youtube/upload/provider/upload_step_page_controller.dart';
-import 'package:techtalk/presentation/pages/youtube/upload/provider/url_input_text_editing_controller_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/upload/youtube_link_submit/provider/youtube_link_input_controller_provider.dart';
 
-part 'target_youtube_info_provider.g.dart';
+part 'submitted_youtube_info_provider.g.dart';
 
 @riverpod
-class TargetYoutubeInfo extends _$TargetYoutubeInfo {
+class SubmittedYoutubeInfo extends _$SubmittedYoutubeInfo {
   @override
   Future<YoutubeVideoEntity> build() async {
-    final videoId = ref.read(urlInputTextEditingControllerProvider).text;
+    final videoId = ref.read(youtubeLinkInputControllerProvider).text;
     final response = await youtubeRepository.getVideoInfoForUpload(videoId);
     return response.fold(
       onSuccess: (youtube) async {
-        final pageController = ref.read(uploadStepPageControllerProvider);
-        await pageController.animateToPage(2,
-            duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
-
         return youtube;
       },
       onFailure: (e) async {

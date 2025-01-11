@@ -218,17 +218,20 @@ class _SummaryTabView extends HookConsumerWidget
               skeletonBuilder: (_) =>
                   _buildRelatedGridViewSkeleton(gridDelegate),
               dataBuilder: (context, relatedVideos) {
-                return KeepAliveView(
-                  child: GridView.builder(
-                    padding: EdgeInsets.zero,
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    gridDelegate: gridDelegate,
-                    itemCount: relatedVideos.length,
-                    itemBuilder: (context, index) {
-                      final video = relatedVideos[index];
+                return GridView.builder(
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: gridDelegate,
+                  itemCount: relatedVideos.length,
+                  itemBuilder: (context, index) {
+                    final video = relatedVideos[index];
 
-                      return Column(
+                    return GestureDetector(
+                      onTap: () {
+                        onRelatedVideoTapped(ref, video: video);
+                      },
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -279,9 +282,9 @@ class _SummaryTabView extends HookConsumerWidget
                             ),
                           ),
                         ],
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 );
               },
             ),

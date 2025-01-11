@@ -7,7 +7,7 @@ part of 'main_bottom_navigation_provider.dart';
 // **************************************************************************
 
 String _$mainBottomNavigationHash() =>
-    r'18c575d0da2983db3fed14fbb96e0d00cf327c41';
+    r'd6b870bdc98b59599cd21948ccc5a62acebfa0c4';
 
 /// See also [MainBottomNavigation].
 @ProviderFor(MainBottomNavigation)
