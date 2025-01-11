@@ -7,7 +7,7 @@ import 'package:techtalk/presentation/pages/youtube/detail/providers/is_bookmark
 import 'package:techtalk/presentation/pages/youtube/detail/providers/related_youtube_videos_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/selected_youtube_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_content_qna_provider.dart';
-import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_ressource_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_resource_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_main_info_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_summary_provider.dart';
