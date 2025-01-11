@@ -21,16 +21,18 @@ Raw<
     firstPageKey: null,
   );
 
-  final random = Random().nextDouble();
-
   bool hasReversedQueryCallProceeded = false;
+
+  final random = Random();
+  final randomValue = random.nextDouble();
+  final randomKey = (random.nextInt(5) + 1).toString();
 
   // 페이지 요청 리스너 추가
   pagingController.addPageRequestListener((pageKey) async {
     // TODO: 추후 필터 UI 구현되면 선택한 파라미터로 구성하도록 변경 필요
     final params = GetYoutubeContentsOverviewsListParams(
       lastDocument: pageKey,
-      limit: 4,
+      limit: 20,
       orderByField: 'upload_at',
       queryConstraints: !category.type.isAll
           ? [
@@ -44,7 +46,8 @@ Raw<
             ]
           : null,
       isHalfOfRandomCalled: hasReversedQueryCallProceeded,
-      random: random,
+      random: randomValue,
+      randomKey: randomKey,
     );
 
     final result = await getYoutubeOverviewListUseCase.call(params);

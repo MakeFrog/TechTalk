@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
@@ -16,12 +17,14 @@ final class GetYoutubeContentsOverviewsListParams {
   final String orderByField;
   final bool isHalfOfRandomCalled;
   final double random;
+  final String randomKey;
 
   GetYoutubeContentsOverviewsListParams({
     required this.limit,
     required this.orderByField,
     required this.isHalfOfRandomCalled,
     required this.random,
+    required this.randomKey,
     this.lastDocument,
     this.queryConstraints,
   });
@@ -53,5 +56,6 @@ final class GetYoutubeOverviewListUseCase extends BaseUseCase<
         queryConstraints: request.queryConstraints,
         hasReversedQueryCallProceeded: request.isHalfOfRandomCalled,
         random: request.random,
+        randomKey: request.randomKey,
       );
 }

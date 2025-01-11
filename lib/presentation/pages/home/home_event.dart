@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:math' as math;
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:techtalk/app/notification/app_local_notification.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
@@ -26,18 +26,6 @@ mixin class HomeEvent {
   /// 실전 면접 기록 여부에 따라 라우팅을 다르게 진행
   ///
   Future<void> onPracticalCardTapped(WidgetRef ref) async {
-    try {
-      if (await Permission.notification.isDenied &&
-          !await Permission.notification.isPermanentlyDenied) {
-        await [Permission.notification].request();
-      }
-      await Future.delayed(Duration(milliseconds: 2800));
-      await AppLocalNotification().testShow();
-    } catch (e) {
-      print('아리랑  : ${e}');
-    }
-
-    return;
     await EasyLoading.show();
 
     final hasNotPracticalInterviewRecord =

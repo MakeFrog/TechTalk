@@ -64,6 +64,7 @@ class YoutubeRepositoryImpl
     List<FirestoreQueryConstraint>? queryConstraints,
     required bool hasReversedQueryCallProceeded,
     required double random,
+    required String randomKey,
   }) async {
     try {
       // Remote DataSource에서 페이징된 데이터 가져오기
@@ -75,6 +76,7 @@ class YoutubeRepositoryImpl
         queryConstraints: queryConstraints,
         hasReversedQueryCallProceeded: hasReversedQueryCallProceeded,
         random: random,
+        randomKey: randomKey,
       );
 
       // 모델을 엔티티로 변환
