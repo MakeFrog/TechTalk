@@ -141,6 +141,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           name: 'resume manage',
           factory: $ResumeManageRouteExtension._fromState,
         ),
+        GoRouteData.$route(
+          path: 'resume-preview',
+          name: 'resume preview',
+          factory: $ResumePreviewRouteExtension._fromState,
+        ),
       ],
     );
 
@@ -355,6 +360,24 @@ extension $ResumeManageRouteExtension on ResumeManageRoute {
 
   String get location => GoRouteData.$location(
         '/resume-manage',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $ResumePreviewRouteExtension on ResumePreviewRoute {
+  static ResumePreviewRoute _fromState(GoRouterState state) =>
+      const ResumePreviewRoute();
+
+  String get location => GoRouteData.$location(
+        '/resume-preview',
       );
 
   void go(BuildContext context) => context.go(location);

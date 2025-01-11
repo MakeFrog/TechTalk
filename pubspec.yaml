@@ -96,6 +96,8 @@ dependencies:
   pub_semver: ^2.1.4 # 주부수 버전 비교 연산
   dotted_border: ^2.1.0 # 점선 보더 적용
   file_picker: ^8.1.7 # 기기 파일 선택
+  flutter_pdfview: ^1.4.0
+
 
 dev_dependencies:
   flutter_lints: ^2.0.1

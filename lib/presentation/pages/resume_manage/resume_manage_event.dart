@@ -6,11 +6,12 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/resume_manage/providers/resume_local_data_info_provider.dart';
+import 'package:techtalk/presentation/pages/resume_manage/providers/resume_preview_path_provider.dart';
 import 'package:techtalk/presentation/pages/resume_manage/providers/resume_temp_data_info_provider.dart';
 import 'package:techtalk/presentation/pages/resume_manage/resume_manage_page.dart';
-import 'package:techtalk/presentation/pages/resume_manage/resume_preview_page.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
 mixin class ResumeManageEvent {
@@ -57,39 +58,30 @@ mixin class ResumeManageEvent {
     required bool isResume,
     required bool isLocal,
   }) {
-    // // 1) 어떤 PDF를 열어야 하는지 경로를 구한다
-    // final tempState = ref.read(resumeTempDataInfoProvider);
-    // final localState = ref.read(resumeLocalDataInfoProvider);
+    final tempState = ref.read(resumeTempDataInfoProvider);
+    final localState = ref.read(resumeLocalDataInfoProvider);
 
-    // // 실제 PDF 경로
-    // late String? pdfPath;
-    // String pageTitle = isResume ? '이력서 미리보기' : '포트폴리오 미리보기';
+    // 미리보기용 pdf 경로
+    late final String? previewPath;
 
-    // if (isResume) {
-    //   // 이력서
-    //   pdfPath = isLocal ? localState.localResumePath : tempState.tempResumePath;
-    // } else {
-    //   // 포트폴리오
-    //   pdfPath =
-    //       isLocal ? localState.localPortfolioPath : tempState.tempPortfolioPath;
-    // }
+    if (isResume) {
+      previewPath =
+          isLocal ? localState.localResumePath : tempState.tempResumePath;
+    } else {
+      previewPath =
+          isLocal ? localState.localPortfolioPath : tempState.tempPortfolioPath;
+    }
 
-    // // 2) 경로가 없는 경우 early return
-    // if (pdfPath == null) {
-    //   debugPrint('PDF 경로가 존재하지 않습니다.');
-    //   return;
-    // }
+    if (previewPath == null) {
+      debugPrint('PDF 경로가 존재하지 않습니다.');
+      return;
+    }
 
-    // // 3) 해당 경로의 PDF를 열어서 미리보기 페이지로 이동
-    // Navigator.push(
-    //   ref.context,
-    //   MaterialPageRoute(
-    //     builder: (_) => ResumePreviewPage(
-    //       pdfPath: pdfPath!,
-    //       title: pageTitle,
-    //     ),
-    //   ),
-    // );
+    // -- (1) resumePreviewPathProvider 값 업데이트
+    ref.read(resumePreviewPathProvider.notifier).state = previewPath;
+
+    // -- (2) 페이지 이동 시에는 인자를 직접 넘기지 않고, provider로부터 읽도록 만듦
+    const ResumePreviewRoute().push(ref.context);
   }
 
   /// 삭제 버튼 클릭시
@@ -127,7 +119,9 @@ mixin class ResumeManageEvent {
     );
   }
 
+  ///
   /// 저장하기 버튼 클릭시
+  ///
   Future<void> onClickedSaveBtn(WidgetRef ref) async {
     await EasyLoading.show();
 
@@ -182,7 +176,9 @@ mixin class ResumeManageEvent {
     }
   }
 
+  ///
   /// 이력서 파일 선택시
+  ///
   Future<void> resumePickAndSaveFile(WidgetRef ref) async {
     const maxFileSizeInBytes = 50 * 1024 * 1024;
 

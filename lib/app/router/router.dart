@@ -16,6 +16,7 @@ import 'package:techtalk/presentation/pages/my_info/job_group_setting/job_group_
 import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_setting_page.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/skill_setting_page.dart';
 import 'package:techtalk/presentation/pages/resume_manage/resume_manage_page.dart';
+import 'package:techtalk/presentation/pages/resume_manage/resume_preview_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
@@ -175,7 +176,11 @@ class SignUpRoute extends GoRouteData {
     TypedGoRoute<ResumeManageRoute>(
       path: ResumeManageRoute.path,
       name: ResumeManageRoute.name,
-    )
+    ),
+    TypedGoRoute<ResumePreviewRoute>(
+      path: ResumePreviewRoute.path,
+      name: ResumePreviewRoute.name,
+    ),
   ],
 )
 class MainRoute extends GoRouteData {
@@ -373,5 +378,17 @@ class ResumeManageRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return ResumeManagePage();
+  }
+}
+
+class ResumePreviewRoute extends GoRouteData {
+  const ResumePreviewRoute();
+
+  static const String path = 'resume-preview';
+  static const String name = 'resume preview';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ResumePreviewPage();
   }
 }
