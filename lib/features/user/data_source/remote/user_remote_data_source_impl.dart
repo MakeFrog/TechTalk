@@ -113,4 +113,33 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       FirestoreUsersRef.lastLoginDateField: FieldValue.serverTimestamp(),
     });
   }
+
+  @override
+  Future<bool> checkIfContentIsBooMarked(String contentId) async {
+    try {
+      final snapshot =
+          await FirestoreUsersRef.bookMarkedYoutubeDoc(contentId).get();
+      return snapshot.exists;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateBookMarkState(
+      {required String contentId, required bool targetState}) async {
+    try {
+      if (targetState == true) {
+        await FirestoreUsersRef.bookMarkedYoutubeDoc(contentId).set(
+          {
+            'id': contentId,
+          },
+        );
+      } else {
+        await FirestoreUsersRef.bookMarkedYoutubeDoc(contentId).delete();
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

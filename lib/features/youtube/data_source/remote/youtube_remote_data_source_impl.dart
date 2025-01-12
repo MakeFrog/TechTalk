@@ -260,7 +260,7 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
       'id': contentId,
     };
     transaction.set(
-      FirestoreUsersRef.youtubeDoc(contentId),
+      FirestoreUsersRef.uploadedYoutubeDoc(contentId),
       data,
     );
   }

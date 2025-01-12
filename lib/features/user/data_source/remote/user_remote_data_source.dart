@@ -42,4 +42,17 @@ abstract interface class UserRemoteDataSource {
   /// 완료된 면접 개수 필드 증가 및 값 리턴
   ///
   Future<int> increaseCompletedInterviewCount();
+
+  ///
+  /// 북마크 되어 잇는 콘텐츠인지 여부
+  ///
+  Future<bool> checkIfContentIsBooMarked(String contentId);
+
+  ///
+  /// 북마크 상태 업데이트
+  ///
+  Future<void> updateBookMarkState({
+    required String contentId,
+    required bool targetState,
+  });
 }

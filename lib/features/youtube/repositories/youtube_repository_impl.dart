@@ -236,7 +236,6 @@ class YoutubeRepositoryImpl
   @override
   Future<Result<List<RelatedVideoEntity>>> getRelatedVideo(
       String contentId) async {
-    print('콘텐츠 아이디 : ${contentId}');
     try {
       // Top-level 함수로 contentId를 이용해 비디오를 가져옴
       final video = await loadWithIsolate(() => _fetchVideo(contentId));

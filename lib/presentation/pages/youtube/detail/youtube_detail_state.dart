@@ -70,8 +70,10 @@ mixin class YoutubeDetailState {
   ///
   /// 북마크 체크 여부
   ///
-  AsyncValue<bool> isBookMarkCheckedAsync(WidgetRef ref) =>
-      ref.watch(isBookmarkCheckedProvider);
+  AsyncValue<bool> isBookMarkCheckedAsync(WidgetRef ref) {
+    final contentId = ref.read(youtubeDetailRouteArgProvider).contentId;
+    return ref.watch(isBookmarkCheckedProvider(contentId));
+  }
 
   ///
   ///  스크롤 컨트롤러

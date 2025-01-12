@@ -165,4 +165,27 @@ final class UserRepositoryImpl implements UserRepository {
       return Result.failure(e);
     }
   }
+
+  @override
+  Future<Result<bool>> isContentBookMarked(String contentId) async {
+    try {
+      final result =
+          await _userRemoteDataSource.checkIfContentIsBooMarked(contentId);
+      return Result.success(result);
+    } catch (e) {
+      return Result.failure(Exception('UserRepository > $e'));
+    }
+  }
+
+  @override
+  Future<Result<void>> updateBookMarkState(
+      {required String contentId, required bool targetState}) async {
+    try {
+      await _userRemoteDataSource.updateBookMarkState(
+          contentId: contentId, targetState: targetState);
+      return Result.success(null);
+    } catch (e) {
+      return Result.failure(Exception('UserRepository > $e'));
+    }
+  }
 }

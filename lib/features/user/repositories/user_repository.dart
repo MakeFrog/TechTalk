@@ -63,4 +63,17 @@ abstract interface class UserRepository {
   /// 면접을 처음 실행했는지 여부 값 업데이트
   ///
   Future<Result<void>> changeFirstEnteredFieldToTrue();
+
+  ///
+  /// 북마크 되어 잇는 콘텐츠인지 여부
+  ///
+  Future<Result<bool>> isContentBookMarked(String contentId);
+
+  ///
+  /// 북마크 상태 업데이트
+  ///
+  Future<Result<void>> updateBookMarkState({
+    required String contentId,
+    required bool targetState,
+  });
 }

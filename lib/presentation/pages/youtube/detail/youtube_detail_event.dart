@@ -20,7 +20,8 @@ mixin class YoutubeDetailEvent {
   /// 북마크 버튼이 탭 되었을 때
   ///
   void onBookmarkBtnTapped(WidgetRef ref) {
-    ref.read(isBookmarkCheckedProvider.notifier).toggle();
+    final contentId = ref.read(youtubeDetailRouteArgProvider).contentId;
+    ref.read(isBookmarkCheckedProvider(contentId).notifier).toggle();
   }
 
   ///

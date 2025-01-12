@@ -9,7 +9,9 @@ abstract class FirestoreUsersRef {
   static const String loginCountField = 'login_count';
   static const String completedInterviewCountField =
       'completed_interview_count';
-  static const String youtubeSubCollectionName = 'Youtube';
+  static const String uploadedYoutubeName = 'UploadedYoutube';
+  static const String bookmarkedYoutubeName = 'BookmarkedYoutube';
+  static const String watchedYoutubeHistoryName = 'WatchedYoutubeHistory';
 
   static String get _userUid => FirebaseAuth.instance.currentUser!.uid;
 
@@ -28,11 +30,25 @@ abstract class FirestoreUsersRef {
             toFirestore: (value, _) => value.toJson(),
           );
 
-  static DocumentReference youtubeDoc(String contentId) =>
+  static DocumentReference uploadedYoutubeDoc(String contentId) =>
       FirebaseFirestore.instance
           .collection(name)
           .doc(_userUid)
-          .collection(youtubeSubCollectionName)
+          .collection(uploadedYoutubeName)
+          .doc(contentId);
+
+  static DocumentReference bookMarkedYoutubeDoc(String contentId) =>
+      FirebaseFirestore.instance
+          .collection(name)
+          .doc(_userUid)
+          .collection(bookmarkedYoutubeName)
+          .doc(contentId);
+
+  static DocumentReference watchedYoutubeHistory(String contentId) =>
+      FirebaseFirestore.instance
+          .collection(name)
+          .doc(_userUid)
+          .collection(watchedYoutubeHistoryName)
           .doc(contentId);
 
   static CollectionReference chatSubCollection([String? id]) =>
