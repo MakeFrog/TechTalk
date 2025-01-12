@@ -1,4 +1,4 @@
-import 'package:techtalk/core/constants/job_group.enum.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/youtube/index.dart';
 
@@ -15,7 +15,7 @@ class YoutubeContentOverviewEntity {
 
   final Set<SkillEntity> relatedSkillIds;
 
-  final Set<JobGroup> relatedJobs;
+  final Set<JobGroupEntity> relatedJobs;
 
   final DateTime techtalkUploadDate;
 
@@ -66,7 +66,7 @@ class YoutubeContentOverviewEntity {
       channel: video.channel,
       qnaNum: qnaAndIds.qnas.length,
       relatedJobs: qnaAndIds.jogGroups.toSet()
-        ..removeWhere((e) => e.isUndefined),
+        ..removeWhere((e) => e == JobGroupEntity.undefinedKey),
       relatedSkillIds: qnaAndIds.skills..removeWhere((e) => e.isUndefined),
       videoDuration: video.duration ?? Duration.zero,
       videoPublishDate: video.publishedDate ?? DateTime.now(),

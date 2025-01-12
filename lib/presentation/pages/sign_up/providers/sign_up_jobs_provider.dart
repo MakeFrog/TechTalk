@@ -6,11 +6,11 @@ part 'sign_up_jobs_provider.g.dart';
 @riverpod
 class SignUpJobs extends _$SignUpJobs {
   @override
-  List<JobGroup> build() {
+  List<JobGroupTypes> build() {
     return [];
   }
 
-  void toggle(JobGroup item) {
+  void toggle(JobGroupTypes item) {
     if (state.contains(item)) {
       state = state.toList()..remove(item);
     } else {

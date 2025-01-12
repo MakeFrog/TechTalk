@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
@@ -22,6 +23,25 @@ import 'package:techtalk/presentation/providers/user/user_topics_provider.dart';
 part 'internal_home_event.p.dart';
 
 mixin class HomeEvent {
+  Future<void> addJobGroupsToFirestore() async {
+    final collectionRef = FirebaseFirestore.instance.collection('JobGroup');
+
+    for (final job in JobGroupTypes.values) {
+      try {
+        // Firestore에 문서 추가
+        await collectionRef.doc(job.id).set({
+          'id': job.id,
+          'name': job.enName,
+          'ko_name': job.name, // 한글 이름
+          'youtube_content_count': 0, // 초기값은 0
+        });
+        print('Added job group: ${job.id}');
+      } catch (e) {
+        print('Failed to add job group ${job.id}: $e');
+      }
+    }
+  }
+
   Future<void> saveSkillsFromJsonToFirestore() async {
     final firestore = FirebaseFirestore.instance;
 
@@ -61,7 +81,7 @@ mixin class HomeEvent {
   ///
   Future<void> onPracticalCardTapped(WidgetRef ref) async {
     await EasyLoading.show();
-    saveSkillsFromJsonToFirestore();
+    await addJobGroupsToFirestore();
     EasyLoading.dismiss();
     return;
     await EasyLoading.show();

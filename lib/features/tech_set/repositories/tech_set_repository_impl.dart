@@ -4,8 +4,8 @@ import 'dart:developer';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
-import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/tech_set/data_source/remote/tech_set_remote_data_source.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
@@ -20,22 +20,25 @@ final class TechSetRepositoryImpl implements TechSetRepository {
 
   final List<SkillEntity> _cachedSkillCollection = [];
 
+  final List<JobGroupEntity> _cachedJobGroups = [];
+
   @override
-  List<JobGroup> getJobs() => JobGroup.values;
+  List<JobGroupEntity> getJobs() => _cachedJobGroups;
 
   @override
   Future<void> initSkills() async {
     try {
       // 원격 데이터 가져오기
-      final response = await _remoteDataSource.getNewSkills();
+      final response = await _remoteDataSource.getSkills();
       final result = response.map((e) => SkillEntity.fromModel(e));
 
       _cachedSkillCollection.addAll(result);
     } catch (e) {
       log('Remote data fetch failed, loading from local JSON: $e');
 
+      /// 원격 호출 실패 시
+      /// 로컬 JSON 파일에서 데이터 가져오기
       try {
-        // 로컬 JSON 파일에서 데이터 가져오기
         String jsonString =
             await rootBundle.loadString('assets/json/skills.json');
         Map<String, dynamic> jsonData = jsonDecode(jsonString);
@@ -60,6 +63,31 @@ final class TechSetRepositoryImpl implements TechSetRepository {
   }
 
   @override
+  Future<void> initJobGroups() async {
+    try {
+      // 원격 데이터 가져오기
+      final response = await _remoteDataSource.getJobGroups();
+      final result = response.map((e) => JobGroupEntity.fromModel(e));
+
+      _cachedJobGroups.addAll(result);
+      log('Loaded job groups from remote data source successfully.');
+    } catch (e) {
+      log('Remote data fetch failed, loading from enum: $e');
+
+      // 원격 호출 실패 시, JobGroup enum에서 매핑
+      try {
+        final fallbackJobGroups = await _localDataSource.getJobs();
+
+        _cachedJobGroups.addAll(fallbackJobGroups);
+        log('Loaded job groups from enum successfully.');
+      } catch (enumError) {
+        log('Error loading job groups from enum: $enumError');
+        rethrow;
+      }
+    }
+  }
+
+  @override
   SkillEntity getSkillById(String id) {
     final targetSkill =
         _cachedSkillCollection.firstWhereOrNull((e) => e.id == id);
@@ -68,4 +96,10 @@ final class TechSetRepositoryImpl implements TechSetRepository {
 
   @override
   List<SkillEntity> getSkills() => _cachedSkillCollection;
+
+  @override
+  JobGroupEntity getJobGroupById(String id) {
+    final targetJobGroup = _cachedJobGroups.firstWhereOrNull((e) => e.id == id);
+    return targetJobGroup ?? JobGroupEntity.undefined();
+  }
 }

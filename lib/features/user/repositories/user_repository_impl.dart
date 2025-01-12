@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/features/user/user.dart';
@@ -38,10 +39,17 @@ final class UserRepositoryImpl implements UserRepository {
 
       skills.removeWhere((e) => e.id == SkillEntity.undefinedKey);
 
+      final List<JobGroupEntity> jobGroups = remoteRes.jobGroupIds != null
+          ? remoteRes.jobGroupIds!
+              .map(_techSetRepository.getJobGroupById)
+              .toList()
+          : [];
+
       final result = UserEntity.fromModel(
         remoteRes,
         skills: skills,
         box: localRes,
+        jobGroups: jobGroups,
       );
 
       return Result.success(result);

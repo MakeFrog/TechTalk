@@ -9,4 +9,10 @@ abstract class FirestoreSkillRef {
             fromFirestore: SkillModel.fromFirestore,
             toFirestore: (value, options) => value.toJson(),
           );
+
+  static DocumentReference<SkillModel> document(String channelId) =>
+      FirebaseFirestore.instance.collection(_name).doc(channelId).withConverter(
+            fromFirestore: SkillModel.fromFirestore,
+            toFirestore: (value, options) => value.toJson(),
+          );
 }

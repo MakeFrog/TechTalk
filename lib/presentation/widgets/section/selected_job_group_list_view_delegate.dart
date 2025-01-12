@@ -1,13 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/app/style/app_color.dart';
-import 'package:techtalk/core/constants/job_group.enum.dart';
-import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/presentation/widgets/common/animated/animated_size_and_fade.dart';
 import 'package:techtalk/presentation/widgets/common/chip/closable_rect_filled_chip.dart';
 
@@ -18,8 +14,8 @@ class SelectedJobGroupListViewDelegate extends SliverPersistentHeaderDelegate {
     required this.scrollController,
   });
 
-  final List<JobGroup> selectedJobGroups;
-  final void Function(JobGroup) onTapItem;
+  final List<JobGroupEntity> selectedJobGroups;
+  final void Function(JobGroupEntity) onTapItem;
   final double expandedHeight = 68;
   final ScrollController scrollController;
 
@@ -47,7 +43,7 @@ class SelectedJobGroupListViewDelegate extends SliverPersistentHeaderDelegate {
               final item = selectedJobGroups[index];
               return Align(
                 child: ClosableRectFilledChip(
-                  label: AppLocale.isKo ? item.name : item.enName,
+                  label: item.name,
                   onTap: () {
                     onTapItem(item);
                   },

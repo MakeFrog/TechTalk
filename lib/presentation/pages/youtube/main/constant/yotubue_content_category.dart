@@ -1,5 +1,5 @@
 import 'package:techtalk/core/constants/content_filter_category_type.enum.dart';
-import 'package:techtalk/core/constants/job_group.enum.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 
 ///
@@ -10,12 +10,14 @@ final class YoutubeContentCategory {
   final String id;
   final String name;
   final ContentFilterCategoryType type;
+  final int contentCount;
   final String? imagePath;
 
   const YoutubeContentCategory({
     required this.id,
     required this.name,
     required this.type,
+    required this.contentCount,
     this.imagePath,
   });
 
@@ -25,17 +27,19 @@ final class YoutubeContentCategory {
         name: entity.name,
         type: ContentFilterCategoryType.skill,
         imagePath: entity.imagePath,
+        contentCount: entity.youtubeContentCount,
       );
 
-  factory YoutubeContentCategory.fromJob(JobGroup job) =>
+  factory YoutubeContentCategory.fromJob(JobGroupEntity job) =>
       YoutubeContentCategory(
         id: job.id,
         name: job.name,
         type: ContentFilterCategoryType.jobGroup,
+        contentCount: job.youtubeContentCount,
       );
 
   factory YoutubeContentCategory.fromSkillOrJobGroup(
-          {JobGroup? job, SkillEntity? skill}) =>
+          {JobGroupEntity? job, SkillEntity? skill}) =>
       YoutubeContentCategory(
         id: job?.id ?? skill?.id ?? 'undefined',
         name: job?.name ?? skill?.name ?? '잘못된값',
@@ -44,6 +48,8 @@ final class YoutubeContentCategory {
             : (job != null
                 ? ContentFilterCategoryType.jobGroup
                 : ContentFilterCategoryType.skill),
+        contentCount:
+            job?.youtubeContentCount ?? skill?.youtubeContentCount ?? 0,
       );
 
   @override

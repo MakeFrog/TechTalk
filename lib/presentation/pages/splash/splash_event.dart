@@ -19,8 +19,11 @@ mixin class SplashEvent {
 
   /// 면접 주제 등 초기 호출 후 재사용할 데이터를 초기화한다.
   Future<void> initStaticData(WidgetRef ref) async {
-    await StoredTopics.initialize();
-    await techSetRepository.initSkills();
+    await Future.wait([
+      StoredTopics.initialize(),
+      techSetRepository.initSkills(),
+      techSetRepository.initJobGroups()
+    ]);
   }
 
   /// 유저 인증정보와 유저 정보를 토대로 라우팅을 분기한다.

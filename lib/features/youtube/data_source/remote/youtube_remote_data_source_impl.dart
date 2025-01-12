@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/core/query_constraints_applier.dart';
+import 'package:techtalk/features/tech_set/data_source/remote/job_group_ref.dart';
+import 'package:techtalk/features/tech_set/data_source/remote/skill_ref.dart';
 import 'package:techtalk/features/user/data_source/remote/users_ref.dart';
 import 'package:techtalk/features/youtube/data_source/remote/models/channel_model.dart';
 import 'package:techtalk/features/youtube/data_source/remote/models/summary_model.dart';
@@ -169,7 +171,9 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
         _updateQnas(batch, contentId: mainInfo.id, qnas: qnas),
         _updateDetail(batch,
             contentId: mainInfo.id, summary: summary, uploaderId: uploaderId),
-        _updateChannel(batch, channel: channel)
+        _updateChannel(batch, channel: channel),
+        _updateSkillCount(batch, skillIds: mainInfo.relatedSkillIds),
+        _updateJobGroupCount(batch, jobGroups: mainInfo.relatedJobGroupIds),
       ]);
       await batch.commit();
     } catch (e) {
@@ -185,6 +189,31 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
       FirestoreYoutubeChannelRef.document(channel.id),
       channel,
     );
+  }
+
+  /// 스킬 컬렉션에 count 개수 업데이트
+  /// [.set]을 사용하여 기존 데이터가 있다면 엎어 씀.
+
+  Future<void> _updateSkillCount(WriteBatch transaction,
+      {required List<String> skillIds}) async {
+    for (var skillId in skillIds) {
+      // 각 스킬 문서에 count 값을 1씩 증가
+      transaction.update(
+        FirestoreSkillRef.document(skillId), // skillId를 참조
+        {'youtube_content_count': FieldValue.increment(1)}, // count 필드 1 증가
+      );
+    }
+  }
+
+  Future<void> _updateJobGroupCount(WriteBatch transaction,
+      {required List<String> jobGroups}) async {
+    for (var jobGroupId in jobGroups) {
+      // 각 스킬 문서에 count 값을 1씩 증가
+      transaction.update(
+        FirestoreJobGroupRef.document(jobGroupId), // skillId를 참조
+        {'youtube_content_count': FieldValue.increment(1)}, // count 필드 1 증가
+      );
+    }
   }
 
   /// 문답 리스트 업데이트

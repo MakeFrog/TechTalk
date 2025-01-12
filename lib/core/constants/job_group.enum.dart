@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
-
 ///
 /// 개발 직군 리스트.
 /// 원티드 채용 사이트를 참고함.
 ///
 
-enum JobGroup {
+enum JobGroupTypes {
   SOFTWARE_ENGINEER('software-engineer', '소프트웨어 엔지니어', 'Software Engineer'),
   WEB_DEVELOPER('web-developer', '웹 개발자', 'Web Developer'),
   SERVER_DEVELOPER('server-developer', '서버 개발자', 'Server Developer'),
@@ -54,12 +52,12 @@ enum JobGroup {
   final String name;
   final String enName;
 
-  const JobGroup(this.id, this.name, this.enName);
+  const JobGroupTypes(this.id, this.name, this.enName);
 
-  static JobGroup getById(String id) => values.firstWhere(
+  static JobGroupTypes getById(String id) => values.firstWhere(
         (job) => job.id == id,
-        orElse: () => JobGroup.UNDEFINED,
+        orElse: () => JobGroupTypes.UNDEFINED,
       );
 
-  bool get isUndefined => this == JobGroup.UNDEFINED;
+  bool get isUndefined => this == JobGroupTypes.UNDEFINED;
 }

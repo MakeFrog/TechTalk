@@ -45,9 +45,7 @@ class _UserInfoCard extends ConsumerWidget with MyPageState, MyPageEvent {
                   ),
                   const Gap(8),
                   ExpandableWrappedListview(
-                    items: user!.jobGroups
-                        .map((e) => AppLocale.isKo ? e.name : e.enName)
-                        .toList(),
+                    items: user!.jobGroups.map((e) => e.name).toList(),
                   ),
                   const Gap(16),
                   Text(
