@@ -32,7 +32,7 @@ Raw<
     // TODO: 추후 필터 UI 구현되면 선택한 파라미터로 구성하도록 변경 필요
     final params = GetYoutubeContentsOverviewsListParams(
       lastDocument: pageKey,
-      limit: 20,
+      limit: 15,
       orderByField: 'upload_at',
       queryConstraints: !category.type.isAll
           ? [

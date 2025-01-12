@@ -7,7 +7,7 @@ part of 'youtube_content_pagination_provider.dart';
 // **************************************************************************
 
 String _$youtubeContentPaginationHash() =>
-    r'55eecde43aeec10487c82194250967dc849c9e02';
+    r'dc78b635ef0a58b49a94afb60fdad004bc298d52';
 
 /// Copied from Dart SDK
 class _SystemHash {

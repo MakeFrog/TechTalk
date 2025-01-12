@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:techtalk/core/firebase_pagination_result.dart';
+import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
 import 'package:techtalk/features/user/user.dart';
 
 abstract interface class UserRemoteDataSource {
@@ -60,4 +63,13 @@ abstract interface class UserRemoteDataSource {
   /// 유튜브 영상 기록 추가
   ///
   Future<void> updateYoutubeWatchHistory(String contentId);
+
+  ///
+  /// 유튜브 영상 기록 호출
+  ///
+  Future<FirebasePaginatedResult<WatchedYoutubeContent, WatchedYoutubeContent>>
+      getPagedWatchedYoutubeHistory({
+    DocumentSnapshot<WatchedYoutubeContent>? lastDocument,
+    required int limit,
+  });
 }

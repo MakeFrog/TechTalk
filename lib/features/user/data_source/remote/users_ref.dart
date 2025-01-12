@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
 import 'package:techtalk/features/user/user.dart';
 
 abstract class FirestoreUsersRef {
@@ -43,6 +44,15 @@ abstract class FirestoreUsersRef {
           .doc(_userUid)
           .collection(bookmarkedYoutubeName)
           .doc(contentId);
+
+  static CollectionReference<WatchedYoutubeContent>
+      watchedYoutubeHistoryCollection() => FirebaseFirestore.instance
+          .collection(name)
+          .doc(_userUid)
+          .collection(watchedYoutubeHistoryName)
+          .withConverter(
+              fromFirestore: WatchedYoutubeContent.fromFirestore,
+              toFirestore: (value, _) => value.toJson());
 
   static DocumentReference watchedYoutubeHistoryDoc(String contentId) =>
       FirebaseFirestore.instance

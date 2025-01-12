@@ -1,10 +1,14 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
+import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
 import 'package:techtalk/features/user/user.dart';
+import 'package:techtalk/features/youtube/data_source/remote/models/youtube_content_overview_model.dart';
 
 final class UserRepositoryImpl implements UserRepository {
   const UserRepositoryImpl(
@@ -196,6 +200,41 @@ final class UserRepositoryImpl implements UserRepository {
       return Result.success(null);
     } catch (e) {
       return Result.failure(Exception('UserRepository > $e'));
+    }
+  }
+
+  @override
+  Future<
+      Result<
+          FirebasePaginatedResult<WatchedYoutubeContent,
+              WatchedYoutubeContent>>> getPagedWatchedYoutubeHistory(
+      {DocumentSnapshot<WatchedYoutubeContent>? lastDocument,
+      required int limit}) async {
+    try {
+      final response =
+          await _userRemoteDataSource.getPagedWatchedYoutubeHistory(
+              limit: limit, lastDocument: lastDocument);
+
+      final entities = response.items.map((res) {
+        final model = res.info;
+        final skills =
+            model.relatedSkillIds.map(_techSetRepository.getSkillById).toList();
+        final jobGroups = model.relatedJobGroupIds
+            .map(_techSetRepository.getJobGroupById)
+            .toList();
+        return model.toEntity(skills, jobGroups);
+      }).toList();
+
+      final paginatedResult =
+          FirebasePaginatedResult<YoutubeContentOverviewEntity, String>(
+        items: entities,
+        lastDocumentId: response.lastDocumentId,
+        hasMore: response.hasMore,
+      );
+
+      return Result.success(response);
+    } catch (e) {
+      throw Result.failure(Exception('UserRepository> $e'));
     }
   }
 }
