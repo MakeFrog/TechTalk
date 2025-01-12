@@ -11,7 +11,6 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/core/services/slack_notification_service.dart' as noti;
-import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_blur_provider.dart';
@@ -103,6 +102,25 @@ mixin class MyPageEvent {
         onLeftBtnClicked: ref.context.pop,
       ),
     );
+  }
+
+  /// 프롤필 영역 클릭 시
+  void onProfileSectionTapped(BuildContext context) {
+    const ProfileSettingRoute().go(context);
+  }
+
+  ///
+  /// 관심 직군 영역 클릭 시
+  ///
+  void onJobGroupSectionTapped(BuildContext context) {
+    JobGroupSettingRoute().go(context);
+  }
+
+  ///
+  /// 관심 스킬 영역 클릭 시
+  ///
+  void onSkillSectionTapped(BuildContext context) {
+    SkillSettingRoute().go(context);
   }
 
   ///

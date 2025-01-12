@@ -6,55 +6,87 @@ class _UserInfoCard extends ConsumerWidget with MyPageState, MyPageEvent {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              tr(LocaleKeys.gnb_myInfo),
-              style: AppTextStyle.title1,
-            ),
-            IconFlashAreaButton.assetIcon(
-              iconPath: Assets.iconsPencil,
-              size: 16,
-              onIconTapped: () {
-                onProfileEditBtnTapped(ref);
-              },
-            ),
-          ],
+        Padding(
+          padding: const EdgeInsets.only(left: 4),
+          child: Text(
+            tr(LocaleKeys.gnb_myInfo),
+            style: AppTextStyle.headline3,
+          ),
         ),
-        const Gap(8),
+        const Gap(12),
         Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(
+            vertical: 24,
             horizontal: 16,
-            vertical: 20,
           ),
           decoration: BoxDecoration(
-            color: AppColor.of.white,
             borderRadius: BorderRadius.circular(16),
+            color: AppColor.of.white,
           ),
           child: user(ref).when(
             data: (user) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    tr(LocaleKeys.common_interviewTerms_interestedJobPositions),
-                    style: AppTextStyle.body3,
+                  GestureDetector(
+                    onTap: () {
+                      onJobGroupSectionTapped(context);
+                    },
+                    behavior: HitTestBehavior.translucent,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              tr(LocaleKeys
+                                  .common_interviewTerms_interestedJobPositions),
+                              style: AppTextStyle.title2,
+                            ),
+                            SvgPicture.asset(
+                              Assets.iconsNewRightArrow,
+                            ),
+                          ],
+                        ),
+                        const Gap(8),
+                        ExpandableWrappedListview(
+                          items: user!.jobGroups.map((e) => e.name).toList(),
+                        ),
+                      ],
+                    ),
                   ),
-                  const Gap(8),
-                  ExpandableWrappedListview(
-                    items: user!.jobGroups.map((e) => e.name).toList(),
-                  ),
-                  const Gap(16),
-                  Text(
-                    tr(LocaleKeys.common_interviewTerms_interestedTopics),
-                    style: AppTextStyle.body3,
-                  ),
-                  const Gap(8),
-                  ExpandableSkillWrappedListview(
-                    items: user.skills,
+                  const Gap(24),
+                  GestureDetector(
+                    onTap: () {
+                      onSkillSectionTapped(context);
+                    },
+                    behavior: HitTestBehavior.translucent,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              tr(LocaleKeys
+                                  .common_interviewTerms_interestedTopics),
+                              style: AppTextStyle.title2,
+                            ),
+                            SvgPicture.asset(
+                              Assets.iconsNewRightArrow,
+                            ),
+                          ],
+                        ),
+                        const Gap(8),
+                        ExpandableSkillWrappedListview(
+                          items: user.skills,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               );

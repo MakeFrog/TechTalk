@@ -6,6 +6,8 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/my_info/my_page/my_page_event.dart';
 import 'package:techtalk/presentation/widgets/common/chip/rounded_filled_chip.dart';
 
+import '../../../../widgets/common/chip/rounded_outlined_chip.dart';
+
 ///
 /// 전달받은 데이터를 기반으로 Wrap 위젯이 단일 행으로 구성되어 있는지 판별하여 (check if it's overflowed),
 /// Expandable 로직을 적용하는 위젯
@@ -86,8 +88,8 @@ class ExpandableWrappedListview extends HookWidget with MyPageEvent {
                             ...List.generate(
                               itemCollection.length,
                               (index) {
-                                return RoundedFilledChip(
-                                  text: itemCollection[index].text,
+                                return RoundedOutlinedChip(
+                                  label: itemCollection[index].text,
                                 );
                               },
                             )
@@ -137,8 +139,8 @@ class ExpandableWrappedListview extends HookWidget with MyPageEvent {
           ...List.generate(
             itemCollection.length,
             (index) {
-              return RoundedFilledChip(
-                text: itemCollection[index].text,
+              return RoundedOutlinedChip(
+                label: itemCollection[index].text,
                 key: itemCollection[index].key,
               );
             },

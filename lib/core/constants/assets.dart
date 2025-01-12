@@ -70,6 +70,8 @@ class Assets {
   static const String iconsIncorrect = 'assets/icons/incorrect.svg';
   static const String iconsMenuThick = 'assets/icons/menu_thick.svg';
   static const String iconsMoreCircle = 'assets/icons/more_circle.svg';
+  static const String iconsNewCamera = 'assets/icons/new_camera.svg';
+  static const String iconsNewRightArrow = 'assets/icons/new_right_arrow.svg';
   static const String iconsNote = 'assets/icons/note.svg';
   static const String iconsPassResult = 'assets/icons/pass_result.svg';
   static const String iconsPencil = 'assets/icons/pencil.svg';

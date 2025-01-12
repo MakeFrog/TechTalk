@@ -1,9 +1,9 @@
+import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
@@ -20,13 +20,10 @@ import 'package:techtalk/presentation/widgets/common/image/round_profile_image.d
 import 'package:techtalk/presentation/widgets/common/input/flat_switch.dart';
 
 part 'widgets/additional_info_card.dart';
-
 part 'widgets/intro_view.dart';
-
+part 'widgets/my_activity_card.p.dart';
 part 'widgets/my_info_page_scaffold.dart';
-
 part 'widgets/setting_card.dart';
-
 part 'widgets/user_info_card.dart';
 
 class MyPage extends BasePage {
@@ -37,6 +34,7 @@ class MyPage extends BasePage {
     return const _Scaffold(
       introView: _IntroView(),
       myInfoCard: _UserInfoCard(),
+      myActivityCard: _MyActivityCard(),
       settingCard: _SettingCard(),
       additionalInfoCard: _AdditionalInfoCard(),
     );
