@@ -146,6 +146,21 @@ RouteBase get $mainRoute => GoRouteData.$route(
           name: 'resume preview',
           factory: $ResumePreviewRouteExtension._fromState,
         ),
+        GoRouteData.$route(
+          path: 'resume-regist-guide',
+          name: 'resume regist guide',
+          factory: $ResumeRegistGuideRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'resume-upload',
+          name: 'resume upload',
+          factory: $ResumeUploadRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'resume-interview-loading',
+          name: 'resume interview loading',
+          factory: $ResumeInterviewLoadingRouteExtension._fromState,
+        ),
       ],
     );
 
@@ -378,6 +393,60 @@ extension $ResumePreviewRouteExtension on ResumePreviewRoute {
 
   String get location => GoRouteData.$location(
         '/resume-preview',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $ResumeRegistGuideRouteExtension on ResumeRegistGuideRoute {
+  static ResumeRegistGuideRoute _fromState(GoRouterState state) =>
+      const ResumeRegistGuideRoute();
+
+  String get location => GoRouteData.$location(
+        '/resume-regist-guide',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $ResumeUploadRouteExtension on ResumeUploadRoute {
+  static ResumeUploadRoute _fromState(GoRouterState state) =>
+      const ResumeUploadRoute();
+
+  String get location => GoRouteData.$location(
+        '/resume-upload',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $ResumeInterviewLoadingRouteExtension on ResumeInterviewLoadingRoute {
+  static ResumeInterviewLoadingRoute _fromState(GoRouterState state) =>
+      const ResumeInterviewLoadingRoute();
+
+  String get location => GoRouteData.$location(
+        '/resume-interview-loading',
       );
 
   void go(BuildContext context) => context.go(location);

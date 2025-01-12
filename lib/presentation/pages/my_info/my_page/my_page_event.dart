@@ -245,8 +245,8 @@ mixin class MyPageEvent {
   ///
   /// 이력서 관리 페이지로 이동
   ///
-  void routeToResumeManagePage(BuildContext context) {
-    const ResumeManageRoute().push(context);
+  void routeToResumeManagePage(WidgetRef ref) {
+    const ResumeManageRoute().push(ref.context);
   }
 
   ///

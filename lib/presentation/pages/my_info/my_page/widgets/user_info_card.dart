@@ -69,7 +69,7 @@ class _UserInfoCard extends ConsumerWidget with MyPageState, MyPageEvent {
 
                   // 내 이력서
                   BounceTapper(
-                    onTap: () => routeToResumeManagePage(context),
+                    onTap: () => routeToResumeManagePage(ref),
                     highlightColor: Colors.transparent,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,

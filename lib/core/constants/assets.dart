@@ -122,9 +122,12 @@ class Assets {
   static const String iconsUser = 'assets/icons/user.svg';
   static const String iconsWarning = 'assets/icons/warning.svg';
   static const String iconsWrongIndicator = 'assets/icons/wrong_indicator.svg';
+  static const String imagesAnalyzingMan = 'assets/images/analyzing_man.png';
   static const String imagesAppIcon = 'assets/images/app_icon.png';
   static const String imagesAvatar1 = 'assets/images/avatar_1.png';
   static const String imagesBlankProfile = 'assets/images/blank_profile.png';
+  static const String imagesDocumentIllustration =
+      'assets/images/document_illustration.png';
   static const String imagesInductionPractical =
       'assets/images/induction_practical.png';
   static const String imagesInductionResume =
