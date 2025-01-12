@@ -72,8 +72,27 @@ class GetOneLineInterViewFeedbackUseCase extends BaseNoFutureUseCase<
     return [
       Messages(
         role: Role.system,
+        content: '당신은 면접관으로서 지원자에게 종합적인 한 줄 평 피드백을 제공해야 합니다.',
+      ).toJson(),
+      param.interviewType.typedBranch(
+        common: (_) {
+          return Messages(
+            role: Role.system,
+            content:
+                '개발자 면접 주제는 ${param.topic.map((e) => StoredTopics.getById(e.id).text).join(' ')}입니다.',
+          ).toJson();
+        },
+        resume: (_) {
+          return Messages(
+            role: Role.system,
+            content: '지원자의 개발자 이력서와 포트폴리오를 기반으로 면접과 답변을 주고 받았습니다.',
+          ).toJson();
+        },
+      ),
+      Messages(
+        role: Role.system,
         content:
-            '당신은 면접관으로서 지원자에게 종합적인 한 줄 평 피드백을 제공해야 합니다. 개발자 면접 주제는 ${param.topic.map((e) => '${StoredTopics.getById(e.id).text}').join(' ')}입니다. 피드백은 ${AppLocale.currentLocale.languageCode}로 작성하며, 면접관과 지원자 주고 받은 대화 기록은 아래와 같습니다.',
+            '피드백은 ${AppLocale.currentLocale.languageCode}로 작성하며, 면접관과 지원자 주고 받은 대화 기록은 아래와 같습니다.',
       ).toJson(),
       ...param.chatHistory.map(
         (element) => switch (element) {
@@ -108,6 +127,7 @@ class GetOneLineInterViewFeedbackParam {
   final List<TopicEntity> topic;
   final List<BaseChatEntity> chatHistory;
   final InterviewResult interviewResult;
+  final InterviewType interviewType;
   final void Function(Object error, StackTrace startTrace) onError;
 
   const GetOneLineInterViewFeedbackParam({
@@ -115,5 +135,6 @@ class GetOneLineInterViewFeedbackParam {
     required this.interviewResult,
     required this.topic,
     required this.onError,
+    required this.interviewType,
   });
 }

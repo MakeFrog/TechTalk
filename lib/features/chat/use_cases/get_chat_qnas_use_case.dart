@@ -5,7 +5,11 @@ final class GetChatQnasUseCase {
   GetChatQnasUseCase(this._chatRepository);
 
   final ChatRepository _chatRepository;
+
   Future<Result<List<ChatQnaEntity>>> call(ChatRoomEntity room) async {
-    return _chatRepository.getChatQnas(room);
+    return room.type.typedBranch(
+      common: (_) => _chatRepository.getCommonChatQnas(room),
+      resume: (_) => _chatRepository.getResumeChatQnas(room),
+    );
   }
 }

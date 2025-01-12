@@ -11,7 +11,8 @@ part 'practical_chat_room_list_provider.g.dart';
 class PracticalChatRoomList extends _$PracticalChatRoomList {
   @override
   FutureOr<List<ChatRoomEntity>> build() async {
-    final response = await getChatRoomsUseCase.call(InterviewType.practical);
+    final response =
+        await getChatRoomsUseCase.call(InterviewType.commonPracticalTopic);
     return response.fold(
       onSuccess: (chatRooms) => chatRooms,
       onFailure: (e) {
