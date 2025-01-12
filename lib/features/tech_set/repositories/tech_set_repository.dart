@@ -18,7 +18,4 @@ abstract interface class TechSetRepository {
 
   /// 스킬 리스트 호출
   List<SkillEntity> getSkills();
-
-  /// 각'TechSet' 데이터 캐싱 여부를 판단할 각 json section key값 호출
-  Future<Result<TechSetKeysModel>> getKeys();
 }

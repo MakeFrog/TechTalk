@@ -1,4 +1,7 @@
+import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/helper/string_extension.dart';
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/tech_set/data_source/remote/model/skill_model.dart';
 import 'package:techtalk/features/tech_set/repositories/enums/skill_category.enum.dart';
 
 class SkillEntity {
@@ -18,8 +21,20 @@ class SkillEntity {
       : id = (json['name'] as String).skillNameToId,
         name = json['name'] as String,
         category = SkillCategory.fromKey(category),
-        imagePath =
-            '${(json['name'] as String).skillNameToId.replaceAll('+', 'plus').replaceAll('#', 'sharp')}.png';
+        imagePath = '${(json['name'] as String).skillNameToId}.png';
+
+  factory SkillEntity.fromModel(SkillModel model) {
+    print('아랑이 : ${model.name}');
+    print('아랑이2 : ${model.name.skillNameToId}');
+    return SkillEntity(
+      id: model.name.skillNameToId,
+      name: AppLocale.isKo ? model.name : model.koName,
+      imagePath: '${model.name.skillNameToId}.png',
+      category: SkillCategory.fromKey(
+        model.category,
+      ),
+    );
+  }
 
   /// 1.0.12
   /// 마이그레이션 이후 존재하지 않은 skill일 경우 사용
