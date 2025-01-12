@@ -55,4 +55,9 @@ abstract interface class UserRemoteDataSource {
     required String contentId,
     required bool targetState,
   });
+
+  ///
+  /// 유튜브 영상 기록 추가
+  ///
+  Future<void> updateYoutubeWatchHistory(String contentId);
 }

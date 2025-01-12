@@ -44,7 +44,7 @@ abstract class FirestoreUsersRef {
           .collection(bookmarkedYoutubeName)
           .doc(contentId);
 
-  static DocumentReference watchedYoutubeHistory(String contentId) =>
+  static DocumentReference watchedYoutubeHistoryDoc(String contentId) =>
       FirebaseFirestore.instance
           .collection(name)
           .doc(_userUid)

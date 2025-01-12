@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/services.dart';
@@ -6,6 +7,7 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
+import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/features/youtube/repositories/entities/youtube_related_vido_entity.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/is_bookmark_checked_provider.dart';
@@ -128,6 +130,22 @@ mixin class YoutubeDetailEvent {
       },
       onFailure: (e) {
         log('Youtube Detail > $e');
+      },
+    );
+  }
+
+  ///
+  /// 시청 기록 업데이트
+  ///
+  Future<void> updateWatchedHistory(WidgetRef ref) async {
+    final contentId = ref.read(youtubeDetailRouteArgProvider).contentId;
+    final response = await userRepository.updateYoutubeWatchHistory(contentId);
+    response.fold(
+      onSuccess: (_) {
+        log('시청 기록 업데이트 성공');
+      },
+      onFailure: (e) {
+        log('시청 기록 업데이트 실패 : ${e}');
       },
     );
   }

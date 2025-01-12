@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/user/user.dart';
+import 'package:techtalk/features/youtube/data_source/remote/youtube_ref.dart';
 
 final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   Future<bool> isExistNickname(
@@ -133,11 +134,25 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         await FirestoreUsersRef.bookMarkedYoutubeDoc(contentId).set(
           {
             'id': contentId,
+            'youtube_ref': FirestoreYoutubeRef.doc(contentId),
           },
         );
       } else {
         await FirestoreUsersRef.bookMarkedYoutubeDoc(contentId).delete();
       }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateYoutubeWatchHistory(String contentId) async {
+    try {
+      await FirestoreUsersRef.watchedYoutubeHistoryDoc(contentId).set({
+        'id': contentId,
+        'youtube_ref': FirestoreYoutubeRef.doc(contentId),
+        'watched_at': DateTime.timestamp(),
+      });
     } catch (e) {
       rethrow;
     }

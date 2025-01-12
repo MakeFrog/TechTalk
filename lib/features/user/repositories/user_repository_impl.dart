@@ -188,4 +188,14 @@ final class UserRepositoryImpl implements UserRepository {
       return Result.failure(Exception('UserRepository > $e'));
     }
   }
+
+  @override
+  Future<Result<void>> updateYoutubeWatchHistory(String contentId) async {
+    try {
+      await _userRemoteDataSource.updateYoutubeWatchHistory(contentId);
+      return Result.success(null);
+    } catch (e) {
+      return Result.failure(Exception('UserRepository > $e'));
+    }
+  }
 }

@@ -76,4 +76,9 @@ abstract interface class UserRepository {
     required String contentId,
     required bool targetState,
   });
+
+  ///
+  /// 유튜브 영상 시청 기록 추가
+  ///
+  Future<Result<void>> updateYoutubeWatchHistory(String contentId);
 }
