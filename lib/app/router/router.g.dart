@@ -135,6 +135,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $YoutubeLinkSubmitRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: 'my-youtube-board',
+          name: 'my youtube board',
+          factory: $MyYoutubeBoardRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'submitted-youtube-confirm-route',
           name: 'submitted youtube confirm route',
           factory: $SubmittedYoutubeConfirmRouteExtension._fromState,
@@ -356,6 +361,24 @@ extension $YoutubeLinkSubmitRouteExtension on YoutubeLinkSubmitRoute {
 
   String get location => GoRouteData.$location(
         '/youtube-link-submit',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $MyYoutubeBoardRouteExtension on MyYoutubeBoardRoute {
+  static MyYoutubeBoardRoute _fromState(GoRouterState state) =>
+      MyYoutubeBoardRoute();
+
+  String get location => GoRouteData.$location(
+        '/my-youtube-board',
       );
 
   void go(BuildContext context) => context.go(location);

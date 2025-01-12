@@ -104,23 +104,30 @@ mixin class MyPageEvent {
     );
   }
 
+  ///
+  /// 내 영상 학습 시청 영역이 클릭되었을 때
+  ///
+  void onMyYoutubeBoardSectionTapped(BuildContext context) {
+    MyYoutubeBoardRoute().push(context);
+  }
+
   /// 프롤필 영역 클릭 시
   void onProfileSectionTapped(BuildContext context) {
-    const ProfileSettingRoute().go(context);
+    const ProfileSettingRoute().push(context);
   }
 
   ///
   /// 관심 직군 영역 클릭 시
   ///
   void onJobGroupSectionTapped(BuildContext context) {
-    JobGroupSettingRoute().go(context);
+    JobGroupSettingRoute().push(context);
   }
 
   ///
   /// 관심 스킬 영역 클릭 시
   ///
   void onSkillSectionTapped(BuildContext context) {
-    SkillSettingRoute().go(context);
+    SkillSettingRoute().push(context);
   }
 
   ///

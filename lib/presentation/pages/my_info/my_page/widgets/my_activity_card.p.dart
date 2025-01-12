@@ -1,6 +1,6 @@
 part of '../my_page.dart';
 
-class _MyActivityCard extends ConsumerWidget {
+class _MyActivityCard extends ConsumerWidget with MyPageEvent {
   const _MyActivityCard({super.key});
 
   @override
@@ -17,7 +17,9 @@ class _MyActivityCard extends ConsumerWidget {
         ),
         const Gap(12),
         BounceTapper(
-          onTap: () {},
+          onTap: () {
+            onMyYoutubeBoardSectionTapped(context);
+          },
           child: Container(
             padding: const EdgeInsets.symmetric(
               vertical: 24,

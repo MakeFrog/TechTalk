@@ -13,6 +13,7 @@ import 'package:techtalk/presentation/pages/interview/question_count_select/ques
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/job_group_setting_page.dart';
+import 'package:techtalk/presentation/pages/my_info/my_youtube_board/my_youtube_board_page.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_setting_page.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/skill_setting_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
@@ -175,6 +176,10 @@ class SignUpRoute extends GoRouteData {
       path: YoutubeLinkSubmitRoute.path,
       name: YoutubeLinkSubmitRoute.name,
     ),
+    TypedGoRoute<MyYoutubeBoardRoute>(
+      path: MyYoutubeBoardRoute.path,
+      name: MyYoutubeBoardRoute.name,
+    ),
     TypedGoRoute<SubmittedYoutubeConfirmRoute>(
       path: SubmittedYoutubeConfirmRoute.path,
       name: SubmittedYoutubeConfirmRoute.name,
@@ -241,6 +246,17 @@ class StudyRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     arg = $extra;
     return const LearningDetailPage();
+  }
+}
+
+class MyYoutubeBoardRoute extends GoRouteData {
+  static const String path = 'my-youtube-board';
+  static const String name = 'my youtube board';
+  static late TopicEntity arg;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const MyYoutubeBoardPage();
   }
 }
 
