@@ -13,34 +13,34 @@ class UserBox extends HiveObject {
   @HiveField(2, defaultValue: true)
   final bool hasEnteredFirstInterview;
 
-  @HiveField(3, defaultValue: null)
-  final String? resumePdfPath;
+  @HiveField(3)
+  final String resumePdfPath;
 
-  @HiveField(4, defaultValue: null)
-  final String? resumePdfTitle;
+  @HiveField(4)
+  final String resumePdfTitle;
 
-  @HiveField(5, defaultValue: null)
-  final String? resumePdfDate;
+  @HiveField(5)
+  final String resumePdfDate;
 
-  @HiveField(6, defaultValue: null)
-  final String? portfolioPdfPath;
+  @HiveField(6)
+  final String portfolioPdfPath;
 
-  @HiveField(7, defaultValue: null)
-  final String? portfolioPdfTitle;
+  @HiveField(7)
+  final String portfolioPdfTitle;
 
-  @HiveField(8, defaultValue: null)
-  final String? portfolioPdfDate;
+  @HiveField(8)
+  final String portfolioPdfDate;
 
   UserBox({
     required this.hasPracticalInterviewRecord,
     required this.isReviewRequestAvailable,
     required this.hasEnteredFirstInterview,
-    this.resumePdfPath,
-    this.resumePdfTitle,
-    this.resumePdfDate,
-    this.portfolioPdfPath,
-    this.portfolioPdfTitle,
-    this.portfolioPdfDate,
+    required this.resumePdfPath,
+    required this.resumePdfTitle,
+    required this.resumePdfDate,
+    required this.portfolioPdfPath,
+    required this.portfolioPdfTitle,
+    required this.portfolioPdfDate,
   });
 
   UserBox copyWith({
@@ -75,6 +75,12 @@ class UserBox extends HiveObject {
       hasPracticalInterviewRecord: false,
       isReviewRequestAvailable: true,
       hasEnteredFirstInterview: false,
+      resumePdfPath: '',
+      resumePdfTitle: '',
+      resumePdfDate: '',
+      portfolioPdfPath: '',
+      portfolioPdfTitle: '',
+      portfolioPdfDate: '',
     );
   }
 }

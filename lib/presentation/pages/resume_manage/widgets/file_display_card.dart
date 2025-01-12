@@ -18,9 +18,9 @@ class FileDisplayCard extends StatelessWidget {
   }) : super(key: key);
 
   final bool isResume;
-  final String? localPath;
-  final String? localTitle;
-  final String? localDate;
+  final String localPath;
+  final String localTitle;
+  final String localDate;
 
   final String? tempPath;
   final String? tempTitle;
@@ -37,8 +37,8 @@ class FileDisplayCard extends StatelessWidget {
     final currentDate = tempPath != null ? tempDate : localDate;
 
     // 파일이 없으면 업로드 컴포넌트
-    if (currentPath == null) {
-      return _FileUploadPlaceholder(onTap: onEmptyTap);
+    if (currentPath.isEmpty) {
+      return FileUploadPlaceholder(onTap: onEmptyTap);
     }
 
     // 파일이 존재하면 해당 파일 정보 표시
@@ -79,8 +79,8 @@ class FileDisplayCard extends StatelessWidget {
 ///
 /// dotted border가 들어간 파일 업로드 placeholder
 ///
-class _FileUploadPlaceholder extends StatelessWidget {
-  const _FileUploadPlaceholder({required this.onTap});
+class FileUploadPlaceholder extends StatelessWidget {
+  const FileUploadPlaceholder({super.key, required this.onTap});
 
   final VoidCallback onTap;
 

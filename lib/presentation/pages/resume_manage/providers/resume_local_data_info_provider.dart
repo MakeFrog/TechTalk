@@ -1,6 +1,9 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 import 'package:techtalk/core/modules/error_handling/result.dart';
 import 'package:techtalk/features/user/user.dart';
 
@@ -14,12 +17,12 @@ class ResumeLocalDataInfo extends _$ResumeLocalDataInfo {
     final metadataResult = userRepository.getPdfMetaData();
     return metadataResult.fold(
       onSuccess: (metadata) => ResumeLocalState(
-        localResumePath: metadata['resumePdfPath'],
-        localResumeTitle: metadata['resumePdfTitle'],
-        localResumeDate: metadata['resumePdfDate'],
-        localPortfolioPath: metadata['portfolioPdfPath'],
-        localPortfolioTitle: metadata['portfolioPdfTitle'],
-        localPortfolioDate: metadata['portfolioPdfDate'],
+        localResumePath: metadata['resumePdfPath'] ?? '',
+        localResumeTitle: metadata['resumePdfTitle'] ?? '',
+        localResumeDate: metadata['resumePdfDate'] ?? '',
+        localPortfolioPath: metadata['portfolioPdfPath'] ?? '',
+        localPortfolioTitle: metadata['portfolioPdfTitle'] ?? '',
+        localPortfolioDate: metadata['portfolioPdfDate'] ?? '',
       ),
       onFailure: (e) {
         log('Failed to load metadata: $e');
@@ -28,11 +31,13 @@ class ResumeLocalDataInfo extends _$ResumeLocalDataInfo {
     );
   }
 
+  ///
   /// 이력서 PDF 정보 로컬 업데이트
+  ///
   void updateLocalResume(
-    String? localResumePath,
-    String? localResumeTitle,
-    String? localResumeDate,
+    String localResumePath,
+    String localResumeTitle,
+    String localResumeDate,
   ) {
     debugPrint('로컬 이력서 업데이트');
     // 1) Riverpod State 갱신
@@ -51,11 +56,13 @@ class ResumeLocalDataInfo extends _$ResumeLocalDataInfo {
     );
   }
 
+  ///
   /// 포트폴리오 PDF 정보 로컬 업데이트
+  ///
   void updateLocalPortfolio(
-    String? localPortfolioPath,
-    String? localPortfolioTitle,
-    String? localPortfolioDate,
+    String localPortfolioPath,
+    String localPortfolioTitle,
+    String localPortfolioDate,
   ) {
     debugPrint('로컬 포트폴리오 업데이트');
     // 1) Riverpod State 갱신
@@ -73,7 +80,9 @@ class ResumeLocalDataInfo extends _$ResumeLocalDataInfo {
     );
   }
 
+  ///
   /// 로컬 데이터 불러오기
+  ///
   Result<Map<String, String?>> getPdfMetaData() {
     try {
       return userRepository.getPdfMetaData();
@@ -81,79 +90,51 @@ class ResumeLocalDataInfo extends _$ResumeLocalDataInfo {
       return Result.failure(e);
     }
   }
+
+  ///
+  /// Local State 초기화 메서드
+  ///
+  void resetLocalState() {
+    debugPrint('로컬 데이터 초기화');
+    state = const ResumeLocalState();
+  }
 }
 
 ///
 /// 이력서 관리 페이지에서만 사용될 로컬 데이터 저장 형태 정의 클래스
 ///
 class ResumeLocalState {
-  final String? localResumePath;
-  final String? localResumeTitle;
-  final String? localResumeDate;
-  final String? localPortfolioPath;
-  final String? localPortfolioTitle;
-  final String? localPortfolioDate;
+  final String localResumePath;
+  final String localResumeTitle;
+  final String localResumeDate;
+  final String localPortfolioPath;
+  final String localPortfolioTitle;
+  final String localPortfolioDate;
 
   const ResumeLocalState({
-    this.localResumePath,
-    this.localResumeTitle,
-    this.localResumeDate,
-    this.localPortfolioPath,
-    this.localPortfolioTitle,
-    this.localPortfolioDate,
+    this.localResumePath = '',
+    this.localResumeTitle = '',
+    this.localResumeDate = '',
+    this.localPortfolioPath = '',
+    this.localPortfolioTitle = '',
+    this.localPortfolioDate = '',
   });
 
-  ResumeLocalCopyWith get copyWith => _ResumeLocalStateCopyWith(this);
-}
-
-///
-/// 클래스의 copywith에서 특정 값(not null)을 기본 값(null)으로 변경할 수 있도록 추상클래스 구현
-///
-abstract class ResumeLocalCopyWith {
-  ResumeLocalState call({
+  ResumeLocalState copyWith({
     String? localResumePath,
     String? localResumeTitle,
     String? localResumeDate,
     String? localPortfolioPath,
     String? localPortfolioTitle,
     String? localPortfolioDate,
-  });
-}
-
-class _ResumeLocalStateCopyWith implements ResumeLocalCopyWith {
-  final ResumeLocalState value;
-  static const Object _undefined = Object();
-
-  const _ResumeLocalStateCopyWith(this.value);
-
-  @override
-  ResumeLocalState call({
-    Object? localResumePath = _undefined,
-    Object? localResumeTitle = _undefined,
-    Object? localResumeDate = _undefined,
-    Object? localPortfolioPath = _undefined,
-    Object? localPortfolioTitle = _undefined,
-    Object? localPortfolioDate = _undefined,
   }) {
     return ResumeLocalState(
-      localResumePath: localResumePath == _undefined
-          ? value.localResumePath
-          : localResumePath as String?,
-      localResumeTitle: localResumeTitle == _undefined
-          ? value.localResumeTitle
-          : localResumeTitle as String?,
-      localResumeDate: localResumeDate == _undefined
-          ? value.localResumeDate
-          : localResumeDate as String?,
-      localPortfolioPath: localPortfolioPath == _undefined
-          ? value.localPortfolioPath
-          : localPortfolioPath as String?,
-      localPortfolioTitle: localPortfolioTitle == _undefined
-          ? value.localPortfolioTitle
-          : localPortfolioTitle as String?,
-      localPortfolioDate: localPortfolioDate == _undefined
-          ? value.localPortfolioDate
-          : localPortfolioDate as String?,
+      localResumePath: localResumePath ?? this.localResumePath,
+      localResumeTitle: localResumeTitle ?? this.localResumeTitle,
+      localResumeDate: localResumeDate ?? this.localResumeDate,
+      localPortfolioPath: localPortfolioPath ?? this.localPortfolioPath,
+      localPortfolioTitle: localPortfolioTitle ?? this.localPortfolioTitle,
+      localPortfolioDate: localPortfolioDate ?? this.localPortfolioDate,
     );
   }
 }

@@ -6,8 +6,8 @@ class _UserInfoCard extends ConsumerWidget with MyPageState, MyPageEvent {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final fetchLocalResumeData = ref.watch(resumeLocalDataInfoProvider);
-    bool isLocalDataExist = fetchLocalResumeData.localResumePath != null ||
-        fetchLocalResumeData.localPortfolioPath != null;
+    bool isLocalDataExist = fetchLocalResumeData.localResumePath.isNotEmpty ||
+        fetchLocalResumeData.localPortfolioPath.isNotEmpty;
 
     return Column(
       children: <Widget>[

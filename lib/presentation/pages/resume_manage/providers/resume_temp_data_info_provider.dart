@@ -33,6 +33,16 @@ class ResumeTempDataInfo extends _$ResumeTempDataInfo {
     debugPrint('임시 데이터 초기화');
     state = const ResumeTempState();
   }
+
+  /// 임시 이력서 삭제 상태 업데이트
+  void setLocalResumeDeleted({required bool value}) {
+    state = state.copyWith(isLocalResumeDeleted: value);
+  }
+
+  /// 임시 포트폴리오 삭제 상태 업데이트
+  void setLocalPortfolioDeleted({required bool value}) {
+    state = state.copyWith(isLocalPortfolioDeleted: value);
+  }
 }
 
 ///
@@ -49,7 +59,8 @@ class ResumeTempState {
   final String? tempPortfolioPath;
   final String? tempPortfolioTitle;
   final String? tempPortfolioDate;
-  final bool isTempChanged;
+  final bool isLocalResumeDeleted;
+  final bool isLocalPortfolioDeleted;
 
   const ResumeTempState({
     this.tempResumePath,
@@ -58,7 +69,8 @@ class ResumeTempState {
     this.tempPortfolioPath,
     this.tempPortfolioTitle,
     this.tempPortfolioDate,
-    this.isTempChanged = false,
+    this.isLocalResumeDeleted = false,
+    this.isLocalPortfolioDeleted = false,
   });
 
   ResumeTempStateCopyWith get copyWith => _ResumeTempStateCopyWith(this);
@@ -72,7 +84,8 @@ abstract class ResumeTempStateCopyWith {
     String? tempPortfolioPath,
     String? tempPortfolioTitle,
     String? tempPortfolioDate,
-    bool? isTempChanged,
+    bool? isLocalResumeDeleted,
+    bool? isLocalPortfolioDeleted,
   });
 }
 
@@ -90,7 +103,8 @@ class _ResumeTempStateCopyWith implements ResumeTempStateCopyWith {
     Object? tempPortfolioPath = _undefined,
     Object? tempPortfolioTitle = _undefined,
     Object? tempPortfolioDate = _undefined,
-    Object? isTempChanged = _undefined,
+    Object? isLocalResumeDeleted = _undefined,
+    Object? isLocalPortfolioDeleted = _undefined,
   }) {
     return ResumeTempState(
       tempResumePath: tempResumePath == _undefined
@@ -111,9 +125,12 @@ class _ResumeTempStateCopyWith implements ResumeTempStateCopyWith {
       tempPortfolioDate: tempPortfolioDate == _undefined
           ? value.tempPortfolioDate
           : tempPortfolioDate as String?,
-      isTempChanged: isTempChanged == _undefined
-          ? value.isTempChanged
-          : isTempChanged as bool,
+      isLocalResumeDeleted: isLocalResumeDeleted == _undefined
+          ? value.isLocalResumeDeleted
+          : isLocalResumeDeleted as bool,
+      isLocalPortfolioDeleted: isLocalPortfolioDeleted == _undefined
+          ? value.isLocalPortfolioDeleted
+          : isLocalPortfolioDeleted as bool,
     );
   }
 }

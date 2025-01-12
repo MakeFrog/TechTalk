@@ -7,7 +7,7 @@ part of 'resume_temp_data_info_provider.dart';
 // **************************************************************************
 
 String _$resumeTempDataInfoHash() =>
-    r'49743390285c47a7b5d7a034c6835290e61c3404';
+    r'938095abf4f67eaade58850b83f118c5dd39a2d7';
 
 /// See also [ResumeTempDataInfo].
 @ProviderFor(ResumeTempDataInfo)

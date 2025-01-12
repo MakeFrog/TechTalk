@@ -15,7 +15,9 @@ import 'package:techtalk/presentation/pages/resume_manage/resume_manage_page.dar
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
 mixin class ResumeManageEvent {
+  ///
   /// 설정 bottom sheet 모달창 노출
+  ///
   void onRegisteredFileBtnTapped(
     WidgetRef ref, {
     required bool isResume,
@@ -51,8 +53,9 @@ mixin class ResumeManageEvent {
     );
   }
 
+  ///
   /// 미리보기 버튼 클릭시
-  /// TODO: 이력서 미리보기 기능 구현하기
+  ///
   void onClickedPreviewBtn(
     WidgetRef ref, {
     required bool isResume,
@@ -84,14 +87,16 @@ mixin class ResumeManageEvent {
     const ResumePreviewRoute().push(ref.context);
   }
 
+  ///
   /// 삭제 버튼 클릭시
+  ///
   void onClickedDeleteBtn(
     WidgetRef ref, {
     required bool isResume,
     required bool isLocal,
   }) {
+    ResumeTempState tempState = ref.read(resumeTempDataInfoProvider);
     final tempNotifier = ref.read(resumeTempDataInfoProvider.notifier);
-    final localNotifier = ref.read(resumeLocalDataInfoProvider.notifier);
 
     DialogService.show(
       dialog: AppDialog.dividedBtn(
@@ -100,16 +105,49 @@ mixin class ResumeManageEvent {
         leftBtnContent: '취소',
         rightBtnContent: '삭제',
         onRightBtnClicked: () {
-          debugPrint('isResume : $isResume');
-          debugPrint('isLocal : $isLocal');
+          if (isResume) {
+            if (isLocal) {
+              tempNotifier.setLocalResumeDeleted(value: true);
+              tempNotifier.updateTempResume(null, null, null);
+              tempState = ref.read(resumeTempDataInfoProvider);
 
-          isResume
-              ? isLocal // 이력서 파일
-                  ? localNotifier.updateLocalResume(null, null, null)
-                  : tempNotifier.updateTempResume(null, null, null)
-              : isLocal // 포트폴리오 파일
-                  ? localNotifier.updateLocalPortfolio(null, null, null)
-                  : tempNotifier.updateTempPortfolio(null, null, null);
+              debugPrint(
+                ' ===== 임시 이력서 경로 : ${tempState.tempResumePath} ===== ',
+              );
+              debugPrint(
+                ' ===== 임시 이력서 제목 : ${tempState.tempResumeTitle} ===== ',
+              );
+              debugPrint(
+                ' ===== 임시 이력서 날짜 : ${tempState.tempResumeDate} ===== ',
+              );
+              debugPrint(
+                ' ===== 로컬 데이터 삭제 예정? : ${tempState.isLocalResumeDeleted} ===== ',
+              );
+            } else {
+              tempNotifier.updateTempResume(null, null, null);
+            }
+          } else {
+            if (isLocal) {
+              tempNotifier.setLocalPortfolioDeleted(value: true);
+              tempNotifier.updateTempPortfolio(null, null, null);
+              tempState = ref.read(resumeTempDataInfoProvider);
+
+              debugPrint(
+                ' ===== 임시 포트폴리오 경로 : ${tempState.tempPortfolioPath} ===== ',
+              );
+              debugPrint(
+                ' ===== 임시 포트폴리오 제목 : ${tempState.tempPortfolioTitle} ===== ',
+              );
+              debugPrint(
+                ' ===== 임시 포트폴리오 날짜 : ${tempState.tempPortfolioDate} ===== ',
+              );
+              debugPrint(
+                ' ===== 로컬 데이터 삭제 예정? : ${tempState.isLocalPortfolioDeleted} ===== ',
+              );
+            } else {
+              tempNotifier.updateTempPortfolio(null, null, null);
+            }
+          }
 
           ref.context.pop();
         },
@@ -129,7 +167,25 @@ mixin class ResumeManageEvent {
     final tempNotifier = ref.read(resumeTempDataInfoProvider.notifier);
     final localNotifier = ref.read(resumeLocalDataInfoProvider.notifier);
 
-    // 1) 이력서 PDF 업데이트
+    // 이력서 초기화 요청 존재한다면 먼저 실행
+    if (tempState.isLocalResumeDeleted) {
+      localNotifier.updateLocalResume(
+        '',
+        '',
+        '',
+      );
+    }
+
+    // 포트폴리오 초기화 요청 존재한다면 먼저 실행
+    if (tempState.isLocalPortfolioDeleted) {
+      localNotifier.updateLocalPortfolio(
+        '',
+        '',
+        '',
+      );
+    }
+
+    // 이력서 PDF 업데이트
     if (tempState.tempResumePath != null) {
       final appDocDir = await getApplicationDocumentsDirectory();
       final localResumePath = '${appDocDir.path}/${tempState.tempResumeTitle}';
@@ -223,11 +279,27 @@ mixin class ResumeManageEvent {
         String tempResumeDate = DateFormat('yyyy.MM.dd').format(DateTime.now());
 
         // 값 업데이트
+        ResumeTempState tempState = ref.read(resumeTempDataInfoProvider);
         final notifier = ref.read(resumeTempDataInfoProvider.notifier);
         notifier.updateTempResume(
           tempResumePath,
           tempResumeTitle,
           tempResumeDate,
+        );
+
+        tempState = ref.read(resumeTempDataInfoProvider);
+
+        debugPrint(
+          ' ===== 임시 이력서 경로 : ${tempState.tempResumePath} ===== ',
+        );
+        debugPrint(
+          ' ===== 임시 이력서 제목 : ${tempState.tempResumeTitle} ===== ',
+        );
+        debugPrint(
+          ' ===== 임시 이력서 날짜 : ${tempState.tempResumeDate} ===== ',
+        );
+        debugPrint(
+          ' ===== 로컬 데이터 삭제 예정? : ${tempState.isLocalResumeDeleted} ===== ',
         );
       } else {
         throw Exception('No file selected or invalid file path.');
@@ -237,7 +309,9 @@ mixin class ResumeManageEvent {
     }
   }
 
+  ///
   /// 포트폴리오 파일 선택시
+  ///
   Future<void> portfolioPickAndSaveFile(WidgetRef ref) async {
     const maxFileSizeInBytes = 50 * 1024 * 1024;
 
@@ -283,20 +357,52 @@ mixin class ResumeManageEvent {
             DateFormat('yyyy.MM.dd').format(DateTime.now());
 
         // 값 업데이트
-        ref.read(resumeTempDataInfoProvider.notifier).updateTempPortfolio(
-              tempPortfolioPath,
-              tempPortfolioTitle,
-              tempPortfolioDate,
-            );
+        ResumeTempState tempState = ref.read(resumeTempDataInfoProvider);
+        final notifier = ref.read(resumeTempDataInfoProvider.notifier);
+        notifier.updateTempPortfolio(
+          tempPortfolioPath,
+          tempPortfolioTitle,
+          tempPortfolioDate,
+        );
 
-        debugPrint('tempPortfolioPath : $tempPortfolioPath');
-        debugPrint('tempPortfolioTitle : $tempPortfolioTitle');
-        debugPrint('tempPortfolioDate : $tempPortfolioDate');
+        tempState = ref.read(resumeTempDataInfoProvider);
+
+        debugPrint(
+          ' ===== 임시 포트폴리오 경로 : ${tempState.tempPortfolioPath} ===== ',
+        );
+        debugPrint(
+          ' ===== 임시 포트폴리오 제목 : ${tempState.tempPortfolioTitle} ===== ',
+        );
+        debugPrint(
+          ' ===== 임시 포트폴리오 날짜 : ${tempState.tempPortfolioDate} ===== ',
+        );
+        debugPrint(
+          ' ===== 로컬 데이터 삭제 예정? : ${tempState.isLocalPortfolioDeleted} ===== ',
+        );
       } else {
         throw Exception('No file selected or invalid file path.');
       }
     } catch (e) {
       debugPrint('Error: $e');
     }
+  }
+
+  ///
+  /// ToolTip 활성화 조건
+  ///
+  bool shouldShowTooltip(
+    ResumeTempState tempState,
+    ResumeLocalState localData, {
+    required bool isTempChanged,
+  }) {
+    bool isTempResumeNull = tempState.tempResumePath == null;
+    bool isTempPortfolioNull = tempState.tempPortfolioPath == null;
+    bool isLocalStateNotNull = localData.localResumePath.isEmpty &&
+        localData.localPortfolioPath.isEmpty;
+
+    // 조건에 따라 true 또는 false 반환
+    return (isTempResumeNull != isTempPortfolioNull) &&
+        isLocalStateNotNull &&
+        isTempChanged == true;
   }
 }

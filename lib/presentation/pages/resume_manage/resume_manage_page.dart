@@ -9,7 +9,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/presentation/pages/resume_manage/providers/resume_local_data_info_provider.dart';
 import 'package:techtalk/presentation/pages/resume_manage/providers/resume_temp_data_info_provider.dart';
 import 'package:techtalk/presentation/pages/resume_manage/resume_manage_event.dart';
 import 'package:techtalk/presentation/pages/resume_manage/resume_manage_state.dart';
@@ -26,75 +25,70 @@ class ResumeManagePage extends BasePage
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
     final tempState = fetchTempState(ref);
-    final localData = fetchLocalResumeData(ref);
+    final localData = fetchLocalState(ref);
 
     // 저장하기 버튼 활성화
-    final bool isTempChanged =
-        tempState.tempResumePath != null || tempState.tempPortfolioPath != null;
+    final bool isTempChanged = tempState.tempResumePath != null ||
+        tempState.tempPortfolioPath != null ||
+        tempState.isLocalResumeDeleted == true ||
+        tempState.isLocalPortfolioDeleted == true;
 
-    bool shouldShowTooltip(
-      ResumeTempState tempState,
-      ResumeLocalState localData, {
-      required bool isTempChanged,
-    }) {
-      final isTempStateNotNull = tempState.tempResumePath != null ||
-          tempState.tempPortfolioPath != null;
-      final isLocalStateNotNull = localData.localResumePath != null ||
-          localData.localPortfolioPath != null;
-
-      // 조건에 따라 true 또는 false 반환
-      return (isTempStateNotNull && !isLocalStateNotNull) ||
-          (!isTempStateNotNull && isLocalStateNotNull) && isTempChanged == true;
-    }
-
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                '50MB 이하의 PDF 파일만 등록할 수 있어요',
-                style: AppTextStyle.body1.copyWith(color: AppColor.of.gray4),
-              ),
-              const Gap(12),
-              const _ResumePdfFileSection(),
-              const _PortfolioPdfFileSection(),
-            ],
-          ),
-          const Spacer(),
-
-          // 저장 버튼
-          Column(
-            children: [
-              if (shouldShowTooltip(
-                tempState,
-                localData,
-                isTempChanged: isTempChanged,
-              ))
-                Column(
-                  children: [
-                    SvgPicture.asset(Assets.iconsOneMoreAddTooltip),
-                    const Gap(8),
-                  ],
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
+          ref.read(resumeTempDataInfoProvider.notifier).resetTempState();
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  '50MB 이하의 PDF 파일만 등록할 수 있어요',
+                  style: AppTextStyle.body1.copyWith(color: AppColor.of.gray4),
                 ),
-              BounceTapper(
-                enable: isTempChanged,
-                child: FilledButton(
-                  onPressed: isTempChanged ? () => onClickedSaveBtn(ref) : null,
-                  child: Center(
-                    child: Text(
-                      context.tr(
-                        LocaleKeys.common_save,
+                const Gap(12),
+                const _ResumePdfFileSection(),
+                const _PortfolioPdfFileSection(),
+              ],
+            ),
+            const Spacer(),
+
+            // 저장 버튼
+            Column(
+              children: [
+                if (shouldShowTooltip(
+                  tempState,
+                  localData,
+                  isTempChanged: isTempChanged,
+                ))
+                  Column(
+                    children: [
+                      SvgPicture.asset(Assets.iconsOneMoreAddTooltip),
+                      const Gap(8),
+                    ],
+                  ),
+                BounceTapper(
+                  enable: isTempChanged,
+                  child: FilledButton(
+                    onPressed:
+                        isTempChanged ? () => onClickedSaveBtn(ref) : null,
+                    child: Center(
+                      child: Text(
+                        context.tr(
+                          LocaleKeys.common_save,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -114,8 +108,8 @@ class _ResumePdfFileSection extends ConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tempState = fetchTempState(ref);
-    final localState = fetchLocalResumeData(ref);
-    final bool isLocalResumeDataExist = localState.localResumePath != null;
+    final localState = fetchLocalState(ref);
+    final bool isLocalResumeDataExist = localState.localResumePath.isNotEmpty;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
@@ -124,21 +118,27 @@ class _ResumePdfFileSection extends ConsumerWidget
         children: [
           Text('이력서', style: AppTextStyle.headline2),
           const Gap(8),
-          FileDisplayCard(
-            isResume: true,
-            localPath: localState.localResumePath,
-            localTitle: localState.localResumeTitle,
-            localDate: localState.localResumeDate,
-            tempPath: tempState.tempResumePath,
-            tempTitle: tempState.tempResumeTitle,
-            tempDate: tempState.tempResumeDate,
-            onFileTap: () => onRegisteredFileBtnTapped(
-              ref,
+          if (tempState.tempResumePath == null &&
+              tempState.isLocalResumeDeleted)
+            FileUploadPlaceholder(
+              onTap: () => resumePickAndSaveFile(ref),
+            )
+          else
+            FileDisplayCard(
               isResume: true,
-              isLocal: isLocalResumeDataExist,
+              localPath: localState.localResumePath,
+              localTitle: localState.localResumeTitle,
+              localDate: localState.localResumeDate,
+              tempPath: tempState.tempResumePath,
+              tempTitle: tempState.tempResumeTitle,
+              tempDate: tempState.tempResumeDate,
+              onFileTap: () => onRegisteredFileBtnTapped(
+                ref,
+                isResume: true,
+                isLocal: isLocalResumeDataExist,
+              ),
+              onEmptyTap: () => resumePickAndSaveFile(ref),
             ),
-            onEmptyTap: () => resumePickAndSaveFile(ref),
-          ),
         ],
       ),
     );
@@ -155,9 +155,9 @@ class _PortfolioPdfFileSection extends ConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tempState = fetchTempState(ref);
-    final localState = fetchLocalResumeData(ref);
+    final localState = fetchLocalState(ref);
     final bool isLocalPortfolioDataExist =
-        localState.localPortfolioPath != null;
+        localState.localPortfolioPath.isNotEmpty;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
@@ -166,21 +166,28 @@ class _PortfolioPdfFileSection extends ConsumerWidget
         children: [
           Text('포트폴리오', style: AppTextStyle.headline2),
           const Gap(8),
-          FileDisplayCard(
-            isResume: false,
-            localPath: localState.localPortfolioPath,
-            localTitle: localState.localPortfolioTitle,
-            localDate: localState.localPortfolioDate,
-            tempPath: tempState.tempPortfolioPath,
-            tempTitle: tempState.tempPortfolioTitle,
-            tempDate: tempState.tempPortfolioDate,
-            onFileTap: () => onRegisteredFileBtnTapped(
-              ref,
+          if (
+            tempState.tempPortfolioPath == null &&
+            tempState.isLocalPortfolioDeleted)
+            FileUploadPlaceholder(
+              onTap: () => portfolioPickAndSaveFile(ref),
+            )
+          else
+            FileDisplayCard(
               isResume: false,
-              isLocal: isLocalPortfolioDataExist,
+              localPath: localState.localPortfolioPath,
+              localTitle: localState.localPortfolioTitle,
+              localDate: localState.localPortfolioDate,
+              tempPath: tempState.tempPortfolioPath,
+              tempTitle: tempState.tempPortfolioTitle,
+              tempDate: tempState.tempPortfolioDate,
+              onFileTap: () => onRegisteredFileBtnTapped(
+                ref,
+                isResume: false,
+                isLocal: isLocalPortfolioDataExist,
+              ),
+              onEmptyTap: () => portfolioPickAndSaveFile(ref),
             ),
-            onEmptyTap: () => portfolioPickAndSaveFile(ref),
-          ),
         ],
       ),
     );

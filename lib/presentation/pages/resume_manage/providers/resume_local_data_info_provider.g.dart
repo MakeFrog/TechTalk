@@ -7,7 +7,7 @@ part of 'resume_local_data_info_provider.dart';
 // **************************************************************************
 
 String _$resumeLocalDataInfoHash() =>
-    r'2d1f046c8cdfd63887ed5e0deb53e25a604358b8';
+    r'70b395f94dccc8abe927787fa839201afffd791a';
 
 /// See also [ResumeLocalDataInfo].
 @ProviderFor(ResumeLocalDataInfo)
