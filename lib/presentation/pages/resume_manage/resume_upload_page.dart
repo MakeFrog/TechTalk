@@ -1,5 +1,6 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -75,8 +76,40 @@ class ResumeUploadPage extends BasePage
                 BounceTapper(
                   enable: isReadyToChat,
                   child: FilledButton(
-                    onPressed:
-                        isReadyToChat ? () => startResumeInterview(ref) : null,
+                    onPressed: isReadyToChat
+                        ? ()
+                            // TODO: 중괄호의 내용물은 startResumeInterview()에 넣을 예정 (yundal)
+                            async {
+                            // 일단 로딩중 페이지 이동
+                            routeToResumeInterviewLoadingPage(ref);
+
+                            // 저장하기 로직 실행
+                            await onClickedSaveBtn(ref);
+
+                            // pdf 경로 추출하기
+                            final localResumePath = localData.localResumePath;
+                            final localPortfolioPath =
+                                localData.localPortfolioPath;
+
+                            // pdf to txt
+                            final String resumeContent =
+                                await extractPdfToTxt(localResumePath);
+
+                            final String portfolioContent =
+                                await extractPdfToTxt(localPortfolioPath);
+
+                            // 프롬프팅
+                            await testSetAiResumeQuestionUseCase(
+                              resumeContent,
+                              portfolioContent,
+                            );
+
+                            // 완료시 다음 페이지 이동
+                            await EasyLoading.show();
+                            routeToResumeChatList(ref);
+                            await EasyLoading.dismiss();
+                          }
+                        : null,
                     child: const Center(
                       child: Text('면접 시작하기'),
                     ),

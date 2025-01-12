@@ -1474,6 +1474,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.0"
+  read_pdf_text:
+    dependency: "direct main"
+    description:
+      name: read_pdf_text
+      sha256: dc909afeb16f57074ed035f2c111479ecca3b9f9429f1a3125f2f0049412fc63
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.3"
   record:
     dependency: "direct main"
     description:

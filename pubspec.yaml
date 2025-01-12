@@ -99,6 +99,7 @@ dependencies:
   pub_semver: ^2.1.4 # 주부수 버전 비교 연산
   dotted_border: ^2.1.0 # 점선 보더 적용
   flutter_pdfview: ^1.4.0
+  read_pdf_text: ^0.2.3
 
 
 dev_dependencies:

@@ -2,6 +2,7 @@ import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -74,8 +75,13 @@ class ResumeManagePage extends BasePage
                 BounceTapper(
                   enable: isTempChanged,
                   child: FilledButton(
-                    onPressed:
-                        isTempChanged ? () => onClickedSaveBtn(ref) : null,
+                    onPressed: isTempChanged
+                        ? () async {
+                            await EasyLoading.show();
+                            await onClickedSaveBtn(ref);
+                            await EasyLoading.dismiss();
+                          }
+                        : null,
                     child: Center(
                       child: Text(
                         context.tr(
@@ -166,9 +172,8 @@ class _PortfolioPdfFileSection extends ConsumerWidget
         children: [
           Text('포트폴리오', style: AppTextStyle.headline2),
           const Gap(8),
-          if (
-            tempState.tempPortfolioPath == null &&
-            tempState.isLocalPortfolioDeleted)
+          if (tempState.tempPortfolioPath == null &&
+              tempState.isLocalPortfolioDeleted)
             FileUploadPlaceholder(
               onTap: () => portfolioPickAndSaveFile(ref),
             )
