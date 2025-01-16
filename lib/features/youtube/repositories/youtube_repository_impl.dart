@@ -83,7 +83,10 @@ class YoutubeRepositoryImpl
       final entities = remotePaginatedResult.items.map((model) {
         final skills =
             model.relatedSkillIds.map(_techSetRepository.getSkillById).toList();
-        return model.toEntity(skills);
+        final jobGroups = model.relatedJobGroupIds
+            .map(_techSetRepository.getJobGroupById)
+            .toList();
+        return model.toEntity(skills, jobGroups);
       }).toList();
 
       // 엔티티로 페이징된 결과 생성
@@ -221,7 +224,10 @@ class YoutubeRepositoryImpl
       final skills = response.relatedSkillIds
           .map(_techSetRepository.getSkillById)
           .toList();
-      return Result.success(response.toEntity(skills));
+      final jobGroups = response.relatedJobGroupIds
+          .map(_techSetRepository.getJobGroupById)
+          .toList();
+      return Result.success(response.toEntity(skills, jobGroups));
     } on Exception catch (e) {
       return Result.failure(e);
     }

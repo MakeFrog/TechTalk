@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:techtalk/app/util/app_format_handler.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/tech_set/data_source/local/boxes/tech_set_box.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 final class TechSetLocalDataSourceImpl implements TechSetLocalDataSource {
@@ -14,7 +12,9 @@ final class TechSetLocalDataSourceImpl implements TechSetLocalDataSource {
   final Box<TechSetBox> _box;
 
   @override
-  Future<List<JobGroup>> getJobs() async => JobGroup.values;
+  Future<List<JobGroupEntity>> getJobs() async {
+    return JobGroupTypes.values.map((e) => JobGroupEntity.fromEnum(e)).toList();
+  }
 
   @override
   Map<String, Map<String, List<Map<String, String>>>>? loadCachedSkillSet() {

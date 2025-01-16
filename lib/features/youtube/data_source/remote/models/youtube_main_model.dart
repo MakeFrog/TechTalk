@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/core/modules/converter/time_stamp_converter.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/youtube/index.dart';
 
@@ -60,7 +60,10 @@ class YoutubeMainModel {
   final String uploadLanguageCode;
 
   /// 엔티티로 변환
-  YoutubeContentOverviewEntity toEntity(List<SkillEntity> skills) {
+  YoutubeContentOverviewEntity toEntity(
+    List<SkillEntity> skills,
+    List<JobGroupEntity> jobGroups,
+  ) {
     return YoutubeContentOverviewEntity(
       id: id,
       thumbnailImgUrl: thumbnailImgUrl,
@@ -68,7 +71,7 @@ class YoutubeMainModel {
       qnaNum: qnaNum,
       channel: channel?.toEntity() ?? ChannelEntity.undefined(),
       relatedSkillIds: skills.toSet(),
-      relatedJobs: relatedJobGroupIds.map(JobGroup.getById).toSet(),
+      relatedJobs: jobGroups.toSet(),
       videoDuration: videoDuration,
       techtalkUploadDate: uploadAt ?? DateTime.now(),
       videoPublishDate: videoPublishedDate ?? DateTime.now(),

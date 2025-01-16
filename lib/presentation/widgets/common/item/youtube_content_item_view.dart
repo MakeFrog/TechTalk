@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/app/util/app_formatter.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/presentation/pages/youtube/main/constant/yotubue_content_category.dart';
 import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
@@ -36,7 +37,7 @@ class YoutubeContentItemView extends StatelessWidget {
   final String channelName;
   final Duration? videoDuration;
   final int? questionCount;
-  final List<JobGroup> jobGroups;
+  final List<JobGroupEntity> jobGroups;
   final List<SkillEntity> skills;
 
   final bool isLoaded;

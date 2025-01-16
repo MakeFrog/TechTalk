@@ -1,10 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
+
 import 'package:collection/collection.dart';
-import 'package:techtalk/app/util/app_format_handler.dart';
-import 'package:techtalk/core/index.dart';
-import 'package:techtalk/features/tech_set/data_source/remote/model/tech_set_keys_model.dart';
+import 'package:flutter/services.dart';
 import 'package:techtalk/features/tech_set/data_source/remote/tech_set_remote_data_source.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
@@ -19,45 +20,70 @@ final class TechSetRepositoryImpl implements TechSetRepository {
 
   final List<SkillEntity> _cachedSkillCollection = [];
 
+  final List<JobGroupEntity> _cachedJobGroups = [];
+
   @override
-  List<JobGroup> getJobs() => JobGroup.values;
+  List<JobGroupEntity> getJobs() => _cachedJobGroups;
 
   @override
   Future<void> initSkills() async {
     try {
-      final cachedSkillSet = _localDataSource.loadCachedSkillSet();
-      final remoteKey =
-          (await _remoteDataSource.getKeys()).skill ?? 'undefined';
-      final localKey = cachedSkillSet?.keys.first;
+      // 원격 데이터 가져오기
+      final response = await _remoteDataSource.getSkills();
+      final result = response.map((e) => SkillEntity.fromModel(e));
 
-      /// 원격 호출
-      if (cachedSkillSet == null || remoteKey != localKey) {
-        final remoteRes = await _remoteDataSource.getSkills();
-        final convertedData = AppFormatHandler.parseMapSLMaSSJson(remoteRes);
-
-        for (var entry in convertedData.entries) {
-          _cachedSkillCollection.addAll(entry.value
-              .map((e) => SkillEntity.fromJson(json: e, category: entry.key)));
-        }
-
-        /// 로컬스터리지에 스킬 데이터 저장
-        unawaited(
-          _localDataSource.storeSkillSet(
-            skillSet: {remoteKey: convertedData},
-          ),
-        );
-      }
-
-      /// 캐싱된 데이터 호출
-      else {
-        for (var entry in cachedSkillSet.values.first.entries) {
-          _cachedSkillCollection.addAll(entry.value
-              .map((e) => SkillEntity.fromJson(json: e, category: entry.key)));
-        }
-      }
+      _cachedSkillCollection.addAll(result);
     } catch (e) {
-      log('Error initializing skills: $e');
-      rethrow;
+      log('Remote data fetch failed, loading from local JSON: $e');
+
+      /// 원격 호출 실패 시
+      /// 로컬 JSON 파일에서 데이터 가져오기
+      try {
+        String jsonString =
+            await rootBundle.loadString('assets/json/skills.json');
+        Map<String, dynamic> jsonData = jsonDecode(jsonString);
+
+        // JSON 데이터를 SkillEntity로 변환
+        final List<SkillEntity> fallbackSkills = [];
+        jsonData.forEach((category, skillList) {
+          for (var skill in skillList) {
+            fallbackSkills
+                .add(SkillEntity.fromJson(json: skill, category: category));
+          }
+        });
+
+        // 캐시에 추가
+        _cachedSkillCollection.addAll(fallbackSkills);
+        log('Loaded skills from local JSON successfully.');
+      } catch (localError) {
+        log('Error loading skills from local JSON: $localError');
+        rethrow;
+      }
+    }
+  }
+
+  @override
+  Future<void> initJobGroups() async {
+    try {
+      // 원격 데이터 가져오기
+      final response = await _remoteDataSource.getJobGroups();
+      final result = response.map((e) => JobGroupEntity.fromModel(e));
+
+      _cachedJobGroups.addAll(result);
+      log('Loaded job groups from remote data source successfully.');
+    } catch (e) {
+      log('Remote data fetch failed, loading from enum: $e');
+
+      // 원격 호출 실패 시, JobGroup enum에서 매핑
+      try {
+        final fallbackJobGroups = await _localDataSource.getJobs();
+
+        _cachedJobGroups.addAll(fallbackJobGroups);
+        log('Loaded job groups from enum successfully.');
+      } catch (enumError) {
+        log('Error loading job groups from enum: $enumError');
+        rethrow;
+      }
     }
   }
 
@@ -72,12 +98,8 @@ final class TechSetRepositoryImpl implements TechSetRepository {
   List<SkillEntity> getSkills() => _cachedSkillCollection;
 
   @override
-  Future<Result<TechSetKeysModel>> getKeys() async {
-    try {
-      final response = await _remoteDataSource.getKeys();
-      return Result.success(response);
-    } on Exception catch (e) {
-      return Result.failure(e);
-    }
+  JobGroupEntity getJobGroupById(String id) {
+    final targetJobGroup = _cachedJobGroups.firstWhereOrNull((e) => e.id == id);
+    return targetJobGroup ?? JobGroupEntity.undefined();
   }
 }

@@ -1,5 +1,5 @@
-import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/features/youtube/index.dart';
@@ -12,7 +12,7 @@ final class YoutubeAiQnaAndIdsResponse {
   final Set<YoutubeQnaEntity> qnas;
 
   /// 직군
-  final Set<JobGroup> jogGroups;
+  final Set<JobGroupEntity> jogGroups;
 
   /// 스킬
   final Set<SkillEntity> skills;
@@ -31,7 +31,7 @@ final class YoutubeAiQnaAndIdsResponse {
           .map((e) => YoutubeQnaEntity.fromJson(e))
           .toSet(),
       jogGroups: (json['jobGroupIds'] as List<dynamic>)
-          .map((e) => JobGroup.getById(e))
+          .map((e) => techSetRepository.getJobGroupById(e))
           .toSet(),
       skills: (json['skillIds'] as List<dynamic>)
           .map((e) => techSetRepository.getSkillById(e))

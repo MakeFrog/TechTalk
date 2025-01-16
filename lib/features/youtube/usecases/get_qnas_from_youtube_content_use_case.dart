@@ -13,6 +13,7 @@ class GetQnasFromYoutubeContentUseCase
   @override
   Future<YoutubeAiQnaAndIdsResponse> call(YoutubeVideoEntity request) async {
     final allSkills = techSetRepository.getSkills();
+    final allJobGroups = techSetRepository.getJobs();
     // the system message that will be sent to the request.
     final systemMessage = OpenAIChatCompletionChoiceMessageModel(
       content: [
@@ -46,7 +47,7 @@ class GetQnasFromYoutubeContentUseCase
 - **제목**: `${request.title}`  
 - **내용**: `${request.script}`
 - **개발 스킬 id 리스트**: `${allSkills.map((e) => e.id).toList()}`
-- **개발 직군 id 리스트**: `${JobGroup.values.map((e) => e.id).toList()}`
+- **개발 직군 id 리스트**: `${allJobGroups.map((e) => e.id).toList()}`
 
 ### 응답 언어:
 - 언어 코드에 해당되는 언어로 응답하세요.

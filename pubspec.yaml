@@ -136,6 +136,7 @@ flutter:
     - assets/translations/
     - assets/skills/
     - assets/lottie/
+    - assets/json/
 
 
   fonts:

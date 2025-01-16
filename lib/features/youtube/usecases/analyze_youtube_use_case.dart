@@ -82,7 +82,6 @@ final class AnalyzeAndUploadYoutubeUseCase
         ));
 
         if (isInBackground) {
-          debugPrint('아랑이 3');
           await AppLocalNotification().triggerPush(
             title: '영상 업로드 했어요',
             description: '요약된 핵심 내용을 확인하고 면접을 진행해 보세요!',
