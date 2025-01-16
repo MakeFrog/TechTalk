@@ -23,7 +23,10 @@ import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_detai
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/youtube_detail_page.dart';
 import 'package:techtalk/presentation/pages/youtube/main/youtube_main_page.dart';
-import 'package:techtalk/presentation/pages/youtube/upload/youtube_upload_page.dart';
+import 'package:techtalk/presentation/pages/youtube/upload/analyze_youtube/analyze_youtube_page.dart';
+import 'package:techtalk/presentation/pages/youtube/upload/submitted_youtube_confirm/provider/submitted_youtube_confirm_arg_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/upload/submitted_youtube_confirm/submitted_youtube_confirm_page.dart';
+import 'package:techtalk/presentation/pages/youtube/upload/youtube_link_submit/youtube_link_submit_page.dart';
 import 'package:techtalk/presentation/pages/youtube/upload_failed/provider/youtube_upload_failed_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload_failed/youtube_upload_fail_page.dart';
 
@@ -168,13 +171,21 @@ class SignUpRoute extends GoRouteData {
       path: ContentsDetailRoute.path,
       name: ContentsDetailRoute.name,
     ),
-    TypedGoRoute<YoutubeContentUploadRoute>(
-      path: YoutubeContentUploadRoute.path,
-      name: YoutubeContentUploadRoute.name,
+    TypedGoRoute<YoutubeLinkSubmitRoute>(
+      path: YoutubeLinkSubmitRoute.path,
+      name: YoutubeLinkSubmitRoute.name,
+    ),
+    TypedGoRoute<SubmittedYoutubeConfirmRoute>(
+      path: SubmittedYoutubeConfirmRoute.path,
+      name: SubmittedYoutubeConfirmRoute.name,
     ),
     TypedGoRoute<YoutubeContentUploadFailedRoute>(
       path: YoutubeContentUploadFailedRoute.path,
       name: YoutubeContentUploadFailedRoute.name,
+    ),
+    TypedGoRoute<AnalyzeYoutubeRoute>(
+      path: AnalyzeYoutubeRoute.path,
+      name: AnalyzeYoutubeRoute.name,
     ),
     TypedGoRoute<WrongAnswerRoute>(
       path: WrongAnswerRoute.path,
@@ -263,15 +274,51 @@ class ContentsDetailRoute extends GoRouteData {
   }
 }
 
-class YoutubeContentUploadRoute extends GoRouteData {
-  const YoutubeContentUploadRoute();
+class YoutubeLinkSubmitRoute extends GoRouteData {
+  const YoutubeLinkSubmitRoute();
 
-  static const String path = 'youtube-content-upload';
-  static const String name = 'youtube content upload';
+  static const String path = 'youtube-link-submit';
+  static const String name = 'youtube link submit';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const YoutubeUploadPage();
+    return const YoutubeLinkSubmitPage();
+  }
+}
+
+class SubmittedYoutubeConfirmRoute extends GoRouteData {
+  const SubmittedYoutubeConfirmRoute(
+    this.$extra,
+  );
+
+  final SubmittedYoutubeConfirmArg $extra;
+
+  static const String path = 'submitted-youtube-confirm-route';
+  static const String name = 'submitted youtube confirm route';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return SubmittedYoutubeConfirmPage(
+      arg: $extra,
+    );
+  }
+}
+
+class AnalyzeYoutubeRoute extends GoRouteData {
+  const AnalyzeYoutubeRoute(
+    this.$extra,
+  );
+
+  final YoutubeVideoEntity $extra;
+
+  static const String path = 'analyze-youtube';
+  static const String name = 'analyze youtube';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return AnalyzeYoutubePage(
+      video: $extra,
+    );
   }
 }
 

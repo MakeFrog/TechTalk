@@ -118,9 +118,11 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
     return hasReversedQueryCallProceeded
         ? FirestoreYoutubeRef.collection()
             .orderBy('random')
-            .startAt([random]).limit(limit)
+            .where('random', isGreaterThan: random)
+            .limit(limit)
         : FirestoreYoutubeRef.collection()
             .orderBy('random')
+            .where('random', isLessThan: random)
             .endAt([random]).limit(limit);
   }
 

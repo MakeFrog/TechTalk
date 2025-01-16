@@ -1,5 +1,6 @@
 import 'package:techtalk/app/di/index.dart';
 import 'package:techtalk/features/youtube/index.dart';
+import 'package:techtalk/features/youtube/usecases/analyze_youtube_use_case.dart';
 
 export 'data_source/remote/models/channel_model.dart';
 export 'data_source/remote/models/paragraph_model.dart';
@@ -34,3 +35,5 @@ final youtubeRepository = locator<YoutubeRepository>();
 final youtubeRemoteDataSource = locator<YoutubeRemoteDataSource>();
 final getYoutubeVideoDataUseCase = locator<GetYoutubeVideoDataUseCase>();
 final getYoutubeOverviewListUseCase = locator<GetYoutubeOverviewListUseCase>();
+final analyzeAndUploadYoutubeUseCase =
+    locator<AnalyzeAndUploadYoutubeUseCase>();

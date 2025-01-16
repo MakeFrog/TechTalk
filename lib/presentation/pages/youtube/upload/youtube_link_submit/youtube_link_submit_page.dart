@@ -1,12 +1,21 @@
-part of '../../youtube_upload_page.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/style/index.dart';
+import 'package:techtalk/core/services/app_size.dart';
+import 'package:techtalk/presentation/pages/youtube/upload/youtube_link_submit/provider/youtube_link_submit_state.dart';
+import 'package:techtalk/presentation/pages/youtube/upload/youtube_link_submit/youtube_link_submit_event.dart';
+import 'package:techtalk/presentation/widgets/base/base_page.dart';
+import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
+import 'package:techtalk/presentation/widgets/common/input/techtalk_text_field.dart';
 
-class _UrlInputView extends HookConsumerWidget
-    with YoutubeUploadState, YoutubeUploadEvent {
-  const _UrlInputView({super.key});
+class YoutubeLinkSubmitPage extends BasePage
+    with YoutubeLinkSubmitState, YoutubeLinkSubmitEvent {
+  const YoutubeLinkSubmitPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    useAutomaticKeepAlive();
+  Widget buildPage(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -53,7 +62,7 @@ class _UrlInputView extends HookConsumerWidget
                   return FilledButton(
                     onPressed: isInputFilled == null
                         ? () {
-                            onUrlOrIdConfirmBtnTapped(ref);
+                            onConfirmBtnTapped(ref);
                           }
                         : null,
                     child: const Text(
@@ -67,5 +76,10 @@ class _UrlInputView extends HookConsumerWidget
         ],
       ),
     );
+  }
+
+  @override
+  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) {
+    return const BackButtonAppBar();
   }
 }

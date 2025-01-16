@@ -1,5 +1,6 @@
 import UIKit
 import Flutter
+import flutter_local_notifications // flutter_local_notifications를 import해야 함
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
@@ -7,12 +8,19 @@ import Flutter
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-
-
-    if #available(iOS 10.0, *) {
-        UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
+    // flutter_local_notifications에서 필요한 Plugin Registrant Callback 설정
+    FlutterLocalNotificationsPlugin.setPluginRegistrantCallback { (registry) in
+      GeneratedPluginRegistrant.register(with: registry)
     }
+
+    // UNUserNotificationCenter의 delegate를 설정 (iOS 10.0 이상)
+    if #available(iOS 10.0, *) {
+      UNUserNotificationCenter.current().delegate = self
+    }
+
+    // 기본 플러그인 등록
     GeneratedPluginRegistrant.register(with: self)
+
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

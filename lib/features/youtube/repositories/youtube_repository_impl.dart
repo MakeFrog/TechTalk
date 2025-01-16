@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_isolate_mixin/easy_isolate_mixin.dart';
+import 'package:techtalk/app/network/app_youtube_explode.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
@@ -131,7 +132,7 @@ class YoutubeRepositoryImpl
   Future<Result<YoutubeVideoEntity>> getVideoInfoForUpload(
       String videoId) async {
     try {
-      final Video video = await _youtubeApiDataSource.videos.get(videoId);
+      final Video video = await _fetchVideo(videoId);
 
       final isAlreadyUploaded = await _youtubeRemoteDataSource
           .isYoutubeAlreadyUploaded(video.id.value);
@@ -141,15 +142,17 @@ class YoutubeRepositoryImpl
       }
 
       final responses = await Future.wait([
+        /// [NOTE]
+        /// channel 정보는 isolate 적용이 제한됨
         _youtubeApiDataSource.channels.get(video.channelId),
-        _youtubeApiDataSource.videos.closedCaptions.getManifest(videoId),
+        loadWithIsolate(() => _fetchCaptionManifest(videoId)),
       ]);
 
       final channel = responses[0] as Channel;
-      final caption = responses[1] as ClosedCaptionManifest;
+      final manifest = responses[1] as ClosedCaptionManifest;
 
       /// 자막이 없는 영상
-      if (caption.tracks.isEmpty) {
+      if (manifest.tracks.isEmpty) {
         throw const YtNoCaptionException();
       }
 
@@ -157,20 +160,22 @@ class YoutubeRepositoryImpl
         throw const YtNotEnoughContentDurationException();
       }
 
-      final ClosedCaptionTrack tracks = await _youtubeApiDataSource
-          .videos.closedCaptions
-          .get(caption.tracks.first);
+      final ClosedCaptionTrack tracks = await loadWithIsolate(
+          () => _fetchCaptionTrack(trackInfo: manifest.tracks.first));
 
       final result = YoutubeVideoEntity.fromExplore(
         video: video,
         captions: tracks.captions.toList(),
         channel: channel,
       );
+
       return Result.success(result);
-    } on YoutubeUploadException catch (e) {
-      return Result.failure(e);
     } catch (e) {
       log('getYoutubeVideoData : $e');
+      if (e is YoutubeUploadException) {
+        return Result.failure(e);
+      }
+
       return Result.failure(
         const YtVideoInfoFetchedFailedException(),
       );
@@ -223,6 +228,7 @@ class YoutubeRepositoryImpl
   @override
   Future<Result<List<RelatedVideoEntity>>> getRelatedVideo(
       String contentId) async {
+    print('콘텐츠 아이디 : ${contentId}');
     try {
       // Top-level 함수로 contentId를 이용해 비디오를 가져옴
       final video = await loadWithIsolate(() => _fetchVideo(contentId));
@@ -241,6 +247,51 @@ class YoutubeRepositoryImpl
       return Result.success(result);
     } on Exception catch (e) {
       return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<String>> getScript({required String videoId}) async {
+    try {
+      final manifest =
+          await loadWithIsolate(() => _fetchCaptionManifest(videoId));
+
+      /// 자막이 없는 영상
+      if (manifest.tracks.isEmpty) {
+        throw const YtNoCaptionException();
+      }
+
+      final caption = await loadWithIsolate(
+          () => _fetchCaptionTrack(trackInfo: manifest.tracks.first));
+
+      String script = '';
+
+      for (var e in caption.captions) {
+        script += ' ${e.text}';
+      }
+
+      /// 자막이 없는 영상
+      if (script.isEmpty) {
+        throw const YtNoCaptionException();
+      }
+
+      return Result.success(script);
+    } catch (e) {
+      log('getCaption >$e');
+      return Result.failure(const YtUnknownException());
+    }
+  }
+
+  @override
+  Future<Result<bool>> isUploadedContent({required String videoId}) async {
+    try {
+      final isAlreadyUploaded =
+          await _youtubeRemoteDataSource.isYoutubeAlreadyUploaded(videoId);
+
+      return Result.success(isAlreadyUploaded);
+    } catch (e) {
+      return Result.failure(
+          Exception('Youtube Repository > isUploadedContent : $e'));
     }
   }
 }

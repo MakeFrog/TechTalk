@@ -74,4 +74,14 @@ abstract interface class YoutubeRepository {
   Future<Result<YoutubeContentOverviewEntity>> getYoutubeMainInfo({
     required String contentId,
   });
+
+  ///
+  /// 유튜브 스크립 (자막)
+  ///
+  Future<Result<String>> getScript({required String videoId});
+
+  ///
+  /// 업로드된 영상인지 확인
+  ///
+  Future<Result<bool>> isUploadedContent({required String videoId});
 }

@@ -1,12 +1,12 @@
 abstract class AppValidator {
   ///
-  /// 유튜브 url인지 여부
+  /// 유튜브 영상 url인지 여부
   ///
-  static bool isYoutubeUrl(String? url) {
+  static bool isYoutubeVideoUrl(String? url) {
     if (url == null) return false;
 
     final regex = RegExp(
-      r'^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)[a-zA-Z0-9_-]+(\?.*)?$',
+      r'^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)[a-zA-Z0-9_-]+([&?].*)?$',
     );
 
     return regex.hasMatch(url);

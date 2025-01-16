@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:techtalk/app/router/deeplink/deep_link_define.enum.dart';
 import 'package:techtalk/app/router/deeplink/deeplink_handler.dart';
 
 final class AppLocalNotification {
@@ -16,10 +19,29 @@ final class AppLocalNotification {
 
     AndroidInitializationSettings android =
         const AndroidInitializationSettings("@mipmap/ic_launcher");
-    DarwinInitializationSettings ios = const DarwinInitializationSettings(
-      requestSoundPermission: false,
-      requestBadgePermission: false,
-      requestAlertPermission: false,
+    // DarwinInitializationSettings ios = const DarwinInitializationSettings(
+    //
+    // );
+
+    final DarwinInitializationSettings ios = DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestSoundPermission: true,
+      requestBadgePermission: true,
+      notificationCategories: [
+        DarwinNotificationCategory(
+          'demoCategory',
+          actions: <DarwinNotificationAction>[
+            DarwinNotificationAction.plain('id_1', 'Action 1'),
+            DarwinNotificationAction.plain('id_2', 'Action 2', options: {
+              DarwinNotificationActionOption.destructive,
+            }),
+            DarwinNotificationAction.plain('id_3', 'Action 3', options: {
+              DarwinNotificationActionOption.foreground,
+            }),
+          ],
+          options: {DarwinNotificationCategoryOption.hiddenPreviewShowTitle},
+        ),
+      ],
     );
     InitializationSettings settings =
         InitializationSettings(android: android, iOS: ios);
@@ -31,11 +53,17 @@ final class AppLocalNotification {
   }
 
   /// 알림이 탭 되었을 때
+  @pragma('vm:entry-point')
   static void notificationTapped(NotificationResponse response) {
     DeepLinkHandler().handleDeepLink(response.payload ?? '');
   }
 
-  Future<void> testShow() async {
+  Future<void> triggerPush({
+    required String title,
+    required String description,
+    required DeeplinkHost host,
+    required String? path,
+  }) async {
     NotificationDetails details = const NotificationDetails(
       iOS: DarwinNotificationDetails(
         presentAlert: true,
@@ -43,16 +71,17 @@ final class AppLocalNotification {
         presentSound: true,
       ),
       android: AndroidNotificationDetails(
-        "1",
-        "test",
+        'noChannel',
+        "localPush",
         importance: Importance.max,
         priority: Priority.high,
       ),
     );
 
-    await _local.show(
-        1, "제목입니다", "본문이 이렇게 길거 들어갈 수 도 있느네 안리 수도 있다는 ㄴ말이죠", details,
+    await _local.show(Random().nextInt(100), title, description, details,
         payload:
-            'techtalk://prefix-youtube-landing/contents-detail/NMdnzvPsGu8');
+            '${DeeplinkScheme.techtalk.name}://${host.toDashedString()}/$path');
   }
+
+  Future<void> testShow() async {}
 }

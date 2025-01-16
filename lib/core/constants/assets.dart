@@ -30,6 +30,7 @@ class Assets {
   static const String characterRed05 = 'assets/character/red_05.svg';
   static const String characterRed06 = 'assets/character/red_06.svg';
   static const String characterRed07 = 'assets/character/red_07.svg';
+  static const String iconsAlarm = 'assets/icons/alarm.svg';
   static const String iconsArrowDown = 'assets/icons/arrow_down.svg';
   static const String iconsArrowDownThick = 'assets/icons/arrow_down_thick.svg';
   static const String iconsArrowLeft = 'assets/icons/arrow_left.svg';
@@ -158,6 +159,8 @@ class Assets {
       'assets/images/topic_webFrontend.png';
   static const String imagesWelcomeTechtalk =
       'assets/images/welcome_techtalk.svg';
+  static const String lottieVideoUploading =
+      'assets/lottie/video_uploading.json';
   static const String pretendardPretendardBold =
       'assets/fonts/pretendard/Pretendard-Bold.otf';
   static const String pretendardPretendardMedium =
@@ -217,6 +220,7 @@ class Assets {
   static const String skillsDart = 'assets/skills/dart.png';
   static const String skillsDatabase = 'assets/skills/database.png';
   static const String skillsDatastructure = 'assets/skills/datastructure.png';
+  static const String skillsDesignpattern = 'assets/skills/designpattern.png';
   static const String skillsDjango = 'assets/skills/django.png';
   static const String skillsDocker = 'assets/skills/docker.png';
   static const String skillsDocusaurus = 'assets/skills/docusaurus.png';

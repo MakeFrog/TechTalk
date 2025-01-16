@@ -29,7 +29,8 @@ dependencies:
   smooth_page_indicator: ^1.1.0 # pageview 인디케이터
   flutter_animate: ^4.2.0+1 # 간편 애니메이션 메소드 지원
   cached_network_image: ^3.3.0 # 네트워크 이미지 캐싱
-  bounce_tapper: ^1.1.0
+  lottie: ^3.2.0
+  bounce_tapper: ^1.1.2
   expandable_page_view: ^1.0.17
   measure_size_builder: ^1.0.3
 
@@ -83,6 +84,7 @@ dependencies:
   async: ^2.11.0 # 비동기 처리
   flutter_dotenv: ^5.0.2 # dotnev
   intl: ^0.19.0 # 포맷팅
+  flutter_background_service: ^5.1.0 # 백그라운드 핸들링
   permission_handler: ^11.3.1 #각종 플랫폼 권한 허용 및 감지
   uuid: ^4.1.0 # uuid 제너레이터
   image_picker: ^1.0.5 # 갤러리 접근
@@ -133,6 +135,7 @@ flutter:
     - assets/character/
     - assets/translations/
     - assets/skills/
+    - assets/lottie/
 
 
   fonts:
