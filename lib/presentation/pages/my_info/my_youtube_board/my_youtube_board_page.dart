@@ -18,13 +18,9 @@ import 'package:techtalk/presentation/widgets/common/item/youtube_content_item_v
 import 'package:techtalk/presentation/widgets/common/tab_bar/techtalk_tab_bar.dart';
 
 part 'widgets/bookmarked_tab_view.p.dart';
-
 part 'widgets/scaffold.p.dart';
-
 part 'widgets/tab_bar.p.dart';
-
 part 'widgets/uploaded_content_tab_view.p.dart';
-
 part 'widgets/watched_history_tab_view.p.dart';
 
 class MyYoutubeBoardPage extends BasePage
@@ -40,6 +36,12 @@ class MyYoutubeBoardPage extends BasePage
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
+    return const _Scaffold(
+      tabBar: _TabBar(),
+      watchedHistoryTabView: _WatchHistoryTabView(),
+      bookmarkedTabView: _BookmarkedTabView(),
+      uploadedContentTabView: _UploadedContentTabView(),
+    );
     return PagedListView<DocumentSnapshot<WatchedYoutubeContent>?,
         WatchedYoutubeContent>(
       pagingController: aimPagingController(ref),
