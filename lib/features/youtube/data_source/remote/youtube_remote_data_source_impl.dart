@@ -24,14 +24,16 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
     required bool hasReversedQueryCallProceeded,
     List<QueryDocumentSnapshot<YoutubeMainModel>>? prevSnapshots,
     required double random,
+    required String randomKey,
     DocumentSnapshot<YoutubeMainModel>? lastDocument,
     List<FirestoreQueryConstraint>? queryConstraints,
   }) async {
     try {
       Query<YoutubeMainModel> query = _buildInitialQuery(
         hasReversedQueryCallProceeded: hasReversedQueryCallProceeded,
-        random: random,
         limit: limit,
+        randomKey: randomKey,
+        randomValue: random,
       );
 
       if (lastDocument != null) {
@@ -66,6 +68,7 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
           prevSnapshots: snapshot.docs,
           queryConstraints: queryConstraints,
           random: random,
+          randomKey: randomKey,
         );
       }
 
@@ -104,26 +107,26 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
   }
 
   /// 조건별 쿼리
-  /// 런덤 호출을 하기 위해
-  /// 임이의 double값을 받아 시작점을 순회
-  /// 반대의 경우도 마찬가지
   Query<YoutubeMainModel> _buildInitialQuery({
     required bool hasReversedQueryCallProceeded,
-    required double random,
+    required String randomKey, // 키 값을 직접 받음
+    required double randomValue, // 랜덤 값
     required int limit,
   }) {
+    final randomField = 'random.$randomKey'; // 동적 필드 이름 생성
+
     /// [NOTE]
     /// 이유는 모르겠으나, greateThan, lassThan을 적용하면
     /// exception없이 이상한 값이 반환됨.
     return hasReversedQueryCallProceeded
         ? FirestoreYoutubeRef.collection()
-            .orderBy('random')
-            .where('random', isGreaterThan: random)
+            .where(randomField, isGreaterThanOrEqualTo: randomValue)
+            .orderBy(randomField)
             .limit(limit)
         : FirestoreYoutubeRef.collection()
-            .orderBy('random')
-            .where('random', isLessThan: random)
-            .endAt([random]).limit(limit);
+            .where(randomField, isLessThan: randomValue)
+            .orderBy(randomField, descending: true)
+            .startAt([randomValue]).limit(limit);
   }
 
   @override

@@ -122,7 +122,13 @@ class YoutubeMainModel {
       'upload_language_code': uploadLanguageCode,
       'channel_ref':
           FirestoreYoutubeChannelRef.document(channel?.id ?? 'undefined'),
-      'random': Random().nextDouble(),
+      'random': {
+        '1': Random().nextDouble(),
+        '2': Random().nextDouble(),
+        '3': Random().nextDouble(),
+        '4': Random().nextDouble(),
+        '5': Random().nextDouble(),
+      },
     };
   }
 

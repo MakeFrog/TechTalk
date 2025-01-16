@@ -35,6 +35,7 @@ abstract interface class YoutubeRemoteDataSource {
     List<FirestoreQueryConstraint>? queryConstraints,
     required bool hasReversedQueryCallProceeded,
     List<QueryDocumentSnapshot<YoutubeMainModel>>? prevSnapshots,
+    required String randomKey,
     required double random,
   });
 

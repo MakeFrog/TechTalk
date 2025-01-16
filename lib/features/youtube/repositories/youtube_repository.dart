@@ -48,6 +48,7 @@ abstract interface class YoutubeRepository {
     required String orderByField,
     required bool hasReversedQueryCallProceeded,
     required double random,
+    required String randomKey,
     DocumentSnapshot<YoutubeMainModel>? lastDocument,
     List<FirestoreQueryConstraint>? queryConstraints,
   });
