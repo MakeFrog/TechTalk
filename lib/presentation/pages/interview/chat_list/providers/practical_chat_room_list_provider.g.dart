@@ -7,7 +7,7 @@ part of 'practical_chat_room_list_provider.dart';
 // **************************************************************************
 
 String _$practicalChatRoomListHash() =>
-    r'773cc9d729ca5f1ccac1ed0a6d5b4d02a6f8cc5d';
+    r'64d5619647f0b3bf7e4cce96e9e492de37ea9e7a';
 
 /// See also [PracticalChatRoomList].
 @ProviderFor(PracticalChatRoomList)

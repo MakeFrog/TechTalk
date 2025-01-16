@@ -25,7 +25,9 @@ class AsyncSkeletonWidgetBuilder<T> extends StatelessWidget {
       child: asyncValue.when(
         data: (data) => dataBuilder(context, data),
         loading: () => skeletonBuilder?.call(context) ?? _defaultSkeleton(),
-        error: (error, stack) => errorBuilder?.call(context, error, stack) ?? _defaultError(context, error),
+        error: (error, stack) =>
+            errorBuilder?.call(context, error, stack) ??
+            _defaultError(context, error),
       ),
     );
   }

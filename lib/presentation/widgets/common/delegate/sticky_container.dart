@@ -25,7 +25,9 @@ class StickyDelegateContainer extends SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
-    return SizedBox.expand(child: child);
+    return SizedBox.expand(
+      child: child,
+    );
   }
 
   @override

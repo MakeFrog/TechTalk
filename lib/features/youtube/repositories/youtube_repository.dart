@@ -6,6 +6,7 @@ import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/youtube/index.dart';
+import 'package:techtalk/features/youtube/repositories/entities/youtube_related_vido_entity.dart';
 
 abstract interface class YoutubeRepository {
   ///
@@ -62,6 +63,15 @@ abstract interface class YoutubeRepository {
     required String uploadLanguageCode,
   });
 
-  Future<Result<YoutubeContentOverviewEntity>> getYoutubeMainInfo(
-      {required String contentId});
+  ///
+  /// ID를 기반으로 관련 유튜브 영상 리스트 호출
+  ///
+  Future<Result<List<RelatedVideoEntity>>> getRelatedVideo(String contentId);
+
+  ///
+  /// 유튜브 비디오 메인 정보 호출
+  ///
+  Future<Result<YoutubeContentOverviewEntity>> getYoutubeMainInfo({
+    required String contentId,
+  });
 }

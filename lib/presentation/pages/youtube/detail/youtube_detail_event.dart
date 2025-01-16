@@ -1,11 +1,90 @@
-import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
-import 'package:techtalk/features/youtube/index.dart';
-import 'package:techtalk/presentation/pages/youtube/detail/widgets/constants/contents_detail_tab_type.enum.dart';
+import 'dart:developer';
+
+import 'package:flutter/services.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/chat/repositories/entities/chat_room_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/is_bookmark_checked_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/selected_youtube_qnas_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_ressource_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 
 mixin class YoutubeDetailEvent {
-  tabChanged(ContentsDetailTabType tabType) {}
+  ///
+  /// 북마크 버튼이 탭 되었을 때
+  ///
+  void onBookmarkBtnTapped(WidgetRef ref) {
+    ref.read(isBookmarkCheckedProvider.notifier).toggle();
+  }
 
-  onTapAuthorProfile(ChannelEntity author) {}
+  ///
+  /// 요약노트 > 타임 스탬프 버튼이 클릭 되었을 때
+  ///
+  Future<void> onTimeStampTapped(
+    WidgetRef ref, {
+    required Duration? timeStamp,
+  }) async {
+    if (timeStamp == null) {
+      SnackBarService.showSnackBar('해당 위치로 이동하지 못했어요');
+      return;
+    }
+    try {
+      final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
+      final youtubeController = ref.read(youtubeDetailResourceProvider(videoId)
+          .select((p) => p.youtubeController));
+      await youtubeController.seekTo(
+          seconds: timeStamp.inSeconds.toDouble(), allowSeekAhead: true);
+    } catch (e) {
+      log('seek 이동 실패 : $e');
+    }
+  }
 
-  onTapUploaderProfile(UserEntity uploader) {}
+  ///
+  /// 면접 시작하기 버튼이 클릭 되었을 떄
+  ///
+  Future<void> onStartInterviewBtnTapped(WidgetRef ref) async {
+    final room = ChatRoomEntity.generateResumeInterview(
+      qnas: [],
+    );
+
+    final route = ChatPageRoute(roomId: room.id, type: room.type);
+    route.updateArg(room: room);
+    route.go(ref.context);
+  }
+
+  ///
+  /// 화면 회전을 막는 설정
+  /// YoutubePlayer의 '전체 화면' 기능으로
+  /// 페이지 진입하거나 이탈 할 때 Portrait이 가로로 강제되는 경우가 있음
+  /// 이를 방지하고자 아래 메소드를 사용
+  ///
+  /// 아마 웹뷰에 캐시가 남아 있는것으로 예상됨
+  ///
+  void setOrientation() {
+    Future.microtask(() async {
+      await SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+    });
+  }
+
+  ///
+  /// 문답 박스가 클릭 되었을 때
+  /// 선택 여부 토글
+  ///
+  void onQnaBoxTapped(WidgetRef ref, {required YoutubeQnaEntity qna}) {
+    final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
+    ref.read(selectedYoutubeQnasProvider(videoId).notifier).toggle(qna);
+  }
+
+  ///
+  /// 문답 박스 전체 선택
+  ///
+  void onAllSelectBtnTapped(WidgetRef ref) {
+    final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
+    ref.read(selectedYoutubeQnasProvider(videoId).notifier).activateAll();
+  }
 }

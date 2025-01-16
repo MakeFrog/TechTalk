@@ -12,7 +12,7 @@ class YoutubeQnaEntity extends BaseQnaEntity {
   /// 평가 요소
   final String answer;
 
-  const YoutubeQnaEntity({
+  YoutubeQnaEntity({
     required super.id,
     required super.question,
     required this.answer,

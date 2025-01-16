@@ -1,11 +1,18 @@
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/youtube/index.dart';
+import 'package:techtalk/features/youtube/repositories/entities/youtube_related_vido_entity.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/is_bookmark_checked_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/related_youtube_videos_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/selected_youtube_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_content_qna_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_ressource_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_main_info_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_summary_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_video_data_provider.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 mixin class YoutubeDetailState {
   ///
@@ -58,5 +65,46 @@ mixin class YoutubeDetailState {
               ref.read(youtubeDetailRouteArgProvider).contentId,
             ),
           );
+  }
+
+  ///
+  /// 북마크 체크 여부
+  ///
+  AsyncValue<bool> isBookMarkCheckedAsync(WidgetRef ref) =>
+      ref.watch(isBookmarkCheckedProvider);
+
+  ///
+  ///  스크롤 컨트롤러
+  ///
+  ScrollController scrollController(WidgetRef ref) {
+    final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
+    return ref.watch(youtubeDetailResourceProvider(videoId)
+        .select((p) => p.scrollController));
+  }
+
+  ///
+  /// 스크롤 컨트롤러
+  ///
+  YoutubePlayerController youtubeController(WidgetRef ref) {
+    final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
+    return ref.watch(youtubeDetailResourceProvider(videoId)
+        .select((p) => p.youtubeController));
+  }
+
+  ///
+  /// 유튜브 관련 영상 리스트
+  ///
+  AsyncValue<List<RelatedVideoEntity>> relatedVideoAsync(WidgetRef ref) {
+    final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
+    return ref.watch(relatedYoutubeVideoProvider(videoId));
+  }
+
+  ///
+  /// 선택된 면접 질문
+  ///
+  List<YoutubeQnaEntity> selectedQnas(WidgetRef ref) {
+    final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
+    final selectedQnas = ref.watch(selectedYoutubeQnasProvider(videoId));
+    return selectedQnas;
   }
 }

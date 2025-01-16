@@ -6,7 +6,7 @@ part of 'youtube_content_qna_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$youtubeContentQnaHash() => r'7093490bc899d5bcacc0b3ae161542642af94ff7';
+String _$youtubeContentQnaHash() => r'e39859010433255e4b09c7b6b66bf18fe74a8287';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -33,7 +33,7 @@ abstract class _$YoutubeContentQna
     extends BuildlessAutoDisposeAsyncNotifier<Set<YoutubeQnaEntity>> {
   late final String contentId;
 
-  FutureOr<Set<YoutubeQnaEntity>> build(
+  Future<Set<YoutubeQnaEntity>> build(
     String contentId,
   );
 }
@@ -114,7 +114,7 @@ class YoutubeContentQnaProvider extends AutoDisposeAsyncNotifierProviderImpl<
   final String contentId;
 
   @override
-  FutureOr<Set<YoutubeQnaEntity>> runNotifierBuild(
+  Future<Set<YoutubeQnaEntity>> runNotifierBuild(
     covariant YoutubeContentQna notifier,
   ) {
     return notifier.build(

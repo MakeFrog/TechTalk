@@ -21,7 +21,7 @@ mixin class ChatListEvent {
     WidgetRef ref, {
     required TopicEntity topic,
   }) {
-    const type = InterviewType.singleTopic;
+    const type = InterviewType.commonSingleTopic;
 
     final route = QuestionCountSelectPageRoute(
       type,
@@ -37,7 +37,7 @@ mixin class ChatListEvent {
   ///
   void routeToTopicSelectPage(WidgetRef ref) {
     InterviewTopicSelectRoute(
-      InterviewType.practical,
+      InterviewType.commonPracticalTopic,
     ).push(ref.context);
   }
 }

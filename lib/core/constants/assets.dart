@@ -40,13 +40,16 @@ class Assets {
   static const String iconsArrowUp = 'assets/icons/arrow_up.svg';
   static const String iconsArrowUpThick = 'assets/icons/arrow_up_thick.svg';
   static const String iconsAvatar1 = 'assets/icons/avatar_1.svg';
+  static const String iconsBoomark = 'assets/icons/boomark.svg';
   static const String iconsBullet = 'assets/icons/bullet.svg';
   static const String iconsCamera = 'assets/icons/camera.svg';
   static const String iconsChatBubbleTale = 'assets/icons/chat_bubble_tale.svg';
   static const String iconsCheck = 'assets/icons/check.svg';
+  static const String iconsCheckNote = 'assets/icons/check_note.svg';
   static const String iconsCheckThick = 'assets/icons/check_thick.svg';
   static const String iconsClose = 'assets/icons/close.svg';
   static const String iconsCloseThick = 'assets/icons/close_thick.svg';
+  static const String iconsCoreCircle = 'assets/icons/core_circle.svg';
   static const String iconsCorrect = 'assets/icons/correct.svg';
   static const String iconsCorrectIndicator =
       'assets/icons/correct_indicator.svg';
@@ -69,6 +72,7 @@ class Assets {
   static const String iconsNote = 'assets/icons/note.svg';
   static const String iconsPassResult = 'assets/icons/pass_result.svg';
   static const String iconsPencil = 'assets/icons/pencil.svg';
+  static const String iconsPlay = 'assets/icons/play.svg';
   static const String iconsPlus = 'assets/icons/plus.svg';
   static const String iconsPlusThick = 'assets/icons/plus_thick.svg';
   static const String iconsPonderingIllusration =
@@ -108,8 +112,10 @@ class Assets {
   static const String iconsSend = 'assets/icons/send.svg';
   static const String iconsSendActivate = 'assets/icons/send_activate.svg';
   static const String iconsSendUp = 'assets/icons/send_up.svg';
+  static const String iconsSparkle = 'assets/icons/sparkle.svg';
   static const String iconsStarDeco = 'assets/icons/star_deco.svg';
   static const String iconsStudy = 'assets/icons/study.svg';
+  static const String iconsSummaryNote = 'assets/icons/summary_note.svg';
   static const String iconsTalker = 'assets/icons/talker.svg';
   static const String iconsTechTalkLogo = 'assets/icons/tech_talk_logo.svg';
   static const String iconsTextFieldMic = 'assets/icons/text_field_mic.svg';
@@ -119,6 +125,7 @@ class Assets {
   static const String iconsUser = 'assets/icons/user.svg';
   static const String iconsVideoUpload = 'assets/icons/video_upload.svg';
   static const String iconsWarning = 'assets/icons/warning.svg';
+  static const String iconsWemoCheck = 'assets/icons/wemo_check.svg';
   static const String iconsWrongIndicator = 'assets/icons/wrong_indicator.svg';
   static const String imagesAppIcon = 'assets/images/app_icon.png';
   static const String imagesAvatar1 = 'assets/images/avatar_1.png';

@@ -18,6 +18,7 @@ import 'package:techtalk/presentation/widgets/common/chip/outlined_chip.dart';
 class YoutubeContentItemView extends StatelessWidget {
   const YoutubeContentItemView({
     super.key,
+    required this.videoId,
     required this.thumbnailImgUrl,
     required this.title,
     required this.channelName,
@@ -27,6 +28,7 @@ class YoutubeContentItemView extends StatelessWidget {
     this.skills = const [],
     this.isLoaded = true,
     this.showCategorySkeleton = true,
+    this.heroEnabled = false,
   });
 
   final String thumbnailImgUrl;
@@ -39,10 +41,13 @@ class YoutubeContentItemView extends StatelessWidget {
 
   final bool isLoaded;
   final bool showCategorySkeleton;
+  final bool heroEnabled;
+  final String videoId;
 
   factory YoutubeContentItemView.createSkeleton(
           {bool exposeCategories = true}) =>
       YoutubeContentItemView(
+        videoId: '',
         thumbnailImgUrl: '',
         title: '',
         channelName: '',
@@ -70,6 +75,18 @@ class YoutubeContentItemView extends StatelessWidget {
                   child: isLoaded
                       ? Image.network(
                           thumbnailImgUrl,
+                          width: double.infinity,
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            return SizedBox(
+                              child: AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 120),
+                                child: loadingProgress == null
+                                    ? child
+                                    : const SkeletonBox(),
+                              ),
+                            );
+                          },
                           fit: BoxFit.fitWidth,
                         )
                       : const SkeletonBox(),
@@ -84,7 +101,7 @@ class YoutubeContentItemView extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(right: 6),
                             child: DarkTransparentChip(
-                              label: AppFormatter.formatDuration(
+                              label: AppFormatter.formatDurationTommssOrHHmmss(
                                 videoDuration!,
                               ),
                             ),

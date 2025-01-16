@@ -66,13 +66,14 @@ class SelectableCategoryChip extends StatelessWidget {
             children: [
               if (item.type.isSkill)
                 Padding(
-                    padding: const EdgeInsets.only(right: 4),
-                    child: RoundedSkillImage(
-                      imagePath: item.imagePath,
-                      scale: 1.0,
-                      disableRound: true,
-                      size: 16,
-                    )),
+                  padding: const EdgeInsets.only(right: 4),
+                  child: RoundedSkillImage(
+                    imagePath: item.imagePath,
+                    scale: 1.0,
+                    disableRound: true,
+                    size: 16,
+                  ),
+                ),
               Text(
                 item.name,
               ),

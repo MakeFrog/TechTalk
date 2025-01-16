@@ -1,4 +1,5 @@
 import 'package:techtalk/features/chat/repositories/enums/qna_type.enum.dart';
+import 'package:uuid/uuid.dart';
 
 abstract class BaseQnaEntity {
   /// 고유 id 값
@@ -10,9 +11,9 @@ abstract class BaseQnaEntity {
   /// 문답 유형
   final QnaType type;
 
-  const BaseQnaEntity({
-    required this.id,
+  BaseQnaEntity({
+    String? id,
     required this.question,
     required this.type,
-  });
+  }) : id = id ?? const Uuid().v1();
 }

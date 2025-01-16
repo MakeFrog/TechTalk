@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gap/gap.dart';
 
 ///
 /// [ExpansionTile] 과 유사한 쓰임새를 가지는 위젯
@@ -16,21 +17,25 @@ class FlexibleExpansionTile extends HookWidget {
   final Curve curve; // 애니메이션의 곡선
   final Curve reverseCurve; // 역방향 애니메이션의 곡선
   final ValueNotifier<bool>? isExpanded; // 확장 여부 state
+  final Color? highlightColor;
   final bool isExpandedInitially; // 초기 확장 상태
+  final double gapBetweenTitleAndContent;
 
-  const FlexibleExpansionTile({
-    Key? key,
-    required this.title,
-    required this.content,
-    this.padding,
-    this.isExpanded,
-    this.alignment = Alignment.center,
-    this.duration = const Duration(milliseconds: 300),
-    this.reverseDuration,
-    this.curve = Curves.easeOut,
-    this.reverseCurve = Curves.easeIn,
-    this.isExpandedInitially = false,
-  }) : super(key: key);
+  const FlexibleExpansionTile(
+      {Key? key,
+      required this.title,
+      required this.content,
+      this.padding,
+      this.highlightColor,
+      this.isExpanded,
+      this.alignment = Alignment.center,
+      this.duration = const Duration(milliseconds: 300),
+      this.reverseDuration,
+      this.curve = Curves.easeOut,
+      this.reverseCurve = Curves.easeIn,
+      this.isExpandedInitially = false,
+      this.gapBetweenTitleAndContent = 0.0})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +71,7 @@ class FlexibleExpansionTile extends HookWidget {
     }, [isOpen.value, animationController]);
 
     return InkWell(
+      highlightColor: highlightColor,
       onTap: () {
         isOpen.value = !isOpen.value; // 터치 시 상태 토글
       },
@@ -75,6 +81,7 @@ class FlexibleExpansionTile extends HookWidget {
         child: Column(
           children: [
             title, // 제목
+            Gap(gapBetweenTitleAndContent),
             ClipRect(
               child: AnimatedBuilder(
                 animation: animationController,

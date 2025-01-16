@@ -25,7 +25,7 @@ class _ContentListView extends HookConsumerWidget
                     margin: const EdgeInsets.only(bottom: 16),
                     child: BounceTapper(
                       onTap: () {
-                        routeToDetailPage(context, overview: item);
+                        routeToDetailPage(ref, overview: item);
                       },
                       child: YoutubeContentItemView(
                         thumbnailImgUrl: item.thumbnailImgUrl,
@@ -35,6 +35,7 @@ class _ContentListView extends HookConsumerWidget
                         questionCount: item.qnaNum,
                         skills: item.relatedSkillIds.toList(),
                         jobGroups: item.relatedJobs.toList(),
+                        videoId: item.id,
                       ),
                     ),
                   );

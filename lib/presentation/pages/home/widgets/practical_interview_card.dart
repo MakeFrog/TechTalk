@@ -9,59 +9,27 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/home/home_event.dart';
 import 'package:techtalk/presentation/pages/home/widgets/home_state.dart';
+import 'package:techtalk/presentation/pages/home/widgets/interview_indicator_card.dart';
 
 class PracticalInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
   const PracticalInterviewCard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return BounceTapper(
-      onTap: () => onPracticalCardTapped(ref),
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(24, 12, 0, 12),
-        decoration: BoxDecoration(
-          color: AppColor.of.brand1,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    tr(LocaleKeys.home_practicalInterview),
-                    style: AppTextStyle.headline2.copyWith(
-                      color: AppColor.of.brand3,
-                    ),
-                  ),
-                ),
-                BounceTapper(
-                  highlightColor: Colors.transparent,
-                  onTap: () {
-                    routeToTopicSelectPage(
-                      context,
-                      type: InterviewType.practical,
-                    );
-                  },
-                  child: SvgPicture.asset(Assets.iconsRoundBlueCircle),
-                ),
-              ],
-            ),
-            if (!(user(ref)?.hasPracticalInterviewRecord ?? false))
-              Padding(
-                padding: const EdgeInsets.only(bottom: 12, right: 24),
-                child: Text(
-                  tr(LocaleKeys.home_practicalInterviewDesc),
-                  style: AppTextStyle.body1.copyWith(
-                    color: AppColor.of.gray3,
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
+    return InterviewIndicatorCard(
+      title: tr(LocaleKeys.home_practicalInterview),
+      subDescription: !(user(ref)?.hasPracticalInterviewRecord ?? false)
+          ? tr(LocaleKeys.home_practicalInterviewDesc)
+          : null,
+      onCardTapped: () {
+        onPracticalCardTapped(ref);
+      },
+      onPlusSuffixedBtnTapped: () {
+        routeToTopicSelectPage(
+          context,
+          type: InterviewType.commonPracticalTopic,
+        );
+      },
     );
   }
 }

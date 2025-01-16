@@ -1,13 +1,18 @@
+import 'dart:developer';
+
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dart_openai/dart_openai.dart' as forWhisper;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/app/environment/environment.enum.dart';
+import 'package:techtalk/core/modules/device/app_device.dart';
 import 'package:techtalk/core/modules/local/app_local.dart';
 
 class Flavor {
@@ -28,6 +33,11 @@ class Flavor {
   Future<void> setup() async {
     WidgetsFlutterBinding.ensureInitialized();
 
+    final rootIsolateToken = RootIsolateToken.instance;
+    if (rootIsolateToken != null) {
+      BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
+    }
+
     // 환경 파일 로드
     await dotenv.load(
       fileName: env.dotFileName,
@@ -43,8 +53,16 @@ class Flavor {
     await Firebase.initializeApp(
       options: option,
     );
+    await FirebaseFirestore.instanceFor(
+        app: Firebase.app(), databaseId: 'techtalk-dev');
 
     FirebaseMessaging.onBackgroundMessage((_) async {});
+
+    try {
+      await AppDevice.init();
+    } catch (e) {
+      log('디바이스 정보 호출 실패 :$e');
+    }
 
     OpenAI.instance.build(
       token: env.openApiKey,

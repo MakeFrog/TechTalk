@@ -29,6 +29,7 @@ class YoutubeMainPage extends BasePage with YoutubeMainState, YoutubeMainEvent {
     useAutomaticKeepAlive();
 
     return const _Scaffold(
+      // categorySliderBar: EmptyBox(),
       categorySliderBar: _CategorySliderBar(),
       contentListView: _ContentListView(),
     );
