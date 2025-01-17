@@ -5,10 +5,6 @@ class _UserInfoCard extends ConsumerWidget with MyPageState, MyPageEvent {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final fetchLocalResumeData = ref.watch(resumeLocalDataInfoProvider);
-    bool isLocalDataExist = fetchLocalResumeData.localResumePath.isNotEmpty ||
-        fetchLocalResumeData.localPortfolioPath.isNotEmpty;
-
     return Column(
       children: <Widget>[
         Row(
@@ -92,12 +88,22 @@ class _UserInfoCard extends ConsumerWidget with MyPageState, MyPageEvent {
                           ],
                         ),
                         const Gap(4),
-                        if (!isLocalDataExist)
-                          Text(
-                            '이력서 등록 후 예상 질문을 경험해 보세요!',
-                            style: AppTextStyle.body3
-                                .copyWith(color: AppColor.of.gray3),
-                          ),
+                        Consumer(
+                          builder: (context, ref, _) {
+                            final hasData =
+                                ref.read(resumeInfoProvider.notifier).hasData();
+
+                            if (!hasData) {
+                              return Text(
+                                '이력서 등록 후 예상 질문을 경험해 보세요!',
+                                style: AppTextStyle.body3
+                                    .copyWith(color: AppColor.of.gray3),
+                              );
+                            } else {
+                              return const EmptyBox();
+                            }
+                          },
+                        ),
                       ],
                     ),
                   ),

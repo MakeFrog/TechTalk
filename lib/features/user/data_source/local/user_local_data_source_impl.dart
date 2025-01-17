@@ -1,5 +1,8 @@
 import 'package:hive/hive.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/user/repositories/entities/document_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 
 final class UserLocalDataSourceImpl implements UserLocalDataSource {
@@ -44,33 +47,25 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
   }
 
   @override
-  Future<void> storeResumePdfMetaData({
-    required String localResumePath,
-    required String localResumeTitle,
-    required String localResumeDate,
-  }) async {
+  Future<void> changeResumeData(ResumeEntity resume) async {
     final userLocalInfo = localUser ?? UserBox.defaultValue();
 
     final updated = userLocalInfo.copyWith(
-      resumePdfPath: localResumePath,
-      resumePdfTitle: localResumeTitle,
-      resumePdfDate: localResumeDate,
+      resumePdfPath: resume.path ?? '',
+      resumePdfTitle: resume.title ?? '',
+      resumePdfDate: resume.uploadAt ?? '',
     );
     await box.put(AppLocal.userBoxName, updated);
   }
 
   @override
-  Future<void> storePortfolioPdfMetaData({
-    required String localPortfolioPath,
-    required String localPortfolioTitle,
-    required String localPortfolioDate,
-  }) async {
+  Future<void> changePortfolioData(PortfolioEntity portfolio) async {
     final userLocalInfo = localUser ?? UserBox.defaultValue();
 
     final updated = userLocalInfo.copyWith(
-      portfolioPdfPath: localPortfolioPath,
-      portfolioPdfTitle: localPortfolioTitle,
-      portfolioPdfDate: localPortfolioDate,
+      portfolioPdfPath: portfolio.path ?? '',
+      portfolioPdfTitle: portfolio.title ?? '',
+      portfolioPdfDate: portfolio.uploadAt ?? '',
     );
     await box.put(AppLocal.userBoxName, updated);
   }

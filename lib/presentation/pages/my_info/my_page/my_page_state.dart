@@ -1,6 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:techtalk/features/user/repositories/entities/document_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
+import 'package:techtalk/presentation/pages/resume_manage/providers/resume_info_provider.dart';
 import 'package:techtalk/presentation/providers/system/notification_status_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
@@ -18,10 +20,15 @@ mixin class MyPageState {
     return packageInfo.version;
   }
 
-
   ///
   /// 알람 권한 허용 여부
   ///
   AsyncValue<bool> isNotificationGranted(WidgetRef ref) =>
       ref.watch(notificationStatusProvider);
+
+  ///
+  /// 이력서 로컬 데이터 불러오기
+  ///
+  DocumentEntity loadDocumentData(WidgetRef ref) =>
+      ref.watch(resumeInfoProvider);
 }

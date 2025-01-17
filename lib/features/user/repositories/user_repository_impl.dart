@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
+import 'package:techtalk/features/user/repositories/entities/document_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 
 final class UserRepositoryImpl implements UserRepository {
@@ -156,58 +159,48 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Result<Map<String, String>> getPdfMetaData() {
+  Future<Result<void>> changeResumeData(ResumeEntity resume) async {
     try {
-      final localUser = _userLocalDataSource.loadUserLocalInfo();
-      final filePaths = {
-        'resumePdfPath': localUser.resumePdfPath,
-        'resumePdfTitle': localUser.resumePdfTitle,
-        'resumePdfDate': localUser.resumePdfDate,
-        'portfolioPdfPath': localUser.portfolioPdfPath,
-        'portfolioPdfTitle': localUser.portfolioPdfTitle,
-        'portfolioPdfDate': localUser.portfolioPdfDate,
-      };
-
-      print(filePaths.entries);
-      return Result.success(filePaths);
-    } on Exception catch (e) {
-      return Result.failure(e);
+      await _userLocalDataSource.changeResumeData(resume);
+      return Result.success(null);
+    } catch (e) {
+      return Result.failure(Exception(e));
     }
   }
 
   @override
-  Future<Result<void>> storeResumePdfMetaData({
-    required String localResumePath,
-    required String localResumeTitle,
-    required String localResumeDate,
-  }) async {
+  Future<Result<void>> changePortfolioData(PortfolioEntity portfolio) async {
     try {
-      await _userLocalDataSource.storeResumePdfMetaData(
-        localResumePath: localResumePath,
-        localResumeTitle: localResumeTitle,
-        localResumeDate: localResumeDate,
-      );
+      await _userLocalDataSource.changePortfolioData(portfolio);
       return Result.success(null);
-    } on Exception catch (e) {
-      return Result.failure(e);
+    } catch (e) {
+      return Result.failure(Exception(e));
     }
   }
 
   @override
-  Future<Result<void>> storePortfolioPdfMetaData({
-    required String localPortfolioPath,
-    required String localPortfolioTitle,
-    required String localPortfolioDate,
-  }) async {
+  Result<DocumentEntity> loadDocumentData() {
     try {
-      await _userLocalDataSource.storePortfolioPdfMetaData(
-        localPortfolioPath: localPortfolioPath,
-        localPortfolioTitle: localPortfolioTitle,
-        localPortfolioDate: localPortfolioDate,
+      final data = _userLocalDataSource.loadUserLocalInfo();
+
+      final resume = ResumeEntity(
+        path: data.resumePdfPath,
+        title: data.resumePdfTitle,
+        uploadAt: data.resumePdfDate,
       );
-      return Result.success(null);
-    } on Exception catch (e) {
-      return Result.failure(e);
+      final portfolio = PortfolioEntity(
+        path: data.portfolioPdfPath,
+        title: data.portfolioPdfTitle,
+        uploadAt: data.portfolioPdfDate,
+      );
+      final documentEntity = DocumentEntity(
+        resume: resume,
+        portfolio: portfolio,
+      );
+
+      return Result.success(documentEntity);
+    } catch (e) {
+      return Result.failure(Exception(e));
     }
   }
 }

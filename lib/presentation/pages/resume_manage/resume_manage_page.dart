@@ -2,7 +2,6 @@ import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -10,13 +9,17 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/presentation/pages/resume_manage/providers/resume_temp_data_info_provider.dart';
+import 'package:techtalk/features/user/repositories/entities/document_base_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
+import 'package:techtalk/features/user/repositories/enums/document_type.enum.dart';
+import 'package:techtalk/presentation/pages/resume_manage/providers/resume_info_provider.dart';
 import 'package:techtalk/presentation/pages/resume_manage/resume_manage_event.dart';
 import 'package:techtalk/presentation/pages/resume_manage/resume_manage_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 
-part 'package:techtalk/presentation/pages/resume_manage/widgets/file_display_card.dart';
+part 'package:techtalk/presentation/pages/resume_manage/widgets/resume_card.dart';
 part 'package:techtalk/presentation/pages/resume_manage/widgets/resume_manage_bottom_sheet.dart';
 
 class ResumeManagePage extends BasePage
@@ -25,176 +28,81 @@ class ResumeManagePage extends BasePage
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
-    final tempState = fetchTempState(ref);
-    final localData = fetchLocalState(ref);
+    // TODO: 여기서 ref.watch로 인해 불필요하게 빌드되는 것이 무엇이 있는지 궁금 (yundal)
+    // TODO: 저장하기 버튼 활성화 조건 추가하기 (yundal)
+    final data = ref.watch(resumeInfoProvider);
 
-    // 저장하기 버튼 활성화
-    final bool isTempChanged = tempState.tempResumePath != null ||
-        tempState.tempPortfolioPath != null ||
-        tempState.isLocalResumeDeleted == true ||
-        tempState.isLocalPortfolioDeleted == true;
+    String resumePath = data.resume.path ?? '';
+    String portfolioPath = data.portfolio.path ?? '';
+    bool showTooltip = resumePath != portfolioPath;
 
-    return PopScope(
-      onPopInvokedWithResult: (didPop, result) async {
-        if (didPop) {
-          ref.read(resumeTempDataInfoProvider.notifier).resetTempState();
-        }
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  '50MB 이하의 PDF 파일만 등록할 수 있어요',
-                  style: AppTextStyle.body1.copyWith(color: AppColor.of.gray4),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          buildGuideText(),
+
+          ResumeCard.fromData(
+            type: DocumentType.resume,
+            doc: data.resume,
+          ),
+
+          ResumeCard.fromData(
+            type: DocumentType.portfolio,
+            doc: data.portfolio,
+          ),
+
+          const Spacer(),
+
+          // 저장 버튼
+          Column(
+            children: [
+              if (showTooltip)
+                Column(
+                  children: [
+                    SvgPicture.asset(Assets.iconsOneMoreAddTooltip),
+                    const Gap(8),
+                  ],
                 ),
-                const Gap(12),
-                const _ResumePdfFileSection(),
-                const _PortfolioPdfFileSection(),
-              ],
-            ),
-            const Spacer(),
-
-            // 저장 버튼
-            Column(
-              children: [
-                if (shouldShowTooltip(
-                  tempState,
-                  localData,
-                  isTempChanged: isTempChanged,
-                ))
-                  Column(
-                    children: [
-                      SvgPicture.asset(Assets.iconsOneMoreAddTooltip),
-                      const Gap(8),
-                    ],
-                  ),
-                BounceTapper(
-                  enable: isTempChanged,
-                  child: FilledButton(
-                    onPressed: isTempChanged
-                        ? () async {
-                            await EasyLoading.show();
-                            await onClickedSaveBtn(ref);
-                            await EasyLoading.dismiss();
-                          }
-                        : null,
-                    child: Center(
-                      child: Text(
-                        context.tr(
-                          LocaleKeys.common_save,
-                        ),
+              BounceTapper(
+                child: FilledButton(
+                  onPressed: () => onClickedSaveBtn(ref),
+                  child: Center(
+                    child: Text(
+                      ref.context.tr(
+                        LocaleKeys.common_save,
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
+  }
+
+  /// 가이드 텍스트
+  Widget buildGuideText() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          '50MB 이하의 PDF 파일만 등록할 수 있어요',
+          style: AppTextStyle.body1.copyWith(color: AppColor.of.gray4),
+        ),
+        const Gap(12),
+      ],
+    );
+  }
+
+  @override
+  void onWillPop(WidgetRef ref) {
+    ref.read(resumeInfoProvider.notifier).resetState();
   }
 
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
       const BackButtonAppBar(title: '내 이력서');
-}
-
-///
-/// 이력서 섹션
-///
-class _ResumePdfFileSection extends ConsumerWidget
-    with ResumeManageEvent, ResumeManageState {
-  const _ResumePdfFileSection();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final tempState = fetchTempState(ref);
-    final localState = fetchLocalState(ref);
-    final bool isLocalResumeDataExist = localState.localResumePath.isNotEmpty;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text('이력서', style: AppTextStyle.headline2),
-          const Gap(8),
-          if (tempState.tempResumePath == null &&
-              tempState.isLocalResumeDeleted)
-            FileUploadPlaceholder(
-              onTap: () => resumePickAndSaveFile(ref),
-            )
-          else
-            FileDisplayCard(
-              isResume: true,
-              localPath: localState.localResumePath,
-              localTitle: localState.localResumeTitle,
-              localDate: localState.localResumeDate,
-              tempPath: tempState.tempResumePath,
-              tempTitle: tempState.tempResumeTitle,
-              tempDate: tempState.tempResumeDate,
-              onFileTap: () => onRegisteredFileBtnTapped(
-                ref,
-                isResume: true,
-                isLocal: isLocalResumeDataExist,
-              ),
-              onEmptyTap: () => resumePickAndSaveFile(ref),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-///
-/// 포트폴리오 섹션
-///
-class _PortfolioPdfFileSection extends ConsumerWidget
-    with ResumeManageEvent, ResumeManageState {
-  const _PortfolioPdfFileSection();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final tempState = fetchTempState(ref);
-    final localState = fetchLocalState(ref);
-    final bool isLocalPortfolioDataExist =
-        localState.localPortfolioPath.isNotEmpty;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text('포트폴리오', style: AppTextStyle.headline2),
-          const Gap(8),
-          if (tempState.tempPortfolioPath == null &&
-              tempState.isLocalPortfolioDeleted)
-            FileUploadPlaceholder(
-              onTap: () => portfolioPickAndSaveFile(ref),
-            )
-          else
-            FileDisplayCard(
-              isResume: false,
-              localPath: localState.localPortfolioPath,
-              localTitle: localState.localPortfolioTitle,
-              localDate: localState.localPortfolioDate,
-              tempPath: tempState.tempPortfolioPath,
-              tempTitle: tempState.tempPortfolioTitle,
-              tempDate: tempState.tempPortfolioDate,
-              onFileTap: () => onRegisteredFileBtnTapped(
-                ref,
-                isResume: false,
-                isLocal: isLocalPortfolioDataExist,
-              ),
-              onEmptyTap: () => portfolioPickAndSaveFile(ref),
-            ),
-        ],
-      ),
-    );
-  }
 }

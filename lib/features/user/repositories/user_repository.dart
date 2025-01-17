@@ -1,6 +1,9 @@
 import 'dart:io';
 
 import 'package:techtalk/core/modules/error_handling/result.dart';
+import 'package:techtalk/features/user/repositories/entities/document_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
 
 abstract interface class UserRepository {
@@ -65,25 +68,17 @@ abstract interface class UserRepository {
   Future<Result<void>> changeFirstEnteredFieldToTrue();
 
   ///
+  /// 만약 Resume 만 업데이트하는 API가 별도로 필요하다면:
+  ///
+  Future<Result<void>> changeResumeData(ResumeEntity resume);
+
+  ///
+  /// 만약 Portfolio 만 업데이트하는 API가 별도로 필요하다면:
+  ///
+  Future<Result<void>> changePortfolioData(PortfolioEntity portfolio);
+
+  ///
   /// 로컬 저장소의 PDF 메타 데이터 호출
   ///
-  Result<Map<String, String>> getPdfMetaData();
-
-  ///
-  /// 이력서 PDF 메타데이터 로컬 저장
-  ///
-  Future<Result<void>> storeResumePdfMetaData({
-    required String localResumePath,
-    required String localResumeTitle,
-    required String localResumeDate,
-  });
-
-  ///
-  /// 포트폴리오 PDF 메타데이터 로컬 저장
-  ///
-  Future<Result<void>> storePortfolioPdfMetaData({
-    required String localPortfolioPath,
-    required String localPortfolioTitle,
-    required String localPortfolioDate,
-  });
+  Result<DocumentEntity> loadDocumentData();
 }

@@ -12,7 +12,7 @@ import 'package:techtalk/presentation/pages/my_info/my_page/my_page_event.dart';
 import 'package:techtalk/presentation/pages/my_info/my_page/my_page_state.dart';
 import 'package:techtalk/presentation/pages/my_info/my_page/widgets/card_list_tile_button.dart';
 import 'package:techtalk/presentation/pages/my_info/my_page/widgets/expandable_wrapped_list_view.dart';
-import 'package:techtalk/presentation/pages/resume_manage/providers/resume_local_data_info_provider.dart';
+import 'package:techtalk/presentation/pages/resume_manage/providers/resume_info_provider.dart';
 import 'package:techtalk/presentation/providers/system/notification_status_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';

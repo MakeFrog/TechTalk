@@ -1,3 +1,5 @@
+import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 
 abstract interface class UserLocalDataSource {
@@ -22,20 +24,12 @@ abstract interface class UserLocalDataSource {
   Future<void> disableReviewAvailableState();
 
   ///
-  /// 로컬 이력서 PDF 메타데이터 저장
+  /// 유저 이력서 데이터 저장
   ///
-  Future<void> storeResumePdfMetaData({
-    required String localResumePath,
-    required String localResumeTitle,
-    required String localResumeDate,
-  });
+  Future<void> changeResumeData(ResumeEntity resume);
 
   ///
-  /// 로컬 포트폴리오 PDF 메타데이터 저장
+  /// 유저 포트폴리오 데이터 저장
   ///
-  Future<void> storePortfolioPdfMetaData({
-    required String localPortfolioPath,
-    required String localPortfolioTitle,
-    required String localPortfolioDate,
-  });
+  Future<void> changePortfolioData(PortfolioEntity portfolio);
 }

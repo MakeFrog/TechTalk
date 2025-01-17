@@ -12,7 +12,6 @@ import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/core/services/slack_notification_service.dart' as noti;
 import 'package:techtalk/features/user/user.dart';
-import 'package:techtalk/presentation/pages/resume_manage/providers/resume_local_data_info_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_blur_provider.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
@@ -248,10 +247,4 @@ mixin class MyPageEvent {
   void routeToResumeManagePage(WidgetRef ref) {
     const ResumeManageRoute().push(ref.context);
   }
-
-  ///
-  /// 이력서 로컬 데이터 불러오기
-  ///
-  ResumeLocalState fetchLocalResumeData(WidgetRef ref) =>
-      ref.watch(resumeLocalDataInfoProvider);
 }

@@ -11,7 +11,7 @@ class ResumePreviewPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // (1) provider로부터 pdfPath 받기
-    final pdfPath = ref.watch(resumePreviewPathProvider);
+     final pdfPath = ref.watch(resumePreviewPathProvider);
 
     // (2) Hook을 사용하여 상태 관리
     final totalPages = useState<int>(0);
