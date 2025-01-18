@@ -1,72 +1,56 @@
-part of 'package:techtalk/presentation/pages/resume_manage/resume_manage_page.dart';
+import 'package:bounce_tapper/bounce_tapper.dart';
+import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/style/index.dart';
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/user/repositories/entities/document_base_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
+import 'package:techtalk/features/user/repositories/enums/document_type.enum.dart';
+import 'package:techtalk/presentation/pages/resume_manage/resume_manage_event.dart';
 
 ///
-/// ResumeCard 위젯
-/// 이력서, 포트폴리오 또는 데이터 없는 상태를 처리
+/// 이력서 카드 / 포트폴리오 카드 위젯
 ///
 class ResumeCard extends ConsumerWidget with ResumeManageEvent {
-  const ResumeCard._({Key? key, this.doc, required this.type})
-      : super(key: key);
+  const ResumeCard._({
+    Key? key,
+    required this.type,
+    required this.doc,
+  }) : super(key: key);
 
-  final DocumentBaseEntity? doc;
   final DocumentType type;
+  final DocumentBaseEntity doc;
 
-  ///
-  /// RESUME
-  ///
-  factory ResumeCard.resume({
-    required ResumeEntity resume,
-  }) {
-    return ResumeCard._(doc: resume, type: DocumentType.resume);
+  /// 이력서 Card
+  factory ResumeCard.resume({required ResumeEntity resume}) {
+    return ResumeCard._(
+      type: DocumentType.resume,
+      doc: resume,
+    );
   }
 
-  ///
-  /// PORTFOLIO
-  ///
-  factory ResumeCard.portfolio({
-    required PortfolioEntity portfolio,
-  }) {
-    return ResumeCard._(doc: portfolio, type: DocumentType.portfolio);
-  }
-
-  ///
-  /// EMPTY
-  ///
-  factory ResumeCard.empty({
-    required DocumentType type,
-  }) {
-    return ResumeCard._(type: type);
-  }
-
-  ///
-  /// 상황에 맞게 분기해주는 메서드
-  ///
-  factory ResumeCard.fromData({
-    required DocumentType type,
-    required DocumentBaseEntity? doc,
-  }) {
-    // 만약 doc 이 없다면 => empty
-    if (doc == null || doc.path!.isEmpty) {
-      return ResumeCard.empty(type: type);
-    }
-    // doc 이 있다면 => resume or portfolio
-    switch (type) {
-      case DocumentType.resume:
-        return ResumeCard.resume(resume: doc as ResumeEntity);
-      case DocumentType.portfolio:
-        return ResumeCard.portfolio(portfolio: doc as PortfolioEntity);
-    }
+  /// 포트폴리오 Card
+  factory ResumeCard.portfolio({required PortfolioEntity portfolio}) {
+    return ResumeCard._(
+      type: DocumentType.portfolio,
+      doc: portfolio,
+    );
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // 데이터가 없으면 Placeholder 표시
-    if (doc == null) {
+    // 만약 파일 경로(path)가 비어있다면 => 파일이 없으므로, FileUploadCard 반환
+    if ((doc.path ?? '').isEmpty) {
       return FileUploadCard(type: type);
     }
 
-    final title = doc?.title ?? '제목 없음';
-    final date = doc?.uploadAt ?? '업로드 날짜 없음';
+    // 파일이 존재한다면 => 기존 UI
+    final title = doc.title ?? '제목 없음';
+    final date = doc.uploadAt ?? '업로드 날짜 없음';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -116,10 +100,10 @@ class ResumeCard extends ConsumerWidget with ResumeManageEvent {
 }
 
 ///
-/// 이력서 파일 업로드
+/// 이력서 파일을 새로 업로드할 때
 ///
 class FileUploadCard extends ConsumerWidget with ResumeManageEvent {
-  const FileUploadCard({super.key, required this.type});
+  const FileUploadCard({Key? key, required this.type}) : super(key: key);
 
   final DocumentType type;
 

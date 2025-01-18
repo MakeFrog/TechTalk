@@ -1,5 +1,4 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,17 +8,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/features/user/repositories/entities/document_base_entity.dart';
-import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
-import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
-import 'package:techtalk/features/user/repositories/enums/document_type.enum.dart';
 import 'package:techtalk/presentation/pages/resume_manage/providers/resume_info_provider.dart';
 import 'package:techtalk/presentation/pages/resume_manage/resume_manage_event.dart';
 import 'package:techtalk/presentation/pages/resume_manage/resume_manage_state.dart';
+import 'package:techtalk/presentation/pages/resume_manage/widgets/resume_card.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 
-part 'package:techtalk/presentation/pages/resume_manage/widgets/resume_card.dart';
 part 'package:techtalk/presentation/pages/resume_manage/widgets/resume_manage_bottom_sheet.dart';
 
 class ResumeManagePage extends BasePage
@@ -42,15 +37,8 @@ class ResumeManagePage extends BasePage
         children: [
           buildGuideText(),
 
-          ResumeCard.fromData(
-            type: DocumentType.resume,
-            doc: data.resume,
-          ),
-
-          ResumeCard.fromData(
-            type: DocumentType.portfolio,
-            doc: data.portfolio,
-          ),
+          ResumeCard.resume(resume: data.resume),
+          ResumeCard.portfolio(portfolio: data.portfolio),
 
           const Spacer(),
 
