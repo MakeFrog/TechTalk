@@ -2,8 +2,8 @@ import 'package:techtalk/features/user/repositories/entities/portfolio_entity.da
 import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 
 final class DocumentEntity {
-  final ResumeEntity resume;
-  final PortfolioEntity portfolio;
+  final ResumeEntity? resume;
+  final PortfolioEntity? portfolio;
 
   const DocumentEntity({
     required this.resume,

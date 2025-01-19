@@ -31,8 +31,8 @@ class ResumeInfo extends _$ResumeInfo {
   /// 툴팁 활성화 조건
   ///
   bool showTooltip() {
-    final resumePath = state.resume.path ?? '';
-    final portfolioPath = state.portfolio.path ?? '';
+    final resumePath = state.resume?.path ?? '';
+    final portfolioPath = state.portfolio?.path ?? '';
     // “다르면 툴팁을 보이게 한다”는 로직
     return resumePath != portfolioPath;
   }
@@ -41,7 +41,10 @@ class ResumeInfo extends _$ResumeInfo {
   /// 로컬 데이터 존재 유무 확인
   ///
   bool hasData() {
-    return state.resume.path!.isNotEmpty || state.portfolio.path!.isNotEmpty;
+    final resumePath = state.resume?.path ?? '';
+    final portfolioPath = state.portfolio?.path ?? '';
+
+    return resumePath.isNotEmpty || portfolioPath.isNotEmpty;
   }
 
   ///

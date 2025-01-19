@@ -27,8 +27,8 @@ class ResumeManagePage extends BasePage
     // TODO: 저장하기 버튼 활성화 조건 추가하기 (yundal)
     final data = ref.watch(resumeInfoProvider);
 
-    String resumePath = data.resume.path ?? '';
-    String portfolioPath = data.portfolio.path ?? '';
+    String? resumePath = data.resume?.path;
+    String? portfolioPath = data.portfolio?.path;
     bool showTooltip = resumePath != portfolioPath;
 
     return Padding(

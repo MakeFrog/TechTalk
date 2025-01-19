@@ -26,31 +26,31 @@ class ResumeCard extends ConsumerWidget with ResumeManageEvent {
   final DocumentBaseEntity doc;
 
   /// 이력서 Card
-  factory ResumeCard.resume({required ResumeEntity resume}) {
+  factory ResumeCard.resume({required ResumeEntity? resume}) {
     return ResumeCard._(
       type: DocumentType.resume,
-      doc: resume,
+      doc: resume ?? ResumeEntity(),
     );
   }
 
   /// 포트폴리오 Card
-  factory ResumeCard.portfolio({required PortfolioEntity portfolio}) {
+  factory ResumeCard.portfolio({required PortfolioEntity? portfolio}) {
     return ResumeCard._(
       type: DocumentType.portfolio,
-      doc: portfolio,
+      doc: portfolio ?? PortfolioEntity(),
     );
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // 만약 파일 경로(path)가 비어있다면 => 파일이 없으므로, FileUploadCard 반환
-    if ((doc.path ?? '').isEmpty) {
+    if (doc.path.isEmpty) {
       return FileUploadCard(type: type);
     }
 
     // 파일이 존재한다면 => 기존 UI
-    final title = doc.title ?? '제목 없음';
-    final date = doc.uploadAt ?? '업로드 날짜 없음';
+    final title = doc.title;
+    final date = doc.uploadAt;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

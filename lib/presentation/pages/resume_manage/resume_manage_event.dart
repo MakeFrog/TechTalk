@@ -270,8 +270,8 @@ mixin class ResumeManageEvent {
     final currentResume = currentState.resume;
     final currentPortfolio = currentState.portfolio;
 
-    await resumeInfo.updateResumeData(currentResume);
-    await resumeInfo.updatePortfolioData(currentPortfolio);
+    // await resumeInfo.updateResumeData(currentResume);
+    // await resumeInfo.updatePortfolioData(currentPortfolio);
 
     // 3) 저장 후 필요한 UI 동작( ex. 화면 pop )
     if (ref.context.mounted) {
@@ -289,16 +289,16 @@ mixin class ResumeManageEvent {
     // 미리보기용 pdf 경로
     late final String? previewPath;
 
-    if (type == DocumentType.resume) {
-      previewPath = state.resume.path;
-    } else {
-      previewPath = state.portfolio.path;
-    }
+    // if (type == DocumentType.resume) {
+    //   previewPath = state.resume.path;
+    // } else {
+    //   previewPath = state.portfolio.path;
+    // }
 
-    if (previewPath == null) {
-      debugPrint('PDF 경로가 존재하지 않습니다.');
-      return;
-    }
+    // if (previewPath == null) {
+    //   debugPrint('PDF 경로가 존재하지 않습니다.');
+    //   return;
+    // }
 
     // ref.read(resumeInfoProvider.notifier).state = previewPath;
 

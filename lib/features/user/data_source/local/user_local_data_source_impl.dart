@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/features/user/repositories/entities/document_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/user.dart';
@@ -51,9 +50,9 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
     final userLocalInfo = localUser ?? UserBox.defaultValue();
 
     final updated = userLocalInfo.copyWith(
-      resumePdfPath: resume.path ?? '',
-      resumePdfTitle: resume.title ?? '',
-      resumePdfDate: resume.uploadAt ?? '',
+      resumePdfPath: resume.path,
+      resumePdfTitle: resume.title,
+      resumePdfDate: resume.uploadAt,
     );
     await box.put(AppLocal.userBoxName, updated);
   }
@@ -63,9 +62,9 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
     final userLocalInfo = localUser ?? UserBox.defaultValue();
 
     final updated = userLocalInfo.copyWith(
-      portfolioPdfPath: portfolio.path ?? '',
-      portfolioPdfTitle: portfolio.title ?? '',
-      portfolioPdfDate: portfolio.uploadAt ?? '',
+      portfolioPdfPath: portfolio.path,
+      portfolioPdfTitle: portfolio.title,
+      portfolioPdfDate: portfolio.uploadAt,
     );
     await box.put(AppLocal.userBoxName, updated);
   }
