@@ -159,8 +159,6 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
 
       QuerySnapshot<YoutubeMainModel> snapshot = await query.get();
 
-      print('이수방이 : ${lastDocument}');
-
       if (snapshot.docs.isEmpty) {
         return FirebasePaginatedResult<YoutubeMainModel, YoutubeMainModel>(
           items: [],

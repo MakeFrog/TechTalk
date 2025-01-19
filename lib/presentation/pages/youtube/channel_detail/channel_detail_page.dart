@@ -1,10 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/youtube/index.dart';
@@ -35,24 +33,6 @@ class ChannelDetailPage extends BasePage with ChannelDetailState {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 상단 배너 이미지
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: AspectRatio(
-                aspectRatio: 343 / 105,
-                child: CachedNetworkImage(
-                  imageUrl:
-                      "https://yt3.googleusercontent.com/-KbvrOwXU-FSD3QioqN-IBNWfCSyZkVHqqKmXRuQ0eR3ucp0NKaDbp639PKsPklh8e8Xcm7SWg=w2560-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj",
-                  placeholder: (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, url, error) => const Icon(
-                    Icons.error,
-                  ),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            const Gap(24),
             // 채널 정보 섹션
             Row(
               children: [
@@ -68,13 +48,6 @@ class ChannelDetailPage extends BasePage with ChannelDetailState {
                       channel.name,
                       style: AppTextStyle.headline2,
                     ),
-                    const Gap(2),
-                    Text(
-                      '구독자 수 999만명',
-                      style: AppTextStyle.body3.copyWith(
-                        color: AppColor.of.gray4,
-                      ),
-                    )
                   ],
                 ),
               ],

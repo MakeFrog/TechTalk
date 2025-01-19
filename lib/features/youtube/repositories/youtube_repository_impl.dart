@@ -12,6 +12,7 @@ import 'package:techtalk/core/modules/exceptions/custom_exception.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/tech_set_repository.dart';
 import 'package:techtalk/features/youtube/index.dart';
+import 'package:techtalk/features/youtube/repositories/entities/channel_detail_entity.dart';
 import 'package:techtalk/features/youtube/repositories/entities/video_overview_entity.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
@@ -149,7 +150,8 @@ class YoutubeRepositoryImpl
       final responses = await Future.wait([
         /// [NOTE]
         /// channel 정보는 isolate 적용이 제한됨
-        _youtubeApiDataSource.channels.get(video.channelId),
+        // _youtubeApiDataSource.channels.get(video.channelId),
+        loadWithIsolate(() => _fetchChannel(video.channelId.value)),
         loadWithIsolate(() => _fetchCaptionManifest(videoId)),
       ]);
 
@@ -349,6 +351,19 @@ class YoutubeRepositoryImpl
       return Result.failure(
         const FetchYoutubeContentsOverviewException(),
       );
+    }
+  }
+
+  @override
+  Future<Result<ChannelDetailEntity>> getChannelDetail(String channelId) async {
+    try {
+      final response = await _youtubeApiDataSource.channels.get(channelId);
+      print('아랑수 : ${response}');
+      final aim = await _youtubeApiDataSource.channels.get(channelId);
+      final result = ChannelDetailEntity.fromExplore(aim);
+      return Result.success(result);
+    } catch (e) {
+      return Result.failure(Exception('$this> $e'));
     }
   }
 }

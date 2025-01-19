@@ -61,4 +61,38 @@ abstract final class AppFormatter {
       }
     }
   }
+
+  /// 좋아요 수 & 조회수 & 구독자 수를 유튜브 포맷에 맞게 변경
+  /// 1000 미만 -> 숫자 ex) 956
+  /// 1000 이상 -> 천 단위 ex) 1.4천
+  /// 10000 이상 -> 만 단위 ex) 32만, 이때는 소숫점 없음 && 41000 -> 4.1만
+  static String? formatNumberWithUnit(int? num, {bool? isViewCount}) {
+    if (num == null) {
+      return null;
+    }
+    final strNum = '$num';
+    if (num <= 1000) {
+      return num.toString();
+    } else if (num > 1000 && num < 10000) {
+      final subString = strNum.substring(0, 2);
+      final result =
+          RegExp('.{1}').allMatches(subString).map((e) => e.group(0)).join('.');
+      return '$result${isViewCount ?? false ? '천회' : '천'}';
+      // 5 ,
+    } else if (num >= 10000) {
+      if (strNum.length == 5) {
+        final subString = strNum.substring(0, 2);
+        final result = RegExp('.{1}')
+            .allMatches(subString)
+            .map((e) => e.group(0))
+            .join('.');
+        return '$result${isViewCount ?? false ? '만회' : '만'}';
+      } else {
+        final result = strNum.substring(0, strNum.length - 4);
+        return '$result${isViewCount ?? false ? '만회' : '만'}';
+      }
+    } else {
+      return '-';
+    }
+  }
 }
