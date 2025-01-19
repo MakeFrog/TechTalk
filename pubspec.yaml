@@ -29,6 +29,7 @@ dependencies:
   smooth_page_indicator: ^1.1.0 # pageview 인디케이터
   flutter_animate: ^4.2.0+1 # 간편 애니메이션 메소드 지원
   cached_network_image: ^3.3.0 # 네트워크 이미지 캐싱
+  flutter_layout_grid: ^2.0.7
   lottie: ^3.2.0
   bounce_tapper: ^1.1.2
   expandable_page_view: ^1.0.17
