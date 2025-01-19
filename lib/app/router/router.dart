@@ -21,6 +21,7 @@ import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
 import 'package:techtalk/presentation/pages/study/learning/learning_detail_page.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_detail_page.dart';
+import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_note_page.dart';
 import 'package:techtalk/presentation/pages/youtube/channel_detail/channel_detail_page.dart';
 import 'package:techtalk/presentation/pages/youtube/channel_detail/provider/channel_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
@@ -166,6 +167,10 @@ class SignUpRoute extends GoRouteData {
       path: StudyRoute.path,
       name: StudyRoute.name,
     ),
+    TypedGoRoute<WrongAnswerNoteRoute>(
+      path: WrongAnswerNoteRoute.path,
+      name: WrongAnswerNoteRoute.name,
+    ),
     TypedGoRoute<YoutubeContentsMainListRoute>(
       path: YoutubeContentsMainListRoute.path,
       name: YoutubeContentsMainListRoute.name,
@@ -252,6 +257,16 @@ class StudyRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     arg = $extra;
     return const LearningDetailPage();
+  }
+}
+
+class WrongAnswerNoteRoute extends GoRouteData {
+  static const String path = 'wrong-answer-note';
+  static const String name = 'wrong answer note';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const WrongAnswerNotePage();
   }
 }
 

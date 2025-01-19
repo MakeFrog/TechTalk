@@ -120,6 +120,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $StudyRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: 'wrong-answer-note',
+          name: 'wrong answer note',
+          factory: $WrongAnswerNoteRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'contents-main-list',
           name: 'contents-main-list',
           factory: $YoutubeContentsMainListRouteExtension._fromState,
@@ -317,6 +322,24 @@ extension $StudyRouteExtension on StudyRoute {
 
   void replace(BuildContext context) =>
       context.replace(location, extra: $extra);
+}
+
+extension $WrongAnswerNoteRouteExtension on WrongAnswerNoteRoute {
+  static WrongAnswerNoteRoute _fromState(GoRouterState state) =>
+      WrongAnswerNoteRoute();
+
+  String get location => GoRouteData.$location(
+        '/wrong-answer-note',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
 }
 
 extension $YoutubeContentsMainListRouteExtension

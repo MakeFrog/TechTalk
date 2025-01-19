@@ -69,6 +69,8 @@ class Assets {
   static const String iconsIconMic = 'assets/icons/icon_mic.svg';
   static const String iconsIncorrect = 'assets/icons/incorrect.svg';
   static const String iconsMenuThick = 'assets/icons/menu_thick.svg';
+  static const String iconsMistakeNoteIllust =
+      'assets/icons/mistake_note_illust.svg';
   static const String iconsMoreCircle = 'assets/icons/more_circle.svg';
   static const String iconsNewCamera = 'assets/icons/new_camera.svg';
   static const String iconsNewRightArrow = 'assets/icons/new_right_arrow.svg';
@@ -82,6 +84,8 @@ class Assets {
       'assets/icons/pondering_illusration.svg';
   static const String iconsRedAlert = 'assets/icons/red_alert.svg';
   static const String iconsRedWarnningBig = 'assets/icons/red_warnning_big.svg';
+  static const String iconsRightAlignedRightArrow =
+      'assets/icons/right_aligned_right_arrow.svg';
   static const String iconsRoundBlueCircle =
       'assets/icons/round_blue_circle.svg';
   static const String iconsRoundedBlueExclamation =
@@ -126,6 +130,7 @@ class Assets {
   static const String iconsTypingModeTooltip =
       'assets/icons/typing_mode_tooltip.svg';
   static const String iconsUser = 'assets/icons/user.svg';
+  static const String iconsVideoStudy = 'assets/icons/video_study.svg';
   static const String iconsVideoUpload = 'assets/icons/video_upload.svg';
   static const String iconsWarning = 'assets/icons/warning.svg';
   static const String iconsWemoCheck = 'assets/icons/wemo_check.svg';
