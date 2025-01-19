@@ -37,14 +37,18 @@ class ExpandableYoutubeContentGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isLoaded || video.isNotEmpty) {
+      final rowSizes = video.isNotEmpty
+          ? List.generate(
+              (video.length / 2).ceil(), // 반올림으로 row 개수 계산
+              (_) => auto,
+            )
+          : [auto]; // 기본값 설정
+
       return SizedBox(
         width: double.infinity, // 부모 위젯의 너비를 제한
         child: LayoutGrid(
           columnSizes: const [FlexibleTrackSize(1), FlexibleTrackSize(1)],
-          rowSizes: List.generate(
-            (video.length / 2).ceil(), // 반올림으로 row 개수 계산
-            (_) => auto,
-          ),
+          rowSizes: rowSizes, // 수정된 부분
           rowGap: 12,
           columnGap: 8,
           children: [
