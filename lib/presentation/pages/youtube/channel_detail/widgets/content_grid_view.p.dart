@@ -1,16 +1,17 @@
 part of '../channel_detail_page.dart';
 
-class _ContentGridView extends ConsumerWidget with ChannelDetailState {
+class _ContentGridView extends ConsumerWidget
+    with ChannelDetailState, ChannelDetailEvent {
   const _ContentGridView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return PagedListView<DocumentSnapshot<YoutubeMainModel>?,
-        YoutubeContentOverviewEntity>(
+        YoutubeMainEntity>(
       shrinkWrap: true, // 스크롤 뷰 안에 맞춤
       physics: const NeverScrollableScrollPhysics(), // 내부 스크롤 비활성화
       pagingController: pagingController(ref),
-      builderDelegate: PagedChildBuilderDelegate<YoutubeContentOverviewEntity>(
+      builderDelegate: PagedChildBuilderDelegate<YoutubeMainEntity>(
         itemBuilder: (context, item, index) {
           // 데이터 리스트
           final itemList = pagingController(ref).itemList ?? [];
@@ -35,14 +36,14 @@ class _ContentGridView extends ConsumerWidget with ChannelDetailState {
                 // 첫 번째 아이템
                 Expanded(
                   child: firstItem != null
-                      ? _buildItem(firstItem)
+                      ? _buildContent(ref, content: firstItem)
                       : const SizedBox.shrink(),
                 ),
                 const SizedBox(width: 8), // 열 간 간격
                 // 두 번째 아이템 (존재하지 않을 경우 빈 공간)
                 Expanded(
                   child: secondItem != null
-                      ? _buildItem(secondItem)
+                      ? _buildContent(ref, content: secondItem)
                       : const SizedBox.shrink(),
                 ),
               ],
@@ -84,10 +85,10 @@ class _ContentGridView extends ConsumerWidget with ChannelDetailState {
   }
 
   /// 각 아이템을 빌드하는 메서드
-  Widget _buildItem(YoutubeContentOverviewEntity item) {
+  Widget _buildContent(WidgetRef ref, {required YoutubeMainEntity content}) {
     return GestureDetector(
       onTap: () {
-        // 아이템 클릭 처리
+        onContentTapped(ref, content: content);
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +99,7 @@ class _ContentGridView extends ConsumerWidget with ChannelDetailState {
             child: AspectRatio(
               aspectRatio: 167.54 / 94, // 썸네일 비율
               child: Image.network(
-                item.thumbnailImgUrl,
+                content.thumbnailImgUrl,
                 fit: BoxFit.cover,
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
@@ -114,7 +115,7 @@ class _ContentGridView extends ConsumerWidget with ChannelDetailState {
           const SizedBox(height: 8),
           // 콘텐츠 제목
           Text(
-            item.contentsTitle,
+            content.contentsTitle,
             style: AppTextStyle.body1,
           ),
           const SizedBox(height: 4),

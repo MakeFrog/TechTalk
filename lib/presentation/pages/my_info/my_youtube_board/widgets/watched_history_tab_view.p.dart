@@ -7,9 +7,9 @@ class _WatchHistoryTabView extends ConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return PagedListView<DocumentSnapshot<YoutubeMainModel>?,
-        YoutubeContentOverviewEntity>(
+        YoutubeMainEntity>(
       pagingController: pagingController(ref),
-      builderDelegate: PagedChildBuilderDelegate<YoutubeContentOverviewEntity>(
+      builderDelegate: PagedChildBuilderDelegate<YoutubeMainEntity>(
         itemBuilder: (context, item, index) {
           return Container(
             margin: const EdgeInsets.only(bottom: 16),

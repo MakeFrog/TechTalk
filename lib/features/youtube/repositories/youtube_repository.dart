@@ -41,10 +41,8 @@ abstract interface class YoutubeRepository {
   /// [limit] - 한 페이지당 가져올 항목 수
   /// [queryConstraints] - 추가적인 Firestore 쿼리 제약 조건
   ///
-  Future<
-      Result<
-          FirebasePaginatedResult<YoutubeContentOverviewEntity,
-              YoutubeMainModel>>> getRandomPagedYoutubeMainContents({
+  Future<Result<FirebasePaginatedResult<YoutubeMainEntity, YoutubeMainModel>>>
+      getRandomPagedYoutubeMainContents({
     required int limit,
     required String orderByField,
     required bool hasReversedQueryCallProceeded,
@@ -57,10 +55,8 @@ abstract interface class YoutubeRepository {
   ///
   /// 유튜브 콘텐츠 리스트 호출 (랜덤 X)
   ///
-  Future<
-      Result<
-          FirebasePaginatedResult<YoutubeContentOverviewEntity,
-              YoutubeMainModel>>> getPagedYoutubeMainContents({
+  Future<Result<FirebasePaginatedResult<YoutubeMainEntity, YoutubeMainModel>>>
+      getPagedYoutubeMainContents({
     required int limit,
     required String orderByField,
     required bool fetchChannel,
@@ -72,7 +68,7 @@ abstract interface class YoutubeRepository {
   /// 유튜브 콘텐츠 업로드
   ///
   Future<Result<void>> uploadYoutube({
-    required YoutubeContentOverviewEntity contentMainInfo,
+    required YoutubeMainEntity contentMainInfo,
     required SummaryEntity summary,
     required Set<YoutubeQnaEntity> qnas,
     required String uploaderId,
@@ -92,7 +88,7 @@ abstract interface class YoutubeRepository {
   ///
   /// 유튜브 비디오 메인 정보 호출
   ///
-  Future<Result<YoutubeContentOverviewEntity>> getYoutubeMainInfo({
+  Future<Result<YoutubeMainEntity>> getYoutubeMainInfo({
     required String contentId,
   });
 

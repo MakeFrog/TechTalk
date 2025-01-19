@@ -13,7 +13,7 @@ final class YoutubeDetailArg {
   final String contentId;
 
   /// Overview 섹션에서 보여지는 데이터
-  final YoutubeContentOverviewEntity? overView;
+  final YoutubeMainEntity? overView;
 
   /// 요약 정보
   final SummaryEntity? summary;
@@ -31,7 +31,7 @@ final class YoutubeDetailArg {
   /// [summary] / [qnas]
   /// 메인 리스트에서 진입하는 경우 null
   factory YoutubeDetailArg.entryFromMainList(
-      {required YoutubeContentOverviewEntity overView}) {
+      {required YoutubeMainEntity overView}) {
     return YoutubeDetailArg._(
       overView: overView,
       summary: null,
@@ -43,7 +43,7 @@ final class YoutubeDetailArg {
   /// [summary] / [qnas]
   /// 메인 리스트에서 진입하는 경우 NOT not
   factory YoutubeDetailArg.entryFromUpload({
-    required YoutubeContentOverviewEntity overView,
+    required YoutubeMainEntity overView,
     required SummaryEntity summary,
     required Set<YoutubeQnaEntity> qnas,
   }) {

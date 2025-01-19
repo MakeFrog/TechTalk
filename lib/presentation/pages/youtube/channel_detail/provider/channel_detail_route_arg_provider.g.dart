@@ -7,12 +7,12 @@ part of 'channel_detail_route_arg_provider.dart';
 // **************************************************************************
 
 String _$channelDetailRouteArgHash() =>
-    r'5c3c8c9dfe4a5a19f1ec8d571d2b4c317463367c';
+    r'84e28090a1dded92699ccde6c71caf76ac7f8001';
 
 /// See also [channelDetailRouteArg].
 @ProviderFor(channelDetailRouteArg)
 final channelDetailRouteArgProvider =
-    AutoDisposeProvider<ChannelEntity>.internal(
+    AutoDisposeProvider<ChannelDetailRouteArg>.internal(
   channelDetailRouteArg,
   name: r'channelDetailRouteArgProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +22,7 @@ final channelDetailRouteArgProvider =
   allTransitiveDependencies: null,
 );
 
-typedef ChannelDetailRouteArgRef = AutoDisposeProviderRef<ChannelEntity>;
+typedef ChannelDetailRouteArgRef
+    = AutoDisposeProviderRef<ChannelDetailRouteArg>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

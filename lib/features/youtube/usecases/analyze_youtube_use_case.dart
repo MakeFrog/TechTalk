@@ -54,7 +54,7 @@ final class AnalyzeAndUploadYoutubeUseCase
         throw const YtIsNotTechContentException();
       }
 
-      final targetOverView = YoutubeContentOverviewEntity.fromUploadResponse(
+      final targetOverView = YoutubeMainEntity.fromUploadResponse(
         video: targetVideo,
         qnaAndIds: qnaAndIdsResult,
       );
@@ -67,7 +67,7 @@ final class AnalyzeAndUploadYoutubeUseCase
       /// 현재 분석 화면에 머물러 있을 경우
       /// 해당 페이지로 바로 라우팅
       if (_isOnAnalyzePage(context)) {
-        ContentsDetailRoute(
+        YoutubeDetailRoute(
           YoutubeDetailArg.entryFromUpload(
             overView: targetOverView,
             summary: SummaryEntity.fromUploadResponse(summaryResult),
@@ -102,7 +102,7 @@ final class AnalyzeAndUploadYoutubeUseCase
           description: '요약된 핵심 내용을 확인하고 면접을 진행해 보세요!',
           host: DeeplinkHost.prefixYoutubeLanding,
           path:
-              '${Uri.parse(ContentsDetailRoute.path).pathSegments[0]}/${targetOverView.id}',
+              '${Uri.parse(YoutubeDetailRoute.path).pathSegments[0]}/${targetOverView.id}',
         );
       }
 
@@ -158,7 +158,7 @@ final class AnalyzeAndUploadYoutubeUseCase
   /// 영상 업로드 메소드 [await] [unawaited] 여부를 결정함
   ///
   Future<void> _uploadContent(
-      YoutubeContentOverviewEntity targetOverView,
+      YoutubeMainEntity targetOverView,
       YoutubeAiSummaryResponse summaryResult,
       Set<YoutubeQnaEntity> qnas,
       String userId) async {

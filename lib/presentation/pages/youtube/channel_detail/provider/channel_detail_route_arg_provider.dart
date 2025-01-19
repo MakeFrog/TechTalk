@@ -4,6 +4,14 @@ import 'package:techtalk/features/youtube/repositories/entities/channel_entity.d
 part 'channel_detail_route_arg_provider.g.dart';
 
 @riverpod
-ChannelEntity channelDetailRouteArg(ChannelDetailRouteArgRef ref) {
+ChannelDetailRouteArg channelDetailRouteArg(ChannelDetailRouteArgRef ref) {
   throw Exception('channelDetailRouteArg > argument를 초기화 해주어야 합니다.');
+}
+
+final class ChannelDetailRouteArg {
+  final ChannelEntity channel;
+  final String currentContentId;
+
+  ChannelDetailRouteArg(
+      {required this.channel, required this.currentContentId});
 }

@@ -7,13 +7,11 @@ import 'package:techtalk/features/youtube/index.dart';
 part 'channel_contents_pagination_provider.g.dart';
 
 @riverpod
-Raw<
-    PagingController<DocumentSnapshot<YoutubeMainModel>?,
-        YoutubeContentOverviewEntity>> channelContentsPagination(
-    ChannelContentsPaginationRef ref,
-    {required String channelId}) {
-  final pagingController = PagingController<DocumentSnapshot<YoutubeMainModel>?,
-      YoutubeContentOverviewEntity>(
+Raw<PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>>
+    channelContentsPagination(ChannelContentsPaginationRef ref,
+        {required String channelId}) {
+  final pagingController =
+      PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>(
     firstPageKey: null,
   );
 

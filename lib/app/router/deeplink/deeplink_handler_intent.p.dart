@@ -31,12 +31,12 @@ extension DeeplinkHandlerIntentExt on DeepLinkHandler {
       String page = uri.pathSegments[0];
 
       /// 콘텐츠 일경우
-      if (page == Uri.parse(ContentsDetailRoute.path).pathSegments[0]) {
+      if (page == Uri.parse(YoutubeDetailRoute.path).pathSegments[0]) {
         log('컨텐츠 디테일 페이지로 이동 처리');
 
         // 콘텐츠 ID 추출
         String contentId = uri.pathSegments[1];
-        await ContentsDetailRoute(
+        await YoutubeDetailRoute(
                 YoutubeDetailArg.deeplinkOrHasSingleIdArg(contentId: contentId))
             .push(context);
 

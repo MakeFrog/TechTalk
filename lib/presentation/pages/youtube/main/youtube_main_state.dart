@@ -12,8 +12,8 @@ mixin class YoutubeMainState {
   ///
   /// 페이지네이션 컨트롤러
   ///
-  PagingController<DocumentSnapshot<YoutubeMainModel>?,
-      YoutubeContentOverviewEntity> pagingController(WidgetRef ref) {
+  PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>
+      pagingController(WidgetRef ref) {
     final selectedCategory =
         ref.watch(youtubeContentCategoryProvider).selectedCategory;
 

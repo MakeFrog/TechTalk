@@ -16,7 +16,7 @@ mixin class YoutubeUploadFailedEvent {
       final nextArg = YoutubeDetailArg.deeplinkOrHasSingleIdArg(
         contentId: passedArg.contentId!,
       );
-      ContentsDetailRoute(nextArg).go(ref.context);
+      YoutubeDetailRoute(nextArg).go(ref.context);
 
       /// TODO
       /// => 상세 페이지로 이동

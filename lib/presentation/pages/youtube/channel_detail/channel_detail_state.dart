@@ -11,9 +11,9 @@ mixin class ChannelDetailState {
   ///
   /// 페이지네이션 컨트롤러
   ///
-  PagingController<DocumentSnapshot<YoutubeMainModel>?,
-      YoutubeContentOverviewEntity> pagingController(WidgetRef ref) {
-    final channelId = ref.read(channelDetailRouteArgProvider).id;
+  PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>
+      pagingController(WidgetRef ref) {
+    final channelId = ref.read(channelDetailRouteArgProvider).channel.id;
     final pagingController =
         ref.watch(channelContentsPaginationProvider(channelId: channelId));
     return pagingController;
@@ -23,14 +23,14 @@ mixin class ChannelDetailState {
   /// 채널 정보
   ///
   ChannelEntity channel(WidgetRef ref) =>
-      ref.read(channelDetailRouteArgProvider);
+      ref.read(channelDetailRouteArgProvider).channel;
 
   ///
   /// 채널 상세 정보
   ///
   @Deprecated('현재 YoutubeExplore 엔드포인트가 안맞아서 상세 정보를 못불러오고 있음')
   AsyncValue<ChannelDetailEntity> channelDetail(WidgetRef ref) {
-    final channelId = ref.read(channelDetailRouteArgProvider).id;
+    final channelId = ref.read(channelDetailRouteArgProvider).channel.id;
     return ref.watch(channelDetailProvider(channelId));
   }
 }

@@ -20,7 +20,7 @@ mixin class YoutubeDetailState {
   /// 전달 받은 argument에 정보가 있는 여부에 따라서
   /// 비동기 호출을 시도함
   ///
-  AsyncValue<YoutubeContentOverviewEntity> mainInfo(WidgetRef ref) {
+  AsyncValue<YoutubeMainEntity> mainInfo(WidgetRef ref) {
     final arg = ref.read(youtubeDetailRouteArgProvider);
     final passedMainInfo = arg.overView;
 

@@ -10,6 +10,7 @@ import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/features/youtube/repositories/entities/video_overview_entity.dart';
+import 'package:techtalk/presentation/pages/youtube/channel_detail/provider/channel_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/is_bookmark_checked_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/selected_youtube_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_resource_provider.dart';
@@ -52,7 +53,10 @@ mixin class YoutubeDetailEvent {
   /// 채널 영역이 클릭 되었을 때
   ///
   void onChannelSectionTapped(WidgetRef ref, {required ChannelEntity channel}) {
-    ChannelDetailRoute(channel).push(ref.context);
+    final contentId = ref.read(youtubeDetailRouteArgProvider).contentId;
+    final arg =
+        ChannelDetailRouteArg(channel: channel, currentContentId: contentId);
+    ChannelDetailRoute(arg).push(ref.context);
   }
 
   ///
@@ -128,7 +132,7 @@ mixin class YoutubeDetailEvent {
         if (isUploadedContent) {
           final arg =
               YoutubeDetailArg.deeplinkOrHasSingleIdArg(contentId: video.id);
-          ContentsDetailRoute(arg).push(ref.context);
+          YoutubeDetailRoute(arg).push(ref.context);
         } else {
           final arg = SubmittedYoutubeConfirmArg.fromContentAccessFlow(
               video: YoutubeVideoEntity.fromRelatedVideoEntity(video));

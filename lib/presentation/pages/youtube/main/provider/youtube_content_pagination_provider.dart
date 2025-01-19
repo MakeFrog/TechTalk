@@ -10,14 +10,13 @@ import 'package:techtalk/presentation/pages/youtube/main/constant/yotubue_conten
 part 'youtube_content_pagination_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-Raw<
-    PagingController<DocumentSnapshot<YoutubeMainModel>?,
-        YoutubeContentOverviewEntity>> youtubeContentPagination(
+Raw<PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>>
+    youtubeContentPagination(
   YoutubeContentPaginationRef ref, {
   required YoutubeContentCategory category,
 }) {
-  final pagingController = PagingController<DocumentSnapshot<YoutubeMainModel>?,
-      YoutubeContentOverviewEntity>(
+  final pagingController =
+      PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>(
     firstPageKey: null,
   );
 

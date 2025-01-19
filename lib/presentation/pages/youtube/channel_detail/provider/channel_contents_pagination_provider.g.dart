@@ -7,7 +7,7 @@ part of 'channel_contents_pagination_provider.dart';
 // **************************************************************************
 
 String _$channelContentsPaginationHash() =>
-    r'8ecf09c412f242d045a98468b9d26ae36092de22';
+    r'f7aa01ede1b15f4e7c7fec127bc013e7c9db6d18';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -36,8 +36,7 @@ const channelContentsPaginationProvider = ChannelContentsPaginationFamily();
 
 /// See also [channelContentsPagination].
 class ChannelContentsPaginationFamily extends Family<
-    PagingController<DocumentSnapshot<YoutubeMainModel>?,
-        YoutubeContentOverviewEntity>> {
+    PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>> {
   /// See also [channelContentsPagination].
   const ChannelContentsPaginationFamily();
 
@@ -76,8 +75,7 @@ class ChannelContentsPaginationFamily extends Family<
 
 /// See also [channelContentsPagination].
 class ChannelContentsPaginationProvider extends AutoDisposeProvider<
-    PagingController<DocumentSnapshot<YoutubeMainModel>?,
-        YoutubeContentOverviewEntity>> {
+    PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>> {
   /// See also [channelContentsPagination].
   ChannelContentsPaginationProvider({
     required String channelId,
@@ -112,8 +110,7 @@ class ChannelContentsPaginationProvider extends AutoDisposeProvider<
 
   @override
   Override overrideWith(
-    PagingController<DocumentSnapshot<YoutubeMainModel>?,
-                YoutubeContentOverviewEntity>
+    PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>
             Function(ChannelContentsPaginationRef provider)
         create,
   ) {
@@ -134,7 +131,7 @@ class ChannelContentsPaginationProvider extends AutoDisposeProvider<
   @override
   AutoDisposeProviderElement<
       PagingController<DocumentSnapshot<YoutubeMainModel>?,
-          YoutubeContentOverviewEntity>> createElement() {
+          YoutubeMainEntity>> createElement() {
     return _ChannelContentsPaginationProviderElement(this);
   }
 
@@ -154,8 +151,7 @@ class ChannelContentsPaginationProvider extends AutoDisposeProvider<
 }
 
 mixin ChannelContentsPaginationRef on AutoDisposeProviderRef<
-    PagingController<DocumentSnapshot<YoutubeMainModel>?,
-        YoutubeContentOverviewEntity>> {
+    PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>> {
   /// The parameter `channelId` of this provider.
   String get channelId;
 }
@@ -163,7 +159,7 @@ mixin ChannelContentsPaginationRef on AutoDisposeProviderRef<
 class _ChannelContentsPaginationProviderElement
     extends AutoDisposeProviderElement<
         PagingController<DocumentSnapshot<YoutubeMainModel>?,
-            YoutubeContentOverviewEntity>> with ChannelContentsPaginationRef {
+            YoutubeMainEntity>> with ChannelContentsPaginationRef {
   _ChannelContentsPaginationProviderElement(super.provider);
 
   @override

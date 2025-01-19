@@ -8,7 +8,7 @@ import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.d
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
 import 'package:techtalk/features/user/user.dart';
-import 'package:techtalk/features/youtube/data_source/remote/models/youtube_content_overview_model.dart';
+import 'package:techtalk/features/youtube/data_source/remote/models/youtube_main_entity.dart';
 
 final class UserRepositoryImpl implements UserRepository {
   const UserRepositoryImpl(
@@ -226,7 +226,7 @@ final class UserRepositoryImpl implements UserRepository {
       }).toList();
 
       final paginatedResult =
-          FirebasePaginatedResult<YoutubeContentOverviewEntity, String>(
+          FirebasePaginatedResult<YoutubeMainEntity, String>(
         items: entities,
         lastDocumentId: response.lastDocumentId,
         hasMore: response.hasMore,

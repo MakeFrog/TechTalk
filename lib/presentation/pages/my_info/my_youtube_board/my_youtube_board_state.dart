@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
-import 'package:techtalk/features/youtube/data_source/remote/models/youtube_content_overview_model.dart';
 import 'package:techtalk/presentation/pages/my_info/my_youtube_board/provider/watched_history_paging_controller_provider.dart';
 
 mixin class MyYoutubeBoardState {

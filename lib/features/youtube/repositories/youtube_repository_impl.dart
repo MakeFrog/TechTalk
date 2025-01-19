@@ -55,10 +55,8 @@ class YoutubeRepositoryImpl
   }
 
   @override
-  Future<
-      Result<
-          FirebasePaginatedResult<YoutubeContentOverviewEntity,
-              YoutubeMainModel>>> getRandomPagedYoutubeMainContents({
+  Future<Result<FirebasePaginatedResult<YoutubeMainEntity, YoutubeMainModel>>>
+      getRandomPagedYoutubeMainContents({
     required int limit,
     required String orderByField,
     DocumentSnapshot<YoutubeMainModel>? lastDocument,
@@ -91,8 +89,8 @@ class YoutubeRepositoryImpl
       }).toList();
 
       // 엔티티로 페이징된 결과 생성
-      final paginatedResult = FirebasePaginatedResult<
-          YoutubeContentOverviewEntity, YoutubeMainModel>(
+      final paginatedResult =
+          FirebasePaginatedResult<YoutubeMainEntity, YoutubeMainModel>(
         items: entities,
         lastDocument: remotePaginatedResult.lastDocument,
         hasMore: remotePaginatedResult.hasMore,
@@ -191,7 +189,7 @@ class YoutubeRepositoryImpl
 
   @override
   Future<Result<void>> uploadYoutube({
-    required YoutubeContentOverviewEntity contentMainInfo,
+    required YoutubeMainEntity contentMainInfo,
     required SummaryEntity summary,
     required Set<YoutubeQnaEntity> qnas,
     required String uploaderId,
@@ -218,7 +216,7 @@ class YoutubeRepositoryImpl
   }
 
   @override
-  Future<Result<YoutubeContentOverviewEntity>> getYoutubeMainInfo(
+  Future<Result<YoutubeMainEntity>> getYoutubeMainInfo(
       {required String contentId}) async {
     try {
       final response = await _youtubeRemoteDataSource
@@ -305,15 +303,13 @@ class YoutubeRepositoryImpl
   }
 
   @override
-  Future<
-      Result<
-          FirebasePaginatedResult<YoutubeContentOverviewEntity,
-              YoutubeMainModel>>> getPagedYoutubeMainContents(
-      {required int limit,
-      required String orderByField,
-      DocumentSnapshot<YoutubeMainModel>? lastDocument,
-      required bool fetchChannel,
-      List<FirestoreQueryConstraint>? queryConstraints}) async {
+  Future<Result<FirebasePaginatedResult<YoutubeMainEntity, YoutubeMainModel>>>
+      getPagedYoutubeMainContents(
+          {required int limit,
+          required String orderByField,
+          DocumentSnapshot<YoutubeMainModel>? lastDocument,
+          required bool fetchChannel,
+          List<FirestoreQueryConstraint>? queryConstraints}) async {
     try {
       // Remote DataSource에서 페이징된 데이터 가져오기
       final remotePaginatedResult =
@@ -336,8 +332,8 @@ class YoutubeRepositoryImpl
       }).toList();
 
       // 엔티티로 페이징된 결과 생성
-      final paginatedResult = FirebasePaginatedResult<
-          YoutubeContentOverviewEntity, YoutubeMainModel>(
+      final paginatedResult =
+          FirebasePaginatedResult<YoutubeMainEntity, YoutubeMainModel>(
         items: entities,
         lastDocument: remotePaginatedResult.lastDocument,
         hasMore: remotePaginatedResult.hasMore,

@@ -6,6 +6,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/youtube/index.dart';
+import 'package:techtalk/presentation/pages/youtube/channel_detail/channel_detail_event.dart';
 import 'package:techtalk/presentation/pages/youtube/channel_detail/channel_detail_state.dart';
 import 'package:techtalk/presentation/pages/youtube/channel_detail/provider/channel_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/main/widgets/youtube_pagination_indicator_view.dart';
@@ -16,19 +17,17 @@ import 'package:techtalk/presentation/widgets/common/grid_view/expandable_youtub
 import 'package:techtalk/presentation/widgets/common/image/round_profile_image.dart';
 
 part 'widgets/channel_info_view.p.dart';
-
 part 'widgets/content_grid_view.p.dart';
-
 part 'widgets/scaffold.p.dart';
 
 class ChannelDetailPage extends BasePage {
-  const ChannelDetailPage(this.channel, {super.key});
+  const ChannelDetailPage(this.arg, {super.key});
 
-  final ChannelEntity channel;
+  final ChannelDetailRouteArg arg;
 
   @override
   Override? get argProviderOverrides =>
-      channelDetailRouteArgProvider.overrideWithValue(channel);
+      channelDetailRouteArgProvider.overrideWithValue(arg);
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {

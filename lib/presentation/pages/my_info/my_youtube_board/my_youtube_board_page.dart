@@ -7,14 +7,13 @@ import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/services/app_size.dart';
 import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
-import 'package:techtalk/features/youtube/data_source/remote/models/youtube_content_overview_model.dart';
+import 'package:techtalk/features/youtube/data_source/remote/models/youtube_main_entity.dart';
 import 'package:techtalk/features/youtube/data_source/remote/models/youtube_main_model.dart';
 import 'package:techtalk/presentation/pages/my_info/my_youtube_board/constant/youtube_board_tab_type.enum.dart';
 import 'package:techtalk/presentation/pages/my_info/my_youtube_board/my_youtube_board_state.dart';
 import 'package:techtalk/presentation/pages/youtube/main/youtube_main_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
-import 'package:techtalk/presentation/widgets/common/box/skeleton_box.dart';
 import 'package:techtalk/presentation/widgets/common/item/youtube_content_item_view.dart';
 import 'package:techtalk/presentation/widgets/common/tab_bar/techtalk_tab_bar.dart';
 
@@ -78,9 +77,9 @@ class MyYoutubeBoardPage extends BasePage
       ),
     );
     return PagedListView<DocumentSnapshot<YoutubeMainModel>?,
-        YoutubeContentOverviewEntity>(
+        YoutubeMainEntity>(
       pagingController: pagingController(ref),
-      builderDelegate: PagedChildBuilderDelegate<YoutubeContentOverviewEntity>(
+      builderDelegate: PagedChildBuilderDelegate<YoutubeMainEntity>(
         itemBuilder: (context, item, index) {
           return Container(
             margin: const EdgeInsets.only(bottom: 16),
