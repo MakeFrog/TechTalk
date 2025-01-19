@@ -254,9 +254,12 @@ class YoutubeRepositoryImpl
         return Result.success([]);
       }
 
-      final result = relatedVideos!
-          .map((e) => VideoOverviewEntity.fromVideoExplore(e))
-          .toList();
+      final context = await navigationContext;
+
+      final result = relatedVideos!.map((e) {
+        precacheImage(NetworkImage(e.thumbnails.highResUrl), context);
+        return VideoOverviewEntity.fromVideoExplore(e);
+      }).toList();
       return Result.success(result);
     } on Exception catch (e) {
       return Result.failure(e);
