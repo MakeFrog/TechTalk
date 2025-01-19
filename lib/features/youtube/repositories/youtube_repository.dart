@@ -6,7 +6,7 @@ import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/youtube/index.dart';
-import 'package:techtalk/features/youtube/repositories/entities/youtube_related_vido_entity.dart';
+import 'package:techtalk/features/youtube/repositories/entities/video_overview_entity.dart';
 
 abstract interface class YoutubeRepository {
   ///
@@ -43,12 +43,26 @@ abstract interface class YoutubeRepository {
   Future<
       Result<
           FirebasePaginatedResult<YoutubeContentOverviewEntity,
-              YoutubeMainModel>>> getPagedYoutubeMainContents({
+              YoutubeMainModel>>> getRandomPagedYoutubeMainContents({
     required int limit,
     required String orderByField,
     required bool hasReversedQueryCallProceeded,
     required double random,
     required String randomKey,
+    DocumentSnapshot<YoutubeMainModel>? lastDocument,
+    List<FirestoreQueryConstraint>? queryConstraints,
+  });
+
+  ///
+  /// 유튜브 콘텐츠 리스트 호출 (랜덤 X)
+  ///
+  Future<
+      Result<
+          FirebasePaginatedResult<YoutubeContentOverviewEntity,
+              YoutubeMainModel>>> getPagedYoutubeMainContents({
+    required int limit,
+    required String orderByField,
+    required bool fetchChannel,
     DocumentSnapshot<YoutubeMainModel>? lastDocument,
     List<FirestoreQueryConstraint>? queryConstraints,
   });
@@ -67,7 +81,7 @@ abstract interface class YoutubeRepository {
   ///
   /// ID를 기반으로 관련 유튜브 영상 리스트 호출
   ///
-  Future<Result<List<RelatedVideoEntity>>> getRelatedVideo(String contentId);
+  Future<Result<List<VideoOverviewEntity>>> getRelatedVideo(String contentId);
 
   ///
   /// 유튜브 비디오 메인 정보 호출

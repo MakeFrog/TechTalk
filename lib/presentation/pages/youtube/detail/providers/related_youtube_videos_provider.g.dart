@@ -7,7 +7,7 @@ part of 'related_youtube_videos_provider.dart';
 // **************************************************************************
 
 String _$relatedYoutubeVideoHash() =>
-    r'fbc2daf6d30a261b8b5c39d98c3241969bdd13ea';
+    r'd9e2f33e65d9f457eec5e7010c1e2e066e3d39f9';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,10 +31,10 @@ class _SystemHash {
 }
 
 abstract class _$RelatedYoutubeVideo
-    extends BuildlessAutoDisposeAsyncNotifier<List<RelatedVideoEntity>> {
+    extends BuildlessAutoDisposeAsyncNotifier<List<VideoOverviewEntity>> {
   late final String contentId;
 
-  FutureOr<List<RelatedVideoEntity>> build(
+  FutureOr<List<VideoOverviewEntity>> build(
     String contentId,
   );
 }
@@ -45,7 +45,7 @@ const relatedYoutubeVideoProvider = RelatedYoutubeVideoFamily();
 
 /// See also [RelatedYoutubeVideo].
 class RelatedYoutubeVideoFamily
-    extends Family<AsyncValue<List<RelatedVideoEntity>>> {
+    extends Family<AsyncValue<List<VideoOverviewEntity>>> {
   /// See also [RelatedYoutubeVideo].
   const RelatedYoutubeVideoFamily();
 
@@ -84,7 +84,7 @@ class RelatedYoutubeVideoFamily
 
 /// See also [RelatedYoutubeVideo].
 class RelatedYoutubeVideoProvider extends AutoDisposeAsyncNotifierProviderImpl<
-    RelatedYoutubeVideo, List<RelatedVideoEntity>> {
+    RelatedYoutubeVideo, List<VideoOverviewEntity>> {
   /// See also [RelatedYoutubeVideo].
   RelatedYoutubeVideoProvider(
     String contentId,
@@ -115,7 +115,7 @@ class RelatedYoutubeVideoProvider extends AutoDisposeAsyncNotifierProviderImpl<
   final String contentId;
 
   @override
-  FutureOr<List<RelatedVideoEntity>> runNotifierBuild(
+  FutureOr<List<VideoOverviewEntity>> runNotifierBuild(
     covariant RelatedYoutubeVideo notifier,
   ) {
     return notifier.build(
@@ -141,7 +141,7 @@ class RelatedYoutubeVideoProvider extends AutoDisposeAsyncNotifierProviderImpl<
 
   @override
   AutoDisposeAsyncNotifierProviderElement<RelatedYoutubeVideo,
-      List<RelatedVideoEntity>> createElement() {
+      List<VideoOverviewEntity>> createElement() {
     return _RelatedYoutubeVideoProviderElement(this);
   }
 
@@ -160,14 +160,14 @@ class RelatedYoutubeVideoProvider extends AutoDisposeAsyncNotifierProviderImpl<
 }
 
 mixin RelatedYoutubeVideoRef
-    on AutoDisposeAsyncNotifierProviderRef<List<RelatedVideoEntity>> {
+    on AutoDisposeAsyncNotifierProviderRef<List<VideoOverviewEntity>> {
   /// The parameter `contentId` of this provider.
   String get contentId;
 }
 
 class _RelatedYoutubeVideoProviderElement
     extends AutoDisposeAsyncNotifierProviderElement<RelatedYoutubeVideo,
-        List<RelatedVideoEntity>> with RelatedYoutubeVideoRef {
+        List<VideoOverviewEntity>> with RelatedYoutubeVideoRef {
   _RelatedYoutubeVideoProviderElement(super.provider);
 
   @override

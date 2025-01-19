@@ -28,7 +28,7 @@ abstract interface class YoutubeRemoteDataSource {
   /// [queryConstraints] - 추가적인 쿼리 제약 조건
   ///
   Future<FirebasePaginatedResult<YoutubeMainModel, YoutubeMainModel>>
-      getPagedYoutubeMainContents({
+      getRandomPagedYoutubeMainContents({
     required int limit,
     required String orderByField,
     DocumentSnapshot<YoutubeMainModel>? lastDocument,
@@ -37,6 +37,19 @@ abstract interface class YoutubeRemoteDataSource {
     List<QueryDocumentSnapshot<YoutubeMainModel>>? prevSnapshots,
     required String randomKey,
     required double random,
+  });
+
+  ///
+  /// 유튜브 콘텐츠 리스트 페이징 호출 (랜덤X)
+  ///
+  Future<FirebasePaginatedResult<YoutubeMainModel, YoutubeMainModel>>
+      getPagedYoutubeMainContents({
+    required int limit,
+    required String orderByField,
+    required bool fetchChannel, // 채널 정보 호출 여부
+    DocumentSnapshot<YoutubeMainModel>? lastDocument,
+    List<FirestoreQueryConstraint>? queryConstraints,
+    List<QueryDocumentSnapshot<YoutubeMainModel>>? prevSnapshots,
   });
 
   ///

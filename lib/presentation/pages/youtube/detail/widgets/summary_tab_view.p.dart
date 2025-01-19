@@ -198,13 +198,6 @@ class _SummaryTabView extends HookConsumerWidget
         iconPath: Assets.iconsSparkle,
       ),
       builder: (context, ref, title) {
-        // const gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
-        //   crossAxisSpacing: 8,
-        //   mainAxisSpacing: 16,
-        //   childAspectRatio: 167.54 / 138,
-        //   crossAxisCount: 2, // 셀의 최대 너비
-        // );
-
         return Column(
           children: [
             if (relatedVideoAsync(ref).isLoading ||
@@ -289,7 +282,7 @@ class ItemCardLayoutGrid extends StatelessWidget {
         assert(items.length == 4),
         super(key: key);
   final int crossAxisCount;
-  final List<RelatedVideoEntity> items;
+  final List<VideoOverviewEntity> items;
 
   @override
   Widget build(BuildContext context) {

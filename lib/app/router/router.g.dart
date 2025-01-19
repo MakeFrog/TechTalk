@@ -125,9 +125,14 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $YoutubeContentsMainListRouteExtension._fromState,
         ),
         GoRouteData.$route(
-          path: 'contents-detail/:contentsId',
+          path: 'contents-detail/:contentId',
           name: 'contents-detail',
           factory: $ContentsDetailRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'channel-detail-route/:channelId',
+          name: 'channel detail route',
+          factory: $ChannelDetailRouteExtension._fromState,
         ),
         GoRouteData.$route(
           path: 'youtube-link-submit',
@@ -340,7 +345,29 @@ extension $ContentsDetailRouteExtension on ContentsDetailRoute {
       );
 
   String get location => GoRouteData.$location(
-        '/contents-detail/${Uri.encodeComponent(contentsId)}',
+        '/contents-detail/${Uri.encodeComponent(contentId)}',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+extension $ChannelDetailRouteExtension on ChannelDetailRoute {
+  static ChannelDetailRoute _fromState(GoRouterState state) =>
+      ChannelDetailRoute(
+        state.extra as ChannelEntity,
+      );
+
+  String get location => GoRouteData.$location(
+        '/channel-detail-route/${Uri.encodeComponent(channelId)}',
       );
 
   void go(BuildContext context) => context.go(location, extra: $extra);

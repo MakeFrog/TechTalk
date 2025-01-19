@@ -4,7 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/services/app_size.dart';
-import 'package:techtalk/features/youtube/repositories/entities/youtube_related_vido_entity.dart';
+import 'package:techtalk/features/youtube/repositories/entities/video_overview_entity.dart';
 import 'package:techtalk/presentation/widgets/common/box/skeleton_box.dart';
 
 ///
@@ -17,85 +17,96 @@ class ExpandableYoutubeContentGridView extends StatelessWidget {
     required this.video,
     required this.onTap,
     this.isLoaded = true,
+    this.showSubtitleSkeleton = true,
   });
 
-  final List<RelatedVideoEntity> video;
-  final void Function(RelatedVideoEntity video) onTap;
+  final List<VideoOverviewEntity> video;
+  final void Function(VideoOverviewEntity video) onTap;
   final bool isLoaded;
+  final bool showSubtitleSkeleton;
 
-  factory ExpandableYoutubeContentGridView.createSkeleton() =>
+  factory ExpandableYoutubeContentGridView.createSkeleton(
+          {bool showSubtitleSkeleton = false}) =>
       ExpandableYoutubeContentGridView(
         video: const [],
         onTap: (_) {},
         isLoaded: false,
+        showSubtitleSkeleton: showSubtitleSkeleton,
       );
 
   @override
   Widget build(BuildContext context) {
-    if (isLoaded) {
-      return LayoutGrid(
-        columnSizes: const [FlexibleTrackSize(1), FlexibleTrackSize(1)],
-        rowSizes: List.generate(video.length ~/ 2, (_) => auto),
-        rowGap: 12,
-        columnGap: 8,
-        children: [
-          for (var i = 0; i < video.length; i++)
-            Builder(
-              builder: (context) {
-                final content = video[i];
-                return GestureDetector(
-                  onTap: () {
-                    onTap(content);
-                  },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: AspectRatio(
-                          aspectRatio: 167.54 / 94,
-                          child: Image.network(
-                            content.thumbnailImgUrl,
-                            fit: BoxFit.cover,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) {
-                                return child;
-                              }
-                              return SizedBox(
-                                width: double.infinity,
-                                height: MediaQuery.of(context).size.width *
-                                    (94 / 167.54),
-                                child: const SkeletonBox(),
-                              );
-                            },
+    if (isLoaded || video.isNotEmpty) {
+      return SizedBox(
+        width: double.infinity, // 부모 위젯의 너비를 제한
+        child: LayoutGrid(
+          columnSizes: const [FlexibleTrackSize(1), FlexibleTrackSize(1)],
+          rowSizes: List.generate(
+            (video.length / 2).ceil(), // 반올림으로 row 개수 계산
+            (_) => auto,
+          ),
+          rowGap: 12,
+          columnGap: 8,
+          children: [
+            for (var i = 0; i < video.length; i++)
+              Builder(
+                builder: (context) {
+                  final content = video[i];
+                  return GestureDetector(
+                    onTap: () {
+                      onTap(content);
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: AspectRatio(
+                            aspectRatio: 167.54 / 94,
+                            child: Image.network(
+                              content.thumbnailImgUrl,
+                              fit: BoxFit.cover,
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                if (loadingProgress == null) {
+                                  return child;
+                                }
+                                return SizedBox(
+                                  width: double.infinity,
+                                  height: MediaQuery.of(context).size.width *
+                                      (94 / 167.54),
+                                  child: const SkeletonBox(),
+                                );
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 2),
-                        child: Text(
-                          content.title,
-                          style: AppTextStyle.body1,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 2),
-                        child: Text(
-                          content.channelName,
-                          style: AppTextStyle.alert2.copyWith(
-                            color: AppColor.of.gray3,
+                        const SizedBox(height: 8),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 2),
+                          child: Text(
+                            content.title,
+                            style: AppTextStyle.body1,
                           ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-        ],
+                        Padding(
+                          padding: const EdgeInsets.only(left: 2),
+                          child: Text(
+                            content.channelName,
+                            style: AppTextStyle.alert2.copyWith(
+                              color: AppColor.of.gray3,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+          ],
+        ),
       );
     } else {
       return _buildRelatedGridViewSkeleton();
@@ -136,14 +147,15 @@ class ExpandableYoutubeContentGridView extends StatelessWidget {
                 height: 16,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 2),
-              child: SkeletonBox(
-                width: AppSize.ratioWidth(40),
-                padding: const EdgeInsets.symmetric(vertical: 2),
-                height: 13,
+            if (showSubtitleSkeleton)
+              Padding(
+                padding: const EdgeInsets.only(left: 2),
+                child: SkeletonBox(
+                  width: AppSize.ratioWidth(40),
+                  padding: const EdgeInsets.symmetric(vertical: 2),
+                  height: 13,
+                ),
               ),
-            ),
           ],
         );
       },

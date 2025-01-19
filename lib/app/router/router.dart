@@ -21,6 +21,7 @@ import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
 import 'package:techtalk/presentation/pages/study/learning/learning_detail_page.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_detail_page.dart';
+import 'package:techtalk/presentation/pages/youtube/channel_detail/channel_detail_page.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/youtube_detail_page.dart';
 import 'package:techtalk/presentation/pages/youtube/main/youtube_main_page.dart';
@@ -172,6 +173,10 @@ class SignUpRoute extends GoRouteData {
       path: ContentsDetailRoute.path,
       name: ContentsDetailRoute.name,
     ),
+    TypedGoRoute<ChannelDetailRoute>(
+      path: ChannelDetailRoute.path,
+      name: ChannelDetailRoute.name,
+    ),
     TypedGoRoute<YoutubeLinkSubmitRoute>(
       path: YoutubeLinkSubmitRoute.path,
       name: YoutubeLinkSubmitRoute.name,
@@ -260,6 +265,22 @@ class MyYoutubeBoardRoute extends GoRouteData {
   }
 }
 
+class ChannelDetailRoute extends GoRouteData {
+  static const String path = 'channel-detail-route/:channelId';
+  static const String name = 'channel detail route';
+
+  ChannelDetailRoute(this.$extra) : channelId = $extra.id;
+
+  final ChannelEntity $extra;
+
+  final String channelId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ChannelDetailPage($extra);
+  }
+}
+
 class YoutubeContentsMainListRoute extends GoRouteData {
   YoutubeContentsMainListRoute();
 
@@ -273,14 +294,14 @@ class YoutubeContentsMainListRoute extends GoRouteData {
 }
 
 class ContentsDetailRoute extends GoRouteData {
-  ContentsDetailRoute(this.$extra) : contentsId = $extra.contentId;
+  ContentsDetailRoute(this.$extra) : contentId = $extra.contentId;
 
-  static const String path = 'contents-detail/:contentsId';
+  static const String path = 'contents-detail/:contentId';
   static const String name = 'contents-detail';
 
   final YoutubeDetailArg $extra;
 
-  final String contentsId;
+  final String contentId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {

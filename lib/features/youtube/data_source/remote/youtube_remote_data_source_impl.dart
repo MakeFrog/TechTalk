@@ -20,7 +20,7 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
 
   @override
   Future<FirebasePaginatedResult<YoutubeMainModel, YoutubeMainModel>>
-      getPagedYoutubeMainContents({
+      getRandomPagedYoutubeMainContents({
     required int limit,
     required String orderByField,
     required bool hasReversedQueryCallProceeded,
@@ -63,7 +63,7 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
           hasReversedQueryCallProceeded == false) {
         /// [startAt] 에서 모두 호출을 완료했다면,
         /// 재귀호출하여 [endAt]을 실행
-        return getPagedYoutubeMainContents(
+        return getRandomPagedYoutubeMainContents(
           limit: limit,
           orderByField: orderByField,
           hasReversedQueryCallProceeded: true,
@@ -129,6 +129,82 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
             .where(randomField, isLessThan: randomValue)
             .orderBy(randomField, descending: true)
             .startAt([randomValue]).limit(limit);
+  }
+
+  @override
+  Future<FirebasePaginatedResult<YoutubeMainModel, YoutubeMainModel>>
+      getPagedYoutubeMainContents({
+    required int limit,
+    required String orderByField,
+    required bool fetchChannel, // 채널 정보호출 여부
+    DocumentSnapshot<YoutubeMainModel>? lastDocument,
+    List<FirestoreQueryConstraint>? queryConstraints,
+    List<QueryDocumentSnapshot<YoutubeMainModel>>? prevSnapshots,
+  }) async {
+    try {
+      Query<YoutubeMainModel> query =
+          FirestoreYoutubeRef.collection().orderBy(orderByField).limit(limit);
+
+      if (lastDocument != null) {
+        query = query.startAfterDocument(lastDocument);
+      }
+
+      // // ConstraintApplier를 사용해서 쿼리 제약사항(필터링) 을 적용함
+      if (queryConstraints != null && queryConstraints.isNotEmpty) {
+        query = _constraintApplier.applyConstraints<YoutubeMainModel>(
+          query,
+          queryConstraints,
+        );
+      }
+
+      QuerySnapshot<YoutubeMainModel> snapshot = await query.get();
+
+      print('이수방이 : ${lastDocument}');
+
+      if (snapshot.docs.isEmpty) {
+        return FirebasePaginatedResult<YoutubeMainModel, YoutubeMainModel>(
+          items: [],
+          lastDocument: null,
+          hasMore: false,
+          hasReversedQueryCallProceeded: true,
+        );
+      }
+
+      final targetSnapshots = snapshot.docs;
+      if (prevSnapshots != null) {
+        targetSnapshots.addAll(prevSnapshots);
+      }
+
+      final items = await Future.wait(targetSnapshots.map((doc) async {
+        final targetData = doc.data();
+
+        if (fetchChannel) {
+          // channel_ref를 통해 [ChannelModel] 데이터를 가져옴
+          final channelSnapshot = await targetData.channelRef?.get()
+              as DocumentSnapshot<Map<String, dynamic>>; // 타입 캐스팅
+          final channelModel =
+              ChannelModel.fromFirestore(channelSnapshot, null);
+
+          targetData.copyWith(channel: channelModel);
+        }
+        return targetData;
+      }).toList());
+
+      final hasMore = snapshot.docs.length == limit;
+      final newLastDocument =
+          snapshot.docs.isNotEmpty ? snapshot.docs.last : lastDocument;
+
+      if (newLastDocument == null && items.isNotEmpty) {
+        throw Exception('Last document is null after fetching data.');
+      }
+      return FirebasePaginatedResult<YoutubeMainModel, YoutubeMainModel>(
+        items: items,
+        lastDocument: newLastDocument,
+        hasMore: hasMore,
+      );
+    } catch (e) {
+      throw Exception('Failed to fetch Youtube Contents: $e');
+    }
   }
 
   @override

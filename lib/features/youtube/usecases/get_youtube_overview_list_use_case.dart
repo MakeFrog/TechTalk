@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
@@ -49,7 +48,7 @@ final class GetYoutubeOverviewListUseCase extends BaseUseCase<
               YoutubeMainModel>>> call(
     GetYoutubeContentsOverviewsListParams request,
   ) =>
-      _repository.getPagedYoutubeMainContents(
+      _repository.getRandomPagedYoutubeMainContents(
         lastDocument: request.lastDocument,
         limit: request.limit,
         orderByField: request.orderByField,

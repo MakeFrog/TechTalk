@@ -9,7 +9,7 @@ import 'package:techtalk/features/chat/repositories/entities/chat_room_entity.da
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/features/youtube/index.dart';
-import 'package:techtalk/features/youtube/repositories/entities/youtube_related_vido_entity.dart';
+import 'package:techtalk/features/youtube/repositories/entities/video_overview_entity.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/is_bookmark_checked_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/selected_youtube_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_resource_provider.dart';
@@ -46,6 +46,13 @@ mixin class YoutubeDetailEvent {
     } catch (e) {
       log('seek 이동 실패 : $e');
     }
+  }
+
+  ///
+  /// 채널 영역이 클릭 되었을 때
+  ///
+  void onChannelSectionTapped(WidgetRef ref, {required ChannelEntity channel}) {
+    ChannelDetailRoute(channel).push(ref.context);
   }
 
   ///
@@ -112,7 +119,7 @@ mixin class YoutubeDetailEvent {
   }
 
   Future<void> onRelatedVideoTapped(WidgetRef ref,
-      {required RelatedVideoEntity video}) async {
+      {required VideoOverviewEntity video}) async {
     final response =
         await youtubeRepository.isUploadedContent(videoId: video.id);
 
