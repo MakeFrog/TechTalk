@@ -20,12 +20,12 @@ class _YoutubePlayerPlaceHolder extends ConsumerWidget
               final listenState = useState(true);
               final state = useState(YoutubePlaySate.unStarted);
               final timer = useState<Timer?>(null); // 타이머를 관리
-
               useEffect(() {
                 if (listenState.value == false) return null;
                 // 상태가 변경될 때 실행되는 로직
                 final changedState =
                     YoutubePlaySate.fromCode(value.playerState.code);
+                print('아랑수 : ${state}');
 
                 if (changedState == YoutubePlaySate.playing) {
                   listenState.value = false;
@@ -39,9 +39,9 @@ class _YoutubePlayerPlaceHolder extends ConsumerWidget
                       changedState == YoutubePlaySate.unknown) {
                     timer.value?.cancel(); // 기존 타이머 취소
                     /// [NOTE]
-                    /// 2초가 지나도 [cued] 상태로 변경되지 않는다면,
+                    /// 10초가 지나도 [cued] 상태로 변경되지 않는다면,
                     /// iframe으로 지원하지 않는 영상이라고 판단
-                    timer.value = Timer(const Duration(seconds: 3), () {
+                    timer.value = Timer(const Duration(seconds: 10), () {
                       if (state.value != YoutubePlaySate.cued) {
                         state.value = YoutubePlaySate
                             .errorOccured; // cued로 변하지 않으면 에러 상태로 변경
@@ -68,18 +68,23 @@ class _YoutubePlayerPlaceHolder extends ConsumerWidget
                     width: double.infinity,
                     child: Stack(
                       children: [
-                        AsyncSkeletonWidgetBuilder(
-                          asyncValue: mainInfo(ref),
-                          dataBuilder: (context, info) {
-                            return Image.network(
-                              cacheWidth: (AppSize.screenWidth / (16 / 9))
-                                  .cacheSize(context),
-                              info.thumbnailImgUrl,
-                              width: double.infinity,
-                              fit: BoxFit.fitWidth,
-                            );
-                          },
-                        ),
+                        if (passedThumbnailImg(ref) != null)
+                          _buildThumbnail(
+                            context,
+                            url: passedThumbnailImg(ref)!,
+                          )
+                        else
+                          AsyncSkeletonWidgetBuilder(
+                            asyncValue: mainInfo(ref),
+                            skeletonBuilder: (_) =>
+                                const ColoredBox(color: Colors.black),
+                            dataBuilder: (context, info) {
+                              return _buildThumbnail(
+                                context,
+                                url: info.thumbnailImgUrl,
+                              );
+                            },
+                          ),
                         const Positioned.fill(
                           child: ColoredBox(
                             color: Color.fromRGBO(0, 0, 0, 0.5),
@@ -89,9 +94,16 @@ class _YoutubePlayerPlaceHolder extends ConsumerWidget
                           child: HookBuilder(
                             builder: (context) {
                               if (state.value == YoutubePlaySate.cued) {
-                                useEffect(() {}, []);
-                                return SvgPicture.asset(
-                                  Assets.iconsPlay,
+                                useEffect(() {
+                                  WidgetsBinding.instance
+                                      .addPostFrameCallback((_) async {
+                                    await youtubeController(ref)
+                                        .seekTo(seconds: 0);
+                                  });
+                                }, []);
+                                return const CircularProgressIndicator(
+                                  strokeWidth: 2.5,
+                                  color: Colors.white,
                                 );
                               } else {
                                 return const CircularProgressIndicator(
@@ -141,6 +153,18 @@ class _YoutubePlayerPlaceHolder extends ConsumerWidget
           );
         },
       ),
+    );
+  }
+
+  ///
+  /// 썸네일
+  ///
+  Widget _buildThumbnail(BuildContext context, {required String url}) {
+    return Image.network(
+      cacheWidth: (AppSize.screenWidth / (16 / 9)).cacheSize(context),
+      url,
+      width: double.infinity,
+      fit: BoxFit.fitWidth,
     );
   }
 }

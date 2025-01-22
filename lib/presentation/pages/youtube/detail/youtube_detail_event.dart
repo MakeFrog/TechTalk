@@ -130,8 +130,10 @@ mixin class YoutubeDetailEvent {
     response.fold(
       onSuccess: (isUploadedContent) {
         if (isUploadedContent) {
-          final arg =
-              YoutubeDetailArg.deeplinkOrHasSingleIdArg(contentId: video.id);
+          final arg = YoutubeDetailArg.deeplinkOrHasSingleIdArg(
+            contentId: video.id,
+            thumbnailImage: video.thumbnailImgUrl,
+          );
           YoutubeDetailRoute(arg).push(ref.context);
         } else {
           final arg = SubmittedYoutubeConfirmArg.fromContentAccessFlow(
