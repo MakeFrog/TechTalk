@@ -38,6 +38,7 @@ class YoutubeDetailResourceProvider extends ChangeNotifier {
     );
 
     youtubeController = controller;
+
     scrollController = ScrollController();
   }
 

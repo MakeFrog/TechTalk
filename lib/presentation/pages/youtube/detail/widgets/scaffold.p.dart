@@ -1,6 +1,6 @@
 part of '../youtube_detail_page.dart';
 
-class _Scaffold extends StatelessWidget with YoutubeDetailState {
+class _Scaffold extends HookWidget with YoutubeDetailState {
   const _Scaffold({
     required this.argOverride,
     required this.appBar,
@@ -23,14 +23,37 @@ class _Scaffold extends StatelessWidget with YoutubeDetailState {
 
   @override
   Widget build(BuildContext context) {
+    // 1) AnimationController 정의
+    final animationController = useAnimationController(
+      duration: const Duration(milliseconds: 370),
+    );
+
+    // 2) 초기 상태: FAB이 나타난 상태로 설정
+    useEffect(() {
+      animationController.value = 1.0;
+      return null;
+    }, []);
+
+    // 3) 슬라이드 애니메이션 정의
+    final offsetAnimation = useMemoized(
+      () => Tween<Offset>(
+        begin: const Offset(0, 1.0), // 아래로 숨김
+        end: Offset.zero, // 표시 상태
+      ).animate(
+        CurvedAnimation(
+          parent: animationController,
+          curve: Curves.easeInOut,
+        ),
+      ),
+    );
+
     return ProviderScope(
-      overrides: [
-        argOverride,
-      ],
+      overrides: [argOverride],
       child: Consumer(
         child: Consumer(
           builder: (context, ref, _) {
             return YoutubePlayerScaffold(
+              enableFullScreenOnVerticalDrag: false,
               fullscreenOrientations: AppSize.originScreenWidth > 600
                   ? [
                       DeviceOrientation.landscapeLeft,
@@ -48,92 +71,110 @@ class _Scaffold extends StatelessWidget with YoutubeDetailState {
                   floatingActionButtonLocation:
                       FloatingActionButtonLocation.centerDocked,
                   resizeToAvoidBottomInset: false,
-                  floatingActionButton: Transform.translate(
-                    offset: Offset(
-                      0,
-                      AppSize.responsiveBottomInset,
+
+                  // SlideTransition으로 FAB 애니메이션 적용
+                  floatingActionButton: SlideTransition(
+                    position: offsetAnimation,
+                    child: Transform.translate(
+                      offset: Offset(
+                        0,
+                        AppSize.responsiveBottomInset,
+                      ),
+                      child: bottomFloatingView,
                     ),
-                    child: bottomFloatingView,
                   ),
                   body: SafeArea(
+                    bottom: false,
                     child: DefaultTabController(
-                      length: ContentsDetailTabType.values.length, // 탭의 개수
-                      child: ExtendedNestedScrollView(
-                        pinnedHeaderSliverHeightBuilder: () {
-                          return AppSize.screenWidth * 9 / 16 +
-                              AppSize.statusBarHeight;
+                      length: ContentsDetailTabType.values.length,
+                      child: NotificationListener<ScrollNotification>(
+                        onNotification: (notification) {
+                          // 1) ScrollNotification 체크
+                          if (notification is UserScrollNotification) {
+                            final direction = notification.direction;
+
+                            // 2) 현재 스크롤 위치
+                            final scrollOffset = notification.metrics.pixels;
+
+                            // 3) 스크롤 위치가 20 이상일 때만 애니메이션 수행
+                            if (scrollOffset > 100) {
+                              // 스크롤을 내릴 때 (reverse)
+                              if (direction == ScrollDirection.reverse &&
+                                  animationController.status !=
+                                      AnimationStatus.dismissed) {
+                                animationController.reverse();
+                                return false;
+                              }
+
+                              // 스크롤을 올릴 때 (forward)
+                              if (direction == ScrollDirection.forward &&
+                                  animationController.status !=
+                                      AnimationStatus.completed) {
+                                animationController.forward();
+                                return false;
+                              }
+                            }
+                          }
+                          return false;
                         },
-                        // controller: scrollController(ref),
-                        onlyOneScrollInBody: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                          SliverToBoxAdapter(
-                            child: appBar,
-                          ),
-                          // SliverAppBar(
-                          //   backgroundColor: Colors.white,
-                          //   floating: true,
-                          //   stretchTriggerOffset: 60,
-                          //   elevation: 0.0,
-                          //   collapsedHeight: 56,
-                          //   automaticallyImplyLeading: false,
-                          //   titleSpacing: 0,
-                          //   title: SizedBox(
-                          //     height: 56,
-                          //     child: Row(
-                          //       children: [
-                          //         AppBackButton(
-                          //           onBackBtnTapped: () {
-                          //             context.pop();
-                          //           },
-                          //         ),
-                          //       ],
-                          //     ),
-                          //   ),
-                          // ),
-                          SliverPersistentHeader(
-                            pinned: true,
-                            delegate: StickyDelegateContainer(
-                              minHeight: AppSize.screenWidth * 9 / 16,
-                              maxHeight: AppSize.screenWidth * 9 / 16,
-                              child: Stack(
-                                children: [
-                                  SizedBox(
-                                    height: double.infinity,
-                                    width: double.infinity,
-                                    child: player,
-                                  ),
-                                  Positioned.fill(
-                                    child: youtubePlayerPlaceHolder,
-                                  ),
-                                ],
+                        child: ExtendedNestedScrollView(
+                          pinnedHeaderSliverHeightBuilder: () {
+                            return AppSize.screenWidth * 9 / 16 +
+                                AppSize.statusBarHeight;
+                          },
+                          onlyOneScrollInBody: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          headerSliverBuilder: (context, innerBoxIsScrolled) =>
+                              [
+                            SliverAppBar(
+                              floating: true,
+                              stretchTriggerOffset: 20,
+                              elevation: 0.0,
+                              collapsedHeight: 56,
+                              automaticallyImplyLeading: false,
+                              titleSpacing: 0,
+                              title: AppBackButton(
+                                onBackBtnTapped: () {
+                                  context.pop();
+                                },
                               ),
                             ),
-                          ),
-
-                          // 콘텐츠 영역을 SliverToBoxAdapter로 감싸기
-                          SliverToBoxAdapter(
-                            child: contentInfoView,
-                          ),
-                          // TabBar를 SliverPersistentHeader로 감싸기
-                          SliverPersistentHeader(
-                            pinned: true,
-                            delegate: StickyDelegateContainer(
-                              child: tabBar,
-                              minHeight: YoutubeDetailPage.tabBarHeight,
-                              maxHeight: YoutubeDetailPage.tabBarHeight,
+                            SliverPersistentHeader(
+                              pinned: true,
+                              delegate: StickyDelegateContainer(
+                                minHeight: AppSize.screenWidth * 9 / 16,
+                                maxHeight: AppSize.screenWidth * 9 / 16,
+                                child: Stack(
+                                  children: [
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: player,
+                                    ),
+                                    Positioned.fill(
+                                      child: youtubePlayerPlaceHolder,
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
-                        ],
-                        body: TabBarView(
-                          // physics: const PageScrollPhysics(), // 기본 가로 스크롤 허용
-                          children: [
-                            // 첫 번째 탭 내용
-                            // 각 탭의 내용을 스크롤 가능한 위젯으로 감싸기
-                            summaryTabView,
-                            // 두 번째 탭 내용
-                            interviewTabView,
+                            SliverToBoxAdapter(
+                              child: contentInfoView,
+                            ),
+                            SliverPersistentHeader(
+                              pinned: true,
+                              delegate: StickyDelegateContainer(
+                                child: tabBar,
+                                minHeight: YoutubeDetailPage.tabBarHeight,
+                                maxHeight: YoutubeDetailPage.tabBarHeight,
+                              ),
+                            ),
                           ],
+                          body: TabBarView(
+                            children: [
+                              summaryTabView,
+                              interviewTabView,
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -144,6 +185,11 @@ class _Scaffold extends StatelessWidget with YoutubeDetailState {
           },
         ),
         builder: (context, ref, scaffold) {
+          /// [NOTE]
+          /// YoutubePlayer가 fullScreen이 되면
+          /// 위젯트리가 다시 생성되는 이슈가 있음.
+          /// 이를 방지하기 위해 미리 provider를 초기화함.
+          /// 이렇게 설정해도 성능상 이슈가 없다고 봐도 무방
           mainInfo(ref);
           summaryAsync(ref);
           qnasAsync(ref);

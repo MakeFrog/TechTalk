@@ -22,7 +22,7 @@ mixin class YoutubeDetailState {
   ///
   AsyncValue<YoutubeMainEntity> mainInfo(WidgetRef ref) {
     final arg = ref.read(youtubeDetailRouteArgProvider);
-    final passedMainInfo = arg.overView;
+    final passedMainInfo = arg.main;
 
     if (passedMainInfo != null) {
       return AsyncData(passedMainInfo);
@@ -37,6 +37,12 @@ mixin class YoutubeDetailState {
   AsyncValue<YoutubeCoreVideoEntity> youtubeVideoDataAsync(
           WidgetRef ref, String contentsId) =>
       ref.watch(youtubeVideoDataProvider(contentsId));
+
+  ///
+  /// 이전 단계에서 전달 받은 썸네일 이미지
+  ///
+  String? passedThumbnailImg(WidgetRef ref) =>
+      ref.read(youtubeDetailRouteArgProvider).thumbnailUrl;
 
   ///
   /// 콘텐츠 요약 정보
