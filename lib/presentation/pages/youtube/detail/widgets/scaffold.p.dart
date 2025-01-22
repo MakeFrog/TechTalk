@@ -23,18 +23,16 @@ class _Scaffold extends HookWidget with YoutubeDetailState {
 
   @override
   Widget build(BuildContext context) {
-    // 1) AnimationController 정의
+    /// 스크롤에 따른 FAB 노출 애니메이션 조정 값
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: 370),
     );
 
-    // 2) 초기 상태: FAB이 나타난 상태로 설정
     useEffect(() {
       animationController.value = 1.0;
       return null;
     }, []);
 
-    // 3) 슬라이드 애니메이션 정의
     final offsetAnimation = useMemoized(
       () => Tween<Offset>(
         begin: const Offset(0, 1.0), // 아래로 숨김
@@ -46,6 +44,9 @@ class _Scaffold extends HookWidget with YoutubeDetailState {
         ),
       ),
     );
+
+    bool isFabHidden = false;
+    double lastOffset = 0;
 
     return ProviderScope(
       overrides: [argOverride],
@@ -89,32 +90,27 @@ class _Scaffold extends HookWidget with YoutubeDetailState {
                       length: ContentsDetailTabType.values.length,
                       child: NotificationListener<ScrollNotification>(
                         onNotification: (notification) {
-                          // 1) ScrollNotification 체크
-                          if (notification is UserScrollNotification) {
-                            final direction = notification.direction;
+                          if (notification is ScrollStartNotification) {
+                            lastOffset = notification.metrics.pixels;
+                          } else if (notification is ScrollUpdateNotification) {
+                            final currentOffset = notification.metrics.pixels;
+                            final diff = currentOffset - lastOffset;
 
-                            // 2) 현재 스크롤 위치
-                            final scrollOffset = notification.metrics.pixels;
-
-                            // 3) 스크롤 위치가 20 이상일 때만 애니메이션 수행
-                            if (scrollOffset > 100) {
-                              // 스크롤을 내릴 때 (reverse)
-                              if (direction == ScrollDirection.reverse &&
-                                  animationController.status !=
-                                      AnimationStatus.dismissed) {
-                                animationController.reverse();
-                                return false;
-                              }
-
-                              // 스크롤을 올릴 때 (forward)
-                              if (direction == ScrollDirection.forward &&
-                                  animationController.status !=
-                                      AnimationStatus.completed) {
-                                animationController.forward();
-                                return false;
-                              }
+                            if (!isFabHidden &&
+                                diff > 50 &&
+                                !animationController.isAnimating) {
+                              animationController.reverse();
+                              isFabHidden = true;
+                              lastOffset = currentOffset;
+                            } else if (isFabHidden &&
+                                diff < -30 &&
+                                !animationController.isAnimating) {
+                              animationController.forward();
+                              isFabHidden = false;
+                              lastOffset = currentOffset;
                             }
                           }
+
                           return false;
                         },
                         child: ExtendedNestedScrollView(
