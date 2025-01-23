@@ -12,13 +12,8 @@ class YoutubeDetailResourceProvider extends ChangeNotifier {
   ///
   late final YoutubePlayerController youtubeController;
 
-  ///
-  /// 스크롤 컨트롤러
-  ///
-  late final ScrollController scrollController;
-
   //// 초기화
-  void _onInit() {
+  void _onInit() async {
     /// [NOTE]
     /// youtube_iframe_plyaer 패키지 공식 문서를 보면
     /// 'YoutubePlayerController.fromVideoId()' 메소드로
@@ -38,8 +33,6 @@ class YoutubeDetailResourceProvider extends ChangeNotifier {
     );
 
     youtubeController = controller;
-
-    scrollController = ScrollController();
   }
 
   YoutubeDetailResourceProvider(this.videoId) {
@@ -51,8 +44,5 @@ final youtubeDetailResourceProvider = AutoDisposeChangeNotifierProviderFamily<
     YoutubeDetailResourceProvider, String>((ref, videoId) {
   final vm = YoutubeDetailResourceProvider(videoId);
 
-  ref.onDispose(() {
-    vm.scrollController.dispose();
-  });
   return vm;
 });

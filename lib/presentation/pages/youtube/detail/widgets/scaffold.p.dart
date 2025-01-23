@@ -10,6 +10,7 @@ class _Scaffold extends HookWidget with YoutubeDetailState {
     required this.summaryTabView,
     required this.interviewTabView,
     required this.bottomFloatingView,
+    required this.tabController,
   });
 
   final Override argOverride;
@@ -20,6 +21,7 @@ class _Scaffold extends HookWidget with YoutubeDetailState {
   final Widget summaryTabView;
   final Widget interviewTabView;
   final Widget bottomFloatingView;
+  final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +32,16 @@ class _Scaffold extends HookWidget with YoutubeDetailState {
 
     useEffect(() {
       animationController.value = 1.0;
+      tabController.addListener(() {
+        print('아수수');
+      });
       return null;
     }, []);
 
     final offsetAnimation = useMemoized(
       () => Tween<Offset>(
-        begin: const Offset(0, 1.0), // 아래로 숨김
-        end: Offset.zero, // 표시 상태
+        begin: const Offset(0, 1.0),
+        end: Offset.zero,
       ).animate(
         CurvedAnimation(
           parent: animationController,
@@ -72,8 +77,6 @@ class _Scaffold extends HookWidget with YoutubeDetailState {
                   floatingActionButtonLocation:
                       FloatingActionButtonLocation.centerDocked,
                   resizeToAvoidBottomInset: false,
-
-                  // SlideTransition으로 FAB 애니메이션 적용
                   floatingActionButton: SlideTransition(
                     position: offsetAnimation,
                     child: Transform.translate(
@@ -90,27 +93,63 @@ class _Scaffold extends HookWidget with YoutubeDetailState {
                       length: ContentsDetailTabType.values.length,
                       child: NotificationListener<ScrollNotification>(
                         onNotification: (notification) {
-                          if (notification is ScrollStartNotification) {
-                            lastOffset = notification.metrics.pixels;
-                          } else if (notification is ScrollUpdateNotification) {
-                            final currentOffset = notification.metrics.pixels;
-                            final diff = currentOffset - lastOffset;
-
-                            if (!isFabHidden &&
-                                diff > 50 &&
-                                !animationController.isAnimating) {
-                              animationController.reverse();
-                              isFabHidden = true;
-                              lastOffset = currentOffset;
-                            } else if (isFabHidden &&
-                                diff < -30 &&
-                                !animationController.isAnimating) {
-                              animationController.forward();
-                              isFabHidden = false;
-                              lastOffset = currentOffset;
-                            }
+                          if (tabController.animation?.isAnimating ?? true) {
+                            return false;
                           }
 
+                          // 스크롤이 “시작”될 때 → 현재 픽셀 위치를 기준점으로 기록
+                          if (notification is ScrollStartNotification) {
+                            lastOffset = notification.metrics.pixels;
+                          }
+                          // 스크롤 “진행” 중 업데이트
+                          else if (notification is ScrollUpdateNotification) {
+                            final currentOffset = notification.metrics.pixels;
+                            final diff =
+                                currentOffset - lastOffset; // 기준점 대비 이동 거리
+                            final delta = notification
+                                .scrollDelta; // 이번 업데이트에서의 이동량(양수=아래, 음수=위)
+
+                            // ─────────────
+                            // 1) 아래로 50px 이상 드래그했을 때 → FAB 숨김
+                            //    (단, 이미 숨겨져있지 않아야 하고, 현재 애니메이션 중이 아니어야 함)
+                            // ─────────────
+                            if (!isFabHidden &&
+                                diff > 50 &&
+                                !animationController.isAnimating &&
+                                delta != null &&
+                                delta > 0) {
+                              animationController.reverse(); // FAB 사라짐
+                              isFabHidden = true;
+                              lastOffset = currentOffset; // 스크롤 기준점 갱신
+                            }
+                            // ─────────────
+                            // 2) 위로 50px 이상 드래그했을 때 → FAB 다시 보임
+                            //    (단, 이미 보이는 상태면 안 되고, 현재 애니메이션 중이 아니어야 함)
+                            // ─────────────
+                            else if (isFabHidden &&
+                                diff < -50 &&
+                                !animationController.isAnimating &&
+                                delta != null &&
+                                delta < 0) {
+                              animationController.forward(); // FAB 나타남
+                              isFabHidden = false;
+                              lastOffset = currentOffset; // 스크롤 기준점 갱신
+                            }
+
+                            // ─────────────────────────────────────
+                            // 3) “맨 아래(maxScrollExtent)”까지 간 경우 → FAB 항상 보이게
+                            //    (isFabHidden 상태라면 보여주고, 기준점 갱신)
+                            // ─────────────────────────────────────
+                            if (notification.metrics.pixels >=
+                                notification.metrics.maxScrollExtent) {
+                              if (isFabHidden &&
+                                  !animationController.isAnimating) {
+                                animationController.forward(); // FAB 나타남
+                                isFabHidden = false;
+                                lastOffset = currentOffset;
+                              }
+                            }
+                          }
                           return false;
                         },
                         child: ExtendedNestedScrollView(
@@ -166,6 +205,7 @@ class _Scaffold extends HookWidget with YoutubeDetailState {
                             ),
                           ],
                           body: TabBarView(
+                            controller: tabController,
                             children: [
                               summaryTabView,
                               interviewTabView,

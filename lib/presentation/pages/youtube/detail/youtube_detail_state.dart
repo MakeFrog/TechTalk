@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/youtube/index.dart';
@@ -79,15 +78,6 @@ mixin class YoutubeDetailState {
   AsyncValue<bool> isBookMarkCheckedAsync(WidgetRef ref) {
     final contentId = ref.read(youtubeDetailRouteArgProvider).contentId;
     return ref.watch(isBookmarkCheckedProvider(contentId));
-  }
-
-  ///
-  ///  스크롤 컨트롤러
-  ///
-  ScrollController scrollController(WidgetRef ref) {
-    final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
-    return ref.watch(youtubeDetailResourceProvider(videoId)
-        .select((p) => p.scrollController));
   }
 
   ///

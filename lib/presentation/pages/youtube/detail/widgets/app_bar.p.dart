@@ -6,10 +6,6 @@ class _AppBar extends ConsumerWidget
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FoldableAppBar(
-      scrollController: scrollController(ref),
-      showBackButton: true,
-      animatedPosition: 2,
-    );
+    return EmptyBox();
   }
 }

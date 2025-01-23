@@ -21,11 +21,13 @@ class _YoutubePlayerPlaceHolder extends ConsumerWidget
               final state = useState(YoutubePlaySate.unStarted);
               final timer = useState<Timer?>(null); // 타이머를 관리
               useEffect(() {
+                print('아랑수 : ${state}');
                 if (listenState.value == false) return null;
                 // 상태가 변경될 때 실행되는 로직
+                // final changedState =
+                // YoutubePlaySate.fromCode((await controller.playerState).code);
                 final changedState =
                     YoutubePlaySate.fromCode(value.playerState.code);
-                print('아랑수 : ${state}');
 
                 if (changedState == YoutubePlaySate.playing) {
                   listenState.value = false;
@@ -97,8 +99,7 @@ class _YoutubePlayerPlaceHolder extends ConsumerWidget
                                 useEffect(() {
                                   WidgetsBinding.instance
                                       .addPostFrameCallback((_) async {
-                                    await youtubeController(ref)
-                                        .seekTo(seconds: 0);
+                                    await youtubeController(ref).playVideo();
                                   });
                                 }, []);
                                 return const CircularProgressIndicator(
