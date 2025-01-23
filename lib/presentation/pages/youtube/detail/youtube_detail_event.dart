@@ -13,7 +13,7 @@ import 'package:techtalk/features/youtube/repositories/entities/video_overview_e
 import 'package:techtalk/presentation/pages/youtube/channel_detail/provider/channel_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/is_bookmark_checked_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/selected_youtube_qnas_provider.dart';
-import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_resource_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_player_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/submitted_youtube_confirm/provider/submitted_youtube_confirm_arg_provider.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -40,8 +40,8 @@ mixin class YoutubeDetailEvent {
     }
     try {
       final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
-      final youtubeController = ref.read(youtubeDetailResourceProvider(videoId)
-          .select((p) => p.youtubeController));
+      final youtubeController = ref.read(
+          youtubePlayerProvider(videoId).select((p) => p.youtubeController));
       await youtubeController.seekTo(
           seconds: timeStamp.inSeconds.toDouble(), allowSeekAhead: true);
     } catch (e) {
