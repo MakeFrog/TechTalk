@@ -29,14 +29,8 @@ class _Scaffold extends HookWidget with YoutubeDetailState {
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: 370),
     );
-
-    useEffect(() {
-      animationController.value = 1.0;
-      tabController.addListener(() {
-        print('아수수');
-      });
-      return null;
-    }, []);
+    bool isFabHidden = false;
+    double lastOffset = 0;
 
     final offsetAnimation = useMemoized(
       () => Tween<Offset>(
@@ -50,8 +44,17 @@ class _Scaffold extends HookWidget with YoutubeDetailState {
       ),
     );
 
-    bool isFabHidden = false;
-    double lastOffset = 0;
+    useEffect(() {
+      animationController.value = 1.0;
+      tabController.addListener(() {
+        /// '면접 질문'으로 탭 인덱스가 변경 되었을 때
+        /// 항상 FAB를 노출하도록 설정
+        if (tabController.index == 1 && animationController.isDismissed) {
+          animationController.forward();
+        }
+      });
+      return null;
+    }, []);
 
     return ProviderScope(
       overrides: [argOverride],
@@ -93,7 +96,8 @@ class _Scaffold extends HookWidget with YoutubeDetailState {
                       length: ContentsDetailTabType.values.length,
                       child: NotificationListener<ScrollNotification>(
                         onNotification: (notification) {
-                          if (tabController.animation?.isAnimating ?? true) {
+                          if ((tabController.animation?.isAnimating ?? true) ||
+                              tabController.index == 1) {
                             return false;
                           }
 

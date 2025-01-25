@@ -41,7 +41,7 @@ class YoutubePlayerNotifier extends ChangeNotifier {
   }
 
   //// 초기화
-  void _onInit() async {
+  void _onInit() {
     /// [NOTE]
     /// youtube_iframe_plyaer 패키지 공식 문서를 보면
     /// 'YoutubePlayerController.fromVideoId()' 메소드로
