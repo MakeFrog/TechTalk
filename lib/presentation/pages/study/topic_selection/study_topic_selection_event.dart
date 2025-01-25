@@ -22,4 +22,11 @@ mixin class StudyTopicSelectionEvent {
     );
     StudyRoute(topic).push(rootNavigatorKey.currentContext!);
   }
+
+  ///
+  ///  오답노트 카드가 탭 되었을 때
+  ///
+  void onWrongAnswerCardTapped(WidgetRef ref) {
+    WrongAnswerNoteRoute().push(ref.context);
+  }
 }

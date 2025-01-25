@@ -25,11 +25,11 @@ class MainPage extends BasePage with MainEvent {
       HomePage(
         key: ValueKey(MainNavigationTab.home),
       ),
+      YoutubeMainPage(
+        key: ValueKey(MainNavigationTab.videoTutorial),
+      ),
       StudyTopicSelectionPage(
         key: ValueKey(MainNavigationTab.study),
-      ),
-      YoutubeMainPage(
-        key: ValueKey(MainNavigationTab.contents),
       ),
       MyPage(
         key: ValueKey(MainNavigationTab.myInfo),

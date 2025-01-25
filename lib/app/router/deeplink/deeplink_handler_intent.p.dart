@@ -22,7 +22,7 @@ extension DeeplinkHandlerIntentExt on DeepLinkHandler {
       if (host == DeeplinkHost.prefixYoutubeLanding) {
         globalContainer
             .read(mainBottomNavigationProvider.notifier)
-            .changeTab(MainNavigationTab.contents);
+            .changeTab(MainNavigationTab.videoTutorial);
       }
     }
 
