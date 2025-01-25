@@ -2,14 +2,14 @@ import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/youtube/index.dart';
-import 'package:techtalk/features/youtube/repositories/entities/youtube_related_vido_entity.dart';
+import 'package:techtalk/features/youtube/repositories/entities/video_overview_entity.dart';
 
 part 'related_youtube_videos_provider.g.dart';
 
 @riverpod
 class RelatedYoutubeVideo extends _$RelatedYoutubeVideo {
   @override
-  FutureOr<List<RelatedVideoEntity>> build(String contentId) async {
+  FutureOr<List<VideoOverviewEntity>> build(String contentId) async {
     final response = await youtubeRepository.getRelatedVideo(contentId);
     return response.fold(
       onSuccess: (videos) {

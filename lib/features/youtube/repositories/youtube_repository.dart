@@ -6,7 +6,8 @@ import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/youtube/index.dart';
-import 'package:techtalk/features/youtube/repositories/entities/youtube_related_vido_entity.dart';
+import 'package:techtalk/features/youtube/repositories/entities/channel_detail_entity.dart';
+import 'package:techtalk/features/youtube/repositories/entities/video_overview_entity.dart';
 
 abstract interface class YoutubeRepository {
   ///
@@ -40,10 +41,8 @@ abstract interface class YoutubeRepository {
   /// [limit] - 한 페이지당 가져올 항목 수
   /// [queryConstraints] - 추가적인 Firestore 쿼리 제약 조건
   ///
-  Future<
-      Result<
-          FirebasePaginatedResult<YoutubeContentOverviewEntity,
-              YoutubeMainModel>>> getPagedYoutubeMainContents({
+  Future<Result<FirebasePaginatedResult<YoutubeMainEntity, YoutubeMainModel>>>
+      getRandomPagedYoutubeMainContents({
     required int limit,
     required String orderByField,
     required bool hasReversedQueryCallProceeded,
@@ -54,10 +53,22 @@ abstract interface class YoutubeRepository {
   });
 
   ///
+  /// 유튜브 콘텐츠 리스트 호출 (랜덤 X)
+  ///
+  Future<Result<FirebasePaginatedResult<YoutubeMainEntity, YoutubeMainModel>>>
+      getPagedYoutubeMainContents({
+    required int limit,
+    required String orderByField,
+    required bool fetchChannel,
+    DocumentSnapshot<YoutubeMainModel>? lastDocument,
+    List<FirestoreQueryConstraint>? queryConstraints,
+  });
+
+  ///
   /// 유튜브 콘텐츠 업로드
   ///
   Future<Result<void>> uploadYoutube({
-    required YoutubeContentOverviewEntity contentMainInfo,
+    required YoutubeMainEntity contentMainInfo,
     required SummaryEntity summary,
     required Set<YoutubeQnaEntity> qnas,
     required String uploaderId,
@@ -65,14 +76,19 @@ abstract interface class YoutubeRepository {
   });
 
   ///
+  /// 유튜브 채널 상세 정보 호출
+  ///
+  Future<Result<ChannelDetailEntity>> getChannelDetail(String channelId);
+
+  ///
   /// ID를 기반으로 관련 유튜브 영상 리스트 호출
   ///
-  Future<Result<List<RelatedVideoEntity>>> getRelatedVideo(String contentId);
+  Future<Result<List<VideoOverviewEntity>>> getRelatedVideo(String contentId);
 
   ///
   /// 유튜브 비디오 메인 정보 호출
   ///
-  Future<Result<YoutubeContentOverviewEntity>> getYoutubeMainInfo({
+  Future<Result<YoutubeMainEntity>> getYoutubeMainInfo({
     required String contentId,
   });
 

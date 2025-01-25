@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
+import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
 import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
 
 abstract interface class UserRepository {
@@ -63,4 +66,36 @@ abstract interface class UserRepository {
   /// 면접을 처음 실행했는지 여부 값 업데이트
   ///
   Future<Result<void>> changeFirstEnteredFieldToTrue();
+
+  ///
+  /// 북마크 되어 잇는 콘텐츠인지 여부
+  ///
+  Future<Result<bool>> isContentBookMarked(String contentId);
+
+  ///
+  /// 북마크 상태 업데이트
+  ///
+  Future<Result<void>> updateBookMarkState({
+    required String contentId,
+    required bool targetState,
+  });
+
+  ///
+  /// 유튜브 영상 시청 기록 추가
+  ///
+  Future<Result<void>> updateYoutubeWatchHistory(String contentId);
+
+  ///
+  ///
+  ///
+  ///
+  /// 유튜브 영상 기록 호출
+  ///
+  Future<
+      Result<
+          FirebasePaginatedResult<WatchedYoutubeContent,
+              WatchedYoutubeContent>>> getPagedWatchedYoutubeHistory({
+    DocumentSnapshot<WatchedYoutubeContent>? lastDocument,
+    required int limit,
+  });
 }

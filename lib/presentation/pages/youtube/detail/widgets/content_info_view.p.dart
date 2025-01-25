@@ -64,22 +64,23 @@ class _ContentInfoView extends ConsumerWidget
                           ),
                         ),
                         const Gap(8),
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundImage:
-
-                                  /// TODO : XIMYA
-                                  /// 예외처리 모듈 만들기
-                                  NetworkImage(info.channel.logoUrl ?? ''),
-                              radius: 15,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              info.channel.name,
-                              style: AppTextStyle.body2,
-                            ),
-                          ],
+                        GestureDetector(
+                          onTap: () {
+                            onChannelSectionTapped(ref, channel: info.channel);
+                          },
+                          child: Row(
+                            children: [
+                              RoundProfileImg(
+                                size: 30,
+                                imgUrl: info.channel.logoUrl,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                info.channel.name,
+                                style: AppTextStyle.body2,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     );

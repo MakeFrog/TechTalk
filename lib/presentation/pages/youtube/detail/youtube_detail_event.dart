@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/services.dart';
@@ -6,8 +7,10 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
+import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/features/youtube/index.dart';
-import 'package:techtalk/features/youtube/repositories/entities/youtube_related_vido_entity.dart';
+import 'package:techtalk/features/youtube/repositories/entities/video_overview_entity.dart';
+import 'package:techtalk/presentation/pages/youtube/channel_detail/provider/channel_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/is_bookmark_checked_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/selected_youtube_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_resource_provider.dart';
@@ -20,7 +23,8 @@ mixin class YoutubeDetailEvent {
   /// 북마크 버튼이 탭 되었을 때
   ///
   void onBookmarkBtnTapped(WidgetRef ref) {
-    ref.read(isBookmarkCheckedProvider.notifier).toggle();
+    final contentId = ref.read(youtubeDetailRouteArgProvider).contentId;
+    ref.read(isBookmarkCheckedProvider(contentId).notifier).toggle();
   }
 
   ///
@@ -43,6 +47,16 @@ mixin class YoutubeDetailEvent {
     } catch (e) {
       log('seek 이동 실패 : $e');
     }
+  }
+
+  ///
+  /// 채널 영역이 클릭 되었을 때
+  ///
+  void onChannelSectionTapped(WidgetRef ref, {required ChannelEntity channel}) {
+    final contentId = ref.read(youtubeDetailRouteArgProvider).contentId;
+    final arg =
+        ChannelDetailRouteArg(channel: channel, currentContentId: contentId);
+    ChannelDetailRoute(arg).push(ref.context);
   }
 
   ///
@@ -109,7 +123,7 @@ mixin class YoutubeDetailEvent {
   }
 
   Future<void> onRelatedVideoTapped(WidgetRef ref,
-      {required RelatedVideoEntity video}) async {
+      {required VideoOverviewEntity video}) async {
     final response =
         await youtubeRepository.isUploadedContent(videoId: video.id);
 
@@ -118,7 +132,7 @@ mixin class YoutubeDetailEvent {
         if (isUploadedContent) {
           final arg =
               YoutubeDetailArg.deeplinkOrHasSingleIdArg(contentId: video.id);
-          ContentsDetailRoute(arg).push(ref.context);
+          YoutubeDetailRoute(arg).push(ref.context);
         } else {
           final arg = SubmittedYoutubeConfirmArg.fromContentAccessFlow(
               video: YoutubeVideoEntity.fromRelatedVideoEntity(video));
@@ -127,6 +141,22 @@ mixin class YoutubeDetailEvent {
       },
       onFailure: (e) {
         log('Youtube Detail > $e');
+      },
+    );
+  }
+
+  ///
+  /// 시청 기록 업데이트
+  ///
+  Future<void> updateWatchedHistory(WidgetRef ref) async {
+    final contentId = ref.read(youtubeDetailRouteArgProvider).contentId;
+    final response = await userRepository.updateYoutubeWatchHistory(contentId);
+    response.fold(
+      onSuccess: (_) {
+        log('시청 기록 업데이트 성공');
+      },
+      onFailure: (e) {
+        log('시청 기록 업데이트 실패 : ${e}');
       },
     );
   }

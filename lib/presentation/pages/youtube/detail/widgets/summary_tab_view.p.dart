@@ -198,13 +198,6 @@ class _SummaryTabView extends HookConsumerWidget
         iconPath: Assets.iconsSparkle,
       ),
       builder: (context, ref, title) {
-        const gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 16,
-          childAspectRatio: 167.54 / 138,
-        );
-
         return Column(
           children: [
             if (relatedVideoAsync(ref).isLoading ||
@@ -216,74 +209,12 @@ class _SummaryTabView extends HookConsumerWidget
             AsyncSkeletonWidgetBuilder(
               asyncValue: relatedVideoAsync(ref),
               skeletonBuilder: (_) =>
-                  _buildRelatedGridViewSkeleton(gridDelegate),
+                  ExpandableYoutubeContentGridView.createSkeleton(),
               dataBuilder: (context, relatedVideos) {
-                return GridView.builder(
-                  padding: EdgeInsets.zero,
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: gridDelegate,
-                  itemCount: relatedVideos.length,
-                  itemBuilder: (context, index) {
-                    final video = relatedVideos[index];
-
-                    return GestureDetector(
-                      onTap: () {
-                        onRelatedVideoTapped(ref, video: video);
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: AspectRatio(
-                                aspectRatio: 167.54 / 94,
-                                child: Image.network(
-                                  video.thumbnailImgUrl,
-                                  width: double.infinity,
-                                  loadingBuilder: (BuildContext context,
-                                      Widget child,
-                                      ImageChunkEvent? loadingProgress) {
-                                    return SizedBox(
-                                      child: AnimatedSwitcher(
-                                        duration:
-                                            const Duration(milliseconds: 120),
-                                        child: loadingProgress == null
-                                            ? child
-                                            : const SkeletonBox(),
-                                      ),
-                                    );
-                                  },
-                                  fit: BoxFit.fitWidth,
-                                )),
-                          ),
-                          const MaxGap(8),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 2),
-                            child: Text(
-                              video.title,
-                              style: AppTextStyle.body1,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 2),
-                            child: FittedBox(
-                              child: Text(
-                                video.channelName,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                style: AppTextStyle.alert2.copyWith(
-                                  color: AppColor.of.gray3,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
+                return ExpandableYoutubeContentGridView(
+                  video: relatedVideos,
+                  onTap: (video) {
+                    onRelatedVideoTapped(ref, video: video);
                   },
                 );
               },
@@ -335,6 +266,43 @@ class _SummaryTabView extends HookConsumerWidget
           ],
         );
       },
+    );
+  }
+}
+
+class ItemCardLayoutGrid extends StatelessWidget {
+  const ItemCardLayoutGrid({
+    Key? key,
+    required this.crossAxisCount,
+    required this.items,
+  })
+  // we only plan to use this with 1 or 2 columns
+  : assert(crossAxisCount == 1 || crossAxisCount == 2),
+        // assume we pass an list of 4 items for simplicity
+        assert(items.length == 4),
+        super(key: key);
+  final int crossAxisCount;
+  final List<VideoOverviewEntity> items;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutGrid(
+      // set some flexible track sizes based on the crossAxisCount
+      columnSizes: crossAxisCount == 2 ? [1.fr, 1.fr] : [1.fr],
+      // set all the row sizes to auto (self-sizing height)
+      rowSizes: crossAxisCount == 2
+          ? const [auto, auto]
+          : const [auto, auto, auto, auto],
+      rowGap: 40,
+      // equivalent to mainAxisSpacing
+      columnGap: 24,
+      // equivalent to crossAxisSpacing
+      // note: there's no childAspectRatio
+      children: [
+        // render all the cards with *automatic child placement*
+        for (var i = 0; i < items.length; i++)
+          ListTile(title: Text(items[i].title)),
+      ],
     );
   }
 }

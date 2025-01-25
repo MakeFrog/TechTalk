@@ -12,9 +12,9 @@ mixin class YoutubeMainEvent {
   ///
   void routeToDetailPage(
     WidgetRef ref, {
-    required YoutubeContentOverviewEntity overview,
+    required YoutubeMainEntity overview,
   }) {
-    final route = ContentsDetailRoute(
+    final route = YoutubeDetailRoute(
         YoutubeDetailArg.entryFromMainList(overView: overview));
     route.push(ref.context);
   }

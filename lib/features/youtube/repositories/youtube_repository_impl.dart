@@ -12,7 +12,8 @@ import 'package:techtalk/core/modules/exceptions/custom_exception.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/tech_set_repository.dart';
 import 'package:techtalk/features/youtube/index.dart';
-import 'package:techtalk/features/youtube/repositories/entities/youtube_related_vido_entity.dart';
+import 'package:techtalk/features/youtube/repositories/entities/channel_detail_entity.dart';
+import 'package:techtalk/features/youtube/repositories/entities/video_overview_entity.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 part 'youtube_repository_impl_internal.p.dart';
@@ -54,10 +55,8 @@ class YoutubeRepositoryImpl
   }
 
   @override
-  Future<
-      Result<
-          FirebasePaginatedResult<YoutubeContentOverviewEntity,
-              YoutubeMainModel>>> getPagedYoutubeMainContents({
+  Future<Result<FirebasePaginatedResult<YoutubeMainEntity, YoutubeMainModel>>>
+      getRandomPagedYoutubeMainContents({
     required int limit,
     required String orderByField,
     DocumentSnapshot<YoutubeMainModel>? lastDocument,
@@ -69,7 +68,7 @@ class YoutubeRepositoryImpl
     try {
       // Remote DataSource에서 페이징된 데이터 가져오기
       final remotePaginatedResult =
-          await _youtubeRemoteDataSource.getPagedYoutubeMainContents(
+          await _youtubeRemoteDataSource.getRandomPagedYoutubeMainContents(
         limit: limit,
         orderByField: orderByField,
         lastDocument: lastDocument,
@@ -90,8 +89,8 @@ class YoutubeRepositoryImpl
       }).toList();
 
       // 엔티티로 페이징된 결과 생성
-      final paginatedResult = FirebasePaginatedResult<
-          YoutubeContentOverviewEntity, YoutubeMainModel>(
+      final paginatedResult =
+          FirebasePaginatedResult<YoutubeMainEntity, YoutubeMainModel>(
         items: entities,
         lastDocument: remotePaginatedResult.lastDocument,
         hasMore: remotePaginatedResult.hasMore,
@@ -149,7 +148,8 @@ class YoutubeRepositoryImpl
       final responses = await Future.wait([
         /// [NOTE]
         /// channel 정보는 isolate 적용이 제한됨
-        _youtubeApiDataSource.channels.get(video.channelId),
+        // _youtubeApiDataSource.channels.get(video.channelId),
+        loadWithIsolate(() => _fetchChannel(video.channelId.value)),
         loadWithIsolate(() => _fetchCaptionManifest(videoId)),
       ]);
 
@@ -189,7 +189,7 @@ class YoutubeRepositoryImpl
 
   @override
   Future<Result<void>> uploadYoutube({
-    required YoutubeContentOverviewEntity contentMainInfo,
+    required YoutubeMainEntity contentMainInfo,
     required SummaryEntity summary,
     required Set<YoutubeQnaEntity> qnas,
     required String uploaderId,
@@ -216,7 +216,7 @@ class YoutubeRepositoryImpl
   }
 
   @override
-  Future<Result<YoutubeContentOverviewEntity>> getYoutubeMainInfo(
+  Future<Result<YoutubeMainEntity>> getYoutubeMainInfo(
       {required String contentId}) async {
     try {
       final response = await _youtubeRemoteDataSource
@@ -234,9 +234,8 @@ class YoutubeRepositoryImpl
   }
 
   @override
-  Future<Result<List<RelatedVideoEntity>>> getRelatedVideo(
+  Future<Result<List<VideoOverviewEntity>>> getRelatedVideo(
       String contentId) async {
-    print('콘텐츠 아이디 : ${contentId}');
     try {
       // Top-level 함수로 contentId를 이용해 비디오를 가져옴
       final video = await loadWithIsolate(() => _fetchVideo(contentId));
@@ -250,7 +249,7 @@ class YoutubeRepositoryImpl
       }
 
       final result = relatedVideos!
-          .map((e) => RelatedVideoEntity.fromVideoExplore(e))
+          .map((e) => VideoOverviewEntity.fromVideoExplore(e))
           .toList();
       return Result.success(result);
     } on Exception catch (e) {
@@ -300,6 +299,67 @@ class YoutubeRepositoryImpl
     } catch (e) {
       return Result.failure(
           Exception('Youtube Repository > isUploadedContent : $e'));
+    }
+  }
+
+  @override
+  Future<Result<FirebasePaginatedResult<YoutubeMainEntity, YoutubeMainModel>>>
+      getPagedYoutubeMainContents(
+          {required int limit,
+          required String orderByField,
+          DocumentSnapshot<YoutubeMainModel>? lastDocument,
+          required bool fetchChannel,
+          List<FirestoreQueryConstraint>? queryConstraints}) async {
+    try {
+      // Remote DataSource에서 페이징된 데이터 가져오기
+      final remotePaginatedResult =
+          await _youtubeRemoteDataSource.getPagedYoutubeMainContents(
+        limit: limit,
+        orderByField: orderByField,
+        fetchChannel: fetchChannel,
+        lastDocument: lastDocument,
+        queryConstraints: queryConstraints,
+      );
+
+      // 모델을 엔티티로 변환
+      final entities = remotePaginatedResult.items.map((model) {
+        final skills =
+            model.relatedSkillIds.map(_techSetRepository.getSkillById).toList();
+        final jobGroups = model.relatedJobGroupIds
+            .map(_techSetRepository.getJobGroupById)
+            .toList();
+        return model.toEntity(skills, jobGroups);
+      }).toList();
+
+      // 엔티티로 페이징된 결과 생성
+      final paginatedResult =
+          FirebasePaginatedResult<YoutubeMainEntity, YoutubeMainModel>(
+        items: entities,
+        lastDocument: remotePaginatedResult.lastDocument,
+        hasMore: remotePaginatedResult.hasMore,
+        hasReversedQueryCallProceeded:
+            remotePaginatedResult.hasReversedQueryCallProceeded,
+      );
+
+      return Result.success(paginatedResult);
+    } on Exception catch (e) {
+      log('getYoutubeContentsOverviews : $e');
+      return Result.failure(
+        const FetchYoutubeContentsOverviewException(),
+      );
+    }
+  }
+
+  @override
+  Future<Result<ChannelDetailEntity>> getChannelDetail(String channelId) async {
+    try {
+      final response = await _youtubeApiDataSource.channels.get(channelId);
+      print('아랑수 : ${response}');
+      final aim = await _youtubeApiDataSource.channels.get(channelId);
+      final result = ChannelDetailEntity.fromExplore(aim);
+      return Result.success(result);
+    } catch (e) {
+      return Result.failure(Exception('$this> $e'));
     }
   }
 }

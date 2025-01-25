@@ -17,13 +17,20 @@ class _YoutubePlayerPlaceHolder extends ConsumerWidget
         builder: (context, value) {
           return HookBuilder(
             builder: (context) {
+              final listenState = useState(true);
               final state = useState(YoutubePlaySate.unStarted);
               final timer = useState<Timer?>(null); // 타이머를 관리
 
               useEffect(() {
+                if (listenState.value == false) return null;
                 // 상태가 변경될 때 실행되는 로직
                 final changedState =
                     YoutubePlaySate.fromCode(value.playerState.code);
+
+                if (changedState == YoutubePlaySate.playing) {
+                  listenState.value = false;
+                  updateWatchedHistory(ref);
+                }
 
                 if (state.value != changedState) {
                   state.value = changedState;
@@ -79,9 +86,10 @@ class _YoutubePlayerPlaceHolder extends ConsumerWidget
                           ),
                         ),
                         Center(
-                          child: Builder(
+                          child: HookBuilder(
                             builder: (context) {
                               if (state.value == YoutubePlaySate.cued) {
+                                useEffect(() {}, []);
                                 return SvgPicture.asset(
                                   Assets.iconsPlay,
                                 );

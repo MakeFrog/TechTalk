@@ -2,7 +2,7 @@ import 'package:techtalk/features/tech_set/repositories/entities/job_group_entit
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/youtube/index.dart';
 
-class YoutubeContentOverviewEntity {
+class YoutubeMainEntity {
   final String id;
 
   final String thumbnailImgUrl;
@@ -23,7 +23,7 @@ class YoutubeContentOverviewEntity {
 
   final Duration videoDuration;
 
-  YoutubeContentOverviewEntity({
+  YoutubeMainEntity({
     required this.id,
     required this.thumbnailImgUrl,
     required this.contentsTitle,
@@ -55,11 +55,11 @@ class YoutubeContentOverviewEntity {
         uploadLanguageCode: uploadLanguageCode,
       );
 
-  factory YoutubeContentOverviewEntity.fromUploadResponse({
+  factory YoutubeMainEntity.fromUploadResponse({
     required YoutubeVideoEntity video,
     required YoutubeAiQnaAndIdsResponse qnaAndIds,
   }) {
-    return YoutubeContentOverviewEntity(
+    return YoutubeMainEntity(
       id: video.id,
       thumbnailImgUrl: video.thumbnails.highResUrl,
       contentsTitle: video.title,
@@ -71,6 +71,32 @@ class YoutubeContentOverviewEntity {
       videoDuration: video.duration ?? Duration.zero,
       videoPublishDate: video.publishedDate ?? DateTime.now(),
       techtalkUploadDate: DateTime.now(),
+    );
+  }
+
+  YoutubeMainEntity copyWith({
+    String? id,
+    String? thumbnailImgUrl,
+    String? contentsTitle,
+    int? qnaNum,
+    ChannelEntity? channel,
+    Set<SkillEntity>? relatedSkillIds,
+    Set<JobGroupEntity>? relatedJobs,
+    DateTime? techtalkUploadDate,
+    DateTime? videoPublishDate,
+    Duration? videoDuration,
+  }) {
+    return YoutubeMainEntity(
+      id: id ?? this.id,
+      thumbnailImgUrl: thumbnailImgUrl ?? this.thumbnailImgUrl,
+      contentsTitle: contentsTitle ?? this.contentsTitle,
+      qnaNum: qnaNum ?? this.qnaNum,
+      channel: channel ?? this.channel,
+      relatedSkillIds: relatedSkillIds ?? this.relatedSkillIds,
+      relatedJobs: relatedJobs ?? this.relatedJobs,
+      techtalkUploadDate: techtalkUploadDate ?? this.techtalkUploadDate,
+      videoPublishDate: videoPublishDate ?? this.videoPublishDate,
+      videoDuration: videoDuration ?? this.videoDuration,
     );
   }
 }

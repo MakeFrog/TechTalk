@@ -8,7 +8,7 @@ part 'youtube_main_info_provider.g.dart';
 @riverpod
 class YoutubeMainInfo extends _$YoutubeMainInfo {
   @override
-  Future<YoutubeContentOverviewEntity> build(String contentId) async {
+  Future<YoutubeMainEntity> build(String contentId) async {
     final response =
         await youtubeRepository.getYoutubeMainInfo(contentId: contentId);
 

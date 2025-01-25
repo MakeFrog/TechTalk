@@ -8,17 +8,17 @@ class _AdditionalInfoCard extends ConsumerWidget with MyPageEvent {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          tr(LocaleKeys.myInfo_others_others),
-          style: AppTextStyle.title1,
+        Padding(
+          padding: const EdgeInsets.only(left: 4),
+          child: Text(
+            tr(LocaleKeys.myInfo_others_others),
+            style: AppTextStyle.headline3,
+          ),
         ),
-        const Gap(8),
+        const Gap(12),
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 8,
-          ),
+          padding: const EdgeInsets.fromLTRB(4, 12, 4, 12),
           decoration: BoxDecoration(
             color: AppColor.of.white,
             borderRadius: BorderRadius.circular(16),

@@ -60,11 +60,11 @@ class YoutubeMainModel {
   final String uploadLanguageCode;
 
   /// 엔티티로 변환
-  YoutubeContentOverviewEntity toEntity(
+  YoutubeMainEntity toEntity(
     List<SkillEntity> skills,
     List<JobGroupEntity> jobGroups,
   ) {
-    return YoutubeContentOverviewEntity(
+    return YoutubeMainEntity(
       id: id,
       thumbnailImgUrl: thumbnailImgUrl,
       contentsTitle: title ?? '제목 없음',

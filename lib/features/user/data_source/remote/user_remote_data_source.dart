@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:techtalk/core/firebase_pagination_result.dart';
+import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
 import 'package:techtalk/features/user/user.dart';
 
 abstract interface class UserRemoteDataSource {
@@ -42,4 +45,31 @@ abstract interface class UserRemoteDataSource {
   /// 완료된 면접 개수 필드 증가 및 값 리턴
   ///
   Future<int> increaseCompletedInterviewCount();
+
+  ///
+  /// 북마크 되어 잇는 콘텐츠인지 여부
+  ///
+  Future<bool> checkIfContentIsBooMarked(String contentId);
+
+  ///
+  /// 북마크 상태 업데이트
+  ///
+  Future<void> updateBookMarkState({
+    required String contentId,
+    required bool targetState,
+  });
+
+  ///
+  /// 유튜브 영상 기록 추가
+  ///
+  Future<void> updateYoutubeWatchHistory(String contentId);
+
+  ///
+  /// 유튜브 영상 기록 호출
+  ///
+  Future<FirebasePaginatedResult<WatchedYoutubeContent, WatchedYoutubeContent>>
+      getPagedWatchedYoutubeHistory({
+    DocumentSnapshot<WatchedYoutubeContent>? lastDocument,
+    required int limit,
+  });
 }

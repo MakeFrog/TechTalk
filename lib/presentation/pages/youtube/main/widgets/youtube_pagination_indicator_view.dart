@@ -3,23 +3,26 @@ import 'package:gap/gap.dart';
 import 'package:techtalk/app/style/index.dart';
 
 class YoutubePaginationIndicatorView extends StatelessWidget {
-  const YoutubePaginationIndicatorView(
-      {super.key,
-      required this.title,
-      required this.description,
-      required this.btnText,
-      required this.onBtnTapped});
+  const YoutubePaginationIndicatorView({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.btnText,
+    required this.onBtnTapped,
+    this.setFlexRatio = true,
+  });
 
   final String title;
   final String description;
   final String btnText;
   final VoidCallback onBtnTapped;
+  final bool setFlexRatio;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Spacer(flex: 214),
+        if (setFlexRatio) const Spacer(flex: 214),
         Text(
           title,
           style: AppTextStyle.title1,
@@ -45,7 +48,7 @@ class YoutubePaginationIndicatorView extends StatelessWidget {
             btnText,
           ),
         ),
-        const Spacer(flex: 240),
+        if (setFlexRatio) const Spacer(flex: 240),
       ],
     );
   }

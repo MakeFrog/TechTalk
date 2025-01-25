@@ -5,8 +5,8 @@ import 'package:techtalk/features/youtube/usecases/analyze_youtube_use_case.dart
 export 'data_source/remote/models/channel_model.dart';
 export 'data_source/remote/models/paragraph_model.dart';
 export 'data_source/remote/models/summary_model.dart';
-export 'data_source/remote/models/youtube_content_overview_model.dart';
 export 'data_source/remote/models/youtube_detail_model.dart';
+export 'data_source/remote/models/youtube_main_entity.dart';
 export 'data_source/remote/models/youtube_main_model.dart';
 export 'data_source/remote/models/youtube_qna_model.dart';
 export 'data_source/remote/youtube_ref.dart';

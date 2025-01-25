@@ -1,5 +1,5 @@
 import 'package:techtalk/features/youtube/index.dart';
-import 'package:techtalk/features/youtube/repositories/entities/youtube_related_vido_entity.dart';
+import 'package:techtalk/features/youtube/repositories/entities/video_overview_entity.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 ///
@@ -85,7 +85,7 @@ class YoutubeVideoEntity {
   }
 
   factory YoutubeVideoEntity.fromRelatedVideoEntity(
-    RelatedVideoEntity entity,
+    VideoOverviewEntity entity,
   ) {
     return YoutubeVideoEntity(
       id: entity.id,

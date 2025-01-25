@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
@@ -35,27 +34,23 @@ final class GetYoutubeContentsOverviewsListParams {
 ///
 final class GetYoutubeOverviewListUseCase extends BaseUseCase<
     GetYoutubeContentsOverviewsListParams,
-    Result<
-        FirebasePaginatedResult<YoutubeContentOverviewEntity,
-            YoutubeMainModel>>> {
+    Result<FirebasePaginatedResult<YoutubeMainEntity, YoutubeMainModel>>> {
   GetYoutubeOverviewListUseCase(this._repository);
 
   final YoutubeRepository _repository;
 
   @override
-  Future<
-      Result<
-          FirebasePaginatedResult<YoutubeContentOverviewEntity,
-              YoutubeMainModel>>> call(
+  Future<Result<FirebasePaginatedResult<YoutubeMainEntity, YoutubeMainModel>>>
+      call(
     GetYoutubeContentsOverviewsListParams request,
   ) =>
-      _repository.getPagedYoutubeMainContents(
-        lastDocument: request.lastDocument,
-        limit: request.limit,
-        orderByField: request.orderByField,
-        queryConstraints: request.queryConstraints,
-        hasReversedQueryCallProceeded: request.isHalfOfRandomCalled,
-        random: request.random,
-        randomKey: request.randomKey,
-      );
+          _repository.getRandomPagedYoutubeMainContents(
+            lastDocument: request.lastDocument,
+            limit: request.limit,
+            orderByField: request.orderByField,
+            queryConstraints: request.queryConstraints,
+            hasReversedQueryCallProceeded: request.isHalfOfRandomCalled,
+            random: request.random,
+            randomKey: request.randomKey,
+          );
 }

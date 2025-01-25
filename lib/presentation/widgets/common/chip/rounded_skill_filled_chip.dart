@@ -21,7 +21,6 @@ class RoundedSkillFilledChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('임튼 : ${skill.imagePath}');
     return Container(
       height: 36,
       margin: margin ?? EdgeInsets.zero,

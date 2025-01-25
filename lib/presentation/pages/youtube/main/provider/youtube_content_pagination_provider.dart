@@ -10,14 +10,13 @@ import 'package:techtalk/presentation/pages/youtube/main/constant/yotubue_conten
 part 'youtube_content_pagination_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-Raw<
-    PagingController<DocumentSnapshot<YoutubeMainModel>?,
-        YoutubeContentOverviewEntity>> youtubeContentPagination(
+Raw<PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>>
+    youtubeContentPagination(
   YoutubeContentPaginationRef ref, {
   required YoutubeContentCategory category,
 }) {
-  final pagingController = PagingController<DocumentSnapshot<YoutubeMainModel>?,
-      YoutubeContentOverviewEntity>(
+  final pagingController =
+      PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>(
     firstPageKey: null,
   );
 
@@ -32,7 +31,7 @@ Raw<
     // TODO: 추후 필터 UI 구현되면 선택한 파라미터로 구성하도록 변경 필요
     final params = GetYoutubeContentsOverviewsListParams(
       lastDocument: pageKey,
-      limit: 20,
+      limit: 15,
       orderByField: 'upload_at',
       queryConstraints: !category.type.isAll
           ? [

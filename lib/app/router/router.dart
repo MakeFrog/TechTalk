@@ -13,6 +13,7 @@ import 'package:techtalk/presentation/pages/interview/question_count_select/ques
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/job_group_setting_page.dart';
+import 'package:techtalk/presentation/pages/my_info/my_youtube_board/my_youtube_board_page.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_setting_page.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/skill_setting_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
@@ -20,6 +21,8 @@ import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
 import 'package:techtalk/presentation/pages/study/learning/learning_detail_page.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_detail_page.dart';
+import 'package:techtalk/presentation/pages/youtube/channel_detail/channel_detail_page.dart';
+import 'package:techtalk/presentation/pages/youtube/channel_detail/provider/channel_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/youtube_detail_page.dart';
 import 'package:techtalk/presentation/pages/youtube/main/youtube_main_page.dart';
@@ -167,13 +170,21 @@ class SignUpRoute extends GoRouteData {
       path: YoutubeContentsMainListRoute.path,
       name: YoutubeContentsMainListRoute.name,
     ),
-    TypedGoRoute<ContentsDetailRoute>(
-      path: ContentsDetailRoute.path,
-      name: ContentsDetailRoute.name,
+    TypedGoRoute<YoutubeDetailRoute>(
+      path: YoutubeDetailRoute.path,
+      name: YoutubeDetailRoute.name,
+    ),
+    TypedGoRoute<ChannelDetailRoute>(
+      path: ChannelDetailRoute.path,
+      name: ChannelDetailRoute.name,
     ),
     TypedGoRoute<YoutubeLinkSubmitRoute>(
       path: YoutubeLinkSubmitRoute.path,
       name: YoutubeLinkSubmitRoute.name,
+    ),
+    TypedGoRoute<MyYoutubeBoardRoute>(
+      path: MyYoutubeBoardRoute.path,
+      name: MyYoutubeBoardRoute.name,
     ),
     TypedGoRoute<SubmittedYoutubeConfirmRoute>(
       path: SubmittedYoutubeConfirmRoute.path,
@@ -244,6 +255,33 @@ class StudyRoute extends GoRouteData {
   }
 }
 
+class MyYoutubeBoardRoute extends GoRouteData {
+  static const String path = 'my-youtube-board';
+  static const String name = 'my youtube board';
+  static late TopicEntity arg;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const MyYoutubeBoardPage();
+  }
+}
+
+class ChannelDetailRoute extends GoRouteData {
+  static const String path = 'channel-detail-route/:channelId';
+  static const String name = 'channel detail route';
+
+  ChannelDetailRoute(this.$extra) : channelId = $extra.channel.id;
+
+  final ChannelDetailRouteArg $extra;
+
+  final String channelId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ChannelDetailPage($extra);
+  }
+}
+
 class YoutubeContentsMainListRoute extends GoRouteData {
   YoutubeContentsMainListRoute();
 
@@ -256,15 +294,15 @@ class YoutubeContentsMainListRoute extends GoRouteData {
   }
 }
 
-class ContentsDetailRoute extends GoRouteData {
-  ContentsDetailRoute(this.$extra) : contentsId = $extra.contentId;
+class YoutubeDetailRoute extends GoRouteData {
+  YoutubeDetailRoute(this.$extra) : contentId = $extra.contentId;
 
-  static const String path = 'contents-detail/:contentsId';
-  static const String name = 'contents-detail';
+  static const String path = 'youtube-detail/:contentId';
+  static const String name = 'youtube detail';
 
   final YoutubeDetailArg $extra;
 
-  final String contentsId;
+  final String contentId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {

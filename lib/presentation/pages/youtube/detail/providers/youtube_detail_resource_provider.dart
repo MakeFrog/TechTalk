@@ -47,5 +47,11 @@ class YoutubeDetailResourceProvider extends ChangeNotifier {
 }
 
 final youtubeDetailResourceProvider = AutoDisposeChangeNotifierProviderFamily<
-    YoutubeDetailResourceProvider,
-    String>((ref, videoId) => YoutubeDetailResourceProvider(videoId));
+    YoutubeDetailResourceProvider, String>((ref, videoId) {
+  final vm = YoutubeDetailResourceProvider(videoId);
+
+  ref.onDispose(() {
+    vm.scrollController.dispose();
+  });
+  return vm;
+});

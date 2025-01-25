@@ -6,7 +6,7 @@ part of 'youtube_main_info_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$youtubeMainInfoHash() => r'84e2f346fd5b56f1d05af3c9b94ae4579df45aa2';
+String _$youtubeMainInfoHash() => r'5ac599e7befb0788f41a11b7eadc64ec4ae00073';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,10 +30,10 @@ class _SystemHash {
 }
 
 abstract class _$YoutubeMainInfo
-    extends BuildlessAutoDisposeAsyncNotifier<YoutubeContentOverviewEntity> {
+    extends BuildlessAutoDisposeAsyncNotifier<YoutubeMainEntity> {
   late final String contentId;
 
-  Future<YoutubeContentOverviewEntity> build(
+  Future<YoutubeMainEntity> build(
     String contentId,
   );
 }
@@ -43,8 +43,7 @@ abstract class _$YoutubeMainInfo
 const youtubeMainInfoProvider = YoutubeMainInfoFamily();
 
 /// See also [YoutubeMainInfo].
-class YoutubeMainInfoFamily
-    extends Family<AsyncValue<YoutubeContentOverviewEntity>> {
+class YoutubeMainInfoFamily extends Family<AsyncValue<YoutubeMainEntity>> {
   /// See also [YoutubeMainInfo].
   const YoutubeMainInfoFamily();
 
@@ -83,7 +82,7 @@ class YoutubeMainInfoFamily
 
 /// See also [YoutubeMainInfo].
 class YoutubeMainInfoProvider extends AutoDisposeAsyncNotifierProviderImpl<
-    YoutubeMainInfo, YoutubeContentOverviewEntity> {
+    YoutubeMainInfo, YoutubeMainEntity> {
   /// See also [YoutubeMainInfo].
   YoutubeMainInfoProvider(
     String contentId,
@@ -114,7 +113,7 @@ class YoutubeMainInfoProvider extends AutoDisposeAsyncNotifierProviderImpl<
   final String contentId;
 
   @override
-  Future<YoutubeContentOverviewEntity> runNotifierBuild(
+  Future<YoutubeMainEntity> runNotifierBuild(
     covariant YoutubeMainInfo notifier,
   ) {
     return notifier.build(
@@ -139,8 +138,8 @@ class YoutubeMainInfoProvider extends AutoDisposeAsyncNotifierProviderImpl<
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<YoutubeMainInfo,
-      YoutubeContentOverviewEntity> createElement() {
+  AutoDisposeAsyncNotifierProviderElement<YoutubeMainInfo, YoutubeMainEntity>
+      createElement() {
     return _YoutubeMainInfoProviderElement(this);
   }
 
@@ -159,14 +158,14 @@ class YoutubeMainInfoProvider extends AutoDisposeAsyncNotifierProviderImpl<
 }
 
 mixin YoutubeMainInfoRef
-    on AutoDisposeAsyncNotifierProviderRef<YoutubeContentOverviewEntity> {
+    on AutoDisposeAsyncNotifierProviderRef<YoutubeMainEntity> {
   /// The parameter `contentId` of this provider.
   String get contentId;
 }
 
 class _YoutubeMainInfoProviderElement
     extends AutoDisposeAsyncNotifierProviderElement<YoutubeMainInfo,
-        YoutubeContentOverviewEntity> with YoutubeMainInfoRef {
+        YoutubeMainEntity> with YoutubeMainInfoRef {
   _YoutubeMainInfoProviderElement(super.provider);
 
   @override

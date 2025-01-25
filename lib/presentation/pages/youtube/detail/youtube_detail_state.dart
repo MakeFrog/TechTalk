@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/youtube/index.dart';
-import 'package:techtalk/features/youtube/repositories/entities/youtube_related_vido_entity.dart';
+import 'package:techtalk/features/youtube/repositories/entities/video_overview_entity.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/is_bookmark_checked_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/related_youtube_videos_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/selected_youtube_qnas_provider.dart';
@@ -20,7 +20,7 @@ mixin class YoutubeDetailState {
   /// 전달 받은 argument에 정보가 있는 여부에 따라서
   /// 비동기 호출을 시도함
   ///
-  AsyncValue<YoutubeContentOverviewEntity> mainInfo(WidgetRef ref) {
+  AsyncValue<YoutubeMainEntity> mainInfo(WidgetRef ref) {
     final arg = ref.read(youtubeDetailRouteArgProvider);
     final passedMainInfo = arg.overView;
 
@@ -70,8 +70,10 @@ mixin class YoutubeDetailState {
   ///
   /// 북마크 체크 여부
   ///
-  AsyncValue<bool> isBookMarkCheckedAsync(WidgetRef ref) =>
-      ref.watch(isBookmarkCheckedProvider);
+  AsyncValue<bool> isBookMarkCheckedAsync(WidgetRef ref) {
+    final contentId = ref.read(youtubeDetailRouteArgProvider).contentId;
+    return ref.watch(isBookmarkCheckedProvider(contentId));
+  }
 
   ///
   ///  스크롤 컨트롤러
@@ -94,7 +96,7 @@ mixin class YoutubeDetailState {
   ///
   /// 유튜브 관련 영상 리스트
   ///
-  AsyncValue<List<RelatedVideoEntity>> relatedVideoAsync(WidgetRef ref) {
+  AsyncValue<List<VideoOverviewEntity>> relatedVideoAsync(WidgetRef ref) {
     final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
     return ref.watch(relatedYoutubeVideoProvider(videoId));
   }

@@ -15,11 +15,10 @@ class _ContentListView extends HookConsumerWidget
           itemBuilder: (context, index) {
             final targetController = pagingController(ref);
             return PagedListView<DocumentSnapshot<YoutubeMainModel>?,
-                YoutubeContentOverviewEntity>(
+                YoutubeMainEntity>(
               pagingController: targetController,
               physics: const NeverScrollableScrollPhysics(),
-              builderDelegate:
-                  PagedChildBuilderDelegate<YoutubeContentOverviewEntity>(
+              builderDelegate: PagedChildBuilderDelegate<YoutubeMainEntity>(
                 itemBuilder: (context, item, index) {
                   return Container(
                     margin: const EdgeInsets.only(bottom: 16),
@@ -58,8 +57,7 @@ class _ContentListView extends HookConsumerWidget
   /// 호출 중 오류 발생
   ///
   Widget _buildErrorOccuredView(
-      PagingController<DocumentSnapshot<YoutubeMainModel>?,
-              YoutubeContentOverviewEntity>
+      PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>
           controller) {
     return YoutubePaginationIndicatorView(
       title: '영상을 불러오지 못했어요',

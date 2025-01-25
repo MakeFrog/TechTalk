@@ -1,20 +1,20 @@
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-final class RelatedVideoEntity {
+final class VideoOverviewEntity {
   final String id;
   final String thumbnailImgUrl;
   final String title;
   final String channelName;
 
-  RelatedVideoEntity({
+  VideoOverviewEntity({
     required this.id,
     required this.title,
     required this.thumbnailImgUrl,
     required this.channelName,
   });
 
-  factory RelatedVideoEntity.fromVideoExplore(Video video) =>
-      RelatedVideoEntity(
+  factory VideoOverviewEntity.fromVideoExplore(Video video) =>
+      VideoOverviewEntity(
         id: video.id.value,
         title: video.title,
         thumbnailImgUrl: video.thumbnails.highResUrl,

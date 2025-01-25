@@ -125,14 +125,24 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $YoutubeContentsMainListRouteExtension._fromState,
         ),
         GoRouteData.$route(
-          path: 'contents-detail/:contentsId',
-          name: 'contents-detail',
-          factory: $ContentsDetailRouteExtension._fromState,
+          path: 'youtube-detail/:contentId',
+          name: 'youtube detail',
+          factory: $YoutubeDetailRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'channel-detail-route/:channelId',
+          name: 'channel detail route',
+          factory: $ChannelDetailRouteExtension._fromState,
         ),
         GoRouteData.$route(
           path: 'youtube-link-submit',
           name: 'youtube link submit',
           factory: $YoutubeLinkSubmitRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'my-youtube-board',
+          name: 'my youtube board',
+          factory: $MyYoutubeBoardRouteExtension._fromState,
         ),
         GoRouteData.$route(
           path: 'submitted-youtube-confirm-route',
@@ -328,14 +338,36 @@ extension $YoutubeContentsMainListRouteExtension
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $ContentsDetailRouteExtension on ContentsDetailRoute {
-  static ContentsDetailRoute _fromState(GoRouterState state) =>
-      ContentsDetailRoute(
+extension $YoutubeDetailRouteExtension on YoutubeDetailRoute {
+  static YoutubeDetailRoute _fromState(GoRouterState state) =>
+      YoutubeDetailRoute(
         state.extra as YoutubeDetailArg,
       );
 
   String get location => GoRouteData.$location(
-        '/contents-detail/${Uri.encodeComponent(contentsId)}',
+        '/youtube-detail/${Uri.encodeComponent(contentId)}',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+extension $ChannelDetailRouteExtension on ChannelDetailRoute {
+  static ChannelDetailRoute _fromState(GoRouterState state) =>
+      ChannelDetailRoute(
+        state.extra as ChannelDetailRouteArg,
+      );
+
+  String get location => GoRouteData.$location(
+        '/channel-detail-route/${Uri.encodeComponent(channelId)}',
       );
 
   void go(BuildContext context) => context.go(location, extra: $extra);
@@ -356,6 +388,24 @@ extension $YoutubeLinkSubmitRouteExtension on YoutubeLinkSubmitRoute {
 
   String get location => GoRouteData.$location(
         '/youtube-link-submit',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $MyYoutubeBoardRouteExtension on MyYoutubeBoardRoute {
+  static MyYoutubeBoardRoute _fromState(GoRouterState state) =>
+      MyYoutubeBoardRoute();
+
+  String get location => GoRouteData.$location(
+        '/my-youtube-board',
       );
 
   void go(BuildContext context) => context.go(location);
