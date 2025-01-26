@@ -7,9 +7,11 @@ final class AppVersion {
 
   AppVersion._internal();
 
-  late final VersionEntity to;
+  VersionEntity? to;
 
   void initialize(VersionEntity version) {
     to = version;
   }
+
+  bool get isOnReview => to?.isOnReview ?? false;
 }

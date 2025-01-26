@@ -18,7 +18,7 @@ class VersionEntity {
   final bool needUpdate;
 
   /// 현재 심사중인 버전이라면
-  bool get isOnReview => onGoingReviewVersion <= currentVersion;
+  bool get isOnReview => onGoingReviewVersion == currentVersion;
 
   const VersionEntity({
     required this.minVersion,

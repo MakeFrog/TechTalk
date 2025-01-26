@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
+import 'package:techtalk/app/environment/app_version.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
@@ -24,6 +25,7 @@ class SetEntryFlowUseCase extends BaseNoParamUseCase<Result<void>> {
 
     return versionInfo.fold(
       onSuccess: (version) async {
+        AppVersion().initialize(version);
         // 시스템 종료 불가 + 점검중 or 공지 노출
         if (!version.isSystemAvailable) {
           if (version.notification != '') {

@@ -11,7 +11,7 @@ class _YoutubePlayerPlaceHolder extends ConsumerWidget
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (AppVersion().to.isOnReview) {
+    if (AppVersion().isOnReview) {
       return const EmptyBox();
     }
 
