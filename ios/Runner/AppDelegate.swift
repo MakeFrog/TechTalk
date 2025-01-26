@@ -1,6 +1,6 @@
 import UIKit
 import Flutter
-import flutter_local_notifications // flutter_local_notifications를 import해야 함
+import flutter_local_notifications 
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
@@ -20,7 +20,7 @@ import flutter_local_notifications // flutter_local_notifications를 import해�
 
     // 기본 플러그인 등록
     GeneratedPluginRegistrant.register(with: self)
-
+      
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

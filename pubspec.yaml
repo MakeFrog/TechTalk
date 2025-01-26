@@ -99,7 +99,8 @@ dependencies:
   url_launcher: ^6.2.5 # url 런쳐
   easy_isolate_mixin: ^1.0.1 # Isolate
   flutter_local_notifications: 18.0.1 # 로컬 푸시
-  youtube_player_iframe: ^5.2.1 # 유튜브 
+  youtube_player_iframe: ^5.2.1 # 유튜브
+  logger: ^2.5.0
   device_info_plus: ^11.2.0
   pod_player: ^0.2.2
   connectivity_plus: ^5.0.2 # 네트워크 연결 상태 관리합

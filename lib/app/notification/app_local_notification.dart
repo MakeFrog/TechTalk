@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:techtalk/app/router/deeplink/deep_link_define.enum.dart';
 import 'package:techtalk/app/router/deeplink/deeplink_handler.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 final class AppLocalNotification {
   static final AppLocalNotification _instance =
@@ -14,14 +16,16 @@ final class AppLocalNotification {
 
   late final FlutterLocalNotificationsPlugin _local;
 
+  static const String _taskName = "local_notification_task";
+  static const String _channelId = 'noChannel';
+  static const String _channelName = 'localPush';
+  static const String _channelDescription = 'Background notifications';
+
   Future<void> initialize() async {
     _local = FlutterLocalNotificationsPlugin();
 
     AndroidInitializationSettings android =
         const AndroidInitializationSettings("@mipmap/ic_launcher");
-    // DarwinInitializationSettings ios = const DarwinInitializationSettings(
-    //
-    // );
 
     final DarwinInitializationSettings ios = DarwinInitializationSettings(
       requestAlertPermission: true,
@@ -43,8 +47,13 @@ final class AppLocalNotification {
         ),
       ],
     );
+
     InitializationSettings settings =
         InitializationSettings(android: android, iOS: ios);
+
+    // Timezone 초기화
+    tz.initializeTimeZones();
+
     await _local.initialize(
       settings,
       onDidReceiveNotificationResponse: notificationTapped,
@@ -71,17 +80,59 @@ final class AppLocalNotification {
         presentSound: true,
       ),
       android: AndroidNotificationDetails(
-        'noChannel',
-        "localPush",
+        _channelId,
+        _channelName,
         importance: Importance.max,
         priority: Priority.high,
+        channelDescription: _channelDescription,
       ),
     );
 
-    await _local.show(Random().nextInt(100), title, description, details,
-        payload:
-            '${DeeplinkScheme.techtalk.name}://${host.toDashedString()}/$path');
+    await _local.show(
+      Random().nextInt(100),
+      title,
+      description,
+      details,
+      payload:
+          '${DeeplinkScheme.techtalk.name}://${host.toDashedString()}/$path',
+    );
   }
 
-  Future<void> testShow() async {}
+  ///
+  /// 백그라운드에서도 push을 받을 수 있는 있도록 설정
+  ///
+  Future<void> triggerBackgroundPush({
+    required String title,
+    required String description,
+    required DeeplinkHost host,
+    required String? path,
+  }) async {
+    NotificationDetails details = const NotificationDetails(
+      iOS: DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      ),
+      android: AndroidNotificationDetails(
+        _channelId,
+        _channelName,
+        importance: Importance.max,
+        priority: Priority.high,
+        channelDescription: _channelDescription,
+      ),
+    );
+
+    await _local.zonedSchedule(
+      Random().nextInt(100),
+      title,
+      description,
+      tz.TZDateTime.now(tz.local).add(const Duration(seconds: 4)),
+      details,
+      payload:
+          '${DeeplinkScheme.techtalk.name}://${host.toDashedString()}/$path',
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      androidScheduleMode: AndroidScheduleMode.exact,
+    );
+  }
 }
