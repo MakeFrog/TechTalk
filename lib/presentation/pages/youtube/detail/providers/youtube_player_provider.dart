@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/app_locale.dart';
+import 'package:techtalk/presentation/app.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/constant/youtube_play_state.enum.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
@@ -34,7 +35,9 @@ class YoutubePlayerNotifier extends ChangeNotifier {
         WidgetsBinding.instance.addPostFrameCallback((_) async {
           await youtubeController.playVideo();
           hasYoutubePlayerCued = true;
-          notifyListeners();
+          if (globalContainer.exists(youtubePlayerProvider(videoId))) {
+            notifyListeners();
+          }
         });
       }
     });
