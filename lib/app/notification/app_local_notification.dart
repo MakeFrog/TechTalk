@@ -125,7 +125,7 @@ final class AppLocalNotification {
       Random().nextInt(100),
       title,
       description,
-      tz.TZDateTime.now(tz.local),
+      tz.TZDateTime.now(tz.local).add(const Duration(seconds: 1)),
       details,
       payload:
           '${DeeplinkScheme.techtalk.name}://${host.toDashedString()}/$path',

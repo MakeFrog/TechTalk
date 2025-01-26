@@ -82,7 +82,7 @@ final class AnalyzeAndUploadYoutubeUseCase
 
         if (isInBackground) {
           await AppLocalNotification().triggerBackgroundPush(
-            title: '영상 업로드 했어요 1',
+            title: '영상 업로드 했어요',
             description: '요약된 핵심 내용을 확인하고 면접을 진행해 보세요!',
             host: DeeplinkHost.landing,
             path: '',
@@ -96,7 +96,7 @@ final class AnalyzeAndUploadYoutubeUseCase
           userId,
         );
 
-        await AppLocalNotification().triggerBackgroundPush(
+        await AppLocalNotification().triggerPush(
           title: '영상 업로드 했어요',
           description: '요약된 핵심 내용을 확인하고 면접을 진행해 보세요!',
           host: DeeplinkHost.prefixYoutubeLanding,
@@ -131,7 +131,7 @@ final class AnalyzeAndUploadYoutubeUseCase
           );
         }
       } else {
-        await AppLocalNotification().triggerBackgroundPush(
+        await AppLocalNotification().triggerPush(
             title: '영상을 업로드하는데 실팼어요',
             description: targetType.description,
             host: DeeplinkHost.prefixYoutubeLanding,

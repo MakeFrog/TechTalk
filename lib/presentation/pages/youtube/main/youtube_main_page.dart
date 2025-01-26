@@ -38,7 +38,7 @@ class YoutubeMainPage extends BasePage with YoutubeMainState, YoutubeMainEvent {
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
       TechtalkAppBar(
-        title: '영상 학습',
+        title: '콘텐츠',
         padding: const EdgeInsets.only(left: 16, right: 0),
         actions: [
           BounceTapper(
