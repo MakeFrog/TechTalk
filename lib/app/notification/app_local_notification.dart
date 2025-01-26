@@ -16,7 +16,6 @@ final class AppLocalNotification {
 
   late final FlutterLocalNotificationsPlugin _local;
 
-  static const String _taskName = "local_notification_task";
   static const String _channelId = 'noChannel';
   static const String _channelName = 'localPush';
   static const String _channelDescription = 'Background notifications';
