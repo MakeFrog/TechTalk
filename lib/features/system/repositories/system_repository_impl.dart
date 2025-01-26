@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/app/localization/localization_enum.dart';
 import 'package:techtalk/core/index.dart';
@@ -17,8 +18,12 @@ class SystemRepositoryImpl implements SystemRepository {
   Future<Result<VersionEntity>> getVersionInfo() async {
     try {
       final response = await _remoteDataSource.getVersionInfo();
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
-      final result = response.toEntity();
+      final result = VersionEntity.fromModel(
+        response,
+        currentVersion: packageInfo.version,
+      );
       return Result.success(result);
     } on Exception catch (e) {
       return Result.failure(const VersionInfoFetchedFailedException());

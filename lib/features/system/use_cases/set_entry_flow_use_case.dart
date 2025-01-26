@@ -4,8 +4,6 @@ import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:pub_semver/pub_semver.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
@@ -19,18 +17,13 @@ class SetEntryFlowUseCase extends BaseNoParamUseCase<Result<void>> {
   final SystemRepository _repository;
 
   @override
-  FutureOr<Result<void>> call() async {
+  FutureOr<Result<VersionEntity>> call() async {
     final versionInfo = await _repository.getVersionInfo();
-
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
     final connectivityResult = await Connectivity().checkConnectivity();
 
     return versionInfo.fold(
       onSuccess: (version) async {
-        final serverVersionCode = Version.parse(version.versionCode);
-        final appVersionCode = Version.parse(packageInfo.version);
-
         // 시스템 종료 불가 + 점검중 or 공지 노출
         if (!version.isSystemAvailable) {
           if (version.notification != '') {
@@ -44,7 +37,7 @@ class SetEntryFlowUseCase extends BaseNoParamUseCase<Result<void>> {
 
         /// 조건: 서버 버전이 현재 앱 버전보다 높다면
         /// 앱 업데이트 모달 노출
-        if (serverVersionCode > appVersionCode) {
+        if (version.minVersion > version.currentVersion) {
           if (version.needUpdate) {
             showNeedUpdateModal();
             return Result.failure(const SystemNeedUpdateException());
@@ -53,7 +46,7 @@ class SetEntryFlowUseCase extends BaseNoParamUseCase<Result<void>> {
           }
         }
 
-        return Result.success(null);
+        return Result.success(version);
       },
       onFailure: (e) {
         /// 조건 : 네트워크가 연결이 안되어 있다면
