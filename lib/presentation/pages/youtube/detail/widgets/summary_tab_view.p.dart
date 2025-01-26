@@ -142,31 +142,53 @@ class _SummaryTabView extends HookConsumerWidget
                                                 const NeverScrollableScrollPhysics(),
                                             itemCount: filteredSummaries.length,
                                             itemBuilder: (context, index) {
-                                              final item =
-                                                  filteredSummaries[index];
-                                              return SummaryNoteFoldableItem(
-                                                onTapTimestamp:
-                                                    (timeStamp) async {
-                                                  await onTimeStampTapped(
-                                                    ref,
-                                                    timeStamp: timeStamp,
-                                                  );
+                                              return HookBuilder(
+                                                builder:
+                                                    (BuildContext context) {
+                                                  final isExpanded =
+                                                      useState(false);
+                                                  final item =
+                                                      filteredSummaries[index];
+                                                  return SummaryNoteFoldableItem(
+                                                    onTileBodyTapped:
+                                                        (timestamp,
+                                                            isExpanded) {
+                                                      onSummaryListTileItemTapped(
+                                                        ref,
+                                                        timestamp: timestamp,
+                                                        isExpanded: isExpanded,
+                                                        selectedIndex:
+                                                            selectedNoteIndex,
+                                                        currentIndex: index,
+                                                      );
+                                                    },
+                                                    onTapTimestamp: (timeStamp,
+                                                        isExpanded) async {
+                                                      await onTimeStampTapped(
+                                                        ref,
+                                                        timeStamp: timeStamp,
+                                                      );
 
-                                                  //// 항목 active 상태 toggle
-                                                  if (selectedNoteIndex.value !=
-                                                      index) {
-                                                    selectedNoteIndex.value =
-                                                        index;
-                                                  }
+                                                      //// 항목 active 상태 toggle
+                                                      if (selectedNoteIndex
+                                                              .value !=
+                                                          index) {
+                                                        selectedNoteIndex
+                                                            .value = index;
+                                                      }
+                                                    },
+                                                    timestamp: item.timestamp,
+                                                    title: item.title,
+                                                    contents: item.contents,
+                                                    isActivated:
+                                                        selectedNoteIndex
+                                                                .value ==
+                                                            index,
+                                                    seeAllNotifier:
+                                                        triggerSeeAllNotifier,
+                                                    isExpanded: isExpanded,
+                                                  );
                                                 },
-                                                timestamp: item.timestamp,
-                                                title: item.title,
-                                                contents: item.contents,
-                                                isActivated:
-                                                    selectedNoteIndex.value ==
-                                                        index,
-                                                seeAllNotifier:
-                                                    triggerSeeAllNotifier,
                                               );
                                             },
                                           ),

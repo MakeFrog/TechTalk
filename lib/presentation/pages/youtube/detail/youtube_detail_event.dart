@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
-import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/user/user.dart';
@@ -17,7 +16,9 @@ import 'package:techtalk/presentation/pages/youtube/detail/providers/is_bookmark
 import 'package:techtalk/presentation/pages/youtube/detail/providers/selected_youtube_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_player_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/youtube_detail_state.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/submitted_youtube_confirm/provider/submitted_youtube_confirm_arg_provider.dart';
+import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 mixin class YoutubeDetailEvent {
@@ -30,14 +31,78 @@ mixin class YoutubeDetailEvent {
   }
 
   ///
+  /// 요약 노트 > ListTile이 클릭 되었을 때
+  ///
+  Future<void> onSummaryListTileItemTapped(
+    WidgetRef ref, {
+    required Duration? timestamp,
+    required ValueNotifier<bool> isExpanded,
+    required ValueNotifier<int?> selectedIndex,
+    required int currentIndex,
+  }) async {
+    final isSelected = selectedIndex.value == currentIndex;
+    isExpanded.value = !isExpanded.value;
+
+    /// 1. 재생 시점으로 이동
+    /// 2. timestamp 토글
+    /// 3. ListTie Expand 값 조정
+
+    if (!isSelected && isExpanded.value) {
+      selectedIndex.value = currentIndex;
+
+      await _seekToTimestamp(ref, timestamp: timestamp);
+    }
+
+    /// timeStampe 토글
+  }
+
+  ///
+  /// 특정 타임스탬프로 영상 재생
+  ///
+  Future<void> _seekToTimestamp(WidgetRef ref,
+      {required Duration? timestamp}) async {
+    final isPlayerCued = YoutubeDetailState().hasYoutubePlayerCued(ref);
+    if (!isPlayerCued) {
+      AppDialog.singleBtn(
+        title: '영상 재생을 가디리고 있어요',
+        onBtnClicked: () {
+          ref.context.pop();
+        },
+        showContentImg: false,
+      );
+      return;
+    }
+    try {
+      final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
+      final youtubeController = ref.read(
+          youtubePlayerProvider(videoId).select((p) => p.youtubeController));
+      await youtubeController.seekTo(
+          seconds: (timestamp?.inSeconds ?? 0).toDouble(),
+          allowSeekAhead: true);
+    } catch (e) {
+      log('seek 이동 실패 : $e');
+    }
+  }
+
+  ///
   /// 요약노트 > 타임 스탬프 버튼이 클릭 되었을 때
   ///
   Future<void> onTimeStampTapped(
     WidgetRef ref, {
     required Duration? timeStamp,
   }) async {
+    final isPlayerCued = YoutubeDetailState().hasYoutubePlayerCued(ref);
+    if (!isPlayerCued) {
+      AppDialog.singleBtn(
+        title: '영상 재생을 가디리고 있어요',
+        onBtnClicked: () {
+          ref.context.pop();
+        },
+        showContentImg: false,
+      );
+      return;
+    }
     if (timeStamp == null) {
-      SnackBarService.showSnackBar('해당 위치로 이동하지 못했어요');
       return;
     }
     try {
@@ -65,22 +130,6 @@ mixin class YoutubeDetailEvent {
   /// 면접 시작하기 버튼이 클릭 되었을 떄
   ///
   Future<void> onStartInterviewBtnTapped(WidgetRef ref) async {
-    // final videoId = ref
-    //     .read(youtubeDetailRouteArgProvider)
-    //     .contentId;
-    // final youtubeController = ref.read(youtubeDetailResourceProvider(videoId)
-    //     .select((p) => p.youtubeController));
-    //
-    // youtubeController
-    // .
-    //
-    // await youtubeController.cueVideoByUrl(
-    // mediaContentUrl: "http://www.youtube.com/v/${videoId}?version=5",
-    // startSeconds: 10,
-    // endSeconds: 30,
-    // );
-
-    return;
     final room = ChatRoomEntity.generateResumeInterview(
       qnas: [],
     );

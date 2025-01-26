@@ -20,11 +20,13 @@ class FlexibleExpansionTile extends HookWidget {
   final Color? highlightColor;
   final bool isExpandedInitially; // 초기 확장 상태
   final double gapBetweenTitleAndContent;
+  final VoidCallback? onTapped;
 
   const FlexibleExpansionTile(
       {Key? key,
       required this.title,
       required this.content,
+      this.onTapped,
       this.padding,
       this.highlightColor,
       this.isExpanded,
@@ -73,7 +75,11 @@ class FlexibleExpansionTile extends HookWidget {
     return InkWell(
       highlightColor: highlightColor,
       onTap: () {
-        isOpen.value = !isOpen.value; // 터치 시 상태 토글
+        if (onTapped != null) {
+          onTapped!();
+        } else {
+          isOpen.value = !isOpen.value; // 터치 시 상태 토글
+        }
       },
       child: Container(
         padding: padding,
