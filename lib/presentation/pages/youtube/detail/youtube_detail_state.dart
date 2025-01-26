@@ -120,7 +120,9 @@ mixin class YoutubeDetailState {
   ///
   List<YoutubeQnaEntity> selectedQnas(WidgetRef ref) {
     final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
-    final selectedQnas = ref.watch(selectedYoutubeQnasProvider(videoId));
+    final passedQnas = ref.read(youtubeDetailRouteArgProvider).qnas;
+    final selectedQnas = ref.watch(selectedYoutubeQnasProvider(videoId,
+        passedQnas: passedQnas?.toList() ?? null));
     return selectedQnas;
   }
 }

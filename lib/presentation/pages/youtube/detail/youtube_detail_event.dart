@@ -113,7 +113,15 @@ mixin class YoutubeDetailEvent {
   ///
   void onQnaBoxTapped(WidgetRef ref, {required YoutubeQnaEntity qna}) {
     final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
-    ref.read(selectedYoutubeQnasProvider(videoId).notifier).toggle(qna);
+
+    final passedQnas = ref.read(youtubeDetailRouteArgProvider).qnas?.toList();
+
+    ref
+        .watch(selectedYoutubeQnasProvider(
+          videoId,
+          passedQnas: passedQnas ?? null,
+        ).notifier)
+        .toggle(qna);
   }
 
   ///
@@ -121,7 +129,13 @@ mixin class YoutubeDetailEvent {
   ///
   void onAllSelectBtnTapped(WidgetRef ref) {
     final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
-    ref.read(selectedYoutubeQnasProvider(videoId).notifier).activateAll();
+    final passedQnas = ref.read(youtubeDetailRouteArgProvider).qnas;
+    ref
+        .read(selectedYoutubeQnasProvider(
+          videoId,
+          passedQnas: passedQnas?.toList() ?? null,
+        ).notifier)
+        .activateAll();
   }
 
   Future<void> onRelatedVideoTapped(WidgetRef ref,
