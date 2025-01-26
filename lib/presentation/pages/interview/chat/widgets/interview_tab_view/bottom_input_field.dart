@@ -1,3 +1,4 @@
+import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -11,7 +12,6 @@ import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/gradient_shine_effect_view.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/bubble_indicator.dart';
-import 'package:techtalk/presentation/pages/youtube/aim_bounce_tapper.dart';
 import 'package:techtalk/presentation/widgets/common/animated/animated_appear_view.dart';
 
 class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
@@ -175,7 +175,7 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
   Widget _buildMicButton(ValueNotifier<bool> showHighlightEffect) {
     return Consumer(
       builder: (context, ref, _) {
-        return AimBounceTapper(
+        return BounceTapper(
           highlightColor: Colors.transparent,
           delayedDurationBeforeGrow: Duration.zero,
           onTap: () {
