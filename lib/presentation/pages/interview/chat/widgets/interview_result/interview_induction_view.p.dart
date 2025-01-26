@@ -94,6 +94,9 @@ class _InterviewInductionView extends HookConsumerWidget
                     ),
                   ],
                 ),
+                youtube: (InterviewType type) {
+                  return Text('작업 필요');
+                },
               ),
           const Gap(16),
 
@@ -151,21 +154,22 @@ class _InterviewInductionView extends HookConsumerWidget
                     ),
                     onPressed: () {
                       room(ref).type.branch(
-                        singleTopic: (_) {
-                          startRelatedNewTopicInterview(
-                            ref,
-                            targetTopic: relatedTopic!,
+                            singleTopic: (_) {
+                              startRelatedNewTopicInterview(
+                                ref,
+                                targetTopic: relatedTopic!,
+                              );
+                            },
+                            practical: (_) {
+                              retryThisInterview(ref);
+                            },
+                            resume: (_) {
+                              /// TODO : XIMYA
+                              /// 테스트 필요
+                              retryThisInterview(ref);
+                            },
+                            youtube: (InterviewType type) {},
                           );
-                        },
-                        practical: (_) {
-                          retryThisInterview(ref);
-                        },
-                        resume: (_) {
-                          /// TODO : XIMYA
-                          /// 테스트 필요
-                          retryThisInterview(ref);
-                        },
-                      );
                     },
                     child: Text(
                       room(ref).type.branch(
@@ -173,6 +177,9 @@ class _InterviewInductionView extends HookConsumerWidget
                                 tr(LocaleKeys.home_takeInterview),
                             practical: (_) => tr(LocaleKeys.interview_tryAgain),
                             resume: (_) => tr(LocaleKeys.interview_tryAgain),
+                            youtube: (InterviewType type) {
+                              return '작업 필요';
+                            },
                           ),
                     ),
                   ),

@@ -3,7 +3,8 @@ import 'package:techtalk/core/constants/assets.dart';
 enum InterviewType {
   commonSingleTopic(Assets.imagesInductionPractical),
   commonPracticalTopic(Assets.imagesInductionSingle),
-  resume(Assets.imagesInductionResume);
+  resume(Assets.imagesInductionResume),
+  youtube(Assets.imagesInductionResume);
 
   bool get isSingleTopic => this == InterviewType.commonSingleTopic;
 
@@ -22,6 +23,7 @@ enum InterviewType {
   R typedBranch<R>({
     required R Function(InterviewType type) common,
     required R Function(InterviewType type) resume,
+    required R Function(InterviewType type) youtube,
   }) {
     switch (this) {
       case InterviewType.commonSingleTopic ||
@@ -29,6 +31,8 @@ enum InterviewType {
         return common(this);
       case InterviewType.resume:
         return resume(this);
+      case InterviewType.youtube:
+        return youtube(this);
       default:
         throw Exception('잘못된 타입입니다 : $this');
     }
@@ -38,6 +42,7 @@ enum InterviewType {
     required R Function(InterviewType type) singleTopic,
     required R Function(InterviewType type) practical,
     required R Function(InterviewType type) resume,
+    required R Function(InterviewType type) youtube,
   }) {
     switch (this) {
       case InterviewType.commonSingleTopic:
@@ -46,6 +51,8 @@ enum InterviewType {
         return practical(this);
       case InterviewType.resume:
         return resume(this);
+      case InterviewType.youtube:
+        return youtube(this);
       default:
         throw Exception('잘못된 타입입니다 : $this');
     }

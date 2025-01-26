@@ -110,19 +110,29 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
     // 프롬프트는 추후 전부 한 언어로 통일할 것이므로 따로 localization은 필요하지 않아 보입니다.
 
     return [
-      param.interviewType.typedBranch(common: (_) {
-        return Messages(
-          role: Role.system,
-          content:
-              '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 이제부터 진행할 면접은 ${StoredTopics.getById(param.qna.qna.id.getFirstPartOfSpliited).text}와 관련된 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
-        ).toJson();
-      }, resume: (_) {
-        return Messages(
-          role: Role.system,
-          content:
-              '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 유저의 개발자 이력서 또는 포트폴로리오에 관련된 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
-        ).toJson();
-      }),
+      param.interviewType.typedBranch(
+        common: (_) {
+          return Messages(
+            role: Role.system,
+            content:
+                '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 이제부터 진행할 면접은 ${StoredTopics.getById(param.qna.qna.id.getFirstPartOfSpliited).text}와 관련된 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
+          ).toJson();
+        },
+        resume: (_) {
+          return Messages(
+            role: Role.system,
+            content:
+                '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 유저의 개발자 이력서 또는 포트폴로리오에 관련된 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
+          ).toJson();
+        },
+        youtube: (_) {
+          return Messages(
+            role: Role.system,
+            content:
+                '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 프로그래밍과 관련된 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
+          ).toJson();
+        },
+      ),
 
       ...param.chatHistory.map(
         (element) => switch (element) {

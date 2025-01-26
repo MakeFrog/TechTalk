@@ -20,9 +20,10 @@ import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:uuid/uuid.dart';
 
 part 'chat_message_history_internal_event.p.dart';
-part 'resume_type_chat_message_history_internal_event.p.dart';
-part 'common_type_chat_message_history_internal_event.p.dart';
 part 'chat_message_history_provider.g.dart';
+part 'common_type_chat_message_history_internal_event.p.dart';
+part 'resume_type_chat_message_history_internal_event.p.dart';
+part 'youtube_type_chat_message_history_internal_event.p.dart';
 
 @riverpod
 class ChatMessageHistory extends _$ChatMessageHistory {
@@ -34,16 +35,22 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   @override
   FutureOr<List<BaseChatEntity>> build() async {
     final room = ref.read(selectedChatRoomProvider);
+    print('아랑이 0 : ${room.progressState}');
 
     // 단골 질문 (주제별, 실전형)
     final getChatList = switch (room.progressState) {
       ChatRoomProgress.initial => () async {
+          print('아랑이 1');
           await room.type.typedBranch(
             common: (_) async {
               await _showIntroAndCommonQuestionMessages();
             },
             resume: (_) async {
               await _showResumeTypeIntroMessages();
+            },
+            youtube: (_) async {
+              print('아랑이 2');
+              await _showYoutubeTypeIntroMessages();
             },
           );
 

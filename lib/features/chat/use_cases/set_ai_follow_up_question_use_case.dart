@@ -98,6 +98,12 @@ class SetAiFollowUpQuestionUseCase extends BaseNoFutureUseCase<
             content: '유저의 개발자 이력서와 포트폴리오를 기반으로 면접 질문을 물어보았습니다',
           ).toJson();
         },
+        youtube: (_) {
+          return Messages(
+            role: Role.system,
+            content: '프로그래밍 질문을 물어보았습니다',
+          ).toJson();
+        },
       ),
       Messages(
         role: Role.system,

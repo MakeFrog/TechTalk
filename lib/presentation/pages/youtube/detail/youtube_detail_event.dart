@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/app/util/app_logger.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/user/user.dart';
@@ -130,13 +131,22 @@ mixin class YoutubeDetailEvent {
   /// 면접 시작하기 버튼이 클릭 되었을 떄
   ///
   Future<void> onStartInterviewBtnTapped(WidgetRef ref) async {
-    final room = ChatRoomEntity.generateResumeInterview(
-      qnas: [],
+    final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
+
+    final passedQnas = ref.read(youtubeDetailRouteArgProvider).qnas?.toList();
+
+    final selectedQnas = ref.read(selectedYoutubeQnasProvider(
+      videoId,
+      passedQnas: passedQnas ?? null,
+    ));
+
+    final room = ChatRoomEntity.generateYoutubeInterview(
+      qnas: selectedQnas,
     );
 
     final route = ChatPageRoute(roomId: room.id, type: room.type);
     route.updateArg(room: room);
-    route.go(ref.context);
+    route.push(ref.context);
   }
 
   ///
@@ -166,7 +176,7 @@ mixin class YoutubeDetailEvent {
     final passedQnas = ref.read(youtubeDetailRouteArgProvider).qnas?.toList();
 
     ref
-        .watch(selectedYoutubeQnasProvider(
+        .read(selectedYoutubeQnasProvider(
           videoId,
           passedQnas: passedQnas ?? null,
         ).notifier)
@@ -255,10 +265,10 @@ mixin class YoutubeDetailEvent {
     final response = await userRepository.updateYoutubeWatchHistory(contentId);
     response.fold(
       onSuccess: (_) {
-        log('시청 기록 업데이트 성공');
+        logger.i('시청 기록 업데이트 성공');
       },
       onFailure: (e) {
-        log('시청 기록 업데이트 실패 : ${e}');
+        logger.e('시청 기록 업데이트 실패 : ${e}');
       },
     );
   }

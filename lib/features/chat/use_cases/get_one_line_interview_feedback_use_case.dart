@@ -88,6 +88,12 @@ class GetOneLineInterViewFeedbackUseCase extends BaseNoFutureUseCase<
             content: '지원자의 개발자 이력서와 포트폴리오를 기반으로 면접과 답변을 주고 받았습니다.',
           ).toJson();
         },
+        youtube: (_) {
+          return Messages(
+            role: Role.system,
+            content: '프로그래밍 기술 주제로 면접 질문을 주고 받고 있습니다.',
+          ).toJson();
+        },
       ),
       Messages(
         role: Role.system,

@@ -75,6 +75,8 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
                 routeToTopicSelectPage(ref);
               case InterviewType.resume:
                 throw Exception('타입을 지정해주어야 합니다1');
+              case InterviewType.youtube:
+                throw Exception('유튜브 면접은 채팅방 면접 페이지에 진입하지 않음');
             }
           },
           height: 56,
@@ -102,6 +104,8 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
           InterviewType.commonPracticalTopic =>
             tr(LocaleKeys.undefined_realWorldInterview),
           InterviewType.resume => '',
+          // TODO: Handle this case.
+          InterviewType.youtube => '',
         },
       );
 

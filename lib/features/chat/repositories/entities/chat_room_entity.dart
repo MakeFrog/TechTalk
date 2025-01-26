@@ -109,7 +109,7 @@ class ChatRoomEntity {
   }) {
     return ChatRoomEntity(
       isTemporary: true,
-      type: InterviewType.resume,
+      type: InterviewType.youtube,
       id: StringGenerator.generateRandomString(),
       interviewer: Interviewer.getRandomInterviewer(),
       qnas: qnas,
@@ -128,6 +128,7 @@ class ChatRoomEntity {
       InterviewType.commonPracticalTopic =>
         roomModel.topicIds.map(StoredTopics.getById).toList(),
       InterviewType.resume => <TopicEntity>[],
+      InterviewType.youtube => <TopicEntity>[],
     };
 
     return ChatRoomEntity(

@@ -225,6 +225,7 @@ const _$InterviewTypeEnumMap = {
   InterviewType.commonSingleTopic: 'common-single-topic',
   InterviewType.commonPracticalTopic: 'common-practical-topic',
   InterviewType.resume: 'resume',
+  InterviewType.youtube: 'youtube',
 };
 
 extension $QuestionCountSelectPageRouteExtension
