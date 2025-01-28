@@ -15,6 +15,7 @@ mixin class YoutubeUploadFailedEvent {
         YoutubeUploadFailedType.alreadyUploaded) {
       final nextArg = YoutubeDetailArg.deeplinkOrHasSingleIdArg(
         contentId: passedArg.contentId!,
+        thumbnailImage: null,
       );
       YoutubeDetailRoute(nextArg).go(ref.context);
 

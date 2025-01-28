@@ -1,7 +1,9 @@
 part of '../youtube_detail_page.dart';
 
 class _TabBar extends StatelessWidget {
-  const _TabBar({super.key});
+  const _TabBar({super.key, required this.controller});
+
+  final TabController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -10,6 +12,7 @@ class _TabBar extends StatelessWidget {
       child: Stack(
         children: [
           TabBar(
+            controller: controller,
             dividerColor: Colors.white,
             tabs: [
               ...ContentsDetailTabType.values

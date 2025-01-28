@@ -13,7 +13,7 @@ final class YoutubeDetailArg {
   final String contentId;
 
   /// Overview 섹션에서 보여지는 데이터
-  final YoutubeMainEntity? overView;
+  final YoutubeMainEntity? main;
 
   /// 요약 정보
   final SummaryEntity? summary;
@@ -21,11 +21,19 @@ final class YoutubeDetailArg {
   /// 문답 리스트
   final Set<YoutubeQnaEntity>? qnas;
 
+  /// 썸네일
+  /// [NOTE]
+  /// [main] 객체는 없지만 썸네일만 있는 경우
+  /// [main]을 쓰려면 필드를 null로 만들어야하는데
+  /// 그러면 null지옥 상태가 되어 오히려 복잡해짐.
+  final String? thumbnailUrl;
+
   const YoutubeDetailArg._({
-    required this.overView,
+    required this.main,
     required this.summary,
     required this.qnas,
     required this.contentId,
+    required this.thumbnailUrl,
   });
 
   /// [summary] / [qnas]
@@ -33,10 +41,11 @@ final class YoutubeDetailArg {
   factory YoutubeDetailArg.entryFromMainList(
       {required YoutubeMainEntity overView}) {
     return YoutubeDetailArg._(
-      overView: overView,
+      main: overView,
       summary: null,
       qnas: null,
       contentId: overView.id,
+      thumbnailUrl: overView.thumbnailImgUrl,
     );
   }
 
@@ -48,10 +57,11 @@ final class YoutubeDetailArg {
     required Set<YoutubeQnaEntity> qnas,
   }) {
     return YoutubeDetailArg._(
-      overView: overView,
+      main: overView,
       summary: summary,
       qnas: qnas,
       contentId: overView.id,
+      thumbnailUrl: overView.thumbnailImgUrl,
     );
   }
 
@@ -60,12 +70,14 @@ final class YoutubeDetailArg {
   ///
   factory YoutubeDetailArg.deeplinkOrHasSingleIdArg({
     required String contentId,
+    required String? thumbnailImage,
   }) {
     return YoutubeDetailArg._(
       contentId: contentId,
-      overView: null,
+      main: null,
       summary: null,
       qnas: null,
+      thumbnailUrl: thumbnailImage,
     );
   }
 }

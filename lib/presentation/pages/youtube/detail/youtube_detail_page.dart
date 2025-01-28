@@ -8,6 +8,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
@@ -55,16 +56,24 @@ class _YoutubeDetailPageState extends ConsumerState<YoutubeDetailPage>
     with YoutubeDetailEvent, YoutubeDetailState {
   @override
   Widget build(BuildContext context) {
-    return _Scaffold(
-      argOverride:
-          youtubeDetailRouteArgProvider.overrideWithValue(widget.argument),
-      appBar: const _AppBar(),
-      youtubePlayerPlaceHolder: const _YoutubePlayerPlaceHolder(),
-      contentInfoView: const _ContentInfoView(),
-      tabBar: const _TabBar(),
-      summaryTabView: const _SummaryTabView(),
-      interviewTabView: const _InterviewTabView(),
-      bottomFloatingView: const _BottomFloatingView(),
+    return HookBuilder(
+      builder: (context) {
+        final tabController = useTabController(initialLength: 2);
+        return _Scaffold(
+          argOverride:
+              youtubeDetailRouteArgProvider.overrideWithValue(widget.argument),
+          appBar: const _AppBar(),
+          youtubePlayerPlaceHolder: const _YoutubePlayerPlaceHolder(),
+          contentInfoView: const _ContentInfoView(),
+          tabBar: _TabBar(
+            controller: tabController,
+          ),
+          summaryTabView: const _SummaryTabView(),
+          interviewTabView: const _InterviewTabView(),
+          bottomFloatingView: const _BottomFloatingView(),
+          tabController: tabController,
+        );
+      },
     );
   }
 

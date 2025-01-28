@@ -3,6 +3,7 @@ import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:gap/gap.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
+import 'package:techtalk/core/helper/cached_image_size_extension.dart';
 import 'package:techtalk/core/services/app_size.dart';
 import 'package:techtalk/features/youtube/repositories/entities/video_overview_entity.dart';
 import 'package:techtalk/presentation/widgets/common/box/skeleton_box.dart';
@@ -48,7 +49,8 @@ class ExpandableYoutubeContentGridView extends StatelessWidget {
         width: double.infinity, // 부모 위젯의 너비를 제한
         child: LayoutGrid(
           columnSizes: const [FlexibleTrackSize(1), FlexibleTrackSize(1)],
-          rowSizes: rowSizes, // 수정된 부분
+          rowSizes: rowSizes,
+          // 수정된 부분
           rowGap: 12,
           columnGap: 8,
           children: [
@@ -70,6 +72,8 @@ class ExpandableYoutubeContentGridView extends StatelessWidget {
                             child: Image.network(
                               content.thumbnailImgUrl,
                               fit: BoxFit.cover,
+                              cacheWidth: ((AppSize.screenWidth - 40) / 2)
+                                  .cacheSize(context),
                               loadingBuilder:
                                   (context, child, loadingProgress) {
                                 if (loadingProgress == null) {

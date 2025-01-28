@@ -44,4 +44,7 @@ enum YoutubePlaySate {
     return values.firstWhere((e) => e.code == code,
         orElse: () => YoutubePlaySate.unDefined);
   }
+
+  bool get isExceptionState =>
+      this == YoutubePlaySate.errorOccured || this == YoutubePlaySate.unDefined;
 }

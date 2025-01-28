@@ -101,6 +101,8 @@ class _ContentGridView extends ConsumerWidget
               child: Image.network(
                 content.thumbnailImgUrl,
                 fit: BoxFit.cover,
+                cacheWidth:
+                    ((AppSize.screenWidth - 40) / 2).cacheSize(ref.context),
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
                   return SizedBox(

@@ -36,9 +36,10 @@ extension DeeplinkHandlerIntentExt on DeepLinkHandler {
 
         // 콘텐츠 ID 추출
         String contentId = uri.pathSegments[1];
-        await YoutubeDetailRoute(
-                YoutubeDetailArg.deeplinkOrHasSingleIdArg(contentId: contentId))
-            .push(context);
+        await YoutubeDetailRoute(YoutubeDetailArg.deeplinkOrHasSingleIdArg(
+          contentId: contentId,
+          thumbnailImage: null,
+        )).push(context);
 
         return;
       }

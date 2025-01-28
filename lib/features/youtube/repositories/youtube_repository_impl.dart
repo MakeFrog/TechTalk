@@ -4,7 +4,9 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_isolate_mixin/easy_isolate_mixin.dart';
+import 'package:flutter/material.dart';
 import 'package:techtalk/app/network/app_youtube_explode.dart';
+import 'package:techtalk/app/router/navigation_context.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
@@ -78,8 +80,12 @@ class YoutubeRepositoryImpl
         randomKey: randomKey,
       );
 
+      final context = await navigationContext;
+
       // 모델을 엔티티로 변환
       final entities = remotePaginatedResult.items.map((model) {
+        precacheImage(NetworkImage(model.thumbnailImgUrl), context);
+
         final skills =
             model.relatedSkillIds.map(_techSetRepository.getSkillById).toList();
         final jobGroups = model.relatedJobGroupIds
@@ -248,9 +254,12 @@ class YoutubeRepositoryImpl
         return Result.success([]);
       }
 
-      final result = relatedVideos!
-          .map((e) => VideoOverviewEntity.fromVideoExplore(e))
-          .toList();
+      final context = await navigationContext;
+
+      final result = relatedVideos!.map((e) {
+        precacheImage(NetworkImage(e.thumbnails.highResUrl), context);
+        return VideoOverviewEntity.fromVideoExplore(e);
+      }).toList();
       return Result.success(result);
     } on Exception catch (e) {
       return Result.failure(e);
