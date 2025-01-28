@@ -72,12 +72,6 @@ class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
             ),
           ),
         ),
-        BounceTapper(
-            child: TextButton(
-                onPressed: () {
-                  // context.pop();
-                },
-                child: Text('테스트'))),
         Column(
           children: <Widget>[
             AnimatedSizeAndFade.showHide(

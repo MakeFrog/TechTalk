@@ -8,7 +8,7 @@ class _AppBar extends HookConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     String? appBarTitle = useMemoized(() {
-      room(ref).type.typedBranch(
+      return room(ref).type.typedBranch(
         common: (_) {
           final firstTopic =
               ref.watch(selectedChatRoomProvider).topics.first.text;
@@ -19,7 +19,7 @@ class _AppBar extends HookConsumerWidget
           return '이력서 면접';
         },
         youtube: (_) {
-          return '';
+          return '콘텐츠 면접';
         },
       );
     });

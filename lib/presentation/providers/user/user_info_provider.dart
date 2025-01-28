@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -77,7 +78,7 @@ class UserInfo extends _$UserInfo {
 
       final response = await updateUserUseCase(updatedUserInfo);
       response.fold(
-        onSuccess: (userInfo) {
+        onSuccess: (_) {
           state = AsyncData(updatedUserInfo);
           log('유저 면접 기록 업데이트 성공');
         },
@@ -90,9 +91,8 @@ class UserInfo extends _$UserInfo {
     }
   }
 
-  void increaseCompletedInterviewCount(int count) {
-    state =
-        AsyncData(state.requireValue!.copyWith(completedInterviewCount: count));
+  Future<void> increaseCompletedInterviewCount(int count) async {
+    await update((prev) => prev?.copyWith(completedInterviewCount: count));
   }
 
   ///

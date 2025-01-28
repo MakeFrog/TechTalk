@@ -101,6 +101,7 @@ class UserEntity {
     DateTime? lastLoginDate,
     DateTime? signUpDate,
     bool? isReviewRequestAvailable,
+    int? loginCount,
   }) {
     return UserEntity(
       uid: uid ?? this.uid,
@@ -118,6 +119,7 @@ class UserEntity {
       signUpDate: signUpDate ?? this.signUpDate,
       isReviewRequestAvailable:
           isReviewRequestAvailable ?? this.isReviewRequestAvailable,
+      loginCount: loginCount ?? this.loginCount,
     );
   }
 }

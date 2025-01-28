@@ -44,7 +44,8 @@ class InterviewProgressState extends _$InterviewProgressState {
   ///
   void listenMessageChanges() {
     ref.listen(chatMessageHistoryProvider, (prev, chatHistory) {
-      if (chatHistory.valueOrNull == null) return;
+      print('이민다이 : ${chatHistory.valueOrNull?.length}');
+      if (chatHistory.valueOrNull?.isEmpty ?? true) return;
 
       final lastChat = chatHistory.value!.first;
 
@@ -129,46 +130,50 @@ class InterviewProgressState extends _$InterviewProgressState {
   ///
   Future<void> _increaseCompletedCountAndAlertAppReview() async {
     final response = await increaseCompletedInterviewCountUseCase.call();
-    final context = await navigationContext;
 
-    unawaited(
-      response.fold(
-        onSuccess: (increasedCount) async {
-          ref
+    unawaited(response.fold(
+      onSuccess: (increasedCount) async {
+        /// NOTE
+        /// [InterviewType]이 youtube인 경우
+        /// 아래와 같은 UserInfo provider의 상타를 조작할 때
+        /// ChatMessageHistory의 상태가 빈 배열로 초기화 되는 이슈가 있음.
+        /// 원인을 파악하지 못하여 예외처리하였고,
+        /// 이렇게 예외처리해도 기능상 문제는 없음.
+        if (!ref.read(selectedChatRoomProvider).type.isYoutube) {
+          unawaited(ref
               .read(userInfoProvider.notifier)
-              .increaseCompletedInterviewCount(increasedCount);
+              .increaseCompletedInterviewCount(increasedCount));
+        }
 
-          /// 인터뷰 결과 다이어로 노출
-          await showAdaptiveDialog(
-            context: context,
-            builder: (context) {
-              return const InterviewResultDialog();
-            },
-          );
-          if (ref
-              .read(userInfoProvider)
-              .requireValue!
-              .isReviewRequestAvailable) {
-            /// 앱 리뷰 요청
-            if (increasedCount == 2 ||
-                increasedCount == 6 ||
-                increasedCount == 12 ||
-                increasedCount == 20) {
-              final InAppReview inAppReview = InAppReview.instance;
+        /// 인터뷰 결과 다이어로 노출
+        await showAdaptiveDialog(
+          context: await navigationContext,
+          builder: (context) {
+            return const InterviewResultDialog();
+          },
+        );
+        if ((await ref.read(userInfoProvider.future))
+                ?.isReviewRequestAvailable ??
+            false) {
+          /// 앱 리뷰 요청
+          if (increasedCount == 2 ||
+              increasedCount == 6 ||
+              increasedCount == 12 ||
+              increasedCount == 20) {
+            final InAppReview inAppReview = InAppReview.instance;
 
-              if (await inAppReview.isAvailable()) {
-                unawaited(inAppReview.requestReview());
-                unawaited(noti.SlackNotificationService.sendNotification(
-                    type: SlackNotificationType.event,
-                    message: '유저에게 앱 리뷰를 요청했어요!'));
-              }
+            if (await inAppReview.isAvailable()) {
+              unawaited(inAppReview.requestReview());
+              unawaited(noti.SlackNotificationService.sendNotification(
+                  type: SlackNotificationType.event,
+                  message: '유저에게 앱 리뷰를 요청했어요!'));
             }
           }
-        },
-        onFailure: (e) {
-          log('완료된 면접 개수 증가 로직 실패 : $e');
-        },
-      ),
-    );
+        }
+      },
+      onFailure: (e) {
+        log('완료된 면접 개수 증가 로직 실패 : $e');
+      },
+    ));
   }
 }

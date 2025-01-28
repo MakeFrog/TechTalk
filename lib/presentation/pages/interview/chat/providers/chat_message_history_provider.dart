@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/app/util/app_logger.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/feedback_response_entity.dart';
@@ -35,12 +36,10 @@ class ChatMessageHistory extends _$ChatMessageHistory {
   @override
   FutureOr<List<BaseChatEntity>> build() async {
     final room = ref.read(selectedChatRoomProvider);
-    print('아랑이 0 : ${room.progressState}');
 
     // 단골 질문 (주제별, 실전형)
     final getChatList = switch (room.progressState) {
       ChatRoomProgress.initial => () async {
-          print('아랑이 1');
           await room.type.typedBranch(
             common: (_) async {
               await _showIntroAndCommonQuestionMessages();
@@ -49,7 +48,6 @@ class ChatMessageHistory extends _$ChatMessageHistory {
               await _showResumeTypeIntroMessages();
             },
             youtube: (_) async {
-              print('아랑이 2');
               await _showYoutubeTypeIntroMessages();
             },
           );
@@ -66,7 +64,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
               return chatCollection.chatHistories;
             },
             onFailure: (e) {
-              log(e.toString());
+              logger.e(e.toString());
 
               throw e;
             },
@@ -139,6 +137,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
         interviewType: room.type,
         userName: ref.read(userInfoProvider).requireValue!.nickname!,
         onError: _onAiFeedbackErrorOccured,
+        youtubeExtra: room.youtubeExtra,
         checkAnswer: ({required AnswerState answerState}) async {
           /// 만약 정상 작동하지 못했다면
           /// 기존 응답 메세지를 제거하고

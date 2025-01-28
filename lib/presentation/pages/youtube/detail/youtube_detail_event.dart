@@ -8,12 +8,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/app/util/app_logger.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_room_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/youtube_interview_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/features/youtube/repositories/entities/video_overview_entity.dart';
 import 'package:techtalk/presentation/pages/youtube/channel_detail/provider/channel_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/is_bookmark_checked_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/related_youtube_videos_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/selected_youtube_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_player_provider.dart';
@@ -131,22 +133,36 @@ mixin class YoutubeDetailEvent {
   /// 면접 시작하기 버튼이 클릭 되었을 떄
   ///
   Future<void> onStartInterviewBtnTapped(WidgetRef ref) async {
+    /// qna 기다리기
     final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
 
-    final passedQnas = ref.read(youtubeDetailRouteArgProvider).qnas?.toList();
+    final arg = ref.read(youtubeDetailRouteArgProvider);
+    final passedQnas = arg.qnas?.toList();
 
     final selectedQnas = ref.read(selectedYoutubeQnasProvider(
       videoId,
       passedQnas: passedQnas ?? null,
     ));
 
+    final relatedVideo = ref.read(relatedYoutubeVideoProvider(arg.contentId));
+
+    final youtubeController = ref.read(
+        youtubePlayerProvider(videoId).select((p) => p.youtubeController));
+
     final room = ChatRoomEntity.generateYoutubeInterview(
       qnas: selectedQnas,
+      extra: YoutubeInterviewRoomEntity(
+        contentTitle: arg.main?.contentsTitle ?? '',
+        relatedVideo: relatedVideo.value?.firstOrNull,
+      ),
     );
 
     final route = ChatPageRoute(roomId: room.id, type: room.type);
     route.updateArg(room: room);
     route.push(ref.context);
+
+    await Future.delayed(const Duration(seconds: 2));
+    await youtubeController.pauseVideo();
   }
 
   ///

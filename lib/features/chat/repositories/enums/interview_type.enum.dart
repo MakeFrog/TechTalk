@@ -14,6 +14,8 @@ enum InterviewType {
       this == InterviewType.commonSingleTopic ||
       this == InterviewType.commonPracticalTopic;
 
+  bool get isYoutube => this == InterviewType.youtube;
+
   bool get isResume => this == InterviewType.resume;
 
   const InterviewType(this.illusrationPath);

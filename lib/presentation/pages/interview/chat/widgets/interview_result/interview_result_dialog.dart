@@ -6,8 +6,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
@@ -15,14 +13,11 @@ import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
-import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
 import 'package:techtalk/presentation/widgets/common/indicator/interview_count_result_indicator.dart';
 
-part 'pass_or_fail_view.p.dart';
-
-part 'one_line_review_view.p.dart';
-
 part 'interview_induction_view.p.dart';
+part 'one_line_review_view.p.dart';
+part 'pass_or_fail_view.p.dart';
 
 ///
 /// 인터뷰가 종료된 이후 결과를 보여주는 다이어로그
