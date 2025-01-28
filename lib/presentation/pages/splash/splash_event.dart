@@ -33,7 +33,7 @@ mixin class SplashEvent {
     final response = await setEntryFlowUseCase.call();
 
     await response.fold(
-      onSuccess: (_) async {
+      onSuccess: (version) async {
         await initStaticData(ref);
         final auth = ref.read(userAuthProvider);
 

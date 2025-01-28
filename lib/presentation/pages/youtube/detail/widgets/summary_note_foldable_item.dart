@@ -16,6 +16,8 @@ class SummaryNoteFoldableItem extends HookWidget {
     required this.contents,
     required this.isActivated,
     required this.seeAllNotifier,
+    required this.isExpanded,
+    this.onTileBodyTapped,
     this.onTapTimestamp,
     this.isLoaded = true,
   }) : super(key: key);
@@ -25,7 +27,11 @@ class SummaryNoteFoldableItem extends HookWidget {
   final List<String> contents;
   final bool isActivated;
   final ValueNotifier<int> seeAllNotifier;
-  final void Function(Duration?)? onTapTimestamp;
+  final ValueNotifier<bool> isExpanded;
+  final void Function(Duration? duration, ValueNotifier<bool> isExpanded)?
+      onTapTimestamp;
+  final void Function(Duration? duration, ValueNotifier<bool> isExpanded)?
+      onTileBodyTapped;
   final bool isLoaded;
 
   factory SummaryNoteFoldableItem.loading() {
@@ -36,20 +42,22 @@ class SummaryNoteFoldableItem extends HookWidget {
       isLoaded: false,
       isActivated: false,
       seeAllNotifier: ValueNotifier(0),
+      isExpanded: ValueNotifier(false),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final isExpanded = useState(false);
     useEffect(() {
       if (!isLoaded) return;
 
       /// '전체 보기' 실행여부를 listen하여
       /// expand 값을 조절
-      if (!isExpanded.value && seeAllNotifier.value != 0) {
-        isExpanded.value = true;
-      }
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!isExpanded.value && seeAllNotifier.value != 0) {
+          isExpanded.value = true;
+        }
+      });
     }, [seeAllNotifier.value]);
 
     return IgnorePointer(
@@ -60,6 +68,11 @@ class SummaryNoteFoldableItem extends HookWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             FlexibleExpansionTile(
+              onTapped: () {
+                if (onTileBodyTapped != null) {
+                  onTileBodyTapped!(timestamp, isExpanded);
+                }
+              },
               highlightColor: Colors.transparent,
               isExpanded: isExpanded,
               curve: Curves.fastOutSlowIn,
@@ -73,7 +86,7 @@ class SummaryNoteFoldableItem extends HookWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     GestureDetector(
-                      onTap: () => onTapTimestamp?.call(timestamp),
+                      onTap: () => onTapTimestamp?.call(timestamp, isExpanded),
                       child: Container(
                         height: 28,
                         width: 54,

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
@@ -10,12 +8,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/environment/app_version.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/app/util/app_formatter.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/youtube/repositories/entities/video_overview_entity.dart';
-import 'package:techtalk/presentation/pages/youtube/detail/constant/youtube_play_state.enum.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/widgets/constants/contents_detail_tab_type.enum.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/widgets/section_title.dart';

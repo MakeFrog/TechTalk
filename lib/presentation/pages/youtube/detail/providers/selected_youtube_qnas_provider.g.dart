@@ -7,7 +7,7 @@ part of 'selected_youtube_qnas_provider.dart';
 // **************************************************************************
 
 String _$selectedYoutubeQnasHash() =>
-    r'c6cd903fc8c059b95b9cf706e0d805b4be7beb15';
+    r'2d751f70b35aae497b2038c94abcc2be0cbb919c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -33,10 +33,12 @@ class _SystemHash {
 abstract class _$SelectedYoutubeQnas
     extends BuildlessAutoDisposeNotifier<List<YoutubeQnaEntity>> {
   late final String contentId;
+  late final List<YoutubeQnaEntity>? passedQnas;
 
   List<YoutubeQnaEntity> build(
-    String contentId,
-  );
+    String contentId, {
+    required List<YoutubeQnaEntity>? passedQnas,
+  });
 }
 
 /// See also [SelectedYoutubeQnas].
@@ -50,10 +52,12 @@ class SelectedYoutubeQnasFamily extends Family<List<YoutubeQnaEntity>> {
 
   /// See also [SelectedYoutubeQnas].
   SelectedYoutubeQnasProvider call(
-    String contentId,
-  ) {
+    String contentId, {
+    required List<YoutubeQnaEntity>? passedQnas,
+  }) {
     return SelectedYoutubeQnasProvider(
       contentId,
+      passedQnas: passedQnas,
     );
   }
 
@@ -63,6 +67,7 @@ class SelectedYoutubeQnasFamily extends Family<List<YoutubeQnaEntity>> {
   ) {
     return call(
       provider.contentId,
+      passedQnas: provider.passedQnas,
     );
   }
 
@@ -86,9 +91,12 @@ class SelectedYoutubeQnasProvider extends AutoDisposeNotifierProviderImpl<
     SelectedYoutubeQnas, List<YoutubeQnaEntity>> {
   /// See also [SelectedYoutubeQnas].
   SelectedYoutubeQnasProvider(
-    String contentId,
-  ) : this._internal(
-          () => SelectedYoutubeQnas()..contentId = contentId,
+    String contentId, {
+    required List<YoutubeQnaEntity>? passedQnas,
+  }) : this._internal(
+          () => SelectedYoutubeQnas()
+            ..contentId = contentId
+            ..passedQnas = passedQnas,
           from: selectedYoutubeQnasProvider,
           name: r'selectedYoutubeQnasProvider',
           debugGetCreateSourceHash:
@@ -99,6 +107,7 @@ class SelectedYoutubeQnasProvider extends AutoDisposeNotifierProviderImpl<
           allTransitiveDependencies:
               SelectedYoutubeQnasFamily._allTransitiveDependencies,
           contentId: contentId,
+          passedQnas: passedQnas,
         );
 
   SelectedYoutubeQnasProvider._internal(
@@ -109,9 +118,11 @@ class SelectedYoutubeQnasProvider extends AutoDisposeNotifierProviderImpl<
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.contentId,
+    required this.passedQnas,
   }) : super.internal();
 
   final String contentId;
+  final List<YoutubeQnaEntity>? passedQnas;
 
   @override
   List<YoutubeQnaEntity> runNotifierBuild(
@@ -119,6 +130,7 @@ class SelectedYoutubeQnasProvider extends AutoDisposeNotifierProviderImpl<
   ) {
     return notifier.build(
       contentId,
+      passedQnas: passedQnas,
     );
   }
 
@@ -127,13 +139,16 @@ class SelectedYoutubeQnasProvider extends AutoDisposeNotifierProviderImpl<
     return ProviderOverride(
       origin: this,
       override: SelectedYoutubeQnasProvider._internal(
-        () => create()..contentId = contentId,
+        () => create()
+          ..contentId = contentId
+          ..passedQnas = passedQnas,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         contentId: contentId,
+        passedQnas: passedQnas,
       ),
     );
   }
@@ -146,13 +161,16 @@ class SelectedYoutubeQnasProvider extends AutoDisposeNotifierProviderImpl<
 
   @override
   bool operator ==(Object other) {
-    return other is SelectedYoutubeQnasProvider && other.contentId == contentId;
+    return other is SelectedYoutubeQnasProvider &&
+        other.contentId == contentId &&
+        other.passedQnas == passedQnas;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, contentId.hashCode);
+    hash = _SystemHash.combine(hash, passedQnas.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -162,6 +180,9 @@ mixin SelectedYoutubeQnasRef
     on AutoDisposeNotifierProviderRef<List<YoutubeQnaEntity>> {
   /// The parameter `contentId` of this provider.
   String get contentId;
+
+  /// The parameter `passedQnas` of this provider.
+  List<YoutubeQnaEntity>? get passedQnas;
 }
 
 class _SelectedYoutubeQnasProviderElement
@@ -171,6 +192,9 @@ class _SelectedYoutubeQnasProviderElement
 
   @override
   String get contentId => (origin as SelectedYoutubeQnasProvider).contentId;
+  @override
+  List<YoutubeQnaEntity>? get passedQnas =>
+      (origin as SelectedYoutubeQnasProvider).passedQnas;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
