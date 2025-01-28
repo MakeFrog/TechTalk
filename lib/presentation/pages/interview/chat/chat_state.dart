@@ -1,15 +1,11 @@
 import 'dart:developer';
 import 'dart:math' as math;
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
-import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/use_cases/get_one_line_interview_feedback_use_case.dart';
 import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_async_adapter_provider.dart';
@@ -26,12 +22,6 @@ import 'package:techtalk/presentation/pages/interview/chat/providers/selected_ch
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 
 mixin class ChatState {
-  ///
-  /// 채팅 목록
-  ///
-  AsyncValue<List<BaseChatEntity>> messageHistoryAsync(WidgetRef ref) =>
-      ref.watch(chatMessageHistoryProvider);
-
   ///
   /// 면접과 정보
   ///
