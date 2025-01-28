@@ -48,7 +48,7 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
           },
         ),
       ).listen(
-        // NOTE: 희한하게 openAI에ㅓ 429 에러같은게 뜨면 여기서는 안잡힌다.
+        // NOTE: 희한하게 openAI에 429 에러같은게 뜨면 여기서는 안잡힌다.
         onError: param.onError,
         cancelOnError: true,
         (it) {

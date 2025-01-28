@@ -172,7 +172,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   /// AI 응답 과정에서 에러 발생했을 때 실행하는 프로세스
   ///
   void _onAiFeedbackErrorOccured([Object? error, StackTrace? startTrace]) {
-    logger.e('에러 발생 : $error');
+    logger.e('$startTrace 에러 발생 : $error');
     _rollbackToPreviousChatStep();
     SnackBarService.showSnackBar(
         tr(LocaleKeys.interview_aiFeedbackErrorOccured));

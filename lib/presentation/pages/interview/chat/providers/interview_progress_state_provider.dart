@@ -44,7 +44,6 @@ class InterviewProgressState extends _$InterviewProgressState {
   ///
   void listenMessageChanges() {
     ref.listen(chatMessageHistoryProvider, (prev, chatHistory) {
-      print('이민다이 : ${chatHistory.valueOrNull?.length}');
       if (chatHistory.valueOrNull?.isEmpty ?? true) return;
 
       final lastChat = chatHistory.value!.first;

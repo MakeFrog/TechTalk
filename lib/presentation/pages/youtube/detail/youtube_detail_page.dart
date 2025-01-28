@@ -30,6 +30,8 @@ import 'package:techtalk/presentation/widgets/common/grid_view/expandable_youtub
 import 'package:techtalk/presentation/widgets/common/tab_bar/techtalk_tab_bar.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
+import 'providers/is_interview_progress_ready_provider.dart';
+
 part 'widgets/app_bar.p.dart';
 part 'widgets/bottom_floating_View.p.dart';
 part 'widgets/content_info_view.p.dart';

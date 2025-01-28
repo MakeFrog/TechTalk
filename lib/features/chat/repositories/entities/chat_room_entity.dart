@@ -188,6 +188,7 @@ class ChatRoomEntity {
     DateTime? lastChatDate,
     bool? isTemporary,
     List<String>? qnaIds,
+    YoutubeInterviewRoomEntity? youtubeExtra,
     List<BaseQnaEntity>? qnas,
   }) {
     return ChatRoomEntity(
@@ -200,6 +201,7 @@ class ChatRoomEntity {
       lastChatDate: lastChatDate ?? this.lastChatDate,
       isTemporary: isTemporary ?? this.isTemporary,
       qnaIds: qnaIds ?? this.qnaIds,
+      youtubeExtra: youtubeExtra ?? this.youtubeExtra,
       qnas: qnas ?? this.qnas,
     );
   }

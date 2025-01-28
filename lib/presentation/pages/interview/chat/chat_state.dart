@@ -8,6 +8,7 @@ import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
 import 'package:techtalk/features/user/user.dart';
+import 'package:techtalk/features/youtube/repositories/entities/video_overview_entity.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_async_adapter_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
@@ -18,6 +19,7 @@ import 'package:techtalk/presentation/pages/interview/chat/providers/is_follow_u
 import 'package:techtalk/presentation/pages/interview/chat/providers/main_input_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/one_line_feedback_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/recognized_text_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/recommended_youtube_video_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 
@@ -151,5 +153,13 @@ mixin class ChatState {
     final int randomIndex = random.nextInt(relatedTopics.length);
 
     return StoredTopics.getById(relatedTopics[randomIndex]);
+  }
+
+  ///
+  /// [InterviewType]이 'youtube'일 경우
+  /// 면접이 종료되고 보여지는 화면에서 노출되는 관련 비디오 콘텐츠
+  ///
+  AsyncValue<VideoOverviewEntity> recommendYoutubeContent(WidgetRef ref) {
+    return ref.watch(recommendedYoutubeVideoProvider);
   }
 }

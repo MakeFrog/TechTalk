@@ -2,9 +2,11 @@ import 'package:techtalk/features/youtube/repositories/entities/video_overview_e
 
 final class YoutubeInterviewRoomEntity {
   final String contentTitle;
+  final String contentId;
   final VideoOverviewEntity? relatedVideo;
 
-  YoutubeInterviewRoomEntity({
+  const YoutubeInterviewRoomEntity({
+    required this.contentId,
     required this.contentTitle,
     required this.relatedVideo,
   });

@@ -13,6 +13,8 @@ import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
+import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
+import 'package:techtalk/presentation/widgets/common/image/thumbnail_image_view.dart';
 import 'package:techtalk/presentation/widgets/common/indicator/interview_count_result_indicator.dart';
 
 part 'interview_induction_view.p.dart';
