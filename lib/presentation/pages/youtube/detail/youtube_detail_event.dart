@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
@@ -13,8 +15,8 @@ import 'package:techtalk/features/youtube/repositories/entities/video_overview_e
 import 'package:techtalk/presentation/pages/youtube/channel_detail/provider/channel_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/is_bookmark_checked_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/selected_youtube_qnas_provider.dart';
-import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_player_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_player_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/submitted_youtube_confirm/provider/submitted_youtube_confirm_arg_provider.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
@@ -134,6 +136,20 @@ mixin class YoutubeDetailEvent {
             contentId: video.id,
             thumbnailImage: video.thumbnailImgUrl,
           );
+
+          /// 이전에 스택이 있는 페이지라면
+          /// 해당 라우트를 제거
+          if (_isContentIdInPreviousRoutes(ref.context, arg.contentId)) {
+            final goRouter = GoRouter.of(ref.context);
+            // 스택에서 해당 라우트 제거
+            goRouter.routerDelegate.currentConfiguration.matches
+                .removeWhere((match) {
+              final uri = Uri.parse(match.matchedLocation);
+              return uri.pathSegments.contains('youtube-detail') &&
+                  uri.pathSegments.last == arg.contentId;
+            });
+          }
+
           YoutubeDetailRoute(arg).push(ref.context);
         } else {
           final arg = SubmittedYoutubeConfirmArg.fromContentAccessFlow(
@@ -145,6 +161,27 @@ mixin class YoutubeDetailEvent {
         log('Youtube Detail > $e');
       },
     );
+  }
+
+  ///
+  ///contentId 값이 이전 라우트 스택에 있는지 확인
+  ///
+  bool _isContentIdInPreviousRoutes(BuildContext context, String contentId) {
+    // GoRouter의 라우터 델리게이트를 가져옵니다.
+    final goRouter = GoRouter.of(context);
+    final routerDelegate = goRouter.routerDelegate;
+
+    // 현재 라우트 스택에서 주어진 contentId가 이전 라우트에 있는지 확인
+    final bool existsInStack = routerDelegate.currentConfiguration.matches
+        .where((match) => match.route is GoRoute)
+        .any((match) {
+      final uri = Uri.parse(match.matchedLocation);
+      // 주어진 contentId가 있는지 확인
+      return uri.pathSegments.contains('youtube-detail') &&
+          uri.pathSegments.last == contentId;
+    });
+
+    return existsInStack;
   }
 
   ///

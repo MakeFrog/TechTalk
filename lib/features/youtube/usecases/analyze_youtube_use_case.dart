@@ -35,6 +35,7 @@ final class AnalyzeAndUploadYoutubeUseCase
     final context = await navigationContext;
 
     try {
+      isInBackground = false;
       final responses = await Future.wait([
         GetSummaryFromYoutubeContentUseCase().call(targetVideo),
         GetQnasFromYoutubeContentUseCase().call(targetVideo),
@@ -62,8 +63,6 @@ final class AnalyzeAndUploadYoutubeUseCase
           (await globalContainer.read(userInfoProvider.future))?.uid ??
               'undefined';
 
-      debugPrint('아랑이 2');
-
       /// 현재 분석 화면에 머물러 있을 경우
       /// 해당 페이지로 바로 라우팅
       if (_isOnAnalyzePage(context)) {
@@ -82,10 +81,10 @@ final class AnalyzeAndUploadYoutubeUseCase
         ));
 
         if (isInBackground) {
-          await AppLocalNotification().triggerPush(
+          await AppLocalNotification().triggerBackgroundPush(
             title: '영상 업로드 했어요',
             description: '요약된 핵심 내용을 확인하고 면접을 진행해 보세요!',
-            host: DeeplinkHost.prefixYoutubeLanding,
+            host: DeeplinkHost.landing,
             path: '',
           );
         }
@@ -124,10 +123,10 @@ final class AnalyzeAndUploadYoutubeUseCase
             .go(await navigationContext);
 
         if (isInBackground) {
-          await AppLocalNotification().triggerPush(
+          await AppLocalNotification().triggerBackgroundPush(
             title: '영상을 업로드하는데 실팼어요',
             description: targetType.description,
-            host: DeeplinkHost.prefixYoutubeLanding,
+            host: DeeplinkHost.landing,
             path: '',
           );
         }

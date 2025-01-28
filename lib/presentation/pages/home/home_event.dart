@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -8,6 +9,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:http/http.dart' as http;
+import 'package:techtalk/app/notification/app_local_notification.dart';
+import 'package:techtalk/app/router/deeplink/deep_link_define.enum.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
@@ -75,14 +79,68 @@ mixin class HomeEvent {
     print("모든 스킬 데이터를 Firestore에 저장 완료!");
   }
 
+  Future<String?> _postMessage(String fcmToken) async {
+    try {
+      String _accessToken =
+          'ya29.a0AXeO80RaDeUYMk0lJTZNfyKC2rmejIm2jHT4blxSYj7VjsnCwA_GRYJwsA-eGKPh7h8Gb-vdoruVreXfCdloq8yDquQeIYwmRCXf7hib4WoE96ItUXhKH8PapD9eQrRSiOsn3ZCYVZ3vlscLA9Tr3XaXcv_XYl-n96Ye7kiGaCgYKAXUSARESFQHGX2MiFWPieROvAPUd3DAyJkpXkA0175';
+
+      http.Response _response = await http.post(
+          Uri.parse(
+            "https://fcm.googleapis.com/v1/projects/techtalk-dev-33/messages:send",
+          ),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $_accessToken',
+          },
+          body: json.encode({
+            "message": {
+              "token": fcmToken,
+              // "topic": "user_uid",
+
+              "notification": {
+                "title": "FCM Test Title",
+                "body": "FCM Test Body",
+              },
+              "data": {
+                "click_action": "FCM Test Click Action",
+              },
+              "android": {
+                "notification": {
+                  "click_action": "Android Click Action",
+                }
+              },
+              "apns": {
+                "payload": {
+                  "aps": {
+                    "category": "Message Category",
+                    "content-available": 1
+                  }
+                }
+              }
+            }
+          }));
+      if (_response.statusCode == 200) {
+        return null;
+      } else {
+        return "Faliure";
+      }
+    } on HttpException catch (error) {
+      print('아랑이 오류 : ${error}');
+      return error.message;
+    }
+  }
+
   ///
   /// 실전 면접 카드(전체 영역)가 클릭 되었을 때
   /// 실전 면접 기록 여부에 따라 라우팅을 다르게 진행
   ///
   Future<void> onPracticalCardTapped(WidgetRef ref) async {
-    await EasyLoading.show();
-    await addJobGroupsToFirestore();
-    EasyLoading.dismiss();
+    await AppLocalNotification().triggerBackgroundPush(
+        title: 'title',
+        description: 'description',
+        host: DeeplinkHost.landing,
+        path: '');
+
     return;
     await EasyLoading.show();
 

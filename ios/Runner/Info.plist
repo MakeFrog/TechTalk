@@ -63,6 +63,13 @@
 		<string>processing</string>
 		<string>remote-notification</string>
 	</array>
+    <key>BGTaskSchedulerPermittedIdentifiers</key>
+    <array>
+    	<string>task-identifier</string>
+
+    	<!-- Register a periodic task in iOS 13+ -->
+    	<string>be.tramckrijte.workmanagerExample.iOSBackgroundAppRefresh</string>
+    </array>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
