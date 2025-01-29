@@ -50,7 +50,6 @@ extension DeeplinkHandlerIntentExt on DeepLinkHandler {
         String errorCode = Uri.splitQueryString(uri.query)['errorCode'] ?? '';
         await YoutubeContentUploadFailedRoute(
           failedType: YoutubeUploadFailedType.getByErrorCode(errorCode),
-          contentId: null,
         ).push(context);
       }
     }

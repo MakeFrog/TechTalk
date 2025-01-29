@@ -33,6 +33,7 @@ import 'package:techtalk/presentation/pages/youtube/upload/submitted_youtube_con
 import 'package:techtalk/presentation/pages/youtube/upload/youtube_link_submit/youtube_link_submit_page.dart';
 import 'package:techtalk/presentation/pages/youtube/upload_failed/provider/youtube_upload_failed_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload_failed/youtube_upload_fail_page.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 part 'router.g.dart';
 
@@ -378,19 +379,23 @@ class AnalyzeYoutubeRoute extends GoRouteData {
 class YoutubeContentUploadFailedRoute extends GoRouteData {
   const YoutubeContentUploadFailedRoute({
     required this.failedType,
-    required this.contentId,
+    this.$extra,
   });
 
   static const String path = 'youtube-content-upload-failed';
   static const String name = 'youtube content upload failed';
 
   final YoutubeUploadFailedType failedType;
-  final String? contentId;
+
+  final Video? $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return YoutubeUploadFailedPage(
-      arg: YoutubeUploadFailedArg(type: failedType, contentId: contentId),
+      arg: YoutubeUploadFailedArg(
+        type: failedType,
+        video: $extra,
+      ),
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/submitted_youtube_confirm/provider/submitted_youtube_confirm_arg_provider.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 mixin class SubmittedYoutubeConfirmEvent {
   ///
@@ -34,13 +35,13 @@ mixin class SubmittedYoutubeConfirmEvent {
 
           final targetType =
               YoutubeUploadFailedType.getByErrorCode(targetException.code);
-          final String? targetCardId =
+          final Video? alreadyUploadedVideo =
               targetException is YtAlreadyUploadedException
-                  ? (e as YtAlreadyUploadedException).contentId
+                  ? (e as YtAlreadyUploadedException).video
                   : null;
 
           YoutubeContentUploadFailedRoute(
-                  contentId: targetCardId, failedType: targetType)
+                  $extra: alreadyUploadedVideo, failedType: targetType)
               .go(ref.context);
 
           return;

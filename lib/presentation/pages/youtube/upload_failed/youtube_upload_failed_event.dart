@@ -14,7 +14,7 @@ mixin class YoutubeUploadFailedEvent {
     if /* 이미 업로드 된 영상 */ (passedArg.type ==
         YoutubeUploadFailedType.alreadyUploaded) {
       final nextArg = YoutubeDetailArg.deeplinkOrHasSingleIdArg(
-        contentId: passedArg.contentId!,
+        contentId: passedArg.video!.id.value,
         thumbnailImage: null,
       );
       YoutubeDetailRoute(nextArg).go(ref.context);
