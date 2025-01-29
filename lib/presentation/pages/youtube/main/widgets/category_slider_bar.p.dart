@@ -7,8 +7,9 @@ class _CategorySliderBar extends ConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
+      // color: Colors.red,
       color: AppColor.of.background1,
-      height: 34,
+      height: 58,
       child: SizedBox(
         child: ListView.separated(
           shrinkWrap: true,

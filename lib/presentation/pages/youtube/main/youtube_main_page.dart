@@ -15,6 +15,7 @@ import 'package:techtalk/presentation/pages/youtube/main/youtube_main_state.dart
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/techtalk_app_bar.dart';
 import 'package:techtalk/presentation/widgets/common/chip/selectable_category_chip.dart';
+import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/common/item/youtube_content_item_view.dart';
 
 part 'widgets/category_slider_bar.p.dart';
@@ -29,7 +30,6 @@ class YoutubeMainPage extends BasePage with YoutubeMainState, YoutubeMainEvent {
     useAutomaticKeepAlive();
 
     return const _Scaffold(
-      // categorySliderBar: EmptyBox(),
       categorySliderBar: _CategorySliderBar(),
       contentListView: _ContentListView(),
     );
@@ -39,6 +39,7 @@ class YoutubeMainPage extends BasePage with YoutubeMainState, YoutubeMainEvent {
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
       TechtalkAppBar(
         title: '콘텐츠',
+        bgColor: AppColor.of.background1,
         padding: const EdgeInsets.only(left: 16, right: 0),
         actions: [
           BounceTapper(

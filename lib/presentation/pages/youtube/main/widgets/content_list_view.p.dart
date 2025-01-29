@@ -14,39 +14,42 @@ class _ContentListView extends HookConsumerWidget
           itemCount: totalCategories(ref).length,
           itemBuilder: (context, index) {
             final targetController = pagingController(ref);
-            return PagedListView<DocumentSnapshot<YoutubeMainModel>?,
-                YoutubeMainEntity>(
-              pagingController: targetController,
-              physics: const NeverScrollableScrollPhysics(),
-              builderDelegate: PagedChildBuilderDelegate<YoutubeMainEntity>(
-                itemBuilder: (context, item, index) {
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 16),
-                    child: BounceTapper(
-                      onTap: () {
-                        routeToDetailPage(ref, overview: item);
-                      },
-                      child: YoutubeContentItemView(
-                        thumbnailImgUrl: item.thumbnailImgUrl,
-                        title: item.contentsTitle,
-                        channelName: item.channel.name,
-                        videoDuration: item.videoDuration,
-                        questionCount: item.qnaNum,
-                        skills: item.relatedSkillIds.toList(),
-                        jobGroups: item.relatedJobs.toList(),
-                        videoId: item.id,
+            return KeepAliveView(
+              child: PagedListView<DocumentSnapshot<YoutubeMainModel>?,
+                  YoutubeMainEntity>(
+                pagingController: targetController,
+                physics: const BouncingScrollPhysics(),
+                builderDelegate: PagedChildBuilderDelegate<YoutubeMainEntity>(
+                  itemBuilder: (context, item, index) {
+                    return Container(
+                      padding: EdgeInsets.only(top: index == 0 ? 70 : 0),
+                      margin: const EdgeInsets.only(bottom: 16),
+                      child: BounceTapper(
+                        onTap: () {
+                          routeToDetailPage(ref, overview: item);
+                        },
+                        child: YoutubeContentItemView(
+                          thumbnailImgUrl: item.thumbnailImgUrl,
+                          title: item.contentsTitle,
+                          channelName: item.channel.name,
+                          videoDuration: item.videoDuration,
+                          questionCount: item.qnaNum,
+                          skills: item.relatedSkillIds.toList(),
+                          jobGroups: item.relatedJobs.toList(),
+                          videoId: item.id,
+                        ),
                       ),
-                    ),
-                  );
-                },
-                firstPageProgressIndicatorBuilder: (_) => _buildLoadView(),
-                newPageProgressIndicatorBuilder: (_) =>
-                    const Center(child: CircularProgressIndicator()),
-                firstPageErrorIndicatorBuilder: (_) =>
-                    _buildErrorOccuredView(targetController),
-                newPageErrorIndicatorBuilder: (_) =>
-                    _buildErrorOccuredView(targetController),
-                noItemsFoundIndicatorBuilder: _buildNoItemFoundView,
+                    );
+                  },
+                  firstPageProgressIndicatorBuilder: (_) => _buildLoadView(),
+                  newPageProgressIndicatorBuilder: (_) =>
+                      const Center(child: CircularProgressIndicator()),
+                  firstPageErrorIndicatorBuilder: (_) =>
+                      _buildErrorOccuredView(targetController),
+                  newPageErrorIndicatorBuilder: (_) =>
+                      _buildErrorOccuredView(targetController),
+                  noItemsFoundIndicatorBuilder: _buildNoItemFoundView,
+                ),
               ),
             );
           }),
