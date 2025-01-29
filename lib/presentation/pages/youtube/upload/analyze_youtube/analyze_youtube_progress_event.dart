@@ -21,13 +21,15 @@ mixin class AnalyzeYoutubeProgressEvent {
     } else {
       DialogService.show(
         dialog: AppDialog.dividedBtn(
-          title: '정말 나가시겠습니까?',
-          description: '알림을 허용하지 않으면 업로드 완료 알림을 받을 수 었어요',
+          title: '알림 권한 필요',
+          description: '알림을 허용하지 않으면 업로드 완료 알림을 받을 수 없어요',
           leftBtnContent: '나가기',
           showContentImg: false,
           rightBtnContent: '허용하기',
           onRightBtnClicked: () {
-            ref.read(notificationStatusProvider.notifier).toggle();
+            ref
+                .read(notificationStatusProvider.notifier)
+                .toggle(showDialog: false);
           },
           onLeftBtnClicked: () {
             ref.context.pop();
