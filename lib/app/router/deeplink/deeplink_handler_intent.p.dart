@@ -47,7 +47,7 @@ extension DeeplinkHandlerIntentExt on DeepLinkHandler {
       /// 유튜브 업로드 실패 화면
       else if (page ==
           Uri.parse(YoutubeContentUploadFailedRoute.path).pathSegments[0]) {
-        String errorCode = uri.query;
+        String errorCode = Uri.splitQueryString(uri.query)['errorCode'] ?? '';
         await YoutubeContentUploadFailedRoute(
           failedType: YoutubeUploadFailedType.getByErrorCode(errorCode),
           contentId: null,
