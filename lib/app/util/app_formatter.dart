@@ -17,6 +17,13 @@ abstract final class AppFormatter {
     }
   }
 
+// 고립된(잘못된) High Surrogate, Low Surrogate를 전부 제거하는 정규식
+  static String removeInvalidSurrogates(String input) {
+    final regex = RegExp(
+        r'([\uD800-\uDBFF](?![\uDC00-\uDFFF]))|((?<![\uD800-\uDBFF])[\uDC00-\uDFFF])');
+    return input.replaceAll(regex, '');
+  }
+
   ///
   /// 시분 형태로 고정된 포맷
   /// 00 : 00 : 00

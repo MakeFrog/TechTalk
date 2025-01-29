@@ -21,6 +21,7 @@ import 'package:techtalk/presentation/pages/youtube/detail/providers/related_you
 import 'package:techtalk/presentation/pages/youtube/detail/providers/selected_youtube_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_content_qna_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_main_info_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_player_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/youtube_detail_state.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/submitted_youtube_confirm/provider/submitted_youtube_confirm_arg_provider.dart';
@@ -168,11 +169,14 @@ mixin class YoutubeDetailEvent {
     final youtubeController = ref.read(
         youtubePlayerProvider(videoId).select((p) => p.youtubeController));
 
+    final content =
+        await ref.read(youtubeMainInfoProvider(arg.contentId).future);
+
     final room = ChatRoomEntity.generateYoutubeInterview(
       qnas: selectedQnas,
       extra: YoutubeInterviewRoomEntity(
-        contentId: arg.main?.id ?? '',
-        contentTitle: arg.main?.contentsTitle ?? '',
+        contentId: content.id,
+        contentTitle: content.contentsTitle,
         relatedVideo: relatedVideo.value?.firstOrNull,
       ),
     );
