@@ -94,8 +94,8 @@ class YoutubeContentItemView extends StatelessWidget {
                 ),
                 if (isLoaded)
                   Positioned(
-                    top: 16,
-                    left: 16,
+                    bottom: 12,
+                    right: 12,
                     child: Row(
                       children: [
                         if (videoDuration != null)
