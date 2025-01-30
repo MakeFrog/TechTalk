@@ -63,10 +63,10 @@ class BubbleIndicator extends StatelessWidget {
                 ),
         ),
         Positioned(
-          top: !talePosition.isBottomPosition ? -6 : null,
+          top: !talePosition.isBottomPosition ? -5.8 : null,
           left: talePosition.isLeft ? 12 : null,
           right: talePosition.isRight ? 12 : null,
-          bottom: talePosition.isBottomPosition ? -6 : null,
+          bottom: talePosition.isBottomPosition ? -5.8 : null,
           child: RotatedBox(
             quarterTurns: talePosition.isBottomPosition ? 0 : 2,
             child: SvgPicture.asset(
