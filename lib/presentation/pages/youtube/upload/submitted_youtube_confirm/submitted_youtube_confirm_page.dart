@@ -1,3 +1,4 @@
+import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
@@ -58,12 +59,17 @@ class SubmittedYoutubeConfirmPage extends BasePage
               width: double.infinity,
               child: HookBuilder(
                 builder: (context) {
-                  return FilledButton(
-                    onPressed: () {
-                      onConfirmBtnTapped(ref);
-                    },
-                    child: const Text(
-                      '다음',
+                  return BounceTapper(
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        onPressed: () {
+                          onConfirmBtnTapped(ref);
+                        },
+                        child: const Text(
+                          '다음',
+                        ),
+                      ),
                     ),
                   );
                 },

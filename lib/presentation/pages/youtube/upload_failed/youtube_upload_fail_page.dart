@@ -69,7 +69,7 @@ class YoutubeUploadFailedPage extends BasePage with YoutubeUploadFailedEvent {
           const Spacer(flex: 166),
         ],
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24) +
+          padding: const EdgeInsets.symmetric(horizontal: 16) +
               const EdgeInsets.only(top: 16),
           margin: EdgeInsets.only(bottom: AppSize.bottomInset == 0 ? 16 : 0),
           child: BounceTapper(

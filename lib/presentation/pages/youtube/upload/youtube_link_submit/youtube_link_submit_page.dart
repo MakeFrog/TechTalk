@@ -109,14 +109,20 @@ class YoutubeLinkSubmitPage extends BasePage
                       return urlInputValidator(textEditingController(ref).text);
                     });
 
-                    return FilledButton(
-                      onPressed: isInputFilled == null
-                          ? () {
-                              onConfirmBtnTapped(ref);
-                            }
-                          : null,
-                      child: const Text(
-                        '다음',
+                    return BounceTapper(
+                      enable: isInputFilled == null,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: FilledButton(
+                          onPressed: isInputFilled == null
+                              ? () {
+                                  onConfirmBtnTapped(ref);
+                                }
+                              : null,
+                          child: const Text(
+                            '다음',
+                          ),
+                        ),
                       ),
                     );
                   },
