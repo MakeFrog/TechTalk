@@ -128,6 +128,7 @@ mixin class YoutubeDetailEvent {
   ///
   void onChannelSectionTapped(WidgetRef ref, {required ChannelEntity channel}) {
     final contentId = ref.read(youtubeDetailRouteArgProvider).contentId;
+    unawaited(_pauseVideoWithDelay(ref));
     final arg =
         ChannelDetailRouteArg(channel: channel, currentContentId: contentId);
     ChannelDetailRoute(arg).push(ref.context);
@@ -166,9 +167,6 @@ mixin class YoutubeDetailEvent {
       return;
     }
 
-    final youtubeController = ref.read(
-        youtubePlayerProvider(videoId).select((p) => p.youtubeController));
-
     final content =
         await ref.read(youtubeMainInfoProvider(arg.contentId).future);
 
@@ -185,8 +183,20 @@ mixin class YoutubeDetailEvent {
     route.updateArg(room: room);
     route.push(ref.context);
 
-    await Future.delayed(const Duration(seconds: 2));
-    await youtubeController.pauseVideo();
+    unawaited(_pauseVideoWithDelay(ref));
+  }
+
+  ///
+  /// 특정 라우팅을 하면 자동으로 유튜브 플레이거 재생이 멈쳐지지만
+  /// 특정 경우 안멈쳐지는 경우가 존재
+  /// 약간의 딜레이 이후에 무조건 멈추하게하는 로직 추가
+  ///
+  Future<void> _pauseVideoWithDelay(WidgetRef ref) async {
+    final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
+    final youtubeController = ref.read(
+        youtubePlayerProvider(videoId).select((p) => p.youtubeController));
+    await Future.delayed(const Duration(milliseconds: 800));
+    unawaited(youtubeController.pauseVideo());
   }
 
   ///
@@ -263,10 +273,12 @@ mixin class YoutubeDetailEvent {
             });
           }
 
+          unawaited(_pauseVideoWithDelay(ref));
           YoutubeDetailRoute(arg).push(ref.context);
         } else {
           final arg = SubmittedYoutubeConfirmArg.fromContentAccessFlow(
               video: YoutubeVideoEntity.fromRelatedVideoEntity(video));
+          unawaited(_pauseVideoWithDelay(ref));
           SubmittedYoutubeConfirmRoute(arg).push(ref.context);
         }
       },
