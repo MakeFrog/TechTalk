@@ -254,9 +254,7 @@ final class UserRepositoryImpl implements UserRepository {
   Future<Result<void>> disableNewFeatureShowState() async {
     try {
       final prev = _userLocalDataSource.loadUserLocalInfo();
-      print('아랑이 1 : ${prev.toString()}');
       final target = prev.copyWith(hasSeenNewYoutubeFeature: true);
-      print('아랑이 2 : ${target.toString()}');
       await _userLocalDataSource.storeNewLocalState(target);
       return Result.success(null);
     } catch (e) {

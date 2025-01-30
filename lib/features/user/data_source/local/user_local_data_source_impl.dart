@@ -44,7 +44,6 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
 
   @override
   Future<void> storeNewLocalState(UserBox userBox) async {
-    print('에임드 : ${userBox.hasEnteredFirstInterview}');
     return box.put(AppLocal.userBoxName, userBox);
   }
 }
