@@ -93,6 +93,7 @@ class _ContentListView extends HookConsumerWidget
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        const Gap(70),
         ...List.generate(
           6,
           (_) => Padding(

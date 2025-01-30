@@ -69,51 +69,52 @@ class AnalyzeYoutubePage extends BasePage
           ),
         ),
         const Spacer(),
+
         HookBuilder(
           builder: (context) {
             final initialGrantState = useState<bool?>(null);
             return isNotificationGranted(ref).when(
               data: (isGranted) {
-                if (initialGrantState.value ?? isGranted) {
-                  return const EmptyBox();
-                }
                 initialGrantState.value ??= isGranted;
                 return Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                          ) +
-                          const EdgeInsets.only(bottom: 16),
-                      child: Container(
-                        height: 64,
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: AppColor.of.background1,
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            SvgPicture.asset(
-                              Assets.iconsAlarm,
-                            ),
-                            const Gap(6),
-                            Text(
-                              '확인이 끝나면 알려드릴까요?',
-                              style: AppTextStyle.body1,
-                            ),
-                            const Spacer(),
-                            FlatSwitch(
-                              value: isGranted,
-                              height: 24,
-                              onTap: (_) {
-                                onNotificationSwitchBtnTapped(ref);
-                              },
-                            ),
-                          ],
+                    if (initialGrantState.value ?? isGranted)
+                      const EmptyBox()
+                    else
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                            ) +
+                            const EdgeInsets.only(bottom: 16),
+                        child: Container(
+                          height: 64,
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            color: AppColor.of.background1,
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              SvgPicture.asset(
+                                Assets.iconsAlarm,
+                              ),
+                              const Gap(6),
+                              Text(
+                                '확인이 끝나면 알려드릴까요?',
+                                style: AppTextStyle.body1,
+                              ),
+                              const Spacer(),
+                              FlatSwitch(
+                                value: isGranted,
+                                height: 24,
+                                onTap: (_) {
+                                  onNotificationSwitchBtnTapped(ref);
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: SafeArea(
