@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/presentation/pages/home/home_page.dart';
+import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/bubble_indicator.dart';
 import 'package:techtalk/presentation/pages/main/main_event.dart';
 import 'package:techtalk/presentation/pages/my_info/my_page/my_page.dart';
 import 'package:techtalk/presentation/pages/study/topic_selection/study_topic_selection_page.dart';
@@ -112,20 +113,35 @@ class _BottomNavigationBar extends ConsumerWidget with MainEvent {
         index: value,
       ),
       items: [
-        ...MainNavigationTab.values.mapIndexed(
-          (index, e) => BottomNavigationBarItem(
+        ...MainNavigationTab.values.mapIndexed((index, e) {
+          return BottomNavigationBarItem(
             label: e.jsonKey.tr(),
-            icon: SvgPicture.asset(
-              e.iconPath,
-              colorFilter: ColorFilter.mode(
-                currentTab.index == index
-                    ? AppColor.of.gray5
-                    : AppColor.of.gray2,
-                BlendMode.srcIn,
-              ),
+            icon: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                SvgPicture.asset(
+                  e.iconPath,
+                  colorFilter: ColorFilter.mode(
+                    currentTab.index == index
+                        ? AppColor.of.gray5
+                        : AppColor.of.gray2,
+                    BlendMode.srcIn,
+                  ),
+                ),
+                // if(bottom)
+                if (e == MainNavigationTab.videoTutorial)
+                  Positioned(
+                    left: -10,
+                    top: -36.4,
+                    child: const BubbleIndicator(
+                      talePosition: BubbleTalePosition.left,
+                      text: '해보세요',
+                    ),
+                  ),
+              ],
             ),
-          ),
-        ),
+          );
+        }),
       ],
     );
   }
