@@ -22,91 +22,105 @@ class YoutubeLinkSubmitPage extends BasePage
   Widget buildPage(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
         children: [
-          const Gap(16),
-          Text(
-            '유튜브 영상\n링크를 알려주세요',
-            style: AppTextStyle.headline1,
-          ),
-          const Gap(12),
-          Text(
-            '영상 요약과 질문을 생성해 드릴게요!',
-            style: AppTextStyle.body1.copyWith(
-              color: AppColor.of.gray4,
-            ),
-          ),
-          const Gap(56),
-          Form(
-            key: formKey(ref),
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: TechtalkTextField(
-              controller: textEditingController(ref),
-              validator: urlInputValidator,
-              hintText: 'https://www.youtube.com/watch?v=TecHtVkAk',
-              inputDecoration: InputDecoration(
-                errorStyle: AppTextStyle.alert2.copyWith(),
-              ),
-            ),
-          ),
-          const Gap(8),
-          if (!AppVersion().isOnReview)
-            Align(
-              alignment: Alignment.centerRight,
-              child: BounceTapper(
-                onTap: () {
-                  onGetYoutubeBtnTapped();
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    border: Border.all(
-                      color: AppColor.of.gray1,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SvgPicture.asset(Assets.iconsYoutubeLogo),
-                      const Gap(4),
-                      Text(
-                        '유튜브 링크 가져오기',
-                        style: AppTextStyle.alert1,
-                      )
-                    ],
+          SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Gap(16),
+                Text(
+                  '유튜브 영상\n링크를 알려주세요',
+                  style: AppTextStyle.headline1,
+                ),
+                const Gap(12),
+                Text(
+                  '영상 요약과 질문을 생성해 드릴게요!',
+                  style: AppTextStyle.body1.copyWith(
+                    color: AppColor.of.gray4,
                   ),
                 ),
-              ),
-            ),
-          const Spacer(),
-          SafeArea(
-            child: Container(
-              margin:
-                  EdgeInsets.only(bottom: AppSize.bottomInset == 0 ? 16 : 0),
-              width: double.infinity,
-              child: HookBuilder(
-                builder: (context) {
-                  final isInputFilled =
-                      useListenableSelector(textEditingController(ref), () {
-                    return urlInputValidator(textEditingController(ref).text);
-                  });
-
-                  return FilledButton(
-                    onPressed: isInputFilled == null
-                        ? () {
-                            onConfirmBtnTapped(ref);
-                          }
-                        : null,
-                    child: const Text(
-                      '다음',
+                const Gap(56),
+                Form(
+                  key: formKey(ref),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: TechtalkTextField(
+                    controller: textEditingController(ref),
+                    validator: urlInputValidator,
+                    hintText: 'https://www.youtube.com/watch?v=TecHtVkAk',
+                    inputDecoration: InputDecoration(
+                      errorStyle: AppTextStyle.alert2.copyWith(),
                     ),
-                  );
-                },
+                  ),
+                ),
+                const Gap(8),
+                if (!AppVersion().isOnReview)
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: BounceTapper(
+                      onTap: () {
+                        onGetYoutubeBtnTapped();
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 10,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(
+                            color: AppColor.of.gray1,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SvgPicture.asset(Assets.iconsYoutubeLogo),
+                            const Gap(4),
+                            Text(
+                              '유튜브 링크 가져오기',
+                              style: AppTextStyle.alert1,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                // const Spacer(),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: AppSize.screenHeight,
+          ),
+          Positioned(
+            right: 0,
+            left: 0,
+            bottom: 0,
+            child: SafeArea(
+              child: Container(
+                margin:
+                    EdgeInsets.only(bottom: AppSize.bottomInset == 0 ? 16 : 0),
+                width: double.infinity,
+                child: HookBuilder(
+                  builder: (context) {
+                    final isInputFilled =
+                        useListenableSelector(textEditingController(ref), () {
+                      return urlInputValidator(textEditingController(ref).text);
+                    });
+
+                    return FilledButton(
+                      onPressed: isInputFilled == null
+                          ? () {
+                              onConfirmBtnTapped(ref);
+                            }
+                          : null,
+                      child: const Text(
+                        '다음',
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ),
