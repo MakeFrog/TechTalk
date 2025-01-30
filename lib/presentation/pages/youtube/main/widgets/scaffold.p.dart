@@ -17,6 +17,7 @@ class _Scaffold extends HookWidget {
         return <Widget>[
           const SliverGap(8),
           SliverAppBar(
+            automaticallyImplyLeading: false,
             backgroundColor: AppColor.of.background1,
             floating: true,
             snap: true,

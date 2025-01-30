@@ -54,6 +54,13 @@ class _YoutubeDetailPageState extends ConsumerState<YoutubeDetailPage>
     with YoutubeDetailEvent, YoutubeDetailState {
   @override
   Widget build(BuildContext context) {
+    /// 시청 히스토리 업데이트
+    ///
+    /// 여기서 youtubeDetailRouteArgProvider 사용하려고 하였으나,
+    /// 더 상위 레벨에서 사용되는 함수라 오버라이딩 전이라 사용하기 어려움
+    ///
+    updateWatchedHistory(widget.argument.contentId);
+
     return HookBuilder(
       builder: (context) {
         final tabController = useTabController(initialLength: 2);

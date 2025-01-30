@@ -61,7 +61,7 @@ class _ContentListView extends HookConsumerWidget
           controller) {
     return YoutubePaginationIndicatorView(
       title: '영상을 불러오지 못했어요',
-      description: '일시적이 오류일 수 있으니 다시 시도해보세요',
+      description: '일시적인 오류일 수 있으니 다시 시도해보세요',
       btnText: '다시 시도',
       onBtnTapped: () {
         controller.refresh();

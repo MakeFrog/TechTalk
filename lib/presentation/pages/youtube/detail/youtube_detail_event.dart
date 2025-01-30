@@ -250,8 +250,7 @@ mixin class YoutubeDetailEvent {
   ///
   /// 시청 기록 업데이트
   ///
-  Future<void> updateWatchedHistory(WidgetRef ref) async {
-    final contentId = ref.read(youtubeDetailRouteArgProvider).contentId;
+  Future<void> updateWatchedHistory(String contentId) async {
     final response = await userRepository.updateYoutubeWatchHistory(contentId);
     response.fold(
       onSuccess: (_) {

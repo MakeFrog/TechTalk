@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:techtalk/features/user/data_source/remote/models/bookmarked_youtube_content_model.dart';
+import 'package:techtalk/features/user/data_source/remote/models/uploaded_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
 import 'package:techtalk/features/user/user.dart';
 
@@ -38,6 +40,16 @@ abstract class FirestoreUsersRef {
           .collection(uploadedYoutubeName)
           .doc(contentId);
 
+  static CollectionReference<UploadedYoutubeModel>
+      uploadedYoutubeCollection() => FirebaseFirestore.instance
+          .collection(name)
+          .doc(_userUid)
+          .collection(uploadedYoutubeName)
+          .withConverter(
+            fromFirestore: UploadedYoutubeModel.fromFirestore,
+            toFirestore: (value, _) => value.toJson(),
+          );
+
   static DocumentReference bookMarkedYoutubeDoc(String contentId) =>
       FirebaseFirestore.instance
           .collection(name)
@@ -45,14 +57,25 @@ abstract class FirestoreUsersRef {
           .collection(bookmarkedYoutubeName)
           .doc(contentId);
 
-  static CollectionReference<WatchedYoutubeContent>
+  static CollectionReference<WatchedYoutubeModel>
       watchedYoutubeHistoryCollection() => FirebaseFirestore.instance
           .collection(name)
           .doc(_userUid)
           .collection(watchedYoutubeHistoryName)
           .withConverter(
-              fromFirestore: WatchedYoutubeContent.fromFirestore,
-              toFirestore: (value, _) => value.toJson());
+            fromFirestore: WatchedYoutubeModel.fromFirestore,
+            toFirestore: (value, _) => value.toJson(),
+          );
+
+  static CollectionReference<BookmarkedYoutubeModel>
+      bookmarkedYoutubeHistoryCollection() => FirebaseFirestore.instance
+          .collection(name)
+          .doc(_userUid)
+          .collection(bookmarkedYoutubeName)
+          .withConverter(
+            fromFirestore: BookmarkedYoutubeModel.fromFirestore,
+            toFirestore: (value, _) => value.toJson(),
+          );
 
   static DocumentReference watchedYoutubeHistoryDoc(String contentId) =>
       FirebaseFirestore.instance
