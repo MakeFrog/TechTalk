@@ -30,7 +30,6 @@ final class AnalyzeAndUploadYoutubeUseCase
 
   @override
   Future<void> call(YoutubeVideoEntity request) async {
-    await Future.delayed(Duration(seconds: 100000));
     WidgetsBinding.instance.addObserver(this);
     final targetVideo = request;
 
