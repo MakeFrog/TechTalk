@@ -42,15 +42,18 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
         query = query.startAfterDocument(lastDocument);
       }
 
-      // // ConstraintApplier를 사용해서 쿼리 제약사항(필터링) 을 적용함
       if (queryConstraints != null && queryConstraints.isNotEmpty) {
         query = _constraintApplier.applyConstraints<YoutubeMainModel>(
-            query, queryConstraints);
+          query,
+          queryConstraints,
+        );
       }
 
-      QuerySnapshot<YoutubeMainModel> snapshot = await query.get();
+      final snapshot = await query.get();
 
-      if (snapshot.docs.isEmpty && hasReversedQueryCallProceeded == true) {
+      if ((prevSnapshots ?? []).isEmpty &&
+          snapshot.docs.isEmpty &&
+          hasReversedQueryCallProceeded) {
         return FirebasePaginatedResult<YoutubeMainModel, YoutubeMainModel>(
           items: [],
           lastDocument: null,
@@ -60,9 +63,7 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
       }
 
       if ((prevSnapshots?.length ?? 0) + snapshot.docs.length < limit &&
-          hasReversedQueryCallProceeded == false) {
-        /// [startAt] 에서 모두 호출을 완료했다면,
-        /// 재귀호출하여 [endAt]을 실행
+          !hasReversedQueryCallProceeded) {
         return getRandomPagedYoutubeMainContents(
           limit: limit,
           orderByField: orderByField,
@@ -74,33 +75,33 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
         );
       }
 
-      final targetSnapshots = snapshot.docs;
-      if (prevSnapshots != null) {
-        targetSnapshots.addAll(prevSnapshots);
-      }
+      final targetSnapshots = <QueryDocumentSnapshot<YoutubeMainModel>>[
+        ...snapshot.docs,
+        if (prevSnapshots != null) ...prevSnapshots,
+      ];
 
       final items = await Future.wait(targetSnapshots.map((doc) async {
-        final targetData = doc.data();
-
-        // channel_ref를 통해 [ChannelModel] 데이터를 가져옴
-        final channelSnapshot = await targetData.channelRef?.get()
-            as DocumentSnapshot<Map<String, dynamic>>; // 타입 캐스팅
+        final data = doc.data();
+        final channelSnapshot = await data.channelRef?.get()
+            as DocumentSnapshot<Map<String, dynamic>>;
         final channelModel = ChannelModel.fromFirestore(channelSnapshot, null);
-
-        return targetData.copyWith(channel: channelModel);
-      }).toList());
+        return data.copyWith(channel: channelModel);
+      }));
 
       final hasMore = snapshot.docs.length == limit;
-      final newLastDocument =
-          snapshot.docs.isNotEmpty ? snapshot.docs.last : lastDocument;
 
+      final newLastDocument =
+          targetSnapshots.isNotEmpty ? targetSnapshots.last : null;
+
+      bool finalHasMore = hasMore;
       if (newLastDocument == null && items.isNotEmpty) {
-        throw Exception('Last document is null after fetching data.');
+        finalHasMore = false;
       }
+
       return FirebasePaginatedResult<YoutubeMainModel, YoutubeMainModel>(
         items: items,
         lastDocument: newLastDocument,
-        hasMore: hasMore,
+        hasMore: finalHasMore,
         hasReversedQueryCallProceeded: hasReversedQueryCallProceeded,
       );
     } catch (e) {
@@ -111,24 +112,23 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
   /// 조건별 쿼리
   Query<YoutubeMainModel> _buildInitialQuery({
     required bool hasReversedQueryCallProceeded,
-    required String randomKey, // 키 값을 직접 받음
-    required double randomValue, // 랜덤 값
+    required String randomKey,
+    required double randomValue,
     required int limit,
   }) {
-    final randomField = 'random.$randomKey'; // 동적 필드 이름 생성
+    final randomField = 'random.$randomKey';
 
-    /// [NOTE]
-    /// 이유는 모르겠으나, greateThan, lassThan을 적용하면
-    /// exception없이 이상한 값이 반환됨.
-    return hasReversedQueryCallProceeded
-        ? FirestoreYoutubeRef.collection()
-            .where(randomField, isGreaterThanOrEqualTo: randomValue)
-            .orderBy(randomField)
-            .limit(limit)
-        : FirestoreYoutubeRef.collection()
-            .where(randomField, isLessThan: randomValue)
-            .orderBy(randomField, descending: true)
-            .startAt([randomValue]).limit(limit);
+    if (!hasReversedQueryCallProceeded) {
+      return FirestoreYoutubeRef.collection()
+          .where(randomField, isLessThan: randomValue)
+          .orderBy(randomField, descending: true)
+          .startAt([randomValue]).limit(limit);
+    }
+
+    return FirestoreYoutubeRef.collection()
+        .where(randomField, isGreaterThanOrEqualTo: randomValue)
+        .orderBy(randomField)
+        .limit(limit);
   }
 
   @override
