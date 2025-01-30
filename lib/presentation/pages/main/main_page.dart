@@ -11,13 +11,15 @@ import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/presentation/pages/home/home_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/bubble_indicator.dart';
 import 'package:techtalk/presentation/pages/main/main_event.dart';
+import 'package:techtalk/presentation/pages/main/main_state.dart';
 import 'package:techtalk/presentation/pages/my_info/my_page/my_page.dart';
 import 'package:techtalk/presentation/pages/study/topic_selection/study_topic_selection_page.dart';
 import 'package:techtalk/presentation/pages/youtube/main/youtube_main_page.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
+import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 
-class MainPage extends BasePage with MainEvent {
+class MainPage extends BasePage with MainEvent, MainState {
   const MainPage({super.key});
 
   @override
@@ -91,7 +93,7 @@ class MainPage extends BasePage with MainEvent {
       const _BottomNavigationBar();
 }
 
-class _BottomNavigationBar extends ConsumerWidget with MainEvent {
+class _BottomNavigationBar extends ConsumerWidget with MainEvent, MainState {
   const _BottomNavigationBar({super.key});
 
   @override
@@ -108,15 +110,16 @@ class _BottomNavigationBar extends ConsumerWidget with MainEvent {
       unselectedItemColor: AppColor.of.gray2,
       selectedLabelStyle: AppTextStyle.alert2,
       unselectedLabelStyle: AppTextStyle.alert2,
-      onTap: (value) => onTapBottomNavigationItem(
+      onTap: (index) => onTapBottomNavigationItem(
         ref,
-        index: value,
+        targetTabIndex: index,
       ),
       items: [
         ...MainNavigationTab.values.mapIndexed((index, e) {
           return BottomNavigationBarItem(
             label: e.jsonKey.tr(),
             icon: Stack(
+              alignment: Alignment.center,
               clipBehavior: Clip.none,
               children: [
                 SvgPicture.asset(
@@ -129,15 +132,29 @@ class _BottomNavigationBar extends ConsumerWidget with MainEvent {
                   ),
                 ),
                 // if(bottom)
-                if (e == MainNavigationTab.videoTutorial)
-                  Positioned(
-                    left: -10,
-                    top: -36.4,
-                    child: const BubbleIndicator(
-                      talePosition: BubbleTalePosition.left,
-                      text: '해보세요',
-                    ),
-                  ),
+                Consumer(builder: (context, ref, _) {
+                  if (e == MainNavigationTab.videoTutorial &&
+                      showNewFeatureIndicator(ref)) {
+                    return Positioned(
+                      top: -36.4,
+                      child: BubbleIndicator.withSpans(
+                        textSpans: const [
+                          TextSpan(
+                            text: 'NEW ',
+                            style: TextStyle(
+                              color: Color(0xFFFFDF10),
+                            ),
+                          ),
+                          TextSpan(
+                            text: '영상으로 학습하세요!',
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return const EmptyBox();
+                  }
+                }),
               ],
             ),
           );

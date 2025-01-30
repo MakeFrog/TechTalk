@@ -18,6 +18,16 @@ abstract interface class UserRepository {
   Result<bool> hasEnteredFirstInterview();
 
   ///
+  /// 유튜브 신기능 처음 노출 여부
+  ///
+  Result<bool> hasSeenNewYoutubeFeature();
+
+  ///
+  /// 유튜브 신기능 처음 노출 여부 값 해제
+  ///
+  Future<Result<void>> disableNewFeatureShowState();
+
+  ///
   /// 유저 정보 호출
   ///
   Future<Result<UserEntity>> getUser([String? uid]);
