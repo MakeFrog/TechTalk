@@ -31,7 +31,7 @@ dependencies:
   cached_network_image: ^3.3.0 # 네트워크 이미지 캐싱
   flutter_layout_grid: ^2.0.7
   lottie: ^3.2.0
-  bounce_tapper: ^1.1.2
+  bounce_tapper: ^1.1.4
   expandable_page_view: ^1.0.17
   measure_size_builder: ^1.0.3
 
@@ -95,7 +95,7 @@ dependencies:
   app_settings: ^5.1.1 # Device Setting Route
   korean_profanity_filter: ^1.0.0 # 비속어 욕설 필터링
   icons_launcher: ^2.1.7 # 앱 아이콘
-  in_app_review: '2.0.10' # 인앱 리뷰
+  in_app_review: "2.0.10" # 인앱 리뷰
   url_launcher: ^6.2.5 # url 런쳐
   easy_isolate_mixin: ^1.0.1 # Isolate
   flutter_local_notifications: 18.0.1 # 로컬 푸시
@@ -140,7 +140,6 @@ flutter:
     - assets/skills/
     - assets/lottie/
     - assets/json/
-
 
   fonts:
     - family: pretendard
