@@ -94,15 +94,56 @@ class _InterviewInductionView extends HookConsumerWidget
                     ),
                   ],
                 ),
+                youtube: (InterviewType type) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        '같은 직군의 지원자들은',
+                        style: AppTextStyle.body2.copyWith(
+                          color: AppColor.of.gray4,
+                        ),
+                      ),
+                      Text(
+                        '아래 영상도 시청했어요',
+                        style: AppTextStyle.title1.copyWith(
+                          color: AppColor.of.gray6,
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
-          const Gap(16),
+
+          if (room(ref).type.isYoutube) const Gap(20) else const Gap(16),
 
           /// ILLUSTRATION
-          Expanded(
-            child: Image.asset(
-              room(ref).type.illusrationPath,
+
+          if (room(ref).type.isYoutube)
+            Expanded(
+              child: Column(
+                children: [
+                  recommendYoutubeContent(ref).when(
+                    data: (video) {
+                      return ThumbnailImageView(url: video.thumbnailImgUrl);
+                    },
+                    error: (_, __) => ThumbnailImageView.createSkeleton(),
+                    loading: ThumbnailImageView.createSkeleton,
+                  ),
+                  const Gap(20),
+                  Text(
+                    '이 영상을 시청해 볼까요?',
+                    style: AppTextStyle.headline2,
+                  ),
+                ],
+              ),
+            )
+          else
+            Expanded(
+              child: Image.asset(
+                room(ref).type.illusrationPath,
+              ),
             ),
-          ),
           if (room(ref).type.isSingleTopic)
             Padding(
               padding: const EdgeInsets.only(top: 16),
@@ -165,6 +206,9 @@ class _InterviewInductionView extends HookConsumerWidget
                           /// 테스트 필요
                           retryThisInterview(ref);
                         },
+                        youtube: (_) {
+                          onWatchRecommendVideoBtnTapped(ref);
+                        },
                       );
                     },
                     child: Text(
@@ -173,6 +217,9 @@ class _InterviewInductionView extends HookConsumerWidget
                                 tr(LocaleKeys.home_takeInterview),
                             practical: (_) => tr(LocaleKeys.interview_tryAgain),
                             resume: (_) => tr(LocaleKeys.interview_tryAgain),
+                            youtube: (InterviewType type) {
+                              return '영상 보기';
+                            },
                           ),
                     ),
                   ),

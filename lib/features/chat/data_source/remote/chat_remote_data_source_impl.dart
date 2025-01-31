@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:techtalk/app/di/modules/system_di.dart';
-import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data_source/remote/models/follow_up_qna_model.dart';
 import 'package:techtalk/features/chat/data_source/remote/models/resume_field_model.dart';
@@ -37,6 +35,7 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
       InterviewType.resume => await FirestoreChatRoomRef.collection()
           .where(FirestoreChatRoomRef.typeField, isEqualTo: type.name)
           .get(),
+      InterviewType.youtube => throw Exception('유튜브 면접은 면접 리스트를 생성 및 호출하지 않음'),
     };
 
     return [

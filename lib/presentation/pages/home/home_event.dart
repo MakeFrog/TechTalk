@@ -79,57 +79,6 @@ mixin class HomeEvent {
     print("모든 스킬 데이터를 Firestore에 저장 완료!");
   }
 
-  Future<String?> _postMessage(String fcmToken) async {
-    try {
-      String _accessToken =
-          'ya29.a0AXeO80RaDeUYMk0lJTZNfyKC2rmejIm2jHT4blxSYj7VjsnCwA_GRYJwsA-eGKPh7h8Gb-vdoruVreXfCdloq8yDquQeIYwmRCXf7hib4WoE96ItUXhKH8PapD9eQrRSiOsn3ZCYVZ3vlscLA9Tr3XaXcv_XYl-n96Ye7kiGaCgYKAXUSARESFQHGX2MiFWPieROvAPUd3DAyJkpXkA0175';
-
-      http.Response _response = await http.post(
-          Uri.parse(
-            "https://fcm.googleapis.com/v1/projects/techtalk-dev-33/messages:send",
-          ),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $_accessToken',
-          },
-          body: json.encode({
-            "message": {
-              "token": fcmToken,
-              // "topic": "user_uid",
-
-              "notification": {
-                "title": "FCM Test Title",
-                "body": "FCM Test Body",
-              },
-              "data": {
-                "click_action": "FCM Test Click Action",
-              },
-              "android": {
-                "notification": {
-                  "click_action": "Android Click Action",
-                }
-              },
-              "apns": {
-                "payload": {
-                  "aps": {
-                    "category": "Message Category",
-                    "content-available": 1
-                  }
-                }
-              }
-            }
-          }));
-      if (_response.statusCode == 200) {
-        return null;
-      } else {
-        return "Faliure";
-      }
-    } on HttpException catch (error) {
-      print('아랑이 오류 : ${error}');
-      return error.message;
-    }
-  }
-
   ///
   /// 실전 면접 카드(전체 영역)가 클릭 되었을 때
   /// 실전 면접 기록 여부에 따라 라우팅을 다르게 진행

@@ -7,7 +7,7 @@ part of 'selected_youtube_qnas_provider.dart';
 // **************************************************************************
 
 String _$selectedYoutubeQnasHash() =>
-    r'2d751f70b35aae497b2038c94abcc2be0cbb919c';
+    r'399e666882510e45fd984ea6a1d541518456cf70';
 
 /// Copied from Dart SDK
 class _SystemHash {

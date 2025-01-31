@@ -48,26 +48,33 @@ class _BottomFloatingView extends ConsumerWidget
           ),
           const Gap(10),
           Expanded(
-            child: BounceTapper(
-              child: SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  onPressed: () {
-                    onStartInterviewBtnTapped(ref);
-                  },
-                  style: FilledButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 4,
-                      vertical: 18,
+            child: Consumer(
+              builder: (context, _, __) {
+                return BounceTapper(
+                  enable: hasAtLeastOneOfQnaSelected(ref),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: FilledButton(
+                      onPressed: hasAtLeastOneOfQnaSelected(ref)
+                          ? () {
+                              onStartInterviewBtnTapped(ref);
+                            }
+                          : null,
+                      style: FilledButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4,
+                          vertical: 18,
+                        ),
+                      ),
+                      child: Text(
+                        '면접 시작하기',
+                        style: AppTextStyle.title1,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
-                  child: Text(
-                    '면접 시작하기',
-                    style: AppTextStyle.title1,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
+                );
+              },
             ),
           ),
         ],

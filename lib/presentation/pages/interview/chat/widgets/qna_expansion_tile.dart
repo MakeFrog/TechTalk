@@ -9,6 +9,7 @@ import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/enums/follow_up_status.enum.dart';
 import 'package:techtalk/features/chat/repositories/enums/interview_result.dart';
 import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.dart';
@@ -102,39 +103,31 @@ class QnaExpansionTile extends HookConsumerWidget with ChatState {
 
             /// 단골 질문 인터뷰
             /// => 모범 답변
-            if (item.qna.type.isCommon)
-              Builder(
-                builder: (context) {
-                  final targetQna = item.qna as CommonQnaEntity;
-                  return QnaDetailBox(
-                    title: tr(LocaleKeys.qa_modelAnswer),
-                    descriptions: targetQna.answers,
-                  );
-                },
-              ),
-
-            /// 이력서 질문 일터뷰
-            /// => 평가 요소
-            if (item.qna.type.isResume)
-              Builder(
-                builder: (context) {
-                  final targetQna = item.qna as ResumeQnaEntity;
-                  return QnaDetailBox(
-                    /// TODO : XIMYA
-                    /// LOCALIZATION 처리 필요
-                    title: '평가요소',
-                    descriptions: [targetQna.evaluationPoint],
-                  );
-                },
-              ),
-
-            // TODO : 꼬리질문 기능 구현시 적용할 예정
-            if (item.followUpQna?.question != null)
-              QnaDetailBox(
-                title: tr(LocaleKeys.interview_followUpQuestion),
-                descriptions: [item.followUpQna!.question!],
-                bgColor: AppColor.of.purple1,
-              ),
+            item.qna.type.branch(
+              common: (_) {
+                final targetQna = item.qna as CommonQnaEntity;
+                return QnaDetailBox(
+                  title: tr(LocaleKeys.qa_modelAnswer),
+                  descriptions: targetQna.answers,
+                );
+              },
+              resume: (_) {
+                final targetQna = item.qna as ResumeQnaEntity;
+                return QnaDetailBox(
+                  /// TODO : XIMYA
+                  /// LOCALIZATION 처리 필요
+                  title: '평가요소',
+                  descriptions: [targetQna.evaluationPoint],
+                );
+              },
+              youtube: (_) {
+                final targetQna = item.qna as YoutubeQnaEntity;
+                return QnaDetailBox(
+                  title: tr(LocaleKeys.qa_modelAnswer),
+                  descriptions: [targetQna.answer],
+                );
+              },
+            ),
           ],
         ),
       ),

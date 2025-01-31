@@ -16,10 +16,8 @@ import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-part 'widgets/chat_page_scaffold.dart';
-
 part 'widgets/chat_page_app_bar.p.dart';
-
+part 'widgets/chat_page_scaffold.dart';
 part 'widgets/chat_page_watch_view.p.dart';
 
 class ChatPage extends BasePage with ChatEvent, ChatState {
@@ -32,8 +30,8 @@ class ChatPage extends BasePage with ChatEvent, ChatState {
     return _Scaffold(
       chatTabView: const InterviewTabView(),
       summaryTabView: const QnaTabView(),
-      tabController: tabController,
       watchView: const _WatchView(),
+      tabController: tabController,
     );
   }
 

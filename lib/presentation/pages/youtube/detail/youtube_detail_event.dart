@@ -5,16 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/router/navigation_context.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/app/util/app_logger.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_room_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/youtube_interview_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/features/youtube/repositories/entities/video_overview_entity.dart';
 import 'package:techtalk/presentation/pages/youtube/channel_detail/provider/channel_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/is_bookmark_checked_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/related_youtube_videos_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/selected_youtube_qnas_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_content_qna_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_main_info_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_player_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/youtube_detail_state.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/submitted_youtube_confirm/provider/submitted_youtube_confirm_arg_provider.dart';
@@ -130,13 +137,56 @@ mixin class YoutubeDetailEvent {
   /// 면접 시작하기 버튼이 클릭 되었을 떄
   ///
   Future<void> onStartInterviewBtnTapped(WidgetRef ref) async {
-    final room = ChatRoomEntity.generateResumeInterview(
-      qnas: [],
+    /// qna 기다리기
+    final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
+
+    final arg = ref.read(youtubeDetailRouteArgProvider);
+    final passedQnas = arg.qnas?.toList();
+
+    final selectedQnas = ref.read(selectedYoutubeQnasProvider(
+      videoId,
+      passedQnas: passedQnas ?? null,
+    ));
+
+    final relatedVideo = ref.read(relatedYoutubeVideoProvider(arg.contentId));
+
+    if (ref.read(youtubeContentQnaProvider(videoId)).valueOrNull == null) {
+      DialogService.show(
+        dialog: AppDialog.singleBtn(
+          onBtnClicked: () {
+            ref.context.pop();
+          },
+          showContentImg: false,
+          btnContent: '확인',
+          title: '잠시만 기다려 주세요',
+          description: '면접 질문을 불러오고 있습니다',
+        ),
+      );
+
+      return;
+    }
+
+    final youtubeController = ref.read(
+        youtubePlayerProvider(videoId).select((p) => p.youtubeController));
+
+    final content =
+        await ref.read(youtubeMainInfoProvider(arg.contentId).future);
+
+    final room = ChatRoomEntity.generateYoutubeInterview(
+      qnas: selectedQnas,
+      extra: YoutubeInterviewRoomEntity(
+        contentId: content.id,
+        contentTitle: content.contentsTitle,
+        relatedVideo: relatedVideo.value?.firstOrNull,
+      ),
     );
 
     final route = ChatPageRoute(roomId: room.id, type: room.type);
     route.updateArg(room: room);
-    route.go(ref.context);
+    route.push(ref.context);
+
+    await Future.delayed(const Duration(seconds: 2));
+    await youtubeController.pauseVideo();
   }
 
   ///
@@ -166,7 +216,7 @@ mixin class YoutubeDetailEvent {
     final passedQnas = ref.read(youtubeDetailRouteArgProvider).qnas?.toList();
 
     ref
-        .watch(selectedYoutubeQnasProvider(
+        .read(selectedYoutubeQnasProvider(
           videoId,
           passedQnas: passedQnas ?? null,
         ).notifier)
@@ -188,12 +238,12 @@ mixin class YoutubeDetailEvent {
   }
 
   Future<void> onRelatedVideoTapped(WidgetRef ref,
-      {required VideoOverviewEntity video}) async {
+      {required VideoOverviewEntity video, bool goRoute = false}) async {
     final response =
         await youtubeRepository.isUploadedContent(videoId: video.id);
 
-    response.fold(
-      onSuccess: (isUploadedContent) {
+    await response.fold(
+      onSuccess: (isUploadedContent) async {
         if (isUploadedContent) {
           final arg = YoutubeDetailArg.deeplinkOrHasSingleIdArg(
             contentId: video.id,
@@ -202,7 +252,7 @@ mixin class YoutubeDetailEvent {
 
           /// 이전에 스택이 있는 페이지라면
           /// 해당 라우트를 제거
-          if (_isContentIdInPreviousRoutes(ref.context, arg.contentId)) {
+          if (await _isContentIdInPreviousRoutes(arg.contentId)) {
             final goRouter = GoRouter.of(ref.context);
             // 스택에서 해당 라우트 제거
             goRouter.routerDelegate.currentConfiguration.matches
@@ -229,7 +279,8 @@ mixin class YoutubeDetailEvent {
   ///
   ///contentId 값이 이전 라우트 스택에 있는지 확인
   ///
-  bool _isContentIdInPreviousRoutes(BuildContext context, String contentId) {
+  Future<bool> _isContentIdInPreviousRoutes(String contentId) async {
+    final context = await navigationContext;
     // GoRouter의 라우터 델리게이트를 가져옵니다.
     final goRouter = GoRouter.of(context);
     final routerDelegate = goRouter.routerDelegate;
@@ -255,10 +306,10 @@ mixin class YoutubeDetailEvent {
     final response = await userRepository.updateYoutubeWatchHistory(contentId);
     response.fold(
       onSuccess: (_) {
-        log('시청 기록 업데이트 성공');
+        logger.i('시청 기록 업데이트 성공');
       },
       onFailure: (e) {
-        log('시청 기록 업데이트 실패 : ${e}');
+        logger.e('시청 기록 업데이트 실패 : ${e}');
       },
     );
   }

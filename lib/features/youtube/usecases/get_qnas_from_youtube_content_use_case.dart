@@ -55,7 +55,7 @@ class GetQnasFromYoutubeContentUseCase
 
 ### 응답 형식:
 아래 JSON 구조를 따르세요:
-```json
+```json 
 {
   "type": "notTech | lackOfContent | isValid",
   "qnas": [

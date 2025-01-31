@@ -14,19 +14,20 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
-import 'package:techtalk/presentation/pages/interview/chat/constant/recrod_progress_state.dart';
 import 'package:techtalk/features/user/user.dart';
+import 'package:techtalk/presentation/pages/interview/chat/constant/recrod_progress_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_scroll_controller.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/interview_progress_state_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/interview_result_page_view_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/is_follow_up_process_active_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/main_input_controller_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/recommended_youtube_video_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_to_text_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_result/interview_result_dialog.dart';
-import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/youtube_detail_event.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
@@ -98,8 +99,7 @@ mixin class ChatEvent {
               .tr(LocaleKeys.interview_notification),
           subTitle: rootNavigatorKey.currentContext!
               .tr(LocaleKeys.interview_confirmEndInterview),
-          description: rootNavigatorKey.currentContext!
-              .tr(LocaleKeys.interview_continueLater),
+          description: room.type.isYoutube ? '나중에 면접을 이어서 진행할 수 없습니다' : null,
           showContentImg: false,
           leftBtnContent:
               rootNavigatorKey.currentContext!.tr(LocaleKeys.common_cancel),
@@ -365,5 +365,24 @@ mixin class ChatEvent {
         return const InterviewResultDialog();
       },
     );
+  }
+
+  Future<void> onWatchRecommendVideoBtnTapped(WidgetRef ref) async {
+    final videoAsync = ref.read(recommendedYoutubeVideoProvider);
+
+    if (videoAsync.isLoading || videoAsync.valueOrNull == null) {
+      SnackBarService.showSnackBar('영상 정보를 가져오고 있습니다. 잠시만 기다려 주세요');
+      return;
+    }
+
+    final youtubeDetailEvent = YoutubeDetailEvent();
+
+    ref.context.pop();
+    if (ref.context.canPop()) {
+      ref.context.pop();
+    }
+
+    await youtubeDetailEvent.onRelatedVideoTapped(ref,
+        video: videoAsync.value!);
   }
 }

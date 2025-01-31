@@ -7,6 +7,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/repositories/entities/youtube_interview_room_entity.dart';
 
 /// AI를 사용하여 꼬리질문을 생성하는 use case
 class SetAiFollowUpQuestionUseCase extends BaseNoFutureUseCase<
@@ -30,6 +31,7 @@ class SetAiFollowUpQuestionUseCase extends BaseNoFutureUseCase<
             chatHistory: param.chatHistory,
             rootQna: param.rootQna,
             type: param.interviewType,
+            youtubeExtra: param.youtubeExtra,
           ),
           maxToken: 300,
           model: Gpt4ChatModel(),
@@ -77,6 +79,7 @@ class SetAiFollowUpQuestionUseCase extends BaseNoFutureUseCase<
     required List<BaseChatEntity> chatHistory,
     required ChatQnaEntity rootQna,
     required InterviewType type,
+    required YoutubeInterviewRoomEntity? youtubeExtra,
   }) {
     // 프롬프트는 추후 전부 한 언어로 통일할 것이므로 따로 localization은 필요하지 않아 보입니다.
     return [
@@ -97,6 +100,13 @@ class SetAiFollowUpQuestionUseCase extends BaseNoFutureUseCase<
             role: Role.system,
             content: '유저의 개발자 이력서와 포트폴리오를 기반으로 면접 질문을 물어보았습니다',
           ).toJson();
+        },
+        youtube: (_) {
+          return Messages(
+                  role: Role.system,
+                  content:
+                      ' ${youtubeExtra?.contentTitle}라는 제목의 유튜브 프로그래밍 콘텐츠를 기반해 제시된 면접 질문입니다')
+              .toJson();
         },
       ),
       Messages(
@@ -142,6 +152,7 @@ typedef GetFollowUpQuestionParam = ({
   List<BaseChatEntity> chatHistory,
   ChatQnaEntity rootQna,
   String userName,
+  YoutubeInterviewRoomEntity? youtubeExtra,
   void Function({required String followUpQuestion}) onFollowUpQuestionCompleted,
   void Function(Object error, StackTrace startTrace) onError,
 });

@@ -31,6 +31,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
     final response = SetAiFollowUpQuestionUseCase().call((
       interviewType: ref.read(selectedChatRoomProvider).type,
       chatHistory: chatHistory,
+      youtubeExtra: ref.read(selectedChatRoomProvider).youtubeExtra,
       onFollowUpQuestionCompleted: ({required String followUpQuestion}) async {
         followUpQuestionChat = QuestionChatEntity.createStatic(
           qnaId: followUpQuestionId,
@@ -69,6 +70,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
         );
       },
       onFailure: (e) {
+        logger.e(e);
         _rollbackToPreviousChatStep();
         SnackBarService.showSnackBar(
             '정답 여부를 판별하는 과정에서 오류가 발생했습니다. 잠시후 다시 시도해주세요.');
@@ -106,6 +108,8 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   /// 채팅 메세지 데이터를 서버에 업로드
   ///
   Future<void> _uploadMessage(List<BaseChatEntity> messages) async {
+    final interviewType = ref.read(selectedChatRoomProvider).type;
+    if (interviewType.isYoutube) return;
     await createChatMessagesUseCase(
       messages: messages,
       chatRoomId: ref.read(selectedChatRoomProvider).id,
@@ -168,7 +172,7 @@ extension ChatMessageHistoryInternalEvent on ChatMessageHistory {
   /// AI 응답 과정에서 에러 발생했을 때 실행하는 프로세스
   ///
   void _onAiFeedbackErrorOccured([Object? error, StackTrace? startTrace]) {
-    print('이그놀드 : ${error}');
+    logger.e('$startTrace 에러 발생 : $error');
     _rollbackToPreviousChatStep();
     SnackBarService.showSnackBar(
         tr(LocaleKeys.interview_aiFeedbackErrorOccured));

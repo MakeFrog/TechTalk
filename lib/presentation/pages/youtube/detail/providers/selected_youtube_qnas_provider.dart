@@ -13,16 +13,16 @@ class SelectedYoutubeQnas extends _$SelectedYoutubeQnas {
     required List<YoutubeQnaEntity>? passedQnas,
   }) {
     if (passedQnas?.isNotEmpty ?? false) {
-      print('초기 아랑수');
       return passedQnas!;
     }
-    final qnas = ref.read(youtubeContentQnaProvider(contentId)).value?.toList();
+    final qnas =
+        ref.watch(youtubeContentQnaProvider(contentId)).value?.toList();
+
     return qnas ?? [];
   }
 
   void toggle(YoutubeQnaEntity qna) {
     final targetIndex = state.firstIndexWhereOrNull((e) => e.id == qna.id);
-    print('아랑수요:  ${targetIndex}');
     if (targetIndex != null) {
       state = [...state]..removeAt(targetIndex);
     } else {
@@ -30,11 +30,17 @@ class SelectedYoutubeQnas extends _$SelectedYoutubeQnas {
     }
   }
 
+  /// 모든 Qna 활성화
   void activateAll() {
     final qnas = ref.read(youtubeContentQnaProvider(contentId)).value?.toList();
 
     if (qnas?.length == state.length) return;
 
     state = qnas ?? [];
+  }
+
+  /// 선택된 Qna가 최소 한 개 이상인지 확인
+  bool hasAtLeastOneSelected() {
+    return state.isNotEmpty;
   }
 }

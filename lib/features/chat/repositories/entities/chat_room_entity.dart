@@ -3,6 +3,7 @@ import 'package:techtalk/core/helper/string_generator.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/base_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/youtube_interview_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
@@ -16,6 +17,7 @@ class ChatRoomEntity {
   final DateTime? lastChatDate;
   final bool isTemporary;
   final List<String>? qnaIds;
+  final YoutubeInterviewRoomEntity? youtubeExtra;
 
   /// [InterviewType.resume]
   final List<BaseQnaEntity> qnas;
@@ -26,6 +28,7 @@ class ChatRoomEntity {
     required this.interviewer,
     required this.topics,
     required this.progressInfo,
+    this.youtubeExtra,
     this.qnaIds,
     this.lastChatMessage,
     this.lastChatDate,
@@ -106,14 +109,16 @@ class ChatRoomEntity {
   /// 이력서 면접 질문
   factory ChatRoomEntity.generateYoutubeInterview({
     required List<YoutubeQnaEntity> qnas,
+    required YoutubeInterviewRoomEntity extra,
   }) {
     return ChatRoomEntity(
       isTemporary: true,
-      type: InterviewType.resume,
+      type: InterviewType.youtube,
       id: StringGenerator.generateRandomString(),
       interviewer: Interviewer.getRandomInterviewer(),
       qnas: qnas,
       topics: [],
+      youtubeExtra: extra,
       progressInfo: ChatProgressInfoEntity.onInitial(
         totalQuestionCount: qnas.length,
       ),
@@ -128,6 +133,7 @@ class ChatRoomEntity {
       InterviewType.commonPracticalTopic =>
         roomModel.topicIds.map(StoredTopics.getById).toList(),
       InterviewType.resume => <TopicEntity>[],
+      InterviewType.youtube => <TopicEntity>[],
     };
 
     return ChatRoomEntity(
@@ -182,6 +188,7 @@ class ChatRoomEntity {
     DateTime? lastChatDate,
     bool? isTemporary,
     List<String>? qnaIds,
+    YoutubeInterviewRoomEntity? youtubeExtra,
     List<BaseQnaEntity>? qnas,
   }) {
     return ChatRoomEntity(
@@ -194,6 +201,7 @@ class ChatRoomEntity {
       lastChatDate: lastChatDate ?? this.lastChatDate,
       isTemporary: isTemporary ?? this.isTemporary,
       qnaIds: qnaIds ?? this.qnaIds,
+      youtubeExtra: youtubeExtra ?? this.youtubeExtra,
       qnas: qnas ?? this.qnas,
     );
   }

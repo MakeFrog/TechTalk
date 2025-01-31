@@ -77,10 +77,10 @@ packages:
     dependency: "direct main"
     description:
       name: bounce_tapper
-      sha256: "5d9a9d0daa8bc49614998bdf4cbf783c29f9ce2e49d4970c5b14d475e9b6a8b3"
+      sha256: "2ea08aee05463a7ab926a43a8db1acaffda0e8ecb990cf2dc6e461e0db9ee5c6"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.2"
+    version: "1.1.4"
   build:
     dependency: transitive
     description:
