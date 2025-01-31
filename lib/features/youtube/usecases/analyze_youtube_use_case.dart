@@ -13,8 +13,6 @@ import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.
 import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/presentation/app.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
-import 'package:techtalk/presentation/pages/youtube/main/provider/selected_filter_category_provider.dart';
-import 'package:techtalk/presentation/pages/youtube/main/provider/youtube_content_pagination_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
@@ -175,18 +173,18 @@ final class AnalyzeAndUploadYoutubeUseCase
           (response) => response.fold(
             onSuccess: (_) {
               /// 영항 학습 탭뷰 페이징 컨트롤러 초기화
-              final categories = globalContainer
-                  .read(youtubeContentCategoryProvider)
-                  .totalCategories;
-              for (var category in categories) {
-                if (globalContainer.exists(
-                    youtubeContentPaginationProvider(category: category))) {
-                  globalContainer
-                      .read(
-                          youtubeContentPaginationProvider(category: category))
-                      .refresh();
-                }
-              }
+              // final categories = globalContainer
+              //     .read(youtubeContentCategoryProvider)
+              //     .totalCategories;
+              // for (var category in categories) {
+              //   if (globalContainer.exists(
+              //       youtubeContentPaginationProvider(category: category))) {
+              //     globalContainer
+              //         .read(
+              //             youtubeContentPaginationProvider(category: category))
+              //         .refresh();
+              //   }
+              // }
 
               log('유튜브 영상 업로드 성공');
             },

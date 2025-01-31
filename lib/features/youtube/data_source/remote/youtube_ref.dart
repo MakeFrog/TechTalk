@@ -1,24 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/features/youtube/data_source/remote/models/channel_model.dart';
 import 'package:techtalk/features/youtube/data_source/remote/models/youtube_detail_model.dart';
-import 'package:techtalk/features/youtube/data_source/remote/models/youtube_qna_model.dart';
 import 'package:techtalk/features/youtube/data_source/remote/models/youtube_main_model.dart';
+import 'package:techtalk/features/youtube/data_source/remote/models/youtube_qna_model.dart';
 
 ///
 /// 유튜브 메인 정보 (overview) ref
 ///
 abstract class FirestoreYoutubeRef {
-  static const String collectionName = 'Youtube';
+  static const String koName = 'Youtube';
+  static const String enName = 'YoutubeEn';
 
   static CollectionReference<YoutubeMainModel> collection() =>
-      FirebaseFirestore.instance.collection(collectionName).withConverter(
+      FirebaseFirestore.instance
+          .collection(AppLocale.isKo ? koName : enName)
+          .withConverter(
             fromFirestore: YoutubeMainModel.fromFirestore,
             toFirestore: YoutubeMainModel.toFiresTore,
           );
 
   static DocumentReference<YoutubeMainModel> doc(String contentId) =>
       FirebaseFirestore.instance
-          .collection(collectionName)
+          .collection(AppLocale.isKo ? koName : enName)
           .doc(contentId)
           .withConverter(
             fromFirestore: YoutubeMainModel.fromFirestore,
@@ -34,7 +38,9 @@ abstract class FirestoreYoutubeDetailNewRef {
 
   static DocumentReference<YoutubeDetailModel> doc(String contentId) =>
       FirebaseFirestore.instance
-          .collection(FirestoreYoutubeRef.collectionName)
+          .collection(AppLocale.isKo
+              ? FirestoreYoutubeRef.koName
+              : FirestoreYoutubeRef.enName)
           .doc(contentId)
           .collection(name)
           .doc(contentId)
@@ -52,7 +58,11 @@ abstract class FirestoreYoutubeQnaRef {
 
   static CollectionReference<YoutubeQnaModel> collection(String contentsId) =>
       FirebaseFirestore.instance
-          .collection(FirestoreYoutubeRef.collectionName)
+          .collection(
+            AppLocale.isKo
+                ? FirestoreYoutubeRef.koName
+                : FirestoreYoutubeRef.enName,
+          )
           .doc(contentsId)
           .collection(name)
           .withConverter(
@@ -65,10 +75,16 @@ abstract class FirestoreYoutubeQnaRef {
 /// 채널 정보
 ///
 abstract class FirestoreYoutubeChannelRef {
-  static const String name = 'Channel';
+  static const String koName = 'Channel';
+  static const String enName = 'ChannelEn';
 
   static DocumentReference<ChannelModel> document(String channelId) =>
-      FirebaseFirestore.instance.collection(name).doc(channelId).withConverter(
+      FirebaseFirestore.instance
+          .collection(
+            AppLocale.isKo ? koName : enName,
+          )
+          .doc(channelId)
+          .withConverter(
             fromFirestore: ChannelModel.fromFirestore,
             toFirestore: (value, options) => value.toJson(),
           );

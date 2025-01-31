@@ -16,7 +16,9 @@ final class JobGroupEntity {
   factory JobGroupEntity.fromModel(JobGroupModel model) => JobGroupEntity(
         id: model.id,
         name: AppLocale.isKo ? model.koName : model.name,
-        youtubeContentCount: model.youtubeContentCount,
+        youtubeContentCount: AppLocale.isKo
+            ? model.youtubeContentCountKo
+            : model.youtubeContentCount,
       );
 
   factory JobGroupEntity.fromEnum(JobGroupTypes type) => JobGroupEntity(

@@ -54,7 +54,8 @@ Raw<PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>>
     result.fold(
       onSuccess: (paginatedResult) {
         final newItems = paginatedResult.items..shuffle();
-        final isLastPage = !paginatedResult.hasMore;
+        final isLastPage = !paginatedResult.hasMore &&
+            paginatedResult.hasReversedQueryCallProceeded;
 
         if (paginatedResult.hasReversedQueryCallProceeded == true) {
           hasReversedQueryCallProceeded = true;

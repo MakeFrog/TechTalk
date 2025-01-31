@@ -12,6 +12,7 @@ JobGroupModel _$JobGroupModelFromJson(Map<String, dynamic> json) =>
       koName: json['ko_name'] as String,
       id: json['id'] as String,
       youtubeContentCount: (json['youtube_content_count'] as num).toInt(),
+      youtubeContentCountKo: (json['youtube_content_count_ko'] as num).toInt(),
     );
 
 Map<String, dynamic> _$JobGroupModelToJson(JobGroupModel instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$JobGroupModelToJson(JobGroupModel instance) =>
       'name': instance.name,
       'ko_name': instance.koName,
       'youtube_content_count': instance.youtubeContentCount,
+      'youtube_content_count_ko': instance.youtubeContentCountKo,
     };

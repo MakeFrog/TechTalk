@@ -11,6 +11,7 @@ SkillModel _$SkillModelFromJson(Map<String, dynamic> json) => SkillModel(
       koName: json['ko_name'] as String,
       category: json['category'] as String,
       youtubeContentCount: (json['youtube_content_count'] as num).toInt(),
+      youtubeContentCountKo: (json['youtube_content_count_ko'] as num).toInt(),
     );
 
 Map<String, dynamic> _$SkillModelToJson(SkillModel instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$SkillModelToJson(SkillModel instance) =>
       'ko_name': instance.koName,
       'category': instance.category,
       'youtube_content_count': instance.youtubeContentCount,
+      'youtube_content_count_ko': instance.youtubeContentCountKo,
     };

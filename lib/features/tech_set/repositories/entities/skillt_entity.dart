@@ -31,11 +31,13 @@ class SkillEntity {
     return SkillEntity(
       id: model.name.skillNameToId,
       name: AppLocale.isKo ? model.name : model.koName,
+      youtubeContentCount: AppLocale.isKo
+          ? model.youtubeContentCountKo
+          : model.youtubeContentCount,
       imagePath: '${model.name.skillNameToId}.png',
       category: SkillCategory.fromKey(
         model.category,
       ),
-      youtubeContentCount: model.youtubeContentCount,
     );
   }
 
