@@ -131,7 +131,8 @@ final class AnalyzeAndUploadYoutubeUseCase
       final mergedSummaryResponse = mergedSummary;
 
       // 7) 유효성 체크 (테크 영상인지 여부)
-      if (qnaAndIdsResult.type == YoutubeContentAnalyzedType.lackOfContent) {
+      if (qnaAndIdsResult.type == YoutubeContentAnalyzedType.lackOfContent ||
+          qnaAndIdsResult.qnas.isEmpty) {
         throw const YtInvalidVideoContentException();
       }
 
