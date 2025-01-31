@@ -101,6 +101,7 @@
   "gnb": {
     "home": "홈",
     "learning": "학습",
+    "videoTutorial": "콘텐츠",
     "mistakeNote": "오답노트",
     "myInfo": "내 정보"
   },
@@ -138,8 +139,8 @@
     "noSearchResults": "검색된 기술면접 주제가 없습니다."
   },
   "interview": {
-    "loadingFollowUpQuestion" : "꼬리질문 생성중",
-    "followUpQuestion" : "꼬리 질문",
+    "loadingFollowUpQuestion": "꼬리질문 생성중",
+    "followUpQuestion": "꼬리 질문",
     "aiFeedbackErrorOccured": "정답 여부를 판별하는 과정에서 오류가 발생했습니다. 잠시후 다시 시도해주세요.",
     "noAudioDetected": "입력된 음성이 없습니다",
     "answerVocally": "음성으로 답변해 보세요!",
@@ -164,18 +165,18 @@
     "errorHasDetected": "오류가 발생하여 답변을 전송할 수 없습니다",
     "waitForReply": "면접관의 응답이 마무리된 이후 답변을 전송해주세요.",
     "recordFailed": "음성 인식에 실패했어요. 다시 시도해주세요",
-    "hasPassed" : "합격했어요!",
-    "keepGoing" : "앞으로도 꾸준히 해서 취뽀 성공!",
+    "hasPassed": "합격했어요!",
+    "keepGoing": "앞으로도 꾸준히 해서 취뽀 성공!",
     "hasFailed": "불합격했어요",
-    "getCoureage" :  "꾸준히 하면 분명 달라질 거예요",
-    "oneLineFeedback" : "면접관의 한줄평",
+    "getCoureage": "꾸준히 하면 분명 달라질 거예요",
+    "oneLineFeedback": "면접관의 한줄평",
     "tryRecap": "놓친 질문들을\n한 번 더 도전해 보세요",
     "retryInterview": "다른 새로운 질문들도 받을 수 있어요 지식을 태산처럼 만들어봐요",
-    "tryAgain" : "다시 도전",
+    "tryAgain": "다시 도전",
     "goToHome": "홈으로",
     "suggestSimilarTopicsLeading": "같은 직군의 지원자들은\n",
     "suggestSimilarTopicsEnd": "를 같이 공부하고 있어요",
-    "letsTryInterviewAgain" : "한 번 면접을 진행해 볼까요?",
+    "letsTryInterviewAgain": "한 번 면접을 진행해 볼까요?",
     "generatingOneLineFeedback": "AI 면접관의 한줄평을 생성하고 있습니다"
   },
   "qa": {
@@ -199,10 +200,13 @@
     "letsHaveInterview": "{tech} 주제로 면접을 진행해보세요!",
     "wrongManyTimes": "여러 번 틀린 문제"
   },
+  "videoTutorial": {
+    "name": "영상 학습"
+  },
   "myInfo": {
     "profile": "프로필",
     "interestedJobPositions": "관심 직군",
-    "interestedTopics": "관심 주제",
+    "interestedTopics": "관심 스킬",
     "stayStrong": "오늘도 열공하세요.",
     "developer": "{ } 개발자",
     "settings": {
@@ -237,11 +241,11 @@
     "permissionNeeded": "권한 필요",
     "micRequired": "설정에서 마이크 권한을 허용해주세요.",
     "setUp": "설정하기",
-    "alarmSetting" : "알림 설정",
+    "alarmSetting": "알림 설정",
     "alarmDismissDesc": "알림을 비활성화 하기 위해 권한을 해제 해주세요",
-    "needAlarmPermission" : "알림 수신을 위해서는 권한 동의가 필요해요",
+    "needAlarmPermission": "알림 수신을 위해서는 권한 동의가 필요해요",
     "alarm_title": "알림 활성화",
-    "alarm_desc" : "주요 공지, 기능 업데이트 등 알림"
+    "alarm_desc": "주요 공지, 기능 업데이트 등 알림"
   },
   "errors": {
     "error": "오류",

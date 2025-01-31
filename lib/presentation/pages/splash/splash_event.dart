@@ -19,8 +19,11 @@ mixin class SplashEvent {
 
   /// 면접 주제 등 초기 호출 후 재사용할 데이터를 초기화한다.
   Future<void> initStaticData(WidgetRef ref) async {
-    await StoredTopics.initialize();
-    await techSetRepository.initSkills();
+    await Future.wait([
+      StoredTopics.initialize(),
+      techSetRepository.initSkills(),
+      techSetRepository.initJobGroups()
+    ]);
   }
 
   /// 유저 인증정보와 유저 정보를 토대로 라우팅을 분기한다.
@@ -30,8 +33,7 @@ mixin class SplashEvent {
     final response = await setEntryFlowUseCase.call();
 
     await response.fold(
-      onSuccess: (_) async {
-
+      onSuccess: (version) async {
         await initStaticData(ref);
         final auth = ref.read(userAuthProvider);
 
@@ -45,8 +47,6 @@ mixin class SplashEvent {
           return;
         }
 
-
-
         await ref.read(userInfoProvider.future).then(
           (userData) async {
             SlackNotificationService.updateUserInfo(userData);
@@ -59,14 +59,13 @@ mixin class SplashEvent {
             if (userData == null) {
               const SignUpRoute().go(ref.context);
             } else {
-
               const MainRoute().go(ref.context);
             }
           },
         );
       },
       onFailure: (e) {
-        log('버전 정보 및 네트워크 확인 실패');
+        log('버전 정보 및 네트워크 확인 실패 : $e');
       },
     );
   }

@@ -5,7 +5,6 @@ import 'package:techtalk/features/tech_set/usecases/get_searched_skills_use_case
 
 export 'data_source/local/tech_set_data_source_impl.dart';
 export 'data_source/local/tech_set_local_data_source.dart';
-export 'repositories/enums/job.enum.dart';
 export 'repositories/tech_set_repository.dart';
 export 'repositories/tech_set_repository_impl.dart';
 export 'tech_set.dart';

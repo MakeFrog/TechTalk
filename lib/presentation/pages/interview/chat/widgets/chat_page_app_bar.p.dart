@@ -1,18 +1,31 @@
 part of '../chat_page.dart';
 
-class _AppBar extends ConsumerWidget
+class _AppBar extends HookConsumerWidget
     with ChatState, ChatEvent
     implements PreferredSizeWidget {
   const _AppBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final firstTopic = ref.watch(selectedChatRoomProvider).topics.first.text;
-    final otherTopicCount = room(ref).topics.length - 1;
+    String? appBarTitle = useMemoized(() {
+      return room(ref).type.typedBranch(
+        common: (_) {
+          final firstTopic =
+              ref.watch(selectedChatRoomProvider).topics.first.text;
+          final otherTopicCount = room(ref).topics.length - 1;
+          return '$firstTopic${otherTopicCount > 0 ? ' ${tr(LocaleKeys.undefined_and)} $otherTopicCount' : ''}';
+        },
+        resume: (_) {
+          return '이력서 면접';
+        },
+        youtube: (_) {
+          return '콘텐츠 면접';
+        },
+      );
+    });
 
     return BackButtonAppBar(
-      title:
-          '$firstTopic${otherTopicCount > 0 ? ' ${tr(LocaleKeys.undefined_and)} $otherTopicCount' : ''}',
+      title: appBarTitle ?? '',
       onBackBtnTapped: () {
         onAppbarBackBtnTapped(ref);
       },

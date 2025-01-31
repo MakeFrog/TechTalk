@@ -120,3 +120,27 @@ class SystemNetworkUnstable extends CustomException {
 class SystemSomethingWrongException extends CustomException {
   const SystemSomethingWrongException() : super('500007', '알 수 없는 오류');
 }
+
+class FetchYoutubeContentsException extends CustomException {
+  const FetchYoutubeContentsException()
+      : super('500008', '영상 정보 데이터를 불러오는 데에 실패하였습니다.');
+}
+
+class FetchYoutubeContentsDetailException extends CustomException {
+  const FetchYoutubeContentsDetailException()
+      : super('500009', '영상 정보 상세 데이터를 불러오는 데에 실패하였습니다.');
+}
+
+class FetchYoutubeContentsOverviewException extends CustomException {
+  const FetchYoutubeContentsOverviewException()
+      : super('500009', '영상 정보 리스트를 불러오는 데에 실패하였습니다.');
+}
+
+class FetchYoutubeContentsQnaException extends CustomException {
+  const FetchYoutubeContentsQnaException()
+      : super('500009', '영상 관련 질문 리스트를 불러오는 데에 실패하였습니다.');
+}
+
+class UnExceptedErrorException extends CustomException {
+  const UnExceptedErrorException(String message) : super('600000', message);
+}

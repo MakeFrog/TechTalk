@@ -5,6 +5,7 @@ import 'package:techtalk/app/di/modules/system_di.dart';
 import 'package:techtalk/app/di/modules/tech_set_di.dart';
 import 'package:techtalk/app/di/modules/topic_di.dart';
 import 'package:techtalk/app/di/modules/user_di.dart';
+import 'package:techtalk/app/di/modules/youtube_di.dart';
 
 final locator = GetIt.I;
 
@@ -41,6 +42,7 @@ final class AppBinder {
       TechSetDependencyInjection(),
       ChatDependencyInject(),
       TopicDependencyInjection(),
+      YoutubeContentsDependencyInjection(),
     ]) {
       di.init();
     }

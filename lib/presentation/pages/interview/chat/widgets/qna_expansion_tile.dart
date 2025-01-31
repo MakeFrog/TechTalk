@@ -1,4 +1,3 @@
-import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -9,20 +8,32 @@ import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/enums/follow_up_status.enum.dart';
 import 'package:techtalk/features/chat/repositories/enums/interview_result.dart';
+import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
+import 'package:techtalk/presentation/pages/interview/chat/widgets/qna_detail_box.dart';
+import 'package:techtalk/presentation/widgets/common/chip/resume_question_type_chip.dart';
 import 'package:techtalk/presentation/widgets/common/indicator/response_indicator.dart';
 import 'package:techtalk/presentation/widgets/common/tile/flexible_expansion_tile.dart';
 
-class QnAExpansionTile extends HookConsumerWidget with ChatState {
-  const QnAExpansionTile(this.item, {Key? key}) : super(key: key);
+class QnaExpansionTile extends HookConsumerWidget with ChatState {
+  const QnaExpansionTile(this.item, {Key? key}) : super(key: key);
 
   final ChatQnaEntity item;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isOpen = useState<bool>(false);
+
+    // readRoom(ref).type.typedBranch(
+    //       common: (_) {
+    //         item.qna
+    //       },
+    //       resume: (_) {},
+    //     );
 
     return FlexibleExpansionTile(
       isExpanded: isOpen,
@@ -36,17 +47,28 @@ class QnAExpansionTile extends HookConsumerWidget with ChatState {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               /// CORRECT WRONG INDICATOR
-
-              ResponseIndicator(
-                followupStatus: item.followUpQna != null
-                    ? FollowupStatus.yes
-                    : FollowupStatus.no,
-                chatResult: item.message!.answerState.isCorrect
-                    ? InterviewResult.pass
-                    : InterviewResult.failed,
-                text: item.message!.answerState.isCorrect
-                    ? context.tr(LocaleKeys.common_responseResult_correct)
-                    : context.tr(LocaleKeys.common_responseResult_incorrect),
+              Wrap(
+                children: [
+                  if (readRoom(ref).type.isResume)
+                    ResumeQuestionTypeChip(
+                      type: (item.qna as ResumeQnaEntity).questionType,
+                      margin: const EdgeInsets.only(
+                        right: 6,
+                      ),
+                    ),
+                  ResponseIndicator(
+                    followupStatus: item.followUpQna != null
+                        ? FollowupStatus.yes
+                        : FollowupStatus.no,
+                    chatResult: item.message!.answerState.isCorrect
+                        ? InterviewResult.pass
+                        : InterviewResult.failed,
+                    text: item.message!.answerState.isCorrect
+                        ? context.tr(LocaleKeys.common_responseResult_correct)
+                        : context
+                            .tr(LocaleKeys.common_responseResult_incorrect),
+                  ),
+                ],
               ),
               AnimatedRotation(
                 turns: isOpen.value ? 0 : 0.5,
@@ -74,98 +96,40 @@ class QnAExpansionTile extends HookConsumerWidget with ChatState {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             /// 내 답변
-            _buildAnswerContainer(
-              backgroundColor: AppColor.of.brand5,
+            QnaDetailBox(
               title: tr(LocaleKeys.qa_myAnswer),
-              children: [
-                Text(
-                  item.message!.message.value,
-                  style: AppTextStyle.body3,
-                ),
-              ],
+              descriptions: [item.message!.message.value],
             ),
 
-            /// 모범 답변
-            _buildAnswerContainer(
-              backgroundColor: AppColor.of.brand5,
-              title: tr(LocaleKeys.qa_modelAnswer),
-              children: List.generate(
-                item.qna.answers.length,
-                (index) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Text(
-                        item.qna.answers[index],
-                        style: AppTextStyle.body3,
-                      ),
-                    ),
-                    if (index != item.qna.answers.length - 1)
-                      Divider(
-                        thickness: 0.7,
-                        color: AppColor.of.gray1,
-                        height: 24,
-                      ),
-                  ],
-                ),
-              ),
+            /// 단골 질문 인터뷰
+            /// => 모범 답변
+            item.qna.type.branch(
+              common: (_) {
+                final targetQna = item.qna as CommonQnaEntity;
+                return QnaDetailBox(
+                  title: tr(LocaleKeys.qa_modelAnswer),
+                  descriptions: targetQna.answers,
+                );
+              },
+              resume: (_) {
+                final targetQna = item.qna as ResumeQnaEntity;
+                return QnaDetailBox(
+                  /// TODO : XIMYA
+                  /// LOCALIZATION 처리 필요
+                  title: '평가요소',
+                  descriptions: [targetQna.evaluationPoint],
+                );
+              },
+              youtube: (_) {
+                final targetQna = item.qna as YoutubeQnaEntity;
+                return QnaDetailBox(
+                  title: tr(LocaleKeys.qa_modelAnswer),
+                  descriptions: [targetQna.answer],
+                );
+              },
             ),
-
-            // TODO : 꼬리질문 기능 구현시 적용할 예정
-            if (item.followUpQna?.question != null)
-              _buildAnswerContainer(
-                backgroundColor: AppColor.of.purple1,
-                title: '꼬리 질문',
-                showIndicator: true,
-                children: [
-                  Text(
-                    item.followUpQna!.question!,
-                    style: AppTextStyle.body3,
-                  ),
-                ],
-              ),
           ],
         ),
-      ),
-    );
-  }
-
-  // 공통된 레이아웃 위젯
-  Widget _buildAnswerContainer({
-    required Color backgroundColor,
-    required String title,
-    required List<Widget> children,
-    bool showIndicator = false,
-    String? iconIndicatorPath,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 제목 텍스트
-          Row(
-            children: [
-              Text(
-                title,
-                style: AppTextStyle.body1,
-              ),
-              const Gap(2),
-              if (showIndicator)
-                SvgPicture.asset(iconIndicatorPath ?? Assets.iconsStarDeco),
-            ],
-          ),
-          const Gap(6),
-          // 내용
-          ...children,
-        ],
       ),
     );
   }

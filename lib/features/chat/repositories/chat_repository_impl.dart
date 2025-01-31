@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/follow_up_qna_entity.dart';
@@ -19,9 +21,11 @@ final class ChatRepositoryImpl implements ChatRepository {
     await _remoteDataSource.uploadChats(room.id, messages: messages);
 
     final rooms = await switch (room.type) {
-      InterviewType.singleTopic => getChatRooms(room.type, room.topics.single),
-      InterviewType.practical => getChatRooms(room.type),
-      InterviewType.resume => throw Exception('타입을 지정해줘야 합니다'),
+      InterviewType.commonSingleTopic =>
+        getChatRooms(room.type, room.topics.single),
+      InterviewType.commonPracticalTopic => getChatRooms(room.type),
+      InterviewType.resume => getChatRooms(room.type),
+      InterviewType.youtube => throw UnimplementedError('유튜브 면접은 채팅방을 생성하지 않음'),
     }
         .then((value) => value.getOrThrow());
 
@@ -64,6 +68,7 @@ final class ChatRepositoryImpl implements ChatRepository {
 
       return Result.success(rooms);
     } on Exception catch (e) {
+      log('채팅방 목록 호출 실패 : ${e}');
       return Result.failure(const ChatRoomsFetchedFailedException());
     }
   }
@@ -116,7 +121,51 @@ final class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<Result<List<ChatQnaEntity>>> getChatQnas(ChatRoomEntity room) async {
+  Future<Result<List<ChatQnaEntity>>> getResumeChatQnas(
+      ChatRoomEntity room) async {
+    try {
+      final fetchedQnas = await _remoteDataSource.getChatQnas(room.id);
+
+      final List<ChatQnaEntity> result = [];
+
+      await Future.forEach(
+        fetchedQnas,
+        (element) async {
+          // 응답 id가 있으면 응답 데이터 조회
+          final AnswerChatEntity? answer;
+
+          if (element.messageId != null) {
+            final message = await _remoteDataSource.getChat(
+              room.id,
+              element.messageId!,
+            );
+
+            answer = message.toEntity() as AnswerChatEntity;
+          } else {
+            answer = null;
+          }
+
+          result.add(
+            ChatQnaEntity.fromModelToResumeEntity(
+              model: element,
+              answerChatEntity: answer,
+              followUpQnaEntity: element.followUpQnas?.first != null
+                  ? FollowUpQnaEntity.fromModel(element.followUpQnas!.first)
+                  : null,
+            ),
+          );
+        },
+      );
+
+      return Result.success(result);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<List<ChatQnaEntity>>> getCommonChatQnas(
+      ChatRoomEntity room) async {
     final roomQnAs = await _remoteDataSource.getChatQnas(room.id);
 
     final qnas = <ChatQnaEntity>[];

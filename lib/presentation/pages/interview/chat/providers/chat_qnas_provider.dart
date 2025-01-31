@@ -6,6 +6,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/follow_up_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answers_provider.dart';
@@ -21,25 +23,59 @@ class ChatQnas extends _$ChatQnas {
   FutureOr<List<ChatQnaEntity>> build() async {
     final room = ref.read(selectedChatRoomProvider);
 
-    if (room.progressState.isInitial) {
-      final response = await getRandomQnaUseCase.call(room);
-      return response.fold(
-        onSuccess: (randomQnas) => randomQnas,
-        onFailure: (e) => _onError(e),
-      );
-    } else {
-      final response = await getChatQnasUseCase.call(room);
-      return response.fold(
-        onSuccess: (qnas) => qnas,
-        onFailure: (e) => _onError(e),
-      );
-    }
+    return room.type.typedBranch(
+      resume: (_) async {
+        if (room.progressState.isInitial) {
+          return room.qnas
+              .map(
+                (e) => ChatQnaEntity.fromResumeQnaEntityAtInitial(
+                  e as ResumeQnaEntity,
+                ),
+              )
+              .toList()
+            ..shuffle();
+        } else {
+          final response = await getChatQnasUseCase.call(room);
+          return response.fold(
+            onSuccess: (qnas) => qnas,
+            onFailure: (e) => _onError(e),
+          );
+        }
+      },
+      common: (_) async {
+        if (room.progressState.isInitial) {
+          final response = await getRandomQnaUseCase.call(room);
+          return response.fold(
+            onSuccess: (randomQnas) => randomQnas,
+            onFailure: (e) => _onError(e),
+          );
+        } else {
+          final response = await getChatQnasUseCase.call(room);
+          return response.fold(
+            onSuccess: (qnas) => qnas,
+            onFailure: (e) => _onError(e),
+          );
+        }
+      },
+      youtube: (InterviewType type) {
+        return room.qnas
+            .map(
+              (e) => ChatQnaEntity.fromYoutubeQnaEntityAtInitial(
+                e as YoutubeQnaEntity,
+              ),
+            )
+            .toList()
+          ..shuffle();
+      },
+    );
   }
 
   ///
   /// qna 상태 업데이트
   ///
   Future<void> updateState(AnswerChatEntity message) async {
+    final room = ref.read(selectedChatRoomProvider);
+
     final qnas = state.requireValue;
     final targetQnaIndex =
         qnas.indexWhere((e) => e.qna.id == message.rootQnaId);
@@ -53,7 +89,6 @@ class ChatQnas extends _$ChatQnas {
         : qnas[targetQnaIndex].copyWith(
             followUpQna: FollowUpQnaEntity.fromAnswerChatEntity(message));
 
-
     /// 일반 Qna
     if (isRootQna) {
       unawaited(
@@ -63,11 +98,12 @@ class ChatQnas extends _$ChatQnas {
               previous.removeAt(targetQnaIndex);
               return [...previous, resolvedQna];
             }),
-            _updateWrongAnswer(resolvedQna),
+            if (room.type.isCommonQuestionType) _updateWrongAnswer(resolvedQna),
           ],
         ),
       );
     }
+
     /// 꼬리 질문 Qna
     else {
       unawaited(
@@ -131,7 +167,7 @@ class ChatQnas extends _$ChatQnas {
   ///
   /// id값으로 Qna객체 반환
   ///
-  ChatQnaEntity getQnaById(String qnaId) {
+  ChatQnaEntity getCommonQnaById(String qnaId) {
     return state.requireValue.firstWhere((e) => e.qna.id == qnaId);
   }
 }

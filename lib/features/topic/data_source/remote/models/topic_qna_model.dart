@@ -6,15 +6,17 @@ part 'topic_qna_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class TopicQnaModel {
-  TopicQnaModel({
+  const TopicQnaModel({
     required this.id,
     required this.question,
-    required this.answers,
+    this.answers = const [],
+    this.questionInstruction,
   });
 
   final String id;
   final String question;
   final List<String> answers;
+  final String? questionInstruction;
 
   CommonQnaEntity toEntity() {
     return CommonQnaEntity(

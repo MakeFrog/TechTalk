@@ -1,6 +1,6 @@
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
-import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/user/user.dart';
 
@@ -18,7 +18,7 @@ class UserEntity {
   final String? email;
 
   /// 유저 관심 직군 ID 목록
-  final List<JobGroup> jobGroups;
+  final List<JobGroupEntity> jobGroups;
 
   /// 유저의 관심 테크 스킬 ID 목록
   final List<SkillEntity> skills;
@@ -63,6 +63,7 @@ class UserEntity {
   factory UserEntity.fromModel(
     UserModel model, {
     required List<SkillEntity> skills,
+    required List<JobGroupEntity> jobGroups,
     required UserBox box,
   }) {
     return UserEntity(
@@ -70,9 +71,10 @@ class UserEntity {
       uid: model.uid,
       nickname: model.nickname,
       profileImgUrl: model.profileImgUrl,
-      jobGroups: model.jobGroupIds != null
-          ? model.jobGroupIds!.map(JobGroup.getById).toList()
-          : [],
+      jobGroups: jobGroups,
+      // model.jobGroupIds != null
+      //     ? model.jobGroupIds!.map(JobGroupTypes.getById).toList()
+      //     : [],
       recordedTopics: model.recordedTopicIds != null
           ? model.recordedTopicIds!.map(StoredTopics.getById).toList()
           : [],
@@ -91,7 +93,7 @@ class UserEntity {
     String? profileImgUrl,
     String? nickname,
     String? email,
-    List<JobGroup>? jobGroups,
+    List<JobGroupEntity>? jobGroups,
     List<SkillEntity>? skills,
     List<TopicEntity>? recordedTopics,
     bool? hasPracticalInterviewRecord,
@@ -99,6 +101,7 @@ class UserEntity {
     DateTime? lastLoginDate,
     DateTime? signUpDate,
     bool? isReviewRequestAvailable,
+    int? loginCount,
   }) {
     return UserEntity(
       uid: uid ?? this.uid,
@@ -116,6 +119,7 @@ class UserEntity {
       signUpDate: signUpDate ?? this.signUpDate,
       isReviewRequestAvailable:
           isReviewRequestAvailable ?? this.isReviewRequestAvailable,
+      loginCount: loginCount ?? this.loginCount,
     );
   }
 }

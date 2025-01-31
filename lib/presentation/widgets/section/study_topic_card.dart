@@ -6,14 +6,12 @@ import 'package:techtalk/core/services/app_size.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 class StudyTopicCard extends StatelessWidget {
-  const StudyTopicCard({
-    super.key,
-    required this.topic,
-    this.onTap,
-  });
+  const StudyTopicCard(
+      {super.key, required this.topic, this.onTap, this.scrollController});
 
   final TopicEntity topic;
   final VoidCallback? onTap;
+  final ScrollController? scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +19,7 @@ class StudyTopicCard extends StatelessWidget {
 
     return BounceTapper(
       onTap: onTap,
+      scrollController: scrollController,
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(

@@ -88,8 +88,10 @@ extension StringExtensions on String {
   /// 2.'-' to ''
   /// 3.'.' to ''
   /// ==> id
-  String get skillNameToId =>
-      toLowerCase().replaceAll(' ', '').replaceAll('-', '').replaceAll('.', '');
+  String get skillNameToId => replaceAll('#', 'sharp')
+      .replaceAll('+', 'plus')
+      .replaceAll(RegExp(r'[^\w]+'), '')
+      .toLowerCase();
 
   ///
   /// 검색 조건을 위해

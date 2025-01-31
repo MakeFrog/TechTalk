@@ -11,10 +11,11 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/core/services/slack_notification_service.dart' as noti;
-import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_blur_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/main/provider/selected_filter_category_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/main/provider/youtube_content_pagination_provider.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
 import 'package:techtalk/presentation/providers/system/notification_status_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_auth_provider.dart';
@@ -74,8 +75,9 @@ mixin class MyPageEvent {
         onRightBtnClicked: () {
           unawaited(noti.SlackNotificationService.sendNotification(
               type: SlackNotificationType.logOut));
-          _clearKeepAliveModules(ref);
+
           const SignInRoute().go(ref.context);
+          _clearKeepAliveModules(ref);
         },
         onLeftBtnClicked: ref.context.pop,
       ),
@@ -100,6 +102,32 @@ mixin class MyPageEvent {
         onLeftBtnClicked: ref.context.pop,
       ),
     );
+  }
+
+  ///
+  /// 내 영상 학습 시청 영역이 클릭되었을 때
+  ///
+  void onMyYoutubeBoardSectionTapped(BuildContext context) {
+    MyYoutubeBoardRoute().push(context);
+  }
+
+  /// 프롤필 영역 클릭 시
+  void onProfileSectionTapped(BuildContext context) {
+    const ProfileSettingRoute().push(context);
+  }
+
+  ///
+  /// 관심 직군 영역 클릭 시
+  ///
+  void onJobGroupSectionTapped(BuildContext context) {
+    JobGroupSettingRoute().push(context);
+  }
+
+  ///
+  /// 관심 스킬 영역 클릭 시
+  ///
+  void onSkillSectionTapped(BuildContext context) {
+    SkillSettingRoute().push(context);
   }
 
   ///
@@ -145,6 +173,14 @@ mixin class MyPageEvent {
     ref.invalidate(mainBottomNavigationProvider);
     ref.invalidate(studyAnswerBlurProvider);
     ref.invalidate(wrongAnswerBlurProvider);
+    if (ref.exists(youtubeContentCategoryProvider)) {
+      final categories = ref.read(youtubeContentCategoryProvider);
+      categories.totalCategories.forEach((e) {
+        if (ref.exists(youtubeContentPaginationProvider(category: e))) {
+          ref.invalidate(youtubeContentPaginationProvider(category: e));
+        }
+      });
+    }
   }
 
   ///

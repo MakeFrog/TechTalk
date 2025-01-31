@@ -4,6 +4,7 @@ class _Scaffold extends StatelessWidget {
   const _Scaffold({
     super.key,
     required this.myInfoCard,
+    required this.myActivityCard,
     required this.settingCard,
     required this.additionalInfoCard,
     required this.introView,
@@ -11,6 +12,7 @@ class _Scaffold extends StatelessWidget {
 
   final Widget introView;
   final Widget myInfoCard;
+  final Widget myActivityCard;
   final Widget settingCard;
   final Widget additionalInfoCard;
 
@@ -23,6 +25,8 @@ class _Scaffold extends StatelessWidget {
         introView,
         const Gap(52),
         myInfoCard,
+        const Gap(24),
+        myActivityCard,
         const Gap(24),
         settingCard,
         const Gap(24),

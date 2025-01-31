@@ -4,7 +4,7 @@ extension JobGroupStepEvent on SignUpEvent {
   ///
   /// 직군 ListTile이 클릭되었을 때
   ///
-  void onJobGroupItemTapped(WidgetRef ref, {required JobGroup item}) {
+  void onJobGroupItemTapped(WidgetRef ref, {required JobGroupEntity item}) {
     final selectedJobGroups = ref.read(selectedJobGroupsProvider);
     if (selectedJobGroups.contains(item)) {
       ref.read(selectedJobGroupsProvider.notifier).remove(item);

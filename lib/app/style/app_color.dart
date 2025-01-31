@@ -22,6 +22,7 @@ class AppColor extends ThemeExtension<AppColor> {
     red3: const Color(0xFFF62B44),
     blue1: const Color(0xFFEDEFFF),
     blue2: const Color(0xFF5C6DFF),
+    blue3: const Color(0xFF3446EA),
     green1: const Color(0xFF79F09A),
     green2: const Color(0xFF30DE80),
     green3: const Color(0xFF02C875),
@@ -50,6 +51,7 @@ class AppColor extends ThemeExtension<AppColor> {
     red3: const Color(0xFFF62B44),
     blue1: const Color(0xFFEDEFFF),
     blue2: const Color(0xFF5C6DFF),
+    blue3: const Color(0xFF3446EA),
     green1: const Color(0xFF79F09A),
     green2: const Color(0xFF30DE80),
     green3: const Color(0xFF02C875),
@@ -79,6 +81,7 @@ class AppColor extends ThemeExtension<AppColor> {
     required this.red3,
     required this.blue1,
     required this.blue2,
+    required this.blue3,
     required this.green1,
     required this.green2,
     required this.green3,
@@ -108,6 +111,7 @@ class AppColor extends ThemeExtension<AppColor> {
   final Color red3;
   final Color blue1;
   final Color blue2;
+  final Color blue3;
   final Color green1;
   final Color green2;
   final Color green3;
@@ -142,6 +146,7 @@ class AppColor extends ThemeExtension<AppColor> {
     Color? red3,
     Color? blue1,
     Color? blue2,
+    Color? blue3,
     Color? green1,
     Color? green2,
     Color? green3,
@@ -169,6 +174,7 @@ class AppColor extends ThemeExtension<AppColor> {
       red3: red3 ?? this.red3,
       blue1: blue1 ?? this.blue1,
       blue2: blue2 ?? this.blue2,
+      blue3: blue3 ?? this.blue3,
       green1: green1 ?? this.green1,
       green2: green2 ?? this.green2,
       green3: green3 ?? this.green3,
@@ -206,6 +212,7 @@ class AppColor extends ThemeExtension<AppColor> {
       red3: Color.lerp(red3, other.red3, t)!,
       blue1: Color.lerp(blue1, other.blue1, t)!,
       blue2: Color.lerp(blue2, other.blue2, t)!,
+      blue3: Color.lerp(blue3, other.blue3, t)!,
       green1: Color.lerp(green1, other.green1, t)!,
       green2: Color.lerp(green2, other.green2, t)!,
       green3: Color.lerp(green3, other.green3, t)!,

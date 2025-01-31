@@ -45,7 +45,7 @@ class SingleTopicInterviewCard extends ConsumerWidget
                   onTap: () {
                     routeToTopicSelectPage(
                       context,
-                      type: InterviewType.singleTopic,
+                      type: InterviewType.commonSingleTopic,
                     );
                   },
                   child: SvgPicture.asset(Assets.iconsRoundBlueCircle),
@@ -97,7 +97,7 @@ class SingleTopicInterviewCard extends ConsumerWidget
           onTap: () {
             routeToChatListPage(
               context,
-              type: InterviewType.singleTopic,
+              type: InterviewType.commonSingleTopic,
               topicId: topic.id,
             );
           },
@@ -146,7 +146,7 @@ class SingleTopicInterviewCard extends ConsumerWidget
                       await Future.delayed(const Duration(milliseconds: 200));
                       routeToChatListPage(
                         context,
-                        type: InterviewType.singleTopic,
+                        type: InterviewType.commonSingleTopic,
                         topicId: topic.id,
                       );
                     },

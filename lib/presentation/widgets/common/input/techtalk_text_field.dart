@@ -26,6 +26,8 @@ class TechtalkTextField extends HookWidget {
     this.inputFormatters,
     this.textInputAction,
     this.keyboardType,
+    this.hintText,
+    this.hintTextStyle,
   }) : inputDecoration = inputDecoration ?? const InputDecoration();
 
   final FocusNode? focusNode;
@@ -42,6 +44,8 @@ class TechtalkTextField extends HookWidget {
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final String? Function(String? value)? validator;
+  final String? hintText;
+  final TextStyle? hintTextStyle;
 
   /// 우측 아이콘을 활성화할지 여부
   final bool activeSuffixIcon;
@@ -61,6 +65,8 @@ class TechtalkTextField extends HookWidget {
     final controller =
         this.controller ?? useTextEditingController(text: initialValue);
     final inputDecoration = this.inputDecoration.copyWith(
+          hintText: hintText,
+          hintStyle: hintTextStyle,
           suffixIcon: activeSuffixIcon && !isFieldEmpty(controller)
               ? _buildClearIcon(controller)
               : null,

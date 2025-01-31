@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
@@ -22,7 +20,6 @@ class SelectedChatRoom extends _$SelectedChatRoom {
     final updatedRoom = state.copyWith(
       lastChatDate: lastChat.timestamp,
       lastChatMessage: lastChat.message.value,
-      chatProgressState: ChatRoomProgress.ongoing,
     );
 
     state = updatedRoom;
@@ -60,6 +57,9 @@ class SelectedChatRoom extends _$SelectedChatRoom {
     );
 
     state = updatedRoom;
-    ref.read(interviewRoomsProvider.notifier).synchronizeRooms(updatedRoom);
+
+    if (!state.type.isYoutube && ref.exists(interviewRoomsProvider)) {
+      ref.read(interviewRoomsProvider.notifier).synchronizeRooms(updatedRoom);
+    }
   }
 }

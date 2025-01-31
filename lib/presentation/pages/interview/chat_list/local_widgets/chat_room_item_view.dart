@@ -34,118 +34,121 @@ class ChatRoomItemView extends StatelessWidget with ChatListEvent {
   @override
   Widget build(BuildContext context) {
     if (isLoaded) {
-      return MaterialButton(
-        padding: const EdgeInsets.symmetric(horizontal: 16) +
-            const EdgeInsets.only(top: 24, bottom: 24),
-        onPressed: () {
+      return BounceTapper(
+        onTap: () {
           routeToChatPage(
             context,
             room: item!,
           );
         },
-        child: SizedBox(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // CHARACTER IMAGE
-              ClipOvalCircleAvatar.create(
-                svgPath: item!.interviewer.iconPath,
-                size: 64,
-              ),
-              const SizedBox(
-                width: 16,
-              ),
-              SizedBox(
-                width: AppSize.ratioWidth(174),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // CHARACTER NAME
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16) +
+              const EdgeInsets.only(top: 24, bottom: 24),
+          child: SizedBox(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                // CHARACTER IMAGE
+                ClipOvalCircleAvatar.create(
+                  svgPath: item!.interviewer.iconPath,
+                  size: 64,
+                ),
+                const SizedBox(
+                  width: 16,
+                ),
+                SizedBox(
+                  width: AppSize.ratioWidth(174),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // CHARACTER NAME
+                      Text(
+                        tr(LocaleKeys.common_interviewTerms_interviewer, args: [
+                          tr(item!.interviewer.name),
+                        ]),
+                        style: AppTextStyle.title1,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                      const Gap(9),
+
+                      /// LAST CHAT MESSAGE or TOPIC CHIP LIST
+                      Builder(
+                        builder: (context) {
+                          if (item!.type.isPractical) {
+                            return Wrap(
+                              children: [
+                                ...List.generate(
+                                  item!.topics.length,
+                                  (index) => NormalRoundedChip(
+                                    margin: const EdgeInsets.only(
+                                      bottom: 6,
+                                      right: 6,
+                                    ),
+                                    text: item!.topics[index].text,
+                                  ),
+                                )
+                              ],
+                            );
+                          } else {
+                            return Text(
+                              item!.lastChatMessage ?? '',
+                              style: AppTextStyle.alert2,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            );
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+
+                const Spacer(),
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    // LAST CHAT DATE
                     Text(
-                      tr(LocaleKeys.common_interviewTerms_interviewer, args: [
-                        tr(item!.interviewer.name),
-                      ]),
-                      style: AppTextStyle.title1,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
+                      item!.lastChatDate?.formatyyMMdd ?? '',
+                      style: AppTextStyle.alert2.copyWith(
+                        color: AppColor.of.gray3,
+                      ),
                     ),
                     const Gap(9),
-
-                    /// LAST CHAT MESSAGE or TOPIC CHIP LIST
+                    // PROGRESS INDICATOR
                     Builder(
                       builder: (context) {
-                        if (item!.type.isPractical) {
-                          return Wrap(
-                            children: [
-                              ...List.generate(
-                                item!.topics.length,
-                                (index) => NormalRoundedChip(
-                                  margin: const EdgeInsets.only(
-                                    bottom: 6,
-                                    right: 6,
-                                  ),
-                                  text: item!.topics[index].text,
-                                ),
-                              )
-                            ],
-                          );
-                        } else {
-                          return Text(
-                            item!.lastChatMessage ?? '',
-                            style: AppTextStyle.alert2,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          );
+                        switch (item!.progressState) {
+                          case ChatRoomProgress.initial ||
+                                ChatRoomProgress.ongoing:
+                            return NormalRoundedChip(
+                              text:
+                                  '${item!.completedQuestionCount}/${item!.progressInfo.totalQuestionCount}',
+                            );
+
+                          case ChatRoomProgress.completed:
+                            return ResponseIndicator(
+                              followupStatus: FollowupStatus
+                                  .no, // TODO : 꼬리질문 기능 도입시 해당 부분 수정 필요
+                              chatResult: item!.passOrFail,
+                              text: item!.passOrFail.isPassed
+                                  ? context
+                                      .tr(LocaleKeys.common_responseResult_pass)
+                                  : context.tr(
+                                      LocaleKeys.common_responseResult_fail,
+                                    ),
+                            );
+                          default:
+                            throw UnimplementedError('잘못된 enum값 입니다');
                         }
                       },
                     ),
                   ],
                 ),
-              ),
-
-              const Spacer(),
-
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  // LAST CHAT DATE
-                  Text(
-                    item!.lastChatDate?.formatyyMMdd ?? '',
-                    style: AppTextStyle.alert2.copyWith(
-                      color: AppColor.of.gray3,
-                    ),
-                  ),
-                  const Gap(9),
-                  // PROGRESS INDICATOR
-                  Builder(
-                    builder: (context) {
-                      switch (item!.progressState) {
-                        case ChatRoomProgress.initial ||
-                              ChatRoomProgress.ongoing:
-                          return NormalRoundedChip(
-                            text:
-                                '${item!.completedQuestionCount}/${item!.progressInfo.totalQuestionCount}',
-                          );
-
-                        case ChatRoomProgress.completed:
-                          return ResponseIndicator(
-                            followupStatus: FollowupStatus.no, // TODO : 꼬리질문 기능 도입시 해당 부분 수정 필요
-                            chatResult: item!.passOrFail,
-                            text: item!.passOrFail.isPassed
-                                ? context
-                                    .tr(LocaleKeys.common_responseResult_pass)
-                                : context.tr(
-                                    LocaleKeys.common_responseResult_fail,
-                                  ),
-                          );
-                        default:
-                          throw UnimplementedError('잘못된 enum값 입니다');
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );

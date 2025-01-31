@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
-
 ///
 /// 개발 직군 리스트.
 /// 원티드 채용 사이트를 참고함.
 ///
 
-enum JobGroup {
+enum JobGroupTypes {
   SOFTWARE_ENGINEER('software-engineer', '소프트웨어 엔지니어', 'Software Engineer'),
   WEB_DEVELOPER('web-developer', '웹 개발자', 'Web Developer'),
   SERVER_DEVELOPER('server-developer', '서버 개발자', 'Server Developer'),
@@ -47,26 +45,19 @@ enum JobGroup {
   VR_ENGINEER('vr-engineer', 'VR 엔지니어', 'VR Engineer'),
   BI_ENGINEER('bi-engineer', 'BI 엔지니어', 'BI Engineer'),
   RUBY_ON_RAILS_DEVELOPER(
-      'ruby-on-rails-developer', '루비온레일즈 개발자', 'Ruby on Rails Developer');
+      'ruby-on-rails-developer', '루비온레일즈 개발자', 'Ruby on Rails Developer'),
+  UNDEFINED('undefined', 'undefined', 'undefined');
 
   final String id;
   final String name;
   final String enName;
 
-  const JobGroup(this.id, this.name, this.enName);
+  const JobGroupTypes(this.id, this.name, this.enName);
 
-  static JobGroup getById(String id) =>
-      values.firstWhere(
-            (job) => job.id == id,
-        orElse: () => throw Exception('Incorrect Id: $id'),
+  static JobGroupTypes getById(String id) => values.firstWhere(
+        (job) => job.id == id,
+        orElse: () => JobGroupTypes.UNDEFINED,
       );
 
-
-}
-
-class TestWidget {
-  final GlobalKey<AnimatedListState> animatedlistKey;
-  final JobGroup job;
-
-  TestWidget(this.animatedlistKey, this.job);
+  bool get isUndefined => this == JobGroupTypes.UNDEFINED;
 }

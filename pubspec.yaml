@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none"
 
-version: 1.0.11+29
+version: 1.1.0+30
 
 environment:
   sdk: ">=3.0.6 <4.0.0"
@@ -29,15 +29,19 @@ dependencies:
   smooth_page_indicator: ^1.1.0 # pageview 인디케이터
   flutter_animate: ^4.2.0+1 # 간편 애니메이션 메소드 지원
   cached_network_image: ^3.3.0 # 네트워크 이미지 캐싱
-  bounce_tapper: ^1.0.9
+  flutter_layout_grid: ^2.0.7
+  lottie: ^3.2.0
+  bounce_tapper: ^1.1.4
   expandable_page_view: ^1.0.17
+  measure_size_builder: ^1.0.3
+
   local_hero: ^0.3.0
   defer_pointer: ^0.0.2 # Overflow 영역에도 터치를 보장할 수 있도록 도와주는 패키지
   gap: ^3.0.1 # 간격 위젯
   # 상태관리
   provider: ^6.0.5
-  hooks_riverpod: ^2.4.0
-  riverpod_annotation: ^2.1.5
+  hooks_riverpod: "2.4.0"
+  riverpod_annotation: "2.1.5"
   rxdart: ^0.27.7
   flutter_hooks: ^0.20.1
 
@@ -51,7 +55,7 @@ dependencies:
   firebase_core: ^3.6.0
   firebase_auth: ^5.3.1
   firebase_messaging: ^15.1.3
-  cloud_firestore: ^5.4.4
+  cloud_firestore: ^5.6.1
   firebase_storage: ^12.3.4
   firebase_crashlytics: ^4.1.3
   firebase_analytics: ^11.3.3
@@ -72,12 +76,17 @@ dependencies:
   json_serializable: ^6.7.1
   json_annotation: ^4.8.1
 
+  # 영상 관련
+  youtube_explode_dart: ^2.3.6
+
   # Utils
+  pointer_interceptor: ^0.10.1+2
   dart_openai: ^5.1.0 #Whisper 사용 목적
   crypto: ^3.0.3 # 해슁
   async: ^2.11.0 # 비동기 처리
   flutter_dotenv: ^5.0.2 # dotnev
   intl: ^0.19.0 # 포맷팅
+  flutter_background_service: ^5.1.0 # 백그라운드 핸들링
   permission_handler: ^11.3.1 #각종 플랫폼 권한 허용 및 감지
   uuid: ^4.1.0 # uuid 제너레이터
   image_picker: ^1.0.5 # 갤러리 접근
@@ -86,26 +95,34 @@ dependencies:
   app_settings: ^5.1.1 # Device Setting Route
   korean_profanity_filter: ^1.0.0 # 비속어 욕설 필터링
   icons_launcher: ^2.1.7 # 앱 아이콘
-  in_app_review: ^2.0.8 # 인앱 리뷰
+  in_app_review: "2.0.10" # 인앱 리뷰
   url_launcher: ^6.2.5 # url 런쳐
+  easy_isolate_mixin: ^1.0.1 # Isolate
+  flutter_local_notifications: 18.0.1 # 로컬 푸시
+  youtube_player_iframe: ^5.2.1 # 유튜브
+  logger: ^2.5.0
+  device_info_plus: ^11.2.0
+  pod_player: ^0.2.2
   connectivity_plus: ^5.0.2 # 네트워크 연결 상태 관리합
   easy_localization: ^3.0.0 # 다국어 지원
   collection: ^1.18.0 # 콜렉션 타입 익스텐션 지원 메소드
+  infinite_scroll_pagination: ^4.1.0 # 무한스크롤 페이지네이션
+  extended_nested_scroll_view: ^6.2.1
   # 앱 정보
   package_info_plus: ^8.0.2 # 현재 앱 버전 정보
   pub_semver: ^2.1.4 # 주부수 버전 비교 연산
 
 dev_dependencies:
   flutter_lints: ^2.0.1
-  build_runner: ^2.4.6
+  build_runner: ^2.4.11
   go_router_builder: ^2.4.1
   build_verify: any
-  riverpod_generator: ^2.3.2
+  riverpod_generator: "^2.3.2"
   custom_lint: ^0.5.3
   riverpod_lint: ^2.1.0
   retrofit_generator: ^7.0.8
   freezed: ^2.4.3
-  analyzer: ^6.4.1
+  analyzer: "6.4.1"
   hive_generator: ^2.0.1
 
 flutter:
@@ -121,7 +138,8 @@ flutter:
     - assets/character/
     - assets/translations/
     - assets/skills/
-
+    - assets/lottie/
+    - assets/json/
 
   fonts:
     - family: pretendard

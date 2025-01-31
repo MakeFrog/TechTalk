@@ -6,6 +6,7 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/presentation/pages/my_info/my_page/my_page_event.dart';
 import 'package:techtalk/presentation/widgets/common/chip/rounded_filled_chip.dart';
+import 'package:techtalk/presentation/widgets/common/chip/rounded_outlined_chip.dart';
 import 'package:techtalk/presentation/widgets/common/chip/rounded_skill_filled_chip.dart';
 
 ///
@@ -89,8 +90,10 @@ class ExpandableSkillWrappedListview extends HookWidget with MyPageEvent {
                             ...List.generate(
                               itemCollection.length,
                               (index) {
-                                return RoundedSkillFilledChip(
-                                  skill: itemCollection[index].skill,
+                                return RoundedOutlinedChip(
+                                  label: itemCollection[index].skill.name,
+                                  imagePath:
+                                      itemCollection[index].skill.imagePath,
                                 );
                               },
                             )
@@ -140,8 +143,9 @@ class ExpandableSkillWrappedListview extends HookWidget with MyPageEvent {
           ...List.generate(
             itemCollection.length,
             (index) {
-              return RoundedSkillFilledChip(
-                skill: itemCollection[index].skill,
+              return RoundedOutlinedChip(
+                label: itemCollection[index].skill.name,
+                imagePath: itemCollection[index].skill.imagePath,
                 key: itemCollection[index].key,
               );
             },

@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:techtalk/app/di/modules/system_di.dart';
-import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/data_source/remote/models/follow_up_qna_model.dart';
+import 'package:techtalk/features/chat/data_source/remote/models/resume_field_model.dart';
+import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
@@ -24,16 +24,18 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
     TopicEntity? topic,
   ]) async {
     final snapshot = switch (type) {
-      InterviewType.singleTopic => await FirestoreChatRoomRef.collection()
+      InterviewType.commonSingleTopic => await FirestoreChatRoomRef.collection()
           .where(FirestoreChatRoomRef.typeField, isEqualTo: type.name)
           .where(FirestoreChatRoomRef.topicIdsField, arrayContains: topic!.id)
           .get(),
-      InterviewType.practical => await FirestoreChatRoomRef.collection()
-          .where(FirestoreChatRoomRef.typeField, isEqualTo: type.name)
-          .get(),
+      InterviewType.commonPracticalTopic =>
+        await FirestoreChatRoomRef.collection()
+            .where(FirestoreChatRoomRef.typeField, isEqualTo: type.name)
+            .get(),
       InterviewType.resume => await FirestoreChatRoomRef.collection()
           .where(FirestoreChatRoomRef.typeField, isEqualTo: type.name)
           .get(),
+      InterviewType.youtube => throw Exception('유튜브 면접은 면접 리스트를 생성 및 호출하지 않음'),
     };
 
     return [
@@ -171,10 +173,18 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
     await FirebaseFirestore.instance.runTransaction((transaction) async {
       for (final chatQna in chatQnas) {
         final qnaDoc = FirestoreChatQnaRef.doc(roomModel.id, chatQna.qna.id);
+        final qna = chatQna.qna;
         transaction.set(
           qnaDoc,
           ChatQnaModel(
             id: qnaDoc.id,
+            resumeField: qna.type.isResume
+                ? ResumeFieldModel(
+                    question: qna.question,
+                    evaluationPoint: (qna as ResumeQnaEntity).evaluationPoint,
+                    questionType: qna.questionType,
+                  )
+                : null,
           ),
         );
       }

@@ -16,9 +16,7 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
 
   @override
   Future<List<TopicQnaModel>> getQnas(String topicId) async {
-    final snapshot = await FirestoreTopicQuestionsRef.collection(topicId,
-            locale: AppLocale.currentLocale)
-        .get();
+    final snapshot = await FirestoreTopicQuestionsRef.collection(topicId, locale: AppLocale.currentLocale).get();
 
     if (snapshot.docs.isEmpty) {
       throw Exception();
@@ -45,8 +43,7 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
   }
 
   @override
-  Future<void> updateWrongAnswer(
-      {required WrongAnswerModel wrongAnswer, required String topicId}) async {
+  Future<void> updateWrongAnswer({required WrongAnswerModel wrongAnswer, required String topicId}) async {
     await FirebaseFirestore.instance.runTransaction(
       (transaction) async {
         final docRef = FirestoreTopicWrongAnswerRef.subCollectionDoc(
@@ -59,12 +56,9 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
 
         if (prevDoc.exists) {
           transaction.update(docRef, {
-            FirestoreTopicWrongAnswerRef.wrongAnswerCountField:
-                FieldValue.increment(1),
-            FirestoreTopicWrongAnswerRef.updatedAtField:
-                FieldValue.serverTimestamp(),
-            FirestoreTopicWrongAnswerRef.userAnswerField:
-                wrongAnswer.userAnswer,
+            FirestoreTopicWrongAnswerRef.wrongAnswerCountField: FieldValue.increment(1),
+            FirestoreTopicWrongAnswerRef.updatedAtField: FieldValue.serverTimestamp(),
+            FirestoreTopicWrongAnswerRef.userAnswerField: wrongAnswer.userAnswer,
           });
         } else {
           transaction.set(
@@ -78,8 +72,7 @@ final class TopicRemoteDataSourceImpl implements TopicRemoteDataSource {
 
   @override
   Future<List<WrongAnswerModel>> getWrongAnswers(String topicId) async {
-    final collectionRef = FirestoreTopicWrongAnswerRef.subCollection(
-            topicId, FirebaseAuth.instance.currentUser!.uid)
+    final collectionRef = FirestoreTopicWrongAnswerRef.subCollection(topicId, FirebaseAuth.instance.currentUser!.uid)
         .orderBy('updated_at', descending: true);
 
     final snapshot = await collectionRef.get();

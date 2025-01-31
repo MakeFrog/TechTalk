@@ -1,8 +1,8 @@
 import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/app/di/feature_di_interface.dart';
-import 'package:techtalk/app/network/app_dio.dart';
 import 'package:techtalk/core/modules/local/app_local.dart';
 import 'package:techtalk/features/tech_set/data_source/remote/tech_set_remote_data_source.dart';
+import 'package:techtalk/features/tech_set/data_source/remote/tech_set_remote_data_source_impl.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/features/tech_set/usecases/get_searched_skills_use_case.dart';
 
@@ -14,7 +14,7 @@ final class TechSetDependencyInjection extends FeatureDependencyInjection {
         () => TechSetLocalDataSourceImpl(AppLocal.techSetBox),
       )
       ..registerLazySingleton<TechSetRemoteDataSource>(
-          () => TechSetRemoteDataSource(AppDio.getInstance()));
+          () => TechSetRemoteDataSourceIml());
   }
 
   @override

@@ -1,17 +1,14 @@
 import 'dart:developer';
 import 'dart:math' as math;
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
-import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/use_cases/get_one_line_interview_feedback_use_case.dart';
 import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
 import 'package:techtalk/features/user/user.dart';
+import 'package:techtalk/features/youtube/repositories/entities/video_overview_entity.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_async_adapter_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
@@ -22,16 +19,11 @@ import 'package:techtalk/presentation/pages/interview/chat/providers/is_follow_u
 import 'package:techtalk/presentation/pages/interview/chat/providers/main_input_controller_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/one_line_feedback_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/recognized_text_provider.dart';
+import 'package:techtalk/presentation/pages/interview/chat/providers/recommended_youtube_video_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 
 mixin class ChatState {
-  ///
-  /// 채팅 목록
-  ///
-  AsyncValue<List<BaseChatEntity>> messageHistoryAsync(WidgetRef ref) =>
-      ref.watch(chatMessageHistoryProvider);
-
   ///
   /// 면접과 정보
   ///
@@ -54,6 +46,11 @@ mixin class ChatState {
   /// 채팅방
   ///
   ChatRoomEntity room(WidgetRef ref) => ref.watch(selectedChatRoomProvider);
+
+  ///
+  /// 채팅방 (Read)
+  ///
+  ChatRoomEntity readRoom(WidgetRef ref) => ref.read(selectedChatRoomProvider);
 
   ///
   /// 인터뷰 진행 상태
@@ -144,13 +141,25 @@ mixin class ChatState {
   ///
   /// 현재 선택된 주제와 관련된 주제 (여러개 중 하나를 랜덤으로 추출)
   ///
-  TopicEntity randomRelatedTopicName(WidgetRef ref) {
-    final relatedTopics =
-        ref.read(selectedChatRoomProvider).topics.first.relatedSkillIds;
+  TopicEntity? randomRelatedTopicName(WidgetRef ref) {
+    final room = ref.read(selectedChatRoomProvider);
+
+    //// 단골 면접 질문 타입이 아닌 경우 리턴
+    if (!room.type.isCommonQuestionType) return null;
+
+    final relatedTopics = room.topics.first.relatedSkillIds;
 
     final math.Random random = math.Random();
     final int randomIndex = random.nextInt(relatedTopics.length);
 
     return StoredTopics.getById(relatedTopics[randomIndex]);
+  }
+
+  ///
+  /// [InterviewType]이 'youtube'일 경우
+  /// 면접이 종료되고 보여지는 화면에서 노출되는 관련 비디오 콘텐츠
+  ///
+  AsyncValue<VideoOverviewEntity> recommendYoutubeContent(WidgetRef ref) {
+    return ref.watch(recommendedYoutubeVideoProvider);
   }
 }

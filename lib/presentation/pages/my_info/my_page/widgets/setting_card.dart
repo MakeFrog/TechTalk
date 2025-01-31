@@ -8,60 +8,65 @@ class _SettingCard extends ConsumerWidget with MyPageState, MyPageEvent {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          tr(LocaleKeys.myInfo_settings_settings),
-          style: AppTextStyle.title1,
+        Padding(
+          padding: const EdgeInsets.only(left: 4),
+          child: Text(
+            tr(LocaleKeys.myInfo_settings_settings),
+            style: AppTextStyle.headline3,
+          ),
         ),
         const Gap(8),
         Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 24,
-          ),
+          padding: const EdgeInsets.fromLTRB(4, 24, 4, 12),
           decoration: BoxDecoration(
-            color: AppColor.of.white,
             borderRadius: BorderRadius.circular(16),
+            color: AppColor.of.white,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Wrap(
-                    direction: Axis.vertical,
-                    alignment: WrapAlignment.center,
-                    spacing: 4,
-                    children: [
-                      Text(
-                        tr(LocaleKeys.permission_alarm_title),
-                        style: AppTextStyle.title3,
-                      ),
-                      Text(
-                        tr(LocaleKeys.permission_alarm_desc),
-                        style: AppTextStyle.body3.copyWith(
-                          color: AppColor.of.gray3,
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Wrap(
+                      direction: Axis.vertical,
+                      alignment: WrapAlignment.center,
+                      spacing: 4,
+                      children: [
+                        Text(
+                          tr(LocaleKeys.permission_alarm_title),
+                          style: AppTextStyle.title2,
                         ),
-                      ),
-                    ],
-                  ),
-                  isNotificationGranted(ref).when(
-                    data: (isGranted) {
-                      return FlatSwitch(
-                        height: 24,
-                        value: isGranted,
-                        bgColor: AppColor.of.blue2,
-                        onTap: (_) {
-                          onNotificationSwitchBtnTapped(ref);
-                        },
-                      );
-                    },
-                    error: (_, __) => const EmptyBox(),
-                    loading: () => const EmptyBox(),
-                  ),
-                ],
+                        const Gap(4),
+                        Text(
+                          tr(LocaleKeys.permission_alarm_desc),
+                          style: AppTextStyle.body3.copyWith(
+                            color: AppColor.of.gray3,
+                          ),
+                        ),
+                      ],
+                    ),
+                    isNotificationGranted(ref).when(
+                      data: (isGranted) {
+                        return FlatSwitch(
+                          height: 24,
+                          value: isGranted,
+                          bgColor: AppColor.of.blue2,
+                          onTap: (_) {
+                            onNotificationSwitchBtnTapped(ref);
+                          },
+                        );
+                      },
+                      error: (_, __) => const EmptyBox(),
+                      loading: () => const EmptyBox(),
+                    ),
+                  ],
+                ),
               ),
               const Gap(12),
               FutureBuilder(
@@ -77,14 +82,17 @@ class _SettingCard extends ConsumerWidget with MyPageState, MyPageEvent {
                   }
                 },
               ),
+              const Gap(12),
               CardListTileButton(
                 onTap: onVisitCsPageTapped,
                 text: tr(LocaleKeys.myInfo_settings_feedbackAndInquiries),
               ),
+              const Gap(12),
               CardListTileButton(
                 onTap: onVisitPolicyPageBtnTapped,
                 text: tr(LocaleKeys.myInfo_settings_privacyAndTerms),
               ),
+              const Gap(12),
               CardListTileButton(
                 onTap: onRateAppTapped,
                 text: tr(LocaleKeys.myInfo_settings_rateApp),

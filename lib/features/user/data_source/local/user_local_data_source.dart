@@ -1,7 +1,6 @@
 import 'package:techtalk/features/user/user.dart';
 
 abstract interface class UserLocalDataSource {
-
   ///
   /// 유저의 로컬 정보 업데이트
   ///
@@ -21,4 +20,11 @@ abstract interface class UserLocalDataSource {
   /// 유저 앱 평가 요청 가능 상태를 비활성화
   ///
   Future<void> disableReviewAvailableState();
+
+  ///
+  /// 유저 로컬에 새로운 값 저장
+  /// TODO
+  /// 나머지 로컬 데이터 저장 로직들을 해당 메소드로 통합 필요
+  ///
+  Future<void> storeNewLocalState(UserBox userBox);
 }

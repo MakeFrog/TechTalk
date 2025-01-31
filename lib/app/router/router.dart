@@ -3,8 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
-import 'package:techtalk/features/chat/repositories/enums/interview_type.enum.dart';
 import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_route_arg.dart';
@@ -13,6 +13,7 @@ import 'package:techtalk/presentation/pages/interview/question_count_select/ques
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/job_group_setting_page.dart';
+import 'package:techtalk/presentation/pages/my_info/my_youtube_board/my_youtube_board_page.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_setting_page.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/skill_setting_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
@@ -20,6 +21,19 @@ import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
 import 'package:techtalk/presentation/pages/study/learning/learning_detail_page.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_detail_page.dart';
+import 'package:techtalk/presentation/pages/wrong_answer_note/wrong_answer_note_page.dart';
+import 'package:techtalk/presentation/pages/youtube/channel_detail/channel_detail_page.dart';
+import 'package:techtalk/presentation/pages/youtube/channel_detail/provider/channel_detail_route_arg_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/detail/youtube_detail_page.dart';
+import 'package:techtalk/presentation/pages/youtube/main/youtube_main_page.dart';
+import 'package:techtalk/presentation/pages/youtube/upload/analyze_youtube/analyze_youtube_page.dart';
+import 'package:techtalk/presentation/pages/youtube/upload/submitted_youtube_confirm/provider/submitted_youtube_confirm_arg_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/upload/submitted_youtube_confirm/submitted_youtube_confirm_page.dart';
+import 'package:techtalk/presentation/pages/youtube/upload/youtube_link_submit/youtube_link_submit_page.dart';
+import 'package:techtalk/presentation/pages/youtube/upload_failed/provider/youtube_upload_failed_route_arg_provider.dart';
+import 'package:techtalk/presentation/pages/youtube/upload_failed/youtube_upload_fail_page.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 part 'router.g.dart';
 
@@ -154,6 +168,42 @@ class SignUpRoute extends GoRouteData {
       path: StudyRoute.path,
       name: StudyRoute.name,
     ),
+    TypedGoRoute<WrongAnswerNoteRoute>(
+      path: WrongAnswerNoteRoute.path,
+      name: WrongAnswerNoteRoute.name,
+    ),
+    TypedGoRoute<YoutubeContentsMainListRoute>(
+      path: YoutubeContentsMainListRoute.path,
+      name: YoutubeContentsMainListRoute.name,
+    ),
+    TypedGoRoute<YoutubeDetailRoute>(
+      path: YoutubeDetailRoute.path,
+      name: YoutubeDetailRoute.name,
+    ),
+    TypedGoRoute<ChannelDetailRoute>(
+      path: ChannelDetailRoute.path,
+      name: ChannelDetailRoute.name,
+    ),
+    TypedGoRoute<YoutubeLinkSubmitRoute>(
+      path: YoutubeLinkSubmitRoute.path,
+      name: YoutubeLinkSubmitRoute.name,
+    ),
+    TypedGoRoute<MyYoutubeBoardRoute>(
+      path: MyYoutubeBoardRoute.path,
+      name: MyYoutubeBoardRoute.name,
+    ),
+    TypedGoRoute<SubmittedYoutubeConfirmRoute>(
+      path: SubmittedYoutubeConfirmRoute.path,
+      name: SubmittedYoutubeConfirmRoute.name,
+    ),
+    TypedGoRoute<YoutubeContentUploadFailedRoute>(
+      path: YoutubeContentUploadFailedRoute.path,
+      name: YoutubeContentUploadFailedRoute.name,
+    ),
+    TypedGoRoute<AnalyzeYoutubeRoute>(
+      path: AnalyzeYoutubeRoute.path,
+      name: AnalyzeYoutubeRoute.name,
+    ),
     TypedGoRoute<WrongAnswerRoute>(
       path: WrongAnswerRoute.path,
       name: WrongAnswerRoute.name,
@@ -208,6 +258,145 @@ class StudyRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     arg = $extra;
     return const LearningDetailPage();
+  }
+}
+
+class WrongAnswerNoteRoute extends GoRouteData {
+  static const String path = 'wrong-answer-note';
+  static const String name = 'wrong answer note';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const WrongAnswerNotePage();
+  }
+}
+
+class MyYoutubeBoardRoute extends GoRouteData {
+  static const String path = 'my-youtube-board';
+  static const String name = 'my youtube board';
+  static late TopicEntity arg;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const MyYoutubeBoardPage();
+  }
+}
+
+class ChannelDetailRoute extends GoRouteData {
+  static const String path = 'channel-detail-route/:channelId';
+  static const String name = 'channel detail route';
+
+  ChannelDetailRoute(this.$extra) : channelId = $extra.channel.id;
+
+  final ChannelDetailRouteArg $extra;
+
+  final String channelId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ChannelDetailPage($extra);
+  }
+}
+
+class YoutubeContentsMainListRoute extends GoRouteData {
+  YoutubeContentsMainListRoute();
+
+  static const String path = 'contents-main-list';
+  static const String name = 'contents-main-list';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const YoutubeMainPage();
+  }
+}
+
+class YoutubeDetailRoute extends GoRouteData {
+  YoutubeDetailRoute(this.$extra) : contentId = $extra.contentId;
+
+  static const String path = 'youtube-detail/:contentId';
+  static const String name = 'youtube detail';
+
+  final YoutubeDetailArg $extra;
+
+  final String contentId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return YoutubeDetailPage(
+      argument: $extra,
+    );
+  }
+}
+
+class YoutubeLinkSubmitRoute extends GoRouteData {
+  const YoutubeLinkSubmitRoute();
+
+  static const String path = 'youtube-link-submit';
+  static const String name = 'youtube link submit';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const YoutubeLinkSubmitPage();
+  }
+}
+
+class SubmittedYoutubeConfirmRoute extends GoRouteData {
+  const SubmittedYoutubeConfirmRoute(
+    this.$extra,
+  );
+
+  final SubmittedYoutubeConfirmArg $extra;
+
+  static const String path = 'submitted-youtube-confirm-route';
+  static const String name = 'submitted youtube confirm route';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return SubmittedYoutubeConfirmPage(
+      arg: $extra,
+    );
+  }
+}
+
+class AnalyzeYoutubeRoute extends GoRouteData {
+  const AnalyzeYoutubeRoute(
+    this.$extra,
+  );
+
+  final YoutubeVideoEntity $extra;
+
+  static const String path = 'analyze-youtube';
+  static const String name = 'analyze youtube';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return AnalyzeYoutubePage(
+      video: $extra,
+    );
+  }
+}
+
+class YoutubeContentUploadFailedRoute extends GoRouteData {
+  const YoutubeContentUploadFailedRoute({
+    required this.failedType,
+    this.$extra,
+  });
+
+  static const String path = 'youtube-content-upload-failed';
+  static const String name = 'youtube content upload failed';
+
+  final YoutubeUploadFailedType failedType;
+
+  final Video? $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return YoutubeUploadFailedPage(
+      arg: YoutubeUploadFailedArg(
+        type: failedType,
+        video: $extra,
+      ),
+    );
   }
 }
 

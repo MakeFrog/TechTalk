@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
-import 'package:techtalk/core/constants/job_group.enum.dart';
-import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
+import 'package:techtalk/features/tech_set/tech_set.dart';
 
 class JobGroupSliverListView extends SliverList {
   JobGroupSliverListView(
       {super.key,
-      required List<JobGroup> selectedJobGroups,
-      required Function(JobGroup) onItemTap})
+      required List<JobGroupEntity> selectedJobGroups,
+      required Function(JobGroupEntity) onItemTap})
       : super.builder(
           itemBuilder: (context, index) {
-            final item = JobGroup.values[index];
+            final item = techSetRepository.getJobs()[index];
             final isSelected = selectedJobGroups.contains(item);
 
             return ListTile(
@@ -25,7 +24,7 @@ class JobGroupSliverListView extends SliverList {
               title: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  AppLocale.isKo ? item.name : item.enName,
+                  item.name,
                   style: AppTextStyle.body2,
                 ),
               ),
@@ -41,6 +40,6 @@ class JobGroupSliverListView extends SliverList {
               },
             );
           },
-          itemCount: JobGroup.values.length,
+          itemCount: techSetRepository.getJobs().length,
         );
 }
