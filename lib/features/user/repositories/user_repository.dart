@@ -3,8 +3,11 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
+import 'package:techtalk/features/user/data_source/remote/models/bookmarked_youtube_content_model.dart';
+import 'package:techtalk/features/user/data_source/remote/models/uploaded_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
 import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
+import 'package:techtalk/features/youtube/data_source/remote/models/youtube_main_entity.dart';
 
 abstract interface class UserRepository {
   ///
@@ -102,10 +105,38 @@ abstract interface class UserRepository {
   /// 유튜브 영상 기록 호출
   ///
   Future<
+          Result<
+              FirebasePaginatedResult<YoutubeMainEntity, WatchedYoutubeModel>>>
+      getPagedWatchedYoutubeHistory({
+    DocumentSnapshot<WatchedYoutubeModel>? lastDocument,
+    required int limit,
+  });
+
+  ///
+  ///
+  ///
+  ///
+  /// 북마크한 유튜브 영상 기록 호출
+  ///
+  Future<
       Result<
-          FirebasePaginatedResult<WatchedYoutubeContent,
-              WatchedYoutubeContent>>> getPagedWatchedYoutubeHistory({
-    DocumentSnapshot<WatchedYoutubeContent>? lastDocument,
+          FirebasePaginatedResult<YoutubeMainEntity,
+              BookmarkedYoutubeModel>>> getPagedBookmarkedYoutube({
+    DocumentSnapshot<BookmarkedYoutubeModel>? lastDocument,
+    required int limit,
+  });
+
+  ///
+  ///
+  ///
+  ///
+  /// 내가 업로드한 유튜브 영상 호출
+  ///
+  Future<
+          Result<
+              FirebasePaginatedResult<YoutubeMainEntity, UploadedYoutubeModel>>>
+      getPagedUploadedYoutube({
+    DocumentSnapshot<UploadedYoutubeModel>? lastDocument,
     required int limit,
   });
 }
