@@ -131,13 +131,13 @@ final class AnalyzeAndUploadYoutubeUseCase
       final mergedSummaryResponse = mergedSummary;
 
       // 7) 유효성 체크 (테크 영상인지 여부)
+      if (qnaAndIdsResult.type == YoutubeContentAnalyzedType.notTech) {
+        throw const YtIsNotTechContentException();
+      }
+
       if (qnaAndIdsResult.type == YoutubeContentAnalyzedType.lackOfContent ||
           qnaAndIdsResult.qnas.isEmpty) {
         throw const YtInvalidVideoContentException();
-      }
-
-      if (qnaAndIdsResult.type == YoutubeContentAnalyzedType.notTech) {
-        throw const YtIsNotTechContentException();
       }
 
       // 8) 요약된 내용이 있는지 여부
