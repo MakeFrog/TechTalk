@@ -9,7 +9,6 @@ part of 'show_upload_floating_button_provider.dart';
 String _$showUploadFloatingButtonHash() =>
     r'a2464e9e1009f3b5f2aa802076412251bcb3a70e';
 
-/// Riverpod의 자동 코드 제너레이션을 이용한 "StateNotifierProvider<bool>" 역할.
 ///
 /// - [uploadedHistoryPagingControllerProvider]를 watch하여,
 ///   아이템 개수에 따라 `true`/`false`를 결정합니다.

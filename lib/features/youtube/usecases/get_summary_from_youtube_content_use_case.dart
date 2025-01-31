@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dart_openai/dart_openai.dart';
+import 'package:techtalk/app/environment/app_version.dart';
 import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/system/repositories/entities/youtube_gpt_model_type.enum.dart';
 import 'package:techtalk/features/youtube/index.dart';
 
 class GetSummaryFromYoutubeContentUseCase
@@ -75,12 +77,14 @@ class GetSummaryFromYoutubeContentUseCase
 
     final startTime = DateTime.now();
 
+    final model = AppVersion().to?.youtubeGptModel ?? YoutubeGptModelType.gpt4o;
     try {
       OpenAIChatCompletionModel completion = await OpenAI.instance.chat.create(
-        model: "o1",
+        model: model.id,
         messages: [
           systemMessage,
         ],
+        temperature: model.isGpt4o ? 1.0 : null,
         responseFormat: {"type": "json_object"},
       );
 

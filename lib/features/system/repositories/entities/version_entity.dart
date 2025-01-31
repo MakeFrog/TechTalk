@@ -1,5 +1,6 @@
 import 'package:pub_semver/pub_semver.dart';
 import 'package:techtalk/features/system/data_source/remote/models/version_model.dart';
+import 'package:techtalk/features/system/repositories/entities/youtube_gpt_model_type.enum.dart';
 
 class VersionEntity {
   /// 최소 버전
@@ -13,6 +14,9 @@ class VersionEntity {
 
   final String notification;
 
+  /// 유튜브섹션에서 사용되는 gpt 모델
+  final YoutubeGptModelType youtubeGptModel;
+
   /// 현재 리뷰중인 버전인지 여부
   final bool isSystemAvailable;
   final bool needUpdate;
@@ -22,6 +26,7 @@ class VersionEntity {
 
   const VersionEntity({
     required this.minVersion,
+    required this.youtubeGptModel,
     required this.onGoingReviewVersion,
     required this.notification,
     required this.currentVersion,
@@ -40,6 +45,7 @@ class VersionEntity {
       minVersion: Version.parse(model.versionCode),
       currentVersion: Version.parse(currentVersion),
       onGoingReviewVersion: Version.parse(model.ongoingAppReviewVersion),
+      youtubeGptModel: YoutubeGptModelType.getById(model.youtubeGptModel),
     );
   }
 
@@ -48,6 +54,7 @@ class VersionEntity {
     Version? onGoingReviewVersion,
     Version? currentVersion,
     String? notification,
+    YoutubeGptModelType? youtubeGptModel,
     bool? isSystemAvailable,
     bool? needUpdate,
   }) {
@@ -56,6 +63,7 @@ class VersionEntity {
       onGoingReviewVersion: onGoingReviewVersion ?? this.onGoingReviewVersion,
       currentVersion: currentVersion ?? this.currentVersion,
       notification: notification ?? this.notification,
+      youtubeGptModel: youtubeGptModel ?? this.youtubeGptModel,
       isSystemAvailable: isSystemAvailable ?? this.isSystemAvailable,
       needUpdate: needUpdate ?? this.needUpdate,
     );
