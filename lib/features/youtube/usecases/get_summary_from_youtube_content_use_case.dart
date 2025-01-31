@@ -38,6 +38,7 @@ class GetSummaryFromYoutubeContentUseCase
 3. **세부 요약 목록 (`summaries`) 작성**:
    - 해당 내용을 섹션(챕터)별로 구분해 `title`과 `contents`를 작성하세요.
    - `contents`에는 프로그래밍 개념을 직접 설명하듯 자세히 서술하세요.
+   - 경어체 사용합니다.(존댓말)
    - 시간 순서별(offset)로 중복 없이 나열하고, 각 섹션 시작 시간을 "HH:MM:SS" 또는 "HH:MM:SS.sss" 형식으로 적어주세요.
     
 ---   
