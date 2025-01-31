@@ -135,6 +135,10 @@ final class AnalyzeAndUploadYoutubeUseCase
         throw const YtInvalidVideoContentException();
       }
 
+      if (qnaAndIdsResult.type == YoutubeContentAnalyzedType.notTech) {
+        throw const YtIsNotTechContentException();
+      }
+
       // 8) 요약된 내용이 있는지 여부
       if (mergedSummaryResponse.summaries.isEmpty ||
           mergedSummaryResponse.mainTheme.isEmpty ||
