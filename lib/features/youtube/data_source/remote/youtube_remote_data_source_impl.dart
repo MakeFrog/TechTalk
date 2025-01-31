@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/core/query_constraints_applier.dart';
@@ -274,7 +275,11 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
       // 각 스킬 문서에 count 값을 1씩 증가
       transaction.update(
         FirestoreSkillRef.document(skillId), // skillId를 참조
-        {'youtube_content_count': FieldValue.increment(1)}, // count 필드 1 증가
+
+        {
+          AppLocale.isKo ? 'youtube_content_count_ko' : 'youtube_content_count':
+              FieldValue.increment(1)
+        }, // count 필드 1 증가
       );
     }
   }
@@ -285,7 +290,10 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
       // 각 스킬 문서에 count 값을 1씩 증가
       transaction.update(
         FirestoreJobGroupRef.document(jobGroupId), // skillId를 참조
-        {'youtube_content_count': FieldValue.increment(1)}, // count 필드 1 증가
+        {
+          AppLocale.isKo ? 'youtube_content_count_ko' : 'youtube_content_count':
+              FieldValue.increment(1)
+        }, // count 필드 1 증가
       );
     }
   }
