@@ -11,96 +11,182 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/youtube/index.dart';
+import 'package:techtalk/features/youtube/usecases/get_remain_summary_form_youtube_content_use_case.dart';
 import 'package:techtalk/presentation/app.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 ///
-/// 유튜브 영상을 분석하여 기대값을 반환받고 업로드하는 useCase
-/// [GetSummaryFromYoutubeContentUseCase], [GetQnasFromYoutubeContentUseCase]
-/// 을 통해 요약, 테크 영상 여부, 스킬 직군 카테고리, 면접질문 데이터를 반환 받음
+/// 유튜브 영상을 분석하여 분할 요약 + QNA 데이터를 얻고,
+/// 최종 병합하여 업로드하는 UseCase
+///
+///  - 0번 청크 → [GetSummaryFromYoutubeContentUseCase] (YoutubeAiSummaryResponse)
+///  - 1~N번 청크 → [GetRemainSummaryFromYoutubeContentUseCase] (SummaryEntity, mainTheme="")
+///  - QNA → 전체 자막 기반 1회
+///
+///  [Future.wait] 결과:
+///    - results[0] → 첫 청크 요약
+///    - results[1..N-1] → 나머지 청크 요약들
+///    - results.last → QNA
 ///
 final class AnalyzeAndUploadYoutubeUseCase
     extends BaseUseCase<YoutubeVideoEntity, void> with WidgetsBindingObserver {
-  /// 앱이 백그라운드에 있는지 여부
   bool isInBackground = false;
 
   @override
   Future<void> call(YoutubeVideoEntity request) async {
     WidgetsBinding.instance.addObserver(this);
-    final targetVideo = request;
 
     final context = await navigationContext;
+    final duration = request.duration ?? Duration.zero;
+
+    // 1) 청크 개수 구하기
+    final chunkCount = _getChunkCount(duration);
+    log('영상길이: ${duration.inMinutes}분 → 청크: $chunkCount');
+
+    // 2) 자막 분할
+    List<List<CaptionEntity>> splittedCaptionLists;
+    if (chunkCount > 1) {
+      splittedCaptionLists = _splitCaptionsIntoChunkLists(
+        captions: request.captions,
+        totalDuration: duration,
+        chunkCount: chunkCount,
+      );
+    } else {
+      // 분할 없음
+      splittedCaptionLists = [request.captions];
+    }
 
     try {
-      isInBackground = false;
-      final responses = await Future.wait([
-        GetSummaryFromYoutubeContentUseCase().call(targetVideo),
-        GetQnasFromYoutubeContentUseCase().call(targetVideo),
-      ]);
+      // 3) 청크별 Future 준비
+      //  - 첫 청크(인덱스=0): [GetSummaryFromYoutubeContentUseCase]
+      //  - 나머지 청크(인덱스>=1): [GetRemainSummaryFromYoutubeContentUseCase]
+      final summaryFutures = <Future>[];
+      for (int i = 0; i < splittedCaptionLists.length; i++) {
+        final chunkCaptions = splittedCaptionLists[i];
 
-      final summaryResult = responses[0] as YoutubeAiSummaryResponse;
-      final qnaAndIdsResult = responses[1] as YoutubeAiQnaAndIdsResponse;
+        if (i == 0) {
+          // 첫 청크 → 정식 요약 (YoutubeAiSummaryResponse)
+          summaryFutures.add(
+            GetSummaryFromYoutubeContentUseCase().call(
+              // 두 번째 파라미터는 "hasBeenDivided" 여부라면, 원하는 대로 넘김
+              (
+                request.copyWith(captions: chunkCaptions),
+                splittedCaptionLists.length > 1
+              ),
+            ),
+          );
+        } else {
+          // 나머지 청크 → 잔여 요약 (SummaryEntity, mainTheme="")
+          summaryFutures.add(
+            GetRemainSummaryFromYoutubeContentUseCase().call(
+              (request.copyWith(captions: chunkCaptions), i),
+            ),
+          );
+        }
+      }
 
-      /// 분석 가능한 영상이 아닐 경우
-      /// ex) 테크 영상 X or 개발자 단순 인터뷰 영상
-      final typeList = [summaryResult.type, qnaAndIdsResult.type];
-      if (typeList.any((e) => e == YoutubeContentAnalyzedType.lackOfContent)) {
+      // QNA (전체 자막으로 1회)
+      final qnaFuture = GetQnasFromYoutubeContentUseCase().call(request);
+
+      // 4) 병렬 실행
+      //    results[0..N-1]: summaryFutures, results.last: qnaFuture
+      final futures = [...summaryFutures, qnaFuture];
+      final results = await Future.wait(futures);
+
+      // 5) 결과 분류
+      //    - 마지막 → QNA
+      final qnaAndIdsResult = results.last as YoutubeAiQnaAndIdsResponse;
+
+      //    - 첫 번째 → 첫 청크 요약
+      final firstSummary = results.first as SummaryEntity;
+
+      //    - 1..(length - 2) → 나머지 청크 요약
+      final remainSummaries = results
+          .sublist(1, results.length - 1)
+          .map((e) => e as SummaryEntity)
+          .toList();
+
+      // 6) 요약 병합
+      //    - 첫 청크 mainTheme + 모든 paragraph
+      final allParagraphs = <ParagraphEntity>[];
+      allParagraphs.addAll(firstSummary.summaries);
+      for (final rs in remainSummaries) {
+        allParagraphs.addAll(rs.summaries);
+      }
+      // 시간순 정렬
+      allParagraphs.sort((a, b) {
+        final aTime = a.timestamp ?? const Duration(hours: 10);
+        final bTime = b.timestamp ?? const Duration(hours: 10);
+        return aTime.compareTo(bTime);
+      });
+
+      final mergedSummary = SummaryEntity(
+        mainTheme: firstSummary.mainTheme,
+        summaries: allParagraphs,
+      );
+
+      // 최종 YoutubeAiSummaryResponse
+      final mergedSummaryResponse = mergedSummary;
+
+      // 7) 유효성 체크 (테크 영상인지 여부)
+      if (qnaAndIdsResult.type == YoutubeContentAnalyzedType.lackOfContent) {
         throw const YtInvalidVideoContentException();
       }
 
-      if (typeList.any((e) => e == YoutubeContentAnalyzedType.notTech)) {
-        throw const YtIsNotTechContentException();
+      // 8) 요약된 내용이 있는지 여부
+      if (mergedSummaryResponse.summaries.isEmpty ||
+          mergedSummaryResponse.mainTheme.isEmpty) {
+        throw const YtInvalidVideoContentException();
       }
 
-      final targetOverView = YoutubeMainEntity.fromUploadResponse(
-        video: targetVideo,
+      // 8) 업로드 및 라우팅/알림
+      final youtubeMainEntity = YoutubeMainEntity.fromUploadResponse(
+        video: request,
         qnaAndIds: qnaAndIdsResult,
       );
-      final userId =
-          (await globalContainer.read(userInfoProvider.future))?.uid ??
-              'undefined';
 
-      /// 현재 분석 화면에 머물러 있을 경우
-      /// 해당 페이지로 바로 라우팅
       if (_isOnAnalyzePage(context)) {
+        // 상세 페이지로 이동
         YoutubeDetailRoute(
           YoutubeDetailArg.entryFromUpload(
-            overView: targetOverView,
-            summary: SummaryEntity.fromUploadResponse(summaryResult),
+            overView: youtubeMainEntity,
+            summary: mergedSummary,
             qnas: qnaAndIdsResult.qnas.toList(),
           ),
         ).go(await navigationContext);
-        unawaited(_uploadContent(
-          targetOverView,
-          summaryResult,
-          qnaAndIdsResult.qnas,
-          userId,
-        ));
+
+        // 업로드는 비동기로 처리
+        unawaited(
+          _uploadContent(
+            youtubeMainEntity,
+            mergedSummaryResponse,
+            qnaAndIdsResult.qnas,
+          ),
+        );
 
         if (isInBackground) {
           await AppLocalNotification().triggerPush(
             title: '영상 업로드 했어요',
-            description: '요약된 핵심 내용을 확인하고 면접을 진행해 보세요!',
+            description: '요약된 내용을 확인해 보세요!',
             host: DeeplinkHost.landing,
             path: '',
           );
         }
       } else {
+        // 업로드 완료 후 알림
         await _uploadContent(
-          targetOverView,
-          summaryResult,
+          youtubeMainEntity,
+          mergedSummaryResponse,
           qnaAndIdsResult.qnas,
-          userId,
         );
-
         await AppLocalNotification().triggerPush(
           title: '영상 업로드 했어요',
-          description: '요약된 핵심 내용을 확인하고 면접을 진행해 보세요!',
+          description: '요약된 내용을 확인해 보세요!',
           host: DeeplinkHost.prefixYoutubeLanding,
           path:
-              '${Uri.parse(YoutubeDetailRoute.path).pathSegments[0]}/${targetOverView.id}',
+              '${Uri.parse(YoutubeDetailRoute.path).pathSegments[0]}/${youtubeMainEntity.id}',
         );
       }
 
@@ -119,12 +205,13 @@ final class AnalyzeAndUploadYoutubeUseCase
 
       if (_isOnAnalyzePage(context)) {
         YoutubeContentUploadFailedRoute(
-                $extra: alreadyUploadedVideo, failedType: targetType)
-            .go(await navigationContext);
+          $extra: alreadyUploadedVideo,
+          failedType: targetType,
+        ).go(await navigationContext);
 
         if (isInBackground) {
           await AppLocalNotification().triggerPush(
-            title: '영상을 업로드하는데 실팼어요',
+            title: '영상을 업로드하는데 실패했어요',
             description: targetType.description,
             host: DeeplinkHost.landing,
             path: '',
@@ -132,18 +219,74 @@ final class AnalyzeAndUploadYoutubeUseCase
         }
       } else {
         await AppLocalNotification().triggerPush(
-            title: '영상을 업로드하는데 실팼어요',
-            description: targetType.description,
-            host: DeeplinkHost.prefixYoutubeLanding,
-            path:
-                '${Uri.parse(YoutubeContentUploadFailedRoute.path).pathSegments[0]}?errorCode=${targetType.code}');
+          title: '영상을 업로드하는데 실패했어요',
+          description: targetType.description,
+          host: DeeplinkHost.prefixYoutubeLanding,
+          path:
+              '${Uri.parse(YoutubeContentUploadFailedRoute.path).pathSegments[0]}?errorCode=${targetType.code}',
+        );
       }
 
       WidgetsBinding.instance.removeObserver(this);
     }
   }
 
-  /// 업로드 및 분석 화면에 현재 머물러 있느지 여부
+  /// 자막을 [chunkCount]만큼 실제로 분할
+  ///
+  /// 정밀도를 위해 inMilliseconds로 계산.
+  /// 예) 전체가 20분3.799초=1203799ms, chunkCount=2 => chunkSize≈601899ms
+  ///  → 0번청크=[0..601898ms], 1번청크=[601899..1203798ms]
+  List<List<CaptionEntity>> _splitCaptionsIntoChunkLists({
+    required List<CaptionEntity> captions,
+    required Duration totalDuration,
+    required int chunkCount,
+  }) {
+    final totalMs = totalDuration.inMilliseconds;
+    final chunkSize = (totalMs / chunkCount).floor();
+
+    final splitted = List.generate(chunkCount, (_) => <CaptionEntity>[]);
+
+    for (final c in captions) {
+      final offsetMs = c.end.inMilliseconds;
+      var index = offsetMs ~/ chunkSize;
+      if (index >= chunkCount) {
+        index = chunkCount - 1; // 마지막 청크로
+      }
+      splitted[index].add(c);
+    }
+
+    return splitted;
+  }
+
+  /// 업로드 로직
+  Future<void> _uploadContent(
+    YoutubeMainEntity targetOverView,
+    SummaryEntity summaryResult,
+    Set<YoutubeQnaEntity> qnas,
+  ) async {
+    // return;
+    // Firestore/서버 업로드 로직
+    // return;
+
+    await youtubeRepository.uploadYoutube(
+      contentMainInfo: targetOverView,
+      summary: summaryResult,
+      qnas: qnas,
+      uploaderId: globalContainer.read(userInfoProvider).value?.uid ?? '',
+      uploadLanguageCode: AppLocale.getLocaleName(),
+    );
+  }
+
+  /// 청크 개수 산정
+  int _getChunkCount(Duration duration) {
+    if (duration >= const Duration(minutes: 60)) return 5;
+    if (duration >= const Duration(minutes: 40)) return 4;
+    if (duration >= const Duration(minutes: 25)) return 3;
+    if (duration >= const Duration(minutes: 12)) return 2;
+    return 1;
+  }
+
+  /// 현재 라우팅이 분석 페이지인지 여부
   bool _isOnAnalyzePage(BuildContext context) {
     return GoRouter.of(context)
         .routerDelegate
@@ -152,67 +295,12 @@ final class AnalyzeAndUploadYoutubeUseCase
         .contains(AnalyzeYoutubeRoute.path);
   }
 
-  ///
-  /// 현재 라우팅 path에 따라
-  /// 영상 업로드 메소드 [await] [unawaited] 여부를 결정함
-  ///
-  Future<void> _uploadContent(
-      YoutubeMainEntity targetOverView,
-      YoutubeAiSummaryResponse summaryResult,
-      Set<YoutubeQnaEntity> qnas,
-      String userId) async {
-    await youtubeRepository
-        .uploadYoutube(
-          contentMainInfo: targetOverView,
-          summary: SummaryEntity.fromUploadResponse(summaryResult),
-          qnas: qnas,
-          uploaderId: userId,
-          uploadLanguageCode: AppLocale.currentLocale.languageCode,
-        )
-        .then(
-          (response) => response.fold(
-            onSuccess: (_) {
-              /// 영항 학습 탭뷰 페이징 컨트롤러 초기화
-              // final categories = globalContainer
-              //     .read(youtubeContentCategoryProvider)
-              //     .totalCategories;
-              // for (var category in categories) {
-              //   if (globalContainer.exists(
-              //       youtubeContentPaginationProvider(category: category))) {
-              //     globalContainer
-              //         .read(
-              //             youtubeContentPaginationProvider(category: category))
-              //         .refresh();
-              //   }
-              // }
-
-              log('유튜브 영상 업로드 성공');
-            },
-            onFailure: (e) {
-              log('유튜브 영상 업로드 실패 : $e');
-            },
-          ),
-        );
-  }
-
-  // flutter: app in inactive
-  // flutter: app in hiddent
-  // flutter: app in paused
-
-  // flutter: app in hiddent
-  // flutter: app in inactive
-  // flutter: app in resumed
-
-  /// 앱이 백그라운드 상태에 진입했는지 여부를 판단하고
-  /// 상태값을 변경
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused && !isInBackground) {
       isInBackground = true;
-    } else {
-      if (isInBackground) {
-        isInBackground = false;
-      }
+    } else if (isInBackground) {
+      isInBackground = false;
     }
   }
 }

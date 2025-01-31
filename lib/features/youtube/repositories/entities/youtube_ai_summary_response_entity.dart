@@ -15,4 +15,14 @@ final class YoutubeAiSummaryResponse {
       summary: SummaryEntity.fromJson(json),
     );
   }
+
+  YoutubeAiSummaryResponse copyWith({
+    YoutubeContentAnalyzedType? type,
+    SummaryEntity? summary,
+  }) {
+    return YoutubeAiSummaryResponse(
+      type: type ?? this.type,
+      summary: summary ?? this.summary,
+    );
+  }
 }
