@@ -4,6 +4,7 @@ import 'package:techtalk/core/modules/local/app_local.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/user/user.dart';
+import 'package:techtalk/features/youtube/index.dart';
 
 final class UserDependencyInjection extends FeatureDependencyInjection {
   @override
@@ -23,6 +24,7 @@ final class UserDependencyInjection extends FeatureDependencyInjection {
       () => UserRepositoryImpl(
         userRemoteDataSource,
         userLocalDataSource,
+        youtubeRemoteDataSource,
         techSetRepository,
       ),
     );

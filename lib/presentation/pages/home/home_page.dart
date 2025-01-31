@@ -41,8 +41,6 @@ class HomePage extends BasePage with HomeState, HomeEvent {
             children: const [
               CheerUpMessageCard(),
               Gap(16),
-              ResumeInterviewCard(),
-              Gap(16),
               PracticalInterviewCard(),
               Gap(16),
               SingleTopicInterviewCard(),

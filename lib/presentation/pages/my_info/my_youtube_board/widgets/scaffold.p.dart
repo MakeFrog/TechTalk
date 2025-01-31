@@ -64,12 +64,8 @@ class _Scaffold extends StatelessWidget {
             child: TabBarView(
               children: [
                 watchedHistoryTabView,
-                SingleChildScrollView(
-                  child: bookmarkedTabView,
-                ),
-                SingleChildScrollView(
-                  child: uploadedContentTabView,
-                ),
+                bookmarkedTabView,
+                uploadedContentTabView,
               ],
             ),
           ),

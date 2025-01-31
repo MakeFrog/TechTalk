@@ -6,17 +6,16 @@ part of 'watched_youtube_content_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-WatchedYoutubeContent _$WatchedYoutubeContentFromJson(
-        Map<String, dynamic> json) =>
-    WatchedYoutubeContent(
-      info: YoutubeMainModel.fromJson(json['info'] as Map<String, dynamic>),
+WatchedYoutubeModel _$WatchedYoutubeModelFromJson(Map<String, dynamic> json) =>
+    WatchedYoutubeModel(
+      id: json['id'] as String,
       watchedAt:
           const TimeStampConverter().fromJson(json['watched_at'] as Timestamp),
     );
 
-Map<String, dynamic> _$WatchedYoutubeContentToJson(
-        WatchedYoutubeContent instance) =>
+Map<String, dynamic> _$WatchedYoutubeModelToJson(
+        WatchedYoutubeModel instance) =>
     <String, dynamic>{
-      'info': instance.info.toJson(),
+      'id': instance.id,
       'watched_at': const TimeStampConverter().toJson(instance.watchedAt),
     };

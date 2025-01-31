@@ -5,11 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/user/data_source/remote/models/bookmarked_youtube_content_model.dart';
+import 'package:techtalk/features/user/data_source/remote/models/uploaded_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
 import 'package:techtalk/features/user/user.dart';
-import 'package:techtalk/features/youtube/data_source/remote/models/channel_model.dart';
-import 'package:techtalk/features/youtube/data_source/remote/models/youtube_main_model.dart';
-import 'package:techtalk/features/youtube/data_source/remote/youtube_ref.dart';
 
 final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   Future<bool> isExistNickname(
@@ -139,7 +138,7 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         await FirestoreUsersRef.bookMarkedYoutubeDoc(contentId).set(
           {
             'id': contentId,
-            'youtube_ref': FirestoreYoutubeRef.doc(contentId),
+            'bookmarked_at': DateTime.timestamp(),
           },
         );
       } else {
@@ -155,7 +154,6 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     try {
       await FirestoreUsersRef.watchedYoutubeHistoryDoc(contentId).set({
         'id': contentId,
-        'youtube_ref': FirestoreYoutubeRef.doc(contentId),
         'watched_at': DateTime.timestamp(),
       });
     } catch (e) {
@@ -164,13 +162,13 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }
 
   @override
-  Future<FirebasePaginatedResult<WatchedYoutubeContent, WatchedYoutubeContent>>
+  Future<FirebasePaginatedResult<WatchedYoutubeModel, WatchedYoutubeModel>>
       getPagedWatchedYoutubeHistory({
-    DocumentSnapshot<WatchedYoutubeContent>? lastDocument, // Object?로 유지
+    DocumentSnapshot<WatchedYoutubeModel>? lastDocument, // Object?로 유지
     required int limit,
   }) async {
     try {
-      Query<WatchedYoutubeContent> query =
+      Query<WatchedYoutubeModel> query =
           FirestoreUsersRef.watchedYoutubeHistoryCollection()
               .orderBy('watched_at', descending: true)
               .limit(limit);
@@ -179,43 +177,119 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         query = query.startAfterDocument(lastDocument);
       }
 
-      QuerySnapshot<WatchedYoutubeContent> snapshot = await query.get();
+      QuerySnapshot<WatchedYoutubeModel> snapshot = await query.get();
 
       if (snapshot.docs.isEmpty) {
-        return FirebasePaginatedResult<WatchedYoutubeContent,
-            WatchedYoutubeContent>(
+        return FirebasePaginatedResult<WatchedYoutubeModel,
+            WatchedYoutubeModel>(
           items: [],
           hasMore: false,
           hasReversedQueryCallProceeded: true,
         );
       }
 
-      final items = await Future.wait(snapshot.docs.map((doc) async {
-        final youtubeRef = doc.get('youtube_ref') as DocumentReference;
-
-        // YoutubeMainModel 데이터 가져오기
-        final youtube =
-            await youtubeRef.get() as DocumentSnapshot<Map<String, dynamic>>;
-        final mainModel = YoutubeMainModel.fromFirestore(youtube, null);
-
-        // ChannelModel 데이터 가져오기
-        final channelSnapshot = await mainModel.channelRef?.get()
-            as DocumentSnapshot<Map<String, dynamic>>;
-        final channelModel = ChannelModel.fromFirestore(channelSnapshot, null);
-
-        return WatchedYoutubeContent(
-          info: mainModel.copyWith(channel: channelModel),
-          watchedAt: (doc.get('watched_at') as Timestamp).toDate(),
-        );
-      }).toList());
+      final items = snapshot.docs.map((doc) {
+        return doc.data();
+      }).toList();
 
       final hasMore = snapshot.docs.length == limit;
 
       final newLastDocument =
           snapshot.docs.isNotEmpty ? snapshot.docs.last : lastDocument;
 
-      return FirebasePaginatedResult<WatchedYoutubeContent,
-          WatchedYoutubeContent>(
+      return FirebasePaginatedResult<WatchedYoutubeModel, WatchedYoutubeModel>(
+        items: items,
+        lastDocument: newLastDocument,
+        hasMore: hasMore,
+      );
+    } catch (e) {
+      log('페이징 호출 실패: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<
+      FirebasePaginatedResult<BookmarkedYoutubeModel,
+          BookmarkedYoutubeModel>> getPagedBookmarkedYoutube({
+    DocumentSnapshot<BookmarkedYoutubeModel>? lastDocument, // Object?로 유지
+    required int limit,
+  }) async {
+    try {
+      Query<BookmarkedYoutubeModel> query =
+          FirestoreUsersRef.bookmarkedYoutubeHistoryCollection().limit(limit);
+
+      if (lastDocument != null) {
+        query = query.startAfterDocument(lastDocument);
+      }
+
+      QuerySnapshot<BookmarkedYoutubeModel> snapshot = await query.get();
+
+      if (snapshot.docs.isEmpty) {
+        return FirebasePaginatedResult<BookmarkedYoutubeModel,
+            BookmarkedYoutubeModel>(
+          items: [],
+          hasMore: false,
+          hasReversedQueryCallProceeded: true,
+        );
+      }
+      final items = snapshot.docs.map((doc) {
+        return doc.data();
+      }).toList();
+
+      final hasMore = snapshot.docs.length == limit;
+
+      final newLastDocument =
+          snapshot.docs.isNotEmpty ? snapshot.docs.last : lastDocument;
+
+      return FirebasePaginatedResult<BookmarkedYoutubeModel,
+          BookmarkedYoutubeModel>(
+        items: items,
+        lastDocument: newLastDocument,
+        hasMore: hasMore,
+      );
+    } catch (e) {
+      log('페이징 호출 실패: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<FirebasePaginatedResult<UploadedYoutubeModel, UploadedYoutubeModel>>
+      getPagedUploadedYoutube({
+    DocumentSnapshot<UploadedYoutubeModel>? lastDocument, // Object?로 유지
+    required int limit,
+  }) async {
+    try {
+      Query<UploadedYoutubeModel> query =
+          FirestoreUsersRef.uploadedYoutubeCollection().limit(limit);
+
+      if (lastDocument != null) {
+        query = query.startAfterDocument(lastDocument);
+      }
+
+      QuerySnapshot<UploadedYoutubeModel> snapshot = await query.get();
+
+      if (snapshot.docs.isEmpty) {
+        return FirebasePaginatedResult<UploadedYoutubeModel,
+            UploadedYoutubeModel>(
+          items: [],
+          hasMore: false,
+          hasReversedQueryCallProceeded: true,
+        );
+      }
+
+      final items = snapshot.docs.map((doc) {
+        return doc.data();
+      }).toList();
+
+      final hasMore = snapshot.docs.length == limit;
+
+      final newLastDocument =
+          snapshot.docs.isNotEmpty ? snapshot.docs.last : lastDocument;
+
+      return FirebasePaginatedResult<UploadedYoutubeModel,
+          UploadedYoutubeModel>(
         items: items,
         lastDocument: newLastDocument,
         hasMore: hasMore,

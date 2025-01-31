@@ -11,12 +11,14 @@ class VersionModel {
     this.versionCode = '2.0.0',
     this.notification = '',
     this.ongoingAppReviewVersion = '2.0.0',
+    this.youtubeGptModel = 'gpt-4o',
   });
 
   final bool isSystemAvailable;
   final bool needUpdate;
   final String versionCode;
   final String ongoingAppReviewVersion;
+  final String youtubeGptModel;
 
   final String notification;
 

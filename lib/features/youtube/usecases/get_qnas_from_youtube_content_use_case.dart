@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dart_openai/dart_openai.dart';
+import 'package:techtalk/app/environment/app_version.dart';
 import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/system/repositories/entities/youtube_gpt_model_type.enum.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/features/youtube/index.dart';
 
@@ -14,7 +16,7 @@ class GetQnasFromYoutubeContentUseCase
   Future<YoutubeAiQnaAndIdsResponse> call(YoutubeVideoEntity request) async {
     final allSkills = techSetRepository.getSkills();
     final allJobGroups = techSetRepository.getJobs();
-    // the system message that will be sent to the request.
+
     final systemMessage = OpenAIChatCompletionChoiceMessageModel(
       content: [
         OpenAIChatCompletionChoiceMessageContentItemModel.text(
@@ -30,16 +32,15 @@ class GetQnasFromYoutubeContentUseCase
 
 2. **질문(`qnas`) 작성**:
    - 최소 4개에서 최대 12개의 질문을 작성하세요.
-   - 질문은 영상의 프로그래밍 개념과 직접적으로 연관되도록 구성하세요.
+   - 질문은 영상에서 다루는 프로그래밍 개념과 직접적으로 연관되고 심화적인 질문으로 구성하세요.
    - 각 질문에 명확하고 구체적인 모범 답안을 작성하세요.
    - 적절한 질문이 없을 경우 빈 배열(`[]`)을 반환하세요.
-
+    
 3. **개발 스킬 id 리스트(`skillIds`) 작성**:
 4. **개발 직군 id 리스트(`jobGroupIds`) 작성**:
-   - 영상의 내용과 관련된 스킬, 직군 id를 주어진 리스트에서 찾아 각각 반환하세요.
+   - 영상의 내용과 직접적으로 관련된 스킬, 직군 id를 주어진 리스트에서 찾아 각각 반환하세요.
    - 꼭 주어진 리스트에 있는 id들만 반환해야 됩니다. 
    - 해당되는 id가 없으면 빈 배열(`[]`)을 반환하세요.
-   - 관련되어 있는 id를 최대한 많이 반환하는것이 중요합니다.
 
 ---
 
@@ -75,14 +76,15 @@ class GetQnasFromYoutubeContentUseCase
 
     final startTime = DateTime.now();
 
+    final model = AppVersion().to?.youtubeGptModel ?? YoutubeGptModelType.gpt4o;
     try {
       OpenAIChatCompletionModel completion = await OpenAI.instance.chat.create(
-        model: "gpt-4o",
+        model: model.id,
         messages: [
           systemMessage,
         ],
+        temperature: model.isGpt4o ? 1.0 : null,
         responseFormat: {"type": "json_object"},
-        temperature: 0.8,
       );
 
       log('Qna 토큰사용량 : ${completion.usage}'); // 응답 결과 출력

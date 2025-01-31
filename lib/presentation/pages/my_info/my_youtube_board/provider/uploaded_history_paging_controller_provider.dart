@@ -1,22 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
+import 'package:techtalk/features/user/data_source/remote/models/uploaded_youtube_content_model.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/features/youtube/data_source/remote/models/youtube_main_entity.dart';
 
-part 'watched_history_paging_controller_provider.g.dart';
+part 'uploaded_history_paging_controller_provider.g.dart';
 
 @riverpod
-Raw<PagingController<DocumentSnapshot<WatchedYoutubeModel>?, YoutubeMainEntity>>
-    watchedHistoryPagingController(WatchedHistoryPagingControllerRef ref) {
+Raw<
+    PagingController<DocumentSnapshot<UploadedYoutubeModel>?,
+        YoutubeMainEntity>> uploadedHistoryPagingController(
+  UploadedHistoryPagingControllerRef ref,
+) {
   final pagingController = PagingController<
-      DocumentSnapshot<WatchedYoutubeModel>?, YoutubeMainEntity>(
+      DocumentSnapshot<UploadedYoutubeModel>?, YoutubeMainEntity>(
     firstPageKey: null,
   );
 
   pagingController.addPageRequestListener((pageKey) async {
-    final result = await userRepository.getPagedWatchedYoutubeHistory(
+    final result = await userRepository.getPagedUploadedYoutube(
       limit: 6,
       lastDocument: pageKey,
     );

@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
+import 'package:techtalk/features/user/data_source/remote/models/bookmarked_youtube_content_model.dart';
+import 'package:techtalk/features/user/data_source/remote/models/uploaded_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
 import 'package:techtalk/features/user/user.dart';
 
@@ -67,9 +69,28 @@ abstract interface class UserRemoteDataSource {
   ///
   /// 유튜브 영상 기록 호출
   ///
-  Future<FirebasePaginatedResult<WatchedYoutubeContent, WatchedYoutubeContent>>
+  Future<FirebasePaginatedResult<WatchedYoutubeModel, WatchedYoutubeModel>>
       getPagedWatchedYoutubeHistory({
-    DocumentSnapshot<WatchedYoutubeContent>? lastDocument,
+    DocumentSnapshot<WatchedYoutubeModel>? lastDocument,
+    required int limit,
+  });
+
+  ///
+  /// 유튜브 북마크 기록 호출
+  ///
+  Future<
+      FirebasePaginatedResult<BookmarkedYoutubeModel,
+          BookmarkedYoutubeModel>> getPagedBookmarkedYoutube({
+    DocumentSnapshot<BookmarkedYoutubeModel>? lastDocument,
+    required int limit,
+  });
+
+  ///
+  /// 유튜브 업로드 기록 호출
+  ///
+  Future<FirebasePaginatedResult<UploadedYoutubeModel, UploadedYoutubeModel>>
+      getPagedUploadedYoutube({
+    DocumentSnapshot<UploadedYoutubeModel>? lastDocument,
     required int limit,
   });
 }

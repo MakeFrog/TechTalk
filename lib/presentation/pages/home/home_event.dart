@@ -81,11 +81,6 @@ mixin class HomeEvent {
   ///
   Future<void> onPracticalCardTapped(WidgetRef ref) async {
     await EasyLoading.show();
-    await saveSkillsFromJsonToFirestore();
-    await EasyLoading.dismiss();
-
-    return;
-    await EasyLoading.show();
 
     final hasNotPracticalInterviewRecord =
         !ref.read(userInfoProvider).requireValue!.hasPracticalInterviewRecord;

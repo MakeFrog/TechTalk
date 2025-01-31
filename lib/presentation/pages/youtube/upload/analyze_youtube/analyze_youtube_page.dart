@@ -1,3 +1,4 @@
+import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/src/consumer.dart';
@@ -123,12 +124,17 @@ class AnalyzeYoutubePage extends BasePage
                             bottom: AppSize.bottomInset == 0 ? 16 : 0,
                           ),
                           width: double.infinity,
-                          child: FilledButton(
-                            onPressed: () {
-                              onExitPageBtnTapped(ref);
-                            },
-                            child: Text(
-                              isGranted ? '업로드가 완료되면 알려드릴게요' : '확인',
+                          child: BounceTapper(
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: FilledButton(
+                                onPressed: () {
+                                  onExitPageBtnTapped(ref);
+                                },
+                                child: Text(
+                                  isGranted ? '업로드가 완료되면 알려드릴게요' : '확인',
+                                ),
+                              ),
                             ),
                           ),
                         ),

@@ -7,19 +7,24 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
+import 'package:techtalk/features/user/data_source/remote/models/bookmarked_youtube_content_model.dart';
+import 'package:techtalk/features/user/data_source/remote/models/uploaded_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/features/youtube/data_source/remote/models/youtube_main_entity.dart';
+import 'package:techtalk/features/youtube/index.dart';
 
 final class UserRepositoryImpl implements UserRepository {
   const UserRepositoryImpl(
     this._userRemoteDataSource,
     this._userLocalDataSource,
+    this._youtubeRemoteDataSource,
     this._techSetRepository,
   );
 
   final UserRemoteDataSource _userRemoteDataSource;
   final UserLocalDataSource _userLocalDataSource;
+  final YoutubeRemoteDataSource _youtubeRemoteDataSource;
   final TechSetRepository _techSetRepository;
 
   @override
@@ -217,34 +222,130 @@ final class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<
-      Result<
-          FirebasePaginatedResult<WatchedYoutubeContent,
-              WatchedYoutubeContent>>> getPagedWatchedYoutubeHistory(
-      {DocumentSnapshot<WatchedYoutubeContent>? lastDocument,
-      required int limit}) async {
+          Result<
+              FirebasePaginatedResult<YoutubeMainEntity, WatchedYoutubeModel>>>
+      getPagedWatchedYoutubeHistory({
+    DocumentSnapshot<WatchedYoutubeModel>? lastDocument,
+    required int limit,
+  }) async {
     try {
       final response =
           await _userRemoteDataSource.getPagedWatchedYoutubeHistory(
-              limit: limit, lastDocument: lastDocument);
+        limit: limit,
+        lastDocument: lastDocument,
+      );
+      final entities = await Future.wait(
+        response.items.map((res) async {
+          /// id를 사용하여 유튜브 컬렉션에서 상세 정보를 가져옴
+          final model = await _youtubeRemoteDataSource
+              .getSingleYoutubeMainContent(contentId: res.id);
 
-      final entities = response.items.map((res) {
-        final model = res.info;
-        final skills =
-            model.relatedSkillIds.map(_techSetRepository.getSkillById).toList();
-        final jobGroups = model.relatedJobGroupIds
-            .map(_techSetRepository.getJobGroupById)
-            .toList();
-        return model.toEntity(skills, jobGroups);
-      }).toList();
+          final skills = model.relatedSkillIds
+              .map(_techSetRepository.getSkillById)
+              .toList();
+          final jobGroups = model.relatedJobGroupIds
+              .map(_techSetRepository.getJobGroupById)
+              .toList();
+          return model.toEntity(skills, jobGroups);
+        }).toList(),
+      );
 
       final paginatedResult =
-          FirebasePaginatedResult<YoutubeMainEntity, String>(
+          FirebasePaginatedResult<YoutubeMainEntity, WatchedYoutubeModel>(
         items: entities,
+        lastDocument: response.lastDocument,
         lastDocumentId: response.lastDocumentId,
         hasMore: response.hasMore,
       );
 
-      return Result.success(response);
+      return Result.success(paginatedResult);
+    } catch (e) {
+      throw Result.failure(Exception('UserRepository> $e'));
+    }
+  }
+
+  @override
+  Future<
+      Result<
+          FirebasePaginatedResult<YoutubeMainEntity,
+              BookmarkedYoutubeModel>>> getPagedBookmarkedYoutube(
+      {DocumentSnapshot<BookmarkedYoutubeModel>? lastDocument,
+      required int limit}) async {
+    try {
+      final response = await _userRemoteDataSource.getPagedBookmarkedYoutube(
+        limit: limit,
+        lastDocument: lastDocument,
+      );
+
+      final entities = await Future.wait(
+        response.items.map((res) async {
+          /// id를 사용하여 유튜브 컬렉션에서 상세 정보를 가져옴
+          final model = await _youtubeRemoteDataSource
+              .getSingleYoutubeMainContent(contentId: res.id);
+
+          final skills = model.relatedSkillIds
+              .map(_techSetRepository.getSkillById)
+              .toList();
+          final jobGroups = model.relatedJobGroupIds
+              .map(_techSetRepository.getJobGroupById)
+              .toList();
+          return model.toEntity(skills, jobGroups);
+        }).toList(),
+      );
+
+      final paginatedResult =
+          FirebasePaginatedResult<YoutubeMainEntity, BookmarkedYoutubeModel>(
+        items: entities,
+        lastDocument: response.lastDocument,
+        lastDocumentId: response.lastDocumentId,
+        hasMore: response.hasMore,
+      );
+
+      return Result.success(paginatedResult);
+    } catch (e) {
+      throw Result.failure(Exception('UserRepository> $e'));
+    }
+  }
+
+  @override
+  Future<
+          Result<
+              FirebasePaginatedResult<YoutubeMainEntity, UploadedYoutubeModel>>>
+      getPagedUploadedYoutube({
+    DocumentSnapshot<UploadedYoutubeModel>? lastDocument,
+    required int limit,
+  }) async {
+    try {
+      final response = await _userRemoteDataSource.getPagedUploadedYoutube(
+        limit: limit,
+        lastDocument: lastDocument,
+      );
+
+      final entities = await Future.wait(
+        response.items.map((res) async {
+          /// id를 사용하여 유튜브 컬렉션에서 상세 정보를 가져옴
+          final model = await _youtubeRemoteDataSource
+              .getSingleYoutubeMainContent(contentId: res.id);
+
+          final skills = model.relatedSkillIds
+              .map(_techSetRepository.getSkillById)
+              .toList();
+          final jobGroups = model.relatedJobGroupIds
+              .map(_techSetRepository.getJobGroupById)
+              .toList();
+          return model.toEntity(skills, jobGroups);
+        }).toList(),
+      );
+
+      final paginatedResult =
+          FirebasePaginatedResult<YoutubeMainEntity, UploadedYoutubeModel>(
+        items: entities,
+        lastDocument: response.lastDocument,
+        lastDocumentId: response.lastDocumentId,
+        hasMore: response.hasMore,
+      );
+
+      return Result.success(paginatedResult);
     } catch (e) {
       throw Result.failure(Exception('UserRepository> $e'));
     }
