@@ -1,3 +1,6 @@
+import 'package:techtalk/features/youtube/index.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+
 sealed class YoutubeUploadException implements Exception {
   const YoutubeUploadException(this.code, this.message);
 
@@ -50,7 +53,8 @@ class YtNotEnoughContentDurationException extends YoutubeUploadException {
 }
 
 class YtAlreadyUploadedException extends YoutubeUploadException {
-  final String contentId;
-  const YtAlreadyUploadedException(this.contentId)
+  final Video video;
+
+  const YtAlreadyUploadedException({required this.video})
       : super('10', '이미 테크톡에 업로드된 영상');
 }

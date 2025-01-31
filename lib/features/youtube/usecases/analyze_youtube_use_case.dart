@@ -16,6 +16,7 @@ import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_det
 import 'package:techtalk/presentation/pages/youtube/main/provider/selected_filter_category_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/main/provider/youtube_content_pagination_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 ///
 /// 유튜브 영상을 분석하여 기대값을 반환받고 업로드하는 useCase
@@ -81,7 +82,7 @@ final class AnalyzeAndUploadYoutubeUseCase
         ));
 
         if (isInBackground) {
-          await AppLocalNotification().triggerBackgroundPush(
+          await AppLocalNotification().triggerPush(
             title: '영상 업로드 했어요',
             description: '요약된 핵심 내용을 확인하고 면접을 진행해 보세요!',
             host: DeeplinkHost.landing,
@@ -96,7 +97,7 @@ final class AnalyzeAndUploadYoutubeUseCase
           userId,
         );
 
-        await AppLocalNotification().triggerBackgroundPush(
+        await AppLocalNotification().triggerPush(
           title: '영상 업로드 했어요',
           description: '요약된 핵심 내용을 확인하고 면접을 진행해 보세요!',
           host: DeeplinkHost.prefixYoutubeLanding,
@@ -113,17 +114,18 @@ final class AnalyzeAndUploadYoutubeUseCase
 
       final targetType =
           YoutubeUploadFailedType.getByErrorCode(targetException.code);
-      final String? targetCardId = targetException is YtAlreadyUploadedException
-          ? (e as YtAlreadyUploadedException).contentId
-          : null;
+      final Video? alreadyUploadedVideo =
+          targetException is YtAlreadyUploadedException
+              ? (e as YtAlreadyUploadedException).video
+              : null;
 
       if (_isOnAnalyzePage(context)) {
         YoutubeContentUploadFailedRoute(
-                contentId: targetCardId, failedType: targetType)
+                $extra: alreadyUploadedVideo, failedType: targetType)
             .go(await navigationContext);
 
         if (isInBackground) {
-          await AppLocalNotification().triggerBackgroundPush(
+          await AppLocalNotification().triggerPush(
             title: '영상을 업로드하는데 실팼어요',
             description: targetType.description,
             host: DeeplinkHost.landing,
@@ -131,7 +133,7 @@ final class AnalyzeAndUploadYoutubeUseCase
           );
         }
       } else {
-        await AppLocalNotification().triggerBackgroundPush(
+        await AppLocalNotification().triggerPush(
             title: '영상을 업로드하는데 실팼어요',
             description: targetType.description,
             host: DeeplinkHost.prefixYoutubeLanding,

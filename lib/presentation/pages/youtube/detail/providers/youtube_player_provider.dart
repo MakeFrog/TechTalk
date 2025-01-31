@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/app_locale.dart';
+import 'package:techtalk/app/util/app_logger.dart';
 import 'package:techtalk/presentation/app.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/constant/youtube_play_state.enum.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -52,13 +53,17 @@ class YoutubePlayerNotifier extends ChangeNotifier {
     /// 15개중 2개의 영상이 재생이 안되는 현상이 발생함
     /// 공식문서에는 없지만 [cueVideoByUrl]로 초기화 시켜주어야 함.
     final controller = YoutubePlayerController(
-      params: YoutubePlayerParams(
-        captionLanguage: AppLocale.currentLocale.languageCode,
-        enableCaption: false,
-        strictRelatedVideos: true,
-        showFullscreenButton: true,
-      ),
-    );
+        params: YoutubePlayerParams(
+          captionLanguage: AppLocale.currentLocale.languageCode,
+          enableCaption: false,
+          strictRelatedVideos: true,
+          showFullscreenButton: true,
+        ),
+        onWebResourceError: (error) {
+          logger.e(error);
+          state = YoutubePlaySate.errorOccured;
+          notifyListeners();
+        });
 
     controller.cueVideoByUrl(
       mediaContentUrl: 'http://www.youtube.com/v/$videoId',

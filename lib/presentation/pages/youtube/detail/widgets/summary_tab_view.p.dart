@@ -228,11 +228,8 @@ class _SummaryTabView extends HookConsumerWidget
               title!,
               const Gap(8),
             ],
-            AsyncSkeletonWidgetBuilder(
-              asyncValue: relatedVideoAsync(ref),
-              skeletonBuilder: (_) =>
-                  ExpandableYoutubeContentGridView.createSkeleton(),
-              dataBuilder: (context, relatedVideos) {
+            relatedVideoAsync(ref).whenFetchOrNull(
+              data: (relatedVideos) {
                 return ExpandableYoutubeContentGridView(
                   video: relatedVideos,
                   onTap: (video) {
@@ -240,50 +237,7 @@ class _SummaryTabView extends HookConsumerWidget
                   },
                 );
               },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  /// 그리드뷰 스켈레톤
-  Widget _buildRelatedGridViewSkeleton(
-      SliverGridDelegateWithFixedCrossAxisCount gridDelegate) {
-    return GridView.builder(
-      padding: EdgeInsets.zero,
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      gridDelegate: gridDelegate,
-      itemCount: 6,
-      itemBuilder: (context, index) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: const AspectRatio(
-                aspectRatio: 167.54 / 94,
-                child: SkeletonBox(),
-              ),
-            ),
-            const MaxGap(8),
-            Padding(
-              padding: const EdgeInsets.only(left: 2),
-              child: SkeletonBox(
-                padding: const EdgeInsets.symmetric(vertical: 2),
-                width: AppSize.ratioWidth(110),
-                height: 16,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 2),
-              child: SkeletonBox(
-                width: AppSize.ratioWidth(40),
-                padding: const EdgeInsets.symmetric(vertical: 2),
-                height: 13,
-              ),
+              error: (_, __) => const EmptyBox(),
             ),
           ],
         );

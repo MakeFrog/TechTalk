@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/youtube/index.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 part 'youtube_upload_failed_route_arg_provider.g.dart';
 
@@ -11,7 +12,7 @@ YoutubeUploadFailedArg youtubeUploadFailedRouteArg(
 
 final class YoutubeUploadFailedArg {
   final YoutubeUploadFailedType type;
-  final String? contentId;
+  final Video? video;
 
-  YoutubeUploadFailedArg({required this.type, this.contentId});
+  YoutubeUploadFailedArg({required this.type, this.video});
 }

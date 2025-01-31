@@ -7,7 +7,7 @@ part of 'submitted_youtube_info_provider.dart';
 // **************************************************************************
 
 String _$submittedYoutubeInfoHash() =>
-    r'b28af3cd12c5fe9b4c6e848a81e81e147c09a3a5';
+    r'1330f56d01bc32d02681220e20bfd80945868a5b';
 
 /// See also [SubmittedYoutubeInfo].
 @ProviderFor(SubmittedYoutubeInfo)

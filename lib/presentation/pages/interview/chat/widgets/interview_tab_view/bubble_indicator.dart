@@ -10,14 +10,27 @@ import 'package:techtalk/core/constants/assets.dart';
 ///
 
 class BubbleIndicator extends StatelessWidget {
-  const BubbleIndicator(
-      {super.key,
-      required this.text,
-      this.talePosition,
-      });
+  const BubbleIndicator({
+    super.key,
+    required this.text,
+    this.textSpans = const [],
+    this.bgColor = const Color(0xFF282831),
+    this.talePosition = BubbleTalePosition.bottomCenter,
+  });
 
   final String text;
-  final BubbleTalePosition? talePosition;
+  final Color bgColor;
+  final List<TextSpan> textSpans;
+  final BubbleTalePosition talePosition;
+
+  factory BubbleIndicator.withSpans(
+          {required List<TextSpan> textSpans,
+          BubbleTalePosition talePosition = BubbleTalePosition.bottomCenter}) =>
+      BubbleIndicator(
+        text: '',
+        textSpans: textSpans,
+        talePosition: talePosition,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -28,21 +41,41 @@ class BubbleIndicator extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(24),
-              color: AppColor.of.gray6),
-          child: Text(
-            text,
-            style: AppTextStyle.alert1.copyWith(
-              color: AppColor.of.white,
-            ),
+            borderRadius: BorderRadius.circular(24),
+            color: bgColor,
           ),
+          child: textSpans.isNotEmpty
+              ? RichText(
+                  text: TextSpan(
+                    children: [
+                      ...textSpans,
+                    ],
+                    style: AppTextStyle.alert1.copyWith(
+                      color: AppColor.of.white,
+                    ),
+                  ),
+                )
+              : Text(
+                  text,
+                  style: AppTextStyle.alert1.copyWith(
+                    color: AppColor.of.white,
+                  ),
+                ),
         ),
         Positioned(
-          left: talePosition == BubbleTalePosition.left ? 18 : null,
-          right: talePosition == BubbleTalePosition.right ? 18 : null,
-          bottom: -6,
-          child: SvgPicture.asset(
-            Assets.iconsChatBubbleTale,
+          top: !talePosition.isBottomPosition ? -6 : null,
+          left: talePosition.isLeft ? 12 : null,
+          right: talePosition.isRight ? 12 : null,
+          bottom: talePosition.isBottomPosition ? -6 : null,
+          child: RotatedBox(
+            quarterTurns: talePosition.isBottomPosition ? 0 : 2,
+            child: SvgPicture.asset(
+              Assets.iconsChatBubbleTale,
+              colorFilter: ColorFilter.mode(
+                bgColor,
+                BlendMode.srcIn,
+              ),
+            ),
           ),
         ),
       ],
@@ -51,7 +84,23 @@ class BubbleIndicator extends StatelessWidget {
 }
 
 enum BubbleTalePosition {
-  left,
-  right,
-  center;
+  bottomLeft,
+  bottomRight,
+  bottomCenter,
+  topRight,
+  topLeft,
+  topCenter;
+
+  bool get isBottomPosition =>
+      this == BubbleTalePosition.bottomCenter ||
+      this == BubbleTalePosition.bottomLeft ||
+      this == BubbleTalePosition.bottomRight;
+
+  bool get isRight =>
+      this == BubbleTalePosition.bottomRight ||
+      this == BubbleTalePosition.topRight;
+
+  bool get isLeft =>
+      this == BubbleTalePosition.bottomLeft ||
+      this == BubbleTalePosition.topLeft;
 }

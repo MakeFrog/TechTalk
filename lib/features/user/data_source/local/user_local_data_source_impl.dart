@@ -41,4 +41,9 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
         userLocalInfo ??
             UserBox.defaultValue().copyWith(hasEnteredFirstInterview: true));
   }
+
+  @override
+  Future<void> storeNewLocalState(UserBox userBox) async {
+    return box.put(AppLocal.userBoxName, userBox);
+  }
 }

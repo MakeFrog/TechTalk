@@ -9,6 +9,7 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/core/services/slack_notification_service.dart' as noti;
 import 'package:techtalk/features/system/system.dart';
 import 'package:techtalk/features/user/user.dart';
+import 'package:techtalk/presentation/pages/main/provider/show_new_feature_indicator_provider.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
 import 'package:techtalk/presentation/providers/system/detect_network_connectivity_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
@@ -16,11 +17,15 @@ import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 mixin class MainEvent {
   void onTapBottomNavigationItem(
     WidgetRef ref, {
-    required int index,
+    required int targetTabIndex,
   }) {
-    ref
-        .read(mainBottomNavigationProvider.notifier)
-        .changeTab(MainNavigationTab.values[index]);
+    final targetTab = MainNavigationTab.values[targetTabIndex];
+    if (targetTab == MainNavigationTab.videoTutorial &&
+        ref.exists(showNewFeatureIndicatorProvider) &&
+        ref.read(showNewFeatureIndicatorProvider)) {
+      ref.read(showNewFeatureIndicatorProvider.notifier).disable();
+    }
+    ref.read(mainBottomNavigationProvider.notifier).changeTab(targetTab);
   }
 
   ///

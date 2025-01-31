@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:techtalk/app/util/app_logger.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
@@ -161,6 +162,17 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
+  Result<bool> hasSeenNewYoutubeFeature() {
+    try {
+      final response =
+          _userLocalDataSource.loadUserLocalInfo().hasSeenNewYoutubeFeature;
+      return Result.success(response);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
   Future<Result<void>> changeFirstEnteredFieldToTrue() async {
     try {
       await _userLocalDataSource.changeFirstEnteredFieldToTrue();
@@ -235,6 +247,19 @@ final class UserRepositoryImpl implements UserRepository {
       return Result.success(response);
     } catch (e) {
       throw Result.failure(Exception('UserRepository> $e'));
+    }
+  }
+
+  @override
+  Future<Result<void>> disableNewFeatureShowState() async {
+    try {
+      final prev = _userLocalDataSource.loadUserLocalInfo();
+      final target = prev.copyWith(hasSeenNewYoutubeFeature: true);
+      await _userLocalDataSource.storeNewLocalState(target);
+      return Result.success(null);
+    } catch (e) {
+      logger.e(e);
+      return Result.failure(Exception(e));
     }
   }
 }

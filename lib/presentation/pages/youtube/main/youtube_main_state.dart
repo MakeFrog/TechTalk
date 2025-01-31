@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:techtalk/features/youtube/index.dart';
+import 'package:techtalk/presentation/pages/main/provider/show_new_feature_indicator_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/main/constant/yotubue_content_category.dart';
 import 'package:techtalk/presentation/pages/youtube/main/provider/selected_filter_category_provider.dart';
 
@@ -20,6 +21,13 @@ mixin class YoutubeMainState {
     final pagingController =
         ref.watch(youtubeContentPaginationProvider(category: selectedCategory));
     return pagingController;
+  }
+
+  ///
+  /// 영상 업로드 노티 버튼 노출 여부
+  ///
+  bool showTryUploadIndicator(WidgetRef ref) {
+    return ref.read(showNewFeatureIndicatorProvider.notifier).initialValue;
   }
 
   ///

@@ -12,6 +12,7 @@ import 'package:techtalk/presentation/pages/youtube/upload_failed/provider/youtu
 import 'package:techtalk/presentation/pages/youtube/upload_failed/youtube_upload_failed_event.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
+import 'package:techtalk/presentation/widgets/common/item/youtube_content_item_view.dart';
 
 class YoutubeUploadFailedPage extends BasePage with YoutubeUploadFailedEvent {
   const YoutubeUploadFailedPage({super.key, required this.arg});
@@ -45,11 +46,31 @@ class YoutubeUploadFailedPage extends BasePage with YoutubeUploadFailedEvent {
             ],
           ),
         ),
-        const Spacer(flex: 105),
-        SvgPicture.asset(Assets.iconsRedWarnningBig),
-        const Spacer(flex: 166),
+        if (arg.type == YoutubeUploadFailedType.alreadyUploaded) ...[
+          const Spacer(flex: 131),
+          if (arg.video != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: YoutubeContentItemView(
+                thumbnailImgUrl: arg.video!.thumbnails.highResUrl,
+                title: arg.video!.title,
+                channelName: '',
+                videoDuration: arg.video!.duration,
+                videoId: arg.video!.id.value,
+              ),
+            )
+          else
+            YoutubeContentItemView.createSkeleton(),
+          const Spacer(flex: 130),
+        ],
+        if (arg.type != YoutubeUploadFailedType.alreadyUploaded) ...[
+          const Spacer(flex: 105),
+          SvgPicture.asset(Assets.iconsRedWarnningBig),
+          const Spacer(flex: 166),
+        ],
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 24) +
+              const EdgeInsets.only(top: 16),
           margin: EdgeInsets.only(bottom: AppSize.bottomInset == 0 ? 16 : 0),
           child: BounceTapper(
             child: SizedBox(

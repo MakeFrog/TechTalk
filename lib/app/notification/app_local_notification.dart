@@ -96,42 +96,4 @@ final class AppLocalNotification {
           '${DeeplinkScheme.techtalk.name}://${host.toDashedString()}/$path',
     );
   }
-
-  ///
-  /// 백그라운드에서도 push을 받을 수 있는 있도록 설정
-  ///
-  Future<void> triggerBackgroundPush({
-    required String title,
-    required String description,
-    required DeeplinkHost host,
-    required String? path,
-  }) async {
-    NotificationDetails details = const NotificationDetails(
-      iOS: DarwinNotificationDetails(
-        presentAlert: true,
-        presentBadge: true,
-        presentSound: true,
-      ),
-      android: AndroidNotificationDetails(
-        _channelId,
-        _channelName,
-        importance: Importance.max,
-        priority: Priority.high,
-        channelDescription: _channelDescription,
-      ),
-    );
-
-    await _local.zonedSchedule(
-      Random().nextInt(100),
-      title,
-      description,
-      tz.TZDateTime.now(tz.local).add(const Duration(seconds: 1)),
-      details,
-      payload:
-          '${DeeplinkScheme.techtalk.name}://${host.toDashedString()}/$path',
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      androidScheduleMode: AndroidScheduleMode.exact,
-    );
-  }
 }

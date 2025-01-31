@@ -45,6 +45,7 @@ class Flavor {
     final option = env.firebaseOption;
 
     /// LocalStorage Hive 초기화
+
     await AppLocal.initHive();
     // AppLocal.clearAllLocalStorage();
 

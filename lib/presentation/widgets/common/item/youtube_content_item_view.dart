@@ -34,7 +34,7 @@ class YoutubeContentItemView extends StatelessWidget {
 
   final String thumbnailImgUrl;
   final String title;
-  final String channelName;
+  final String? channelName;
   final Duration? videoDuration;
   final int? questionCount;
   final List<JobGroupEntity> jobGroups;
@@ -94,8 +94,8 @@ class YoutubeContentItemView extends StatelessWidget {
                 ),
                 if (isLoaded)
                   Positioned(
-                    top: 16,
-                    left: 16,
+                    bottom: 12,
+                    right: 12,
                     child: Row(
                       children: [
                         if (videoDuration != null)
@@ -107,7 +107,7 @@ class YoutubeContentItemView extends StatelessWidget {
                               ),
                             ),
                           ),
-                        if (videoDuration != null)
+                        if (questionCount != null)
                           DarkTransparentChip(label: '질문 $questionCount개'),
                       ],
                     ),
@@ -136,9 +136,9 @@ class YoutubeContentItemView extends StatelessWidget {
                       width: AppSize.ratioWidth(162),
                     ),
                   const Gap(2),
-                  if (isLoaded)
+                  if (isLoaded && channelName != null)
                     Text(
-                      channelName,
+                      channelName!,
                       maxLines: 1,
                       style: AppTextStyle.body2.copyWith(
                         color: AppColor.of.gray3,

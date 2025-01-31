@@ -76,7 +76,7 @@ class BottomInputField extends HookConsumerWidget with ChatState, ChatEvent {
                   child: Builder(
                     builder: (context) {
                       return BubbleIndicator(
-                        talePosition: BubbleTalePosition.left,
+                        talePosition: BubbleTalePosition.bottomLeft,
                         text: tr(LocaleKeys.interview_answerVocally),
                       );
                     },

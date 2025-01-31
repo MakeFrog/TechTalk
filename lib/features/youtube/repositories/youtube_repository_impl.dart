@@ -148,7 +148,7 @@ class YoutubeRepositoryImpl
           .isYoutubeAlreadyUploaded(video.id.value);
 
       if (isAlreadyUploaded) {
-        throw YtAlreadyUploadedException(video.id.value);
+        throw YtAlreadyUploadedException(video: video);
       }
 
       final responses = await Future.wait([

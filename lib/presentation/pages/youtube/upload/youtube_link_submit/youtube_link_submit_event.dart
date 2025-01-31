@@ -10,6 +10,7 @@ import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/submitted_youtube_confirm/provider/submitted_youtube_confirm_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/youtube_link_submit/provider/youtube_link_input_controller_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 mixin class YoutubeLinkSubmitEvent {
   ///
@@ -53,14 +54,15 @@ mixin class YoutubeLinkSubmitEvent {
 
         final targetType =
             YoutubeUploadFailedType.getByErrorCode(targetException.code);
-        final String? targetCardId =
+        final Video? alreadyUploadedVideo =
             targetException is YtAlreadyUploadedException
-                ? (e as YtAlreadyUploadedException).contentId
+                ? (e as YtAlreadyUploadedException).video
                 : null;
 
         YoutubeContentUploadFailedRoute(
-                contentId: targetCardId, failedType: targetType)
-            .go(ref.context);
+          failedType: targetType,
+          $extra: alreadyUploadedVideo,
+        ).go(ref.context);
       },
     );
   }

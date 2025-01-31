@@ -21,7 +21,7 @@ class ExpandableYoutubeContentGridView extends StatelessWidget {
     this.showSubtitleSkeleton = true,
   });
 
-  final List<VideoOverviewEntity> video;
+  final List<VideoOverviewEntity>? video;
   final void Function(VideoOverviewEntity video) onTap;
   final bool isLoaded;
   final bool showSubtitleSkeleton;
@@ -37,10 +37,10 @@ class ExpandableYoutubeContentGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isLoaded || video.isNotEmpty) {
-      final rowSizes = video.isNotEmpty
+    if (isLoaded || (video?.isNotEmpty ?? true)) {
+      final rowSizes = video?.isNotEmpty ?? true
           ? List.generate(
-              (video.length / 2).ceil(), // 반올림으로 row 개수 계산
+              (video?.length ?? 10 / 2).ceil(), // 반올림으로 row 개수 계산
               (_) => auto,
             )
           : [auto]; // 기본값 설정
@@ -54,12 +54,13 @@ class ExpandableYoutubeContentGridView extends StatelessWidget {
           rowGap: 12,
           columnGap: 8,
           children: [
-            for (var i = 0; i < video.length; i++)
+            for (var i = 0; i < (video?.length ?? 10); i++)
               Builder(
                 builder: (context) {
-                  final content = video[i];
+                  final content = video?[i];
                   return GestureDetector(
                     onTap: () {
+                      if (content == null) return;
                       onTap(content);
                     },
                     child: Column(
@@ -67,47 +68,79 @@ class ExpandableYoutubeContentGridView extends StatelessWidget {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
-                          child: AspectRatio(
-                            aspectRatio: 167.54 / 94,
-                            child: Image.network(
-                              content.thumbnailImgUrl,
-                              fit: BoxFit.cover,
-                              cacheWidth: ((AppSize.screenWidth - 40) / 2)
-                                  .cacheSize(context),
-                              loadingBuilder:
-                                  (context, child, loadingProgress) {
-                                if (loadingProgress == null) {
-                                  return child;
-                                }
-                                return SizedBox(
-                                  width: double.infinity,
-                                  height: MediaQuery.of(context).size.width *
-                                      (94 / 167.54),
-                                  child: const SkeletonBox(),
-                                );
-                              },
-                            ),
-                          ),
+                          child: AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 300),
+                              child: content != null
+                                  ? AspectRatio(
+                                      aspectRatio: 167.54 / 94,
+                                      child: Image.network(
+                                        content.thumbnailImgUrl ?? '',
+                                        fit: BoxFit.cover,
+                                        cacheWidth:
+                                            ((AppSize.screenWidth - 40) / 2)
+                                                .cacheSize(context),
+                                        errorBuilder: (_, __, ___) {
+                                          return SizedBox(
+                                            width: double.infinity,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                (94 / 167.54),
+                                            child: const SkeletonBox(),
+                                          );
+                                        },
+                                        loadingBuilder:
+                                            (context, child, loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          }
+                                          return const SkeletonBox();
+                                        },
+                                      ),
+                                    )
+                                  : const AspectRatio(
+                                      aspectRatio: 167.54 / 94,
+                                      child: SkeletonBox())),
                         ),
                         const SizedBox(height: 8),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 2),
-                          child: Text(
-                            content.title,
-                            style: AppTextStyle.body1,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 2),
-                          child: Text(
-                            content.channelName,
-                            style: AppTextStyle.alert2.copyWith(
-                              color: AppColor.of.gray3,
+                        if (content != null)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 2),
+                            child: Text(
+                              content.title ?? '',
+                              style: AppTextStyle.body1,
                             ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
+                          )
+                        else
+                          Padding(
+                            padding: const EdgeInsets.only(left: 2),
+                            child: SkeletonBox(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              width: AppSize.ratioWidth(110),
+                              height: 16,
+                            ),
                           ),
-                        ),
+                        if (content != null)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 2),
+                            child: Text(
+                              content.channelName ?? '',
+                              style: AppTextStyle.alert2.copyWith(
+                                color: AppColor.of.gray3,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                          )
+                        else
+                          Padding(
+                            padding: const EdgeInsets.only(left: 2),
+                            child: SkeletonBox(
+                              width: AppSize.ratioWidth(40),
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              height: 13,
+                            ),
+                          ),
                       ],
                     ),
                   );

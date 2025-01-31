@@ -63,3 +63,19 @@ extension RiverpodRefCacheExt on AutoDisposeRef {
     onDispose(timer.cancel);
   }
 }
+
+extension AsyncValueX<T> on AsyncValue<T> {
+  R whenFetchOrNull<R>({
+    bool skipLoadingOnReload = false,
+    bool skipLoadingOnRefresh = true,
+    bool skipError = false,
+    required R Function(T? data) data,
+    required R Function(Object error, StackTrace stackTrace) error,
+  }) {
+    if (hasError && (!hasValue || !skipError)) {
+      return error(this.error!, stackTrace!);
+    }
+
+    return data(valueOrNull);
+  }
+}

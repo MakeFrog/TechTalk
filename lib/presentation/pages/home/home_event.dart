@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -9,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:http/http.dart' as http;
 import 'package:techtalk/app/notification/app_local_notification.dart';
 import 'package:techtalk/app/router/deeplink/deep_link_define.enum.dart';
 import 'package:techtalk/app/router/router.dart';
@@ -84,7 +82,7 @@ mixin class HomeEvent {
   /// 실전 면접 기록 여부에 따라 라우팅을 다르게 진행
   ///
   Future<void> onPracticalCardTapped(WidgetRef ref) async {
-    await AppLocalNotification().triggerBackgroundPush(
+    await AppLocalNotification().triggerPush(
         title: 'title',
         description: 'description',
         host: DeeplinkHost.landing,
