@@ -18,7 +18,6 @@ import 'package:techtalk/features/youtube/repositories/entities/video_overview_e
 import 'package:techtalk/presentation/pages/youtube/channel_detail/provider/channel_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/is_bookmark_checked_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/related_youtube_videos_provider.dart';
-import 'package:techtalk/presentation/pages/youtube/detail/providers/selected_youtube_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_content_qna_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_main_info_provider.dart';
@@ -138,20 +137,14 @@ mixin class YoutubeDetailEvent {
   /// 면접 시작하기 버튼이 클릭 되었을 떄
   ///
   Future<void> onStartInterviewBtnTapped(WidgetRef ref) async {
-    /// qna 기다리기
-    final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
-
     final arg = ref.read(youtubeDetailRouteArgProvider);
-    final passedQnas = arg.qnas?.toList();
 
-    final selectedQnas = ref.read(selectedYoutubeQnasProvider(
-      videoId,
-      passedQnas: passedQnas ?? null,
-    ));
-
-    final relatedVideo = ref.read(relatedYoutubeVideoProvider(arg.contentId));
-
-    if (ref.read(youtubeContentQnaProvider(videoId)).valueOrNull == null) {
+    if (ref
+            .read(youtubeContentQnaProvider(
+              contentId: arg.contentId,
+            ))
+            .valueOrNull ==
+        null) {
       DialogService.show(
         dialog: AppDialog.singleBtn(
           onBtnClicked: () {
@@ -166,6 +159,18 @@ mixin class YoutubeDetailEvent {
 
       return;
     }
+
+    final selectedQnas = (await ref
+            .read(
+              youtubeContentQnaProvider(
+                contentId: arg.contentId,
+              ).notifier,
+            )
+            .future)
+        .where((e) => e.isSelected)
+        .toList();
+
+    final relatedVideo = ref.read(relatedYoutubeVideoProvider(arg.contentId));
 
     final content =
         await ref.read(youtubeMainInfoProvider(arg.contentId).future);
@@ -221,15 +226,13 @@ mixin class YoutubeDetailEvent {
   /// 선택 여부 토글
   ///
   void onQnaBoxTapped(WidgetRef ref, {required YoutubeQnaEntity qna}) {
-    final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
-
-    final passedQnas = ref.read(youtubeDetailRouteArgProvider).qnas?.toList();
-
-    ref
-        .read(selectedYoutubeQnasProvider(
-          videoId,
-          passedQnas: passedQnas ?? null,
-        ).notifier)
+    final arg = ref.read(youtubeDetailRouteArgProvider);
+    return ref
+        .read(
+          youtubeContentQnaProvider(
+            contentId: arg.contentId,
+          ).notifier,
+        )
         .toggle(qna);
   }
 
@@ -237,13 +240,13 @@ mixin class YoutubeDetailEvent {
   /// 문답 박스 전체 선택
   ///
   void onAllSelectBtnTapped(WidgetRef ref) {
-    final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
-    final passedQnas = ref.read(youtubeDetailRouteArgProvider).qnas;
-    ref
-        .read(selectedYoutubeQnasProvider(
-          videoId,
-          passedQnas: passedQnas?.toList() ?? null,
-        ).notifier)
+    final arg = ref.read(youtubeDetailRouteArgProvider);
+    return ref
+        .read(
+          youtubeContentQnaProvider(
+            contentId: arg.contentId,
+          ).notifier,
+        )
         .activateAll();
   }
 

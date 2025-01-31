@@ -69,7 +69,7 @@ final class AnalyzeAndUploadYoutubeUseCase
           YoutubeDetailArg.entryFromUpload(
             overView: targetOverView,
             summary: SummaryEntity.fromUploadResponse(summaryResult),
-            qnas: qnaAndIdsResult.qnas,
+            qnas: qnaAndIdsResult.qnas.toList(),
           ),
         ).go(await navigationContext);
         unawaited(_uploadContent(

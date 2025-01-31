@@ -7,7 +7,7 @@ part of 'is_interview_progress_ready_provider.dart';
 // **************************************************************************
 
 String _$isInterviewProgressReadyHash() =>
-    r'9d717a1aca574c0b8c17b62af49925645a50eb32';
+    r'6046d88327706e4d78e8207edd65da063075bf14';
 
 /// See also [IsInterviewProgressReady].
 @ProviderFor(IsInterviewProgressReady)
@@ -20,13 +20,13 @@ final isInterviewProgressReadyProvider =
       : _$isInterviewProgressReadyHash,
   dependencies: <ProviderOrFamily>[
     youtubeDetailRouteArgProvider,
-    selectedYoutubeQnasProvider
+    youtubeContentQnaProvider
   ],
   allTransitiveDependencies: <ProviderOrFamily>{
     youtubeDetailRouteArgProvider,
     ...?youtubeDetailRouteArgProvider.allTransitiveDependencies,
-    selectedYoutubeQnasProvider,
-    ...?selectedYoutubeQnasProvider.allTransitiveDependencies
+    youtubeContentQnaProvider,
+    ...?youtubeContentQnaProvider.allTransitiveDependencies
   },
 );
 

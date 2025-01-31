@@ -1,4 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:techtalk/features/chat/repositories/entities/base_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/enums/qna_type.enum.dart';
 import 'package:techtalk/features/topic/data_source/remote/models/topic_qna_model.dart';
@@ -11,11 +10,13 @@ import 'package:uuid/uuid.dart';
 class YoutubeQnaEntity extends BaseQnaEntity {
   /// 평가 요소
   final String answer;
+  final bool isSelected;
 
   YoutubeQnaEntity({
     required super.id,
     required super.question,
     required this.answer,
+    this.isSelected = true,
   }) : super(
           type: QnaType.youtube,
         );
@@ -24,11 +25,13 @@ class YoutubeQnaEntity extends BaseQnaEntity {
     String? answer,
     String? id,
     String? question,
+    bool? isSelected,
   }) {
     return YoutubeQnaEntity(
       answer: answer ?? this.answer,
       id: id ?? this.id,
       question: question ?? this.question,
+      isSelected: isSelected ?? this.isSelected,
     );
   }
 
@@ -48,18 +51,4 @@ class YoutubeQnaEntity extends BaseQnaEntity {
         question: model.question,
         answer: model.questionInstruction ?? '없음',
       );
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is YoutubeQnaEntity &&
-          runtimeType == other.runtimeType &&
-          answer == other.answer &&
-          id == other.id &&
-          question == other.question &&
-          type == other.type;
-
-  @override
-  int get hashCode =>
-      answer.hashCode ^ id.hashCode ^ question.hashCode ^ type.hashCode;
 }

@@ -50,7 +50,7 @@ class AnalyzeYoutubePage extends BasePage
               ),
               const Gap(12),
               Text(
-                '앱을 종료하면 업로드가 취소돼요',
+                '앱을 종료하면 업로드가 취소돼요\n(최대 1분 소요)',
                 style: AppTextStyle.body1.copyWith(
                   color: AppColor.of.gray4,
                 ),

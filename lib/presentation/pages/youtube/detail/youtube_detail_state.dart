@@ -6,7 +6,6 @@ import 'package:techtalk/presentation/pages/youtube/detail/constant/youtube_play
 import 'package:techtalk/presentation/pages/youtube/detail/providers/is_bookmark_checked_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/is_interview_progress_ready_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/related_youtube_videos_provider.dart';
-import 'package:techtalk/presentation/pages/youtube/detail/providers/selected_youtube_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_content_qna_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_main_info_provider.dart';
@@ -80,21 +79,20 @@ mixin class YoutubeDetailState {
   ///
   /// 선택된 Qna가 최소 한 개 이상인지 여부
   ///
-  bool hasAtLeastOneOfQnaSelected(WidgetRef ref) =>
-      ref.watch(isInterviewProgressReadyProvider);
+  bool hasAtLeastOneOfQnaSelected(WidgetRef ref) {
+    return ref.watch(isInterviewProgressReadyProvider);
+  }
 
   ///
   /// 콘텐츠 문답 리스트
   ///
-  AsyncValue<Set<YoutubeQnaEntity>> qnasAsync(WidgetRef ref) {
-    final passedQnas = ref.read(youtubeDetailRouteArgProvider).qnas;
-    return passedQnas != null
-        ? AsyncData(passedQnas)
-        : ref.watch(
-            youtubeContentQnaProvider(
-              ref.read(youtubeDetailRouteArgProvider).contentId,
-            ),
-          );
+  AsyncValue<List<YoutubeQnaEntity>> qnasAsync(WidgetRef ref) {
+    final arg = ref.read(youtubeDetailRouteArgProvider);
+    return ref.watch(
+      youtubeContentQnaProvider(
+        contentId: arg.contentId,
+      ),
+    );
   }
 
   ///
@@ -120,16 +118,5 @@ mixin class YoutubeDetailState {
   AsyncValue<List<VideoOverviewEntity>> relatedVideoAsync(WidgetRef ref) {
     final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
     return ref.watch(relatedYoutubeVideoProvider(videoId));
-  }
-
-  ///
-  /// 선택된 면접 질문
-  ///
-  List<YoutubeQnaEntity> selectedQnas(WidgetRef ref) {
-    final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
-    final passedQnas = ref.read(youtubeDetailRouteArgProvider).qnas;
-    final selectedQnas = ref.watch(selectedYoutubeQnasProvider(videoId,
-        passedQnas: passedQnas?.toList() ?? null));
-    return selectedQnas;
   }
 }

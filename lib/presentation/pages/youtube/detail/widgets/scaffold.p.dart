@@ -235,7 +235,7 @@ class _Scaffold extends HookWidget with YoutubeDetailState {
           qnasAsync(ref);
           isBookMarkCheckedAsync(ref);
           relatedVideoAsync(ref);
-          selectedQnas(ref);
+          hasAtLeastOneOfQnaSelected(ref);
 
           return scaffold!;
         },
