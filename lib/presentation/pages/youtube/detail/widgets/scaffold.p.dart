@@ -96,6 +96,14 @@ class _Scaffold extends HookWidget with YoutubeDetailState {
                       length: ContentsDetailTabType.values.length,
                       child: NotificationListener<ScrollNotification>(
                         onNotification: (notification) {
+                          // 가로 스크롤은 무시
+                          if (notification.metrics.axisDirection ==
+                                  AxisDirection.left ||
+                              notification.metrics.axisDirection ==
+                                  AxisDirection.right) {
+                            return false;
+                          }
+
                           if ((tabController.animation?.isAnimating ?? true) ||
                               tabController.index == 1) {
                             return false;
