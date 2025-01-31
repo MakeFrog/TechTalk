@@ -137,7 +137,8 @@ final class AnalyzeAndUploadYoutubeUseCase
 
       // 8) 요약된 내용이 있는지 여부
       if (mergedSummaryResponse.summaries.isEmpty ||
-          mergedSummaryResponse.mainTheme.isEmpty) {
+          mergedSummaryResponse.mainTheme.isEmpty ||
+          mergedSummaryResponse.summaries.any((e) => e.title.isEmpty)) {
         throw const YtInvalidVideoContentException();
       }
 
