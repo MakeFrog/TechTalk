@@ -17,9 +17,9 @@ class GetSummaryFromYoutubeContentUseCase
       content: [
         OpenAIChatCompletionChoiceMessageContentItemModel.text(
           '''
-프로그래밍 관련 유튜브 영상을 기반으로 요약을 작성하세요.
+프로그래밍 관련 자막 데이터를 바탕으로 프로그래밍 개념을 직접 설명하듯이 요약하세요.
 
-영상 제목과 제공된 자막(caption) 데이터를 활용하여 아래 요구사항에 따라 세부적이고 체계적인 요약을 생성하세요.
+제목과 자막(caption) 데이터를 활용하여 아래 요구사항에 따라 세부적이고 체계적인 요약을 생성하세요.
 
 ### 요구사항:
 1. **응답 유형 (`type`) 지정**:
@@ -29,18 +29,17 @@ class GetSummaryFromYoutubeContentUseCase
    - `isValid` 타입이 아니면 `main_theme`과 `summaries`를 빈문자열, 빈배열을 반환합니다.
 
 2. **핵심 주제 (`main_theme`) 작성**:
-   - 영상에서 다루고 있는 핵심 프로그래밍 개념에 대한 내용을 3~5문장으로 요약하세요.
-   - 프로그래밍 주제를 설명할 때 '영상'이라는 단어를 절대 사용하지 마세요. 
+   - 해당 내용에서 다루는 핵심 프로그래밍 개념을 2~4문장으로 요약하세요.
+   - 직접 개념을 설명하듯 작성하시고, '영상'이라는 단어는 절대 사용하지 마세요.
    
   
 3. **세부 요약 목록 (`summaries`) 작성**:
-   - 영상에서 다루고 있는 섹션별로 제목(`title`)과 요약 내용(`contents`)을 구성하세요.
-   - 요약 내용(`contents`)은 영상에서 다루고 있는 프로그래밍 내용을 상세히 설명해야 합니다.
-   - 세부 요약 목록은 시간 순서별(`offset`)로 중복되지 않게 나열되어야 합니다.
-   - 각 섹션의 시작 시간(`offset`)을 명시하세요.
-
----   
+   - 해당 내용을 섹션(챕터)별로 구분해 `title`과 `contents`를 작성하세요.
+   - `contents`에는 프로그래밍 개념을 직접 설명하듯 자세히 서술하세요.
+   - 시간 순서별(offset)로 중복 없이 나열하고, 각 섹션 시작 시간을 "HH:MM:SS" 또는 "HH:MM:SS.sss" 형식으로 적어주세요.
     
+---   
+            
 ### 입력 데이터 형식:
 - **제목**: `${request.title}`
 - **자막 데이터**: `${request.captions.map((e) => e.toMap()).toList()}`
@@ -78,12 +77,11 @@ class GetSummaryFromYoutubeContentUseCase
 
     try {
       OpenAIChatCompletionModel completion = await OpenAI.instance.chat.create(
-        model: "gpt-4o",
+        model: "o1",
         messages: [
           systemMessage,
         ],
         responseFormat: {"type": "json_object"},
-        temperature: 1,
       );
 
       log('Summary 토큰사용량 : ${completion.usage}'); // 응답 결과 출력
