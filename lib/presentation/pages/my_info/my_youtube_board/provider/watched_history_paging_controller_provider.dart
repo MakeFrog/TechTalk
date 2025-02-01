@@ -17,7 +17,7 @@ Raw<PagingController<DocumentSnapshot<WatchedYoutubeModel>?, YoutubeMainEntity>>
 
   pagingController.addPageRequestListener((pageKey) async {
     final result = await userRepository.getPagedWatchedYoutubeHistory(
-      limit: 6,
+      limit: 15,
       lastDocument: pageKey,
     );
 

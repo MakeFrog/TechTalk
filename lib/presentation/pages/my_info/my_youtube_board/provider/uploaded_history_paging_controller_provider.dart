@@ -20,7 +20,7 @@ Raw<
 
   pagingController.addPageRequestListener((pageKey) async {
     final result = await userRepository.getPagedUploadedYoutube(
-      limit: 6,
+      limit: 15,
       lastDocument: pageKey,
     );
 

@@ -1,42 +1,40 @@
 part of '../my_youtube_board_page.dart';
 
-class _WatchHistoryTabView extends ConsumerWidget
+class _WatchHistoryTabView extends HookConsumerWidget
     with MyYoutubeBoardState, MyYoutubeBoardEvent {
   const _WatchHistoryTabView();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useAutomaticKeepAlive();
     final pagingController = watchedHistoryPagingControllerState(ref);
-    return TechtalkRefreshIndicator(
-      onRefresh: () => refreshWatchedHistoryList(ref),
-      child: PagedListView<DocumentSnapshot<WatchedYoutubeModel>?,
-          YoutubeMainEntity>(
-        pagingController: pagingController,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        builderDelegate: PagedChildBuilderDelegate<YoutubeMainEntity>(
-          itemBuilder: (context, item, index) {
-            return Container(
-              margin: const EdgeInsets.only(bottom: 16),
-              child: BounceTapper(
-                onTap: () => routeToDetailPage(ref, overview: item),
-                child: YoutubeContentSmallItemView(
-                  thumbnailImgUrl: item.thumbnailImgUrl,
-                  title: item.contentsTitle,
-                  channelName: item.channel.name,
-                  videoDuration: item.videoDuration,
-                  questionCount: item.qnaNum,
-                  videoId: item.id,
-                ),
+    return PagedListView<DocumentSnapshot<WatchedYoutubeModel>?,
+        YoutubeMainEntity>(
+      pagingController: pagingController,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      builderDelegate: PagedChildBuilderDelegate<YoutubeMainEntity>(
+        itemBuilder: (context, item, index) {
+          return Container(
+            margin: const EdgeInsets.only(bottom: 16),
+            child: BounceTapper(
+              onTap: () => routeToDetailPage(ref, overview: item),
+              child: YoutubeContentSmallItemView(
+                thumbnailImgUrl: item.thumbnailImgUrl,
+                title: item.contentsTitle,
+                channelName: item.channel.name,
+                videoDuration: item.videoDuration,
+                questionCount: item.qnaNum,
+                videoId: item.id,
               ),
-            );
-          },
-          firstPageErrorIndicatorBuilder: (_) =>
-              _buildErrorOccuredView(pagingController),
-          newPageErrorIndicatorBuilder: (_) => const SizedBox(),
-          newPageProgressIndicatorBuilder: (_) => const SizedBox(),
-          noItemsFoundIndicatorBuilder: (context) =>
-              _buildNoItemFoundView(context, ref),
-        ),
+            ),
+          );
+        },
+        firstPageErrorIndicatorBuilder: (_) =>
+            _buildErrorOccuredView(pagingController),
+        newPageErrorIndicatorBuilder: (_) => const SizedBox(),
+        newPageProgressIndicatorBuilder: (_) => const SizedBox(),
+        noItemsFoundIndicatorBuilder: (context) =>
+            _buildNoItemFoundView(context, ref),
       ),
     );
   }

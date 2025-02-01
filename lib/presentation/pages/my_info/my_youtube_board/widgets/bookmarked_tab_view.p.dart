@@ -1,37 +1,33 @@
 part of '../my_youtube_board_page.dart';
 
-class _BookmarkedTabView extends ConsumerWidget
+class _BookmarkedTabView extends HookConsumerWidget
     with MyYoutubeBoardState, MyYoutubeBoardEvent {
   const _BookmarkedTabView();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useAutomaticKeepAlive();
     final pagingController = bookmarkedPagingControllerState(ref);
-    return Stack(
-      children: [
-        TechtalkRefreshIndicator(
-          onRefresh: () => refreshBookmarkList(ref),
-          child: PagedListView<DocumentSnapshot<BookmarkedYoutubeModel>?,
-              YoutubeMainEntity>(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            pagingController: pagingController,
-            builderDelegate: PagedChildBuilderDelegate<YoutubeMainEntity>(
-              itemBuilder: (context, item, index) {
-                return _BookmarkAnimatedDeletableListItem(
-                  item: item,
-                  onConfirmDelete: () => deleteBookmark(ref, videoId: item.id),
-                );
-              },
-              firstPageErrorIndicatorBuilder: (_) =>
-                  _buildErrorOccuredView(pagingController),
-              newPageErrorIndicatorBuilder: (_) => const SizedBox(),
-              newPageProgressIndicatorBuilder: (_) => const SizedBox(),
-              noItemsFoundIndicatorBuilder: (context) =>
-                  _buildNoItemFoundView(context, ref),
+    return PagedListView<DocumentSnapshot<BookmarkedYoutubeModel>?,
+        YoutubeMainEntity>(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      pagingController: pagingController,
+      builderDelegate: PagedChildBuilderDelegate<YoutubeMainEntity>(
+        itemBuilder: (context, item, index) {
+          return AnimatedSizeAndFade(
+            child: _BookmarkAnimatedDeletableListItem(
+              item: item,
+              onConfirmDelete: () => deleteBookmark(ref, videoId: item.id),
             ),
-          ),
-        ),
-      ],
+          );
+        },
+        firstPageErrorIndicatorBuilder: (_) =>
+            _buildErrorOccuredView(pagingController),
+        newPageErrorIndicatorBuilder: (_) => const SizedBox(),
+        newPageProgressIndicatorBuilder: (_) => const SizedBox(),
+        noItemsFoundIndicatorBuilder: (context) =>
+            _buildNoItemFoundView(context, ref),
+      ),
     );
   }
 
