@@ -52,14 +52,15 @@ class _BottomFloatingView extends ConsumerWidget
               builder: (context, _, __) {
                 return BounceTapper(
                   enable: hasAtLeastOneOfQnaSelected(ref),
+                  onTap: hasAtLeastOneOfQnaSelected(ref)
+                      ? () {
+                          onStartInterviewBtnTapped(ref);
+                        }
+                      : null,
                   child: SizedBox(
                     width: double.infinity,
                     child: FilledButton(
-                      onPressed: hasAtLeastOneOfQnaSelected(ref)
-                          ? () {
-                              onStartInterviewBtnTapped(ref);
-                            }
-                          : null,
+                      onPressed: hasAtLeastOneOfQnaSelected(ref) ? () {} : null,
                       style: FilledButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 4,

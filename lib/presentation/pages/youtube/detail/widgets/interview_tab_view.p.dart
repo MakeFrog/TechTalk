@@ -46,7 +46,6 @@ class _InterviewTabView extends HookConsumerWidget
                   );
                 },
                 dataBuilder: (context, qnas) {
-                  final activatedQnas = selectedQnas(ref);
                   return ListView.separated(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -57,7 +56,7 @@ class _InterviewTabView extends HookConsumerWidget
                       return SelectableQnaBox(
                         index: index,
                         question: item.question,
-                        isSelected: activatedQnas.contains(item),
+                        isSelected: item.isSelected,
                         onTap: () {
                           onQnaBoxTapped(ref, qna: item);
                         },

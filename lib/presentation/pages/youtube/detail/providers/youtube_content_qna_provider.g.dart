@@ -6,7 +6,7 @@ part of 'youtube_content_qna_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$youtubeContentQnaHash() => r'e39859010433255e4b09c7b6b66bf18fe74a8287';
+String _$youtubeContentQnaHash() => r'17c9b9710487ad5b807c1497500611baa0ecdfd4';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,12 +30,12 @@ class _SystemHash {
 }
 
 abstract class _$YoutubeContentQna
-    extends BuildlessAutoDisposeAsyncNotifier<Set<YoutubeQnaEntity>> {
+    extends BuildlessAutoDisposeAsyncNotifier<List<YoutubeQnaEntity>> {
   late final String contentId;
 
-  Future<Set<YoutubeQnaEntity>> build(
-    String contentId,
-  );
+  Future<List<YoutubeQnaEntity>> build({
+    required String contentId,
+  });
 }
 
 /// See also [YoutubeContentQna].
@@ -44,16 +44,16 @@ const youtubeContentQnaProvider = YoutubeContentQnaFamily();
 
 /// See also [YoutubeContentQna].
 class YoutubeContentQnaFamily
-    extends Family<AsyncValue<Set<YoutubeQnaEntity>>> {
+    extends Family<AsyncValue<List<YoutubeQnaEntity>>> {
   /// See also [YoutubeContentQna].
   const YoutubeContentQnaFamily();
 
   /// See also [YoutubeContentQna].
-  YoutubeContentQnaProvider call(
-    String contentId,
-  ) {
+  YoutubeContentQnaProvider call({
+    required String contentId,
+  }) {
     return YoutubeContentQnaProvider(
-      contentId,
+      contentId: contentId,
     );
   }
 
@@ -62,16 +62,22 @@ class YoutubeContentQnaFamily
     covariant YoutubeContentQnaProvider provider,
   ) {
     return call(
-      provider.contentId,
+      contentId: provider.contentId,
     );
   }
 
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
+  static final Iterable<ProviderOrFamily> _dependencies = <ProviderOrFamily>[
+    youtubeDetailRouteArgProvider
+  ];
 
   @override
   Iterable<ProviderOrFamily>? get dependencies => _dependencies;
 
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+  static final Iterable<ProviderOrFamily> _allTransitiveDependencies =
+      <ProviderOrFamily>{
+    youtubeDetailRouteArgProvider,
+    ...?youtubeDetailRouteArgProvider.allTransitiveDependencies
+  };
 
   @override
   Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
@@ -83,11 +89,11 @@ class YoutubeContentQnaFamily
 
 /// See also [YoutubeContentQna].
 class YoutubeContentQnaProvider extends AutoDisposeAsyncNotifierProviderImpl<
-    YoutubeContentQna, Set<YoutubeQnaEntity>> {
+    YoutubeContentQna, List<YoutubeQnaEntity>> {
   /// See also [YoutubeContentQna].
-  YoutubeContentQnaProvider(
-    String contentId,
-  ) : this._internal(
+  YoutubeContentQnaProvider({
+    required String contentId,
+  }) : this._internal(
           () => YoutubeContentQna()..contentId = contentId,
           from: youtubeContentQnaProvider,
           name: r'youtubeContentQnaProvider',
@@ -114,11 +120,11 @@ class YoutubeContentQnaProvider extends AutoDisposeAsyncNotifierProviderImpl<
   final String contentId;
 
   @override
-  Future<Set<YoutubeQnaEntity>> runNotifierBuild(
+  Future<List<YoutubeQnaEntity>> runNotifierBuild(
     covariant YoutubeContentQna notifier,
   ) {
     return notifier.build(
-      contentId,
+      contentId: contentId,
     );
   }
 
@@ -140,7 +146,7 @@ class YoutubeContentQnaProvider extends AutoDisposeAsyncNotifierProviderImpl<
 
   @override
   AutoDisposeAsyncNotifierProviderElement<YoutubeContentQna,
-      Set<YoutubeQnaEntity>> createElement() {
+      List<YoutubeQnaEntity>> createElement() {
     return _YoutubeContentQnaProviderElement(this);
   }
 
@@ -159,14 +165,14 @@ class YoutubeContentQnaProvider extends AutoDisposeAsyncNotifierProviderImpl<
 }
 
 mixin YoutubeContentQnaRef
-    on AutoDisposeAsyncNotifierProviderRef<Set<YoutubeQnaEntity>> {
+    on AutoDisposeAsyncNotifierProviderRef<List<YoutubeQnaEntity>> {
   /// The parameter `contentId` of this provider.
   String get contentId;
 }
 
 class _YoutubeContentQnaProviderElement
     extends AutoDisposeAsyncNotifierProviderElement<YoutubeContentQna,
-        Set<YoutubeQnaEntity>> with YoutubeContentQnaRef {
+        List<YoutubeQnaEntity>> with YoutubeContentQnaRef {
   _YoutubeContentQnaProviderElement(super.provider);
 
   @override

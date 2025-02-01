@@ -19,7 +19,7 @@ final class YoutubeDetailArg {
   final SummaryEntity? summary;
 
   /// 문답 리스트
-  final Set<YoutubeQnaEntity>? qnas;
+  final List<YoutubeQnaEntity>? qnas;
 
   /// 썸네일
   /// [NOTE]
@@ -54,7 +54,7 @@ final class YoutubeDetailArg {
   factory YoutubeDetailArg.entryFromUpload({
     required YoutubeMainEntity overView,
     required SummaryEntity summary,
-    required Set<YoutubeQnaEntity> qnas,
+    required List<YoutubeQnaEntity> qnas,
   }) {
     return YoutubeDetailArg._(
       main: overView,

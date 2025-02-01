@@ -23,6 +23,36 @@ import 'package:techtalk/presentation/providers/user/user_topics_provider.dart';
 part 'internal_home_event.p.dart';
 
 mixin class HomeEvent {
+  Future<void> updateYouTubeContentCount() async {
+    final firestore = FirebaseFirestore.instance;
+
+    // YouTube 문서들을 가져옵니다.
+    final youtubeDocs = await firestore.collection('Youtube').get();
+
+    // 각 YouTube 문서에 대하여 처리합니다.
+    for (var youtubeDoc in youtubeDocs.docs) {
+      final data = youtubeDoc.data();
+
+      // 연관된 skill IDs를 처리합니다.
+      List<dynamic> skillIds = data['related_skill_ids'] ?? [];
+      for (var skillId in skillIds) {
+        firestore
+            .collection('Skill')
+            .doc(skillId)
+            .update({'youtube_content_count_ko': FieldValue.increment(1)});
+      }
+
+      // 연관된 job group IDs를 처리합니다.
+      List<dynamic> jobGroupIds = data['related_job_group_ids'] ?? [];
+      for (var jobGroupId in jobGroupIds) {
+        firestore
+            .collection('JobGroup')
+            .doc(jobGroupId)
+            .update({'youtube_content_count_ko': FieldValue.increment(1)});
+      }
+    }
+  }
+
   Future<void> addJobGroupsToFirestore() async {
     final collectionRef = FirebaseFirestore.instance.collection('JobGroup');
 
@@ -34,6 +64,7 @@ mixin class HomeEvent {
           'name': job.enName,
           'ko_name': job.name, // 한글 이름
           'youtube_content_count': 0, // 초기값은 0
+          'youtube_content_count_ko': 0, // 초기값은 0
         });
         print('Added job group: ${job.id}');
       } catch (e) {
@@ -68,6 +99,7 @@ mixin class HomeEvent {
           'ko_name': name, // 한국어 표기는 name과 동일
           'category': category, // category 필드 추가
           'youtube_content_count': 0,
+          'youtube_content_count_ko': 0, // 초기값은 0
         });
       }
     }

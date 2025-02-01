@@ -27,9 +27,9 @@ final class AppLocalNotification {
         const AndroidInitializationSettings("@mipmap/ic_launcher");
 
     final DarwinInitializationSettings ios = DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestSoundPermission: true,
-      requestBadgePermission: true,
+      requestAlertPermission: false,
+      requestSoundPermission: false,
+      requestBadgePermission: false,
       notificationCategories: [
         DarwinNotificationCategory(
           'demoCategory',
