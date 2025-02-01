@@ -17,30 +17,15 @@ class _BookmarkedTabView extends ConsumerWidget
             pagingController: pagingController,
             builderDelegate: PagedChildBuilderDelegate<YoutubeMainEntity>(
               itemBuilder: (context, item, index) {
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  child: BounceTapper(
-                    onTap: () => routeToDetailPage(ref, overview: item),
-                    child: YoutubeContentSmallItemView(
-                      onTapDeleteButton: () =>
-                          deleteBookmark(ref, videoId: item.id),
-                      thumbnailImgUrl: item.thumbnailImgUrl,
-                      title: item.contentsTitle,
-                      channelName: item.channel.name,
-                      videoDuration: item.videoDuration,
-                      questionCount: item.qnaNum,
-                      videoId: item.id,
-                    ),
-                  ),
+                return _BookmarkAnimatedDeletableListItem(
+                  item: item,
+                  onConfirmDelete: () => deleteBookmark(ref, videoId: item.id),
                 );
               },
-              // firstPageProgressIndicatorBuilder: (_) => _buildLoadView(),
-              // newPageProgressIndicatorBuilder: (_) =>
-              // const Center(child: CircularProgressIndicator()),
               firstPageErrorIndicatorBuilder: (_) =>
                   _buildErrorOccuredView(pagingController),
-              newPageErrorIndicatorBuilder: (_) =>
-                  _buildErrorOccuredView(pagingController),
+              newPageErrorIndicatorBuilder: (_) => const SizedBox(),
+              newPageProgressIndicatorBuilder: (_) => const SizedBox(),
               noItemsFoundIndicatorBuilder: (context) =>
                   _buildNoItemFoundView(context, ref),
             ),
@@ -62,9 +47,7 @@ class _BookmarkedTabView extends ConsumerWidget
       title: '데이터를 불러오지 못했어요',
       description: '일시적인 오류일 수 있으니 다시 시도해보세요',
       btnText: '다시 시도',
-      onBtnTapped: () {
-        controller.refresh();
-      },
+      onBtnTapped: () => controller.refresh(),
     );
   }
 

@@ -1,7 +1,7 @@
 part of '../my_youtube_board_page.dart';
 
 class _TabBar extends StatelessWidget {
-  const _TabBar({super.key});
+  const _TabBar();
 
   @override
   Widget build(BuildContext context) {
