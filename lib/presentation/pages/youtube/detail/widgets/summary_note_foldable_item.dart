@@ -62,86 +62,82 @@ class SummaryNoteFoldableItem extends HookWidget {
 
     return IgnorePointer(
       ignoring: !isLoaded,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            FlexibleExpansionTile(
-              onTapped: () {
-                if (onTileBodyTapped != null) {
-                  onTileBodyTapped!(timestamp, isExpanded);
-                }
-              },
-              highlightColor: Colors.transparent,
-              isExpanded: isExpanded,
-              curve: Curves.fastOutSlowIn,
-              reverseCurve: Curves.fastOutSlowIn,
-              reverseDuration: const Duration(milliseconds: 300),
-              gapBetweenTitleAndContent: 8,
-              alignment: Alignment.centerLeft,
-              title: Align(
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      onTap: () => onTapTimestamp?.call(timestamp, isExpanded),
-                      child: Container(
-                        height: 28,
-                        width: 54,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: isActivated
-                              ? const Color(0xFFFFF9E0)
-                              : AppColor.of.background1,
-                          borderRadius: BorderRadius.circular(
-                            8,
-                          ),
-                        ),
-                        child: Text(
-                          AppFormatter.formatDurationToHHmm(
-                            timestamp ?? Duration.zero,
-                          ),
-                          style: isActivated
-                              ? AppTextStyle.body1.copyWith(
-                                  color: const Color(0xFFFFB520),
-                                )
-                              : AppTextStyle.body2.copyWith(
-                                  color: AppColor.of.gray3,
-                                ),
-                        ),
-                      ),
+      child: FlexibleExpansionTile(
+        padding: EdgeInsets.zero,
+        onTapped: () {
+          if (onTileBodyTapped != null) {
+            onTileBodyTapped!(timestamp, isExpanded);
+          }
+        },
+        highlightColor: Colors.transparent,
+        isExpanded: isExpanded,
+        curve: Curves.fastOutSlowIn,
+        reverseCurve: Curves.fastOutSlowIn,
+        reverseDuration: const Duration(milliseconds: 300),
+        gapBetweenTitleAndContent: 8,
+        alignment: Alignment.centerLeft,
+        title: Align(
+          alignment: Alignment.centerLeft,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GestureDetector(
+                onTap: () => onTapTimestamp?.call(timestamp, isExpanded),
+                child: Container(
+                  height: 28,
+                  width: 54,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: isActivated
+                        ? const Color(0xFFFFF9E0)
+                        : AppColor.of.background1,
+                    borderRadius: BorderRadius.circular(
+                      8,
                     ),
-                    const SizedBox(width: 8),
-                    Container(
-                      width: AppSize.screenWidth - 32 - 56 - 8,
-                      constraints: const BoxConstraints(
-                        minHeight: 24,
-                      ),
-                      alignment: Alignment.centerLeft,
-                      child: isLoaded
-                          ? Text(
-                              title,
-                              style: isActivated
-                                  ? AppTextStyle.title3
-                                  : AppTextStyle.body2,
-                              textAlign: TextAlign.start,
-                            )
-                          : const SkeletonBox(
-                              width: 120,
-                              padding: EdgeInsets.symmetric(vertical: 2),
-                              height: 20,
-                            ),
+                  ),
+                  child: Text(
+                    AppFormatter.formatDurationToHHmm(
+                      timestamp ?? Duration.zero,
                     ),
-                  ],
+                    style: isActivated
+                        ? AppTextStyle.body1.copyWith(
+                            color: const Color(0xFFFFB520),
+                          )
+                        : AppTextStyle.body2.copyWith(
+                            color: AppColor.of.gray3,
+                          ),
+                  ),
                 ),
               ),
-              content: FilledTextBox(
-                contents: contents,
+              const SizedBox(width: 8),
+              Container(
+                width: AppSize.screenWidth - 32 - 56 - 8,
+                constraints: const BoxConstraints(
+                  minHeight: 24,
+                ),
+                alignment: Alignment.centerLeft,
+                child: isLoaded
+                    ? Text(
+                        title,
+                        style: isActivated
+                            ? AppTextStyle.title3
+                            : AppTextStyle.body2,
+                        textAlign: TextAlign.start,
+                      )
+                    : const SkeletonBox(
+                        width: 120,
+                        padding: EdgeInsets.symmetric(vertical: 2),
+                        height: 20,
+                      ),
               ),
-            ),
-          ],
+            ],
+          ),
+        ),
+        content: Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: FilledTextBox(
+            contents: contents,
+          ),
         ),
       ),
     );

@@ -30,39 +30,52 @@ class _Scaffold extends StatelessWidget {
                   ),
                 ),
               ),
-              child: Builder(
-                builder: (context) {
-                  return SizedBox(
-                    height: ChatPage.tabBarHeight,
-                    child: TabBar(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ColoredBox(
+                color: Colors.white,
+                child: Stack(
+                  children: [
+                    TabBar(
                       controller: tabController,
+                      dividerColor: Colors.white,
                       tabs: [
-                        Tab(
-                            text:
-                                tr(LocaleKeys.common_interviewTerms_interview)),
-                        Tab(text: tr(LocaleKeys.common_interviewTerms_qa)),
+                        ...[
+                          LocaleKeys.common_interviewTerms_interview,
+                          LocaleKeys.common_interviewTerms_qa
+                        ]
+                            .map(
+                              (tab) => Tab(
+                                text: tr(tab),
+                              ),
+                            )
+                            .toList()
                       ],
-                      indicator: UnderlineTabIndicator(
-                        borderSide:
-                            BorderSide(width: 2, color: AppColor.of.black),
-                        insets: EdgeInsets.symmetric(
-                          horizontal: AppSize.screenWidth / 4.2,
-                        ),
-                      ),
+                      indicator:
+                          TechtalkTabBar(width: (AppSize.screenWidth - 36) / 2),
                       onTap: (_) {
                         FocusScope.of(context).unfocus();
                       },
-                      overlayColor: MaterialStateProperty.all<Color>(
-                          Colors.grey.shade200),
+                      overlayColor:
+                          WidgetStateProperty.all<Color>(Colors.grey.shade200),
                       labelColor: AppColor.of.black,
                       unselectedLabelColor: AppColor.of.gray3,
                       indicatorColor: AppColor.of.black,
                       labelStyle: AppTextStyle.title3,
                       unselectedLabelStyle: AppTextStyle.body2,
                     ),
-                  );
-                },
+
+                    /// DIVIDER
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        height: 0.5,
+                        color: AppColor.of.gray2,
+                        width: double.infinity,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

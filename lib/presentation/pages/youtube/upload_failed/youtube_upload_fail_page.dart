@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/constants/assets.dart';
-import 'package:techtalk/core/services/app_size.dart';
 import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/presentation/pages/youtube/upload_failed/provider/youtube_upload_failed_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload_failed/youtube_upload_failed_event.dart';
@@ -71,7 +70,7 @@ class YoutubeUploadFailedPage extends BasePage with YoutubeUploadFailedEvent {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16) +
               const EdgeInsets.only(top: 16),
-          margin: EdgeInsets.only(bottom: AppSize.bottomInset == 0 ? 16 : 0),
+          margin: const EdgeInsets.only(bottom: 16),
           child: BounceTapper(
             child: SizedBox(
               width: double.infinity,

@@ -66,21 +66,30 @@ class _ContentGridView extends ConsumerWidget
 
   /// 호출실패
   Widget _buildExceptionView(WidgetRef ref, String label) {
-    return Column(
-      children: [
-        Gap(AppSize.ratioHeight(120)),
-        Center(
-          child: YoutubePaginationIndicatorView(
-            setFlexRatio: false,
-            title: '영상을 불러오지 못했어요',
-            description: '일시적이 오류일 수 있으니 다시 시도해보세요',
-            btnText: '다시 시도',
-            onBtnTapped: () {
-              pagingController(ref).refresh();
-            },
+    return Container(
+      height: AppSize.screenHeight -
+          AppSize.statusBarHeight -
+          56 -
+          76 -
+          36 -
+          AppSize.bottomInset,
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: YoutubePaginationIndicatorView(
+              setFlexRatio: false,
+              title: '영상을 불러오지 못했어요',
+              description: '일시적이 오류일 수 있으니 다시 시도해보세요',
+              btnText: '다시 시도',
+              onBtnTapped: () {
+                pagingController(ref).refresh();
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

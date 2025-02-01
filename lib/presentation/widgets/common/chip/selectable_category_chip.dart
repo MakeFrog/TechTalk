@@ -39,25 +39,20 @@ class SelectableCategoryChip extends StatelessWidget {
                 : const EdgeInsets.symmetric(horizontal: 12),
             showCheckmark: false,
             selected: isSelected,
-            padding: const EdgeInsets.symmetric(
-              vertical: 6,
-            ),
+            padding: EdgeInsets.zero,
             backgroundColor: AppColor.of.white,
             selectedColor: type.isAll ? AppColor.of.gray6 : AppColor.of.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
             shadowColor: Colors.white,
-            labelStyle: TextStyle(
-              fontFamily: 'pretendard',
-              fontWeight: type.isAll ? FontWeight.w700 : FontWeight.w600,
-              leadingDistribution: TextLeadingDistribution.even,
-              color: type.isAll
-                  ? (isSelected ? Colors.white : AppColor.of.gray3)
-                  : (isSelected ? AppColor.of.gray6 : AppColor.of.gray3),
-              letterSpacing: -2 / 100 * 15,
-              fontSize: 15,
-              height: 22 / 15,
+            labelStyle: (isSelected ? AppTextStyle.body1 : AppTextStyle.title3)
+                .copyWith(
+              color: isSelected
+                  ? type.isAll
+                      ? AppColor.of.white
+                      : AppColor.of.black
+                  : AppColor.of.gray3,
             ),
             side: BorderSide.none,
             onSelected: (_) {

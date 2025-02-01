@@ -75,7 +75,7 @@ class AppDialog extends Dialog {
       elevation: 0,
       backgroundColor: Colors.transparent,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16),
+        margin: const EdgeInsets.symmetric(horizontal: 40),
         padding: const EdgeInsets.all(16),
         constraints: const BoxConstraints(minHeight: 120),
         decoration: BoxDecoration(

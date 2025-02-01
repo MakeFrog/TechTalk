@@ -60,7 +60,7 @@ class _ContentInfoView extends ConsumerWidget
                           width: AppSize.screenWidth - 32,
                           child: Text(
                             info.contentsTitle,
-                            style: AppTextStyle.headline3,
+                            style: AppTextStyle.headline2,
                           ),
                         ),
                         const Gap(8),
@@ -77,7 +77,7 @@ class _ContentInfoView extends ConsumerWidget
                               const SizedBox(width: 8),
                               Text(
                                 info.channel.name,
-                                style: AppTextStyle.body2,
+                                style: AppTextStyle.body1,
                               ),
                             ],
                           ),
@@ -103,7 +103,7 @@ class _ContentInfoView extends ConsumerWidget
                         ...mainInfo.relatedSkillIds
                             .map(
                               (skill) => OutlinedChip(
-                                labelStyle: AppTextStyle.body2,
+                                labelStyle: AppTextStyle.body3,
                                 label: skill.name,
                               ),
                             )
@@ -111,7 +111,7 @@ class _ContentInfoView extends ConsumerWidget
                         ...mainInfo.relatedJobs
                             .map(
                               (job) => OutlinedChip(
-                                labelStyle: AppTextStyle.body2,
+                                labelStyle: AppTextStyle.body3,
                                 label: job.name,
                               ),
                             )

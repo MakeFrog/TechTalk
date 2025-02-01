@@ -50,7 +50,7 @@ class AnalyzeYoutubePage extends BasePage
               ),
               const Gap(12),
               Text(
-                '앱을 종료하면 업로드가 취소돼요\n(영살 길이에 따라 최대 1분 소요)',
+                '앱을 종료하면 업로드가 취소돼요\n(영상 길이에 따라 최대 1분 소요)',
                 style: AppTextStyle.body1.copyWith(
                   color: AppColor.of.gray4,
                 ),
@@ -59,14 +59,17 @@ class AnalyzeYoutubePage extends BasePage
           ),
         ),
 
-        const Gap(48),
+        const Spacer(),
 
         // 일러스트 영역
         Center(
-          child: Lottie.asset(
-            Assets.lottieVideoUploading,
-            width: AppSize.ratioHeight(375),
-            fit: BoxFit.fitWidth,
+          child: Transform.scale(
+            scale: 0.84,
+            child: Lottie.asset(
+              Assets.lottieVideoUploading,
+              width: AppSize.ratioHeight(375),
+              fit: BoxFit.fitWidth,
+            ),
           ),
         ),
         const Spacer(),

@@ -30,7 +30,9 @@ class YoutubeLinkSubmitPage extends BasePage
               children: [
                 const Gap(16),
                 Text(
-                  '유튜브 영상\n링크를 알려주세요',
+                  AppVersion().isOnReview
+                      ? '영상 콘텐츠\n링크를 알려주세요'
+                      : '유튜브 영상\n링크를 알려주세요',
                   style: AppTextStyle.headline1,
                 ),
                 const Gap(12),
@@ -47,7 +49,9 @@ class YoutubeLinkSubmitPage extends BasePage
                   child: TechtalkTextField(
                     controller: textEditingController(ref),
                     validator: urlInputValidator,
-                    hintText: 'https://www.youtube.com/watch?v=TecHtVkAk',
+                    hintText: AppVersion().isOnReview
+                        ? '영상 링크 입력'
+                        : 'https://www.youtube.com/watch?v=TecHtVkAk',
                     inputDecoration: InputDecoration(
                       errorStyle: AppTextStyle.alert2.copyWith(),
                     ),
@@ -99,8 +103,7 @@ class YoutubeLinkSubmitPage extends BasePage
             bottom: 0,
             child: SafeArea(
               child: Container(
-                margin:
-                    EdgeInsets.only(bottom: AppSize.bottomInset == 0 ? 16 : 0),
+                margin: const EdgeInsets.only(bottom: 16),
                 width: double.infinity,
                 child: HookBuilder(
                   builder: (context) {

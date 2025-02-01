@@ -135,12 +135,14 @@ class _SummaryTabView extends HookConsumerWidget
                                         final selectedNoteIndex =
                                             useState<int?>(null);
                                         return KeepAliveView(
-                                          child: ListView.builder(
+                                          child: ListView.separated(
                                             shrinkWrap: true,
                                             padding: EdgeInsets.zero,
                                             physics:
                                                 const NeverScrollableScrollPhysics(),
                                             itemCount: filteredSummaries.length,
+                                            separatorBuilder: (_, __) =>
+                                                const Gap(2),
                                             itemBuilder: (context, index) {
                                               return HookBuilder(
                                                 builder:
@@ -149,6 +151,7 @@ class _SummaryTabView extends HookConsumerWidget
                                                       useState(false);
                                                   final item =
                                                       filteredSummaries[index];
+
                                                   return SummaryNoteFoldableItem(
                                                     onTileBodyTapped:
                                                         (timestamp,

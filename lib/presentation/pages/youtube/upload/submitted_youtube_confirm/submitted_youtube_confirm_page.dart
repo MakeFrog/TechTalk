@@ -4,7 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/index.dart';
-import 'package:techtalk/core/services/app_size.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/submitted_youtube_confirm/provider/submitted_youtube_confirm_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/submitted_youtube_confirm/submitted_youtube_confirm_event.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/submitted_youtube_confirm/submitted_youtube_confirm_state.dart';
@@ -54,8 +53,7 @@ class SubmittedYoutubeConfirmPage extends BasePage
           const Spacer(flex: 136),
           SafeArea(
             child: Container(
-              margin:
-                  EdgeInsets.only(bottom: AppSize.bottomInset == 0 ? 16 : 0),
+              margin: EdgeInsets.only(bottom: 16),
               width: double.infinity,
               child: HookBuilder(
                 builder: (context) {

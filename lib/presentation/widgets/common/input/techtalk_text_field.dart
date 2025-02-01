@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 
 class TechtalkTextField extends HookWidget {
   const TechtalkTextField({
@@ -91,7 +90,7 @@ class TechtalkTextField extends HookWidget {
       validator: validator,
       enabled: enabled,
       obscureText: obscureText,
-      style: style,
+      style: style ?? AppTextStyle.body1,
       cursorColor: AppColor.of.brand2,
       inputFormatters: inputFormatters,
       textInputAction: textInputAction,

@@ -166,8 +166,9 @@ class _Scaffold extends HookWidget with YoutubeDetailState {
                         },
                         child: ExtendedNestedScrollView(
                           pinnedHeaderSliverHeightBuilder: () {
-                            return AppSize.screenWidth * 9 / 16 +
-                                AppSize.statusBarHeight;
+                            return (AppSize.screenWidth * 9 / 16) +
+                                AppSize.statusBarHeight -
+                                AppSize.ratioHeight(14);
                           },
                           onlyOneScrollInBody: true,
                           physics: const NeverScrollableScrollPhysics(),
