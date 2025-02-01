@@ -11,7 +11,6 @@ import 'package:techtalk/features/user/data_source/remote/models/bookmarked_yout
 import 'package:techtalk/features/user/data_source/remote/models/uploaded_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
 import 'package:techtalk/features/user/user.dart';
-import 'package:techtalk/features/youtube/data_source/remote/models/youtube_main_entity.dart';
 import 'package:techtalk/features/youtube/index.dart';
 
 final class UserRepositoryImpl implements UserRepository {
@@ -234,6 +233,7 @@ final class UserRepositoryImpl implements UserRepository {
         limit: limit,
         lastDocument: lastDocument,
       );
+
       final rawEntities = await Future.wait(
         response.items.map((res) async {
           try {
@@ -270,7 +270,7 @@ final class UserRepositoryImpl implements UserRepository {
 
       return Result.success(paginatedResult);
     } catch (e) {
-      throw Result.failure(Exception('UserRepository> $e'));
+      return Result.failure(Exception('UserRepository> $e'));
     }
   }
 
@@ -383,7 +383,7 @@ final class UserRepositoryImpl implements UserRepository {
 
       return Result.success(paginatedResult);
     } catch (e) {
-      throw Result.failure(Exception('UserRepository> $e'));
+      return Result.failure(Exception('UserRepository> $e'));
     }
   }
 

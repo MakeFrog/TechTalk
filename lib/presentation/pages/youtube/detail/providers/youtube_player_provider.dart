@@ -39,9 +39,9 @@ class YoutubePlayerNotifier extends ChangeNotifier {
       if (state == YoutubePlaySate.cued) {
         WidgetsBinding.instance.addPostFrameCallback((_) async {
           ///
-          /// 유뷰브 시청 기록 업데이트
+          /// 유튜브 시청 기록 업데이트
           ///
-          unawaited(_updateWatchedHistory(value.metaData.videoId));
+          unawaited(_updateWatchedHistory(videoId));
 
           await youtubeController.playVideo();
 
