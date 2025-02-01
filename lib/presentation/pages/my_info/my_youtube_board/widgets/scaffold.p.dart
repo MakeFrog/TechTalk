@@ -2,7 +2,6 @@ part of '../my_youtube_board_page.dart';
 
 class _Scaffold extends StatelessWidget {
   const _Scaffold({
-    super.key,
     required this.tabBar,
     required this.watchedHistoryTabView,
     required this.bookmarkedTabView,

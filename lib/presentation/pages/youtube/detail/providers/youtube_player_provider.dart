@@ -1,6 +1,10 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/app_locale.dart';
+import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/app/util/app_logger.dart';
 import 'package:techtalk/presentation/app.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/constant/youtube_play_state.enum.dart';
@@ -34,7 +38,13 @@ class YoutubePlayerNotifier extends ChangeNotifier {
       state = YoutubePlaySate.fromCode(value.playerState.code);
       if (state == YoutubePlaySate.cued) {
         WidgetsBinding.instance.addPostFrameCallback((_) async {
+          ///
+          /// 유튜브 시청 기록 업데이트
+          ///
+          unawaited(_updateWatchedHistory(videoId));
+
           await youtubeController.playVideo();
+
           hasYoutubePlayerCued = true;
           if (globalContainer.exists(youtubePlayerProvider(videoId))) {
             notifyListeners();
@@ -76,6 +86,21 @@ class YoutubePlayerNotifier extends ChangeNotifier {
 
   YoutubePlayerNotifier(this.videoId) {
     _onInit();
+  }
+
+  ///
+  /// 시청 기록 업데이트
+  ///
+  Future<void> _updateWatchedHistory(String contentId) async {
+    final response = await userRepository.updateYoutubeWatchHistory(contentId);
+    response.fold(
+      onSuccess: (_) {
+        log('시청 기록 업데이트 성공');
+      },
+      onFailure: (e) {
+        log('시청 기록 업데이트 실패 : ${e}');
+      },
+    );
   }
 }
 

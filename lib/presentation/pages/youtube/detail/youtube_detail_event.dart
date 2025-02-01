@@ -309,21 +309,6 @@ mixin class YoutubeDetailEvent {
 
     return existsInStack;
   }
-
-  ///
-  /// 시청 기록 업데이트
-  ///
-  Future<void> updateWatchedHistory(String contentId) async {
-    final response = await userRepository.updateYoutubeWatchHistory(contentId);
-    response.fold(
-      onSuccess: (_) {
-        logger.i('시청 기록 업데이트 성공');
-      },
-      onFailure: (e) {
-        logger.e('시청 기록 업데이트 실패 : ${e}');
-      },
-    );
-  }
 }
 
 extension YoutubePlayerControllerEx on YoutubePlayerController {

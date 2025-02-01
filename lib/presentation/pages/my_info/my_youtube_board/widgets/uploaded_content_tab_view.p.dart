@@ -34,13 +34,10 @@ class _UploadedContentTabView extends ConsumerWidget
                   ),
                 );
               },
-              // firstPageProgressIndicatorBuilder: (_) => _buildLoadView(),
-              // newPageProgressIndicatorBuilder: (_) =>
-              // const Center(child: CircularProgressIndicator()),
               firstPageErrorIndicatorBuilder: (_) =>
                   _buildErrorOccuredView(pagingController),
-              newPageErrorIndicatorBuilder: (_) =>
-                  _buildErrorOccuredView(pagingController),
+              newPageErrorIndicatorBuilder: (_) => const SizedBox(),
+              newPageProgressIndicatorBuilder: (_) => const SizedBox(),
               noItemsFoundIndicatorBuilder: (context) =>
                   _buildNoItemFoundView(context, ref),
             ),

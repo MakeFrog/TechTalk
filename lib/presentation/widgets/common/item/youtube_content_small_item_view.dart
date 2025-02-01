@@ -74,6 +74,7 @@ class YoutubeContentSmallItemView extends StatelessWidget {
                       ) {
                         return SizedBox(
                           child: AnimatedSwitcher(
+                            key: ValueKey(videoId),
                             duration: const Duration(milliseconds: 120),
                             child: loadingProgress == null
                                 ? child

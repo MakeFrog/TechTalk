@@ -11,7 +11,6 @@ import 'package:techtalk/features/user/data_source/remote/models/bookmarked_yout
 import 'package:techtalk/features/user/data_source/remote/models/uploaded_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
 import 'package:techtalk/features/user/user.dart';
-import 'package:techtalk/features/youtube/data_source/remote/models/youtube_main_entity.dart';
 import 'package:techtalk/features/youtube/index.dart';
 
 final class UserRepositoryImpl implements UserRepository {
@@ -234,21 +233,32 @@ final class UserRepositoryImpl implements UserRepository {
         limit: limit,
         lastDocument: lastDocument,
       );
-      final entities = await Future.wait(
-        response.items.map((res) async {
-          /// id를 사용하여 유튜브 컬렉션에서 상세 정보를 가져옴
-          final model = await _youtubeRemoteDataSource
-              .getSingleYoutubeMainContent(contentId: res.id);
 
-          final skills = model.relatedSkillIds
-              .map(_techSetRepository.getSkillById)
-              .toList();
-          final jobGroups = model.relatedJobGroupIds
-              .map(_techSetRepository.getJobGroupById)
-              .toList();
-          return model.toEntity(skills, jobGroups);
+      final rawEntities = await Future.wait(
+        response.items.map((res) async {
+          try {
+            // id를 사용하여 유튜브 컬렉션에서 상세 정보를 가져옴
+            final model = await _youtubeRemoteDataSource
+                .getSingleYoutubeMainContent(contentId: res.id);
+
+            final skills = model.relatedSkillIds
+                .map(_techSetRepository.getSkillById)
+                .toList();
+
+            final jobGroups = model.relatedJobGroupIds
+                .map(_techSetRepository.getJobGroupById)
+                .toList();
+
+            return model.toEntity(skills, jobGroups);
+          } catch (e) {
+            // 여기서 예외가 발생하면 null을 반환하여 해당 아이템만 건너뛰도록 함
+            return null;
+          }
         }).toList(),
       );
+
+      // null이 아닌 실제 값들만 필터링
+      final entities = rawEntities.whereType<YoutubeMainEntity>().toList();
 
       final paginatedResult =
           FirebasePaginatedResult<YoutubeMainEntity, WatchedYoutubeModel>(
@@ -260,7 +270,7 @@ final class UserRepositoryImpl implements UserRepository {
 
       return Result.success(paginatedResult);
     } catch (e) {
-      throw Result.failure(Exception('UserRepository> $e'));
+      return Result.failure(Exception('UserRepository> $e'));
     }
   }
 
@@ -268,31 +278,45 @@ final class UserRepositoryImpl implements UserRepository {
   Future<
       Result<
           FirebasePaginatedResult<YoutubeMainEntity,
-              BookmarkedYoutubeModel>>> getPagedBookmarkedYoutube(
-      {DocumentSnapshot<BookmarkedYoutubeModel>? lastDocument,
-      required int limit}) async {
+              BookmarkedYoutubeModel>>> getPagedBookmarkedYoutube({
+    DocumentSnapshot<BookmarkedYoutubeModel>? lastDocument,
+    required int limit,
+  }) async {
     try {
+      // 1. 북마크된 유튜브 목록 문서 가져오기
       final response = await _userRemoteDataSource.getPagedBookmarkedYoutube(
         limit: limit,
         lastDocument: lastDocument,
       );
 
-      final entities = await Future.wait(
+      // 2. 가져온 북마크 목록(response.items)에 대해 상세 정보를 병렬로 조회
+      final rawEntities = await Future.wait(
         response.items.map((res) async {
-          /// id를 사용하여 유튜브 컬렉션에서 상세 정보를 가져옴
-          final model = await _youtubeRemoteDataSource
-              .getSingleYoutubeMainContent(contentId: res.id);
+          try {
+            // id를 사용하여 유튜브 컬렉션에서 상세 정보를 가져옴
+            final model = await _youtubeRemoteDataSource
+                .getSingleYoutubeMainContent(contentId: res.id);
 
-          final skills = model.relatedSkillIds
-              .map(_techSetRepository.getSkillById)
-              .toList();
-          final jobGroups = model.relatedJobGroupIds
-              .map(_techSetRepository.getJobGroupById)
-              .toList();
-          return model.toEntity(skills, jobGroups);
+            final skills = model.relatedSkillIds
+                .map(_techSetRepository.getSkillById)
+                .toList();
+
+            final jobGroups = model.relatedJobGroupIds
+                .map(_techSetRepository.getJobGroupById)
+                .toList();
+
+            return model.toEntity(skills, jobGroups);
+          } catch (e) {
+            // 여기서 예외가 발생하면 null을 반환하여 해당 아이템만 건너뛰도록 함
+            return null;
+          }
         }).toList(),
       );
 
+      // 3. null이 아닌 실제 값들만 필터링
+      final entities = rawEntities.whereType<YoutubeMainEntity>().toList();
+
+      // 4. 페이징 결과 구성
       final paginatedResult =
           FirebasePaginatedResult<YoutubeMainEntity, BookmarkedYoutubeModel>(
         items: entities,
@@ -303,7 +327,9 @@ final class UserRepositoryImpl implements UserRepository {
 
       return Result.success(paginatedResult);
     } catch (e) {
-      throw Result.failure(Exception('UserRepository> $e'));
+      // getPagedBookmarkedYoutube 자체가 실패했을 때는 전체 예외 처리
+      // (예: 네트워크 등)
+      return Result.failure(Exception('UserRepository> $e'));
     }
   }
 
@@ -321,21 +347,31 @@ final class UserRepositoryImpl implements UserRepository {
         lastDocument: lastDocument,
       );
 
-      final entities = await Future.wait(
+      final rawEntities = await Future.wait(
         response.items.map((res) async {
-          /// id를 사용하여 유튜브 컬렉션에서 상세 정보를 가져옴
-          final model = await _youtubeRemoteDataSource
-              .getSingleYoutubeMainContent(contentId: res.id);
+          try {
+            // id를 사용하여 유튜브 컬렉션에서 상세 정보를 가져옴
+            final model = await _youtubeRemoteDataSource
+                .getSingleYoutubeMainContent(contentId: res.id);
 
-          final skills = model.relatedSkillIds
-              .map(_techSetRepository.getSkillById)
-              .toList();
-          final jobGroups = model.relatedJobGroupIds
-              .map(_techSetRepository.getJobGroupById)
-              .toList();
-          return model.toEntity(skills, jobGroups);
+            final skills = model.relatedSkillIds
+                .map(_techSetRepository.getSkillById)
+                .toList();
+
+            final jobGroups = model.relatedJobGroupIds
+                .map(_techSetRepository.getJobGroupById)
+                .toList();
+
+            return model.toEntity(skills, jobGroups);
+          } catch (e) {
+            // 여기서 예외가 발생하면 null을 반환하여 해당 아이템만 건너뛰도록 함
+            return null;
+          }
         }).toList(),
       );
+
+      // null이 아닌 실제 값들만 필터링
+      final entities = rawEntities.whereType<YoutubeMainEntity>().toList();
 
       final paginatedResult =
           FirebasePaginatedResult<YoutubeMainEntity, UploadedYoutubeModel>(
@@ -347,7 +383,7 @@ final class UserRepositoryImpl implements UserRepository {
 
       return Result.success(paginatedResult);
     } catch (e) {
-      throw Result.failure(Exception('UserRepository> $e'));
+      return Result.failure(Exception('UserRepository> $e'));
     }
   }
 

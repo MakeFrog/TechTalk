@@ -28,6 +28,7 @@ part 'widgets/scaffold.p.dart';
 part 'widgets/tab_bar.p.dart';
 part 'widgets/uploaded_content_tab_view.p.dart';
 part 'widgets/watched_history_tab_view.p.dart';
+part 'widgets/bookmark_animated_deletable_list_item.p.dart';
 
 class MyYoutubeBoardPage extends BasePage
     with MyYoutubeBoardState, YoutubeMainState {

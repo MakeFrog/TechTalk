@@ -6,11 +6,12 @@ class _WatchHistoryTabView extends ConsumerWidget
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final pagingController = watchedHistoryPagingControllerState(ref);
     return TechtalkRefreshIndicator(
       onRefresh: () => refreshWatchedHistoryList(ref),
       child: PagedListView<DocumentSnapshot<WatchedYoutubeModel>?,
           YoutubeMainEntity>(
-        pagingController: watchedHistoryPagingControllerState(ref),
+        pagingController: pagingController,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         builderDelegate: PagedChildBuilderDelegate<YoutubeMainEntity>(
           itemBuilder: (context, item, index) {
@@ -29,13 +30,10 @@ class _WatchHistoryTabView extends ConsumerWidget
               ),
             );
           },
-          // firstPageProgressIndicatorBuilder: (_) => _buildLoadView(),
-          // newPageProgressIndicatorBuilder: (_) =>
-          //     const Center(child: CircularProgressIndicator()),
           firstPageErrorIndicatorBuilder: (_) =>
-              _buildErrorOccuredView(watchedHistoryPagingControllerState(ref)),
-          newPageErrorIndicatorBuilder: (_) =>
-              _buildErrorOccuredView(watchedHistoryPagingControllerState(ref)),
+              _buildErrorOccuredView(pagingController),
+          newPageErrorIndicatorBuilder: (_) => const SizedBox(),
+          newPageProgressIndicatorBuilder: (_) => const SizedBox(),
           noItemsFoundIndicatorBuilder: (context) =>
               _buildNoItemFoundView(context, ref),
         ),

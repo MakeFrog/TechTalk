@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/features/user/user.dart';
@@ -7,6 +8,7 @@ import 'package:techtalk/presentation/pages/my_info/my_youtube_board/provider/bo
 import 'package:techtalk/presentation/pages/my_info/my_youtube_board/provider/uploaded_history_paging_controller_provider.dart';
 import 'package:techtalk/presentation/pages/my_info/my_youtube_board/provider/watched_history_paging_controller_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
+import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
 
 mixin class MyYoutubeBoardEvent {
   ///
@@ -31,8 +33,19 @@ mixin class MyYoutubeBoardEvent {
     );
 
     response.fold(
-      onSuccess: (_) => ref.read(bookmarkedPagingControllerProvider).refresh(),
-      onFailure: (_) {},
+      onSuccess: (_) {
+        final pagingController = ref.read(bookmarkedPagingControllerProvider);
+        pagingController.itemList?.removeWhere((item) => item.id == videoId);
+
+        /// 리스트만 직접 지우다가, 전부 다 지워지면
+        /// pagingController 상태 자체를 바꿔야 하므로 refresh 실행
+        if (pagingController.itemList?.isEmpty ?? true) {
+          ref.read(bookmarkedPagingControllerProvider).refresh();
+        }
+      },
+      onFailure: (error) {
+        // 실패 처리
+      },
     );
   }
 
@@ -49,7 +62,11 @@ mixin class MyYoutubeBoardEvent {
   ///
   void goToYoutubeMainPage(WidgetRef ref) {
     //// 유튜브 메인 페이지
-    YoutubeContentsMainListRoute().push(ref.context);
+    // YoutubeContentsMainListRoute().push(ref.context);
+    ref.context.pop();
+    ref
+        .read(mainBottomNavigationProvider.notifier)
+        .changeTab(MainNavigationTab.videoTutorial);
   }
 
   ///

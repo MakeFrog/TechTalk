@@ -217,7 +217,9 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }) async {
     try {
       Query<BookmarkedYoutubeModel> query =
-          FirestoreUsersRef.bookmarkedYoutubeHistoryCollection().limit(limit);
+          FirestoreUsersRef.bookmarkedYoutubeHistoryCollection()
+              .orderBy('bookmarked_at', descending: true)
+              .limit(limit);
 
       if (lastDocument != null) {
         query = query.startAfterDocument(lastDocument);
@@ -262,7 +264,9 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }) async {
     try {
       Query<UploadedYoutubeModel> query =
-          FirestoreUsersRef.uploadedYoutubeCollection().limit(limit);
+          FirestoreUsersRef.uploadedYoutubeCollection()
+              .orderBy('upload_at', descending: true)
+              .limit(limit);
 
       if (lastDocument != null) {
         query = query.startAfterDocument(lastDocument);
