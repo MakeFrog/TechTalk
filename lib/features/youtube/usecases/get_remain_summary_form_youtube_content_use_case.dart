@@ -43,7 +43,7 @@ class GetRemainSummaryFromYoutubeContentUseCase
 - **자막 데이터**: `${request.$1.captions.map((e) => e.toMap()).toList()}`
 
 ### 응답 언어:
-- 언어 코드에 해당되는 언어로 응답해야 됩니다.
+- 항상 **언어 코드**에 해당되는 언어로 응답해야 됩니다.
 - 언어 코드 : ${AppLocale.currentLocale.languageCode} 
 
 ### 응답 어체:
@@ -57,10 +57,10 @@ class GetRemainSummaryFromYoutubeContentUseCase
   "main_theme": "", // 빈 문자열 리턴
   "summaries": [ // 필수
     {
-      "title": "요약 제목", // 선택 (빈 문자열 가능)
-      "contents": ["요약 내용1", "요약 내용2", "요약 내용3", "요약 내용4", ...], // 선택 (빈 배열 가능)
+      "title": "요약 제목", // 필수
+      "contents": ["요약 내용1", "요약 내용2", "요약 내용3", "요약 내용4", ...], // 필수
       "offset": "0:10:55.839000" // 필수
-    }
+    } 
   ]
 }
   ```
