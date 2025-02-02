@@ -11,7 +11,9 @@ import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/navigation_context.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/app/util/app_logger.dart';
+import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/core/services/slack_notification_service.dart' as noti;
 import 'package:techtalk/features/chat/repositories/entities/chat_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_interview_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
@@ -34,8 +36,14 @@ mixin class YoutubeDetailEvent {
   /// 북마크 버튼이 탭 되었을 때
   ///
   void onBookmarkBtnTapped(WidgetRef ref) {
-    final contentId = ref.read(youtubeDetailRouteArgProvider).contentId;
-    ref.read(isBookmarkCheckedProvider(contentId).notifier).toggle();
+    final arg = ref.read(youtubeDetailRouteArgProvider);
+    ref.read(isBookmarkCheckedProvider(arg.contentId).notifier).toggle();
+    unawaited(
+      noti.SlackNotificationService.sendNotification(
+        type: SlackNotificationType.event,
+        message: '영상을 북마크 했어요. 제목:${arg.main?.contentsTitle ?? ''}',
+      ),
+    );
   }
 
   ///
@@ -191,6 +199,12 @@ mixin class YoutubeDetailEvent {
     route.updateArg(room: room);
     route.push(ref.context);
 
+    unawaited(
+      noti.SlackNotificationService.sendNotification(
+        type: SlackNotificationType.event,
+        message: '콘텐츠 인터뷰를 시작했어요! 제목:${arg.main?.contentsTitle ?? ''}',
+      ),
+    );
     unawaited(_pauseVideoWithDelay(ref));
   }
 
@@ -289,7 +303,10 @@ mixin class YoutubeDetailEvent {
         } else {
           final arg = SubmittedYoutubeConfirmArg.fromContentAccessFlow(
               video: YoutubeVideoEntity.fromRelatedVideoEntity(video));
-          unawaited(_pauseVideoWithDelay(ref));
+          if (intentPauseVideo) {
+            unawaited(_pauseVideoWithDelay(ref));
+          }
+
           SubmittedYoutubeConfirmRoute(arg).push(ref.context);
         }
       },

@@ -4,8 +4,10 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/app_locale.dart';
-import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/app/util/app_logger.dart';
+import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
+import 'package:techtalk/core/services/slack_notification_service.dart' as noti;
+import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/app.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/constant/youtube_play_state.enum.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -42,6 +44,12 @@ class YoutubePlayerNotifier extends ChangeNotifier {
           /// 유튜브 시청 기록 업데이트
           ///
           unawaited(_updateWatchedHistory(videoId));
+          unawaited(
+            noti.SlackNotificationService.sendNotification(
+              type: SlackNotificationType.event,
+              message: '영상을 시청하고 있어요',
+            ),
+          );
 
           await youtubeController.playVideo();
 

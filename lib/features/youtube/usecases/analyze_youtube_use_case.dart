@@ -10,6 +10,7 @@ import 'package:techtalk/app/notification/app_local_notification.dart';
 import 'package:techtalk/app/router/deeplink/deep_link_define.enum.dart';
 import 'package:techtalk/app/router/navigation_context.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/youtube/index.dart';
@@ -19,6 +20,7 @@ import 'package:techtalk/presentation/app.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:techtalk/core/services/slack_notification_service.dart' as noti;
 
 ///
 /// 유튜브 영상을 분석하여 분할 요약 + QNA 데이터를 얻고,
@@ -203,6 +205,7 @@ final class AnalyzeAndUploadYoutubeUseCase
       WidgetsBinding.instance.removeObserver(this);
     } catch (e) {
       log('유튜브 AI 분석 실패 : $e');
+
       final targetException =
           e is YoutubeUploadException ? e : const YtUnknownException();
 
@@ -212,6 +215,15 @@ final class AnalyzeAndUploadYoutubeUseCase
           targetException is YtAlreadyUploadedException
               ? (e as YtAlreadyUploadedException).video
               : null;
+
+      if (alreadyUploadedVideo != null) {
+        unawaited(
+          noti.SlackNotificationService.sendNotification(
+            type: SlackNotificationType.event,
+            message: '영상을 업로드에 실팼어요. 사유:${tr(targetType.title)}',
+          ),
+        );
+      }
 
       if (_isOnAnalyzePage(context)) {
         YoutubeContentUploadFailedRoute(
@@ -280,6 +292,12 @@ final class AnalyzeAndUploadYoutubeUseCase
       qnas: qnas,
       uploaderId: globalContainer.read(userInfoProvider).value?.uid ?? '',
       uploadLanguageCode: AppLocale.getLocaleName(),
+    );
+    unawaited(
+      noti.SlackNotificationService.sendNotification(
+        type: SlackNotificationType.event,
+        message: '영상을 업로드 했어요! 제목:${targetOverView.contentsTitle}',
+      ),
     );
   }
 
