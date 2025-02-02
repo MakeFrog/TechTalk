@@ -1,3 +1,4 @@
+import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:techtalk/app/style/index.dart';
@@ -44,17 +45,19 @@ class YoutubePaginationIndicatorView extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         const Gap(16),
-        FilledButton(
-          style: buttonStyle ??
-              FilledButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 13,
+        BounceTapper(
+          child: FilledButton(
+            style: buttonStyle ??
+                FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 13,
+                  ),
                 ),
-              ),
-          onPressed: onBtnTapped,
-          child: Text(
-            btnText,
+            onPressed: onBtnTapped,
+            child: Text(
+              btnText,
+            ),
           ),
         ),
         if (setFlexRatio) const Spacer(flex: 240),

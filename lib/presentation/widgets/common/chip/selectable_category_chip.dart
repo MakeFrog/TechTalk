@@ -31,12 +31,15 @@ class SelectableCategoryChip extends StatelessWidget {
           ChoiceChip(
             visualDensity: VisualDensity.compact,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            labelPadding: item.type.isSkill
-                ? const EdgeInsets.only(
-                    left: 8,
-                    right: 10,
-                  )
-                : const EdgeInsets.symmetric(horizontal: 12),
+            labelPadding: const EdgeInsets.symmetric(vertical: 2) +
+                (item.type.isSkill
+                    ? const EdgeInsets.only(
+                        left: 8,
+                        right: 10,
+                      )
+                    : const EdgeInsets.symmetric(
+                        horizontal: 12,
+                      )),
             showCheckmark: false,
             selected: isSelected,
             padding: EdgeInsets.zero,

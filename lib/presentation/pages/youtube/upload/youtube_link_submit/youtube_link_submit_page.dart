@@ -19,6 +19,9 @@ class YoutubeLinkSubmitPage extends BasePage
   const YoutubeLinkSubmitPage({super.key});
 
   @override
+  bool get resizeToAvoidBottomInset => false;
+
+  @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -103,7 +106,9 @@ class YoutubeLinkSubmitPage extends BasePage
             bottom: 0,
             child: SafeArea(
               child: Container(
-                margin: const EdgeInsets.only(bottom: 16),
+                margin: const EdgeInsets.only(
+                  bottom: 16,
+                ),
                 width: double.infinity,
                 child: HookBuilder(
                   builder: (context) {

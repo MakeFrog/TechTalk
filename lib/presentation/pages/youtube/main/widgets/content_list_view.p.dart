@@ -22,7 +22,7 @@ class _ContentListView extends HookConsumerWidget
                 builderDelegate: PagedChildBuilderDelegate<YoutubeMainEntity>(
                   itemBuilder: (context, item, index) {
                     return Container(
-                      padding: EdgeInsets.only(top: index == 0 ? 70 : 0),
+                      padding: EdgeInsets.only(top: index == 0 ? 60 : 0),
                       margin: const EdgeInsets.only(bottom: 16),
                       child: BounceTapper(
                         onTap: () {
@@ -93,7 +93,7 @@ class _ContentListView extends HookConsumerWidget
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Gap(70),
+        const Gap(60),
         ...List.generate(
           6,
           (_) => Padding(

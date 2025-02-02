@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/app/util/app_formatter.dart';
@@ -117,12 +118,35 @@ class SummaryNoteFoldableItem extends HookWidget {
                 ),
                 alignment: Alignment.centerLeft,
                 child: isLoaded
-                    ? Text(
-                        title,
-                        style: isActivated
-                            ? AppTextStyle.title3
-                            : AppTextStyle.body2,
-                        textAlign: TextAlign.start,
+                    ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              title,
+                              style: isActivated
+                                  ? AppTextStyle.title3
+                                  : AppTextStyle.body2,
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
+                          AnimatedRotation(
+                            turns: isExpanded.value ? 0.5 : 0,
+                            duration: const Duration(milliseconds: 240),
+                            child: SizedBox(
+                              width: 32,
+                              child: SvgPicture.asset(
+                                Assets.iconsArUpDown,
+                                colorFilter: ColorFilter.mode(
+                                  isExpanded.value
+                                      ? AppColor.of.black
+                                      : AppColor.of.gray2,
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       )
                     : const SkeletonBox(
                         width: 120,
