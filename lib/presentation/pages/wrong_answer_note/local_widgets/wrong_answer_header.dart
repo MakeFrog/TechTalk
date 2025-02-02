@@ -44,11 +44,13 @@ class _WrongAnswerHeader extends HookWidget
                   duration: const Duration(milliseconds: 200),
                   child: Stack(
                     children: [
-                      const Positioned(
+                      Positioned(
                         top: 0,
                         left: 0,
                         right: 0,
-                        child: BackButtonAppBar(title: '오답노트'),
+                        child: BackButtonAppBar(
+                          title: tr(LocaleKeys.learning_reviewNote),
+                        ),
                       ),
                       Positioned(
                         bottom: 12,

@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:techtalk/app/localization/app_locale.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/notification/app_local_notification.dart';
 import 'package:techtalk/app/router/deeplink/deep_link_define.enum.dart';
 import 'package:techtalk/app/router/navigation_context.dart';
@@ -110,7 +112,6 @@ final class AnalyzeAndUploadYoutubeUseCase
       final allParagraphs = <ParagraphEntity>[];
 
       for (final rs in remainSummaries) {
-        print('이찌방 : ${rs.length}');
         allParagraphs.addAll(rs);
       }
       // 시간순 정렬
@@ -137,7 +138,6 @@ final class AnalyzeAndUploadYoutubeUseCase
       if ([mainSummary.type, qnaAndIdsResult.type]
               .any((e) => e == YoutubeContentAnalyzedType.lackOfContent) ||
           qnaAndIdsResult.qnas.isEmpty) {
-        print('아랑수요 1');
         throw const YtInvalidVideoContentException();
       }
 
@@ -146,13 +146,6 @@ final class AnalyzeAndUploadYoutubeUseCase
           mergedSummary.mainTheme.isEmpty ||
           mergedSummary.summaries
               .any((e) => e.title.isEmpty || e.contents.isEmpty)) {
-        print('아랑수요 2');
-        print('summaries : ${mergedSummaryResponse.summaries.length}');
-        print('allParagraphs prev: ${allParagraphs.length}');
-        print('${mergedSummary.summaries.isEmpty}');
-        print('${mergedSummary.mainTheme.isEmpty}');
-        print(
-            '${mergedSummary.summaries.any((e) => e.title.isEmpty || e.contents.isEmpty)}');
         throw const YtInvalidVideoContentException();
       }
 
@@ -183,8 +176,9 @@ final class AnalyzeAndUploadYoutubeUseCase
 
         if (isInBackground) {
           await AppLocalNotification().triggerPush(
-            title: '영상 업로드 했어요',
-            description: '요약된 내용을 확인해 보세요!',
+            title: tr(LocaleKeys.notificationPermission_uploadSuccessTitle),
+            description:
+                tr(LocaleKeys.notificationPermission_uploadSuccessDescription),
             host: DeeplinkHost.landing,
             path: '',
           );
@@ -197,8 +191,9 @@ final class AnalyzeAndUploadYoutubeUseCase
           qnaAndIdsResult.qnas,
         );
         await AppLocalNotification().triggerPush(
-          title: '영상 업로드 했어요',
-          description: '요약된 내용을 확인해 보세요!',
+          title: tr(LocaleKeys.notificationPermission_uploadSuccessTitle),
+          description:
+              tr(LocaleKeys.notificationPermission_uploadSuccessDescription),
           host: DeeplinkHost.prefixYoutubeLanding,
           path:
               '${Uri.parse(YoutubeDetailRoute.path).pathSegments[0]}/${youtubeMainEntity.id}',
@@ -226,16 +221,16 @@ final class AnalyzeAndUploadYoutubeUseCase
 
         if (isInBackground) {
           await AppLocalNotification().triggerPush(
-            title: '영상을 업로드하는데 실패했어요',
-            description: targetType.description,
+            title: tr(LocaleKeys.notificationPermission_uploadFailTitle),
+            description: tr(targetType.description),
             host: DeeplinkHost.landing,
             path: '',
           );
         }
       } else {
         await AppLocalNotification().triggerPush(
-          title: '영상을 업로드하는데 실패했어요',
-          description: targetType.description,
+          title: tr(LocaleKeys.notificationPermission_uploadFailTitle),
+          description: tr(targetType.description),
           host: DeeplinkHost.prefixYoutubeLanding,
           path:
               '${Uri.parse(YoutubeContentUploadFailedRoute.path).pathSegments[0]}?errorCode=${targetType.code}',

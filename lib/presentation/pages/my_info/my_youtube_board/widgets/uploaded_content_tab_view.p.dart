@@ -20,7 +20,7 @@ class _UploadedContentTabView extends HookConsumerWidget
             itemBuilder: (context, item, index) {
               return Container(
                 margin: const EdgeInsets.only(bottom: 16),
-                child: BounceTapper(
+                child: GestureDetector(
                   onTap: () => routeToDetailPage(ref, overview: item),
                   child: YoutubeContentSmallItemView(
                     thumbnailImgUrl: item.thumbnailImgUrl,
@@ -81,9 +81,9 @@ class _UploadedContentTabView extends HookConsumerWidget
         controller,
   ) {
     return YoutubePaginationIndicatorView(
-      title: '데이터를 불러오지 못했어요',
-      description: '일시적인 오류일 수 있으니 다시 시도해보세요',
-      btnText: '다시 시도',
+      title: tr(LocaleKeys.youtubeBoard_loadErrorTitle),
+      description: tr(LocaleKeys.youtubeBoard_loadErrorDescription),
+      btnText: tr(LocaleKeys.youtubeBoard_retryButton),
       onBtnTapped: () {
         controller.refresh();
       },
@@ -96,8 +96,8 @@ class _UploadedContentTabView extends HookConsumerWidget
   Widget _buildNoItemFoundView(BuildContext context, WidgetRef ref) {
     return SizedBox(
       child: YoutubePaginationIndicatorView(
-        description: '업로드한 영상이 없어요',
-        btnText: '영상 업로드하기',
+        description: tr(LocaleKeys.youtubeBoard_noUploadsDescription),
+        btnText: tr(LocaleKeys.youtubeBoard_noUploadsDescription),
         descriptionTextStyle: AppTextStyle.body2.copyWith(
           color: AppColor.of.black,
         ),

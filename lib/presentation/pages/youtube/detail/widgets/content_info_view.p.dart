@@ -35,7 +35,12 @@ class _ContentInfoView extends ConsumerWidget
                     color: AppColor.of.gray2,
                   ),
                   Text(
-                    '질문 ${info.qnaNum}개',
+                    tr(
+                      LocaleKeys.youtubeDetail_questionsCount,
+                      namedArgs: {
+                        'count': info.qnaNum.toString(),
+                      },
+                    ),
                     style: AppTextStyle.body2.copyWith(
                       color: AppColor.of.gray4,
                     ),

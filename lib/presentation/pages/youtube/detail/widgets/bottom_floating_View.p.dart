@@ -68,7 +68,7 @@ class _BottomFloatingView extends ConsumerWidget
                         ),
                       ),
                       child: Text(
-                        '면접 시작하기',
+                        tr(LocaleKeys.youtubeDetail_startInterview),
                         style: AppTextStyle.title1,
                         textAlign: TextAlign.center,
                       ),

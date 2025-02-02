@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/core/constants/content_filter_category_type.enum.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/presentation/pages/youtube/main/constant/yotubue_content_category.dart';
@@ -91,9 +93,9 @@ final youtubeContentCategoryProvider =
 
     // 4. '전체' 카테고리 추가
     final combined = [
-      const YoutubeContentCategory(
+      YoutubeContentCategory(
         id: 'all',
-        name: '전체',
+        name: tr(LocaleKeys.common_all),
         type: ContentFilterCategoryType.all,
         contentCount: 0,
       ),

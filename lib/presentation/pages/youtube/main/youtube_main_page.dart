@@ -1,11 +1,13 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/features/youtube/index.dart';
@@ -39,7 +41,7 @@ class YoutubeMainPage extends BasePage with YoutubeMainState, YoutubeMainEvent {
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
       TechtalkAppBar(
-        title: '콘텐츠',
+        title: tr(LocaleKeys.common_content),
         bgColor: AppColor.of.background1,
         padding: const EdgeInsets.only(left: 16, right: 0),
         actions: [
@@ -79,7 +81,7 @@ class YoutubeMainPage extends BasePage with YoutubeMainState, YoutubeMainEvent {
                         opacity: opacity.value,
                         child: BubbleIndicator(
                           bgColor: AppColor.of.brand3,
-                          text: '영상을 업로드해 보세요!',
+                          text: tr(LocaleKeys.youtube_tryUploadPrompt),
                           talePosition: BubbleTalePosition.topRight,
                         ),
                       );

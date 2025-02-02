@@ -1,11 +1,12 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/app/util/app_formatter.dart';
 import 'package:techtalk/core/index.dart';
-
 import 'package:techtalk/presentation/widgets/common/box/skeleton_box.dart';
 
 ///
@@ -115,10 +116,8 @@ class YoutubeContentSmallItemView extends StatelessWidget {
                           // 버튼과 텍스트가 너무 가까울 수 있으니 여백 추가
                           const SizedBox(width: 15),
                           if (onTapDeleteButton != null)
-                            BounceTapper(
+                            GestureDetector(
                               onTap: onTapDeleteButton,
-                              shrinkScaleFactor: 1,
-                              highlightColor: Colors.transparent,
                               child: SvgPicture.asset(
                                 Assets.iconsRoundedClose,
                                 width: 20,
@@ -144,7 +143,7 @@ class YoutubeContentSmallItemView extends StatelessWidget {
                     children: [
                       if (videoDuration != null)
                         Text(
-                          AppFormatter.formatDurationLanguageFormat(
+                          AppFormatter.formatDurationToHHmm(
                             videoDuration!,
                           ),
                           style: AppTextStyle.alert1.copyWith(
@@ -163,7 +162,12 @@ class YoutubeContentSmallItemView extends StatelessWidget {
 
                       if (videoDuration != null)
                         Text(
-                          '질문 $questionCount개',
+                          tr(
+                            LocaleKeys.youtubeDetail_questionsCount,
+                            namedArgs: {
+                              "count": '$questionCount',
+                            },
+                          ),
                           style: AppTextStyle.alert1.copyWith(
                             color: AppColor.of.gray4,
                           ),

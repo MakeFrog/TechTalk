@@ -7,11 +7,13 @@ part of '../my_youtube_board_page.dart';
 class _BookmarkAnimatedDeletableListItem extends StatefulWidget {
   final YoutubeMainEntity item;
   final VoidCallback onConfirmDelete; // 실제로 목록에서 제거하는 콜백
+  final VoidCallback onTap;
 
   const _BookmarkAnimatedDeletableListItem({
     Key? key,
     required this.item,
     required this.onConfirmDelete,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -37,17 +39,22 @@ class _BookmarkAnimatedDeletableListItemState
       // child가 SizedBox()로 바뀌면 height가 0이 되어 애니메이션으로 접힘
       child: _isDeleted
           ? const SizedBox()
-          : Container(
-              key: ValueKey(widget.item.id),
-              margin: const EdgeInsets.only(bottom: 16),
-              child: YoutubeContentSmallItemView(
-                onTapDeleteButton: _onDeleteTap,
-                thumbnailImgUrl: widget.item.thumbnailImgUrl,
-                title: widget.item.contentsTitle,
-                channelName: widget.item.channel.name,
-                videoDuration: widget.item.videoDuration,
-                questionCount: widget.item.qnaNum,
-                videoId: widget.item.id,
+          : GestureDetector(
+              onTap: () {
+                widget.onTap();
+              },
+              child: Container(
+                key: ValueKey(widget.item.id),
+                margin: const EdgeInsets.only(bottom: 16),
+                child: YoutubeContentSmallItemView(
+                  onTapDeleteButton: _onDeleteTap,
+                  thumbnailImgUrl: widget.item.thumbnailImgUrl,
+                  title: widget.item.contentsTitle,
+                  channelName: widget.item.channel.name,
+                  videoDuration: widget.item.videoDuration,
+                  questionCount: widget.item.qnaNum,
+                  videoId: widget.item.id,
+                ),
               ),
             ),
     );

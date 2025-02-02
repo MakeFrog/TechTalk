@@ -18,7 +18,7 @@ class _TabBar extends StatelessWidget {
               ...ContentsDetailTabType.values
                   .map(
                     (tab) => Tab(
-                      text: tab.displayStr,
+                      text: tr(tab.displayStr),
                     ),
                   )
                   .toList()

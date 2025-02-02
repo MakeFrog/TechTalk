@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/navigation_context.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/app/util/app_logger.dart';
@@ -71,7 +73,7 @@ mixin class YoutubeDetailEvent {
     final isPlayerCued = YoutubeDetailState().hasYoutubePlayerCued(ref);
     if (!isPlayerCued) {
       AppDialog.singleBtn(
-        title: '영상 재생을 가디리고 있어요',
+        title: tr(LocaleKeys.youtubeDetail_loadingVideo),
         onBtnClicked: () {
           ref.context.pop();
         },
@@ -101,7 +103,7 @@ mixin class YoutubeDetailEvent {
     final isPlayerCued = YoutubeDetailState().hasYoutubePlayerCued(ref);
     if (!isPlayerCued) {
       AppDialog.singleBtn(
-        title: '영상 재생을 가디리고 있어요',
+        title: tr(LocaleKeys.youtubeDetail_loadingVideo),
         onBtnClicked: () {
           ref.context.pop();
         },
@@ -152,9 +154,9 @@ mixin class YoutubeDetailEvent {
             ref.context.pop();
           },
           showContentImg: false,
-          btnContent: '확인',
-          title: '잠시만 기다려 주세요',
-          description: '면접 질문을 불러오고 있습니다',
+          btnContent: tr(LocaleKeys.common_confirm),
+          title: tr(LocaleKeys.youtubeDetail_loadingTitle),
+          description: tr(LocaleKeys.youtubeDetail_loadingDescription),
         ),
       );
 
@@ -252,7 +254,9 @@ mixin class YoutubeDetailEvent {
   }
 
   Future<void> onRelatedVideoTapped(WidgetRef ref,
-      {required VideoOverviewEntity video, bool goRoute = false}) async {
+      {required VideoOverviewEntity video,
+      bool goRoute = false,
+      bool intentPauseVideo = true}) async {
     final response =
         await youtubeRepository.isUploadedContent(videoId: video.id);
 
@@ -277,7 +281,10 @@ mixin class YoutubeDetailEvent {
             });
           }
 
-          unawaited(_pauseVideoWithDelay(ref));
+          if (intentPauseVideo) {
+            unawaited(_pauseVideoWithDelay(ref));
+          }
+
           YoutubeDetailRoute(arg).push(ref.context);
         } else {
           final arg = SubmittedYoutubeConfirmArg.fromContentAccessFlow(

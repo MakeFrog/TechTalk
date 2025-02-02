@@ -4,13 +4,16 @@
     "emptyName": "익명",
     "next": "다음",
     "close": "닫기",
+    "content": "콘텐츠",
     "save": "저장하기",
     "start": "시작하기",
     "cancel": "취소",
+    "all": "전체",
     "confirm": "확인",
     "notice": "공지",
     "practicalInterviewFormat": "실전형 면접",
     "topicInterviewFormat": "주제별 면접",
+    "alreadySelected": "이미 선택된 기술입니다.",
     "responseResult": {
       "pass": "합격",
       "fail": "불합격",
@@ -193,7 +196,9 @@
     "previous": "이전",
     "all": "전체 보기",
     "all_question": "전체 문항",
-    "next": "다음"
+    "next": "다음",
+    "reviewNote": "오답노트",
+    "reviewNoteDescription": "오답 복습을 통해\n실력을 증진하세요!"
   },
   "mistakeNote": {
     "noMistakeRecords": "아직 오답 기록이 없어요",
@@ -203,7 +208,72 @@
   "videoTutorial": {
     "name": "영상 학습"
   },
+  "youtubeUploadFailed": {
+    "goToVideo": "바로가기",
+    "fetchAnotherVideo": "다른 영상 가져오기",
+    "timeout": {
+      "title": "시간안에 영상을 분석하지 못했어요",
+      "description": "영상의 길이나 네트워크 상태를 확인해주세요"
+    },
+    "jsonFormatError": {
+      "title": "일시적인 오류가 발생했습니다",
+      "description": "다시 업로드를 시도해주세요"
+    },
+    "invalidVideoContent": {
+      "title": "분석할 내용이 부족해요",
+      "description": "충분한 면접 질문과 요약 내용을 제공할 수 있는 영상을 업로드 해주세요"
+    },
+    "tooManyTokensRequired": {
+      "title": "영상이 너무 길어요",
+      "description": "1시간 이내의 영상이 권장됩니다"
+    },
+    "unknownError": {
+      "title": "예상하지 못한 오류가 발생했습니다",
+      "description": "다시 업로드를 시도해주세요"
+    },
+    "unexpectedGptError": {
+      "title": "일시적인 오류가 발생했습니다",
+      "description": "다시 업로드를 시도해주세요"
+    },
+    "isNotTechContent": {
+      "title": "개발 관련 콘텐츠가 아닌 것 같아요",
+      "description": "개발 관련 영상을 업로드해 주세요"
+    },
+    "noCaption": {
+      "title": "자막이 없어 분석이 어려워요",
+      "description": "자막이 포함된 영상을 업로드해 주세요"
+    },
+    "youtubeVideoFetchedFailed": {
+      "title": "영상 정보를 가져오는데 실패했어요",
+      "description": "다시 업로드를 시도해 주세요"
+    },
+    "tooShortVideo": {
+      "title": "영상 길이가 짧아요",
+      "description": "1분을 초과하는 영상을 업로드해 주세요"
+    },
+    "alreadyUploaded": {
+      "title": "이 영상은 이미 업로드되었어요",
+      "description": "해당 영상으로 바로 이동할 수 있습니다"
+    }
+  },
+  "youtubeBoard": {
+    "loadErrorTitle": "데이터를 불러오지 못했어요",
+    "loadErrorDescription": "일시적인 오류일 수 있으니 다시 시도해보세요",
+    "retryButton": "다시 시도",
+    "noItemFoundDescription": "아직 시청 기록이 없어요",
+    "watchVideoButton": "영상 시청하기",
+    "noFavoritesDescription": "즐겨찾기한 영상이 없어요",
+    "noUploadsDescription": "업로드한 영상이 없어요",
+    "uploadVideoButton": "영상 업로드하기"
+  },
   "myInfo": {
+    "myActivity": "내 활동",
+    "content": "콘텐츠",
+    "contentDescription": "기록, 즐겨찾기, 업로드 관리",
+    "myContents": "내 콘텐츠",
+    "watchHistory": "시청 기록",
+    "favorites": "즐겨찾기",
+    "uploadedVideos": "업로드 영상",
     "profile": "프로필",
     "interestedJobPositions": "관심 직군",
     "interestedTopics": "관심 스킬",
@@ -246,6 +316,67 @@
     "needAlarmPermission": "알림 수신을 위해서는 권한 동의가 필요해요",
     "alarm_title": "알림 활성화",
     "alarm_desc": "주요 공지, 기능 업데이트 등 알림"
+  },
+  "youtube": {
+    "noResults": "결과가 없습니다",
+    "uploadPrompt": "영상을 업로드해 보세요",
+    "uploadButton": "영상 업로드하기",
+    "loadErrorTitle": "영상을 불러오지 못했어요",
+    "loadErrorDescription": "일시적인 오류일 수 있으니 다시 시도해보세요",
+    "retryButton": "다시 시도",
+    "learnWithVideo": "영상으로 학습하세요!",
+    "tryUploadPrompt": "영상을 업로드해 보세요"
+  },
+  "youtubeUpload": {
+    "title": "유튜브 영상\n링크를 알려주세요",
+    "title_only_for_review": "영상 콘텐츠\n링크를 알려주세요",
+    "description": "영상 요약과 질문을 생성해 드릴게요!",
+    "placeholder": "https://www.youtube.com/watch?v=...",
+    "fetchLinkButton": "유튜브 링크 가져오기",
+    "nextButton": "다음",
+    "emptyInput": "유튜브 영상의 링크 또는 ID 값을 입력해 주세요",
+    "containsSpace": "공백이 포함된 링크 또는 ID는 입력할 수 없어요",
+    "confirmationTitle": "입력하신 영상이 맞나요?",
+    "confirmationDescription": "영상을 업로드하면 내용을 요약하고\n면접 질문을 받아볼 수 있어요!",
+    "notFoundError": "테크톡에 없는 영상이에요",
+    "uploadingTitle": "영상을 업로드하고 있어요\n잠시만 기다려 주세요",
+    "uploadWarning": "앱을 종료하면 업로드가 취소돼요\n(영상 길이에 따라 최대 1분 소요)",
+    "uploadCompleteNotification": "업로드가 완료되면 알려드릴게요",
+    "confirmationNotification": "확인이 끝나면 알려드릴까요?"
+  },
+  "notificationPermission": {
+    "title": "알림 권한 필요",
+    "description": "알림을 허용하지 않으면 업로드 완료 알림을 받을 수 없어요",
+    "exitButton": "나가기",
+    "allowButton": "허용하기",
+    "uploadSuccessTitle": "영상 업로드 했어요",
+    "uploadSuccessDescription": "요약된 내용을 확인해 보세요!",
+    "uploadFailTitle": "영상을 업로드하는데 실패했어요"
+  },
+  "youtubeInterview": {
+    "introMessage": "안녕하세요 {nickname}님! ‘{contentTitle}’ 콘텐츠를 기반으로 면접 질문을 여쭤볼게요.",
+    "cannotResumeLater": "나중에 면접을 이어서 진행할 수 없습니다.",
+    "similarApplicantsWatched": "같은 직군의 지원자들은",
+    "suggestedVideo": "아래 영상도 시청했어요",
+    "watchThisVideo": "이 영상을 시청해 볼까요?",
+    "watchVideoButton": "영상 보기"
+  },
+  "youtubeDetail": {
+    "questions": "질문",
+    "questionsCount": "질문 {count}개",
+    "summary": "요약",
+    "keyTopic": "핵심 주제",
+    "interview": "면접",
+    "summaryNote": "요약 노트",
+    "seeAll": "전체보기",
+    "relatedVideos": "관련 영상",
+    "interviewQuestions": "면접 질문",
+    "selectAll": "전체선택",
+    "startInterview": "면접 시작하기",
+    "loadingVideo": "영상 재생을 기다리고 있어요",
+    "buttonConfirm": "확인",
+    "loadingTitle": "잠시만 기다려 주세요",
+    "loadingDescription": "면접 질문을 불러오고 있습니다"
   },
   "errors": {
     "error": "오류",

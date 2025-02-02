@@ -1,6 +1,8 @@
+import 'package:techtalk/app/localization/locale_keys.g.dart';
+
 enum ContentsDetailTabType {
-  summary('요약'),
-  questions('면접질문');
+  summary(LocaleKeys.youtubeDetail_summary),
+  questions(LocaleKeys.youtubeDetail_interview);
 
   final String displayStr;
 

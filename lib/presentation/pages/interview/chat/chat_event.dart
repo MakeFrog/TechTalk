@@ -99,7 +99,9 @@ mixin class ChatEvent {
               .tr(LocaleKeys.interview_notification),
           subTitle: rootNavigatorKey.currentContext!
               .tr(LocaleKeys.interview_confirmEndInterview),
-          description: room.type.isYoutube ? '나중에 면접을 이어서 진행할 수 없습니다' : null,
+          description: room.type.isYoutube
+              ? tr(LocaleKeys.youtubeInterview_cannotResumeLater)
+              : null,
           showContentImg: false,
           leftBtnContent:
               rootNavigatorKey.currentContext!.tr(LocaleKeys.common_cancel),
@@ -383,6 +385,6 @@ mixin class ChatEvent {
     }
 
     await youtubeDetailEvent.onRelatedVideoTapped(ref,
-        video: videoAsync.value!);
+        video: videoAsync.value!, intentPauseVideo: false);
   }
 }

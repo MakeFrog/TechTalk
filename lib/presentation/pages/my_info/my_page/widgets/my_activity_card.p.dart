@@ -11,7 +11,7 @@ class _MyActivityCard extends ConsumerWidget with MyPageEvent {
         Padding(
           padding: const EdgeInsets.only(left: 4),
           child: Text(
-            '내 활동',
+            tr(LocaleKeys.myInfo_myActivity),
             style: AppTextStyle.headline3,
           ),
         ),
@@ -36,7 +36,7 @@ class _MyActivityCard extends ConsumerWidget with MyPageEvent {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '내 영상 학습',
+                      tr(LocaleKeys.common_content),
                       style: AppTextStyle.title2,
                     ),
                     SvgPicture.asset(
@@ -46,7 +46,7 @@ class _MyActivityCard extends ConsumerWidget with MyPageEvent {
                 ),
                 const Gap(4),
                 Text(
-                  '기록, 즐겨찾기, 업로드 관리',
+                  tr(LocaleKeys.myInfo_contentDescription),
                   style: AppTextStyle.body3.copyWith(
                     color: AppColor.of.gray3,
                   ),

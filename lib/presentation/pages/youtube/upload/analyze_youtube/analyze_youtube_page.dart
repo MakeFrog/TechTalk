@@ -1,4 +1,5 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/src/consumer.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:lottie/lottie.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/constants/assets.dart';
@@ -45,12 +47,12 @@ class AnalyzeYoutubePage extends BasePage
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '영상을 업로드하고 있어요\n잠시만 기다려 주세요',
+                tr(LocaleKeys.youtubeUpload_uploadingTitle),
                 style: AppTextStyle.headline1,
               ),
               const Gap(12),
               Text(
-                '앱을 종료하면 업로드가 취소돼요\n(영상 길이에 따라 최대 1분 소요)',
+                tr(LocaleKeys.youtubeUpload_uploadWarning),
                 style: AppTextStyle.body1.copyWith(
                   color: AppColor.of.gray4,
                 ),
@@ -104,7 +106,8 @@ class AnalyzeYoutubePage extends BasePage
                               ),
                               const Gap(6),
                               Text(
-                                '확인이 끝나면 알려드릴까요?',
+                                tr(LocaleKeys
+                                    .youtubeUpload_confirmationNotification),
                                 style: AppTextStyle.body1,
                               ),
                               const Spacer(),
@@ -134,9 +137,10 @@ class AnalyzeYoutubePage extends BasePage
                                 onPressed: () {
                                   onExitPageBtnTapped(ref);
                                 },
-                                child: Text(
-                                  isGranted ? '업로드가 완료되면 알려드릴게요' : '확인',
-                                ),
+                                child: Text(isGranted
+                                    ? tr(LocaleKeys
+                                        .youtubeUpload_uploadCompleteNotification)
+                                    : tr(LocaleKeys.common_confirm)),
                               ),
                             ),
                           ),

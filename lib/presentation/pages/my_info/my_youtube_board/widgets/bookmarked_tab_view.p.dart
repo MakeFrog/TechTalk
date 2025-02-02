@@ -18,6 +18,9 @@ class _BookmarkedTabView extends HookConsumerWidget
             child: _BookmarkAnimatedDeletableListItem(
               item: item,
               onConfirmDelete: () => deleteBookmark(ref, videoId: item.id),
+              onTap: () {
+                routeToDetailPage(ref, overview: item);
+              },
             ),
           );
         },
@@ -40,18 +43,20 @@ class _BookmarkedTabView extends HookConsumerWidget
         controller,
   ) {
     return YoutubePaginationIndicatorView(
-      title: '데이터를 불러오지 못했어요',
-      description: '일시적인 오류일 수 있으니 다시 시도해보세요',
-      btnText: '다시 시도',
-      onBtnTapped: () => controller.refresh(),
+      title: tr(LocaleKeys.youtubeBoard_loadErrorTitle),
+      description: tr(LocaleKeys.youtubeBoard_loadErrorDescription),
+      btnText: tr(LocaleKeys.youtubeBoard_retryButton),
+      onBtnTapped: () {
+        controller.refresh();
+      },
     );
   }
 
   Widget _buildNoItemFoundView(BuildContext context, WidgetRef ref) {
     return SizedBox(
       child: YoutubePaginationIndicatorView(
-        description: '즐겨찾기한 영상이 없어요',
-        btnText: '영상 시청하기',
+        description: tr(LocaleKeys.youtubeBoard_noFavoritesDescription),
+        btnText: tr(LocaleKeys.youtubeBoard_watchVideoButton),
         descriptionTextStyle: AppTextStyle.body2.copyWith(
           color: AppColor.of.black,
         ),

@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/providers/system/notification_status_provider.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
@@ -21,11 +23,11 @@ mixin class AnalyzeYoutubeProgressEvent {
     } else {
       DialogService.show(
         dialog: AppDialog.dividedBtn(
-          title: '알림 권한 필요',
-          description: '알림을 허용하지 않으면 업로드 완료 알림을 받을 수 없어요',
-          leftBtnContent: '나가기',
+          title: tr(LocaleKeys.notificationPermission_title),
+          description: tr(LocaleKeys.notificationPermission_description),
+          leftBtnContent: tr(LocaleKeys.notificationPermission_exitButton),
           showContentImg: false,
-          rightBtnContent: '허용하기',
+          rightBtnContent: tr(LocaleKeys.notificationPermission_allowButton),
           onRightBtnClicked: () {
             ref
                 .read(notificationStatusProvider.notifier)
