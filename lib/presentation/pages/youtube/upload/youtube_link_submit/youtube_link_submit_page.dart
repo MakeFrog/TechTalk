@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/environment/app_version.dart';
+import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/constants/assets.dart';
@@ -55,7 +56,9 @@ class YoutubeLinkSubmitPage extends BasePage
                     controller: textEditingController(ref),
                     validator: urlInputValidator,
                     hintText: AppVersion().isOnReview
-                        ? ''
+                        ? AppLocale.isKo
+                            ? '영상 링크를 입력해 주세요'
+                            : 'Pleas Submit Video Link'
                         : 'https://www.youtube.com/watch?v=TecHtVkAk',
                     inputDecoration: InputDecoration(
                       errorStyle: AppTextStyle.alert2.copyWith(),

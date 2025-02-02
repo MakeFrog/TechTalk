@@ -52,7 +52,7 @@ mixin class SplashEvent {
             SlackNotificationService.updateUserInfo(userData);
             unawaited(
               SlackNotificationService.sendNotification(
-                targetUserInfo: userData,
+                userInfo: userData,
                 type: SlackNotificationType.login,
               ),
             );

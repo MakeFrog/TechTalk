@@ -9,6 +9,7 @@ import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 ///
 /// 슬랙 노티피케이션 알람 모듈
@@ -20,9 +21,11 @@ abstract class SlackNotificationService {
 
   // Slack 알림을 보내는 함수
   static Future<void> sendNotification(
-      {UserEntity? targetUserInfo,
+      {UserEntity? userInfo,
       String? message,
       required SlackNotificationType type}) async {
+    UserEntity? targetUserInfo = userInfo ?? AppUserInfo().intnace;
+
     final userId = targetUserInfo?.uid ?? '';
     if (Flavor.env.operationIdList.contains(userId)) {
       return;
