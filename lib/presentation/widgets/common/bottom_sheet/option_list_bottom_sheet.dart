@@ -2,12 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/services/app_size.dart';
 
-class OptionListBottomSheet<T extends dynamic> extends StatelessWidget {
+class OptionListBottomSheet<T extends dynamic> extends ConsumerWidget {
   const OptionListBottomSheet({
     Key? key,
     required this.options,
@@ -17,12 +18,12 @@ class OptionListBottomSheet<T extends dynamic> extends StatelessWidget {
   }) : super(key: key);
 
   final List<String> options;
-  final void Function(int index) onOptionTapped;
+  final void Function(int index, WidgetRef ref) onOptionTapped;
   final VoidCallback onCloseBtnTapped;
   final String leadingText;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
@@ -77,8 +78,7 @@ class OptionListBottomSheet<T extends dynamic> extends StatelessWidget {
                           : BorderRadius.zero,
                     ),
                     onPressed: () {
-                      context.pop();
-                      onOptionTapped(index);
+                      onOptionTapped(index, ref);
                     },
                     child: SizedBox(
                       height: 56,

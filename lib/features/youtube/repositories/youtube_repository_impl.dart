@@ -363,12 +363,21 @@ class YoutubeRepositoryImpl
   Future<Result<ChannelDetailEntity>> getChannelDetail(String channelId) async {
     try {
       final response = await _youtubeApiDataSource.channels.get(channelId);
-      print('아랑수 : ${response}');
-      final aim = await _youtubeApiDataSource.channels.get(channelId);
-      final result = ChannelDetailEntity.fromExplore(aim);
+
+      final result = ChannelDetailEntity.fromExplore(response);
       return Result.success(result);
     } catch (e) {
       return Result.failure(Exception('$this> $e'));
+    }
+  }
+
+  @override
+  Future<Result<void>> deleteContent({required String contentId}) async {
+    try {
+      await _youtubeRemoteDataSource.deleteContent(contentId: contentId);
+      return Result.success(null);
+    } catch (e) {
+      return Result.failure(Exception('this > $e'));
     }
   }
 }

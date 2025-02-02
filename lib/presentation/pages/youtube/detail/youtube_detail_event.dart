@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/navigation_context.dart';
@@ -12,7 +13,6 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_interview_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
-import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/features/youtube/repositories/entities/video_overview_entity.dart';
 import 'package:techtalk/presentation/pages/youtube/channel_detail/provider/channel_detail_route_arg_provider.dart';
@@ -313,6 +313,70 @@ mixin class YoutubeDetailEvent {
 
     return existsInStack;
   }
+
+  Future<void> secretManageBtnTapped(WidgetRef ref) async {
+    final arg = ref.read(youtubeDetailRouteArgProvider);
+    await showModalBottomSheet(
+      context: await navigationContext,
+      useSafeArea: true,
+      isDismissible: true,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) {
+        return OptionListBottomSheet(
+          leadingText: '영상 관리',
+          onCloseBtnTapped: context.pop,
+          options: ['삭제', '재업로드'],
+          onOptionTapped: (int index, WidgetRef targetRef) async {
+            await EasyLoading.show();
+
+            final response =
+                await youtubeRepository.deleteContent(contentId: arg.contentId);
+            await EasyLoading.dismiss();
+            await response.fold(
+              onSuccess: (_) async {
+                logger.i('삭제 성공');
+
+                SnackBarService.showSnackBar('삭제됨 (캐시는 남아 있음)');
+                final mainInfo =
+                    YoutubeDetailState().mainInfo(ref).requireValue;
+                if (index == 1) {
+                  final targetArg = VideoOverviewEntity(
+                    id: arg.contentId,
+                    title: mainInfo.contentsTitle,
+                    thumbnailImgUrl: arg.thumbnailUrl!,
+                    channelName: mainInfo.channel.name,
+                  );
+                  final aimArg =
+                      SubmittedYoutubeConfirmArg.fromContentAccessFlow(
+                          video: YoutubeVideoEntity.fromRelatedVideoEntity(
+                              targetArg));
+                  context.pop();
+                  await SubmittedYoutubeConfirmRoute(aimArg)
+                      .push(await navigationContext);
+                } else {
+                  targetRef.context.pop();
+                }
+              },
+              onFailure: (e) {
+                context.pop();
+                logger.e(e);
+                AppDialog.singleBtn(
+                  title: '삭제 실패',
+                  description: '왜 실패 했지..',
+                  btnContent: '확인',
+                  onBtnClicked: () {
+                    targetRef.context.pop();
+                  },
+                );
+              },
+            );
+            await EasyLoading.dismiss();
+          },
+        );
+      },
+    );
+  }
 }
 
 extension YoutubePlayerControllerEx on YoutubePlayerController {
@@ -341,23 +405,5 @@ extension YoutubePlayerControllerEx on YoutubePlayerController {
     }
 
     return controller;
-  }
-
-  Future<void> secretManageBtnTapped(WidgetRef ref) async {
-    showModalBottomSheet(
-      context: ref.context,
-      useSafeArea: true,
-      isDismissible: true,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      builder: (context) {
-        return OptionListBottomSheet(
-          leadingText: '운영진 비밀 버튼 ><',
-          onCloseBtnTapped: context.pop,
-          options: ['삭제하게', '교체하기'],
-          onOptionTapped: (int index) {},
-        );
-      },
-    );
   }
 }

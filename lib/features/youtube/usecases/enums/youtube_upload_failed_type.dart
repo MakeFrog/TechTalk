@@ -3,7 +3,7 @@ enum YoutubeUploadFailedType {
   jsonFormatError('1', '일시적인 오류가 발생했습니다', '다시 업로드를 시도해주세요'),
   invalidVideoContent(
       '2', '분석할 내용이 부족해요', '충분한 면접 질문과 요약 내용을 제공할 수 있는 영상을 업로드 해주세요'),
-  tooManyTokensRequired('3', '영상이 너무 길어요', '30분 이내의 영상이 권장됩니다'),
+  tooManyTokensRequired('3', '영상이 너무 길어요', '1시간 이내의 영상이 권장됩니다'),
   unknownError('4', '예상하지 못한 오류가 발생했습니다', '다시 업로드를 시도해주세요'),
   unexpectedGptError('5', '일시적인 오류가 발생했습니다', '다시 업로드를 시도해주세요'),
   isNotTechContent('6', '개발 관련 콘텐츠가 아닌 것 같아요', '개발 관련 영상을 업로드해 주세요'),

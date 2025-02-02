@@ -101,4 +101,9 @@ abstract interface class YoutubeRepository {
   /// 업로드된 영상인지 확인
   ///
   Future<Result<bool>> isUploadedContent({required String videoId});
+
+  ///
+  /// 콘텐츠 삭제
+  ///
+  Future<Result<void>> deleteContent({required String contentId});
 }

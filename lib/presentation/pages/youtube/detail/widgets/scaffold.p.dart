@@ -1,6 +1,6 @@
 part of '../youtube_detail_page.dart';
 
-class _Scaffold extends HookWidget with YoutubeDetailState {
+class _Scaffold extends HookWidget with YoutubeDetailState, YoutubeDetailEvent {
   const _Scaffold({
     required this.argOverride,
     required this.appBar,
@@ -187,12 +187,22 @@ class _Scaffold extends HookWidget with YoutubeDetailState {
                                 },
                               ),
                               actions: [
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.more_horiz_outlined,
-                                    color: AppColor.of.black,
-                                  ),
+                                Consumer(
+                                  builder: (context, ref, _) {
+                                    if (isOperationAccess(ref)) {
+                                      return IconButton(
+                                        onPressed: () {
+                                          secretManageBtnTapped(ref);
+                                        },
+                                        icon: Icon(
+                                          Icons.more_horiz_outlined,
+                                          color: AppColor.of.black,
+                                        ),
+                                      );
+                                    } else {
+                                      return const EmptyBox();
+                                    }
+                                  },
                                 ),
                               ],
                             ),

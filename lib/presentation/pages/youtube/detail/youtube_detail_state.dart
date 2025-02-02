@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/environment/flavor.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/features/youtube/repositories/entities/video_overview_entity.dart';
@@ -12,6 +13,7 @@ import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_mai
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_player_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_summary_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_video_data_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 mixin class YoutubeDetailState {
@@ -118,5 +120,10 @@ mixin class YoutubeDetailState {
   AsyncValue<List<VideoOverviewEntity>> relatedVideoAsync(WidgetRef ref) {
     final videoId = ref.read(youtubeDetailRouteArgProvider).contentId;
     return ref.watch(relatedYoutubeVideoProvider(videoId));
+  }
+
+  bool isOperationAccess(WidgetRef ref) {
+    final userId = ref.read(userInfoProvider).valueOrNull?.uid;
+    return Flavor.env.operationIdList.contains(userId);
   }
 }
