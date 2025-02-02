@@ -21,46 +21,50 @@ class GetSummaryFromYoutubeContentUseCase
       content: [
         OpenAIChatCompletionChoiceMessageContentItemModel.text(
           '''
-프로그래밍 관련 자막 데이터를 바탕으로 프로그래밍 개념을 직접 설명하듯이 요약하세요.
+프로그래밍 관련 자막 데이터를 바탕으로, **프로그래밍 개념을 직접 가르치듯** 요약해 주세요.  
+- 예) "노드 확장을 위해 소켓 아이오 어댑터를 활용하면 여러 클라이언트 연결을 효율적으로 처리할 수 있습니다."  
+- 비예) "영상에서 발표자가 소켓 아이오 어댑터 활용을 통해 확장 전략을 설명해 주십니다."
 
-제목과 자막(caption) 데이터를 활용하여 아래 요구사항에 따라 세부적이고 체계적인 요약을 생성하세요.
-${hasBeenDivided ? '주의: 이 자막은 **전체 영상 중 일부(분할된 구간)**일 뿐, 전체가 아닙니다.' : ''}
-${hasBeenDivided ? '전체 영상 시간(${videoEntity.duration}) 중 ${videoEntity.captions.first.end} ~ ${videoEntity.captions.last.end}에 해당 합니다.' : ''}
+### 주의:
+1. **설명하는 주체가 직접 가르치듯** 서술해 주세요.
+2. "영상에서 언급", "발표자가 말함" 등은 사용하지 마세요.  
+3. "이 섹션에서는" 같은 표현 없이, **바로 개념**을 서술해 주세요.  
+4. 단답형 표현 없이, **프로그래밍 지식을 모르는 독자에게 설명**하는 방식으로 작성해 주세요.
+  
 
-### 요구사항:  
-1. **세부 요약 목록 (`summaries`) 작성**:
-   - 해당 내용을 섹션(챕터)별로 구분해 `title`과 `contents`를 작성하세요.
-   - `contents`에는 직접 프로그래밍 개념을 설명하듯이 작성하고 핵심 내용을 서술하세요.
-   - 시간 순서별(offset)로 중복 없이 나열하고, 각 섹션 시작 시간을 "HH:MM:SS" 또는 "HH:MM:SS.sss" 형식으로 적어주세요. 
-   - ${hasBeenDivided ? '**영상이 분할되어 있기 때문에**, 오직 이 구간에 해당하는 offset만 요약 대상입니다. 다음 구간(이후 청크)은 존재할 수 있으나 여기서는 다루지 않습니다' : ''}.
+### 요구사항:
+1. **세부 요약 목록(`summaries`) 작성**:
+   - 각 섹션에 `title`(짧은 요약 제목), `contents`(설명 내용), `offset`(HH:MM:SS 또는 HH:MM:SS.sss 형식)을 기재하세요.
+   - `contents`는 서술형 문장으로 구성해 주세요.
+   - `contents`서로 다른 항목이어도 단순히 나열식("첫 번째 문장, 두 번째 문장...")이 아니라 설명 흐름이 자연스럽게 이어지도록 **앞뒤 맥락을 자연스럽게 이어** 주시면 좋습니다.
+   - ${hasBeenDivided ? '**현재 구간(이 청크) 내에서만** 요약해 주시고, 다른 구간은 제외합니다.' : ''}
+   
     
----     
-              
-### 입력 데이터 형식:
-- **제목**: `${videoEntity.title}`  
-- **자막 데이터**: `${videoEntity.captions.map((e) => e.toMap()).toList()}`
+2. **입력 데이터 형식**:
+   - **제목**: `${videoEntity.title}`
+   - **자막(caption) 데이터**: `${videoEntity.captions.map((e) => e.toMap()).toList()}`
 
+3. **응답 언어**:
+   - 항상 **${AppLocale.currentLocale.languageCode}**로 언어를 구성해 주세요.
 
-### 응답 언어:
-- 항상 **언어 코드**에 해당되는 언어로 응답해야 됩니다.
-- 언어 코드 : ${AppLocale.currentLocale.languageCode} 
+4. **어체**:
+   - 경어체(존댓말)을 사용해 주시되, **바로 독자에게 설명**한다는 느낌을 유지해 주세요.
 
-### 응답 어체:
-- 경어체 사용합니다.(존댓말)
-
-### 응답 형식:
-모든 응답은 아래 JSON 구조를 따라야 합니다.
-    
-```json 
-{
-  "summaries": [ // 필수
-    {
-      "title": "요약 제목", // 필수 
-      "contents": ["요약 내용1", "요약 내용2", "요약 내용3", "요약 내용4", ...], // 필수
-      "offset": "0:10:55.839000" // 필수
-    }
-  ]
-}
+5. **응답 형식**:
+   모든 응답은 다음 JSON 구조를 준수해야 합니다.
+   ```json
+   {
+     "summaries": [
+       {
+         "title": "요약 제목",
+         "contents": [
+           "요약 내용1",
+           "요약 내용2"
+         ],
+         "offset": "HH:MM:SS"
+       }
+     ]
+   }
   ```
           ''',
         ),
@@ -71,6 +75,7 @@ ${hasBeenDivided ? '전체 영상 시간(${videoEntity.duration}) 중 ${videoEnt
     final startTime = DateTime.now();
 
     final model = AppVersion().to?.youtubeGptModel ?? YoutubeGptModelType.gpt4o;
+
     try {
       OpenAIChatCompletionModel completion = await OpenAI.instance.chat.create(
         model: model.id,
