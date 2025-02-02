@@ -134,8 +134,9 @@ class _SelectedListViewSlider extends ConsumerWidget
 
                 return Align(
                   alignment: Alignment.topCenter,
-                  child: ClosableSkillFilledChip(
-                    skill: item,
+                  child: ClosableFilledChip(
+                    logoPath: item.imagePath,
+                    name: item.name,
                     onTap: () {
                       onSelectableChipTapped(ref, index: index);
                     },
