@@ -8,38 +8,36 @@ import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/system/repositories/entities/youtube_gpt_model_type.enum.dart';
 import 'package:techtalk/features/youtube/index.dart';
+import 'package:techtalk/features/youtube/repositories/entities/youtube_ai_main_theme_response.dart';
 
-class GetSummaryFromYoutubeContentUseCase
-    extends BaseUseCase<(YoutubeVideoEntity, bool), List<ParagraphEntity>> {
+class GetMainSummaryThemeUseCase
+    extends BaseUseCase<YoutubeVideoEntity, YoutubeAiMainThemeResponse> {
   @override
-  Future<List<ParagraphEntity>> call((YoutubeVideoEntity, bool) request) async {
+  Future<YoutubeAiMainThemeResponse> call(YoutubeVideoEntity request) async {
     // - 주제를 설명할 때 '영상'이라는 단어를 사용하지 마세요.
-    final videoEntity = request.$1;
-    final hasBeenDivided = request.$2;
+    final videoEntity = request;
 
     final systemMessage = OpenAIChatCompletionChoiceMessageModel(
       content: [
         OpenAIChatCompletionChoiceMessageContentItemModel.text(
           '''
-프로그래밍 관련 자막 데이터를 바탕으로 프로그래밍 개념을 직접 설명하듯이 요약하세요.
+프로그래밍 관련 영상 자막 데이터를 바탕으로 프로그래밍 개념을 직접 설명하듯이 핵심 내용을 요약하세요.
 
-제목과 자막(caption) 데이터를 활용하여 아래 요구사항에 따라 세부적이고 체계적인 요약을 생성하세요.
-${hasBeenDivided ? '주의: 이 자막은 **전체 영상 중 일부(분할된 구간)**일 뿐, 전체가 아닙니다.' : ''}
-${hasBeenDivided ? '전체 영상 시간(${videoEntity.duration}) 중 ${videoEntity.captions.first.end} ~ ${videoEntity.captions.last.end}에 해당 합니다.' : ''}
 
-### 요구사항:  
-1. **세부 요약 목록 (`summaries`) 작성**:
-   - 해당 내용을 섹션(챕터)별로 구분해 `title`과 `contents`를 작성하세요.
-   - `contents`에는 프로그래밍 개념을 직접 설명하듯 자세히 서술하세요.
-   - 시간 순서별(offset)로 중복 없이 나열하고, 각 섹션 시작 시간을 "HH:MM:SS" 또는 "HH:MM:SS.sss" 형식으로 적어주세요. 
-   - ${hasBeenDivided ? '**영상이 분할되어 있기 때문에**, 오직 이 구간에 해당하는 offset만 요약 대상입니다. 다음 구간(이후 청크)은 존재할 수 있으나 여기서는 다루지 않습니다' : ''}.
+### 요구사항:
+1. **응답 유형 (`type`) 지정**:
+   - **`notTech`**: 영상 내용이 프로그래밍과 관련이 없는 경우.
+   - **`isValid`**: 영상 내용에서 기술 면접 질문을 생성할 수 있는 경우.
+
+2. **핵심 주제 (`main_theme`) 작성**:
+   - 해당 내용에서 다루는 핵심 프로그래밍 개념을 2~3문장으로 요약하세요.
+   - 직접 개념을 설명하듯 작성하신고, '영상' 라는 단어는 절대 사용하지 마세요.
     
 ---     
-              
+                                
 ### 입력 데이터 형식:
 - **제목**: `${videoEntity.title}`  
-- **자막 데이터**: `${videoEntity.captions.map((e) => e.toMap()).toList()}`
-
+- **자막 데이터**: `${videoEntity.script}`  
 
 ### 응답 언어:
 - 항상 **언어 코드**에 해당되는 언어로 응답해야 됩니다.
@@ -53,13 +51,8 @@ ${hasBeenDivided ? '전체 영상 시간(${videoEntity.duration}) 중 ${videoEnt
     
 ```json 
 {
-  "summaries": [ // 필수
-    {
-      "title": "요약 제목", // 필수 
-      "contents": ["요약 내용1", "요약 내용2", "요약 내용3", "요약 내용4", ...], // 필수
-      "offset": "0:10:55.839000" // 필수
-    }
-  ]
+  "type": "notTech | isValid", // 필수
+  "main_theme": "영상의 핵심 주제", // 필수
 }
   ```
           ''',
@@ -81,9 +74,9 @@ ${hasBeenDivided ? '전체 영상 시간(${videoEntity.duration}) 중 ${videoEnt
         responseFormat: {"type": "json_object"},
       );
 
-      log('Summary 토큰사용량 : ${completion.usage}'); // 응답 결과 출력
-      log('Summary 시간 : ${DateTime.now().difference(startTime).inSeconds}'); // 응답 결과 출력
-      log('Summary 결과랑이 : ${completion.choices.first.message.content?.first.text}'); // 응답 결과 출력
+      log('핵심 주제 요약 토큰사용량 : ${completion.usage}'); // 응답 결과 출력
+      log('핵심 주제 요약 시간 : ${DateTime.now().difference(startTime).inSeconds}'); // 응답 결과 출력
+      log('핵심 주제 요약 결과랑이 : ${completion.choices.first.message.content?.first.text}'); // 응답 결과 출력
       // 🔹 전달된 captions 개수 및 첫/마지막 offset 확인
       log('🟢 앞쪽 Summary[${0}] - 전달된 captions 개수: ${videoEntity.captions.length}');
       if (videoEntity.captions.isNotEmpty) {
@@ -105,9 +98,7 @@ ${hasBeenDivided ? '전체 영상 시간(${videoEntity.duration}) 중 ${videoEnt
 
       final targetJson = jsonDecode(response);
 
-      final targetEntity = (targetJson['summaries'] as List<dynamic>)
-          .map((e) => ParagraphEntity.fromJson(e as Map<String, dynamic>))
-          .toList();
+      final targetEntity = YoutubeAiMainThemeResponse.fromJson(targetJson);
 
       return targetEntity;
     } on RequestFailedException catch (e) {

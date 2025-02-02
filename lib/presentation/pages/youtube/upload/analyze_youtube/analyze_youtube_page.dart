@@ -123,8 +123,8 @@ class AnalyzeYoutubePage extends BasePage
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: SafeArea(
                         child: Container(
-                          margin: EdgeInsets.only(
-                            bottom: AppSize.bottomInset == 0 ? 16 : 0,
+                          margin: const EdgeInsets.only(
+                            bottom: 16,
                           ),
                           width: double.infinity,
                           child: BounceTapper(

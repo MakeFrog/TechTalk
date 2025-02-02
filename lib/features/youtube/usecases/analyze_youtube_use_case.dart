@@ -11,7 +11,8 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/youtube/index.dart';
-import 'package:techtalk/features/youtube/usecases/get_remain_summary_form_youtube_content_use_case.dart';
+import 'package:techtalk/features/youtube/repositories/entities/youtube_ai_main_theme_response.dart';
+import 'package:techtalk/features/youtube/usecases/get_main_summary_theme_use_case.dart';
 import 'package:techtalk/presentation/app.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/providers/youtube_detail_route_arg_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
@@ -21,14 +22,16 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 /// 유튜브 영상을 분석하여 분할 요약 + QNA 데이터를 얻고,
 /// 최종 병합하여 업로드하는 UseCase
 ///
-///  - 0번 청크 → [GetSummaryFromYoutubeContentUseCase] (YoutubeAiSummaryResponse)
-///  - 1~N번 청크 → [GetRemainSummaryFromYoutubeContentUseCase] (SummaryEntity, mainTheme="")
+///  - 영상 길이 별 요약 노트 (청크 0 ~ N) → [GetSummaryFromYoutubeContentUseCase] (YoutubeAiSummaryResponse)
+///  - 영상 핵심 주제 [GetMainSummaryThemeUseCase]
+///  - 영상 스킬 직군 매핑 + 면접 질문 추출 -> [GetQnasFromYoutubeContentUseCase]
 ///  - QNA → 전체 자막 기반 1회
 ///
 ///  [Future.wait] 결과:
 ///    - results[0] → 첫 청크 요약
 ///    - results[1..N-1] → 나머지 청크 요약들
 ///    - results.last → QNA
+///
 ///
 final class AnalyzeAndUploadYoutubeUseCase
     extends BaseUseCase<YoutubeVideoEntity, void> with WidgetsBindingObserver {
@@ -66,54 +69,49 @@ final class AnalyzeAndUploadYoutubeUseCase
       for (int i = 0; i < splittedCaptionLists.length; i++) {
         final chunkCaptions = splittedCaptionLists[i];
 
-        if (i == 0) {
-          // 첫 청크 → 정식 요약 (YoutubeAiSummaryResponse)
-          summaryFutures.add(
-            GetSummaryFromYoutubeContentUseCase().call(
-              // 두 번째 파라미터는 "hasBeenDivided" 여부라면, 원하는 대로 넘김
-              (
-                request.copyWith(captions: chunkCaptions),
-                splittedCaptionLists.length > 1
-              ),
+        summaryFutures.add(
+          GetSummaryFromYoutubeContentUseCase().call(
+            // 두 번째 파라미터는 "hasBeenDivided" 여부라면, 원하는 대로 넘김
+            (
+              request.copyWith(captions: chunkCaptions),
+              splittedCaptionLists.length > 1
             ),
-          );
-        } else {
-          // 나머지 청크 → 잔여 요약 (SummaryEntity, mainTheme="")
-          summaryFutures.add(
-            GetRemainSummaryFromYoutubeContentUseCase().call(
-              (request.copyWith(captions: chunkCaptions), i),
-            ),
-          );
-        }
+          ),
+        );
       }
 
       // QNA (전체 자막으로 1회)
       final qnaFuture = GetQnasFromYoutubeContentUseCase().call(request);
 
+      /// 핵심주제
+      final mainThemeFuture = GetMainSummaryThemeUseCase().call(request);
+
       // 4) 병렬 실행
       //    results[0..N-1]: summaryFutures, results.last: qnaFuture
-      final futures = [...summaryFutures, qnaFuture];
+      final futures = [
+        qnaFuture,
+        mainThemeFuture,
+        ...summaryFutures,
+      ];
       final results = await Future.wait(futures);
 
       // 5) 결과 분류
-      //    - 마지막 → QNA
-      final qnaAndIdsResult = results.last as YoutubeAiQnaAndIdsResponse;
+      final qnaAndIdsResult = results[0] as YoutubeAiQnaAndIdsResponse;
+      final mainSummary = results[1] as YoutubeAiMainThemeResponse;
 
-      //    - 첫 번째 → 첫 청크 요약
-      final firstSummary = results.first as SummaryEntity;
-
-      //    - 1..(length - 2) → 나머지 청크 요약
+      // 청크 요약들
       final remainSummaries = results
-          .sublist(1, results.length - 1)
-          .map((e) => e as SummaryEntity)
+          .sublist(2) // 2부터 끝까지 전부가 요약들
+          .map((e) => e as List<ParagraphEntity>)
           .toList();
 
       // 6) 요약 병합
       //    - 첫 청크 mainTheme + 모든 paragraph
       final allParagraphs = <ParagraphEntity>[];
-      allParagraphs.addAll(firstSummary.summaries);
+
       for (final rs in remainSummaries) {
-        allParagraphs.addAll(rs.summaries);
+        print('이찌방 : ${rs.length}');
+        allParagraphs.addAll(rs);
       }
       // 시간순 정렬
       allParagraphs.sort((a, b) {
@@ -123,7 +121,7 @@ final class AnalyzeAndUploadYoutubeUseCase
       });
 
       final mergedSummary = SummaryEntity(
-        mainTheme: firstSummary.mainTheme,
+        mainTheme: mainSummary.mainTheme,
         summaries: allParagraphs,
       );
 
@@ -131,19 +129,30 @@ final class AnalyzeAndUploadYoutubeUseCase
       final mergedSummaryResponse = mergedSummary;
 
       // 7) 유효성 체크 (테크 영상인지 여부)
-      if (qnaAndIdsResult.type == YoutubeContentAnalyzedType.notTech) {
+      if ([mainSummary.type, qnaAndIdsResult.type]
+          .any((e) => e == YoutubeContentAnalyzedType.notTech)) {
         throw const YtIsNotTechContentException();
       }
 
-      if (qnaAndIdsResult.type == YoutubeContentAnalyzedType.lackOfContent ||
+      if ([mainSummary.type, qnaAndIdsResult.type]
+              .any((e) => e == YoutubeContentAnalyzedType.lackOfContent) ||
           qnaAndIdsResult.qnas.isEmpty) {
+        print('아랑수요 1');
         throw const YtInvalidVideoContentException();
       }
 
       // 8) 요약된 내용이 있는지 여부
-      if (mergedSummaryResponse.summaries.isEmpty ||
-          mergedSummaryResponse.mainTheme.isEmpty ||
-          mergedSummaryResponse.summaries.any((e) => e.title.isEmpty)) {
+      if (mergedSummary.summaries.isEmpty ||
+          mergedSummary.mainTheme.isEmpty ||
+          mergedSummary.summaries
+              .any((e) => e.title.isEmpty || e.contents.isEmpty)) {
+        print('아랑수요 2');
+        print('summaries : ${mergedSummaryResponse.summaries.length}');
+        print('allParagraphs prev: ${allParagraphs.length}');
+        print('${mergedSummary.summaries.isEmpty}');
+        print('${mergedSummary.mainTheme.isEmpty}');
+        print(
+            '${mergedSummary.summaries.any((e) => e.title.isEmpty || e.contents.isEmpty)}');
         throw const YtInvalidVideoContentException();
       }
 
@@ -270,10 +279,6 @@ final class AnalyzeAndUploadYoutubeUseCase
     SummaryEntity summaryResult,
     Set<YoutubeQnaEntity> qnas,
   ) async {
-    // return;
-    // Firestore/서버 업로드 로직
-    // return;
-
     await youtubeRepository.uploadYoutube(
       contentMainInfo: targetOverView,
       summary: summaryResult,
