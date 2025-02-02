@@ -21,38 +21,61 @@ class ClosableSkillFilledChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: AppColor.of.brand2,
-      borderRadius: BorderRadius.circular(8),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(8),
-        onTap: onTap,
-        child: Container(
-          height: height ?? 34,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Center(
+    return GestureDetector(
+      onTap: () {
+        onTap?.call();
+      },
+      child: Stack(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 6,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+            ),
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                RoundedSkillImage(
-                  imagePath: skill.imagePath,
-                ),
-                const Gap(6),
-                Text(
-                  skill.name,
-                  textAlign: TextAlign.center,
-                  style: AppTextStyle.newBody.copyWith(
-                    color: Colors.white,
+                Padding(
+                  padding: const EdgeInsets.only(right: 4),
+                  child: RoundedSkillImage(
+                    imagePath: skill.imagePath,
+                    scale: 1.0,
+                    disableRound: true,
+                    size: 16,
                   ),
                 ),
-                const Gap(2),
-                SvgPicture.asset(
-                  Assets.iconsRoundedCloseBlue,
-                  width: 16,
+                Text(
+                  skill.name,
+                  style: AppTextStyle.body1,
+                  textAlign: TextAlign.center,
                 ),
+                const Gap(4),
+                SvgPicture.asset(
+                  Assets.iconsCircleSmallClose,
+                  width: 16,
+                  height: 16,
+                )
               ],
             ),
           ),
-        ),
+          Positioned.fill(
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8,
+                vertical: 4,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: AppColor.of.gray1,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

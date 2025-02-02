@@ -131,7 +131,7 @@
     "noResultFound": "검색된 결과가 없습니다."
   },
   "techSelection": {
-    "promptTechInterviewTopics": "준비하고 있는 기술면접\n주제를 알려주세요!",
+    "promptTechInterviewTopics": "준비하고 있는 기술면접\n스킬을 알려주세요!",
     "searchInEnglish": "영어로 검색해주세요.",
     "selectOneOrMore": "1개 이상 선택해 주세요.",
     "searchTechnologies": "관심 기술을 검색해 주세요",

@@ -26,7 +26,9 @@ class SearchedSkillListView extends ConsumerWidget with SignUpEvent {
       },
       child: ListView.builder(
         itemCount: items.length,
-        itemExtent: 52,
+        padding: const EdgeInsets.only(
+          top: 8,
+        ),
         itemBuilder: (context, index) {
           final skill = items[index];
           final separatedString = getProcessString(
@@ -35,44 +37,45 @@ class SearchedSkillListView extends ConsumerWidget with SignUpEvent {
             searchedTerm: searchedTerm,
           );
 
-          return ListTile(
-            minVerticalPadding: 0,
-            title: Row(
-              children: [
-                RoundedSkillImage(
-                  imagePath: skill.imagePath,
-                  size: 30,
-                ),
-                const Gap(4),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: separatedString.$1, // prefix
-                          style: TextStyle(color: AppColor.of.gray4),
-                        ),
-                        TextSpan(
-                          text: separatedString.$2, // match
-                          style: TextStyle(color: AppColor.of.brand3),
-                        ),
-                        TextSpan(
-                          text: separatedString.$3, // suffix
-                          style: TextStyle(color: AppColor.of.gray4),
-                        ),
-                      ],
-                    ),
-                    style: AppTextStyle.body2,
-                  ),
-                ),
-              ],
-            ),
+          return GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: () {
               onItemTapped(skill);
-
-              /// TODO : XIMYA
             },
+            child: SizedBox(
+              height: 52,
+              child: Row(
+                children: [
+                  RoundedSkillImage(
+                    disableRound: true,
+                    imagePath: skill.imagePath,
+                  ),
+                  const Gap(6),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: separatedString.$1, // prefix
+                            style: TextStyle(color: AppColor.of.gray4),
+                          ),
+                          TextSpan(
+                            text: separatedString.$2, // match
+                            style: TextStyle(color: AppColor.of.black),
+                          ),
+                          TextSpan(
+                            text: separatedString.$3, // suffix
+                            style: TextStyle(color: AppColor.of.gray4),
+                          ),
+                        ],
+                      ),
+                      style: AppTextStyle.body2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           );
         },
       ),

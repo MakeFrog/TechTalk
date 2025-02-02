@@ -49,6 +49,8 @@ class Assets {
   static const String iconsCheck = 'assets/icons/check.svg';
   static const String iconsCheckNote = 'assets/icons/check_note.svg';
   static const String iconsCheckThick = 'assets/icons/check_thick.svg';
+  static const String iconsCircleSmallClose =
+      'assets/icons/circle_small_close.svg';
   static const String iconsClose = 'assets/icons/close.svg';
   static const String iconsCloseThick = 'assets/icons/close_thick.svg';
   static const String iconsCoreCircle = 'assets/icons/core_circle.svg';
