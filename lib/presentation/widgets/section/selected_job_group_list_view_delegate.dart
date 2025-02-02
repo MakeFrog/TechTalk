@@ -50,14 +50,6 @@ class SelectedJobGroupListViewDelegate extends SliverPersistentHeaderDelegate {
                   },
                 ),
               );
-              return Align(
-                child: ClosableRectFilledChip(
-                  label: item.name,
-                  onTap: () {
-                    onTapItem(item);
-                  },
-                ),
-              );
             } catch (e) {
               /// NOTE
               /// [AnimatedSizeAndFade]에 걸려 있는 duration fade 때문에,

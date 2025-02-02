@@ -30,7 +30,7 @@ ${hasBeenDivided ? '전체 영상 시간(${videoEntity.duration}) 중 ${videoEnt
 ### 요구사항:  
 1. **세부 요약 목록 (`summaries`) 작성**:
    - 해당 내용을 섹션(챕터)별로 구분해 `title`과 `contents`를 작성하세요.
-   - `contents`에는 프로그래밍 개념을 직접 설명하듯 자세히 서술하세요.
+   - `contents`에는 직접 프로그래밍 개념을 설명하듯이 작성하고 핵심 내용을 서술하세요.
    - 시간 순서별(offset)로 중복 없이 나열하고, 각 섹션 시작 시간을 "HH:MM:SS" 또는 "HH:MM:SS.sss" 형식으로 적어주세요. 
    - ${hasBeenDivided ? '**영상이 분할되어 있기 때문에**, 오직 이 구간에 해당하는 offset만 요약 대상입니다. 다음 구간(이후 청크)은 존재할 수 있으나 여기서는 다루지 않습니다' : ''}.
     

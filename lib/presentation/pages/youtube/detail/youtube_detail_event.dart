@@ -53,6 +53,7 @@ mixin class YoutubeDetailEvent {
     /// 2. timestamp 토글
     /// 3. ListTie Expand 값 조정
 
+    /// 재생 시점으로 이동하는 로직 제거
     if (!isSelected && isExpanded.value) {
       selectedIndex.value = currentIndex;
 
@@ -340,5 +341,23 @@ extension YoutubePlayerControllerEx on YoutubePlayerController {
     }
 
     return controller;
+  }
+
+  Future<void> secretManageBtnTapped(WidgetRef ref) async {
+    showModalBottomSheet(
+      context: ref.context,
+      useSafeArea: true,
+      isDismissible: true,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) {
+        return OptionListBottomSheet(
+          leadingText: '운영진 비밀 버튼 ><',
+          onCloseBtnTapped: context.pop,
+          options: ['삭제하게', '교체하기'],
+          onOptionTapped: (int index) {},
+        );
+      },
+    );
   }
 }

@@ -186,6 +186,15 @@ class _Scaffold extends HookWidget with YoutubeDetailState {
                                   context.pop();
                                 },
                               ),
+                              actions: [
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.more_horiz_outlined,
+                                    color: AppColor.of.black,
+                                  ),
+                                ),
+                              ],
                             ),
                             SliverPersistentHeader(
                               pinned: true,
