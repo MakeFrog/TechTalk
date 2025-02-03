@@ -88,21 +88,30 @@ class _UserInfoCard extends ConsumerWidget with MyPageState, MyPageEvent {
                           ],
                         ),
                         const Gap(4),
-                        Consumer(
-                          builder: (context, ref, _) {
-                            final hasData =
-                                ref.read(resumeInfoProvider.notifier).hasData();
+                        resumeAsync(ref).when(
+                          data: (_) {
+                            return Consumer(
+                              builder: (context, ref, _) {
+                                final hasData = ref
+                                    .read(resumeInfoProvider.notifier)
+                                    .hasData();
 
-                            if (!hasData) {
-                              return Text(
-                                '이력서 등록 후 예상 질문을 경험해 보세요!',
-                                style: AppTextStyle.body3
-                                    .copyWith(color: AppColor.of.gray3),
-                              );
-                            } else {
-                              return const EmptyBox();
-                            }
+                                if (!hasData) {
+                                  return Text(
+                                    '이력서 등록 후 예상 질문을 경험해 보세요!',
+                                    style: AppTextStyle.body3
+                                        .copyWith(color: AppColor.of.gray3),
+                                  );
+                                } else {
+                                  return const EmptyBox();
+                                }
+                              },
+                            );
                           },
+                          error: (e, __) => const Text('에러가 발생했습니다'),
+                          loading: () => const Center(
+                            child: CircularProgressIndicator(),
+                          ),
                         ),
                       ],
                     ),

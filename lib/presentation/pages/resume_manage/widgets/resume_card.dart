@@ -16,18 +16,19 @@ import 'package:techtalk/presentation/pages/resume_manage/resume_manage_event.da
 /// 이력서 카드 / 포트폴리오 카드 위젯
 ///
 class ResumeCard extends ConsumerWidget with ResumeManageEvent {
+  final DocumentType type;
+  final DocumentBaseEntity doc;
+
   const ResumeCard._({
     Key? key,
     required this.type,
     required this.doc,
   }) : super(key: key);
 
-  final DocumentType type;
-  final DocumentBaseEntity doc;
-
   /// 이력서 Card
   factory ResumeCard.resume({required ResumeEntity? resume}) {
     return ResumeCard._(
+      // 고정값
       type: DocumentType.resume,
       doc: resume ?? ResumeEntity(),
     );
@@ -36,6 +37,7 @@ class ResumeCard extends ConsumerWidget with ResumeManageEvent {
   /// 포트폴리오 Card
   factory ResumeCard.portfolio({required PortfolioEntity? portfolio}) {
     return ResumeCard._(
+      // 고정값
       type: DocumentType.portfolio,
       doc: portfolio ?? PortfolioEntity(),
     );
@@ -44,7 +46,7 @@ class ResumeCard extends ConsumerWidget with ResumeManageEvent {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // 만약 파일 경로(path)가 비어있다면 => 파일이 없으므로, FileUploadCard 반환
-    if (doc.path.isEmpty) {
+    if (doc.path == null) {
       return FileUploadCard(type: type);
     }
 
@@ -74,7 +76,7 @@ class ResumeCard extends ConsumerWidget with ResumeManageEvent {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  title,
+                  title ?? '',
                   style: AppTextStyle.headline2,
                 ),
                 const Gap(36),
@@ -82,7 +84,7 @@ class ResumeCard extends ConsumerWidget with ResumeManageEvent {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      date,
+                      date ?? '',
                       style:
                           AppTextStyle.body2.copyWith(color: AppColor.of.gray4),
                     ),
@@ -120,7 +122,7 @@ class FileUploadCard extends ConsumerWidget with ResumeManageEvent {
         const Gap(8),
         BounceTapper(
           highlightColor: Colors.transparent,
-          onTap: () => registDocument(ref, type),
+          onTap: () => registDocumentBtn(ref, type),
           child: DottedBorder(
             color: AppColor.of.gray2,
             dashPattern: const [6, 1],

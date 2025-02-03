@@ -30,5 +30,11 @@ mixin class MyPageState {
   /// 이력서 로컬 데이터 불러오기
   ///
   DocumentEntity loadDocumentData(WidgetRef ref) =>
+      ref.watch(resumeInfoProvider).requireValue!;
+
+  ///
+  /// 이력서 엔티티 정보
+  ///
+  AsyncValue<DocumentEntity?> resumeAsync(WidgetRef ref) =>
       ref.watch(resumeInfoProvider);
 }

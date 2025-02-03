@@ -72,9 +72,6 @@ class UserEntity {
       completedInterviewCount: model.completedInterviewCount ?? 0,
       isReviewRequestAvailable: box.isReviewRequestAvailable,
       signUpDate: model.signUpDate,
-      resumePdfPath: box.resumePdfPath,
-      resumePdfTitle: box.resumePdfTitle,
-      resumePdfDate: box.resumePdfDate,
     );
   }
 

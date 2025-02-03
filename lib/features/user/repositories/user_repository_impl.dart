@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/rendering.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/features/user/repositories/entities/document_entity.dart';
@@ -159,9 +160,27 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<void>> changeResumeData(ResumeEntity resume) async {
+  Future<Result<void>> changeResumeData(ResumeEntity? newResume) async {
     try {
-      await _userLocalDataSource.changeResumeData(resume);
+      debugPrint('repository - newResume : ${newResume?.path}');
+      debugPrint('repository - newResume : ${newResume?.title}');
+
+      await _userLocalDataSource.changeResumeData(newResume);
+      debugPrint('repository - 저장 성공');
+
+      return Result.success(null);
+    } catch (e) {
+      debugPrint('repository - 저장 실패');
+
+      return Result.failure(Exception(e));
+    }
+  }
+
+  @override
+  Future<Result<void>> changePortfolioData(
+      PortfolioEntity? newPortfolio) async {
+    try {
+      await _userLocalDataSource.changePortfolioData(newPortfolio);
       return Result.success(null);
     } catch (e) {
       return Result.failure(Exception(e));
@@ -169,36 +188,45 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<void>> changePortfolioData(PortfolioEntity portfolio) async {
-    try {
-      await _userLocalDataSource.changePortfolioData(portfolio);
-      return Result.success(null);
-    } catch (e) {
-      return Result.failure(Exception(e));
-    }
-  }
-
-  @override
-  Result<DocumentEntity> loadDocumentData() {
+  Future<Result<DocumentEntity>> loadDocumentData() async {
+    // TODO: UserEntity에 이력서, 포폴 데이터 넣기 (yundal)
     try {
       final data = _userLocalDataSource.loadUserLocalInfo();
 
-      final resume = ResumeEntity(
-        path: data.resumePdfPath,
-        title: data.resumePdfTitle,
-        uploadAt: data.resumePdfDate,
-      );
-      final portfolio = PortfolioEntity(
-        path: data.portfolioPdfPath,
-        title: data.portfolioPdfTitle,
-        uploadAt: data.portfolioPdfDate,
-      );
-      final documentEntity = DocumentEntity(
-        resume: resume,
-        portfolio: portfolio,
-      );
+      final resumeBox = data.resume;
+      final portfolioBox = data.portfolio;
 
-      return Result.success(documentEntity);
+      ResumeEntity? resume;
+
+      if (resumeBox != null) {
+        resume = ResumeEntity(
+          path: resumeBox.resumePath,
+          title: resumeBox.resumeTitle,
+          uploadAt: resumeBox.resumeUploadAt,
+        );
+      }
+
+      PortfolioEntity? portfolio;
+
+      if (portfolioBox != null) {
+        PortfolioEntity(
+          path: portfolioBox.portfolioPath,
+          title: portfolioBox.portfolioTitle,
+          uploadAt: portfolioBox.portfolioUploadAt,
+        );
+      }
+
+      debugPrint('===== UserRepositoryImpl.loadDocumentData() =====');
+      debugPrint('이력서 제목 : ${resumeBox?.resumeTitle}');
+      debugPrint('이력서 존재하는가 : ${resumeBox != null}');
+      debugPrint('포트폴리오 존재하는가 : ${portfolioBox != null}');
+
+      return Result.success(
+        DocumentEntity(
+          resume: resume,
+          portfolio: portfolio,
+        ),
+      );
     } catch (e) {
       return Result.failure(Exception(e));
     }

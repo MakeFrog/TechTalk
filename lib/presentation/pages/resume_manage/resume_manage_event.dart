@@ -38,7 +38,7 @@ mixin class ResumeManageEvent {
           onOptionTapped: (int index) {
             switch (index) {
               case 0: // 변경
-                registDocument(ref, type);
+                registDocumentBtn(ref, type);
                 break;
               case 1: // 미리보기
                 onClickedPreviewBtn(ref, type);
@@ -82,10 +82,9 @@ mixin class ResumeManageEvent {
   }
 
   ///
-  /// 1. Resume.empty에서 파일 등록시
-  /// 2. Resume._에서 파일 변경 선택시
+  /// 이력서, 포폴 문서 등록
   ///
-  Future<void> registDocument(WidgetRef ref, DocumentType type) async {
+  Future<void> registDocumentBtn(WidgetRef ref, DocumentType type) async {
     const maxFileSizeInBytes = 50 * 1024 * 1024; // 50MB
 
     try {
@@ -265,18 +264,15 @@ mixin class ResumeManageEvent {
   Future<void> onClickedSaveBtn(WidgetRef ref) async {
     // 1) 현재 state를 가져온다.
     final resumeInfo = ref.read(resumeInfoProvider.notifier);
-    final currentState = ref.read(resumeInfoProvider);
 
-    final currentResume = currentState.resume;
-    final currentPortfolio = currentState.portfolio;
+    final currentResume = ref.read(resumeInfoProvider).requireValue!.resume;
+    final currentPortfolio =
+        ref.read(resumeInfoProvider).requireValue!.portfolio;
 
-    // await resumeInfo.updateResumeData(currentResume);
-    // await resumeInfo.updatePortfolioData(currentPortfolio);
+    await resumeInfo.updateResumeData(currentResume);
+    await resumeInfo.updatePortfolioData(currentPortfolio);
 
-    // 3) 저장 후 필요한 UI 동작( ex. 화면 pop )
-    if (ref.context.mounted) {
-      ref.context.pop();
-    }
+    debugPrint('저장이 완료되었습니다');
   }
 
   ///

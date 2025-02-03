@@ -1,4 +1,6 @@
 import 'package:hive/hive.dart';
+import 'package:techtalk/features/user/data_source/local/boxes/portfolio_box.dart';
+import 'package:techtalk/features/user/data_source/local/boxes/resume_box.dart';
 
 part 'user_box.g.dart';
 
@@ -14,45 +16,27 @@ class UserBox extends HiveObject {
   final bool hasEnteredFirstInterview;
 
   @HiveField(3)
-  final String resumePdfPath;
+  final ResumeBox? resume;
 
   @HiveField(4)
-  final String resumePdfTitle;
-
-  @HiveField(5)
-  final String resumePdfDate;
-
-  @HiveField(6)
-  final String portfolioPdfPath;
-
-  @HiveField(7)
-  final String portfolioPdfTitle;
-
-  @HiveField(8)
-  final String portfolioPdfDate;
+  final PortfolioBox? portfolio;
 
   UserBox({
     required this.hasPracticalInterviewRecord,
     required this.isReviewRequestAvailable,
     required this.hasEnteredFirstInterview,
-    required this.resumePdfPath,
-    required this.resumePdfTitle,
-    required this.resumePdfDate,
-    required this.portfolioPdfPath,
-    required this.portfolioPdfTitle,
-    required this.portfolioPdfDate,
+    this.resume,
+    this.portfolio,
   });
 
   UserBox copyWith({
     bool? hasPracticalInterviewRecord,
     bool? isReviewRequestAvailable,
     bool? hasEnteredFirstInterview,
-    String? resumePdfPath,
-    String? resumePdfTitle,
-    String? resumePdfDate,
-    String? portfolioPdfPath,
-    String? portfolioPdfTitle,
-    String? portfolioPdfDate,
+    ResumeBox? resume,
+    bool nullResume = false,
+    PortfolioBox? portfolio,
+    bool nullPortfolio = false,
   }) {
     return UserBox(
       hasPracticalInterviewRecord:
@@ -61,12 +45,8 @@ class UserBox extends HiveObject {
           isReviewRequestAvailable ?? this.isReviewRequestAvailable,
       hasEnteredFirstInterview:
           hasEnteredFirstInterview ?? this.hasEnteredFirstInterview,
-      resumePdfPath: resumePdfPath ?? this.resumePdfPath,
-      resumePdfTitle: resumePdfTitle ?? this.resumePdfTitle,
-      resumePdfDate: resumePdfDate ?? this.resumePdfDate,
-      portfolioPdfPath: portfolioPdfPath ?? this.portfolioPdfPath,
-      portfolioPdfTitle: portfolioPdfTitle ?? this.portfolioPdfTitle,
-      portfolioPdfDate: portfolioPdfDate ?? this.portfolioPdfDate,
+      resume: nullResume ? null : (resume ?? this.resume),
+      portfolio: nullPortfolio ? null : (portfolio ?? this.portfolio),
     );
   }
 
@@ -75,12 +55,6 @@ class UserBox extends HiveObject {
       hasPracticalInterviewRecord: false,
       isReviewRequestAvailable: true,
       hasEnteredFirstInterview: false,
-      resumePdfPath: '',
-      resumePdfTitle: '',
-      resumePdfDate: '',
-      portfolioPdfPath: '',
-      portfolioPdfTitle: '',
-      portfolioPdfDate: '',
     );
   }
 }

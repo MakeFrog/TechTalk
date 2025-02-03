@@ -10,7 +10,8 @@ final class DocumentEntity {
     required this.portfolio,
   });
 
-  /// 각 필드를 변경할 수 있도록 copyWith를 제공
+  bool get hasFetchedAnyDocuments => resume != null || portfolio != null;
+
   DocumentEntity copyWith({
     ResumeEntity? resume,
     PortfolioEntity? portfolio,

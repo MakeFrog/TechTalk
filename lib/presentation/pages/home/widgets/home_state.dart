@@ -28,5 +28,5 @@ mixin class HomeState {
   /// 이력서 로컬 데이터 불러오기
   ///
   DocumentEntity loadDocumentData(WidgetRef ref) =>
-      ref.watch(resumeInfoProvider);
+      ref.watch(resumeInfoProvider).requireValue!;
 }

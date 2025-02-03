@@ -1,3 +1,4 @@
+import 'package:flutter/rendering.dart';
 import 'package:hive/hive.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
@@ -9,7 +10,7 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
 
   final Box<UserBox> box;
 
-  UserBox? get localUser => box.values.firstOrNull;
+  UserBox? get localUser => box.get(AppLocal.userBoxName);
 
   @override
   Future<void> storeUserLocalInfo(UserEntity user) async {
@@ -46,26 +47,44 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
   }
 
   @override
-  Future<void> changeResumeData(ResumeEntity resume) async {
+  Future<void> changeResumeData(ResumeEntity? newResume) async {
+    debugPrint('===== UserLocalDataSourceImpl.changeResumeData =====');
+    debugPrint('UserLocalDataSourceImpl - newResume : ${newResume?.path}');
+    debugPrint('UserLocalDataSourceImpl - newResume : ${newResume?.title}');
+
     final userLocalInfo = localUser ?? UserBox.defaultValue();
 
-    final updated = userLocalInfo.copyWith(
-      resumePdfPath: resume.path,
-      resumePdfTitle: resume.title,
-      resumePdfDate: resume.uploadAt,
+    final updatedUserBox = userLocalInfo.copyWith(
+      nullResume: newResume?.path != null ? false : true,
+      resume: newResume?.path != null
+          ? userLocalInfo.resume?.copyWith(
+              resumePath: newResume?.path,
+              resumeTitle: newResume?.title,
+              resumeUploadAt: newResume?.uploadAt,
+            )
+          : null,
     );
-    await box.put(AppLocal.userBoxName, updated);
+
+    try {
+      await box.put(AppLocal.userBoxName, updatedUserBox);
+    } catch (e, s) {
+      debugPrint('[로컬] box.put 예외 발생: $e');
+      debugPrint('$s');
+      rethrow;
+    }
   }
 
   @override
-  Future<void> changePortfolioData(PortfolioEntity portfolio) async {
+  Future<void> changePortfolioData(PortfolioEntity? newPortfolio) async {
     final userLocalInfo = localUser ?? UserBox.defaultValue();
 
-    final updated = userLocalInfo.copyWith(
-      portfolioPdfPath: portfolio.path,
-      portfolioPdfTitle: portfolio.title,
-      portfolioPdfDate: portfolio.uploadAt,
+    final updatedUserBox = userLocalInfo.copyWith(
+      portfolio: userLocalInfo.portfolio?.copyWith(
+        portfolioPath: newPortfolio?.path,
+        portfolioTitle: newPortfolio?.title,
+        portfolioUploadAt: newPortfolio?.uploadAt,
+      ),
     );
-    await box.put(AppLocal.userBoxName, updated);
+    await box.put(AppLocal.userBoxName, updatedUserBox);
   }
 }

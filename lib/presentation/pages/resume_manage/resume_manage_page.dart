@@ -23,13 +23,10 @@ class ResumeManagePage extends BasePage
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
-    // TODO: 여기서 ref.watch로 인해 불필요하게 빌드되는 것이 무엇이 있는지 궁금 (yundal)
-    // TODO: 저장하기 버튼 활성화 조건 추가하기 (yundal)
+    // TODO: 여기서 ref.watch로 인해 무엇이 불필요하게 빌드되는지 궁금 (yundal)
     final data = ref.watch(resumeInfoProvider);
-
-    String? resumePath = data.resume?.path;
-    String? portfolioPath = data.portfolio?.path;
-    bool showTooltip = resumePath != portfolioPath;
+    final isStateChanged =
+        ref.read(resumeInfoProvider.notifier).isStateChanged();
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -37,29 +34,25 @@ class ResumeManagePage extends BasePage
         children: [
           buildGuideText(),
 
-          ResumeCard.resume(resume: data.resume),
-          ResumeCard.portfolio(portfolio: data.portfolio),
+          ResumeCard.resume(resume: data.requireValue!.resume),
+          ResumeCard.portfolio(portfolio: data.requireValue!.portfolio),
 
           const Spacer(),
 
-          // 저장 버튼
+          /// 저장 버튼
           Column(
             children: [
-              if (showTooltip)
-                Column(
-                  children: [
-                    SvgPicture.asset(Assets.iconsOneMoreAddTooltip),
-                    const Gap(8),
-                  ],
-                ),
+              // if (showTooltip) ...[
+              //   SvgPicture.asset(Assets.iconsOneMoreAddTooltip),
+              //   const Gap(8),
+              // ],
               BounceTapper(
                 child: FilledButton(
-                  onPressed: () => onClickedSaveBtn(ref),
+                  onPressed:
+                      isStateChanged ? () => onClickedSaveBtn(ref) : null,
                   child: Center(
                     child: Text(
-                      ref.context.tr(
-                        LocaleKeys.common_save,
-                      ),
+                      context.tr(LocaleKeys.common_save),
                     ),
                   ),
                 ),
@@ -86,11 +79,12 @@ class ResumeManagePage extends BasePage
   }
 
   @override
-  void onWillPop(WidgetRef ref) {
-    ref.read(resumeInfoProvider.notifier).resetState();
-  }
-
-  @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
       const BackButtonAppBar(title: '내 이력서');
+
+  @override
+  void onWillPop(WidgetRef ref) {
+    debugPrint('뒤로가기 실행');
+    super.onWillPop(ref);
+  }
 }
