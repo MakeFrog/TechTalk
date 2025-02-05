@@ -10,9 +10,6 @@ part 'resume_info_provider.g.dart';
 
 @Riverpod()
 class ResumeInfo extends _$ResumeInfo {
-  // build()에서 불러온 로컬 데이터를 저장해둘 필드
-  late final DocumentEntity? _localDoc;
-
   @override
   FutureOr<DocumentEntity?> build() async {
     /// 로컬에서 DocumentEntity 불러오기
@@ -23,8 +20,6 @@ class ResumeInfo extends _$ResumeInfo {
       onFailure: (e) => null,
     );
 
-    // 빌드 시점에 불러온 로컬 데이터를 캐싱
-    _localDoc = doc;
     return doc;
   }
 
@@ -40,11 +35,13 @@ class ResumeInfo extends _$ResumeInfo {
   /// 로컬 데이터 존재 유무 확인
   ///
   bool hasData() {
-    if (_localDoc == null) {
+    final doc = state.valueOrNull;
+
+    if (doc == null) {
       return false;
     }
 
-    return _localDoc!.resume != null || _localDoc!.portfolio != null;
+    return doc.resume != null || doc.portfolio != null;
   }
 
   ///

@@ -37,4 +37,10 @@ mixin class MyPageState {
   ///
   AsyncValue<DocumentEntity?> resumeAsync(WidgetRef ref) =>
       ref.watch(resumeInfoProvider);
+
+  ///
+  /// 이력서 데이터 유무 판별
+  ///
+  bool hasData(WidgetRef ref) =>
+      ref.read(resumeInfoProvider.notifier).hasData();
 }

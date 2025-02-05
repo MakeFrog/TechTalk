@@ -92,11 +92,7 @@ class _UserInfoCard extends ConsumerWidget with MyPageState, MyPageEvent {
                           data: (_) {
                             return Consumer(
                               builder: (context, ref, _) {
-                                final hasData = ref
-                                    .read(resumeInfoProvider.notifier)
-                                    .hasData();
-
-                                if (!hasData) {
+                                if (!hasData(ref)) {
                                   return Text(
                                     '이력서 등록 후 예상 질문을 경험해 보세요!',
                                     style: AppTextStyle.body3

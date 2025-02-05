@@ -15,4 +15,9 @@ mixin class ResumeManageState {
   ///
   DocumentEntity loadDocumentData(WidgetRef ref) =>
       ref.watch(resumeInfoProvider).requireValue!;
+
+  ///
+  /// 이력서 데이터 유무 판별
+  ///
+  bool hasData(WidgetRef ref) => ref.read(resumeInfoProvider.notifier).hasData();
 }
