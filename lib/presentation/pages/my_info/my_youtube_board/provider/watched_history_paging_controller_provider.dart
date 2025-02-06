@@ -17,7 +17,7 @@ Raw<PagingController<DocumentSnapshot<WatchedYoutubeModel>?, YoutubeMainEntity>>
 
   pagingController.addPageRequestListener((pageKey) async {
     final result = await userRepository.getPagedWatchedYoutubeHistory(
-      limit: 6,
+      limit: 15,
       lastDocument: pageKey,
     );
 
@@ -27,11 +27,10 @@ Raw<PagingController<DocumentSnapshot<WatchedYoutubeModel>?, YoutubeMainEntity>>
         final isLastPage = !paginatedResult.hasMore;
 
         if (isLastPage) {
-          print('마지막 페이징 ');
           pagingController.appendLastPage(newItems);
         } else {
           final nextPageKey = paginatedResult.lastDocument;
-          print('일반 페이징 : ${nextPageKey?.get('id')}');
+
           pagingController.appendPage(newItems, nextPageKey);
         }
       },

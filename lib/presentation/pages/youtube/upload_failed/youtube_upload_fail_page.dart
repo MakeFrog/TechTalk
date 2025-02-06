@@ -1,12 +1,13 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/constants/assets.dart';
-import 'package:techtalk/core/services/app_size.dart';
 import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/presentation/pages/youtube/upload_failed/provider/youtube_upload_failed_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload_failed/youtube_upload_failed_event.dart';
@@ -35,12 +36,12 @@ class YoutubeUploadFailedPage extends BasePage with YoutubeUploadFailedEvent {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                arg.type.title,
+                tr(arg.type.title),
                 style: AppTextStyle.headline1,
               ),
               const Gap(12),
               Text(
-                arg.type.description,
+                tr(arg.type.description),
                 style: AppTextStyle.body1.copyWith(color: AppColor.of.gray4),
               ),
             ],
@@ -71,7 +72,7 @@ class YoutubeUploadFailedPage extends BasePage with YoutubeUploadFailedEvent {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16) +
               const EdgeInsets.only(top: 16),
-          margin: EdgeInsets.only(bottom: AppSize.bottomInset == 0 ? 16 : 0),
+          margin: const EdgeInsets.only(bottom: 16),
           child: BounceTapper(
             child: SizedBox(
               width: double.infinity,
@@ -80,8 +81,8 @@ class YoutubeUploadFailedPage extends BasePage with YoutubeUploadFailedEvent {
                   onBottomFixedBtnTapped(ref);
                 },
                 child: Text(arg.type == YoutubeUploadFailedType.alreadyUploaded
-                    ? '바로가기'
-                    : '다른 영상 가져오기'),
+                    ? tr(LocaleKeys.youtubeUploadFailed_goToVideo)
+                    : tr(LocaleKeys.youtubeUploadFailed_fetchAnotherVideo)),
               ),
             ),
           ),

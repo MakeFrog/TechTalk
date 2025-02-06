@@ -42,7 +42,6 @@ class _SettingCard extends ConsumerWidget with MyPageState, MyPageEvent {
                           tr(LocaleKeys.permission_alarm_title),
                           style: AppTextStyle.title2,
                         ),
-                        const Gap(4),
                         Text(
                           tr(LocaleKeys.permission_alarm_desc),
                           style: AppTextStyle.body3.copyWith(

@@ -1,6 +1,7 @@
 enum YoutubeGptModelType {
   gpt4o('gpt-4o'),
-  o1('o1');
+  o1('o1'),
+  o3mini('o3-mini');
 
   final String id;
 

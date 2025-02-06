@@ -1,16 +1,36 @@
+import 'package:techtalk/app/localization/locale_keys.g.dart';
+
 enum YoutubeUploadFailedType {
-  timeout('0', '시간안에 영상을 분석하지 못했어요', '영상의 길이나 네트워크 상태를 확인해주세요'),
-  jsonFormatError('1', '일시적인 오류가 발생했습니다', '다시 업로드를 시도해주세요'),
+  timeout('0', LocaleKeys.youtubeUploadFailed_timeout_title,
+      LocaleKeys.youtubeUploadFailed_timeout_description),
+  jsonFormatError('1', LocaleKeys.youtubeUploadFailed_jsonFormatError_title,
+      LocaleKeys.youtubeUploadFailed_jsonFormatError_description),
   invalidVideoContent(
-      '2', '분석할 내용이 부족해요', '충분한 면접 질문과 요약 내용을 제공할 수 있는 영상을 업로드 해주세요'),
-  tooManyTokensRequired('3', '영상이 너무 길어요', '30분 이내의 영상이 권장됩니다'),
-  unknownError('4', '예상하지 못한 오류가 발생했습니다', '다시 업로드를 시도해주세요'),
-  unexpectedGptError('5', '일시적인 오류가 발생했습니다', '다시 업로드를 시도해주세요'),
-  isNotTechContent('6', '개발 관련 콘텐츠가 아닌 것 같아요', '개발 관련 영상을 업로드해 주세요'),
-  noCaption('7', '자막이 없어 분석이 어려워요', '자막이 포함된 영상을 업로드해 주세요'),
-  youtubeVideoFetchedFailed('8', '영상 정보를 가져오는데 실패했어요', '다시 업로드를 시도해 주세요'),
-  tooShortVideo('9', '영상 길이가 짧아요', '1분을 초과하는 영상을 업로드해 주세요'),
-  alreadyUploaded('10', '이 영상은 이미 업로드되었어요', '해당 영상으로 바로 이동할 수 있습니다');
+      '2',
+      LocaleKeys.youtubeUploadFailed_invalidVideoContent_title,
+      LocaleKeys.youtubeUploadFailed_invalidVideoContent_description),
+  tooManyTokensRequired(
+      '3',
+      LocaleKeys.youtubeUploadFailed_tooManyTokensRequired_title,
+      LocaleKeys.youtubeUploadFailed_tooManyTokensRequired_description),
+  unknownError('4', LocaleKeys.youtubeUploadFailed_unknownError_title,
+      LocaleKeys.youtubeUploadFailed_unknownError_description),
+  unexpectedGptError(
+      '5',
+      LocaleKeys.youtubeUploadFailed_unexpectedGptError_title,
+      LocaleKeys.youtubeUploadFailed_unexpectedGptError_description),
+  isNotTechContent('6', LocaleKeys.youtubeUploadFailed_isNotTechContent_title,
+      LocaleKeys.youtubeUploadFailed_isNotTechContent_description),
+  noCaption('7', LocaleKeys.youtubeUploadFailed_noCaption_title,
+      LocaleKeys.youtubeUploadFailed_noCaption_description),
+  youtubeVideoFetchedFailed(
+      '8',
+      LocaleKeys.youtubeUploadFailed_youtubeVideoFetchedFailed_title,
+      LocaleKeys.youtubeUploadFailed_youtubeVideoFetchedFailed_description),
+  tooShortVideo('9', LocaleKeys.youtubeUploadFailed_tooShortVideo_title,
+      LocaleKeys.youtubeUploadFailed_tooShortVideo_description),
+  alreadyUploaded('10', LocaleKeys.youtubeUploadFailed_alreadyUploaded_title,
+      LocaleKeys.youtubeUploadFailed_alreadyUploaded_description);
 
   final String code;
   final String title;

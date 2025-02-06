@@ -22,7 +22,7 @@ class _ContentListView extends HookConsumerWidget
                 builderDelegate: PagedChildBuilderDelegate<YoutubeMainEntity>(
                   itemBuilder: (context, item, index) {
                     return Container(
-                      padding: EdgeInsets.only(top: index == 0 ? 70 : 0),
+                      padding: EdgeInsets.only(top: index == 0 ? 60 : 0),
                       margin: const EdgeInsets.only(bottom: 16),
                       child: BounceTapper(
                         onTap: () {
@@ -63,9 +63,9 @@ class _ContentListView extends HookConsumerWidget
       PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>
           controller) {
     return YoutubePaginationIndicatorView(
-      title: '영상을 불러오지 못했어요',
-      description: '일시적인 오류일 수 있으니 다시 시도해보세요',
-      btnText: '다시 시도',
+      title: tr(LocaleKeys.youtube_loadErrorTitle),
+      description: tr(LocaleKeys.youtube_loadErrorDescription),
+      btnText: tr(LocaleKeys.youtube_retryButton),
       onBtnTapped: () {
         controller.refresh();
       },
@@ -77,9 +77,9 @@ class _ContentListView extends HookConsumerWidget
   ///
   Widget _buildNoItemFoundView(BuildContext context) {
     return YoutubePaginationIndicatorView(
-      title: '결과가 없습니다',
-      description: '영상을 업로드해 보세요\n영상 요약 및 질문을 생성해 드립니다',
-      btnText: '영상 업로드하기',
+      title: tr(LocaleKeys.youtube_noResults),
+      description: tr(LocaleKeys.youtube_uploadPrompt),
+      btnText: tr(LocaleKeys.youtube_uploadButton),
       onBtnTapped: () {
         onVideoUploadBtnTapped(context);
       },
@@ -93,7 +93,7 @@ class _ContentListView extends HookConsumerWidget
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Gap(70),
+        const Gap(60),
         ...List.generate(
           6,
           (_) => Padding(

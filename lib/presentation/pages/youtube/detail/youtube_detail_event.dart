@@ -1,18 +1,22 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/navigation_context.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/app/util/app_logger.dart';
+import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/core/services/slack_notification_service.dart' as noti;
 import 'package:techtalk/features/chat/repositories/entities/chat_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_interview_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
-import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/features/youtube/repositories/entities/video_overview_entity.dart';
 import 'package:techtalk/presentation/pages/youtube/channel_detail/provider/channel_detail_route_arg_provider.dart';
@@ -32,8 +36,14 @@ mixin class YoutubeDetailEvent {
   /// 북마크 버튼이 탭 되었을 때
   ///
   void onBookmarkBtnTapped(WidgetRef ref) {
-    final contentId = ref.read(youtubeDetailRouteArgProvider).contentId;
-    ref.read(isBookmarkCheckedProvider(contentId).notifier).toggle();
+    final arg = ref.read(youtubeDetailRouteArgProvider);
+    ref.read(isBookmarkCheckedProvider(arg.contentId).notifier).toggle();
+    unawaited(
+      noti.SlackNotificationService.sendNotification(
+        type: SlackNotificationType.event,
+        message: '영상을 북마크 했어요. 제목:${arg.main?.contentsTitle ?? ''}',
+      ),
+    );
   }
 
   ///
@@ -53,6 +63,7 @@ mixin class YoutubeDetailEvent {
     /// 2. timestamp 토글
     /// 3. ListTie Expand 값 조정
 
+    /// 재생 시점으로 이동하는 로직 제거
     if (!isSelected && isExpanded.value) {
       selectedIndex.value = currentIndex;
 
@@ -70,7 +81,7 @@ mixin class YoutubeDetailEvent {
     final isPlayerCued = YoutubeDetailState().hasYoutubePlayerCued(ref);
     if (!isPlayerCued) {
       AppDialog.singleBtn(
-        title: '영상 재생을 가디리고 있어요',
+        title: tr(LocaleKeys.youtubeDetail_loadingVideo),
         onBtnClicked: () {
           ref.context.pop();
         },
@@ -100,7 +111,7 @@ mixin class YoutubeDetailEvent {
     final isPlayerCued = YoutubeDetailState().hasYoutubePlayerCued(ref);
     if (!isPlayerCued) {
       AppDialog.singleBtn(
-        title: '영상 재생을 가디리고 있어요',
+        title: tr(LocaleKeys.youtubeDetail_loadingVideo),
         onBtnClicked: () {
           ref.context.pop();
         },
@@ -151,9 +162,9 @@ mixin class YoutubeDetailEvent {
             ref.context.pop();
           },
           showContentImg: false,
-          btnContent: '확인',
-          title: '잠시만 기다려 주세요',
-          description: '면접 질문을 불러오고 있습니다',
+          btnContent: tr(LocaleKeys.common_confirm),
+          title: tr(LocaleKeys.youtubeDetail_loadingTitle),
+          description: tr(LocaleKeys.youtubeDetail_loadingDescription),
         ),
       );
 
@@ -188,6 +199,12 @@ mixin class YoutubeDetailEvent {
     route.updateArg(room: room);
     route.push(ref.context);
 
+    unawaited(
+      noti.SlackNotificationService.sendNotification(
+        type: SlackNotificationType.event,
+        message: '콘텐츠 인터뷰를 시작했어요! 제목:${arg.main?.contentsTitle ?? ''}',
+      ),
+    );
     unawaited(_pauseVideoWithDelay(ref));
   }
 
@@ -251,7 +268,9 @@ mixin class YoutubeDetailEvent {
   }
 
   Future<void> onRelatedVideoTapped(WidgetRef ref,
-      {required VideoOverviewEntity video, bool goRoute = false}) async {
+      {required VideoOverviewEntity video,
+      bool goRoute = false,
+      bool intentPauseVideo = true}) async {
     final response =
         await youtubeRepository.isUploadedContent(videoId: video.id);
 
@@ -276,12 +295,18 @@ mixin class YoutubeDetailEvent {
             });
           }
 
-          unawaited(_pauseVideoWithDelay(ref));
+          if (intentPauseVideo) {
+            unawaited(_pauseVideoWithDelay(ref));
+          }
+
           YoutubeDetailRoute(arg).push(ref.context);
         } else {
           final arg = SubmittedYoutubeConfirmArg.fromContentAccessFlow(
               video: YoutubeVideoEntity.fromRelatedVideoEntity(video));
-          unawaited(_pauseVideoWithDelay(ref));
+          if (intentPauseVideo) {
+            unawaited(_pauseVideoWithDelay(ref));
+          }
+
           SubmittedYoutubeConfirmRoute(arg).push(ref.context);
         }
       },
@@ -311,6 +336,70 @@ mixin class YoutubeDetailEvent {
     });
 
     return existsInStack;
+  }
+
+  Future<void> secretManageBtnTapped(WidgetRef ref) async {
+    final arg = ref.read(youtubeDetailRouteArgProvider);
+    await showModalBottomSheet(
+      context: await navigationContext,
+      useSafeArea: true,
+      isDismissible: true,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) {
+        return OptionListBottomSheet(
+          leadingText: '영상 관리',
+          onCloseBtnTapped: context.pop,
+          options: ['삭제', '재업로드'],
+          onOptionTapped: (int index, WidgetRef targetRef) async {
+            await EasyLoading.show();
+
+            final response =
+                await youtubeRepository.deleteContent(contentId: arg.contentId);
+            await EasyLoading.dismiss();
+            await response.fold(
+              onSuccess: (_) async {
+                logger.i('삭제 성공');
+
+                SnackBarService.showSnackBar('삭제됨 (캐시는 남아 있음)');
+                final mainInfo =
+                    YoutubeDetailState().mainInfo(ref).requireValue;
+                if (index == 1) {
+                  final targetArg = VideoOverviewEntity(
+                    id: arg.contentId,
+                    title: mainInfo.contentsTitle,
+                    thumbnailImgUrl: arg.thumbnailUrl!,
+                    channelName: mainInfo.channel.name,
+                  );
+                  final aimArg =
+                      SubmittedYoutubeConfirmArg.fromContentAccessFlow(
+                          video: YoutubeVideoEntity.fromRelatedVideoEntity(
+                              targetArg));
+                  context.pop();
+                  await SubmittedYoutubeConfirmRoute(aimArg)
+                      .push(await navigationContext);
+                } else {
+                  targetRef.context.pop();
+                }
+              },
+              onFailure: (e) {
+                context.pop();
+                logger.e(e);
+                AppDialog.singleBtn(
+                  title: '삭제 실패',
+                  description: '왜 실패 했지..',
+                  btnContent: '확인',
+                  onBtnClicked: () {
+                    targetRef.context.pop();
+                  },
+                );
+              },
+            );
+            await EasyLoading.dismiss();
+          },
+        );
+      },
+    );
   }
 }
 

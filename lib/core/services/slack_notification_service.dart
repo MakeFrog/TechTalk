@@ -1,13 +1,15 @@
+import 'dart:convert';
 import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:techtalk/app/environment/environment.enum.dart';
 import 'package:techtalk/app/environment/flavor.dart';
 import 'package:techtalk/app/localization/app_locale.dart';
-import 'dart:convert';
 import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 ///
 /// 슬랙 노티피케이션 알람 모듈
@@ -19,11 +21,18 @@ abstract class SlackNotificationService {
 
   // Slack 알림을 보내는 함수
   static Future<void> sendNotification(
-      {UserEntity? targetUserInfo,
+      {UserEntity? userInfo,
       String? message,
       required SlackNotificationType type}) async {
+    UserEntity? targetUserInfo = userInfo ?? AppUserInfo().instance;
+
+    final userId = targetUserInfo?.uid ?? '';
+    if (Flavor.env.operationIdList.contains(userId)) {
+      return;
+    }
+
     // 데브 또는 디버그 모드에서는 이벤트 실행 X
-    if(kDebugMode.isTrue || Flavor.env == Environment.dev) return;
+    if (kDebugMode.isTrue || Flavor.env == Environment.dev) return;
     // 웹후크 URL
     final url = Uri.parse(
         'https://hooks.slack.com/services/T071LHJ83KK/B07QPDR2KBM/${Environment.prod.slackNotificationKey}');

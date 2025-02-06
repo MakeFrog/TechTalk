@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/presentation/providers/scroll/selected_skill_scroll_controller.dart';
@@ -18,7 +20,7 @@ class SelectedSkills extends _$SelectedSkills {
 
   void add(SkillEntity item) {
     if (state.contains(item)) {
-      SnackBarService.showSnackBar('이미 선택된 기술입니다.');
+      SnackBarService.showSnackBar(tr(LocaleKeys.common_alreadySelected));
       return;
     }
     state = [...state, item];

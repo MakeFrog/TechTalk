@@ -1,10 +1,11 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
-import 'package:techtalk/core/services/app_size.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/submitted_youtube_confirm/provider/submitted_youtube_confirm_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/submitted_youtube_confirm/submitted_youtube_confirm_event.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/submitted_youtube_confirm/submitted_youtube_confirm_state.dart';
@@ -34,12 +35,14 @@ class SubmittedYoutubeConfirmPage extends BasePage
         children: [
           const Gap(16),
           Text(
-            arg.hasFetchedMetaInfo ? '입력하신 영상이 맞나요?' : '테크톡에 없는 영상이에요',
+            arg.hasFetchedMetaInfo
+                ? tr(LocaleKeys.youtubeUpload_confirmationTitle)
+                : tr(LocaleKeys.youtubeUpload_notFoundError),
             style: AppTextStyle.headline1,
           ),
           const Gap(12),
           Text(
-            '영상을 업로드하면 내용을 요약하고\n면접 질문을 받아볼 수 있어요!',
+            tr(LocaleKeys.youtubeUpload_confirmationDescription),
             style: AppTextStyle.body1.copyWith(
               color: AppColor.of.gray4,
             ),
@@ -54,8 +57,7 @@ class SubmittedYoutubeConfirmPage extends BasePage
           const Spacer(flex: 136),
           SafeArea(
             child: Container(
-              margin:
-                  EdgeInsets.only(bottom: AppSize.bottomInset == 0 ? 16 : 0),
+              margin: const EdgeInsets.only(bottom: 16),
               width: double.infinity,
               child: HookBuilder(
                 builder: (context) {
@@ -66,8 +68,8 @@ class SubmittedYoutubeConfirmPage extends BasePage
                         onPressed: () {
                           onConfirmBtnTapped(ref);
                         },
-                        child: const Text(
-                          '다음',
+                        child: Text(
+                          tr(LocaleKeys.common_next),
                         ),
                       ),
                     ),

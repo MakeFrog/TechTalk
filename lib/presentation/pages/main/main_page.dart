@@ -6,6 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/presentation/pages/home/home_page.dart';
@@ -138,15 +139,15 @@ class _BottomNavigationBar extends ConsumerWidget with MainEvent, MainState {
                     return Positioned(
                       top: -36.4,
                       child: BubbleIndicator.withSpans(
-                        textSpans: const [
-                          TextSpan(
+                        textSpans: [
+                          const TextSpan(
                             text: 'NEW ',
                             style: TextStyle(
                               color: Color(0xFFFFDF10),
                             ),
                           ),
                           TextSpan(
-                            text: '영상으로 학습하세요!',
+                            text: tr(LocaleKeys.youtube_learnWithVideo),
                           ),
                         ],
                       ),

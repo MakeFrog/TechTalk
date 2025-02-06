@@ -1,4 +1,5 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +10,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/environment/app_version.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/app/util/app_formatter.dart';
@@ -29,8 +31,6 @@ import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/common/grid_view/expandable_youtube_content_grid_view.dart';
 import 'package:techtalk/presentation/widgets/common/tab_bar/techtalk_tab_bar.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
-
-import 'providers/is_interview_progress_ready_provider.dart';
 
 part 'widgets/app_bar.p.dart';
 part 'widgets/bottom_floating_View.p.dart';

@@ -62,7 +62,7 @@ mixin class SignUpEvent {
         (_) async {
           unawaited(
             SlackNotificationService.sendNotification(
-              targetUserInfo: userData,
+              userInfo: userData,
               type: SlackNotificationType.signUp,
             ),
           );

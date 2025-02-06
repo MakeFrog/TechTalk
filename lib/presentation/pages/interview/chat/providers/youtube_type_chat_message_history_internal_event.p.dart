@@ -14,7 +14,10 @@ extension YoutubeTypeChatMessageHistoryInternalEvent on ChatMessageHistory {
     final room = ref.read(selectedChatRoomProvider).youtubeExtra;
     final firstQna = _getNewQna()!;
     final String introMessage =
-        '안녕하세요 $nickname님! \‘${room?.contentTitle}’ 콘텐츠를 기반으로 면접질문을 여쭤볼게요.';
+        tr(LocaleKeys.youtubeInterview_introMessage, namedArgs: {
+      "nickname": nickname,
+      "contentTitle": room?.contentTitle ?? '',
+    });
 
     final introChat = GuideChatEntity.createStatic(
       message: introMessage,

@@ -99,13 +99,14 @@ class _InterviewInductionView extends HookConsumerWidget
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        '같은 직군의 지원자들은',
+                        tr(LocaleKeys
+                            .youtubeInterview_similarApplicantsWatched),
                         style: AppTextStyle.body2.copyWith(
                           color: AppColor.of.gray4,
                         ),
                       ),
                       Text(
-                        '아래 영상도 시청했어요',
+                        tr(LocaleKeys.youtubeInterview_suggestedVideo),
                         style: AppTextStyle.title1.copyWith(
                           color: AppColor.of.gray6,
                         ),
@@ -123,16 +124,18 @@ class _InterviewInductionView extends HookConsumerWidget
             Expanded(
               child: Column(
                 children: [
-                  recommendYoutubeContent(ref).when(
-                    data: (video) {
-                      return ThumbnailImageView(url: video.thumbnailImgUrl);
-                    },
-                    error: (_, __) => ThumbnailImageView.createSkeleton(),
-                    loading: ThumbnailImageView.createSkeleton,
+                  Expanded(
+                    child: recommendYoutubeContent(ref).when(
+                      data: (video) {
+                        return ThumbnailImageView(url: video.thumbnailImgUrl);
+                      },
+                      error: (_, __) => ThumbnailImageView.createSkeleton(),
+                      loading: ThumbnailImageView.createSkeleton,
+                    ),
                   ),
                   const Gap(20),
                   Text(
-                    '이 영상을 시청해 볼까요?',
+                    tr(LocaleKeys.youtubeInterview_watchThisVideo),
                     style: AppTextStyle.headline2,
                   ),
                 ],
@@ -218,7 +221,8 @@ class _InterviewInductionView extends HookConsumerWidget
                             practical: (_) => tr(LocaleKeys.interview_tryAgain),
                             resume: (_) => tr(LocaleKeys.interview_tryAgain),
                             youtube: (InterviewType type) {
-                              return '영상 보기';
+                              return tr(
+                                  LocaleKeys.youtubeInterview_watchVideoButton);
                             },
                           ),
                     ),

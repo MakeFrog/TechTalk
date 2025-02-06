@@ -27,7 +27,7 @@ class _Scaffold extends StatelessWidget {
                   ...YoutubeBoardTabType.values
                       .map(
                         (tab) => Tab(
-                          text: tab.label,
+                          text: tr(tab.label),
                         ),
                       )
                       .toList()

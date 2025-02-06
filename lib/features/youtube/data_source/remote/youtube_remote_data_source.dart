@@ -74,4 +74,11 @@ abstract interface class YoutubeRemoteDataSource {
   Future<YoutubeMainModel> getSingleYoutubeMainContent({
     required String contentId,
   });
+
+  ///
+  /// 콘텐츠 삭제
+  ///
+  Future<void> deleteContent({
+    required String contentId,
+  });
 }

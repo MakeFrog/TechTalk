@@ -1,7 +1,9 @@
+import 'package:techtalk/app/localization/locale_keys.g.dart';
+
 enum YoutubeBoardTabType {
-  watchHistory('시청 기록'),
-  bookmark('즐겨찾기'),
-  uploaded('업로드 영상');
+  watchHistory(LocaleKeys.myInfo_watchHistory),
+  bookmark(LocaleKeys.myInfo_favorites),
+  uploaded(LocaleKeys.myInfo_uploadedVideos);
 
   final String label;
 

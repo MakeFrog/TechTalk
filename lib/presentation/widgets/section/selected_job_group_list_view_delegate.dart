@@ -6,6 +6,7 @@ import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/presentation/widgets/common/animated/animated_size_and_fade.dart';
 import 'package:techtalk/presentation/widgets/common/chip/closable_rect_filled_chip.dart';
+import 'package:techtalk/presentation/widgets/common/chip/closable_skill_filled_chip.dart';
 
 class SelectedJobGroupListViewDelegate extends SliverPersistentHeaderDelegate {
   SelectedJobGroupListViewDelegate({
@@ -42,8 +43,8 @@ class SelectedJobGroupListViewDelegate extends SliverPersistentHeaderDelegate {
             try {
               final item = selectedJobGroups[index];
               return Align(
-                child: ClosableRectFilledChip(
-                  label: item.name,
+                child: ClosableFilledChip(
+                  name: item.name,
                   onTap: () {
                     onTapItem(item);
                   },
@@ -68,7 +69,7 @@ class SelectedJobGroupListViewDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => selectedJobGroups.isNotEmpty ? expandedHeight : 12;
 
   @override
-  double get minExtent => 0;
+  double get minExtent => selectedJobGroups.isNotEmpty ? expandedHeight : 12;
 
   @override
   bool shouldRebuild(covariant SelectedJobGroupListViewDelegate oldDelegate) {

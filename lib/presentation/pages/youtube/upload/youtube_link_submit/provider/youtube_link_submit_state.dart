@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/presentation/pages/youtube/upload/youtube_link_submit/provider/youtube_link_input_controller_provider.dart';
 
 mixin class YoutubeLinkSubmitState {
@@ -22,11 +24,11 @@ mixin class YoutubeLinkSubmitState {
   ///
   String? urlInputValidator(String? input) {
     if (input?.isEmpty ?? false) {
-      return '유튜브 영상의 링크 또는 id값을 입력해 주세요';
+      return tr(LocaleKeys.youtubeUpload_emptyInput);
     }
 
     if (input!.trim().contains(' ')) {
-      return '공백을 포함된 링크 또는 id는 입력할 수 없어요';
+      return tr(LocaleKeys.youtubeUpload_containsSpace);
     }
 
     return null;

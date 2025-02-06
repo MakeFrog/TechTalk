@@ -31,6 +31,7 @@ class Assets {
   static const String characterRed06 = 'assets/character/red_06.svg';
   static const String characterRed07 = 'assets/character/red_07.svg';
   static const String iconsAlarm = 'assets/icons/alarm.svg';
+  static const String iconsArUpDown = 'assets/icons/ar_up_down.svg';
   static const String iconsArrowDown = 'assets/icons/arrow_down.svg';
   static const String iconsArrowDownThick = 'assets/icons/arrow_down_thick.svg';
   static const String iconsArrowLeft = 'assets/icons/arrow_left.svg';
@@ -48,6 +49,8 @@ class Assets {
   static const String iconsCheck = 'assets/icons/check.svg';
   static const String iconsCheckNote = 'assets/icons/check_note.svg';
   static const String iconsCheckThick = 'assets/icons/check_thick.svg';
+  static const String iconsCircleSmallClose =
+      'assets/icons/circle_small_close.svg';
   static const String iconsClose = 'assets/icons/close.svg';
   static const String iconsCloseThick = 'assets/icons/close_thick.svg';
   static const String iconsCoreCircle = 'assets/icons/core_circle.svg';

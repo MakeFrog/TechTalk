@@ -1,46 +1,44 @@
 part of '../my_youtube_board_page.dart';
 
-class _UploadedContentTabView extends ConsumerWidget
+class _UploadedContentTabView extends HookConsumerWidget
     with MyYoutubeBoardState, MyYoutubeBoardEvent {
   const _UploadedContentTabView();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useAutomaticKeepAlive();
     // 업로드 목록 페이징 컨트롤러 가져오기
     final pagingController = uploadedHistoryPagingControllerState(ref);
 
     return Stack(
       children: [
-        TechtalkRefreshIndicator(
-          onRefresh: () => refreshUploadList(ref),
-          child: PagedListView<DocumentSnapshot<UploadedYoutubeModel>?,
-              YoutubeMainEntity>(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            pagingController: pagingController,
-            builderDelegate: PagedChildBuilderDelegate<YoutubeMainEntity>(
-              itemBuilder: (context, item, index) {
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  child: BounceTapper(
-                    onTap: () => routeToDetailPage(ref, overview: item),
-                    child: YoutubeContentSmallItemView(
-                      thumbnailImgUrl: item.thumbnailImgUrl,
-                      title: item.contentsTitle,
-                      channelName: item.channel.name,
-                      videoDuration: item.videoDuration,
-                      questionCount: item.qnaNum,
-                      videoId: item.id,
-                    ),
+        PagedListView<DocumentSnapshot<UploadedYoutubeModel>?,
+            YoutubeMainEntity>(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          pagingController: pagingController,
+          builderDelegate: PagedChildBuilderDelegate<YoutubeMainEntity>(
+            itemBuilder: (context, item, index) {
+              return Container(
+                margin: const EdgeInsets.only(bottom: 16),
+                child: GestureDetector(
+                  onTap: () => routeToDetailPage(ref, overview: item),
+                  child: YoutubeContentSmallItemView(
+                    thumbnailImgUrl: item.thumbnailImgUrl,
+                    title: item.contentsTitle,
+                    channelName: item.channel.name,
+                    videoDuration: item.videoDuration,
+                    questionCount: item.qnaNum,
+                    videoId: item.id,
                   ),
-                );
-              },
-              firstPageErrorIndicatorBuilder: (_) =>
-                  _buildErrorOccuredView(pagingController),
-              newPageErrorIndicatorBuilder: (_) => const SizedBox(),
-              newPageProgressIndicatorBuilder: (_) => const SizedBox(),
-              noItemsFoundIndicatorBuilder: (context) =>
-                  _buildNoItemFoundView(context, ref),
-            ),
+                ),
+              );
+            },
+            firstPageErrorIndicatorBuilder: (_) =>
+                _buildErrorOccuredView(pagingController),
+            newPageErrorIndicatorBuilder: (_) => const SizedBox(),
+            newPageProgressIndicatorBuilder: (_) => const SizedBox(),
+            noItemsFoundIndicatorBuilder: (context) =>
+                _buildNoItemFoundView(context, ref),
           ),
         ),
 
@@ -83,9 +81,9 @@ class _UploadedContentTabView extends ConsumerWidget
         controller,
   ) {
     return YoutubePaginationIndicatorView(
-      title: '데이터를 불러오지 못했어요',
-      description: '일시적인 오류일 수 있으니 다시 시도해보세요',
-      btnText: '다시 시도',
+      title: tr(LocaleKeys.youtubeBoard_loadErrorTitle),
+      description: tr(LocaleKeys.youtubeBoard_loadErrorDescription),
+      btnText: tr(LocaleKeys.youtubeBoard_retryButton),
       onBtnTapped: () {
         controller.refresh();
       },
@@ -98,8 +96,8 @@ class _UploadedContentTabView extends ConsumerWidget
   Widget _buildNoItemFoundView(BuildContext context, WidgetRef ref) {
     return SizedBox(
       child: YoutubePaginationIndicatorView(
-        description: '업로드한 영상이 없어요',
-        btnText: '영상 업로드하기',
+        description: tr(LocaleKeys.youtubeBoard_noUploadsDescription),
+        btnText: tr(LocaleKeys.youtubeBoard_noUploadsDescription),
         descriptionTextStyle: AppTextStyle.body2.copyWith(
           color: AppColor.of.black,
         ),

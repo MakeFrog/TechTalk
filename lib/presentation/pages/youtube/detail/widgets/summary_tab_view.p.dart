@@ -31,8 +31,8 @@ class _SummaryTabView extends HookConsumerWidget
   /// 핵심주제
   Widget _buildSummaryView() {
     return Consumer(
-      child: const SectionTitle(
-        title: '핵심 주제',
+      child: SectionTitle(
+        title: tr(LocaleKeys.youtubeDetail_keyTopic),
         iconPath: Assets.iconsCoreCircle,
       ),
       builder: (context, ref, title) {
@@ -78,8 +78,8 @@ class _SummaryTabView extends HookConsumerWidget
                 return Consumer(
                   child: Row(
                     children: [
-                      const SectionTitle(
-                        title: '요약 노트',
+                      SectionTitle(
+                        title: tr(LocaleKeys.youtubeDetail_summaryNote),
                         iconPath: Assets.iconsSummaryNote,
                       ),
                       const Spacer(),
@@ -135,12 +135,14 @@ class _SummaryTabView extends HookConsumerWidget
                                         final selectedNoteIndex =
                                             useState<int?>(null);
                                         return KeepAliveView(
-                                          child: ListView.builder(
+                                          child: ListView.separated(
                                             shrinkWrap: true,
                                             padding: EdgeInsets.zero,
                                             physics:
                                                 const NeverScrollableScrollPhysics(),
                                             itemCount: filteredSummaries.length,
+                                            separatorBuilder: (_, __) =>
+                                                const Gap(2),
                                             itemBuilder: (context, index) {
                                               return HookBuilder(
                                                 builder:
@@ -149,6 +151,7 @@ class _SummaryTabView extends HookConsumerWidget
                                                       useState(false);
                                                   final item =
                                                       filteredSummaries[index];
+
                                                   return SummaryNoteFoldableItem(
                                                     onTileBodyTapped:
                                                         (timestamp,
@@ -215,8 +218,8 @@ class _SummaryTabView extends HookConsumerWidget
   /// 관련 영상
   Widget _buildRelatedVideosView() {
     return Consumer(
-      child: const SectionTitle(
-        title: '관련 영상',
+      child: SectionTitle(
+        title: tr(LocaleKeys.youtubeDetail_relatedVideos),
         iconPath: Assets.iconsSparkle,
       ),
       builder: (context, ref, title) {

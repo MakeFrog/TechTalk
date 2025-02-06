@@ -372,4 +372,13 @@ final class YoutubeRemoteDataSourceImpl implements YoutubeRemoteDataSource {
       rethrow;
     }
   }
+
+  @override
+  Future<void> deleteContent({required String contentId}) async {
+    try {
+      await FirestoreYoutubeRef.doc(contentId).delete();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

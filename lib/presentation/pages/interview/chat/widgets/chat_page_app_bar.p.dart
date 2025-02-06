@@ -19,7 +19,7 @@ class _AppBar extends HookConsumerWidget
           return '이력서 면접';
         },
         youtube: (_) {
-          return '콘텐츠 면접';
+          return AppLocale.isKo ? '콘텐츠 면접' : '';
         },
       );
     });

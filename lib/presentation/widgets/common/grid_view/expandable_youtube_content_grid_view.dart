@@ -107,7 +107,9 @@ class ExpandableYoutubeContentGridView extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 2),
                             child: Text(
-                              content.title ?? '',
+                              content.title,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
                               style: AppTextStyle.body1,
                             ),
                           )
@@ -124,7 +126,7 @@ class ExpandableYoutubeContentGridView extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 2),
                             child: Text(
-                              content.channelName ?? '',
+                              content.channelName,
                               style: AppTextStyle.alert2.copyWith(
                                 color: AppColor.of.gray3,
                               ),

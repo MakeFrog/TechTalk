@@ -30,7 +30,7 @@ class SkillEntity {
   factory SkillEntity.fromModel(SkillModel model) {
     return SkillEntity(
       id: model.name.skillNameToId,
-      name: AppLocale.isKo ? model.name : model.koName,
+      name: AppLocale.isKo ? model.koName : model.name,
       youtubeContentCount: AppLocale.isKo
           ? model.youtubeContentCountKo
           : model.youtubeContentCount,

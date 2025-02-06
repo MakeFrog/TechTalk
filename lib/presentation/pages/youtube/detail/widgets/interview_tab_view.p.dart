@@ -18,13 +18,13 @@ class _InterviewTabView extends HookConsumerWidget
           const Gap(24),
           Row(
             children: [
-              const SectionTitle(
-                title: '면접 질문',
+              SectionTitle(
+                title: tr(LocaleKeys.youtubeDetail_interviewQuestions),
                 iconPath: Assets.iconsCheckNote,
               ),
               const Spacer(),
               AllButton(
-                label: '전체선택',
+                label: LocaleKeys.youtubeDetail_selectAll,
                 onTap: () {
                   onAllSelectBtnTapped(ref);
                 },

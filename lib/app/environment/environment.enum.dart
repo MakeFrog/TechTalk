@@ -40,6 +40,11 @@ enum Environment {
         prod => dotenv.env['SLACK_NOTIFICATION_KEY']!,
       };
 
+  List<String> get operationIdList => switch (this) {
+        prod => dotenv.env['OPERATIONS_UUID_LIST']!.split(','),
+        dev => dotenv.env['OPERATIONS_UUID_LIST']!.split(','),
+      };
+
   FirebaseOptions get firebaseOption => switch (this) {
         prod => prod_firebase.DefaultFirebaseOptions.currentPlatform,
         dev => dev_firebase.DefaultFirebaseOptions.currentPlatform,

@@ -1,10 +1,13 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/environment/app_version.dart';
+import 'package:techtalk/app/localization/app_locale.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/services/app_size.dart';
@@ -30,12 +33,14 @@ class YoutubeLinkSubmitPage extends BasePage
               children: [
                 const Gap(16),
                 Text(
-                  '유튜브 영상\n링크를 알려주세요',
+                  AppVersion().isOnReview
+                      ? tr(LocaleKeys.youtubeUpload_title_only_for_review)
+                      : tr(LocaleKeys.youtubeUpload_title),
                   style: AppTextStyle.headline1,
                 ),
                 const Gap(12),
                 Text(
-                  '영상 요약과 질문을 생성해 드릴게요!',
+                  tr(LocaleKeys.youtubeUpload_description),
                   style: AppTextStyle.body1.copyWith(
                     color: AppColor.of.gray4,
                   ),
@@ -47,7 +52,11 @@ class YoutubeLinkSubmitPage extends BasePage
                   child: TechtalkTextField(
                     controller: textEditingController(ref),
                     validator: urlInputValidator,
-                    hintText: 'https://www.youtube.com/watch?v=TecHtVkAk',
+                    hintText: AppVersion().isOnReview
+                        ? AppLocale.isKo
+                            ? '영상 링크를 입력해 주세요'
+                            : 'Pleas Submit Video Link'
+                        : 'https://www.youtube.com/watch?v=TecHtVkAk',
                     inputDecoration: InputDecoration(
                       errorStyle: AppTextStyle.alert2.copyWith(),
                     ),
@@ -78,7 +87,7 @@ class YoutubeLinkSubmitPage extends BasePage
                             SvgPicture.asset(Assets.iconsYoutubeLogo),
                             const Gap(4),
                             Text(
-                              '유튜브 링크 가져오기',
+                              tr(LocaleKeys.youtubeUpload_fetchLinkButton),
                               style: AppTextStyle.alert1,
                             )
                           ],
@@ -99,8 +108,9 @@ class YoutubeLinkSubmitPage extends BasePage
             bottom: 0,
             child: SafeArea(
               child: Container(
-                margin:
-                    EdgeInsets.only(bottom: AppSize.bottomInset == 0 ? 16 : 0),
+                margin: const EdgeInsets.only(
+                  bottom: 16,
+                ),
                 width: double.infinity,
                 child: HookBuilder(
                   builder: (context) {
@@ -119,8 +129,8 @@ class YoutubeLinkSubmitPage extends BasePage
                                   onConfirmBtnTapped(ref);
                                 }
                               : null,
-                          child: const Text(
-                            '다음',
+                          child: Text(
+                            tr(LocaleKeys.common_next),
                           ),
                         ),
                       ),

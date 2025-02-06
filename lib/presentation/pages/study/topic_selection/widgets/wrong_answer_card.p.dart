@@ -30,7 +30,7 @@ class _WrongAnswerNoteCard extends ConsumerWidget
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          '오답노트',
+                          tr(LocaleKeys.learning_reviewNote),
                           style: AppTextStyle.headline2.copyWith(
                             color: AppColor.of.red2,
                           ),
@@ -43,7 +43,7 @@ class _WrongAnswerNoteCard extends ConsumerWidget
                     ),
                     const Gap(4),
                     Text(
-                      '오답 복습을 통해\n실력을 증진하세요!',
+                      tr(LocaleKeys.learning_reviewNoteDescription),
                       style: AppTextStyle.body3.copyWith(
                         color: AppColor.of.gray5,
                       ),

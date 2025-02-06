@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/features/youtube/index.dart';
 
@@ -25,7 +26,8 @@ Raw<PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>>
         queryConstraints: [
           EqualToConstraint(
             fieldName: 'channel_ref',
-            value: FirebaseFirestore.instance.doc('/Channel/$channelId'),
+            value: FirebaseFirestore.instance
+                .doc('/${AppLocale.isKo ? 'Channel' : 'ChannelEn'}/$channelId'),
           ),
         ]);
 

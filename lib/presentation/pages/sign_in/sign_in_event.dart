@@ -22,7 +22,8 @@ mixin class SignInEvent {
           unawaited(FirebaseAnalytics.instance
               .logLogin(loginMethod: accountProvider.name));
           const MainRoute().go(ref.context);
-          unawaited(noti.SlackNotificationService.sendNotification(type: SlackNotificationType.login, targetUserInfo: userData));
+          unawaited(noti.SlackNotificationService.sendNotification(
+              type: SlackNotificationType.login, userInfo: userData));
         } else {
           unawaited(FirebaseAnalytics.instance
               .logSignUp(signUpMethod: accountProvider.name));

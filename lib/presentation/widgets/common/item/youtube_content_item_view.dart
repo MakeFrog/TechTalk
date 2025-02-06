@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart' as localization;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/app/util/app_formatter.dart';
 import 'package:techtalk/core/index.dart';
@@ -108,7 +110,14 @@ class YoutubeContentItemView extends StatelessWidget {
                             ),
                           ),
                         if (questionCount != null)
-                          DarkTransparentChip(label: '질문 $questionCount개'),
+                          DarkTransparentChip(
+                            label: localization.tr(
+                              LocaleKeys.youtubeDetail_questionsCount,
+                              namedArgs: {
+                                "count": '$questionCount',
+                              },
+                            ),
+                          ),
                       ],
                     ),
                   ),

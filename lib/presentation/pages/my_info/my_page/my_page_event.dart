@@ -200,7 +200,7 @@ mixin class MyPageEvent {
           options: ProfileSettingType.values
               .map((e) => context.tr(e.nameTrKey))
               .toList(),
-          onOptionTapped: (int index) {
+          onOptionTapped: (int index, WidgetRef ref) {
             ProfileSettingType.branch(
               targetCategory: ProfileSettingType.getByIndex(index),
               profile: (_) {

@@ -1,9 +1,12 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/constants/assets.dart';
@@ -18,17 +21,17 @@ import 'package:techtalk/presentation/pages/my_info/my_youtube_board/my_youtube_
 import 'package:techtalk/presentation/pages/youtube/main/widgets/youtube_pagination_indicator_view.dart';
 import 'package:techtalk/presentation/pages/youtube/main/youtube_main_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
+import 'package:techtalk/presentation/widgets/common/animated/animated_size_and_fade.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
-import 'package:techtalk/presentation/widgets/common/indicator/tecktalk_refresh_indicator.dart';
 import 'package:techtalk/presentation/widgets/common/item/youtube_content_small_item_view.dart';
 import 'package:techtalk/presentation/widgets/common/tab_bar/techtalk_tab_bar.dart';
 
+part 'widgets/bookmark_animated_deletable_list_item.p.dart';
 part 'widgets/bookmarked_tab_view.p.dart';
 part 'widgets/scaffold.p.dart';
 part 'widgets/tab_bar.p.dart';
 part 'widgets/uploaded_content_tab_view.p.dart';
 part 'widgets/watched_history_tab_view.p.dart';
-part 'widgets/bookmark_animated_deletable_list_item.p.dart';
 
 class MyYoutubeBoardPage extends BasePage
     with MyYoutubeBoardState, YoutubeMainState {
@@ -53,8 +56,11 @@ class MyYoutubeBoardPage extends BasePage
 
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) {
-    return const BackButtonAppBar(
-      title: '내 영상 학습',
+    return BackButtonAppBar(
+      title: tr(LocaleKeys.myInfo_myContents),
     );
   }
+
+  @override
+  bool get setBottomSafeArea => false;
 }
