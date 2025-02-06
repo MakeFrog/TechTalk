@@ -143,9 +143,9 @@ final class AppUserInfo {
 
   AppUserInfo._internal();
 
-  UserEntity? intnace;
+  UserEntity? instance;
 
   void initialize(UserEntity? info) {
-    intnace = info;
+    instance = info;
   }
 }

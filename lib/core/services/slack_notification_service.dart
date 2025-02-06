@@ -24,7 +24,7 @@ abstract class SlackNotificationService {
       {UserEntity? userInfo,
       String? message,
       required SlackNotificationType type}) async {
-    UserEntity? targetUserInfo = userInfo ?? AppUserInfo().intnace;
+    UserEntity? targetUserInfo = userInfo ?? AppUserInfo().instance;
 
     final userId = targetUserInfo?.uid ?? '';
     if (Flavor.env.operationIdList.contains(userId)) {
