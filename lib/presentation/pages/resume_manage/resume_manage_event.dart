@@ -275,27 +275,25 @@ mixin class ResumeManageEvent {
 
   ///
   /// 미리보기 버튼 클릭시
-  /// TODO: 수정 필요 (yundal)
   ///
   void onClickedPreviewBtn(WidgetRef ref, DocumentType type) {
     final state = ref.read(resumeInfoProvider);
 
     // 미리보기용 pdf 경로
-    late final String? previewPath;
+    late String? previewPath;
 
-    // if (type == DocumentType.resume) {
-    //   previewPath = state.resume.path;
-    // } else {
-    //   previewPath = state.portfolio.path;
-    // }
+    if (type == DocumentType.resume) {
+      previewPath = state.requireValue?.resume?.path;
+    } else {
+      previewPath = state.requireValue?.portfolio?.path;
+    }
 
-    // if (previewPath == null) {
-    //   debugPrint('PDF 경로가 존재하지 않습니다.');
-    //   return;
-    // }
+    // TODO: UI로 알림 띄우는 로직 구현하기 (yundal)
+    if (previewPath == null) {
+      debugPrint('PDF 경로가 올바르지 않습니다.');
+      return;
+    }
 
-    // ref.read(resumeInfoProvider.notifier).state = previewPath;
-
-    const ResumePreviewRoute().push(ref.context);
+    ResumePreviewRoute(previewPath: previewPath).push(ref.context);
   }
 }

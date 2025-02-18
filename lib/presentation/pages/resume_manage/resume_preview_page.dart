@@ -3,31 +3,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/presentation/pages/resume_manage/providers/resume_preview_path_provider.dart';
+import 'package:techtalk/presentation/pages/resume_manage/resume_manage_event.dart';
 
-class ResumePreviewPage extends HookConsumerWidget {
-  const ResumePreviewPage({Key? key}) : super(key: key);
+class ResumePreviewPage extends HookConsumerWidget with ResumeManageEvent {
+  final String previewPath;
+
+  const ResumePreviewPage({Key? key, required this.previewPath})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // (1) provider로부터 pdfPath 받기
-     final pdfPath = ref.watch(resumePreviewPathProvider);
-
-    // (2) Hook을 사용하여 상태 관리
     final totalPages = useState<int>(0);
     final currentPage = useState<int>(0);
     final isLoading = useState<bool>(true);
     final hasError = useState<bool>(false);
     final pdfViewController = useState<PDFViewController?>(null);
 
-    // (3) 파일 존재 여부 체크 - useEffect 활용
-    useEffect(() {
-      final file = File(pdfPath);
-      if (!file.existsSync()) {
-        hasError.value = true;
-      }
-      return null; // cleanup이 필요하지 않으므로 null
-    }, [pdfPath]);
+    // 파일 존재 여부 체크 - useEffect 활용
+    useEffect(
+      () {
+        final file = File(previewPath);
+        if (!file.existsSync()) {
+          hasError.value = true;
+        }
+        return null;
+      },
+      [previewPath],
+    );
 
     // 파일이 없거나 접근 불가능하면 에러 UI
     if (hasError.value) {
@@ -47,9 +49,8 @@ class ResumePreviewPage extends HookConsumerWidget {
       body: Stack(
         children: [
           PDFView(
-            filePath: pdfPath,
+            filePath: previewPath,
             autoSpacing: false,
-            swipeHorizontal: false,
             pageSnap: false,
             pageFling: false,
             onRender: (pages) {

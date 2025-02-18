@@ -397,14 +397,16 @@ class ResumeManageRoute extends GoRouteData {
 }
 
 class ResumePreviewRoute extends GoRouteData {
-  const ResumePreviewRoute();
+  const ResumePreviewRoute({required this.previewPath});
+
+  final String previewPath;
 
   static const String path = 'resume-preview';
   static const String name = 'resume preview';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const ResumePreviewPage();
+    return ResumePreviewPage(previewPath: previewPath);
   }
 }
 

@@ -30,4 +30,16 @@ class ResumeBox extends HiveObject {
       resumeUploadAt: resumeUploadAt ?? this.resumeUploadAt,
     );
   }
+
+  ResumeBox updateResume({
+    String? resumePath,
+    String? resumeTitle,
+    String? resumeUploadAt,
+  }) {
+    return ResumeBox(
+      resumePath: resumePath ?? this.resumePath,
+      resumeTitle: resumeTitle ?? this.resumeTitle,
+      resumeUploadAt: resumeUploadAt ?? this.resumeUploadAt,
+    );
+  }
 }

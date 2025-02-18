@@ -1,6 +1,7 @@
 import 'package:flutter/rendering.dart';
 import 'package:hive/hive.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/user/data_source/local/boxes/resume_box.dart';
 import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/user.dart';
@@ -52,21 +53,33 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
     debugPrint('UserLocalDataSourceImpl - newResume : ${newResume?.path}');
     debugPrint('UserLocalDataSourceImpl - newResume : ${newResume?.title}');
 
-    final userLocalInfo = localUser ?? UserBox.defaultValue();
-
-    final updatedUserBox = userLocalInfo.copyWith(
-      nullResume: newResume?.path != null ? false : true,
-      resume: newResume?.path != null
-          ? userLocalInfo.resume?.copyWith(
-              resumePath: newResume?.path,
-              resumeTitle: newResume?.title,
-              resumeUploadAt: newResume?.uploadAt,
-            )
-          : null,
-    );
-
     try {
+      final userLocalInfo = localUser ?? UserBox.defaultValue();
+
+      // TODO: 해당 메서드 고치기
+      // final updatedUserBox = userLocalInfo.copyWith(
+      //   resume: newResume?.path != null
+      //       ? userLocalInfo.resume?.copyWith(
+      //           resumePath: newResume?.path,
+      //           resumeTitle: newResume?.title,
+      //           resumeUploadAt: newResume?.uploadAt,
+      //         )
+      //       : null,
+      // );
+
+      final updatedUserBox = userLocalInfo.copyWith(
+        resume: ResumeBox(
+          resumePath: newResume?.path,
+          resumeTitle: newResume?.title,
+          resumeUploadAt: newResume?.uploadAt,
+        ),
+      );
+
+      debugPrint('=== updatedUserBox:  ${updatedUserBox.resume?.resumeTitle}');
+
       await box.put(AppLocal.userBoxName, updatedUserBox);
+
+      debugPrint('resumePath  이력서 경로 ${localUser?.resume?.resumePath}');
     } catch (e, s) {
       debugPrint('[로컬] box.put 예외 발생: $e');
       debugPrint('$s');

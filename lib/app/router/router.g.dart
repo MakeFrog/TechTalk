@@ -389,10 +389,15 @@ extension $ResumeManageRouteExtension on ResumeManageRoute {
 
 extension $ResumePreviewRouteExtension on ResumePreviewRoute {
   static ResumePreviewRoute _fromState(GoRouterState state) =>
-      const ResumePreviewRoute();
+      ResumePreviewRoute(
+        previewPath: state.uri.queryParameters['preview-path']!,
+      );
 
   String get location => GoRouteData.$location(
         '/resume-preview',
+        queryParams: {
+          'preview-path': previewPath,
+        },
       );
 
   void go(BuildContext context) => context.go(location);

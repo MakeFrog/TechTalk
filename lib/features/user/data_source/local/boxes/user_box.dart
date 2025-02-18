@@ -29,12 +29,12 @@ class UserBox extends HiveObject {
     this.portfolio,
   });
 
+  //
   UserBox copyWith({
     bool? hasPracticalInterviewRecord,
     bool? isReviewRequestAvailable,
     bool? hasEnteredFirstInterview,
     ResumeBox? resume,
-    bool nullResume = false,
     PortfolioBox? portfolio,
     bool nullPortfolio = false,
   }) {
@@ -45,8 +45,28 @@ class UserBox extends HiveObject {
           isReviewRequestAvailable ?? this.isReviewRequestAvailable,
       hasEnteredFirstInterview:
           hasEnteredFirstInterview ?? this.hasEnteredFirstInterview,
-      resume: nullResume ? null : (resume ?? this.resume),
-      portfolio: nullPortfolio ? null : (portfolio ?? this.portfolio),
+      resume: resume ?? this.resume,
+      portfolio: portfolio ?? this.portfolio,
+    );
+  }
+
+  // TODO: copywith는 제대로 동작을 하지 않으니 resume, portfolio 업데이트 로직을 여기에다가 따로 구성하기 (윤수)
+  UserBox updateResume({
+    bool? hasPracticalInterviewRecord,
+    bool? isReviewRequestAvailable,
+    bool? hasEnteredFirstInterview,
+    PortfolioBox? portfolio,
+    ResumeBox? resume,
+  }) {
+    return UserBox(
+      hasPracticalInterviewRecord:
+          hasPracticalInterviewRecord ?? this.hasPracticalInterviewRecord,
+      isReviewRequestAvailable:
+          isReviewRequestAvailable ?? this.isReviewRequestAvailable,
+      hasEnteredFirstInterview:
+          hasEnteredFirstInterview ?? this.hasEnteredFirstInterview,
+      resume: resume ?? this.resume,
+      portfolio: portfolio ?? this.portfolio,
     );
   }
 
