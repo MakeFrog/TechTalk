@@ -7,14 +7,16 @@ part of 'package:techtalk/presentation/pages/resume_manage/resume_manage_page.da
 class ResumeManageBottomSheet<T extends dynamic> extends StatelessWidget {
   const ResumeManageBottomSheet({
     Key? key,
+    required this.options,
     required this.onOptionTapped,
     required this.onCloseBtnTapped,
+    required this.leadingText,
   }) : super(key: key);
 
+  final List<String> options;
   final void Function(int index) onOptionTapped;
   final VoidCallback onCloseBtnTapped;
-
-  final List<String> _options = const ['변경', '미리보기', '삭제'];
+  final String leadingText;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class ResumeManageBottomSheet<T extends dynamic> extends StatelessWidget {
                 width: double.infinity,
                 child: Center(
                   child: Text(
-                    '이력서',
+                    leadingText,
                     style: AppTextStyle.alert2,
                   ),
                 ),
@@ -61,14 +63,14 @@ class ResumeManageBottomSheet<T extends dynamic> extends StatelessWidget {
                 ),
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: _options.length,
+                itemCount: options.length,
                 itemBuilder: (context, index) {
                   // 변경, 미리보기 삭제
                   return MaterialButton(
                     color: AppColor.of.white,
                     padding: EdgeInsets.zero,
                     shape: RoundedRectangleBorder(
-                      borderRadius: _options.length == index + 1
+                      borderRadius: options.length == index + 1
                           ? const BorderRadius.only(
                               bottomLeft: Radius.circular(12),
                               bottomRight: Radius.circular(12),
@@ -83,8 +85,8 @@ class ResumeManageBottomSheet<T extends dynamic> extends StatelessWidget {
                       height: 56,
                       child: Center(
                         child: Text(
-                          _options[index],
-                          style: index == _options.length - 1
+                          options[index],
+                          style: index == options.length - 1
                               ? AppTextStyle.title2.copyWith(
                                   color: Colors.red,
                                 )
