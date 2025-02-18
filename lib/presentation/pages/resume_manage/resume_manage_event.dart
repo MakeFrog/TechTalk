@@ -15,6 +15,7 @@ import 'package:techtalk/features/chat/use_cases/create_resume_question_use_case
 import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/repositories/enums/document_type.enum.dart';
+import 'package:techtalk/features/user/repositories/enums/resume_setting_type.enum.dart';
 import 'package:techtalk/presentation/pages/resume_manage/providers/resume_info_provider.dart';
 import 'package:techtalk/presentation/pages/resume_manage/resume_manage_page.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
@@ -34,21 +35,18 @@ mixin class ResumeManageEvent {
       isScrollControlled: true,
       builder: (context) {
         return ResumeManageBottomSheet(
+          leadingText: '이력서',
           onCloseBtnTapped: context.pop,
+          options: ResumeSettingType.values
+              .map((e) => context.tr(e.nameTrKey))
+              .toList(),
           onOptionTapped: (int index) {
-            switch (index) {
-              case 0: // 변경
-                registDocumentBtn(ref, type);
-                break;
-              case 1: // 미리보기
-                onClickedPreviewBtn(ref, type);
-                break;
-              case 2: // 삭제
-                onClickedDeleteBtn(ref, type);
-                break;
-              default:
-                break;
-            }
+            ResumeSettingType.branch(
+              targetCategory: ResumeSettingType.getByIndex(index),
+              upload: (_) => registDocumentBtn(ref, type),
+              preview: (_) => onClickedPreviewBtn(ref, type),
+              delete: (_) => onClickedDeleteBtn(ref, type),
+            );
           },
         );
       },
