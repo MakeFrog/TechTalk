@@ -1,6 +1,7 @@
 import 'package:flutter/rendering.dart';
 import 'package:hive/hive.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/user/data_source/local/boxes/portfolio_box.dart';
 import 'package:techtalk/features/user/data_source/local/boxes/resume_box.dart';
 import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
@@ -24,6 +25,10 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
 
   @override
   UserBox loadUserLocalInfo() {
+    debugPrint('===== UserLocalDataSourceImpl.loadUserLocalInfo =====');
+    debugPrint('이력서 존재한느가? : ${localUser!.resume}');
+    debugPrint('이력서 주소 : ${localUser!.resume?.resumePath}');
+
     return localUser ?? UserBox.defaultValue();
   }
 
@@ -56,30 +61,20 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
     try {
       final userLocalInfo = localUser ?? UserBox.defaultValue();
 
-      // TODO: 해당 메서드 고치기
-      // final updatedUserBox = userLocalInfo.copyWith(
-      //   resume: newResume?.path != null
-      //       ? userLocalInfo.resume?.copyWith(
-      //           resumePath: newResume?.path,
-      //           resumeTitle: newResume?.title,
-      //           resumeUploadAt: newResume?.uploadAt,
-      //         )
-      //       : null,
-      // );
-
-      final updatedUserBox = userLocalInfo.copyWith(
-        resume: ResumeBox(
-          resumePath: newResume?.path,
-          resumeTitle: newResume?.title,
-          resumeUploadAt: newResume?.uploadAt,
-        ),
-      );
-
-      debugPrint('=== updatedUserBox:  ${updatedUserBox.resume?.resumeTitle}');
-
-      await box.put(AppLocal.userBoxName, updatedUserBox);
-
-      debugPrint('resumePath  이력서 경로 ${localUser?.resume?.resumePath}');
+      if (newResume == null) {
+        final updatedUserBox = userLocalInfo.deleteResume();
+        await box.put(AppLocal.userBoxName, updatedUserBox);
+      } else {
+        final updatedUserBox = userLocalInfo.copyWith(
+          resume: ResumeBox(
+            resumePath: newResume.path,
+            resumeTitle: newResume.title,
+            resumeUploadAt: newResume.uploadAt,
+          ),
+        );
+        await box.put(AppLocal.userBoxName, updatedUserBox);
+        
+      }
     } catch (e, s) {
       debugPrint('[로컬] box.put 예외 발생: $e');
       debugPrint('$s');
@@ -89,15 +84,32 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
 
   @override
   Future<void> changePortfolioData(PortfolioEntity? newPortfolio) async {
-    final userLocalInfo = localUser ?? UserBox.defaultValue();
+    debugPrint('===== UserLocalDataSourceImpl.changeResumeData =====');
+    debugPrint(
+        'UserLocalDataSourceImpl - newPortfolio : ${newPortfolio?.path}');
+    debugPrint(
+        'UserLocalDataSourceImpl - newPortfolio : ${newPortfolio?.title}');
 
-    final updatedUserBox = userLocalInfo.copyWith(
-      portfolio: userLocalInfo.portfolio?.copyWith(
-        portfolioPath: newPortfolio?.path,
-        portfolioTitle: newPortfolio?.title,
-        portfolioUploadAt: newPortfolio?.uploadAt,
-      ),
-    );
-    await box.put(AppLocal.userBoxName, updatedUserBox);
+    try {
+      final userLocalInfo = localUser ?? UserBox.defaultValue();
+
+      if (newPortfolio == null) {
+        final updatedUserBox = userLocalInfo.deletePortfolio();
+        await box.put(AppLocal.userBoxName, updatedUserBox);
+      } else {
+        final updatedUserBox = userLocalInfo.copyWith(
+          portfolio: PortfolioBox(
+            portfolioPath: newPortfolio.path,
+            portfolioTitle: newPortfolio.title,
+            portfolioUploadAt: newPortfolio.uploadAt,
+          ),
+        );
+        await box.put(AppLocal.userBoxName, updatedUserBox);
+      }
+    } catch (e, s) {
+      debugPrint('[로컬] box.put 예외 발생: $e');
+      debugPrint('$s');
+      rethrow;
+    }
   }
 }

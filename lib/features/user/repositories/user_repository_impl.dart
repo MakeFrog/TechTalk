@@ -162,8 +162,8 @@ final class UserRepositoryImpl implements UserRepository {
   @override
   Future<Result<void>> changeResumeData(ResumeEntity? newResume) async {
     try {
-      debugPrint('repository - newResume : ${newResume?.path}');
-      debugPrint('repository - newResume : ${newResume?.title}');
+      debugPrint('repository - newResume 객체 : $newResume');
+      debugPrint('repository - newResume 경로 : ${newResume?.path}');
 
       await _userLocalDataSource.changeResumeData(newResume);
       debugPrint('repository - 저장 성공');
@@ -180,9 +180,16 @@ final class UserRepositoryImpl implements UserRepository {
   Future<Result<void>> changePortfolioData(
       PortfolioEntity? newPortfolio) async {
     try {
+      debugPrint('repository - newPortfolio 객체 : $newPortfolio');
+      debugPrint('repository - newPortfolio 경로 : ${newPortfolio?.path}');
+
       await _userLocalDataSource.changePortfolioData(newPortfolio);
+      debugPrint('repository - 저장 성공');
+
       return Result.success(null);
     } catch (e) {
+      debugPrint('repository - 저장 실패');
+
       return Result.failure(Exception(e));
     }
   }
@@ -209,7 +216,7 @@ final class UserRepositoryImpl implements UserRepository {
       PortfolioEntity? portfolio;
 
       if (portfolioBox != null) {
-        PortfolioEntity(
+        portfolio = PortfolioEntity(
           path: portfolioBox.portfolioPath,
           title: portfolioBox.portfolioTitle,
           uploadAt: portfolioBox.portfolioUploadAt,

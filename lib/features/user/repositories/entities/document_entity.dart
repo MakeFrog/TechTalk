@@ -21,4 +21,18 @@ final class DocumentEntity {
       portfolio: portfolio ?? this.portfolio,
     );
   }
+
+  DocumentEntity deleteResume() {
+    return DocumentEntity(
+      resume: null,
+      portfolio: portfolio,
+    );
+  }
+
+  DocumentEntity deletePortfolio() {
+    return DocumentEntity(
+      resume: resume,
+      portfolio: null,
+    );
+  }
 }

@@ -67,9 +67,9 @@ mixin class ResumeManageEvent {
         rightBtnContent: '삭제',
         onRightBtnClicked: () {
           if (type == DocumentType.resume) {
-            resumeInfo.updateResumeState(ResumeEntity());
+            resumeInfo.updateResumeState(null);
           } else {
-            resumeInfo.updatePortfolioState(PortfolioEntity());
+            resumeInfo.updatePortfolioState(null);
           }
           ref.context.pop();
         },

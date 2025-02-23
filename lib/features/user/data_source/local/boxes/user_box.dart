@@ -15,10 +15,10 @@ class UserBox extends HiveObject {
   @HiveField(2, defaultValue: true)
   final bool hasEnteredFirstInterview;
 
-  @HiveField(3)
+  @HiveField(3, defaultValue: null)
   final ResumeBox? resume;
 
-  @HiveField(4)
+  @HiveField(4, defaultValue: null)
   final PortfolioBox? portfolio;
 
   UserBox({
@@ -29,34 +29,12 @@ class UserBox extends HiveObject {
     this.portfolio,
   });
 
-  //
   UserBox copyWith({
     bool? hasPracticalInterviewRecord,
     bool? isReviewRequestAvailable,
     bool? hasEnteredFirstInterview,
     ResumeBox? resume,
     PortfolioBox? portfolio,
-    bool nullPortfolio = false,
-  }) {
-    return UserBox(
-      hasPracticalInterviewRecord:
-          hasPracticalInterviewRecord ?? this.hasPracticalInterviewRecord,
-      isReviewRequestAvailable:
-          isReviewRequestAvailable ?? this.isReviewRequestAvailable,
-      hasEnteredFirstInterview:
-          hasEnteredFirstInterview ?? this.hasEnteredFirstInterview,
-      resume: resume ?? this.resume,
-      portfolio: portfolio ?? this.portfolio,
-    );
-  }
-
-  // TODO: copywith는 제대로 동작을 하지 않으니 resume, portfolio 업데이트 로직을 여기에다가 따로 구성하기 (윤수)
-  UserBox updateResume({
-    bool? hasPracticalInterviewRecord,
-    bool? isReviewRequestAvailable,
-    bool? hasEnteredFirstInterview,
-    PortfolioBox? portfolio,
-    ResumeBox? resume,
   }) {
     return UserBox(
       hasPracticalInterviewRecord:
@@ -75,6 +53,26 @@ class UserBox extends HiveObject {
       hasPracticalInterviewRecord: false,
       isReviewRequestAvailable: true,
       hasEnteredFirstInterview: false,
+    );
+  }
+
+  UserBox deleteResume() {
+    return UserBox(
+      resume: null,
+      portfolio: portfolio, // 기존 포트폴리오 필드 그대로
+      hasPracticalInterviewRecord: hasPracticalInterviewRecord,
+      isReviewRequestAvailable: isReviewRequestAvailable,
+      hasEnteredFirstInterview: hasEnteredFirstInterview,
+    );
+  }
+
+  UserBox deletePortfolio() {
+    return UserBox(
+      resume: resume, // 기존 이력서 필드 그대로
+      portfolio: null,
+      hasPracticalInterviewRecord: hasPracticalInterviewRecord,
+      isReviewRequestAvailable: isReviewRequestAvailable,
+      hasEnteredFirstInterview: hasEnteredFirstInterview,
     );
   }
 }

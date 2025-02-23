@@ -24,10 +24,10 @@ class ResumeInfo extends _$ResumeInfo {
   }
 
   ///
+  /// TODO: 임시 코드 (yundal)
   /// 저장하기 버튼 활성화 조건
   ///
   bool isStateChanged() {
-    // 임시 코드
     return true;
   }
 
@@ -48,15 +48,24 @@ class ResumeInfo extends _$ResumeInfo {
   /// 이력서 상태만 업데이트
   ///
   Future<void> updateResumeState(ResumeEntity? newResume) async {
-    state = state.whenData((doc) => doc?.copyWith(resume: newResume));
+    state = state.whenData((doc) {
+      if (doc == null) return null;
+
+      debugPrint('updateResumeState - newResume : $newResume');
+
+      return newResume == null
+          ? doc.deleteResume()
+          : doc.copyWith(resume: newResume);
+    });
   }
 
   ///
   /// 이력서 데이터 업데이트
   ///
   Future<void> updateResumeData(ResumeEntity? newResume) async {
-    debugPrint('newResume : ${newResume?.path}');
-    debugPrint('newResume : ${newResume?.title}');
+    debugPrint('newResume 객체 : $newResume');
+    debugPrint('newResume 경로 : ${newResume?.path}');
+    debugPrint('newResume 제목 : ${newResume?.title}');
 
     final storeResult = await userRepository.changeResumeData(newResume);
     storeResult.fold(
@@ -69,13 +78,25 @@ class ResumeInfo extends _$ResumeInfo {
   /// 포트폴리오 상태만 업데이트
   ///
   Future<void> updatePortfolioState(PortfolioEntity? newPortfolio) async {
-    state = state.whenData((doc) => doc?.copyWith(portfolio: newPortfolio));
+    state = state.whenData((doc) {
+      if (doc == null) return null;
+
+      debugPrint('updateResumeState - newPortfolio : $newPortfolio');
+
+      return newPortfolio == null
+          ? doc.deletePortfolio()
+          : doc.copyWith(portfolio: newPortfolio);
+    });
   }
 
   ///
   /// 포트폴리오 데이터 업데이트
   ///
   Future<void> updatePortfolioData(PortfolioEntity? newPortfolio) async {
+    debugPrint('newPortfolio 객체 : $newPortfolio');
+    debugPrint('newPortfolio 경로 : ${newPortfolio?.path}');
+    debugPrint('newPortfolio 제목 : ${newPortfolio?.title}');
+
     final storeResult = await userRepository.changePortfolioData(newPortfolio);
     storeResult.fold(
       onSuccess: (_) => null,
