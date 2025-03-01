@@ -4,10 +4,12 @@ import 'package:techtalk/features/user/repositories/entities/resume_entity.dart'
 final class DocumentEntity {
   final ResumeEntity? resume;
   final PortfolioEntity? portfolio;
+  bool isFileChanged; // 파일을 새로 업로드하거나 기존 파일을 삭제한 경우
 
-  const DocumentEntity({
+  DocumentEntity({
     required this.resume,
     required this.portfolio,
+    this.isFileChanged = false,
   });
 
   bool get hasFetchedAnyDocuments => resume != null || portfolio != null;
@@ -15,10 +17,12 @@ final class DocumentEntity {
   DocumentEntity copyWith({
     ResumeEntity? resume,
     PortfolioEntity? portfolio,
+    bool? isFileChanged,
   }) {
     return DocumentEntity(
       resume: resume ?? this.resume,
       portfolio: portfolio ?? this.portfolio,
+      isFileChanged: isFileChanged ?? this.isFileChanged,
     );
   }
 
@@ -26,6 +30,7 @@ final class DocumentEntity {
     return DocumentEntity(
       resume: null,
       portfolio: portfolio,
+      isFileChanged: true,
     );
   }
 
@@ -33,6 +38,7 @@ final class DocumentEntity {
     return DocumentEntity(
       resume: resume,
       portfolio: null,
+      isFileChanged: true,
     );
   }
 }

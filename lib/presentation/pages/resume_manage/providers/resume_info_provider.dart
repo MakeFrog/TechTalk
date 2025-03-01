@@ -1,9 +1,8 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/rendering.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/user/repositories/entities/document_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
+import 'package:techtalk/features/user/repositories/enums/document_type.enum.dart';
 import 'package:techtalk/features/user/user.dart';
 
 part 'resume_info_provider.g.dart';
@@ -12,7 +11,6 @@ part 'resume_info_provider.g.dart';
 class ResumeInfo extends _$ResumeInfo {
   @override
   FutureOr<DocumentEntity?> build() async {
-    /// 로컬에서 DocumentEntity 불러오기
     final result = await userRepository.loadDocumentData();
 
     final doc = result.fold(
@@ -24,11 +22,11 @@ class ResumeInfo extends _$ResumeInfo {
   }
 
   ///
-  /// TODO: 임시 코드 (yundal)
-  /// 저장하기 버튼 활성화 조건
+  /// 저장하기 버튼 활성화 기준
   ///
-  bool isStateChanged() {
-    return true;
+  bool isFileChanged() {
+    final doc = state.valueOrNull;
+    return doc?.isFileChanged ?? false;
   }
 
   ///
@@ -45,17 +43,31 @@ class ResumeInfo extends _$ResumeInfo {
   }
 
   ///
-  /// 이력서 상태만 업데이트
+  /// 이력서, 포트폴리오 상태 업데이트
   ///
-  Future<void> updateResumeState(ResumeEntity? newResume) async {
+  Future<void> updateDocumentState(DocumentType type, dynamic newData) async {
     state = state.whenData((doc) {
       if (doc == null) return null;
 
-      debugPrint('updateResumeState - newResume : $newResume');
+      doc.isFileChanged = true;
 
-      return newResume == null
-          ? doc.deleteResume()
-          : doc.copyWith(resume: newResume);
+      // 이력서 상태 업데이트
+      if (type == DocumentType.resume) {
+        ResumeEntity? newResume = newData as ResumeEntity?;
+
+        return newResume == null
+            ? doc.deleteResume()
+            : doc.copyWith(resume: newResume);
+      }
+
+      // 포트폴리오 상태 업데이트
+      else {
+        PortfolioEntity? newPortfolio = newData as PortfolioEntity?;
+
+        return newPortfolio == null
+            ? doc.deletePortfolio()
+            : doc.copyWith(portfolio: newPortfolio);
+      }
     });
   }
 
@@ -63,10 +75,6 @@ class ResumeInfo extends _$ResumeInfo {
   /// 이력서 데이터 업데이트
   ///
   Future<void> updateResumeData(ResumeEntity? newResume) async {
-    debugPrint('newResume 객체 : $newResume');
-    debugPrint('newResume 경로 : ${newResume?.path}');
-    debugPrint('newResume 제목 : ${newResume?.title}');
-
     final storeResult = await userRepository.changeResumeData(newResume);
     storeResult.fold(
       onSuccess: (_) => null,
@@ -75,28 +83,9 @@ class ResumeInfo extends _$ResumeInfo {
   }
 
   ///
-  /// 포트폴리오 상태만 업데이트
-  ///
-  Future<void> updatePortfolioState(PortfolioEntity? newPortfolio) async {
-    state = state.whenData((doc) {
-      if (doc == null) return null;
-
-      debugPrint('updateResumeState - newPortfolio : $newPortfolio');
-
-      return newPortfolio == null
-          ? doc.deletePortfolio()
-          : doc.copyWith(portfolio: newPortfolio);
-    });
-  }
-
-  ///
   /// 포트폴리오 데이터 업데이트
   ///
   Future<void> updatePortfolioData(PortfolioEntity? newPortfolio) async {
-    debugPrint('newPortfolio 객체 : $newPortfolio');
-    debugPrint('newPortfolio 경로 : ${newPortfolio?.path}');
-    debugPrint('newPortfolio 제목 : ${newPortfolio?.title}');
-
     final storeResult = await userRepository.changePortfolioData(newPortfolio);
     storeResult.fold(
       onSuccess: (_) => null,
@@ -105,16 +94,21 @@ class ResumeInfo extends _$ResumeInfo {
   }
 
   ///
-  /// 상태 초기화
+  /// 실제 저장 로직(Repository 호출)을 모아서 수행하고,
+  /// 저장이 완료되면 _isFileChanged = false 로 변경
   ///
-  Future<void> resetState() async {
-    state = state.whenData((doc) {
-      final newDoc = doc?.copyWith(
-            resume: ResumeEntity(),
-            portfolio: PortfolioEntity(),
-          ) ??
-          DocumentEntity(resume: ResumeEntity(), portfolio: PortfolioEntity());
-      return newDoc;
-    });
+  Future<void> saveCurrentDocumentState() async {
+    final doc = state.valueOrNull;
+    if (doc == null) return;
+
+    final currentResume = doc.resume;
+    final currentPortfolio = doc.portfolio;
+
+    // 각각 서버나 로컬에 저장
+    await updateResumeData(currentResume);
+    await updatePortfolioData(currentPortfolio);
+
+    // 모든 저장 로직이 끝나면 다시 파일 변경 false
+    doc.isFileChanged = false;
   }
 }

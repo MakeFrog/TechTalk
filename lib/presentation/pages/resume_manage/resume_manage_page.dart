@@ -25,8 +25,6 @@ class ResumeManagePage extends BasePage
   Widget buildPage(BuildContext context, WidgetRef ref) {
     // TODO: 여기서 ref.watch로 인해 무엇이 불필요하게 빌드되는지 궁금 (yundal)
     final data = ref.watch(resumeInfoProvider);
-    final isStateChanged =
-        ref.read(resumeInfoProvider.notifier).isStateChanged();
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -49,7 +47,7 @@ class ResumeManagePage extends BasePage
               BounceTapper(
                 child: FilledButton(
                   onPressed:
-                      isStateChanged ? () => onClickedSaveBtn(ref) : null,
+                      isFileChanged(ref) ? () => onClickedSaveBtn(ref) : null,
                   child: Center(
                     child: Text(
                       context.tr(LocaleKeys.common_save),

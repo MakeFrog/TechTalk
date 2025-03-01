@@ -66,11 +66,7 @@ mixin class ResumeManageEvent {
         leftBtnContent: '취소',
         rightBtnContent: '삭제',
         onRightBtnClicked: () {
-          if (type == DocumentType.resume) {
-            resumeInfo.updateResumeState(null);
-          } else {
-            resumeInfo.updatePortfolioState(null);
-          }
+          resumeInfo.updateDocumentState(type, null);
           ref.context.pop();
         },
         onLeftBtnClicked: () => ref.context.pop(),
@@ -112,21 +108,21 @@ mixin class ResumeManageEvent {
 
         /// 상태 업데이트
         if (type == DocumentType.resume) {
-          await resumeInfo.updateResumeState(
-            ResumeEntity(
-              path: filePath,
-              title: fileTitle,
-              uploadAt: fileUploadAt,
-            ),
+          final resume = ResumeEntity(
+            path: filePath,
+            title: fileTitle,
+            uploadAt: fileUploadAt,
           );
+
+          await resumeInfo.updateDocumentState(type, resume);
         } else {
-          await resumeInfo.updatePortfolioState(
-            PortfolioEntity(
-              path: filePath,
-              title: fileTitle,
-              uploadAt: fileUploadAt,
-            ),
+          final portfolio = PortfolioEntity(
+            path: filePath,
+            title: fileTitle,
+            uploadAt: fileUploadAt,
           );
+
+          await resumeInfo.updateDocumentState(type, portfolio);
         }
       }
     } catch (e) {
@@ -260,15 +256,9 @@ mixin class ResumeManageEvent {
   /// 저장하기 버튼 클릭시
   ///
   Future<void> onClickedSaveBtn(WidgetRef ref) async {
-    // 1) 현재 state를 가져온다.
     final resumeInfo = ref.read(resumeInfoProvider.notifier);
-
-    final currentResume = ref.read(resumeInfoProvider).requireValue!.resume;
-    final currentPortfolio =
-        ref.read(resumeInfoProvider).requireValue!.portfolio;
-
-    await resumeInfo.updateResumeData(currentResume);
-    await resumeInfo.updatePortfolioData(currentPortfolio);
+    // resumeInfo 내부에 실제 저장 로직을 담당하는 메서드를 만들어두었으므로 호출만 한다.
+    await resumeInfo.saveCurrentDocumentState();
 
     debugPrint('저장이 완료되었습니다');
   }

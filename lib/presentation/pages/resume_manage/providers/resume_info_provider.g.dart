@@ -6,7 +6,7 @@ part of 'resume_info_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$resumeInfoHash() => r'7622aebd116a4ef02e3aa7500684eda6da039018';
+String _$resumeInfoHash() => r'63193e8155ab8527bd0aa2f813acd62de64406da';
 
 /// See also [ResumeInfo].
 @ProviderFor(ResumeInfo)

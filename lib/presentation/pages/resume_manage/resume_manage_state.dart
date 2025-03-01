@@ -19,5 +19,12 @@ mixin class ResumeManageState {
   ///
   /// 이력서 데이터 유무 판별
   ///
-  bool hasData(WidgetRef ref) => ref.read(resumeInfoProvider.notifier).hasData();
+  bool hasData(WidgetRef ref) =>
+      ref.read(resumeInfoProvider.notifier).hasData();
+
+  ///
+  /// 저장하기 버튼 활성화 기준
+  ///
+  bool isFileChanged(WidgetRef ref) =>
+      ref.read(resumeInfoProvider.notifier).isFileChanged();
 }
