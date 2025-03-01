@@ -27,4 +27,10 @@ mixin class ResumeManageState {
   ///
   bool isFileChanged(WidgetRef ref) =>
       ref.read(resumeInfoProvider.notifier).isFileChanged();
+
+  ///
+  /// 툴팁 활성화 기준
+  ///
+  bool showTooltip(WidgetRef ref) =>
+      ref.read(resumeInfoProvider).requireValue?.shouldShowTooltip == true;
 }

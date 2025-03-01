@@ -40,10 +40,12 @@ class ResumeManagePage extends BasePage
           /// 저장 버튼
           Column(
             children: [
-              // if (showTooltip) ...[
-              //   SvgPicture.asset(Assets.iconsOneMoreAddTooltip),
-              //   const Gap(8),
-              // ],
+              // if 문으로 조건 처리
+              if (showTooltip(ref)) ...[
+                // 툴팁 UI 표시
+                SvgPicture.asset(Assets.iconsOneMoreAddTooltip),
+                const Gap(8),
+              ],
               BounceTapper(
                 child: FilledButton(
                   onPressed:
