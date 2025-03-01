@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:developer';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -10,7 +8,6 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
-import 'package:techtalk/features/chat/repositories/enums/resume_question_type.enum.dart';
 import 'package:techtalk/features/chat/use_cases/create_resume_question_use_case.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/practical_chat_room_list_provider.dart';
 import 'package:techtalk/presentation/pages/resume_manage/providers/resume_info_provider.dart';
@@ -261,20 +258,5 @@ Postman, GitHub, Figma, Jira, Slack.
   ///
   void routeToResumeUploadPage(WidgetRef ref) {
     const ResumeUploadRoute().push(ref.context);
-  }
-
-  ///
-  /// 이력서 면접 버튼 클릭시
-  ///
-  void onResumeInterviewBtnClicked(WidgetRef ref) {
-    final hasData = ref.read(resumeInfoProvider.notifier).hasData();
-    if (hasData) {
-      routeToResumeRegistGuidePage(ref);
-    } else {
-      // 바로 이력서 업로드 페이지로 이동
-      routeToResumeUploadPage(ref);
-    }
-    // TODO: 면접 시작시 적용하기(yundal)
-    // routeToResumeChatList(ref);
   }
 }

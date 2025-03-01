@@ -8,7 +8,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/presentation/pages/resume_manage/providers/resume_info_provider.dart';
 import 'package:techtalk/presentation/pages/resume_manage/resume_manage_event.dart';
 import 'package:techtalk/presentation/pages/resume_manage/resume_manage_state.dart';
 import 'package:techtalk/presentation/pages/resume_manage/widgets/resume_card.dart';
@@ -23,17 +22,16 @@ class ResumeManagePage extends BasePage
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
-    // TODO: 여기서 ref.watch로 인해 무엇이 불필요하게 빌드되는지 궁금 (yundal)
-    final data = ref.watch(resumeInfoProvider);
-
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
           buildGuideText(),
 
-          ResumeCard.resume(resume: data.requireValue!.resume),
-          ResumeCard.portfolio(portfolio: data.requireValue!.portfolio),
+          ResumeCard.resume(resume: resumeAsync(ref).requireValue!.resume),
+          ResumeCard.portfolio(
+            portfolio: resumeAsync(ref).requireValue!.portfolio,
+          ),
 
           const Spacer(),
 

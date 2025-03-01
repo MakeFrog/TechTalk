@@ -250,101 +250,117 @@ mixin class ResumeManageEvent {
   /// 이력서 프롬프팅 뽑아내기
   ///
   Future<void> startResumeInterview(WidgetRef ref) async {
-    // TODO: Gemini로 업로드하는 로직도 구현해보기 (yundal)
+    // 일단 로딩중 페이지 이동
+    // TODO: 애니메이션 넣어야함 (yundal)
+    routeToResumeInterviewLoadingPage(ref);
+
+    // 이력서 업로드 페이지에서 올린 파일 저장하기
+    await onClickedSaveBtn(ref);
+
+    // GEMENI로 이력서 업로드 로직 구현 vs PDF to TXT
+    // 1) GEMINI
+    
+
+
+    // 2) await extractPdfToTxt(localResumePath); await extractPdfToTxt(localPortfolioPath);
+
+    // 프롬프팅
+    // await testSetAiResumeQuestionUseCase(
+    //   resumeContent,
+    //   portfolioContent,
+    // );
 
     // 완료시 다음 페이지 이동
     routeToResumeChatList(ref);
   }
 
   ///
-  /// TODO: 250301 작업중 (윤수)
   /// 저장하기 버튼 클릭시
   ///
-Future<void> onClickedSaveBtn(WidgetRef ref) async {
-  await EasyLoading.show();
+  Future<void> onClickedSaveBtn(WidgetRef ref) async {
+    await EasyLoading.show();
 
-  // 1. 현재 문서 Entity 조회
-  final state = ref.read(resumeInfoProvider);
-  final doc = state.requireValue; 
-  if (doc == null) {
-    debugPrint('문서 정보가 존재하지 않습니다.');
+    // 1. 현재 문서 Entity 조회
+    final state = ref.read(resumeInfoProvider);
+    final doc = state.requireValue;
+    if (doc == null) {
+      debugPrint('문서 정보가 존재하지 않습니다.');
+      await EasyLoading.dismiss();
+      return;
+    }
+
+    // 2. 디렉토리 준비 (임시 디렉토리, 영구 디렉토리)
+    final Directory tempDir = await getTemporaryDirectory();
+    final Directory permanentDir = await getApplicationDocumentsDirectory();
+
+    // 이력서, 포트폴리오 임시 참조
+    final tempResume = doc.resume;
+    final tempPortfolio = doc.portfolio;
+
+    // 3. 이력서 임시 경로 → 영구 경로 복사
+    if (tempResume != null && tempResume.path != null) {
+      // 임시 디렉토리에 있는지 확인
+      if (tempResume.path!.startsWith(tempDir.path)) {
+        final String? fileName = tempResume.title; // 확장자 없는 파일명
+        final String newResumePath = '${permanentDir.path}/$fileName.pdf';
+
+        try {
+          // (1) 파일 복사
+          await File(tempResume.path!).copy(newResumePath);
+          // (2) 임시 파일 삭제
+          await File(tempResume.path!).delete();
+
+          // (3) 새로운 ResumeEntity 생성
+          final updatedResume = ResumeEntity(
+            path: newResumePath,
+            title: tempResume.title,
+            uploadAt: tempResume.uploadAt,
+          );
+
+          // (4) resumeInfoProvider의 상태 업데이트
+          await ref
+              .read(resumeInfoProvider.notifier)
+              .updateDocumentState(DocumentType.resume, updatedResume);
+        } catch (e) {
+          debugPrint('이력서 영구 경로 이동 실패: $e');
+        }
+      }
+    }
+
+    // 4. 포트폴리오 임시 경로 → 영구 경로 복사
+    if (tempPortfolio != null && tempPortfolio.path != null) {
+      if (tempPortfolio.path!.startsWith(tempDir.path)) {
+        final String? fileName = tempPortfolio.title;
+        final String newPortfolioPath = '${permanentDir.path}/$fileName.pdf';
+
+        try {
+          await File(tempPortfolio.path!).copy(newPortfolioPath);
+          await File(tempPortfolio.path!).delete();
+
+          final updatedPortfolio = PortfolioEntity(
+            path: newPortfolioPath,
+            title: tempPortfolio.title,
+            uploadAt: tempPortfolio.uploadAt,
+          );
+
+          await ref
+              .read(resumeInfoProvider.notifier)
+              .updateDocumentState(DocumentType.portfolio, updatedPortfolio);
+        } catch (e) {
+          debugPrint('포트폴리오 영구 경로 이동 실패: $e');
+        }
+      }
+    }
+
+    // 5. 최종 저장 로직 호출 (내부적으로 서버/로컬 DB에 반영)
+    await ref.read(resumeInfoProvider.notifier).saveCurrentDocumentState();
+
+    // 6. UI 처리 (화면 닫기, 로딩 종료 등)
+    ref.context.pop();
+    SnackBarService.showSnackBar('저장이 완료되었습니다.');
+    debugPrint('저장이 완료되었습니다');
     await EasyLoading.dismiss();
-    return;
   }
-
-  // 2. 디렉토리 준비 (임시 디렉토리, 영구 디렉토리)
-  final Directory tempDir = await getTemporaryDirectory();
-  final Directory permanentDir = await getApplicationDocumentsDirectory();
-
-  // 이력서, 포트폴리오 임시 참조
-  final tempResume = doc.resume;
-  final tempPortfolio = doc.portfolio;
-
-  // 3. 이력서 임시 경로 → 영구 경로 복사
-  if (tempResume != null && tempResume.path != null) {
-    // 임시 디렉토리에 있는지 확인
-    if (tempResume.path!.startsWith(tempDir.path)) {
-      final String? fileName = tempResume.title; // 확장자 없는 파일명
-      final String newResumePath = '${permanentDir.path}/$fileName.pdf';
-
-      try {
-        // (1) 파일 복사
-        await File(tempResume.path!).copy(newResumePath);
-        // (2) 임시 파일 삭제
-        await File(tempResume.path!).delete();
-
-        // (3) 새로운 ResumeEntity 생성
-        final updatedResume = ResumeEntity(
-          path: newResumePath,
-          title: tempResume.title,
-          uploadAt: tempResume.uploadAt,
-        );
-
-        // (4) resumeInfoProvider의 상태 업데이트
-        await ref
-            .read(resumeInfoProvider.notifier)
-            .updateDocumentState(DocumentType.resume, updatedResume);
-      } catch (e) {
-        debugPrint('이력서 영구 경로 이동 실패: $e');
-      }
-    }
-  }
-
-  // 4. 포트폴리오 임시 경로 → 영구 경로 복사
-  if (tempPortfolio != null && tempPortfolio.path != null) {
-    if (tempPortfolio.path!.startsWith(tempDir.path)) {
-      final String? fileName = tempPortfolio.title;
-      final String newPortfolioPath = '${permanentDir.path}/$fileName.pdf';
-
-      try {
-        await File(tempPortfolio.path!).copy(newPortfolioPath);
-        await File(tempPortfolio.path!).delete();
-
-        final updatedPortfolio = PortfolioEntity(
-          path: newPortfolioPath,
-          title: tempPortfolio.title,
-          uploadAt: tempPortfolio.uploadAt,
-        );
-
-        await ref
-            .read(resumeInfoProvider.notifier)
-            .updateDocumentState(DocumentType.portfolio, updatedPortfolio);
-      } catch (e) {
-        debugPrint('포트폴리오 영구 경로 이동 실패: $e');
-      }
-    }
-  }
-
-  // 5. 최종 저장 로직 호출 (내부적으로 서버/로컬 DB에 반영)
-  await ref.read(resumeInfoProvider.notifier).saveCurrentDocumentState();
-
-  // 6. UI 처리 (화면 닫기, 로딩 종료 등)
-  ref.context.pop();
-  SnackBarService.showSnackBar('저장이 완료되었습니다.');
-  debugPrint('저장이 완료되었습니다');
-  await EasyLoading.dismiss();
-}
-
 
   ///
   /// 미리보기 버튼 클릭시
