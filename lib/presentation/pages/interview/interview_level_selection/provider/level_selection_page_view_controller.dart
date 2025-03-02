@@ -8,7 +8,7 @@ class LevelSelectionPageViewController
     extends _$LevelSelectionPageViewController {
   @override
   Raw<PageController> build() {
-    final controller = PageController();
+    final controller = PageController(initialPage: 1);
     ref.onDispose(controller.dispose);
     return controller;
   }
