@@ -1,15 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
-import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
@@ -90,6 +86,16 @@ mixin class HomeEvent {
     ref
         .read(mainBottomNavigationProvider.notifier)
         .changeTab(MainNavigationTab.youtube);
+  }
+
+  ///
+  /// AI 면접 카드가 탭 되었을 때
+  ///
+  void onAiInterviewCardTapped(WidgetRef ref) {
+    InterviewLevelSelectionRoute().push(ref.context);
+
+    return;
+    SearchTechSet().push(ref.context);
   }
 
   ///

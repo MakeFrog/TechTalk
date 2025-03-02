@@ -25,13 +25,10 @@ class AiInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
           ? tr(LocaleKeys.home_practicalInterviewDesc)
           : null,
       onCardTapped: () {
-        onPracticalCardTapped(ref);
+        onAiInterviewCardTapped(ref);
       },
       onPlusSuffixedBtnTapped: () {
-        routeToTopicSelectPage(
-          context,
-          type: InterviewType.commonPracticalTopic,
-        );
+        onAiInterviewCardTapped(ref);
       },
     );
   }

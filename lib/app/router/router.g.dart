@@ -105,6 +105,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $ProfileSettingRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: 'search-tech-set',
+          name: 'search-tech-set',
+          factory: $SearchTechSetExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'job-group-setting',
           name: 'job-group-setting',
           factory: $JobGroupSettingRouteExtension._fromState,
@@ -128,6 +133,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           path: 'contents-main-list',
           name: 'contents-main-list',
           factory: $YoutubeContentsMainListRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'interview-level-selection',
+          name: 'interview-level-selection',
+          factory: $InterviewLevelSelectionRouteExtension._fromState,
         ),
         GoRouteData.$route(
           path: 'youtube-detail/:contentId',
@@ -224,6 +234,7 @@ extension $InterviewTopicSelectRouteExtension on InterviewTopicSelectRoute {
 const _$InterviewTypeEnumMap = {
   InterviewType.commonSingleTopic: 'common-single-topic',
   InterviewType.commonPracticalTopic: 'common-practical-topic',
+  InterviewType.ai: 'ai',
   InterviewType.resume: 'resume',
   InterviewType.youtube: 'youtube',
 };
@@ -256,6 +267,23 @@ extension $ProfileSettingRouteExtension on ProfileSettingRoute {
 
   String get location => GoRouteData.$location(
         '/profile-setting',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $SearchTechSetExtension on SearchTechSet {
+  static SearchTechSet _fromState(GoRouterState state) => SearchTechSet();
+
+  String get location => GoRouteData.$location(
+        '/search-tech-set',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -350,6 +378,25 @@ extension $YoutubeContentsMainListRouteExtension
 
   String get location => GoRouteData.$location(
         '/contents-main-list',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $InterviewLevelSelectionRouteExtension
+    on InterviewLevelSelectionRoute {
+  static InterviewLevelSelectionRoute _fromState(GoRouterState state) =>
+      InterviewLevelSelectionRoute();
+
+  String get location => GoRouteData.$location(
+        '/interview-level-selection',
       );
 
   void go(BuildContext context) => context.go(location);

@@ -30,6 +30,7 @@ class Assets {
   static const String characterRed05 = 'assets/character/red_05.svg';
   static const String characterRed06 = 'assets/character/red_06.svg';
   static const String characterRed07 = 'assets/character/red_07.svg';
+  static const String iconsAdvancedIllust = 'assets/icons/advanced_illust.svg';
   static const String iconsAiInterviewLogo =
       'assets/icons/ai_interview_logo.svg';
   static const String iconsAlarm = 'assets/icons/alarm.svg';
@@ -44,6 +45,7 @@ class Assets {
   static const String iconsArrowUp = 'assets/icons/arrow_up.svg';
   static const String iconsArrowUpThick = 'assets/icons/arrow_up_thick.svg';
   static const String iconsAvatar1 = 'assets/icons/avatar_1.svg';
+  static const String iconsBeginnerIllust = 'assets/icons/beginner_illust.svg';
   static const String iconsBoomark = 'assets/icons/boomark.svg';
   static const String iconsBullet = 'assets/icons/bullet.svg';
   static const String iconsCamera = 'assets/icons/camera.svg';
@@ -76,6 +78,8 @@ class Assets {
       'assets/icons/icon_app_bar_left.svg';
   static const String iconsIconMic = 'assets/icons/icon_mic.svg';
   static const String iconsIncorrect = 'assets/icons/incorrect.svg';
+  static const String iconsIntermediateIllust =
+      'assets/icons/intermediate_illust.svg';
   static const String iconsMenuThick = 'assets/icons/menu_thick.svg';
   static const String iconsMistakeNoteIllust =
       'assets/icons/mistake_note_illust.svg';

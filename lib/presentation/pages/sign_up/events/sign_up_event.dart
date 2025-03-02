@@ -10,6 +10,7 @@ import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/core/modules/regex/app_validator.dart';
 import 'package:techtalk/core/services/slack_notification_service.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
