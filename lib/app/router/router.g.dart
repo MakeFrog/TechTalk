@@ -428,8 +428,8 @@ extension $ResumeRegistGuideRouteExtension on ResumeRegistGuideRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $ResumeUploadRouteExtension on ResumeUploadRoute {
-  static ResumeUploadRoute _fromState(GoRouterState state) => ResumeUploadRoute(
+extension $ResumeUploadRouteExtension on ResumeInterviewRoute {
+  static ResumeInterviewRoute _fromState(GoRouterState state) => ResumeInterviewRoute(
         _$InterviewTypeEnumMap._$fromName(state.uri.queryParameters['type']!),
       );
 

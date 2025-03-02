@@ -102,6 +102,7 @@ dependencies:
   read_pdf_text: ^0.2.3
   pdf_gemini: ^0.0.3 # pdf 첨부시 gemini로 프롬프팅
   lottie: ^3.2.0
+  path: ^1.9.0
 
 
 dev_dependencies:

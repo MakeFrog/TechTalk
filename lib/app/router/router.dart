@@ -188,9 +188,9 @@ class SignUpRoute extends GoRouteData {
       path: ResumeRegistGuideRoute.path,
       name: ResumeRegistGuideRoute.name,
     ),
-    TypedGoRoute<ResumeUploadRoute>(
-      path: ResumeUploadRoute.path,
-      name: ResumeUploadRoute.name,
+    TypedGoRoute<ResumeInterviewRoute>(
+      path: ResumeInterviewRoute.path,
+      name: ResumeInterviewRoute.name,
     ),
     TypedGoRoute<ResumeInterviewLoadingRoute>(
       path: ResumeInterviewLoadingRoute.path,
@@ -422,8 +422,8 @@ class ResumeRegistGuideRoute extends GoRouteData {
   }
 }
 
-class ResumeUploadRoute extends GoRouteData {
-  const ResumeUploadRoute(this.type);
+class ResumeInterviewRoute extends GoRouteData {
+  const ResumeInterviewRoute(this.type);
 
   static const String path = 'resume-upload';
   static const String name = 'resume upload';

@@ -20,7 +20,7 @@ import 'package:techtalk/features/user/repositories/enums/resume_setting_type.en
 import 'package:techtalk/presentation/pages/resume/providers/resume_info_provider.dart';
 import 'package:techtalk/presentation/pages/resume/resume_manage_page.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
-
+import 'package:path/path.dart' as p;
 
 mixin class ResumeManageEvent {
   ///
@@ -87,9 +87,6 @@ mixin class ResumeManageEvent {
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['pdf'],
-
-        /// ▶ 필요에 따라 withData: true를 쓸 수도 있으나,
-        ///   파일이 클 경우 메모리를 많이 먹을 수 있음
       );
       if (result == null || result.files.isEmpty) return;
 
@@ -98,23 +95,23 @@ mixin class ResumeManageEvent {
 
       final pickedFile = File(pickedPath);
 
-      // 1) 용량 초과 체크
+      // 용량 초과 체크
       if (pickedFile.lengthSync() > maxFileSizeInBytes) {
         exceedCapacityDialog(ref);
         return;
       }
 
-      // 2) 임시 파일명, 예: 실제 파일명+timestamp 등
+      // 임시 파일명
       final fileTitle = result.files.single.name
           .replaceAll(RegExp(r'\.pdf$', caseSensitive: false), '');
       final fileUploadAt = DateFormat('yyyy.MM.dd').format(DateTime.now());
 
-      // 3) 앱 내부(또는 임시) 디렉토리로 복사
+      // 앱 내부(또는 임시) 디렉토리로 복사
       final Directory appDocDir = await getApplicationDocumentsDirectory();
       final targetPath = '${appDocDir.path}/$fileTitle.pdf';
       final localCopied = await pickedFile.copy(targetPath);
 
-      // 4) Resume(또는 Portfolio) Entity 생성
+      // Entity 생성
       final resumeInfoNotifier = ref.read(resumeInfoProvider.notifier);
 
       if (type == DocumentType.resume) {
@@ -133,7 +130,7 @@ mixin class ResumeManageEvent {
         await resumeInfoNotifier.updateDocumentState(type, portfolio);
       }
 
-      // 5) 추가적인 UI 표시
+      // 추가적인 UI 표시
       await ref.read(resumeInfoProvider.notifier).showTooltip();
     } catch (e, s) {
       debugPrint('파일 등록 중 오류 발생: $e\n$s');
@@ -165,7 +162,7 @@ mixin class ResumeManageEvent {
   /// 이력서 면접 - 업로드 페이지로 이동
   ///
   void routeToResumeUploadPage(WidgetRef ref) {
-    const ResumeUploadRoute(InterviewType.resume).push(ref.context);
+    const ResumeInterviewRoute(InterviewType.resume).push(ref.context);
   }
 
   ///
@@ -246,7 +243,7 @@ mixin class ResumeManageEvent {
   /// 이력서 면접 시작 (프롬프팅)
   ///
   Future<void> startResumeInterview(WidgetRef ref) async {
-    // (1) 이력서 파일 자체가 없는 경우
+    // 이력서 파일 자체가 없는 경우
     final doc = ref.read(resumeInfoProvider).requireValue;
     if ((doc?.resume?.path?.isEmpty ?? true) &&
         (doc?.portfolio?.path?.isEmpty ?? true)) {
@@ -254,15 +251,15 @@ mixin class ResumeManageEvent {
       return; // 조기 종료
     }
 
-    // (2) 로딩 중 페이지로 먼저 이동
+    // 로딩 중 페이지로 먼저 이동
     routeToResumeInterviewLoadingPage(ref);
 
-    // (3) PDF 저장
+    // PDF 저장
     await saveDocuments(ref);
 
     final DateTime startTime = DateTime.now();
 
-    // (4) 질문 생성 유즈케이스 실행
+    // 질문 생성 유즈케이스 실행
     final router = GoRouter.of(ref.context);
     final useCase = CreateResumeQuestionUseCase();
     final param = (
@@ -278,10 +275,9 @@ mixin class ResumeManageEvent {
           // 생성 가능한 질문 개수가 적은 경우 - 3개 미만
           if (qnaList.length < 3) {
             debugPrint('[에러] 생성 가능한 질문의 수가 너무 적습니다. (현재: ${qnaList.length}개)');
-            return; // 조기 종료
+            return;
           }
 
-          // 여기까지 통과하면 정상 진행
           debugPrint("Gemini AI 질문 생성 성공, 총 ${qnaList.length}개");
           final mapped = qnaList
               .map(
@@ -297,7 +293,7 @@ mixin class ResumeManageEvent {
           debugPrint("==== 면접 질문 결과 ====");
           debugPrint(prettyJson);
 
-          // 2-3) 채팅방 구성 후 이동
+          // 채팅방 구성 후 이동
           final room = ChatRoomEntity.generateResumeInterview(qnas: qnaList);
           final route = ChatPageRoute(roomId: room.id, type: room.type);
           route.updateArg(room: room);
@@ -308,7 +304,7 @@ mixin class ResumeManageEvent {
         },
       );
 
-      // (5) 종료 시각 기록
+      // 종료 시각 기록
       final DateTime endTime = DateTime.now();
       final duration = endTime.difference(startTime).inMilliseconds;
       debugPrint('===== 프롬프트 출력 시간: $duration ms =====');
@@ -316,5 +312,32 @@ mixin class ResumeManageEvent {
       debugPrint("[에러] AI 질문 생성 도중 예외 발생: $e");
       debugPrint("$s");
     }
+  }
+
+  /// 실제로 존재하는 파일 경로를 리턴하는 함수
+  /// 1) [storedPath] 자체가 존재하는지 확인
+  /// 2) 없다면 basename만 떼어 앱 내부 Documents 폴더와 합쳐 확인
+  /// 3) 둘 다 없으면 Exception
+  Future<String> getValidPath(WidgetRef ref, String storedPath) async {
+    final storedFile = File(storedPath);
+
+    // 1) 기존 절대 경로 파일이 존재하면 그대로 사용
+    if (storedFile.existsSync()) {
+      return storedPath;
+    }
+
+    // 2) 앱 내부 Documents 디렉토리를 구해 basename과 결합
+    final docDir = await getApplicationDocumentsDirectory();
+    final fileName = p.basename(storedPath); // 예) "myResume.pdf"
+    final fallbackPath = p.join(docDir.path, fileName);
+    final fallbackFile = File(fallbackPath);
+
+    if (fallbackFile.existsSync()) {
+      // Fallback 경로에 파일이 있으면 이걸 사용
+      return fallbackPath;
+    }
+
+    // 3) 둘 다 없으면 예외
+    throw Exception('파일을 찾을 수 없습니다.');
   }
 }

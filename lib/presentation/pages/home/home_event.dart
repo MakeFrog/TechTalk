@@ -257,6 +257,6 @@ mixin class HomeEvent {
   /// 이력서 등록 페이지로 이동
   ///
   void routeToResumeUploadPage(WidgetRef ref) {
-    const ResumeUploadRoute(InterviewType.resume).push(ref.context);
+    const ResumeInterviewRoute(InterviewType.resume).push(ref.context);
   }
 }

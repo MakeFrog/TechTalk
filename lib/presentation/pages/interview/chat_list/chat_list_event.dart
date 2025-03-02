@@ -45,7 +45,7 @@ mixin class ChatListEvent {
   /// 이력서 면접 업로드 페이지로 이동
   ///
   void routeToResumeUploadPage(WidgetRef ref) {
-    const ResumeUploadRoute(
+    const ResumeInterviewRoute(
       InterviewType.resume,
     ).push(ref.context);
   }
