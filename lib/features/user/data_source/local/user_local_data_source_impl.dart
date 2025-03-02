@@ -25,10 +25,6 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
 
   @override
   UserBox loadUserLocalInfo() {
-    debugPrint('===== UserLocalDataSourceImpl.loadUserLocalInfo =====');
-    debugPrint('이력서 존재한느가? : ${localUser!.resume}');
-    debugPrint('이력서 주소 : ${localUser!.resume?.resumePath}');
-
     return localUser ?? UserBox.defaultValue();
   }
 
@@ -54,10 +50,6 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
 
   @override
   Future<void> changeResumeData(ResumeEntity? newResume) async {
-    debugPrint('===== UserLocalDataSourceImpl.changeResumeData =====');
-    debugPrint('UserLocalDataSourceImpl - newResume : ${newResume?.path}');
-    debugPrint('UserLocalDataSourceImpl - newResume : ${newResume?.title}');
-
     try {
       final userLocalInfo = localUser ?? UserBox.defaultValue();
 
@@ -73,7 +65,6 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
           ),
         );
         await box.put(AppLocal.userBoxName, updatedUserBox);
-        
       }
     } catch (e, s) {
       debugPrint('[로컬] box.put 예외 발생: $e');
@@ -84,12 +75,6 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
 
   @override
   Future<void> changePortfolioData(PortfolioEntity? newPortfolio) async {
-    debugPrint('===== UserLocalDataSourceImpl.changeResumeData =====');
-    debugPrint(
-        'UserLocalDataSourceImpl - newPortfolio : ${newPortfolio?.path}');
-    debugPrint(
-        'UserLocalDataSourceImpl - newPortfolio : ${newPortfolio?.title}');
-
     try {
       final userLocalInfo = localUser ?? UserBox.defaultValue();
 

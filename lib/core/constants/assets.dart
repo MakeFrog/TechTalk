@@ -52,6 +52,7 @@ class Assets {
       'assets/icons/correct_indicator.svg';
   static const String iconsDataStructure = 'assets/icons/data_structure.svg';
   static const String iconsDeleteOrWrong = 'assets/icons/delete_or_wrong.svg';
+  static const String iconsDocuments = 'assets/icons/documents.svg';
   static const String iconsErrorIndicator = 'assets/icons/error_indicator.svg';
   static const String iconsExpansionArrowIndicator =
       'assets/icons/expansion_arrow_indicator.svg';

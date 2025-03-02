@@ -429,11 +429,15 @@ extension $ResumeRegistGuideRouteExtension on ResumeRegistGuideRoute {
 }
 
 extension $ResumeUploadRouteExtension on ResumeUploadRoute {
-  static ResumeUploadRoute _fromState(GoRouterState state) =>
-      const ResumeUploadRoute();
+  static ResumeUploadRoute _fromState(GoRouterState state) => ResumeUploadRoute(
+        _$InterviewTypeEnumMap._$fromName(state.uri.queryParameters['type']!),
+      );
 
   String get location => GoRouteData.$location(
         '/resume-upload',
+        queryParams: {
+          'type': _$InterviewTypeEnumMap[type],
+        },
       );
 
   void go(BuildContext context) => context.go(location);

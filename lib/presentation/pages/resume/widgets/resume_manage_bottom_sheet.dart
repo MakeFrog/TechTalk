@@ -1,4 +1,4 @@
-part of 'package:techtalk/presentation/pages/resume_manage/resume_manage_page.dart';
+part of 'package:techtalk/presentation/pages/resume/resume_manage_page.dart';
 
 ///
 /// 이력서 관리에만 사용되는 BottomSheet

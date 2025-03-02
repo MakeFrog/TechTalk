@@ -4,7 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/presentation/pages/resume_manage/resume_manage_event.dart';
+import 'package:techtalk/presentation/pages/resume/resume_manage_event.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 

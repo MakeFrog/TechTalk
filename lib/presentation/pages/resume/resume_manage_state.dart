@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/features/user/repositories/entities/document_entity.dart';
-import 'package:techtalk/presentation/pages/resume_manage/providers/resume_info_provider.dart';
+import 'package:techtalk/presentation/pages/resume/providers/resume_info_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:techtalk/features/user/user.dart';
 
@@ -15,12 +15,6 @@ mixin class ResumeManageState {
   ///
   AsyncValue<DocumentEntity?> resumeAsync(WidgetRef ref) =>
       ref.watch(resumeInfoProvider);
-
-  ///
-  /// 이력서 로컬 데이터 불러오기
-  ///
-  DocumentEntity loadDocumentData(WidgetRef ref) =>
-      ref.watch(resumeInfoProvider).requireValue!;
 
   ///
   /// 이력서 데이터 유무 판별

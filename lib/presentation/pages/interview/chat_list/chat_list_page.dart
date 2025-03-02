@@ -74,7 +74,7 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
               case InterviewType.commonPracticalTopic:
                 routeToTopicSelectPage(ref);
               case InterviewType.resume:
-                throw Exception('타입을 지정해주어야 합니다1');
+                routeToResumeUploadPage(ref);
             }
           },
           height: 56,
@@ -94,16 +94,26 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
   }
 
   @override
-  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
-      BackButtonAppBar(
-        title: switch (selectedInterviewType(ref)) {
-          InterviewType.commonSingleTopic => selectedTopic(ref)?.text ??
-              ref.read(selectedChatRoomProvider).singleTopic.text,
-          InterviewType.commonPracticalTopic =>
-            tr(LocaleKeys.undefined_realWorldInterview),
-          InterviewType.resume => '',
-        },
-      );
+  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) {
+    return BackButtonAppBar(
+      title: switch (selectedInterviewType(ref)) {
+        InterviewType.commonSingleTopic => selectedTopic(ref)?.text ??
+            ref.read(selectedChatRoomProvider).singleTopic.text,
+        InterviewType.commonPracticalTopic =>
+          tr(LocaleKeys.undefined_realWorldInterview),
+        InterviewType.resume => '',
+      },
+      actions: selectedInterviewType(ref).isResume
+          ? [
+              // 이력서 인터뷰일 때만 표시
+              IconButton(
+                icon: SvgPicture.asset(Assets.iconsDocuments),
+                onPressed: () => routeToResumeManagePage(ref),
+              ),
+            ]
+          : const [],
+    );
+  }
 
   @override
   bool get setBottomSafeArea => false;

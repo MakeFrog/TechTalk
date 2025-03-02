@@ -12,21 +12,9 @@ class ResumeInterviewCard extends ConsumerWidget with HomeEvent, HomeState {
   Widget build(BuildContext context, WidgetRef ref) {
     return InterviewIndicatorCard(
       title: '이력서 면접',
-      onCardTapped: () {
-        if (hasData(ref)) {
-          debugPrint('현재 데이터 존재');
-          routeToResumeUploadPage(ref);
-        } else {
-          debugPrint('현재 데이터 없음');
-          routeToResumeRegistGuidePage(ref);
-        }
-
-        // TODO: 면접 시작시 적용하기(yundal)
-        // routeToResumeChatList(ref);
-      },
-      onPlusSuffixedBtnTapped: () {
-        routeToChatListPage(context, type: InterviewType.resume);
-      },
+      onCardTapped: () =>
+          routeToChatListPage(context, type: InterviewType.resume),
+      onPlusSuffixedBtnTapped: () => routeToResumeUploadPage(ref),
       showNewBadge: true,
     );
   }

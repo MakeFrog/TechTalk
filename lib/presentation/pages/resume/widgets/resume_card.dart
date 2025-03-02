@@ -10,12 +10,13 @@ import 'package:techtalk/features/user/repositories/entities/document_base_entit
 import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/repositories/enums/document_type.enum.dart';
-import 'package:techtalk/presentation/pages/resume_manage/resume_manage_event.dart';
+import 'package:techtalk/presentation/pages/resume/resume_manage_event.dart';
+import 'package:techtalk/presentation/pages/resume/resume_manage_state.dart';
 
 ///
 /// 이력서 카드 / 포트폴리오 카드 위젯
 ///
-class ResumeCard extends ConsumerWidget with ResumeManageEvent {
+class ResumeCard extends ConsumerWidget with ResumeManageEvent, ResumeManageState {
   final DocumentType type;
   final DocumentBaseEntity doc;
 

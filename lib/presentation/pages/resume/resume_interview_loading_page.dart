@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/app/style/index.dart';
-import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
-import 'package:techtalk/presentation/pages/resume_manage/resume_manage_event.dart';
-import 'package:techtalk/presentation/pages/resume_manage/resume_manage_state.dart';
-import 'package:techtalk/presentation/widgets/base/base_page.dart';
+import 'package:techtalk/presentation/pages/resume/resume_manage_event.dart';
+import 'package:techtalk/presentation/pages/resume/resume_manage_state.dart';
+import 'package:techtalk/presentation/widgets/base/index.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
@@ -18,22 +20,46 @@ class ResumeInterviewLoadingPage extends BasePage
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
+    final lottieAnimationController = useAnimationController(
+      duration: 2.seconds,
+    );
+
+    useEffect(
+      () {
+        lottieAnimationController.loop(
+          reverse: true,
+        );
+
+        return () {};
+      },
+      [],
+    );
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                // TODO: 유저 이름 가져오기 (yundal)
-                '잠시만요,\n면접관이 이력서를 읽고 있어요',
-                style: AppTextStyle.headline2,
-              ),
-              const Gap(104),
-              Image.asset(Assets.imagesAnalyzingMan),
-            ],
+          Text(
+            '잠시만요, ${user(ref)?.nickname ?? ''}님\n면접관이 이력서를 읽고 있어요',
+            style: AppTextStyle.headline1,
           ),
+          const Gap(104),
+
+          // Lottie 크기를 지정
+          SizedBox(
+            width: double.infinity,
+            child: Lottie.asset(
+              'assets/lottie/document_loading.json',
+              controller: lottieAnimationController,
+              onLoaded: (composition) {
+                lottieAnimationController
+                  ..duration = composition.duration
+                  ..repeat();
+              },
+            ),
+          ),
+
           const Spacer(),
         ],
       ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/presentation/pages/resume_manage/resume_manage_event.dart';
+import 'package:techtalk/presentation/pages/resume/resume_manage_event.dart';
 
 class ResumePreviewPage extends HookConsumerWidget with ResumeManageEvent {
   final String previewPath;
