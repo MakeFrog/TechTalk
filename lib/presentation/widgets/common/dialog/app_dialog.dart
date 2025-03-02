@@ -17,6 +17,7 @@ class AppDialog extends Dialog {
     required this.btnText,
     required this.onBtnClicked,
     required this.title,
+    this.customAssetPath,
   }) : super(key: key);
 
   factory AppDialog.singleBtn({
@@ -41,6 +42,7 @@ class AppDialog extends Dialog {
     String? description,
     String? subTitle,
     bool? showContentImg,
+    String? customAssetPath,
     required String leftBtnContent,
     required String rightBtnContent,
     required VoidCallback onRightBtnClicked,
@@ -56,6 +58,7 @@ class AppDialog extends Dialog {
         leftBtnText: leftBtnContent,
         btnText: rightBtnContent,
         showContentImg: showContentImg,
+        customAssetPath: customAssetPath,
       );
 
   final bool isDividedBtnFormat;
@@ -67,6 +70,7 @@ class AppDialog extends Dialog {
   final String? leftBtnText;
   final String? subTitle;
   final bool? showContentImg;
+  final String? customAssetPath;
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +144,7 @@ class AppDialog extends Dialog {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: SvgPicture.asset(
-                  Assets.imagesWelcomeTechtalk,
+                  customAssetPath ?? Assets.imagesWelcomeTechtalk,
                 ),
               ),
 

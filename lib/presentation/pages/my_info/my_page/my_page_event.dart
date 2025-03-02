@@ -23,11 +23,10 @@ import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 mixin class MyPageEvent {
-
   ///
   /// 알럼 활성화 스위치 버튼이 클릭 되었을 때
   ///
-  void onNotificationSwitchBtnTapped(WidgetRef ref){
+  void onNotificationSwitchBtnTapped(WidgetRef ref) {
     ref.read(notificationStatusProvider.notifier).toggle();
   }
 
@@ -72,7 +71,11 @@ mixin class MyPageEvent {
         rightBtnContent: tr(LocaleKeys.myInfo_others_logout),
         showContentImg: false,
         onRightBtnClicked: () {
-          unawaited(noti.SlackNotificationService.sendNotification(type: SlackNotificationType.logOut));
+          unawaited(
+            noti.SlackNotificationService.sendNotification(
+              type: SlackNotificationType.logOut,
+            ),
+          );
           _clearKeepAliveModules(ref);
           const SignInRoute().go(ref.context);
         },
@@ -115,14 +118,18 @@ mixin class MyPageEvent {
           await EasyLoading.show();
           final response = await resignUserInfoUseCase
               .call(ref.read(userInfoProvider).requireValue!);
-          unawaited(noti.SlackNotificationService.sendNotification(
-              type: SlackNotificationType.withdraw));
+          unawaited(
+            noti.SlackNotificationService.sendNotification(
+              type: SlackNotificationType.withdraw,
+            ),
+          );
           response.fold(
             onSuccess: (_) {
               _clearKeepAliveModules(ref);
               const SignInRoute().go(ref.context);
               SnackBarService.showSnackBar(
-                  tr(LocaleKeys.undefined_resignSuccess));
+                tr(LocaleKeys.undefined_resignSuccess),
+              );
               EasyLoading.dismiss();
             },
             onFailure: (e) {},
@@ -189,10 +196,11 @@ mixin class MyPageEvent {
   /// 마지막 행의 끝 위치를 구하는 메소드
   ///
   void getListItemPosition(
-      List<({String text, GlobalKey key})> itemCollection,
-      ValueNotifier<double> firstRowElementY,
-      ValueNotifier<double> lastRowElementY,
-      double spacing) {
+    List<({String text, GlobalKey key})> itemCollection,
+    ValueNotifier<double> firstRowElementY,
+    ValueNotifier<double> lastRowElementY,
+    double spacing,
+  ) {
     int firstRowElementCount = 0;
     int lastRowElementCount = 0;
     final firstRowY = itemCollection[0].key.top;
@@ -224,9 +232,19 @@ mixin class MyPageEvent {
   /// 상단에 위치한 [Wrap]의 자체 크기를
   /// 확인하여, overflow가 되었는지 계산하는 메소드
   ///
-  void getWrapWidgetSize(BuildContext context, ValueNotifier<Size> notifier,
-      ValueNotifier<double> originHeight) {
+  void getWrapWidgetSize(
+    BuildContext context,
+    ValueNotifier<Size> notifier,
+    ValueNotifier<double> originHeight,
+  ) {
     notifier.value = (context.findRenderObject() as RenderBox).size;
     originHeight.value = notifier.value.height;
+  }
+
+  ///
+  /// 이력서 관리 페이지로 이동
+  ///
+  void routeToResumeManagePage(WidgetRef ref) {
+    const ResumeManageRoute().push(ref.context);
   }
 }

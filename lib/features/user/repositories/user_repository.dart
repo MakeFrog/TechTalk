@@ -1,6 +1,9 @@
 import 'dart:io';
 
 import 'package:techtalk/core/modules/error_handling/result.dart';
+import 'package:techtalk/features/user/repositories/entities/document_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
 
 abstract interface class UserRepository {
@@ -63,4 +66,19 @@ abstract interface class UserRepository {
   /// 면접을 처음 실행했는지 여부 값 업데이트
   ///
   Future<Result<void>> changeFirstEnteredFieldToTrue();
+
+  ///
+  /// 만약 Resume 만 업데이트하는 API가 별도로 필요하다면:
+  ///
+  Future<Result<void>> changeResumeData(ResumeEntity? resume);
+
+  ///
+  /// 만약 Portfolio 만 업데이트하는 API가 별도로 필요하다면:
+  ///
+  Future<Result<void>> changePortfolioData(PortfolioEntity? portfolio);
+
+  ///
+  /// 로컬 저장소의 PDF 메타 데이터 호출
+  ///
+  Future<Result<DocumentEntity?>> loadDocumentData();
 }

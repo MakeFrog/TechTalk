@@ -52,6 +52,7 @@ class Assets {
       'assets/icons/correct_indicator.svg';
   static const String iconsDataStructure = 'assets/icons/data_structure.svg';
   static const String iconsDeleteOrWrong = 'assets/icons/delete_or_wrong.svg';
+  static const String iconsDocuments = 'assets/icons/documents.svg';
   static const String iconsErrorIndicator = 'assets/icons/error_indicator.svg';
   static const String iconsExpansionArrowIndicator =
       'assets/icons/expansion_arrow_indicator.svg';
@@ -66,11 +67,15 @@ class Assets {
   static const String iconsIncorrect = 'assets/icons/incorrect.svg';
   static const String iconsMenuThick = 'assets/icons/menu_thick.svg';
   static const String iconsMoreCircle = 'assets/icons/more_circle.svg';
+  static const String iconsMoreNoCircle = 'assets/icons/more_no_circle.svg';
   static const String iconsNote = 'assets/icons/note.svg';
+  static const String iconsOneMoreAddTooltip =
+      'assets/icons/one_more_add_tooltip.svg';
   static const String iconsPassResult = 'assets/icons/pass_result.svg';
   static const String iconsPencil = 'assets/icons/pencil.svg';
   static const String iconsPlus = 'assets/icons/plus.svg';
   static const String iconsPlusThick = 'assets/icons/plus_thick.svg';
+  static const String iconsPolygonWarning = 'assets/icons/polygon_warning.svg';
   static const String iconsPonderingIllusration =
       'assets/icons/pondering_illusration.svg';
   static const String iconsRedAlert = 'assets/icons/red_alert.svg';
@@ -118,9 +123,12 @@ class Assets {
   static const String iconsUser = 'assets/icons/user.svg';
   static const String iconsWarning = 'assets/icons/warning.svg';
   static const String iconsWrongIndicator = 'assets/icons/wrong_indicator.svg';
+  static const String imagesAnalyzingMan = 'assets/images/analyzing_man.png';
   static const String imagesAppIcon = 'assets/images/app_icon.png';
   static const String imagesAvatar1 = 'assets/images/avatar_1.png';
   static const String imagesBlankProfile = 'assets/images/blank_profile.png';
+  static const String imagesDocumentIllustration =
+      'assets/images/document_illustration.png';
   static const String imagesInductionPractical =
       'assets/images/induction_practical.png';
   static const String imagesInductionResume =

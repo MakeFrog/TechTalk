@@ -1,6 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/features/user/repositories/entities/document_entity.dart';
 import 'package:techtalk/features/user/user.dart';
+import 'package:techtalk/presentation/pages/resume/providers/resume_info_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_topics_provider.dart';
 
@@ -21,4 +23,16 @@ mixin class HomeState {
   /// 유저 엔티티 정보
   ///
   UserEntity? user(WidgetRef ref) => ref.watch(userInfoProvider).requireValue;
+
+  ///
+  /// 이력서 엔티티 정보
+  ///
+  AsyncValue<DocumentEntity?> resumeAsync(WidgetRef ref) =>
+      ref.watch(resumeInfoProvider);
+
+  ///
+  /// 이력서 데이터 유무 판별
+  ///
+  bool hasData(WidgetRef ref) =>
+      ref.read(resumeInfoProvider.notifier).hasData();
 }

@@ -20,19 +20,25 @@ class UserBoxAdapter extends TypeAdapter<UserBox> {
       hasPracticalInterviewRecord: fields[0] as bool,
       isReviewRequestAvailable: fields[1] as bool,
       hasEnteredFirstInterview: fields[2] == null ? true : fields[2] as bool,
+      resume: fields[3] as ResumeBox?,
+      portfolio: fields[4] as PortfolioBox?,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserBox obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.hasPracticalInterviewRecord)
       ..writeByte(1)
       ..write(obj.isReviewRequestAvailable)
       ..writeByte(2)
-      ..write(obj.hasEnteredFirstInterview);
+      ..write(obj.hasEnteredFirstInterview)
+      ..writeByte(3)
+      ..write(obj.resume)
+      ..writeByte(4)
+      ..write(obj.portfolio);
   }
 
   @override

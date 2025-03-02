@@ -92,11 +92,17 @@ dependencies:
   connectivity_plus: ^5.0.2 # 네트워크 연결 상태 관리합
   easy_localization: ^3.0.0 # 다국어 지원
   collection: ^1.18.0 # 콜렉션 타입 익스텐션 지원 메소드
-  file_picker: ^8.1.4 # 디바이스 내부 파일 접근
+  file_picker: ^8.1.7 # 디바이스 내부 파일 접근
 
   # 앱 정보
   package_info_plus: ^8.0.2 # 현재 앱 버전 정보
   pub_semver: ^2.1.4 # 주부수 버전 비교 연산
+  dotted_border: ^2.1.0 # 점선 보더 적용
+  flutter_pdfview: ^1.4.0
+  read_pdf_text: ^0.2.3
+  pdf_gemini: ^0.0.3 # pdf 첨부시 gemini로 프롬프팅
+  lottie: ^3.2.0
+
 
 dev_dependencies:
   flutter_lints: ^2.0.1
@@ -124,6 +130,8 @@ flutter:
     - assets/character/
     - assets/json/
     - assets/translations/
+    - assets/lottie/
+
 
   fonts:
     - family: pretendard

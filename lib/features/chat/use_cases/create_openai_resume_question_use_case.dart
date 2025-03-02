@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
-
 import 'package:techtalk/features/chat/repositories/enums/resume_question_type.enum.dart';
 
 class CreateResumeQuestionUseCase
@@ -129,3 +128,90 @@ class CreateResumeQuestionUseCase
 
 /// 파라미터
 typedef GetResumeParam = ({String resumeContent, String portfolioContent});
+
+
+///
+/// TODO: openai에 적용할 resume_manage_event 코드 (yundal)
+///
+  ///
+  /// 문서 저장하기
+  ///
+  // Future<void> saveDocuments(WidgetRef ref) async {
+  //   final state = ref.read(resumeInfoProvider);
+  //   final doc = state.requireValue;
+  //   if (doc == null) {
+  //     debugPrint('문서 정보가 존재하지 않습니다.');
+  //     return;
+  //   }
+
+  //   final Directory tempDir = await getTemporaryDirectory();
+  //   final Directory permanentDir = await getApplicationDocumentsDirectory();
+
+  //   final tempResume = doc.resume;
+  //   final tempPortfolio = doc.portfolio;
+
+  //   // --- 이력서 처리 로직 ---
+  //   if (tempResume != null && tempResume.path != null) {
+  //     // 이미 영구 디렉토리에 있는지 확인
+  //     if (tempResume.path!.startsWith(tempDir.path)) {
+  //       // 임시 경로이므로, 영구 디렉토리로 복사
+  //       final String? fileName = tempResume.title; // 확장자 없는 파일명
+  //       final String newResumePath = '${permanentDir.path}/$fileName.pdf';
+
+  //       try {
+  //         // (1) 파일 복사
+  //         await File(tempResume.path!).copy(newResumePath);
+  //         // (2) 임시 파일 삭제
+  //         await File(tempResume.path!).delete();
+
+  //         // (3) ResumeEntity 업데이트
+  //         final updatedResume = ResumeEntity(
+  //           path: newResumePath,
+  //           title: tempResume.title,
+  //           uploadAt: tempResume.uploadAt,
+  //         );
+
+  //         // (4) resumeInfoProvider 업데이트
+  //         await ref
+  //             .read(resumeInfoProvider.notifier)
+  //             .updateDocumentState(DocumentType.resume, updatedResume);
+  //       } catch (e) {
+  //         debugPrint('이력서 영구 경로 이동 실패: $e');
+  //       }
+  //     } else {
+  //       // 이미 영구 경로라면, 별도 저장 로직 스킵
+  //       debugPrint('이미 영구 디렉토리에 저장된 이력서입니다. 추가 작업 스킵');
+  //     }
+  //   }
+
+  //   // --- 포트폴리오 처리 로직 ---
+  //   if (tempPortfolio != null && tempPortfolio.path != null) {
+  //     // 이미 영구 디렉토리에 있는지 확인
+  //     if (tempPortfolio.path!.startsWith(tempDir.path)) {
+  //       final String? fileName = tempPortfolio.title;
+  //       final String newPortfolioPath = '${permanentDir.path}/$fileName.pdf';
+
+  //       try {
+  //         await File(tempPortfolio.path!).copy(newPortfolioPath);
+  //         await File(tempPortfolio.path!).delete();
+
+  //         final updatedPortfolio = PortfolioEntity(
+  //           path: newPortfolioPath,
+  //           title: tempPortfolio.title,
+  //           uploadAt: tempPortfolio.uploadAt,
+  //         );
+
+  //         await ref
+  //             .read(resumeInfoProvider.notifier)
+  //             .updateDocumentState(DocumentType.portfolio, updatedPortfolio);
+  //       } catch (e) {
+  //         debugPrint('포트폴리오 영구 경로 이동 실패: $e');
+  //       }
+  //     } else {
+  //       debugPrint('이미 영구 디렉토리에 저장된 포트폴리오입니다. 추가 작업 스킵');
+  //     }
+  //   }
+
+  //   // --- 모든 저장 로직 호출 (Repository에 반영)
+  //   await ref.read(resumeInfoProvider.notifier).saveCurrentDocumentState();
+  // }

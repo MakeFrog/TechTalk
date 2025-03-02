@@ -1,7 +1,11 @@
 import 'dart:io';
 
+import 'package:flutter/rendering.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
+import 'package:techtalk/features/user/repositories/entities/document_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 
 final class UserRepositoryImpl implements UserRepository {
@@ -135,9 +139,10 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Result<bool> hasEnteredFirstInterview()  {
+  Result<bool> hasEnteredFirstInterview() {
     try {
-      final response = _userLocalDataSource.loadUserLocalInfo().hasEnteredFirstInterview;
+      final response =
+          _userLocalDataSource.loadUserLocalInfo().hasEnteredFirstInterview;
       return Result.success(response);
     } on Exception catch (e) {
       return Result.failure(e);
@@ -145,13 +150,81 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<void>> changeFirstEnteredFieldToTrue() async{
+  Future<Result<void>> changeFirstEnteredFieldToTrue() async {
     try {
       await _userLocalDataSource.changeFirstEnteredFieldToTrue();
       return Result.success(null);
-    } on Exception catch(e) {
+    } on Exception catch (e) {
       return Result.failure(e);
     }
   }
 
+  @override
+  Future<Result<void>> changeResumeData(ResumeEntity? newResume) async {
+    try {
+      await _userLocalDataSource.changeResumeData(newResume);
+      return Result.success(null);
+    } catch (e) {
+      debugPrint('repository - 저장 실패');
+
+      return Result.failure(Exception(e));
+    }
+  }
+
+  @override
+  Future<Result<void>> changePortfolioData(
+      PortfolioEntity? newPortfolio) async {
+    try {
+      await _userLocalDataSource.changePortfolioData(newPortfolio);
+      return Result.success(null);
+    } catch (e) {
+      debugPrint('repository - 저장 실패');
+
+      return Result.failure(Exception(e));
+    }
+  }
+
+  @override
+  Future<Result<DocumentEntity>> loadDocumentData() async {
+    try {
+      final data = _userLocalDataSource.loadUserLocalInfo();
+
+      final resumeBox = data.resume;
+      final portfolioBox = data.portfolio;
+
+      ResumeEntity? resume;
+
+      if (resumeBox != null) {
+        resume = ResumeEntity(
+          path: resumeBox.resumePath,
+          title: resumeBox.resumeTitle,
+          uploadAt: resumeBox.resumeUploadAt,
+        );
+      }
+
+      PortfolioEntity? portfolio;
+
+      if (portfolioBox != null) {
+        portfolio = PortfolioEntity(
+          path: portfolioBox.portfolioPath,
+          title: portfolioBox.portfolioTitle,
+          uploadAt: portfolioBox.portfolioUploadAt,
+        );
+      }
+
+      debugPrint('===== UserRepositoryImpl.loadDocumentData() =====');
+      debugPrint('이력서 제목 : ${resumeBox?.resumeTitle}');
+      debugPrint('이력서 존재하는가 : ${resumeBox != null}');
+      debugPrint('포트폴리오 존재하는가 : ${portfolioBox != null}');
+
+      return Result.success(
+        DocumentEntity(
+          resume: resume,
+          portfolio: portfolio,
+        ),
+      );
+    } catch (e) {
+      return Result.failure(Exception(e));
+    }
+  }
 }
