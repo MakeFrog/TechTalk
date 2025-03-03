@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/app/util/app_logger.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_route_arg.dart';
@@ -50,6 +51,10 @@ class InterviewRooms extends _$InterviewRooms {
             throw e;
           },
         );
+      },
+      youtube: (_) {
+        logger.e('유튜브 면접을 면섭실 페이지에 진입하지 않음');
+        throw Exception('알 수 없는 오류입니다');
       },
     );
   }

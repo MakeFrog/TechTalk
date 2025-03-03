@@ -14,6 +14,9 @@ class AppTheme {
   static final ThemeData light = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Colors.grey,
+    ),
     primaryColor: AppColor().brand3,
     primarySwatch: Colors.blue,
     splashFactory: NoSplash.splashFactory,

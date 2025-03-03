@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'portfolio_box.g.dart';
 
-@HiveType(typeId: 5)
+@HiveType(typeId: 6)
 class PortfolioBox extends HiveObject {
   @HiveField(0, defaultValue: null)
   final String? portfolioPath;

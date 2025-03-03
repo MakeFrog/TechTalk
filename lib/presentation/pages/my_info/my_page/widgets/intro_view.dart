@@ -1,6 +1,6 @@
 part of '../my_page.dart';
 
-class _IntroView extends ConsumerWidget with MyPageState {
+class _IntroView extends ConsumerWidget with MyPageState, MyPageEvent {
   const _IntroView({super.key});
 
   @override
@@ -33,9 +33,25 @@ class _IntroView extends ConsumerWidget with MyPageState {
               ),
               style: AppTextStyle.headline1,
             ),
-            RoundProfileImg(
-              size: 64,
-              imgUrl: user?.profileImgUrl,
+            GestureDetector(
+              onTap: () {
+                onProfileSectionTapped(context);
+              },
+              child: Stack(
+                children: [
+                  RoundProfileImg(
+                    size: 64,
+                    imgUrl: user?.profileImgUrl,
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: SvgPicture.asset(
+                      Assets.iconsNewCamera,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         );

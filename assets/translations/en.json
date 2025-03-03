@@ -1,6 +1,5 @@
 {
   "common": {
-
     "errorDetectedTryLater": "An error occurred.\nPlease try again later.",
     "emptyName": "Anonymous",
     "next": "Next",
@@ -8,10 +7,13 @@
     "save": "Save",
     "start": "Start",
     "cancel": "Cancel",
+    "content": "Content",
     "confirm": "Confirm",
+    "all": "All",
     "notice": "Notice",
     "practicalInterviewFormat": "Mock\nInterview",
     "topicInterviewFormat": "Topic\nInterview",
+    "alreadySelected": "This skill is already selected.",
     "responseResult": {
       "pass": "Pass",
       "fail": "Fail",
@@ -102,6 +104,7 @@
   "gnb": {
     "home": "Home",
     "learning": "Learning",
+    "videoTutorial": "Content",
     "mistakeNote": "Review",
     "myInfo": "My"
   },
@@ -165,18 +168,18 @@
     "errorHasDetected": "An error occurred, unable to send the response",
     "waitForReply": "Wait for the interviewer to finish before replying",
     "recordFailed": "Failed to recognize the voice. Please try again.",
-    "hasPassed" : "You passed!",
-    "keepGoing" : "Keep going, and you'll keep growing!",
+    "hasPassed": "You passed!",
+    "keepGoing": "Keep going, and you'll keep growing!",
     "hasFailed": "You didn’t pass",
-    "getCoureage" :  "Keep trying, and things will change!",
-    "oneLineFeedback" : "Feedback",
+    "getCoureage": "Keep trying, and things will change!",
+    "oneLineFeedback": "Feedback",
     "tryRecap": "Retry the questions\nyou missed.",
     "retryInterview": "Get new questions and build a mountain of knowledge!",
-    "tryAgain" : "Try Again",
+    "tryAgain": "Try Again",
     "goToHome": "Go Home",
     "suggestSimilarTopicsLeading": "Candidates in your field are studying\n",
     "suggestSimilarTopicsEnd": " together",
-    "letsTryInterviewAgain" : "Ready for an interview?",
+    "letsTryInterviewAgain": "Ready for an interview?",
     "generatingOneLineFeedback": "Generating Feedback"
   },
   "qa": {
@@ -193,14 +196,84 @@
     "previous": "Prev",
     "all": "All",
     "all_question": "All",
-    "next": "Next"
+    "next": "Next",
+    "reviewNote": "Review Notes",
+    "reviewNoteDescription": "Improve your skills\nby reviewing incorrect answers!"
   },
   "mistakeNote": {
     "noMistakeRecords": "No wrong answers yet.",
     "letsHaveInterview": "Let’s try a {tech} interview!",
     "wrongManyTimes": "Frequently Wrong"
   },
+  "videoTutorial": {
+    "name": "Video Tutorial"
+  },
+  "youtubeUploadFailed": {
+    "goToVideo": "Go to video",
+    "fetchAnotherVideo": "Get another video",
+    "timeout": {
+      "title": "Failed to analyze the video in time",
+      "description": "Check the video length or network connection"
+    },
+    "jsonFormatError": {
+      "title": "A temporary error occurred",
+      "description": "Please try uploading again"
+    },
+    "invalidVideoContent": {
+      "title": "Not enough content to analyze",
+      "description": "Upload a video with enough interview questions and summary content"
+    },
+    "tooManyTokensRequired": {
+      "title": "The video is too long",
+      "description": "Videos under 1 hour are recommended"
+    },
+    "unknownError": {
+      "title": "An unexpected error occurred",
+      "description": "Please try uploading again"
+    },
+    "unexpectedGptError": {
+      "title": "A temporary error occurred",
+      "description": "Please try uploading again"
+    },
+    "isNotTechContent": {
+      "title": "This does not seem to be tech-related content",
+      "description": "Please upload a tech-related video"
+    },
+    "noCaption": {
+      "title": "No captions found, making analysis difficult",
+      "description": "Please upload a video with captions"
+    },
+    "youtubeVideoFetchedFailed": {
+      "title": "Failed to retrieve video information",
+      "description": "Please try uploading again"
+    },
+    "tooShortVideo": {
+      "title": "The video is too short",
+      "description": "Please upload a video longer than 1 minute"
+    },
+    "alreadyUploaded": {
+      "title": "This video has already been uploaded",
+      "description": "You can go directly to this video"
+    }
+  },
+  "youtubeBoard": {
+    "loadErrorTitle": "Failed to load data",
+    "loadErrorDescription": "It might be a temporary issue. Please try again.",
+    "retryButton": "Retry",
+    "noItemFoundDescription": "No watch history yet",
+    "watchVideoButton": "Watch Video",
+    "noFavoritesDescription": "No favorite videos yet",
+    "noUploadsDescription": "No uploaded videos yet",
+    "uploadVideoButton": "Upload Video"
+  },
   "myInfo": {
+    "myActivity": "My Activity",
+    "content": "Content",
+    "myContents": "My contents",
+    "contentDescription": "Records, Favorites, Upload Management",
+    "watchHistory": "Watch History",
+    "favorites": "Favorites",
+    "uploadedVideos": "Uploaded Videos",
     "profile": "Profile",
     "interestedJobPositions": "Positions",
     "interestedTopics": "Skills",
@@ -243,6 +316,67 @@
     "needAlarmPermission": "Permission is required to receive alarms",
     "alarm_title": "Notification",
     "alarm_desc": "Important updates and announcements"
+  },
+  "youtube": {
+    "noResults": "No results found",
+    "uploadPrompt": "Try uploading a video\nWe will generate a summary and questions for you",
+    "uploadButton": "Upload",
+    "loadErrorTitle": "Failed to load video",
+    "loadErrorDescription": "It might be a temporary issue. Please try again.",
+    "retryButton": "Retry",
+    "learnWithVideo": "Explore videos!",
+    "tryUploadPrompt": "Can Upload a video!"
+  },
+  "youtubeUpload": {
+    "title": "Please provide the\nYouTube video link",
+    "title_only_for_review": "Please provide the\nContent video link.",
+    "description": "We will generate a summary and questions for you!",
+    "placeholder": "https://www.youtube.com/watch?v=...",
+    "fetchLinkButton": "Get YouTube Link",
+    "nextButton": "Next",
+    "emptyInput": "Please enter a YouTube video link or ID",
+    "containsSpace": "Links or IDs containing spaces cannot be entered",
+    "confirmationTitle": "Is this the correct video?",
+    "confirmationDescription": "Once uploaded, we will summarize the content\nand generate interview questions for you!",
+    "notFoundError": "This video does not exist on TechTalk yet",
+    "uploadingTitle": "Uploading your video\nPlease wait a moment",
+    "uploadWarning": "Closing the app will cancel the upload\n(May take up to 1 minute depending on video length)",
+    "uploadCompleteNotification": "You'll be notified when it's done",
+    "confirmationNotification": "Notify you when confirmed?"
+  },
+  "notificationPermission": {
+    "title": "Notification Permission Required",
+    "description": "If you don't allow notifications, you won't receive an upload completion alert",
+    "exitButton": "Exit",
+    "allowButton": "Allow",
+    "uploadSuccessTitle": "Video uploaded",
+    "uploadSuccessDescription": "Check out the summarized content!",
+    "uploadFailTitle": "Video upload failed"
+  },
+  "youtubeInterview": {
+    "introMessage": "Hi {nickname}! I'll ask interview questions based on '{contentTitle}' content.",
+    "cannotResumeLater": "Interview can't be resumed later.",
+    "similarApplicantsWatched": "Applicants in your field",
+    "suggestedVideo": "also watched this video",
+    "watchThisVideo": "Would you like to watch it?",
+    "watchVideoButton": "Watch Video"
+  },
+  "youtubeDetail": {
+    "questions": "Questions",
+    "questionsCount": "{count} Questions",
+    "summary": "Summary",
+    "keyTopic": "Key Topic",
+    "interview": "Interview",
+    "summaryNote": "Summary Note",
+    "seeAll": "See All",
+    "relatedVideos": "Related Videos",
+    "interviewQuestions": "Interview Questions",
+    "selectAll": "Select All",
+    "startInterview": "Start Interview",
+    "loadingVideo": "Waiting for video playback",
+    "buttonConfirm": "OK",
+    "loadingTitle": "Please wait a moment",
+    "loadingDescription": "Fetching interview questions"
   },
   "errors": {
     "error": "error",

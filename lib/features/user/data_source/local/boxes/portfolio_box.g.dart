@@ -8,7 +8,7 @@ part of 'portfolio_box.dart';
 
 class PortfolioBoxAdapter extends TypeAdapter<PortfolioBox> {
   @override
-  final int typeId = 5;
+  final int typeId = 6;
 
   @override
   PortfolioBox read(BinaryReader reader) {

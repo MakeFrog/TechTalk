@@ -88,11 +88,17 @@ class GetOneLineInterViewFeedbackUseCase extends BaseNoFutureUseCase<
             content: '지원자의 개발자 이력서와 포트폴리오를 기반으로 면접과 답변을 주고 받았습니다.',
           ).toJson();
         },
+        youtube: (_) {
+          return Messages(
+            role: Role.system,
+            content: '프로그래밍 기술 주제로 면접 질문을 주고 받고 있습니다.',
+          ).toJson();
+        },
       ),
       Messages(
         role: Role.system,
         content:
-            '피드백은 ${AppLocale.currentLocale.languageCode}로 작성하며, 면접관과 지원자 주고 받은 대화 기록은 아래와 같습니다.',
+            '피드백은 꼭 **${AppLocale.currentLocale.languageCode} 언어**로 작성하며, 면접관과 지원자 주고 받은 대화 기록은 아래와 같습니다.',
       ).toJson(),
       ...param.chatHistory.map(
         (element) => switch (element) {
@@ -114,6 +120,11 @@ class GetOneLineInterViewFeedbackUseCase extends BaseNoFutureUseCase<
             ).toJson()
         },
       ),
+      Messages(
+        role: Role.system,
+        content:
+            '다시 한번 강조하지만 응답언어는 꼭  **${AppLocale.currentLocale.languageCode} 언어**로 이어야 합니다',
+      ).toJson(),
       Messages(
         role: Role.system,
         content: '위 면접 대화 기록을 바탕으로 반드시 100자 이내의 종합적인 피드백을 문자열로 제공해야 합니다.',

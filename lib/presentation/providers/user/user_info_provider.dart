@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -22,8 +23,9 @@ class UserInfo extends _$UserInfo {
     final userData = await getUserUseCase();
 
     return userData.fold(
-      onSuccess: (value) {
-        return value;
+      onSuccess: (info) {
+        AppUserInfo().initialize(info);
+        return info;
       },
       onFailure: (e) {
         return null;
@@ -77,7 +79,7 @@ class UserInfo extends _$UserInfo {
 
       final response = await updateUserUseCase(updatedUserInfo);
       response.fold(
-        onSuccess: (userInfo) {
+        onSuccess: (_) {
           state = AsyncData(updatedUserInfo);
           log('유저 면접 기록 업데이트 성공');
         },
@@ -90,9 +92,8 @@ class UserInfo extends _$UserInfo {
     }
   }
 
-  void increaseCompletedInterviewCount(int count) {
-    state =
-        AsyncData(state.requireValue!.copyWith(completedInterviewCount: count));
+  Future<void> increaseCompletedInterviewCount(int count) async {
+    await update((prev) => prev?.copyWith(completedInterviewCount: count));
   }
 
   ///
@@ -132,5 +133,19 @@ class UserInfo extends _$UserInfo {
         throw e;
       },
     );
+  }
+}
+
+final class AppUserInfo {
+  static final AppUserInfo _instance = AppUserInfo._internal();
+
+  factory AppUserInfo() => _instance;
+
+  AppUserInfo._internal();
+
+  UserEntity? instance;
+
+  void initialize(UserEntity? info) {
+    instance = info;
   }
 }

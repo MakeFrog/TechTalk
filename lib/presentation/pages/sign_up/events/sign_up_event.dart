@@ -11,7 +11,8 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/core/services/slack_notification_service.dart';
-import 'package:techtalk/features/tech_set/tech_set.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/provider/selected_job_groups_provider.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/searched_skills_provider.dart';
@@ -20,14 +21,11 @@ import 'package:techtalk/presentation/pages/sign_up/providers/sign_up_step_contr
 import 'package:techtalk/presentation/providers/input/nickname_input_provider.dart';
 import 'package:techtalk/presentation/providers/input/skill_text_field_controller_provider.dart';
 import 'package:techtalk/presentation/providers/scroll/selected_job_group_scroll_controller.dart';
-import 'package:techtalk/presentation/providers/scroll/selected_skill_scroll_controller.dart';
 import 'package:techtalk/presentation/providers/user/user_auth_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 part 'job_group_step_event.p.dart';
-
 part 'nickname_step_event.p.dart';
-
 part 'skill_step_event.p.dart';
 
 mixin class SignUpEvent {
@@ -64,7 +62,7 @@ mixin class SignUpEvent {
         (_) async {
           unawaited(
             SlackNotificationService.sendNotification(
-              targetUserInfo: userData,
+              userInfo: userData,
               type: SlackNotificationType.signUp,
             ),
           );

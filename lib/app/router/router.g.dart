@@ -120,6 +120,51 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $StudyRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: 'wrong-answer-note',
+          name: 'wrong answer note',
+          factory: $WrongAnswerNoteRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'contents-main-list',
+          name: 'contents-main-list',
+          factory: $YoutubeContentsMainListRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'youtube-detail/:contentId',
+          name: 'youtube detail',
+          factory: $YoutubeDetailRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'channel-detail-route/:channelId',
+          name: 'channel detail route',
+          factory: $ChannelDetailRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'youtube-link-submit',
+          name: 'youtube link submit',
+          factory: $YoutubeLinkSubmitRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'my-youtube-board',
+          name: 'my youtube board',
+          factory: $MyYoutubeBoardRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'submitted-youtube-confirm-route',
+          name: 'submitted youtube confirm route',
+          factory: $SubmittedYoutubeConfirmRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'youtube-content-upload-failed',
+          name: 'youtube content upload failed',
+          factory: $YoutubeContentUploadFailedRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'analyze-youtube',
+          name: 'analyze youtube',
+          factory: $AnalyzeYoutubeRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'wrong-answer/:index',
           name: 'wrong answer',
           factory: $WrongAnswerRouteExtension._fromState,
@@ -154,7 +199,7 @@ RouteBase get $mainRoute => GoRouteData.$route(
         GoRouteData.$route(
           path: 'resume-upload',
           name: 'resume upload',
-          factory: $ResumeUploadRouteExtension._fromState,
+          factory: $ResumeInterviewRouteExtension._fromState,
         ),
         GoRouteData.$route(
           path: 'resume-interview-loading',
@@ -205,6 +250,7 @@ const _$InterviewTypeEnumMap = {
   InterviewType.commonSingleTopic: 'common-single-topic',
   InterviewType.commonPracticalTopic: 'common-practical-topic',
   InterviewType.resume: 'resume',
+  InterviewType.youtube: 'youtube',
 };
 
 extension $QuestionCountSelectPageRouteExtension
@@ -290,6 +336,211 @@ extension $StudyRouteExtension on StudyRoute {
 
   String get location => GoRouteData.$location(
         '/study/${Uri.encodeComponent(topicId)}',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+extension $WrongAnswerNoteRouteExtension on WrongAnswerNoteRoute {
+  static WrongAnswerNoteRoute _fromState(GoRouterState state) =>
+      WrongAnswerNoteRoute();
+
+  String get location => GoRouteData.$location(
+        '/wrong-answer-note',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $YoutubeContentsMainListRouteExtension
+    on YoutubeContentsMainListRoute {
+  static YoutubeContentsMainListRoute _fromState(GoRouterState state) =>
+      YoutubeContentsMainListRoute();
+
+  String get location => GoRouteData.$location(
+        '/contents-main-list',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $YoutubeDetailRouteExtension on YoutubeDetailRoute {
+  static YoutubeDetailRoute _fromState(GoRouterState state) =>
+      YoutubeDetailRoute(
+        state.extra as YoutubeDetailArg,
+      );
+
+  String get location => GoRouteData.$location(
+        '/youtube-detail/${Uri.encodeComponent(contentId)}',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+extension $ChannelDetailRouteExtension on ChannelDetailRoute {
+  static ChannelDetailRoute _fromState(GoRouterState state) =>
+      ChannelDetailRoute(
+        state.extra as ChannelDetailRouteArg,
+      );
+
+  String get location => GoRouteData.$location(
+        '/channel-detail-route/${Uri.encodeComponent(channelId)}',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+extension $YoutubeLinkSubmitRouteExtension on YoutubeLinkSubmitRoute {
+  static YoutubeLinkSubmitRoute _fromState(GoRouterState state) =>
+      const YoutubeLinkSubmitRoute();
+
+  String get location => GoRouteData.$location(
+        '/youtube-link-submit',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $MyYoutubeBoardRouteExtension on MyYoutubeBoardRoute {
+  static MyYoutubeBoardRoute _fromState(GoRouterState state) =>
+      MyYoutubeBoardRoute();
+
+  String get location => GoRouteData.$location(
+        '/my-youtube-board',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $SubmittedYoutubeConfirmRouteExtension
+    on SubmittedYoutubeConfirmRoute {
+  static SubmittedYoutubeConfirmRoute _fromState(GoRouterState state) =>
+      SubmittedYoutubeConfirmRoute(
+        state.extra as SubmittedYoutubeConfirmArg,
+      );
+
+  String get location => GoRouteData.$location(
+        '/submitted-youtube-confirm-route',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+extension $YoutubeContentUploadFailedRouteExtension
+    on YoutubeContentUploadFailedRoute {
+  static YoutubeContentUploadFailedRoute _fromState(GoRouterState state) =>
+      YoutubeContentUploadFailedRoute(
+        failedType: _$YoutubeUploadFailedTypeEnumMap
+            ._$fromName(state.uri.queryParameters['failed-type']!),
+        $extra: state.extra as Video?,
+      );
+
+  String get location => GoRouteData.$location(
+        '/youtube-content-upload-failed',
+        queryParams: {
+          'failed-type': _$YoutubeUploadFailedTypeEnumMap[failedType],
+        },
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+const _$YoutubeUploadFailedTypeEnumMap = {
+  YoutubeUploadFailedType.timeout: 'timeout',
+  YoutubeUploadFailedType.jsonFormatError: 'json-format-error',
+  YoutubeUploadFailedType.invalidVideoContent: 'invalid-video-content',
+  YoutubeUploadFailedType.tooManyTokensRequired: 'too-many-tokens-required',
+  YoutubeUploadFailedType.unknownError: 'unknown-error',
+  YoutubeUploadFailedType.unexpectedGptError: 'unexpected-gpt-error',
+  YoutubeUploadFailedType.isNotTechContent: 'is-not-tech-content',
+  YoutubeUploadFailedType.noCaption: 'no-caption',
+  YoutubeUploadFailedType.youtubeVideoFetchedFailed:
+      'youtube-video-fetched-failed',
+  YoutubeUploadFailedType.tooShortVideo: 'too-short-video',
+  YoutubeUploadFailedType.alreadyUploaded: 'already-uploaded',
+};
+
+extension $AnalyzeYoutubeRouteExtension on AnalyzeYoutubeRoute {
+  static AnalyzeYoutubeRoute _fromState(GoRouterState state) =>
+      AnalyzeYoutubeRoute(
+        state.extra as YoutubeVideoEntity,
+      );
+
+  String get location => GoRouteData.$location(
+        '/analyze-youtube',
       );
 
   void go(BuildContext context) => context.go(location, extra: $extra);
@@ -428,8 +679,9 @@ extension $ResumeRegistGuideRouteExtension on ResumeRegistGuideRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $ResumeUploadRouteExtension on ResumeInterviewRoute {
-  static ResumeInterviewRoute _fromState(GoRouterState state) => ResumeInterviewRoute(
+extension $ResumeInterviewRouteExtension on ResumeInterviewRoute {
+  static ResumeInterviewRoute _fromState(GoRouterState state) =>
+      ResumeInterviewRoute(
         _$InterviewTypeEnumMap._$fromName(state.uri.queryParameters['type']!),
       );
 

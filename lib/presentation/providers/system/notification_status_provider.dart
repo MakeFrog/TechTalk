@@ -29,33 +29,38 @@ class NotificationStatus extends _$NotificationStatus {
     }
   }
 
-  Future<void> toggle() async {
+  Future<void> toggle({bool showDialog = true}) async {
     final isGranted = state.valueOrNull;
     if (isGranted == null) return;
     if (isGranted) {
-      DialogService.show(
-        dialog: AppDialog.dividedBtn(
-          title: tr(LocaleKeys.permission_alarmSetting),
-          subTitle: tr(LocaleKeys.permission_alarmDismissDesc),
-          leftBtnContent: tr(LocaleKeys.common_cancel),
-          showContentImg: false,
-          rightBtnContent: tr(LocaleKeys.permission_setUp),
-          onRightBtnClicked: () async {
-            (await navigationContext).pop();
-            await AppSettings.openAppSettings();
-          },
-          onLeftBtnClicked: () async {
-            (await navigationContext).pop();
-          },
-        ),
-      );
+      if (showDialog) {
+        DialogService.show(
+          dialog: AppDialog.dividedBtn(
+            title: tr(LocaleKeys.permission_alarmSetting),
+            subTitle: tr(LocaleKeys.permission_alarmDismissDesc),
+            leftBtnContent: tr(LocaleKeys.common_cancel),
+            showContentImg: false,
+            rightBtnContent: tr(LocaleKeys.permission_setUp),
+            onRightBtnClicked: () async {
+              (await navigationContext).pop();
+              await AppSettings.openAppSettings();
+            },
+            onLeftBtnClicked: () async {
+              (await navigationContext).pop();
+            },
+          ),
+        );
+      } else {
+        (await navigationContext).pop();
+        await AppSettings.openAppSettings();
+      }
     } else {
       await FirebaseMessaging.instance.requestPermission();
       final result = await Permission.notification.request();
       if (result.isGranted) {
         await update((_) => true);
       } else {
-        {
+        if (showDialog) {
           DialogService.show(
             dialog: AppDialog.dividedBtn(
               title: tr(LocaleKeys.permission_permissionNeeded),
@@ -73,6 +78,11 @@ class NotificationStatus extends _$NotificationStatus {
                 (await navigationContext).pop();
               },
             ),
+          );
+        } else {
+          (await navigationContext).pop();
+          await AppSettings.openAppSettings(
+            type: AppSettingsType.notification,
           );
         }
       }

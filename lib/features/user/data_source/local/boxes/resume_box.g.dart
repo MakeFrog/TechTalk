@@ -8,7 +8,7 @@ part of 'resume_box.dart';
 
 class ResumeBoxAdapter extends TypeAdapter<ResumeBox> {
   @override
-  final int typeId = 4;
+  final int typeId = 5;
 
   @override
   ResumeBox read(BinaryReader reader) {

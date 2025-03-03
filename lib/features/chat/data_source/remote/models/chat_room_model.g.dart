@@ -33,4 +33,5 @@ const _$InterviewTypeEnumMap = {
   InterviewType.commonSingleTopic: 'commonSingleTopic',
   InterviewType.commonPracticalTopic: 'commonPracticalTopic',
   InterviewType.resume: 'resume',
+  InterviewType.youtube: 'youtube',
 };

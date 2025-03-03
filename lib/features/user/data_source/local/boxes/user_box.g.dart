@@ -19,16 +19,17 @@ class UserBoxAdapter extends TypeAdapter<UserBox> {
     return UserBox(
       hasPracticalInterviewRecord: fields[0] as bool,
       isReviewRequestAvailable: fields[1] as bool,
-      hasEnteredFirstInterview: fields[2] == null ? true : fields[2] as bool,
-      resume: fields[3] as ResumeBox?,
-      portfolio: fields[4] as PortfolioBox?,
+      hasEnteredFirstInterview: fields[2] == null ? false : fields[2] as bool,
+      hasSeenNewYoutubeFeature: fields[3] == null ? false : fields[3] as bool,
+      resume: fields[4] as ResumeBox?,
+      portfolio: fields[5] as PortfolioBox?,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserBox obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.hasPracticalInterviewRecord)
       ..writeByte(1)
@@ -36,8 +37,10 @@ class UserBoxAdapter extends TypeAdapter<UserBox> {
       ..writeByte(2)
       ..write(obj.hasEnteredFirstInterview)
       ..writeByte(3)
-      ..write(obj.resume)
+      ..write(obj.hasSeenNewYoutubeFeature)
       ..writeByte(4)
+      ..write(obj.resume)
+      ..writeByte(5)
       ..write(obj.portfolio);
   }
 

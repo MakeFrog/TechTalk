@@ -67,6 +67,7 @@ class GetRandomQnasUseCase
             return chatQns;
           },
         InterviewType.resume => throw Exception('타입을 지정해줘야 합니다'),
+        InterviewType.youtube => throw Exception('유튜브 면접은 질문을 이전에 생성함'),
       };
 
       return Result.success(await returnedQnas());

@@ -12,27 +12,48 @@ class UserBox extends HiveObject {
   @HiveField(1)
   final bool isReviewRequestAvailable;
 
-  @HiveField(2, defaultValue: true)
+  /// 인터뷰를 시도한적 있는지 여부
+  @HiveField(2, defaultValue: false)
   final bool hasEnteredFirstInterview;
 
-  @HiveField(3, defaultValue: null)
-  final ResumeBox? resume;
+  /// 유튜브 학습 신기능이 처음 노출되었는지 여부
+  @HiveField(3, defaultValue: false)
+  final bool hasSeenNewYoutubeFeature;
 
   @HiveField(4, defaultValue: null)
+  final ResumeBox? resume;
+
+  @HiveField(5, defaultValue: null)
   final PortfolioBox? portfolio;
 
   UserBox({
     required this.hasPracticalInterviewRecord,
     required this.isReviewRequestAvailable,
     required this.hasEnteredFirstInterview,
+    required this.hasSeenNewYoutubeFeature,
     this.resume,
     this.portfolio,
   });
+
+  factory UserBox.defaultValue() {
+    return UserBox(
+      hasPracticalInterviewRecord: false,
+      isReviewRequestAvailable: true,
+      hasEnteredFirstInterview: false,
+      hasSeenNewYoutubeFeature: false,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'UserBox{hasPracticalInterviewRecord: $hasPracticalInterviewRecord, isReviewRequestAvailable: $isReviewRequestAvailable, hasEnteredFirstInterview: $hasEnteredFirstInterview, hasSeenNewYoutubeFeature: $hasSeenNewYoutubeFeature}';
+  }
 
   UserBox copyWith({
     bool? hasPracticalInterviewRecord,
     bool? isReviewRequestAvailable,
     bool? hasEnteredFirstInterview,
+    bool? hasSeenNewYoutubeFeature,
     ResumeBox? resume,
     PortfolioBox? portfolio,
   }) {
@@ -43,16 +64,10 @@ class UserBox extends HiveObject {
           isReviewRequestAvailable ?? this.isReviewRequestAvailable,
       hasEnteredFirstInterview:
           hasEnteredFirstInterview ?? this.hasEnteredFirstInterview,
+      hasSeenNewYoutubeFeature:
+          hasSeenNewYoutubeFeature ?? this.hasSeenNewYoutubeFeature,
       resume: resume ?? this.resume,
       portfolio: portfolio ?? this.portfolio,
-    );
-  }
-
-  factory UserBox.defaultValue() {
-    return UserBox(
-      hasPracticalInterviewRecord: false,
-      isReviewRequestAvailable: true,
-      hasEnteredFirstInterview: false,
     );
   }
 
@@ -63,6 +78,7 @@ class UserBox extends HiveObject {
       hasPracticalInterviewRecord: hasPracticalInterviewRecord,
       isReviewRequestAvailable: isReviewRequestAvailable,
       hasEnteredFirstInterview: hasEnteredFirstInterview,
+      hasSeenNewYoutubeFeature: hasSeenNewYoutubeFeature,
     );
   }
 
@@ -73,6 +89,7 @@ class UserBox extends HiveObject {
       hasPracticalInterviewRecord: hasPracticalInterviewRecord,
       isReviewRequestAvailable: isReviewRequestAvailable,
       hasEnteredFirstInterview: hasEnteredFirstInterview,
+      hasSeenNewYoutubeFeature: hasSeenNewYoutubeFeature,
     );
   }
 }

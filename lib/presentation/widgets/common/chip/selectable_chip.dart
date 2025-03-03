@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:techtalk/app/style/index.dart';
+import 'package:techtalk/core/helper/string_extension.dart';
+import 'package:techtalk/presentation/widgets/common/image/rounded_skill_image.dart';
 
 class SelectableChip extends StatelessWidget {
-  const SelectableChip(
-      {super.key,
-      required this.isSelected,
-      required this.onTap,
-      required this.label});
+  const SelectableChip({
+    super.key,
+    required this.isSelected,
+    required this.onTap,
+    required this.label,
+    this.imagePath,
+  });
 
   final bool isSelected;
   final VoidCallback onTap;
   final String label;
+  final String? imagePath;
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +46,19 @@ class SelectableChip extends StatelessWidget {
       onSelected: (_) {
         onTap();
       },
-      label: Text(
-        label,
+      label: Row(
+        children: [
+          if (imagePath != null)
+            Padding(
+                padding: EdgeInsets.only(right: 4),
+                child: RoundedSkillImage(
+                  imagePath: imagePath,
+                  size: 18,
+                )),
+          Text(
+            label,
+          ),
+        ],
       ),
     );
   }

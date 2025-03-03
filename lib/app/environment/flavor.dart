@@ -1,14 +1,18 @@
+import 'dart:developer';
+
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
+import 'package:dart_openai/dart_openai.dart' as forWhisper;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/app/environment/environment.enum.dart';
+import 'package:techtalk/app/notification/app_local_notification.dart';
+import 'package:techtalk/core/modules/device/app_device.dart';
 import 'package:techtalk/core/modules/local/app_local.dart';
-import 'package:dart_openai/dart_openai.dart' as forWhisper;
 
 class Flavor {
   Flavor._();
@@ -28,6 +32,11 @@ class Flavor {
   Future<void> setup() async {
     WidgetsFlutterBinding.ensureInitialized();
 
+    final rootIsolateToken = RootIsolateToken.instance;
+    if (rootIsolateToken != null) {
+      BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
+    }
+
     // 환경 파일 로드
     await dotenv.load(
       fileName: env.dotFileName,
@@ -36,6 +45,7 @@ class Flavor {
     final option = env.firebaseOption;
 
     /// LocalStorage Hive 초기화
+
     await AppLocal.initHive();
     // AppLocal.clearAllLocalStorage();
 
@@ -44,21 +54,39 @@ class Flavor {
       options: option,
     );
 
-    FirebaseMessaging.onBackgroundMessage((_) async {});
+    try {
+      await AppDevice.init();
+    } catch (e) {
+      log('디바이스 정보 호출 실패 :$e');
+    }
+
+    try {
+      await AppLocalNotification().initialize();
+    } catch (e) {
+      print('Local Notification 초기화 실패 :$e');
+    }
+
+    OpenAI.instance.build(
+      token: env.openApiKey,
+      baseOption: HttpSetup(
+          receiveTimeout: const Duration(seconds: 10),
+          connectTimeout: const Duration(seconds: 10)),
+      enableLog: true,
+    );
 
     /// 채팅 면접에서 사용되는 OepnAI SK
     OpenAI.instance.build(
       token: env.openApiKey,
       baseOption: HttpSetup(
-        receiveTimeout: const Duration(seconds: 30),
-        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 60),
+        connectTimeout: const Duration(seconds: 60),
       ),
       enableLog: true,
     );
 
     /// whisper 모델을 제공하는 OpenAI SDK
     forWhisper.OpenAI.apiKey = env.openApiKey;
-    forWhisper.OpenAI.requestsTimeOut = const Duration(seconds: 12);
+    forWhisper.OpenAI.requestsTimeOut = const Duration(seconds: 90);
 
     /// 앱 DI 실행
     await AppBinder.init();

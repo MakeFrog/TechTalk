@@ -46,7 +46,7 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
           },
         );
       },
-      error: (e, _) => const Text('채팅 6 불러오지 못하였습니다'),
+      error: (e, _) => const Text('채팅을 불러오지 못하였습니다'),
       loading: () {
         return ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
@@ -75,6 +75,9 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
                 routeToTopicSelectPage(ref);
               case InterviewType.resume:
                 routeToResumeUploadPage(ref);
+                throw Exception('타입을 지정해주어야 합니다1');
+              case InterviewType.youtube:
+                throw Exception('유튜브 면접은 채팅방 면접 페이지에 진입하지 않음');
             }
           },
           height: 56,
@@ -94,16 +97,18 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
   }
 
   @override
-  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) {
-    return BackButtonAppBar(
-      title: switch (selectedInterviewType(ref)) {
-        InterviewType.commonSingleTopic => selectedTopic(ref)?.text ??
-            ref.read(selectedChatRoomProvider).singleTopic.text,
-        InterviewType.commonPracticalTopic =>
-          tr(LocaleKeys.undefined_realWorldInterview),
-        InterviewType.resume => '',
-      },
-      actions: selectedInterviewType(ref).isResume
+  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
+      BackButtonAppBar(
+        title: switch (selectedInterviewType(ref)) {
+          InterviewType.commonSingleTopic => selectedTopic(ref)?.text ??
+              ref.read(selectedChatRoomProvider).singleTopic.text,
+          InterviewType.commonPracticalTopic =>
+            tr(LocaleKeys.undefined_realWorldInterview),
+          InterviewType.resume => '',
+          // TODO: Handle this case.
+          InterviewType.youtube => '',
+        },
+              actions: selectedInterviewType(ref).isResume
           ? [
               // 이력서 인터뷰일 때만 표시
               IconButton(
@@ -112,8 +117,7 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
               ),
             ]
           : const [],
-    );
-  }
+      );
 
   @override
   bool get setBottomSafeArea => false;

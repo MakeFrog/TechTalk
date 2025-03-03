@@ -4,13 +4,13 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/my_info/my_page/my_page_event.dart';
-import 'package:techtalk/presentation/widgets/common/chip/rounded_filled_chip.dart';
+
+import '../../../../widgets/common/chip/rounded_outlined_chip.dart';
 
 ///
 /// 전달받은 데이터를 기반으로 Wrap 위젯이 단일 행으로 구성되어 있는지 판별하여 (check if it's overflowed),
 /// Expandable 로직을 적용하는 위젯
 ///
-
 class ExpandableWrappedListview extends HookWidget with MyPageEvent {
   ExpandableWrappedListview({super.key, required List<String> items})
       : itemCollection = items.map((e) => (text: e, key: GlobalKey())).toList();
@@ -19,7 +19,8 @@ class ExpandableWrappedListview extends HookWidget with MyPageEvent {
   ValueNotifier<Size> notifier = ValueNotifier(const Size(0, 0));
 
   /// [Wrap] 위젯의 고정 값들
-  final double rowHeight = 48;
+  /// padding 변경으로 인해 높이가 늘어났으므로 기존 48에서 56으로 조정
+  final double rowHeight = 56;
   final double spacing = 8;
   final double runSpacing = 12;
 
@@ -48,7 +49,7 @@ class ExpandableWrappedListview extends HookWidget with MyPageEvent {
       getWrapWidgetSize(context, notifier, originHeight);
       if (notifier.value.height < rowHeight) return;
       isOverflowed.value = true;
-      getListItemPosition(
+      _getListItemPosition(
           itemCollection, firstRowElementY, lastRowElementY, spacing);
     }, [itemCollection]);
 
@@ -76,7 +77,8 @@ class ExpandableWrappedListview extends HookWidget with MyPageEvent {
                     clipBehavior: Clip.none,
                     children: [
                       AnimatedContainer(
-                        height: !isExpanded.value ? 36 : originHeight.value,
+                        // 기존 36 -> 패딩 증가에 따라 48로 조정
+                        height: !isExpanded.value ? 48 : originHeight.value,
                         duration: const Duration(milliseconds: 200),
                         child: Wrap(
                           spacing: spacing,
@@ -86,8 +88,13 @@ class ExpandableWrappedListview extends HookWidget with MyPageEvent {
                             ...List.generate(
                               itemCollection.length,
                               (index) {
-                                return RoundedFilledChip(
-                                  text: itemCollection[index].text,
+                                return RoundedOutlinedChip(
+                                  // 변경된 padding
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 8,
+                                    horizontal: 12,
+                                  ),
+                                  label: itemCollection[index].text,
                                 );
                               },
                             )
@@ -100,19 +107,22 @@ class ExpandableWrappedListview extends HookWidget with MyPageEvent {
                           left: isExpanded.value
                               ? lastRowElementY.value
                               : firstRowElementY.value,
-                          bottom: 6,
+                          bottom: isExpanded.value ? 4 : 16,
                           child: DeferPointer(
                             paintOnTop: true,
                             child: GestureDetector(
-                                onTap: () {
-                                  isExpanded.value = !isExpanded.value;
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 12),
-                                  child: SvgPicture.asset(isExpanded.value
+                              onTap: () {
+                                isExpanded.value = !isExpanded.value;
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 8),
+                                child: SvgPicture.asset(
+                                  isExpanded.value
                                       ? Assets.iconsRoundedTop
-                                      : Assets.iconsRoundedMore),
-                                )),
+                                      : Assets.iconsRoundedMore,
+                                ),
+                              ),
+                            ),
                           ),
                         )
                     ],
@@ -137,12 +147,55 @@ class ExpandableWrappedListview extends HookWidget with MyPageEvent {
           ...List.generate(
             itemCollection.length,
             (index) {
-              return RoundedFilledChip(
-                text: itemCollection[index].text,
+              return RoundedOutlinedChip(
+                // 변경된 padding
+                padding: const EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 12,
+                ),
+                label: itemCollection[index].text,
                 key: itemCollection[index].key,
               );
             },
           )
         ],
       );
+
+  ///
+  /// [ExpandableWrappedListview]
+  /// Wrap위젯이 overflow 되었을 때,
+  /// 첫 번째 행의 끝 위치와
+  /// 마지막 행의 끝 위치를 구하는 메소드
+  ///
+  void _getListItemPosition(
+    List<({String text, GlobalKey key})> itemCollection,
+    ValueNotifier<double> firstRowElementY,
+    ValueNotifier<double> lastRowElementY,
+    double spacing,
+  ) {
+    int firstRowElementCount = 0;
+    int lastRowElementCount = 0;
+    final firstRowY = itemCollection[0].key.top;
+    final lastRowY = itemCollection.last.key.top;
+
+    for (var e in itemCollection) {
+      if (e.key.top == firstRowY) {
+        firstRowElementY.value += e.key.width;
+        firstRowElementCount++;
+      } else {
+        if (e.key.top == lastRowY) {
+          lastRowElementY.value += e.key.width;
+          lastRowElementCount++;
+        }
+      }
+    }
+
+    if (firstRowElementCount > 0) {
+      firstRowElementY.value += spacing * (firstRowElementCount - 1);
+    }
+
+    if (lastRowElementCount > 0) {
+      lastRowElementY.value += spacing * (lastRowElementCount - 1);
+    }
+  }
 }

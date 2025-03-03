@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:techtalk/features/user/data_source/remote/models/bookmarked_youtube_content_model.dart';
+import 'package:techtalk/features/user/data_source/remote/models/uploaded_youtube_content_model.dart';
+import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
 import 'package:techtalk/features/user/user.dart';
 
 abstract class FirestoreUsersRef {
@@ -9,6 +12,10 @@ abstract class FirestoreUsersRef {
   static const String loginCountField = 'login_count';
   static const String completedInterviewCountField =
       'completed_interview_count';
+  static const String uploadedYoutubeName = 'UploadedYoutube';
+  static const String bookmarkedYoutubeName = 'BookmarkedYoutube';
+  static const String watchedYoutubeHistoryName = 'WatchedYoutubeHistory';
+
   static String get _userUid => FirebaseAuth.instance.currentUser!.uid;
 
   static CollectionReference<UserModel> collection() =>
@@ -25,6 +32,57 @@ abstract class FirestoreUsersRef {
             fromFirestore: UserModel.fromFirestore,
             toFirestore: (value, _) => value.toJson(),
           );
+
+  static DocumentReference uploadedYoutubeDoc(String contentId) =>
+      FirebaseFirestore.instance
+          .collection(name)
+          .doc(_userUid)
+          .collection(uploadedYoutubeName)
+          .doc(contentId);
+
+  static CollectionReference<UploadedYoutubeModel>
+      uploadedYoutubeCollection() => FirebaseFirestore.instance
+          .collection(name)
+          .doc(_userUid)
+          .collection(uploadedYoutubeName)
+          .withConverter(
+            fromFirestore: UploadedYoutubeModel.fromFirestore,
+            toFirestore: (value, _) => value.toJson(),
+          );
+
+  static DocumentReference bookMarkedYoutubeDoc(String contentId) =>
+      FirebaseFirestore.instance
+          .collection(name)
+          .doc(_userUid)
+          .collection(bookmarkedYoutubeName)
+          .doc(contentId);
+
+  static CollectionReference<WatchedYoutubeModel>
+      watchedYoutubeHistoryCollection() => FirebaseFirestore.instance
+          .collection(name)
+          .doc(_userUid)
+          .collection(watchedYoutubeHistoryName)
+          .withConverter(
+            fromFirestore: WatchedYoutubeModel.fromFirestore,
+            toFirestore: (value, _) => value.toJson(),
+          );
+
+  static CollectionReference<BookmarkedYoutubeModel>
+      bookmarkedYoutubeHistoryCollection() => FirebaseFirestore.instance
+          .collection(name)
+          .doc(_userUid)
+          .collection(bookmarkedYoutubeName)
+          .withConverter(
+            fromFirestore: BookmarkedYoutubeModel.fromFirestore,
+            toFirestore: (value, _) => value.toJson(),
+          );
+
+  static DocumentReference watchedYoutubeHistoryDoc(String contentId) =>
+      FirebaseFirestore.instance
+          .collection(name)
+          .doc(_userUid)
+          .collection(watchedYoutubeHistoryName)
+          .doc(contentId);
 
   static CollectionReference chatSubCollection([String? id]) =>
       FirebaseFirestore.instance

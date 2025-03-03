@@ -7,6 +7,7 @@ import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/follow_up_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answers_provider.dart';
@@ -55,6 +56,16 @@ class ChatQnas extends _$ChatQnas {
             onFailure: (e) => _onError(e),
           );
         }
+      },
+      youtube: (InterviewType type) {
+        return room.qnas
+            .map(
+              (e) => ChatQnaEntity.fromYoutubeQnaEntityAtInitial(
+                e as YoutubeQnaEntity,
+              ),
+            )
+            .toList()
+          ..shuffle();
       },
     );
   }

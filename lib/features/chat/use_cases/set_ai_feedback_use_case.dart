@@ -9,6 +9,8 @@ import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/feedback_response_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/youtube_interview_room_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.dart';
 
 class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
@@ -46,7 +48,7 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
           },
         ),
       ).listen(
-        // NOTE: 희한하게 openAI에ㅓ 429 에러같은게 뜨면 여기서는 안잡힌다.
+        // NOTE: 희한하게 openAI에 429 에러같은게 뜨면 여기서는 안잡힌다.
         onError: param.onError,
         cancelOnError: true,
         (it) {
@@ -97,6 +99,7 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
         },
       );
     }, (error, stackTrace) {
+      print('에러 이유 : ${error}');
       param.onError(error, stackTrace);
     });
 
@@ -110,20 +113,29 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
     // 프롬프트는 추후 전부 한 언어로 통일할 것이므로 따로 localization은 필요하지 않아 보입니다.
 
     return [
-      param.interviewType.typedBranch(common: (_) {
-        return Messages(
-          role: Role.system,
-          content:
-              '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 이제부터 진행할 면접은 ${StoredTopics.getById(param.qna.qna.id.getFirstPartOfSpliited).text}와 관련된 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
-        ).toJson();
-      }, resume: (_) {
-        return Messages(
-          role: Role.system,
-          content:
-              '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 유저의 개발자 이력서 또는 포트폴로리오에 관련된 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
-        ).toJson();
-      }),
-
+      param.interviewType.typedBranch(
+        common: (_) {
+          return Messages(
+            role: Role.system,
+            content:
+                '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 이제부터 진행할 면접은 ${StoredTopics.getById(param.qna.qna.id.getFirstPartOfSpliited).text}와 관련된 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
+          ).toJson();
+        },
+        resume: (_) {
+          return Messages(
+            role: Role.system,
+            content:
+                '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 유저의 개발자 이력서 또는 포트폴로리오에 관련된 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
+          ).toJson();
+        },
+        youtube: (_) {
+          return Messages(
+            role: Role.system,
+            content:
+                '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. ${param.youtubeExtra}라는 제목의 유튜브 프로그래밍 콘텐츠를 기반해 제시된 면접 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
+          ).toJson();
+        },
+      ),
       ...param.chatHistory.map(
         (element) => switch (element) {
           QuestionChatEntity() => Messages(
@@ -144,14 +156,28 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
             ).toJson()
         },
       ),
-
-      /// 단골질문 interview일 경우에만
-      if (param.interviewType.isCommonQuestionType)
-        Messages(
-          role: Role.system,
-          content:
-              '면접 질문에 대한 모범답안은 다음과 같습니다: ${(param.qna.qna as CommonQnaEntity).answers.map((str) => '-$str').join(' ')}',
-        ).toJson(),
+      param.interviewType.typedBranch(
+        common: (_) {
+          return Messages(
+            role: Role.system,
+            content:
+                '면접 질문에 대한 모범답안은 다음과 같습니다: ${(param.qna.qna as CommonQnaEntity).answers.map((str) => '-$str').join(' ')}',
+          ).toJson();
+        },
+        resume: (_) {
+          return Messages(
+            role: Role.system,
+            content: '',
+          ).toJson();
+        },
+        youtube: (_) {
+          return Messages(
+            role: Role.system,
+            content:
+                '면접 질문에 대한 모범답안은 다음과 같습니다: ${(param.qna.qna as YoutubeQnaEntity).answer}',
+          ).toJson();
+        },
+      ),
       Messages(
         role: Role.system,
         content:
@@ -251,6 +277,7 @@ typedef GetQuestionFeedbackParam = ({
   ChatQnaEntity qna,
   String userName,
   InterviewType interviewType,
+  YoutubeInterviewRoomEntity? youtubeExtra,
   void Function(
       {required FeedbackResponseEntity feedbackResponse}) onFeedBackCompleted,
   void Function({required AnswerState answerState}) checkAnswer,

@@ -19,14 +19,9 @@ class JobGroupSettingPage extends BasePage
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
     return JobGroupSelectionScaffold(
-      introTextView: GestureDetector(
-        onTap: () {
-          print(selectedGroupScrollController(ref).position.maxScrollExtent);
-        },
-        child: SignUpStepIntroMessage(
-          title: tr(LocaleKeys.jobSelection_promptJobPositions),
-          subTitle: tr(LocaleKeys.jobSelection_selectOneOrMore),
-        ),
+      introTextView: SignUpStepIntroMessage(
+        title: tr(LocaleKeys.jobSelection_promptJobPositions),
+        subTitle: tr(LocaleKeys.jobSelection_selectOneOrMore),
       ),
       selectedJogGroupSlider: SelectedJobGroupListViewDelegate(
         selectedJobGroups: selectedJobGroups(ref),

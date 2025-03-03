@@ -14,12 +14,26 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
     }
+
+    buildscript {
+        repositories {
+            mavenCentral()
+            maven {
+                // r8 maven
+                url = uri("https://storage.googleapis.com/r8-releases/raw")
+            }
+        }
+        dependencies {
+            // r8 version
+            classpath("com.android.tools:r8:8.2.16-dev")
+        }
+    }
 }
 
 plugins {
     id "dev.flutter.flutter-plugin-loader" version "1.0.0"
-    id "com.android.application" version "7.3.0" apply false
-    id "org.jetbrains.kotlin.android" version "1.9.0" apply false
+    id "com.android.application" version "8.7.1" apply false
+    id "org.jetbrains.kotlin.android" version "1.9.24" apply false
     id "com.google.gms.google-services" version "4.3.15" apply false
     id "com.google.firebase.crashlytics" version "2.9.9" apply false
 }

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
@@ -60,7 +58,7 @@ class SelectedChatRoom extends _$SelectedChatRoom {
 
     state = updatedRoom;
 
-    if (ref.exists(interviewRoomsProvider)) {
+    if (!state.type.isYoutube && ref.exists(interviewRoomsProvider)) {
       ref.read(interviewRoomsProvider.notifier).synchronizeRooms(updatedRoom);
     }
   }

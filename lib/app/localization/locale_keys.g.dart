@@ -8,11 +8,14 @@ abstract class LocaleKeys {
   static const common_save = 'common.save';
   static const common_start = 'common.start';
   static const common_cancel = 'common.cancel';
+  static const common_content = 'common.content';
   static const common_confirm = 'common.confirm';
+  static const common_all = 'common.all';
   static const common_notice = 'common.notice';
   static const common_practicalInterviewFormat =
       'common.practicalInterviewFormat';
   static const common_topicInterviewFormat = 'common.topicInterviewFormat';
+  static const common_alreadySelected = 'common.alreadySelected';
   static const common_responseResult_pass = 'common.responseResult.pass';
   static const common_responseResult_fail = 'common.responseResult.fail';
   static const common_responseResult_correct = 'common.responseResult.correct';
@@ -155,6 +158,7 @@ abstract class LocaleKeys {
   static const home = 'home';
   static const gnb_home = 'gnb.home';
   static const gnb_learning = 'gnb.learning';
+  static const gnb_videoTutorial = 'gnb.videoTutorial';
   static const gnb_mistakeNote = 'gnb.mistakeNote';
   static const gnb_myInfo = 'gnb.myInfo';
   static const gnb = 'gnb';
@@ -242,10 +246,14 @@ abstract class LocaleKeys {
   static const interview_retryInterview = 'interview.retryInterview';
   static const interview_tryAgain = 'interview.tryAgain';
   static const interview_goToHome = 'interview.goToHome';
-  static const interview_suggestSimilarTopicsLeading = 'interview.suggestSimilarTopicsLeading';
-  static const interview_suggestSimilarTopicsEnd = 'interview.suggestSimilarTopicsEnd';
-  static const interview_letsTryInterviewAgain = 'interview.letsTryInterviewAgain';
-  static const interview_generatingOneLineFeedback = 'interview.generatingOneLineFeedback';
+  static const interview_suggestSimilarTopicsLeading =
+      'interview.suggestSimilarTopicsLeading';
+  static const interview_suggestSimilarTopicsEnd =
+      'interview.suggestSimilarTopicsEnd';
+  static const interview_letsTryInterviewAgain =
+      'interview.letsTryInterviewAgain';
+  static const interview_generatingOneLineFeedback =
+      'interview.generatingOneLineFeedback';
   static const interview = 'interview';
   static const qa_numberOfQa = 'qa.numberOfQa';
   static const qa_swiftAndTwoOthers = 'qa.swiftAndTwoOthers';
@@ -260,11 +268,105 @@ abstract class LocaleKeys {
   static const learning_all = 'learning.all';
   static const learning_all_question = 'learning.all_question';
   static const learning_next = 'learning.next';
+  static const learning_reviewNote = 'learning.reviewNote';
+  static const learning_reviewNoteDescription =
+      'learning.reviewNoteDescription';
   static const learning = 'learning';
   static const mistakeNote_noMistakeRecords = 'mistakeNote.noMistakeRecords';
   static const mistakeNote_letsHaveInterview = 'mistakeNote.letsHaveInterview';
   static const mistakeNote_wrongManyTimes = 'mistakeNote.wrongManyTimes';
   static const mistakeNote = 'mistakeNote';
+  static const videoTutorial_name = 'videoTutorial.name';
+  static const videoTutorial = 'videoTutorial';
+  static const youtubeUploadFailed_goToVideo = 'youtubeUploadFailed.goToVideo';
+  static const youtubeUploadFailed_fetchAnotherVideo =
+      'youtubeUploadFailed.fetchAnotherVideo';
+  static const youtubeUploadFailed_timeout_title =
+      'youtubeUploadFailed.timeout.title';
+  static const youtubeUploadFailed_timeout_description =
+      'youtubeUploadFailed.timeout.description';
+  static const youtubeUploadFailed_timeout = 'youtubeUploadFailed.timeout';
+  static const youtubeUploadFailed_jsonFormatError_title =
+      'youtubeUploadFailed.jsonFormatError.title';
+  static const youtubeUploadFailed_jsonFormatError_description =
+      'youtubeUploadFailed.jsonFormatError.description';
+  static const youtubeUploadFailed_jsonFormatError =
+      'youtubeUploadFailed.jsonFormatError';
+  static const youtubeUploadFailed_invalidVideoContent_title =
+      'youtubeUploadFailed.invalidVideoContent.title';
+  static const youtubeUploadFailed_invalidVideoContent_description =
+      'youtubeUploadFailed.invalidVideoContent.description';
+  static const youtubeUploadFailed_invalidVideoContent =
+      'youtubeUploadFailed.invalidVideoContent';
+  static const youtubeUploadFailed_tooManyTokensRequired_title =
+      'youtubeUploadFailed.tooManyTokensRequired.title';
+  static const youtubeUploadFailed_tooManyTokensRequired_description =
+      'youtubeUploadFailed.tooManyTokensRequired.description';
+  static const youtubeUploadFailed_tooManyTokensRequired =
+      'youtubeUploadFailed.tooManyTokensRequired';
+  static const youtubeUploadFailed_unknownError_title =
+      'youtubeUploadFailed.unknownError.title';
+  static const youtubeUploadFailed_unknownError_description =
+      'youtubeUploadFailed.unknownError.description';
+  static const youtubeUploadFailed_unknownError =
+      'youtubeUploadFailed.unknownError';
+  static const youtubeUploadFailed_unexpectedGptError_title =
+      'youtubeUploadFailed.unexpectedGptError.title';
+  static const youtubeUploadFailed_unexpectedGptError_description =
+      'youtubeUploadFailed.unexpectedGptError.description';
+  static const youtubeUploadFailed_unexpectedGptError =
+      'youtubeUploadFailed.unexpectedGptError';
+  static const youtubeUploadFailed_isNotTechContent_title =
+      'youtubeUploadFailed.isNotTechContent.title';
+  static const youtubeUploadFailed_isNotTechContent_description =
+      'youtubeUploadFailed.isNotTechContent.description';
+  static const youtubeUploadFailed_isNotTechContent =
+      'youtubeUploadFailed.isNotTechContent';
+  static const youtubeUploadFailed_noCaption_title =
+      'youtubeUploadFailed.noCaption.title';
+  static const youtubeUploadFailed_noCaption_description =
+      'youtubeUploadFailed.noCaption.description';
+  static const youtubeUploadFailed_noCaption = 'youtubeUploadFailed.noCaption';
+  static const youtubeUploadFailed_youtubeVideoFetchedFailed_title =
+      'youtubeUploadFailed.youtubeVideoFetchedFailed.title';
+  static const youtubeUploadFailed_youtubeVideoFetchedFailed_description =
+      'youtubeUploadFailed.youtubeVideoFetchedFailed.description';
+  static const youtubeUploadFailed_youtubeVideoFetchedFailed =
+      'youtubeUploadFailed.youtubeVideoFetchedFailed';
+  static const youtubeUploadFailed_tooShortVideo_title =
+      'youtubeUploadFailed.tooShortVideo.title';
+  static const youtubeUploadFailed_tooShortVideo_description =
+      'youtubeUploadFailed.tooShortVideo.description';
+  static const youtubeUploadFailed_tooShortVideo =
+      'youtubeUploadFailed.tooShortVideo';
+  static const youtubeUploadFailed_alreadyUploaded_title =
+      'youtubeUploadFailed.alreadyUploaded.title';
+  static const youtubeUploadFailed_alreadyUploaded_description =
+      'youtubeUploadFailed.alreadyUploaded.description';
+  static const youtubeUploadFailed_alreadyUploaded =
+      'youtubeUploadFailed.alreadyUploaded';
+  static const youtubeUploadFailed = 'youtubeUploadFailed';
+  static const youtubeBoard_loadErrorTitle = 'youtubeBoard.loadErrorTitle';
+  static const youtubeBoard_loadErrorDescription =
+      'youtubeBoard.loadErrorDescription';
+  static const youtubeBoard_retryButton = 'youtubeBoard.retryButton';
+  static const youtubeBoard_noItemFoundDescription =
+      'youtubeBoard.noItemFoundDescription';
+  static const youtubeBoard_watchVideoButton = 'youtubeBoard.watchVideoButton';
+  static const youtubeBoard_noFavoritesDescription =
+      'youtubeBoard.noFavoritesDescription';
+  static const youtubeBoard_noUploadsDescription =
+      'youtubeBoard.noUploadsDescription';
+  static const youtubeBoard_uploadVideoButton =
+      'youtubeBoard.uploadVideoButton';
+  static const youtubeBoard = 'youtubeBoard';
+  static const myInfo_myActivity = 'myInfo.myActivity';
+  static const myInfo_content = 'myInfo.content';
+  static const myInfo_myContents = 'myInfo.myContents';
+  static const myInfo_contentDescription = 'myInfo.contentDescription';
+  static const myInfo_watchHistory = 'myInfo.watchHistory';
+  static const myInfo_favorites = 'myInfo.favorites';
+  static const myInfo_uploadedVideos = 'myInfo.uploadedVideos';
   static const myInfo_profile = 'myInfo.profile';
   static const myInfo_interestedJobPositions = 'myInfo.interestedJobPositions';
   static const myInfo_interestedTopics = 'myInfo.interestedTopics';
@@ -312,6 +414,80 @@ abstract class LocaleKeys {
   static const permission_alarm_title = 'permission.alarm_title';
   static const permission_alarm_desc = 'permission.alarm_desc';
   static const permission = 'permission';
+  static const youtube_noResults = 'youtube.noResults';
+  static const youtube_uploadPrompt = 'youtube.uploadPrompt';
+  static const youtube_uploadButton = 'youtube.uploadButton';
+  static const youtube_loadErrorTitle = 'youtube.loadErrorTitle';
+  static const youtube_loadErrorDescription = 'youtube.loadErrorDescription';
+  static const youtube_retryButton = 'youtube.retryButton';
+  static const youtube_learnWithVideo = 'youtube.learnWithVideo';
+  static const youtube_tryUploadPrompt = 'youtube.tryUploadPrompt';
+  static const youtube = 'youtube';
+  static const youtubeUpload_title = 'youtubeUpload.title';
+  static const youtubeUpload_title_only_for_review =
+      'youtubeUpload.title_only_for_review';
+  static const youtubeUpload_description = 'youtubeUpload.description';
+  static const youtubeUpload_placeholder = 'youtubeUpload.placeholder';
+  static const youtubeUpload_fetchLinkButton = 'youtubeUpload.fetchLinkButton';
+  static const youtubeUpload_nextButton = 'youtubeUpload.nextButton';
+  static const youtubeUpload_emptyInput = 'youtubeUpload.emptyInput';
+  static const youtubeUpload_containsSpace = 'youtubeUpload.containsSpace';
+  static const youtubeUpload_confirmationTitle =
+      'youtubeUpload.confirmationTitle';
+  static const youtubeUpload_confirmationDescription =
+      'youtubeUpload.confirmationDescription';
+  static const youtubeUpload_notFoundError = 'youtubeUpload.notFoundError';
+  static const youtubeUpload_uploadingTitle = 'youtubeUpload.uploadingTitle';
+  static const youtubeUpload_uploadWarning = 'youtubeUpload.uploadWarning';
+  static const youtubeUpload_uploadCompleteNotification =
+      'youtubeUpload.uploadCompleteNotification';
+  static const youtubeUpload_confirmationNotification =
+      'youtubeUpload.confirmationNotification';
+  static const youtubeUpload = 'youtubeUpload';
+  static const notificationPermission_title = 'notificationPermission.title';
+  static const notificationPermission_description =
+      'notificationPermission.description';
+  static const notificationPermission_exitButton =
+      'notificationPermission.exitButton';
+  static const notificationPermission_allowButton =
+      'notificationPermission.allowButton';
+  static const notificationPermission_uploadSuccessTitle =
+      'notificationPermission.uploadSuccessTitle';
+  static const notificationPermission_uploadSuccessDescription =
+      'notificationPermission.uploadSuccessDescription';
+  static const notificationPermission_uploadFailTitle =
+      'notificationPermission.uploadFailTitle';
+  static const notificationPermission = 'notificationPermission';
+  static const youtubeInterview_introMessage = 'youtubeInterview.introMessage';
+  static const youtubeInterview_cannotResumeLater =
+      'youtubeInterview.cannotResumeLater';
+  static const youtubeInterview_similarApplicantsWatched =
+      'youtubeInterview.similarApplicantsWatched';
+  static const youtubeInterview_suggestedVideo =
+      'youtubeInterview.suggestedVideo';
+  static const youtubeInterview_watchThisVideo =
+      'youtubeInterview.watchThisVideo';
+  static const youtubeInterview_watchVideoButton =
+      'youtubeInterview.watchVideoButton';
+  static const youtubeInterview = 'youtubeInterview';
+  static const youtubeDetail_questions = 'youtubeDetail.questions';
+  static const youtubeDetail_questionsCount = 'youtubeDetail.questionsCount';
+  static const youtubeDetail_summary = 'youtubeDetail.summary';
+  static const youtubeDetail_keyTopic = 'youtubeDetail.keyTopic';
+  static const youtubeDetail_interview = 'youtubeDetail.interview';
+  static const youtubeDetail_summaryNote = 'youtubeDetail.summaryNote';
+  static const youtubeDetail_seeAll = 'youtubeDetail.seeAll';
+  static const youtubeDetail_relatedVideos = 'youtubeDetail.relatedVideos';
+  static const youtubeDetail_interviewQuestions =
+      'youtubeDetail.interviewQuestions';
+  static const youtubeDetail_selectAll = 'youtubeDetail.selectAll';
+  static const youtubeDetail_startInterview = 'youtubeDetail.startInterview';
+  static const youtubeDetail_loadingVideo = 'youtubeDetail.loadingVideo';
+  static const youtubeDetail_buttonConfirm = 'youtubeDetail.buttonConfirm';
+  static const youtubeDetail_loadingTitle = 'youtubeDetail.loadingTitle';
+  static const youtubeDetail_loadingDescription =
+      'youtubeDetail.loadingDescription';
+  static const youtubeDetail = 'youtubeDetail';
   static const errors_error = 'errors.error';
   static const errors_photoUploadError = 'errors.photoUploadError';
   static const errors_errorOccurred = 'errors.errorOccurred';

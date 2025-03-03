@@ -6,9 +6,9 @@ extension SkillStepEvent on SignUpEvent {
   ///
   String? skillInputValidation(WidgetRef ref,
           {required String? searchedTerm}) =>
-      ref
-          .read(skillTextFieldControllerProvider.notifier)
-          .skillInputValidation(searchedTerm);
+      ref.read(skillTextFieldControllerProvider.notifier).skillInputValidation(
+          input: searchedTerm,
+          isResultEmpty: ref.read(searchedSkillsProvider).isEmpty);
 
   ///
   /// 검색된 스킬 리스트 호출
@@ -25,9 +25,7 @@ extension SkillStepEvent on SignUpEvent {
       {required SkillEntity targetSkill}) {
     ref.read(searchedSkillsProvider.notifier).clear();
     ref.read(skillTextFieldControllerProvider).clear();
-    ref
-        .read(selectedSkillsProvider.notifier)
-        .add(targetSkill, ref.read(selectedSkillScrollControllerProvider));
+    ref.read(selectedSkillsProvider.notifier).add(targetSkill);
   }
 
   ///

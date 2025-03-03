@@ -94,15 +94,59 @@ class _InterviewInductionView extends HookConsumerWidget
                     ),
                   ],
                 ),
+                youtube: (InterviewType type) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        tr(LocaleKeys
+                            .youtubeInterview_similarApplicantsWatched),
+                        style: AppTextStyle.body2.copyWith(
+                          color: AppColor.of.gray4,
+                        ),
+                      ),
+                      Text(
+                        tr(LocaleKeys.youtubeInterview_suggestedVideo),
+                        style: AppTextStyle.title1.copyWith(
+                          color: AppColor.of.gray6,
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
-          const Gap(16),
+
+          if (room(ref).type.isYoutube) const Gap(20) else const Gap(16),
 
           /// ILLUSTRATION
-          Expanded(
-            child: Image.asset(
-              room(ref).type.illusrationPath,
+
+          if (room(ref).type.isYoutube)
+            Expanded(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: recommendYoutubeContent(ref).when(
+                      data: (video) {
+                        return ThumbnailImageView(url: video.thumbnailImgUrl);
+                      },
+                      error: (_, __) => ThumbnailImageView.createSkeleton(),
+                      loading: ThumbnailImageView.createSkeleton,
+                    ),
+                  ),
+                  const Gap(20),
+                  Text(
+                    tr(LocaleKeys.youtubeInterview_watchThisVideo),
+                    style: AppTextStyle.headline2,
+                  ),
+                ],
+              ),
+            )
+          else
+            Expanded(
+              child: Image.asset(
+                room(ref).type.illusrationPath,
+              ),
             ),
-          ),
           if (room(ref).type.isSingleTopic)
             Padding(
               padding: const EdgeInsets.only(top: 16),
@@ -165,6 +209,9 @@ class _InterviewInductionView extends HookConsumerWidget
                           /// 테스트 필요
                           retryThisInterview(ref);
                         },
+                        youtube: (_) {
+                          onWatchRecommendVideoBtnTapped(ref);
+                        },
                       );
                     },
                     child: Text(
@@ -173,6 +220,10 @@ class _InterviewInductionView extends HookConsumerWidget
                                 tr(LocaleKeys.home_takeInterview),
                             practical: (_) => tr(LocaleKeys.interview_tryAgain),
                             resume: (_) => tr(LocaleKeys.interview_tryAgain),
+                            youtube: (InterviewType type) {
+                              return tr(
+                                  LocaleKeys.youtubeInterview_watchVideoButton);
+                            },
                           ),
                     ),
                   ),

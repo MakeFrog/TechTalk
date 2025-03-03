@@ -1,10 +1,16 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
 import 'package:techtalk/features/user/repositories/entities/document_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
+import 'package:techtalk/features/user/data_source/remote/models/bookmarked_youtube_content_model.dart';
+import 'package:techtalk/features/user/data_source/remote/models/uploaded_youtube_content_model.dart';
+import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
 import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
+import 'package:techtalk/features/youtube/data_source/remote/models/youtube_main_entity.dart';
 
 abstract interface class UserRepository {
   ///
@@ -16,6 +22,16 @@ abstract interface class UserRepository {
   /// 유저의 면접 실행 기록 여부
   ///
   Result<bool> hasEnteredFirstInterview();
+
+  ///
+  /// 유튜브 신기능 처음 노출 여부
+  ///
+  Result<bool> hasSeenNewYoutubeFeature();
+
+  ///
+  /// 유튜브 신기능 처음 노출 여부 값 해제
+  ///
+  Future<Result<void>> disableNewFeatureShowState();
 
   ///
   /// 유저 정보 호출
@@ -66,6 +82,57 @@ abstract interface class UserRepository {
   /// 면접을 처음 실행했는지 여부 값 업데이트
   ///
   Future<Result<void>> changeFirstEnteredFieldToTrue();
+
+  ///
+  /// 북마크 되어 잇는 콘텐츠인지 여부
+  ///
+  Future<Result<bool>> isContentBookMarked(String contentId);
+
+  ///
+  /// 북마크 상태 업데이트
+  ///
+  Future<Result<void>> updateBookMarkState({
+    required String contentId,
+    required bool targetState,
+  });
+
+  ///
+  /// 유튜브 영상 시청 기록 추가
+  ///
+  Future<Result<void>> updateYoutubeWatchHistory(String contentId);
+
+  ///
+  /// 유튜브 영상 기록 호출
+  ///
+  Future<
+          Result<
+              FirebasePaginatedResult<YoutubeMainEntity, WatchedYoutubeModel>>>
+      getPagedWatchedYoutubeHistory({
+    DocumentSnapshot<WatchedYoutubeModel>? lastDocument,
+    required int limit,
+  });
+
+  ///
+  /// 북마크한 유튜브 영상 기록 호출
+  ///
+  Future<
+      Result<
+          FirebasePaginatedResult<YoutubeMainEntity,
+              BookmarkedYoutubeModel>>> getPagedBookmarkedYoutube({
+    DocumentSnapshot<BookmarkedYoutubeModel>? lastDocument,
+    required int limit,
+  });
+
+  ///
+  /// 내가 업로드한 유튜브 영상 호출
+  ///
+  Future<
+          Result<
+              FirebasePaginatedResult<YoutubeMainEntity, UploadedYoutubeModel>>>
+      getPagedUploadedYoutube({
+    DocumentSnapshot<UploadedYoutubeModel>? lastDocument,
+    required int limit,
+  });
 
   ///
   /// 만약 Resume 만 업데이트하는 API가 별도로 필요하다면:

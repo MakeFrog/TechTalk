@@ -6,20 +6,23 @@ import 'package:techtalk/app/environment/firebase/firebase_options_dev.dart'
     as dev_firebase;
 
 enum Environment {
-  dev(type: "DEV", firebaseId: "techtalk-dev-33"),
-  prod(type: "PROD", firebaseId: "techtalk-prod-32");
+  dev(type: "DEV"),
+  prod(type: "PROD");
 
   final String type;
-  final String firebaseId;
 
   const Environment({
     required this.type,
-    required this.firebaseId,
   });
 
   String get dotFileName => switch (this) {
         dev => /*'.dev.env'*/ '.env',
         prod => '.env',
+      };
+
+  String get firebaseId => switch (this) {
+        dev => dotenv.env['FIREBASE_DEV_ID']!,
+        prod => dotenv.env['FIREBASE_PROD_ID']!,
       };
 
   String get openApiKey => switch (this) {
@@ -35,6 +38,11 @@ enum Environment {
   String get slackNotificationKey => switch (this) {
         dev => dotenv.env['SLACK_NOTIFICATION_KEY']!,
         prod => dotenv.env['SLACK_NOTIFICATION_KEY']!,
+      };
+
+  List<String> get operationIdList => switch (this) {
+        prod => dotenv.env['OPERATIONS_UUID_LIST']!.split(','),
+        dev => dotenv.env['OPERATIONS_UUID_LIST']!.split(','),
       };
 
   FirebaseOptions get firebaseOption => switch (this) {

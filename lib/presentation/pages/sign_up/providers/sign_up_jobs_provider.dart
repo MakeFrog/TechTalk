@@ -1,16 +1,16 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:techtalk/features/tech_set/tech_set.dart';
+import 'package:techtalk/core/constants/job_group.enum.dart';
 
 part 'sign_up_jobs_provider.g.dart';
 
 @riverpod
 class SignUpJobs extends _$SignUpJobs {
   @override
-  List<Job> build() {
+  List<JobGroupTypes> build() {
     return [];
   }
 
-  void toggle(Job item) {
+  void toggle(JobGroupTypes item) {
     if (state.contains(item)) {
       state = state.toList()..remove(item);
     } else {

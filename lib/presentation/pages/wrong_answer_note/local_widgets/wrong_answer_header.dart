@@ -10,7 +10,7 @@ class _WrongAnswerHeader extends HookWidget
   @override
   Widget build(BuildContext context) {
     return PreferredSize(
-      preferredSize: const Size.fromHeight(56),
+      preferredSize: const Size.fromHeight(102),
       child: Consumer(
         builder: (context, ref, child) {
           return HookBuilder(
@@ -46,15 +46,10 @@ class _WrongAnswerHeader extends HookWidget
                     children: [
                       Positioned(
                         top: 0,
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 16),
-                          height: 56,
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            tr(LocaleKeys.gnb_mistakeNote),
-                            style: AppTextStyle.headline2,
-                            textAlign: TextAlign.start,
-                          ),
+                        left: 0,
+                        right: 0,
+                        child: BackButtonAppBar(
+                          title: tr(LocaleKeys.learning_reviewNote),
                         ),
                       ),
                       Positioned(
@@ -75,13 +70,12 @@ class _WrongAnswerHeader extends HookWidget
 
                               return SelectableChip(
                                 isSelected: isSelected,
-                                onTap: ()=> onTapTopicChip(
-                                ref,
-                                topic,
-                              ),
+                                onTap: () => onTapTopicChip(
+                                  ref,
+                                  topic,
+                                ),
                                 label: topic.text,
                               );
-
                             },
                           ),
                         ),

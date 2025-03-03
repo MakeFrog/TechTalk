@@ -7,6 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
+import 'package:techtalk/app/util/app_formatter.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
@@ -90,15 +91,15 @@ class Bubble extends StatelessWidget {
                                     (chat as QuestionChatEntity)
                                         .isFollowUpQuestion) {
                                   return Text(
-                                    tr(LocaleKeys.interview_loadingFollowUpQuestion),
+                                    tr(LocaleKeys
+                                        .interview_loadingFollowUpQuestion),
                                     style: AppTextStyle.body2
                                         .copyWith(color: AppColor.of.gray4),
                                   )
                                       .animate(
                                           delay: 320.ms,
-                                          onPlay: (controller) =>
-                                              controller.repeat(
-                                                  period: 500.milliseconds))
+                                          onPlay: (controller) => controller
+                                              .repeat(period: 500.milliseconds))
                                       .shimmer(
                                           color: Colors.white.withOpacity(0.5));
                                 } else {
@@ -122,7 +123,10 @@ class Bubble extends StatelessWidget {
                               }
 
                               return Text(
-                                snapshot.hasData ? snapshot.requireData : '',
+                                snapshot.hasData
+                                    ? AppFormatter.removeInvalidSurrogates(
+                                        snapshot.requireData)
+                                    : '',
                                 style: AppTextStyle.body2,
                               );
                             },

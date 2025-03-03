@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'resume_box.g.dart';
 
-@HiveType(typeId: 4)
+@HiveType(typeId: 5)
 class ResumeBox extends HiveObject {
   @HiveField(0, defaultValue: null)
   final String? resumePath;

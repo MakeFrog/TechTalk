@@ -45,26 +45,33 @@ abstract class BasePage extends HookConsumerWidget {
     /// Swipe Back 제스처 이벤트를 관리
     /// [preventSwipeBack]의 속성 값은 통해
     /// 플랫폼별 Swipe Back 제스쳐 작동 여부를 설정할 수 있음.
-    ///
+
     return PopScope(
       canPop: canPop,
       onPopInvokedWithResult: (didPop, result) async {
         if (didPop) return;
         onWillPop(ref);
       },
-      child: GestureDetector(
-        onTap: !preventAutoUnfocus
-            ? () => FocusManager.instance.primaryFocus?.unfocus()
-            : null,
-        child: Container(
-          color: unSafeAreaColor,
-          child: wrapWithSafeArea
-              ? SafeArea(
-                  top: setTopSafeArea,
-                  bottom: setBottomSafeArea,
-                  child: _buildScaffold(context, ref),
-                )
-              : _buildScaffold(context, ref),
+      child: ProviderScope(
+        overrides: argProviderOverrides != null ? [argProviderOverrides!] : [],
+        child: HookConsumer(
+          builder: (context, ref, child) {
+            return GestureDetector(
+              onTap: !preventAutoUnfocus
+                  ? () => FocusManager.instance.primaryFocus?.unfocus()
+                  : null,
+              child: Container(
+                color: unSafeAreaColor,
+                child: wrapWithSafeArea
+                    ? SafeArea(
+                        top: setTopSafeArea,
+                        bottom: setBottomSafeArea,
+                        child: _buildScaffold(context, ref),
+                      )
+                    : _buildScaffold(context, ref),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -83,6 +90,9 @@ abstract class BasePage extends HookConsumerWidget {
       floatingActionButton: buildFloatingActionButton(ref),
     );
   }
+
+  /// 라우팅 Argument Provider overrides
+  Override? get argProviderOverrides => null;
 
   /// 하단 네비게이션 바를 구성하는 위젯을 반환
   @protected

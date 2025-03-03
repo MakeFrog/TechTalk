@@ -4,6 +4,7 @@ import 'package:techtalk/features/chat/data_source/remote/models/follow_up_qna_m
 import 'package:techtalk/features/chat/repositories/entities/base_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/follow_up_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 class ChatQnaEntity {
@@ -23,6 +24,10 @@ class ChatQnaEntity {
       ChatQnaEntity(qna: entity);
 
   factory ChatQnaEntity.fromResumeQnaEntityAtInitial(ResumeQnaEntity entity) =>
+      ChatQnaEntity(qna: entity);
+
+  factory ChatQnaEntity.fromYoutubeQnaEntityAtInitial(
+          YoutubeQnaEntity entity) =>
       ChatQnaEntity(qna: entity);
 
   factory ChatQnaEntity.fromModelToResumeEntity(

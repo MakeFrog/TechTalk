@@ -32,4 +32,10 @@ abstract interface class UserLocalDataSource {
   /// 유저 포트폴리오 데이터 저장
   ///
   Future<void> changePortfolioData(PortfolioEntity? portfolio);
+
+  /// 유저 로컬에 새로운 값 저장
+  /// TODO
+  /// 나머지 로컬 데이터 저장 로직들을 해당 메소드로 통합 필요
+  ///
+  Future<void> storeNewLocalState(UserBox userBox);
 }

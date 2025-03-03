@@ -46,3 +46,5 @@ app.*.map.json
 
 # FVM Version Cache
 .fvm/
+# assets/skills 폴더 내 모든 파일 제외
+/assets/skills/*

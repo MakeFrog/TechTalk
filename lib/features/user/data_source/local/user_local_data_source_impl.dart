@@ -97,4 +97,9 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
       rethrow;
     }
   }
+
+  @override
+  Future<void> storeNewLocalState(UserBox userBox) async {
+    return box.put(AppLocal.userBoxName, userBox);
+  }
 }

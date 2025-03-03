@@ -28,7 +28,7 @@ enum AnswerState {
   static AnswerState getStateById(String id) {
     return values.firstWhere(
       (state) => state.tag == id,
-      orElse: () => throw Exception('Unexpected Topic Id Value'),
+      orElse: () => throw Exception('Unexpected Answer Id Value'),
     );
   }
 }

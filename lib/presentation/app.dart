@@ -12,7 +12,7 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_theme.dart';
 import 'package:techtalk/core/services/app_size.dart';
-import 'package:techtalk/presentation/widgets/common/layout/responsive_layout.dart';
+import 'package:techtalk/presentation/widgets/common/layout/mobie_layout_constraint_layout.dart';
 
 class ProviderLogger extends ProviderObserver {
   @override
@@ -35,13 +35,20 @@ class ProviderLogger extends ProviderObserver {
   }
 }
 
+final globalContainer = ProviderContainer();
+
 Future<void> runFlavoredApp() async {
   await Flavor.instance.setup();
+  // await SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitDown,
+  //   DeviceOrientation.portraitUp,
+  // ]);
 
   return runApp(
     ProviderScope(
+      parent: globalContainer,
       observers: [
-        ProviderLogger(),
+        MyObserver(),
       ],
       child: App(),
     ),
@@ -97,7 +104,7 @@ class App extends StatelessWidget {
                 AppSize.init(context);
                 return FToastBuilder()(
                   context,
-                  ResponsiveLayoutBuilder(context, child),
+                  MLayoutConstraintLayout(context, child),
                 );
               },
             ),
@@ -105,5 +112,44 @@ class App extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+class MyObserver extends ProviderObserver {
+  @override
+  void didAddProvider(
+    ProviderBase<Object?> provider,
+    Object? value,
+    ProviderContainer container,
+  ) {
+    print('Provider $provider was initialized with $value');
+  }
+
+  @override
+  void didDisposeProvider(
+    ProviderBase<Object?> provider,
+    ProviderContainer container,
+  ) {
+    print('Provider $provider was disposed');
+  }
+
+  @override
+  void didUpdateProvider(
+    ProviderBase<Object?> provider,
+    Object? previousValue,
+    Object? newValue,
+    ProviderContainer container,
+  ) {
+    print('Provider $provider updated from $previousValue to $newValue');
+  }
+
+  @override
+  void providerDidFail(
+    ProviderBase<Object?> provider,
+    Object error,
+    StackTrace stackTrace,
+    ProviderContainer container,
+  ) {
+    print('Provider $provider threw $error at $stackTrace');
   }
 }

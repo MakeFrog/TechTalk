@@ -81,4 +81,28 @@ extension StringExtensions on String {
   bool get isNotEntirelyEmpty {
     return isNotEmpty && this != '';
   }
+
+  ///
+  /// 스킬이름
+  /// 1.lowercase
+  /// 2.'-' to ''
+  /// 3.'.' to ''
+  /// ==> id
+  String get skillNameToId => replaceAll('#', 'sharp')
+      .replaceAll('+', 'plus')
+      .replaceAll(RegExp(r'[^\w]+'), '')
+      .toLowerCase();
+
+  ///
+  /// 검색 조건을 위해
+  /// (-), '(공백)'을 제거하고
+  /// lowerCase
+  ///
+  String get normalizeSearchString =>
+      replaceAll(RegExp(r'[- ]'), '').toLowerCase();
+
+  ///
+  /// 스킬 경로 image path를 prefix하는 메소드
+  ///
+  String get skillImagePathPrefix => 'assets/skills/$this';
 }
