@@ -74,9 +74,10 @@ class ResumeInfo extends _$ResumeInfo {
   ///
   /// 이력서 데이터 업데이트
   ///
-  Future<void> updateResumeData(ResumeEntity? newResume) async {
-    final storeResult = await userRepository.changeResumeData(newResume);
-    storeResult.fold(
+  Future<void> updateResume(ResumeEntity? newResume) async {
+    // 로컬 데이터
+    final result = await userRepository.updateResume(newResume);
+    result.fold(
       onSuccess: (_) => null,
       onFailure: (e) {},
     );
@@ -85,9 +86,10 @@ class ResumeInfo extends _$ResumeInfo {
   ///
   /// 포트폴리오 데이터 업데이트
   ///
-  Future<void> updatePortfolioData(PortfolioEntity? newPortfolio) async {
-    final storeResult = await userRepository.changePortfolioData(newPortfolio);
-    storeResult.fold(
+  Future<void> updatePortfolio(PortfolioEntity? newPortfolio) async {
+    // 로컬 데이터
+    final result = await userRepository.updatePortfolio(newPortfolio);
+    result.fold(
       onSuccess: (_) => null,
       onFailure: (e) {},
     );
@@ -97,16 +99,13 @@ class ResumeInfo extends _$ResumeInfo {
   /// 실제 저장 로직(Repository 호출)을 모아서 수행하고,
   /// 저장이 완료되면 _isFileChanged = false 로 변경
   ///
-  Future<void> saveCurrentDocumentState() async {
+  Future<void> saveDocument() async {
     final doc = state.valueOrNull;
     if (doc == null) return;
 
-    final currentResume = doc.resume;
-    final currentPortfolio = doc.portfolio;
-
     // 각각 서버나 로컬에 저장
-    await updateResumeData(currentResume);
-    await updatePortfolioData(currentPortfolio);
+    await updateResume(doc.resume);
+    await updatePortfolio(doc.portfolio);
 
     // 모든 저장 로직이 끝나면 다시 파일 변경 false
     doc.isFileChanged = false;

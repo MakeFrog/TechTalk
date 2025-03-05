@@ -57,11 +57,37 @@ final class UserRepositoryImpl implements UserRepository {
               .toList()
           : [];
 
+      final ResumeEntity? resume =
+          (localRes.resume != null || remoteRes.resume != null)
+              ? ResumeEntity(
+                  path: localRes.resume?.resumePath ??
+                      remoteRes.resume?['path'] as String?,
+                  title: localRes.resume?.resumeTitle ??
+                      remoteRes.resume?['title'] as String?,
+                  uploadAt: localRes.resume?.resumeUploadAt ??
+                      remoteRes.resume?['uploadAt'] as String?,
+                )
+              : null;
+
+      final PortfolioEntity? portfolio =
+          (localRes.portfolio != null || remoteRes.portfolio != null)
+              ? PortfolioEntity(
+                  path: localRes.portfolio?.portfolioPath ??
+                      remoteRes.portfolio?['path'] as String?,
+                  title: localRes.portfolio?.portfolioTitle ??
+                      remoteRes.portfolio?['title'] as String?,
+                  uploadAt: localRes.portfolio?.portfolioUploadAt ??
+                      remoteRes.portfolio?['uploadAt'] as String?,
+                )
+              : null;
+
       final result = UserEntity.fromModel(
         remoteRes,
         skills: skills,
         box: localRes,
         jobGroups: jobGroups,
+        resume: resume,
+        portfolio: portfolio,
       );
 
       return Result.success(result);
@@ -201,11 +227,15 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<void>> updateBookMarkState(
-      {required String contentId, required bool targetState}) async {
+  Future<Result<void>> updateBookMarkState({
+    required String contentId,
+    required bool targetState,
+  }) async {
     try {
       await _userRemoteDataSource.updateBookMarkState(
-          contentId: contentId, targetState: targetState);
+        contentId: contentId,
+        targetState: targetState,
+      );
       return Result.success(null);
     } catch (e) {
       return Result.failure(Exception('UserRepository > $e'));
@@ -404,27 +434,24 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<void>> changeResumeData(ResumeEntity? newResume) async {
+  Future<Result<void>> updateResume(ResumeEntity? newResume) async {
     try {
-      await _userLocalDataSource.changeResumeData(newResume);
+      await _userLocalDataSource.updateResume(newResume);
+      await _userRemoteDataSource.updateResume(newResume);
       return Result.success(null);
     } catch (e) {
-      debugPrint('repository - 저장 실패');
-
-      return Result.failure(Exception(e));
+      return Result.failure(Exception('UserRepository > updateResume > $e'));
     }
   }
 
   @override
-  Future<Result<void>> changePortfolioData(
-      PortfolioEntity? newPortfolio) async {
+  Future<Result<void>> updatePortfolio(PortfolioEntity? newPortfolio) async {
     try {
-      await _userLocalDataSource.changePortfolioData(newPortfolio);
+      await _userLocalDataSource.updatePortfolio(newPortfolio);
+      await _userRemoteDataSource.updatePortfolio(newPortfolio);
       return Result.success(null);
     } catch (e) {
-      debugPrint('repository - 저장 실패');
-
-      return Result.failure(Exception(e));
+      return Result.failure(Exception('UserRepository > updatePortfolio > $e'));
     }
   }
 

@@ -49,23 +49,23 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
   }
 
   @override
-  Future<void> changeResumeData(ResumeEntity? newResume) async {
+  Future<void> updateResume(ResumeEntity? resume) async {
     try {
       final userLocalInfo = localUser ?? UserBox.defaultValue();
 
-      if (newResume == null) {
+      if (resume == null || resume.path == null) {
         final updatedUserBox = userLocalInfo.deleteResume();
         await box.put(AppLocal.userBoxName, updatedUserBox);
-      } else {
-        final updatedUserBox = userLocalInfo.copyWith(
-          resume: ResumeBox(
-            resumePath: newResume.path,
-            resumeTitle: newResume.title,
-            resumeUploadAt: newResume.uploadAt,
-          ),
-        );
-        await box.put(AppLocal.userBoxName, updatedUserBox);
+        return;
       }
+      final updatedUserBox = userLocalInfo.copyWith(
+        resume: ResumeBox(
+          resumePath: resume.path,
+          resumeTitle: resume.title,
+          resumeUploadAt: resume.uploadAt,
+        ),
+      );
+      await box.put(AppLocal.userBoxName, updatedUserBox);
     } catch (e, s) {
       debugPrint('[로컬] box.put 예외 발생: $e');
       debugPrint('$s');
@@ -74,19 +74,19 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
   }
 
   @override
-  Future<void> changePortfolioData(PortfolioEntity? newPortfolio) async {
+  Future<void> updatePortfolio(PortfolioEntity? portfolio) async {
     try {
       final userLocalInfo = localUser ?? UserBox.defaultValue();
 
-      if (newPortfolio == null) {
+      if (portfolio == null) {
         final updatedUserBox = userLocalInfo.deletePortfolio();
         await box.put(AppLocal.userBoxName, updatedUserBox);
       } else {
         final updatedUserBox = userLocalInfo.copyWith(
           portfolio: PortfolioBox(
-            portfolioPath: newPortfolio.path,
-            portfolioTitle: newPortfolio.title,
-            portfolioUploadAt: newPortfolio.uploadAt,
+            portfolioPath: portfolio.path,
+            portfolioTitle: portfolio.title,
+            portfolioUploadAt: portfolio.uploadAt,
           ),
         );
         await box.put(AppLocal.userBoxName, updatedUserBox);

@@ -209,10 +209,7 @@ mixin class ResumeManageEvent {
       return;
     }
 
-    // 만약 이력이 필요 없다면, 사실상 로직 스킵 가능
-    // (이미 registDocumentBtn에서 Documents 디렉토리에 복사했음)
-
-    await ref.read(resumeInfoProvider.notifier).saveCurrentDocumentState();
+    await ref.read(resumeInfoProvider.notifier).saveDocument();
     debugPrint('저장이 완료되었습니다');
   }
 

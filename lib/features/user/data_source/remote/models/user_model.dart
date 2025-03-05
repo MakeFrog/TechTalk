@@ -21,6 +21,8 @@ class UserModel {
     this.recordedTopicIds,
     this.completedInterviewCount,
     this.techSkills,
+    this.resume,
+    this.portfolio,
   });
 
   /// 유저 UID
@@ -60,6 +62,12 @@ class UserModel {
   /// 마지막 로그인 시간
   @TimeStampConverter()
   final DateTime lastLoginDate;
+
+  /// 이력서 메타데이터
+  final Map<String, dynamic>? resume;
+
+  /// 포트폴리오 메타데이터
+  final Map<String, dynamic>? portfolio;
 
   factory UserModel.fromEntity(UserEntity entity) {
     return UserModel(

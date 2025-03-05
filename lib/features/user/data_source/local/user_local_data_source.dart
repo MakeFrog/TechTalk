@@ -26,12 +26,12 @@ abstract interface class UserLocalDataSource {
   ///
   /// 유저 이력서 데이터 저장
   ///
-  Future<void> changeResumeData(ResumeEntity? resume);
+  Future<void> updateResume(ResumeEntity? resume);
 
   ///
   /// 유저 포트폴리오 데이터 저장
   ///
-  Future<void> changePortfolioData(PortfolioEntity? portfolio);
+  Future<void> updatePortfolio(PortfolioEntity? portfolio);
 
   /// 유저 로컬에 새로운 값 저장
   /// TODO

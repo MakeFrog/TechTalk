@@ -137,12 +137,12 @@ abstract interface class UserRepository {
   ///
   /// 만약 Resume 만 업데이트하는 API가 별도로 필요하다면:
   ///
-  Future<Result<void>> changeResumeData(ResumeEntity? resume);
+  Future<Result<void>> updateResume(ResumeEntity? resume);
 
   ///
   /// 만약 Portfolio 만 업데이트하는 API가 별도로 필요하다면:
   ///
-  Future<Result<void>> changePortfolioData(PortfolioEntity? portfolio);
+  Future<Result<void>> updatePortfolio(PortfolioEntity? portfolio);
 
   ///
   /// 로컬 저장소의 PDF 메타 데이터 호출
