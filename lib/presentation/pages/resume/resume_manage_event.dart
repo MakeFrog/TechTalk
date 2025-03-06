@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
@@ -18,10 +17,8 @@ import 'package:techtalk/features/user/repositories/entities/resume_entity.dart'
 import 'package:techtalk/features/user/repositories/enums/document_type.enum.dart';
 import 'package:techtalk/features/user/repositories/enums/resume_setting_type.enum.dart';
 import 'package:techtalk/presentation/pages/resume/providers/resume_info_provider.dart';
-import 'package:techtalk/presentation/pages/resume/resume_manage_page.dart';
+import 'package:techtalk/presentation/widgets/common/bottom_sheet/option_list_bottom_sheet.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
-import 'package:path/path.dart' as p;
-
 import '../../../features/chat/use_cases/summarize_gemini_resume_use_case.dart';
 
 mixin class ResumeManageEvent {
@@ -38,18 +35,28 @@ mixin class ResumeManageEvent {
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (context) {
-        return ResumeManageBottomSheet(
+        return OptionListBottomSheet(
           leadingText: '이력서',
           onCloseBtnTapped: context.pop,
+          highlightedIndexes: const {2}, // 강조하고싶은 버튼의 인덱스
           options: ResumeSettingType.values
               .map((e) => context.tr(e.nameTrKey))
               .toList(),
           onOptionTapped: (int index) {
             ResumeSettingType.branch(
               targetCategory: ResumeSettingType.getByIndex(index),
-              upload: (_) => registDocumentBtn(ref, type),
-              preview: (_) => onClickedPreviewBtn(ref, type),
-              delete: (_) => onClickedDeleteBtn(ref, type),
+              upload: (_) {
+                context.pop();
+                registDocumentBtn(ref, type);
+              },
+              preview: (_) {
+                context.pop();
+                onClickedPreviewBtn(ref, type);
+              },
+              delete: (_) {
+                context.pop();
+                onClickedDeleteBtn(ref, type);
+              },
             );
           },
         );
@@ -305,32 +312,5 @@ mixin class ResumeManageEvent {
         debugPrint("[에러] PDF 요약 실패: $error");
       },
     );
-  }
-
-  /// 실제로 존재하는 파일 경로를 리턴하는 함수
-  /// 1) [storedPath] 자체가 존재하는지 확인
-  /// 2) 없다면 basename만 떼어 앱 내부 Documents 폴더와 합쳐 확인
-  /// 3) 둘 다 없으면 Exception
-  Future<String> getValidPath(WidgetRef ref, String storedPath) async {
-    final storedFile = File(storedPath);
-
-    // 1) 기존 절대 경로 파일이 존재하면 그대로 사용
-    if (storedFile.existsSync()) {
-      return storedPath;
-    }
-
-    // 2) 앱 내부 Documents 디렉토리를 구해 basename과 결합
-    final docDir = await getApplicationDocumentsDirectory();
-    final fileName = p.basename(storedPath); // 예) "myResume.pdf"
-    final fallbackPath = p.join(docDir.path, fileName);
-    final fallbackFile = File(fallbackPath);
-
-    if (fallbackFile.existsSync()) {
-      // Fallback 경로에 파일이 있으면 이걸 사용
-      return fallbackPath;
-    }
-
-    // 3) 둘 다 없으면 예외
-    throw Exception('파일을 찾을 수 없습니다.');
   }
 }

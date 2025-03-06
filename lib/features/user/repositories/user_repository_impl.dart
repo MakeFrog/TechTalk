@@ -456,7 +456,7 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<DocumentEntity>> loadDocumentData() async {
+  Future<Result<DocumentEntity>> loadDocument() async {
     try {
       final data = _userLocalDataSource.loadUserLocalInfo();
 

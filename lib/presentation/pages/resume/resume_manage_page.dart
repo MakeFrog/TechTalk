@@ -3,7 +3,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
@@ -13,9 +12,6 @@ import 'package:techtalk/presentation/pages/resume/resume_manage_state.dart';
 import 'package:techtalk/presentation/pages/resume/widgets/resume_card.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
-
-part 'package:techtalk/presentation/pages/resume/widgets/resume_manage_bottom_sheet.dart';
-
 
 class ResumeManagePage extends BasePage
     with ResumeManageEvent, ResumeManageState {
@@ -35,9 +31,10 @@ class ResumeManagePage extends BasePage
         }
 
         return Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
+              const Gap(16),
               buildGuideText(),
               ResumeCard.resume(resume: doc.resume),
               ResumeCard.portfolio(portfolio: doc.portfolio),

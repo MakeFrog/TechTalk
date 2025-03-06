@@ -32,5 +32,5 @@ mixin class ResumeManageState {
   /// 툴팁 활성화 기준
   ///
   bool showTooltip(WidgetRef ref) =>
-      ref.read(resumeInfoProvider).requireValue?.shouldShowTooltip == true;
+      ref.read(resumeInfoProvider.notifier).showTooltip();
 }

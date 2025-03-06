@@ -24,19 +24,15 @@ class ResumeInterviewPage extends BasePage
       error: (error, stackTrace) => const Text('에러가 발생했습니다'),
       data: (data) {
         return Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
+              const Gap(16),
               buildMainText(),
-
               buildGuideText(),
-
               ResumeCard.resume(resume: data?.resume),
               ResumeCard.portfolio(portfolio: data?.portfolio),
-
               const Spacer(),
-
-              /// 면접 시작하기 버튼
               buildStartInterviewBtn(ref),
             ],
           ),

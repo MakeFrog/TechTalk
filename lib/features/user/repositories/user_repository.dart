@@ -147,5 +147,5 @@ abstract interface class UserRepository {
   ///
   /// 로컬 저장소의 PDF 메타 데이터 호출
   ///
-  Future<Result<DocumentEntity?>> loadDocumentData();
+  Future<Result<DocumentEntity?>> loadDocument();
 }
