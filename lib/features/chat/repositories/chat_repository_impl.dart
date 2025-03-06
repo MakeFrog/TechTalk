@@ -73,12 +73,12 @@ final class ChatRepositoryImpl implements ChatRepository {
     }
   }
 
-  @override
-  Future<Result<ChatRoomEntity>> getChatRoom(String roomId) async {
-    final roomModel = await _remoteDataSource.getChatRoom(roomId);
+  // @override
+  // Future<Result<ChatRoomEntity>> getChatRoom(String roomId) async {
+  //   final roomModel = await _remoteDataSource.getChatRoom(roomId);
 
-    return Result.success(ChatRoomEntity.fromModel(roomModel));
-  }
+  //   return Result.success(ChatRoomEntity.fromModel(roomModel));
+  // }
 
   @override
   Future<Result<void>> uploadChats(

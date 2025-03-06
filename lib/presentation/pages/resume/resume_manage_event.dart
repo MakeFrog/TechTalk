@@ -12,7 +12,7 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/enums/interview_type.enum.dart';
-import 'package:techtalk/features/chat/use_cases/create_gemini_resume_question_use_case.dart';
+import 'package:techtalk/features/chat/use_cases/create_openai_resume_question_use_case.dart';
 import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/repositories/enums/document_type.enum.dart';
@@ -21,6 +21,8 @@ import 'package:techtalk/presentation/pages/resume/providers/resume_info_provide
 import 'package:techtalk/presentation/pages/resume/resume_manage_page.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 import 'package:path/path.dart' as p;
+
+import '../../../features/chat/use_cases/summarize_gemini_resume_use_case.dart';
 
 mixin class ResumeManageEvent {
   ///
@@ -240,75 +242,69 @@ mixin class ResumeManageEvent {
   /// 이력서 면접 시작 (프롬프팅)
   ///
   Future<void> startResumeInterview(WidgetRef ref) async {
-    // 이력서 파일 자체가 없는 경우
     final doc = ref.read(resumeInfoProvider).requireValue;
     if ((doc?.resume?.path?.isEmpty ?? true) &&
         (doc?.portfolio?.path?.isEmpty ?? true)) {
       debugPrint('[에러] 이력서 및 포트폴리오 파일이 없습니다. 인터뷰를 진행할 수 없습니다.');
-      return; // 조기 종료
+      return;
     }
 
-    // 로딩 중 페이지로 먼저 이동
+    // 로딩 화면
     routeToResumeInterviewLoadingPage(ref);
 
-    // PDF 저장
-    await saveDocuments(ref);
-
-    final DateTime startTime = DateTime.now();
-
-    // 질문 생성 유즈케이스 실행
-    final router = GoRouter.of(ref.context);
-    final useCase = CreateResumeQuestionUseCase();
-    final param = (
-      resumePath: doc?.resume?.path ?? '',
-      portfolioPath: doc?.portfolio?.path ?? ''
-    );
-
-    try {
-      final result = await useCase.call(param as GetResumeParam);
-
-      result.fold(
-        onSuccess: (qnaList) {
-          // 생성 가능한 질문 개수가 적은 경우 - 3개 미만
-          if (qnaList.length < 3) {
-            debugPrint('[에러] 생성 가능한 질문의 수가 너무 적습니다. (현재: ${qnaList.length}개)');
-            return;
-          }
-
-          debugPrint("Gemini AI 질문 생성 성공, 총 ${qnaList.length}개");
-          final mapped = qnaList
-              .map(
-                (q) => {
-                  "id": q.id,
-                  "question": q.question,
-                  "type": q.questionType.name,
-                  "evaluationPoint": q.evaluationPoint,
-                },
-              )
-              .toList();
-          final prettyJson = const JsonEncoder.withIndent('  ').convert(mapped);
-          debugPrint("==== 면접 질문 결과 ====");
-          debugPrint(prettyJson);
-
-          // 채팅방 구성 후 이동
-          final room = ChatRoomEntity.generateResumeInterview(qnas: qnaList);
-          final route = ChatPageRoute(roomId: room.id, type: room.type);
-          route.updateArg(room: room);
-          router.go(route.location);
-        },
-        onFailure: (error) {
-          debugPrint("[에러] AI 질문 생성 실패: $error");
-        },
-      );
-
-      // 종료 시각 기록
-      final DateTime endTime = DateTime.now();
-      final duration = endTime.difference(startTime).inMilliseconds;
-      debugPrint('===== 프롬프트 출력 시간: $duration ms =====');
-    } catch (e, s) {
-      debugPrint("[에러] AI 질문 생성 도중 예외 발생: $e");
-      debugPrint("$s");
+    // 이력서 관리 파일에 변화가 있을 때에만 PDF 저장 로직 실행
+    // TODO: 이력서/포트폴리오중 하나만 변경시 변경된 것만 저장하도록 예외처리 (yundal)
+    if (doc?.isFileChanged == true) {
+      await saveDocuments(ref);
     }
+
+    final router = GoRouter.of(ref.context);
+    final summarizeUseCase = SummarizeGeminiResumeUseCase();
+
+    final resumePath = doc?.resume?.path ?? '';
+    final portfolioPath = doc?.portfolio?.path ?? '';
+
+    debugPrint('startResumeInterview');
+    debugPrint('resumePath : $resumePath');
+    debugPrint('portfolioPath : $portfolioPath');
+
+    // GEMINI로 요약하기
+    final getGeminiParam =
+        (resumePath: resumePath, portfolioPath: portfolioPath);
+
+    final summarizeResult = await summarizeUseCase.call(getGeminiParam);
+
+    await summarizeResult.fold(
+      // 요약된 내용 기반으로 질문 생성하기
+      onSuccess: (map) async {
+        final resumeText = map[0]["content"];
+        final portfolioText = map[1]["content"];
+
+        final questionUseCase = CreateOpenAIResumeQuestionUseCase();
+        final getResumeParam = (
+          resumeContent: resumeText ?? '',
+          portfolioContent: portfolioText ?? ''
+        );
+
+        final questionResult = await questionUseCase.call(getResumeParam);
+
+        questionResult.fold(
+          onSuccess: (qnaList) {
+            // 질문 생성 성공 => 채팅방 이동
+            final room = ChatRoomEntity.generateResumeInterview(qnas: qnaList);
+            final route = ChatPageRoute(roomId: room.id, type: room.type);
+            route.updateArg(room: room);
+            router.go(route.location);
+          },
+          onFailure: (error) {
+            debugPrint("[에러] 질문 생성 실패: $error");
+          },
+        );
+      },
+      onFailure: (error) {
+        debugPrint("[에러] PDF 요약 실패: $error");
+      },
+    );
   }
 
   /// 실제로 존재하는 파일 경로를 리턴하는 함수

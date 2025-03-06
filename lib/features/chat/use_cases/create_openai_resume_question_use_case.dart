@@ -7,7 +7,10 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/enums/resume_question_type.enum.dart';
 
-class CreateResumeQuestionUseCase
+/// 파라미터
+typedef GetResumeParam = ({String resumeContent, String portfolioContent});
+
+class CreateOpenAIResumeQuestionUseCase
     extends BaseUseCase<GetResumeParam, Result<List<ResumeQnaEntity>>> {
   @override
   Future<Result<List<ResumeQnaEntity>>> call(GetResumeParam request) async {
@@ -108,11 +111,13 @@ class CreateResumeQuestionUseCase
   예시:
   [
     {
+      "id": "Q1"
       "question": "클린 아키텍처를 적용하여 코드 리뷰 시간을 단축한 방법을 설명해주세요.",
       "type": "hardSkill",
       "evaluationPoint": "클린 아키텍처 이해도, 코드 품질 개선 능력"
     },
     {
+      "id": "Q2"
       "question": "팀 프로젝트에서 UI/UX 개선을 위해 디자이너와 협력한 경험을 공유해주세요.",
       "type": "softSkill",
       "evaluationPoint": "팀 협업 능력, 창의적 문제 해결 능력"
@@ -125,9 +130,6 @@ class CreateResumeQuestionUseCase
     ];
   }
 }
-
-/// 파라미터
-typedef GetResumeParam = ({String resumeContent, String portfolioContent});
 
 
 ///
