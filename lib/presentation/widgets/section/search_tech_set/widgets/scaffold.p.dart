@@ -5,6 +5,7 @@ class _Scaffold extends HookConsumerWidget {
     super.key,
     required this.leadingView,
     required this.searchBar,
+    required this.techSetSelectionBottomSheet,
     required this.tabBar,
     required this.searchSkillListView,
     required this.jobGroupSelectionListView,
@@ -13,6 +14,7 @@ class _Scaffold extends HookConsumerWidget {
 
   final Widget leadingView;
   final Widget searchBar;
+  final Widget techSetSelectionBottomSheet;
   final Widget tabBar;
   final Widget searchSkillListView;
   final Widget jobGroupSelectionListView;
@@ -20,30 +22,32 @@ class _Scaffold extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tabController =
-        useTabController(initialLength: TechSetType.values.length);
-
-    return ControllerHolder<TabController>(
-      controller: tabController,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          leadingView,
-          const Gap(24),
-          searchBar,
-          const Gap(12),
-          tabBar,
-          Expanded(
-            child: TabBarView(
-              controller: tabController,
-              children: [
-                searchSkillListView,
-                jobGroupSelectionListView,
-              ],
-            ),
-          ),
-        ],
-      ),
+    return Stack(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            BackButtonAppBar(),
+            leadingView,
+            const Gap(24),
+            searchBar,
+            const Gap(12),
+          ],
+        ),
+        techSetSelectionBottomSheet,
+        // ScrollableSheet(
+        //   // maxPosition: const SheetAnchor.proportional(772 / 812),
+        //   // minPosition: const SheetAnchor.proportional(665 / 812),
+        //   child: Container(
+        //     height: 400,
+        //     width: double.infinity,
+        //     color: Colors.red,
+        //     child: const Text(
+        //       'data',
+        //     ),
+        //   ),
+        // ),
+      ],
     );
   }
 }

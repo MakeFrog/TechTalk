@@ -92,9 +92,9 @@ mixin class HomeEvent {
   /// AI 면접 카드가 탭 되었을 때
   ///
   void onAiInterviewCardTapped(WidgetRef ref) {
-    InterviewLevelSelectionRoute().push(ref.context);
-
-    return;
+    // InterviewLevelSelectionRoute().push(ref.context);
+    //
+    // return;
     SearchTechSet().push(ref.context);
   }
 

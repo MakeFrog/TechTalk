@@ -21,6 +21,7 @@ class TechtalkTextField extends HookWidget {
     this.enabled = true,
     this.activeSuffixIcon = true,
     this.autoFocus = false,
+    this.showPrefixIcon = false,
     this.validator,
     this.inputFormatters,
     this.textInputAction,
@@ -45,6 +46,7 @@ class TechtalkTextField extends HookWidget {
   final String? Function(String? value)? validator;
   final String? hintText;
   final TextStyle? hintTextStyle;
+  final bool showPrefixIcon;
 
   /// 우측 아이콘을 활성화할지 여부
   final bool activeSuffixIcon;
@@ -76,28 +78,44 @@ class TechtalkTextField extends HookWidget {
                 vertical: 14,
               ) +
               const EdgeInsets.only(right: 16),
-          prefix: const Padding(
+          prefix: Padding(
             padding: EdgeInsets.only(
-              left: 16.0,
+              left: 16.0 + (showPrefixIcon ? 32 : 0),
             ),
           ),
         );
 
-    return TextFormField(
-      focusNode: focusNode,
-      controller: controller,
-      autofocus: autoFocus,
-      validator: validator,
-      enabled: enabled,
-      obscureText: obscureText,
-      style: style ?? AppTextStyle.body1,
-      cursorColor: AppColor.of.brand2,
-      inputFormatters: inputFormatters,
-      textInputAction: textInputAction,
-      keyboardType: keyboardType,
-      decoration: inputDecoration,
-      onChanged: onChanged,
-      onEditingComplete: onEditingComplete,
+    return Stack(
+      alignment: Alignment.centerLeft,
+      children: [
+        TextFormField(
+          focusNode: focusNode,
+          controller: controller,
+          autofocus: autoFocus,
+          validator: validator,
+          enabled: enabled,
+          obscureText: obscureText,
+          style: style ?? AppTextStyle.body1,
+          cursorColor: AppColor.of.brand2,
+          inputFormatters: inputFormatters,
+          textInputAction: textInputAction,
+          keyboardType: keyboardType,
+          decoration: inputDecoration,
+          onChanged: onChanged,
+          onEditingComplete: onEditingComplete,
+        ),
+        if (showPrefixIcon)
+          Positioned(
+            left: 16,
+            child: SvgPicture.asset(
+              Assets.iconsSearch,
+              colorFilter: ColorFilter.mode(
+                AppColor.of.gray4,
+                BlendMode.srcIn,
+              ),
+            ),
+          ),
+      ],
     );
   }
 

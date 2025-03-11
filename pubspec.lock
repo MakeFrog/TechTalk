@@ -1922,6 +1922,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0+3"
+  smooth_sheets:
+    dependency: "direct main"
+    description:
+      name: smooth_sheets
+      sha256: f673e448418f3e9e02f17a991691eef1c8a85b59e4438f47c5f28580787920f9
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.2"
   source_gen:
     dependency: transitive
     description:
