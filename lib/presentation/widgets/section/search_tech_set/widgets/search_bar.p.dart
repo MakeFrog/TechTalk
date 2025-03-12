@@ -25,13 +25,6 @@ class _SearchBar extends ConsumerWidget
               hintText: '스킬 및 직군을 검색해 주세요',
             ),
             controller: textEditingController(ref),
-            validator: (input) => skillInputValidator(ref, input: input),
-            onClear: () {
-              onSearchBarClearBtnTapped(ref);
-            },
-            onChanged: (searchedTerm) {
-              onFieldChanged(ref, searchedTerm: searchedTerm);
-            },
           ),
         ),
       ),

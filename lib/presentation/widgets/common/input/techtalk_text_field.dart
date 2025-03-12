@@ -106,12 +106,16 @@ class TechtalkTextField extends HookWidget {
         ),
         if (showPrefixIcon)
           Positioned(
+            top: 12,
             left: 16,
-            child: SvgPicture.asset(
-              Assets.iconsSearch,
-              colorFilter: ColorFilter.mode(
-                AppColor.of.gray4,
-                BlendMode.srcIn,
+            child: Align(
+              alignment: Alignment.centerLeft, // 중앙 정렬 유지
+              child: SvgPicture.asset(
+                Assets.iconsSearch,
+                colorFilter: ColorFilter.mode(
+                  AppColor.of.gray4,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
           ),

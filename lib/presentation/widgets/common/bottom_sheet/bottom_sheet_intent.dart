@@ -10,21 +10,25 @@ abstract final class BottomSheetIntent {
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (context) {
-        return GestureDetector(
-          behavior: HitTestBehavior.opaque, // 빈 영역 클릭 감지
-          onTap: () => Navigator.pop(context), // 모달 외부 클릭 시 닫기
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: GestureDetector(
-                  onTap: () {}, // 내부 터치는 이벤트를 소비하지 않도록 처리
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: scrollableSheet,
+        return MediaQuery.removeViewInsets(
+          context: context,
+          removeBottom: true,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque, // 빈 영역 클릭 감지
+            onTap: () => Navigator.pop(context), // 모달 외부 클릭 시 닫기
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: GestureDetector(
+                    onTap: () {}, // 내부 터치는 이벤트를 소비하지 않도록 처리
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: scrollableSheet,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

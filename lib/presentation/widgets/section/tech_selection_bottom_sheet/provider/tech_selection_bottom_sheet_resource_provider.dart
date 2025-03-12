@@ -3,8 +3,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smooth_sheets/smooth_sheets.dart';
 import 'package:techtalk/presentation/widgets/section/search_tech_set/constant/tech_set_type.enum.dart';
 
-final class SearchTechSetResourceNotifier extends ChangeNotifier {
+final class TechSelectionBottomSheetResourceNotifier extends ChangeNotifier {
   final SheetController sheetController = SheetController();
+  final TextEditingController textEditingController = TextEditingController();
 
   ///
   /// 선택된 테크셋 유형
@@ -25,11 +26,13 @@ final class SearchTechSetResourceNotifier extends ChangeNotifier {
 
   void onDispose() {
     sheetController.dispose();
+    textEditingController.dispose();
   }
 }
 
-final searchTechSetResourceProvider = AutoDisposeChangeNotifierProvider((ref) {
-  final notifier = SearchTechSetResourceNotifier();
+final techSelectionBottomSheetResourceProvider =
+    AutoDisposeChangeNotifierProvider((ref) {
+  final notifier = TechSelectionBottomSheetResourceNotifier();
   ref.onDispose(notifier.onDispose);
 
   return notifier;

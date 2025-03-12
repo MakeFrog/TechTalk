@@ -96,6 +96,7 @@ class Assets {
       'assets/icons/pondering_illusration.svg';
   static const String iconsRedAlert = 'assets/icons/red_alert.svg';
   static const String iconsRedWarnningBig = 'assets/icons/red_warnning_big.svg';
+  static const String iconsReset = 'assets/icons/reset.svg';
   static const String iconsResumeInterviewLogo =
       'assets/icons/resume_interview_logo.svg';
   static const String iconsRightAlignedRightArrow =
