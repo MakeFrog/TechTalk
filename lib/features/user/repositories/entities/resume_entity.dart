@@ -2,9 +2,8 @@ import 'package:techtalk/features/user/repositories/entities/document_base_entit
 import 'package:techtalk/features/user/repositories/enums/document_type.enum.dart';
 
 final class ResumeEntity extends DocumentBaseEntity {
-  static DocumentType type = DocumentType.resume; // 문서 유형: 이력서
-
   ResumeEntity({
+    type = DocumentType.resume,
     super.path,
     super.title,
     super.uploadAt,
