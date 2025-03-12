@@ -19,7 +19,7 @@ class OptionListBottomSheet<T extends dynamic> extends ConsumerWidget {
     this.highlightedTextColor = Colors.red, // 특정 인덱스 강조 색상
   }) : super(key: key);
 
-  final List<String> options;
+  final List<T> options;
   final void Function(int index) onOptionTapped;
   final VoidCallback onCloseBtnTapped;
   final String leadingText;
@@ -70,6 +70,7 @@ class OptionListBottomSheet<T extends dynamic> extends ConsumerWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: options.length,
                 itemBuilder: (context, index) {
+                  final item = options[index];
                   final isHighlighted = highlightedIndexes.contains(index);
 
                   return MaterialButton(
@@ -83,20 +84,11 @@ class OptionListBottomSheet<T extends dynamic> extends ConsumerWidget {
                             )
                           : BorderRadius.zero,
                     ),
-                    onPressed: () {
-                      onOptionTapped(index);
-                    },
+                    onPressed: () => onOptionTapped(index),
                     child: SizedBox(
                       height: 56,
                       child: Center(
-                        child: Text(
-                          options[index],
-                          style: isHighlighted
-                              ? AppTextStyle.title2.copyWith(
-                                  color: highlightedTextColor,
-                                )
-                              : AppTextStyle.title2,
-                        ),
+                        child: _buildWidgetItem(item, isHighlighted),
                       ),
                     ),
                   );
@@ -125,5 +117,20 @@ class OptionListBottomSheet<T extends dynamic> extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  /// options: List<T>
+  dynamic _buildWidgetItem(T item, bool isHighlighted) {
+    // T: String
+    if (item is String) {
+      return Text(
+        item,
+        style: isHighlighted
+            ? AppTextStyle.title2.copyWith(color: highlightedTextColor)
+            : AppTextStyle.title2,
+      );
+    }
+    // T: String을 제외한 모든 dynamic
+    return item;
   }
 }
