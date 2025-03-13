@@ -6,8 +6,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smooth_sheets/smooth_sheets.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
+import 'package:techtalk/presentation/widgets/common/animated/animated_size_and_fade.dart';
 import 'package:techtalk/presentation/widgets/common/button/reset_button.dart';
+import 'package:techtalk/presentation/widgets/common/chip/closable_skill_filled_chip.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/section/search_tech_set/constant/tech_set_type.enum.dart';
 import 'package:techtalk/presentation/widgets/section/searched_skill_list_view.dart';
@@ -16,6 +19,7 @@ import 'package:techtalk/presentation/widgets/section/tech_selection_bottom_shee
 import 'tech_selection_bottom_sheet_event.dart';
 
 part 'widgets/searched_skill_list_view.p.dart';
+part 'widgets/selected_skill_list_view.p.dart';
 
 class TechSetSelectionBottomSheet extends ConsumerWidget
     with TechSelectionBottomSheetState, TechSelectionBottomSheetEvent {
@@ -59,87 +63,99 @@ class TechSetSelectionBottomSheet extends ConsumerWidget
                 ),
               ),
               Expanded(
-                child: ListView(
-                  physics: NeverScrollableScrollPhysics(),
-                  children: [
-                    /// TOGGLE SWITCH <-> REST BUTTON
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                      ),
-                      child: Consumer(
-                        builder: (context, ref, child) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Wrap(
-                                children: [
-                                  ...TechSetType.values.map(
-                                    (type) {
-                                      final isSelected =
-                                          selectedTechSetType(ref) == type;
-                                      return Padding(
-                                        padding: (type.index == 0
-                                            ? const EdgeInsets.only(right: 8)
-                                            : EdgeInsets.zero),
-                                        child: BounceTapper(
-                                          highlightColor: Colors.transparent,
-                                          onTap: () {
-                                            onTechSelectionTapped(ref,
-                                                type: type);
-                                          },
-                                          child: Text(
-                                            type.label,
-                                            style:
-                                                AppTextStyle.headline2.copyWith(
-                                              color: isSelected
-                                                  ? AppColor.of.gray6
-                                                  : AppColor.of.gray3,
+                child: GestureDetector(
+                  onVerticalDragDown: (_) {
+                    /// 검색 결과 리스트뷰의
+                    /// 공간 확보를 수직 스크롤 시 키보드 해제
+                    if (FocusScope.of(context).hasFocus) {
+                      FocusScope.of(context).unfocus();
+                    }
+                  },
+                  child: ListView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: [
+                      /// TOGGLE SWITCH <-> REST BUTTON
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                        ),
+                        child: Consumer(
+                          builder: (context, ref, child) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Wrap(
+                                  children: [
+                                    ...TechSetType.values.map(
+                                      (type) {
+                                        final isSelected =
+                                            selectedTechSetType(ref) == type;
+                                        return Padding(
+                                          padding: (type.index == 0
+                                              ? const EdgeInsets.only(right: 8)
+                                              : EdgeInsets.zero),
+                                          child: BounceTapper(
+                                            highlightColor: Colors.transparent,
+                                            onTap: () {
+                                              onTechSelectionTapped(ref,
+                                                  type: type);
+                                            },
+                                            child: Text(
+                                              type.label,
+                                              style: AppTextStyle.headline2
+                                                  .copyWith(
+                                                color: isSelected
+                                                    ? AppColor.of.gray6
+                                                    : AppColor.of.gray3,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                  )
-                                ],
-                              ),
-                              ResetButton(
-                                onTap: () {},
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-
-                    const Gap(12),
-
-                    /// SEARCH BAR
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Form(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        child: TechtalkTextField(
-                          showPrefixIcon: true,
-                          inputDecoration: const InputDecoration(
-                            hintText: '스킬 및 직군을 검색해 주세요',
-                          ),
-                          controller: textEditingController(ref),
-                          validator: (input) =>
-                              skillInputValidator(ref, input: input),
-                          onClear: () {
-                            onSearchBarClearBtnTapped(ref);
-                          },
-                          onChanged: (searchedTerm) {
-                            onFieldChanged(ref, searchedTerm: searchedTerm);
+                                        );
+                                      },
+                                    )
+                                  ],
+                                ),
+                                ResetButton(
+                                  onTap: () {},
+                                ),
+                              ],
+                            );
                           },
                         ),
                       ),
-                    ),
 
-                    /// SEARCHED LIST
-                    const _SearchedSkillListView(),
-                  ],
+                      const Gap(12),
+
+                      /// SELECTED SKILLS
+                      const _SelectedSkillListView(),
+
+                      /// SEARCH BAR
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Form(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          child: TechtalkTextField(
+                            showPrefixIcon: true,
+                            inputDecoration: const InputDecoration(
+                              hintText: '스킬 및 직군을 검색해 주세요',
+                            ),
+                            controller: textEditingController(ref),
+                            validator: (input) =>
+                                skillInputValidator(ref, input: input),
+                            onClear: () {
+                              onSearchBarClearBtnTapped(ref);
+                            },
+                            onChanged: (searchedTerm) {
+                              onFieldChanged(ref, searchedTerm: searchedTerm);
+                            },
+                          ),
+                        ),
+                      ),
+
+                      /// SEARCHED LIST
+                      const _SearchedSkillListView(),
+                    ],
+                  ),
                 ),
               ),
             ],

@@ -1,7 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/searched_skills_provider.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/selected_skills_provider.dart';
-import 'package:techtalk/presentation/widgets/section/search_tech_set/search_tech_set_state.dart';
 import 'package:techtalk/presentation/widgets/section/tech_selection_bottom_sheet/provider/tech_selection_bottom_sheet_resource_provider.dart';
 import 'package:techtalk/presentation/widgets/section/tech_selection_bottom_sheet/tech_selection_bottom_sheet_state.dart';
 
@@ -15,6 +16,19 @@ mixin class TechSelectionBottomSheetEvent {
     ref.read(
       techSelectionBottomSheetResourceProvider.notifier.select(
         (p) => p.toggleTechSetSelection(type),
+      ),
+    );
+  }
+
+  ///
+  /// 선택된 '스킬' or '직군' 클릭 되었을 때
+  /// => 선택 해제
+  ///
+  void onSelectedTechSetTapped(WidgetRef ref,
+      {required TechSetEntity techSet}) {
+    ref.read(
+      techSelectionBottomSheetResourceProvider.notifier.select(
+        (p) => p.removeSelection(techSet),
       ),
     );
   }
@@ -41,5 +55,18 @@ mixin class TechSelectionBottomSheetEvent {
     final textEditingController =
         TechSelectionBottomSheetState().textEditingController(ref);
     textEditingController.text = '';
+  }
+
+  ///
+  /// 선택된 스킬에 추가
+  ///
+  void onSearchedSkillTapped(WidgetRef ref,
+      {required SkillEntity targetSkill}) {
+    final techSetForm = TechSetEntity.skill(targetSkill);
+    onSearchBarClearBtnTapped(ref);
+    ref.read(searchedSkillsProvider.notifier).clear();
+    ref.read(techSelectionBottomSheetResourceProvider
+        .select((p) => p.addTechSets(techSetForm)));
+    // ref.read(selectedSkillsProvider.notifier).add(targetSkill);
   }
 }

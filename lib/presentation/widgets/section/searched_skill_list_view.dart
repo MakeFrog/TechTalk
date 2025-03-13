@@ -14,6 +14,7 @@ class SearchedSkillListView extends ConsumerWidget {
       this.scrollPhysics,
       this.hideKeyboardOnScroll = true,
       this.shrinkWrap = false,
+      this.padding,
       super.key});
 
   final List<SkillEntity> items;
@@ -21,8 +22,8 @@ class SearchedSkillListView extends ConsumerWidget {
   final String searchedTerm;
   final Function(SkillEntity item) onItemTapped;
   final bool shrinkWrap;
-
   final bool hideKeyboardOnScroll;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,9 +45,10 @@ class SearchedSkillListView extends ConsumerWidget {
       shrinkWrap: shrinkWrap,
       itemCount: items.length,
       physics: scrollPhysics,
-      padding: const EdgeInsets.only(
-        top: 8,
-      ),
+      padding: padding ??
+          const EdgeInsets.only(
+            top: 8,
+          ),
       itemBuilder: (context, index) {
         final skill = items[index];
         final separatedString = getProcessString(
