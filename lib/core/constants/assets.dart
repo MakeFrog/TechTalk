@@ -63,6 +63,7 @@ class Assets {
   static const String iconsCorrect = 'assets/icons/correct.svg';
   static const String iconsCorrectIndicator =
       'assets/icons/correct_indicator.svg';
+  static const String iconsDarkCheckBox = 'assets/icons/dark_check_box.svg';
   static const String iconsDataStructure = 'assets/icons/data_structure.svg';
   static const String iconsDeleteOrWrong = 'assets/icons/delete_or_wrong.svg';
   static const String iconsDice = 'assets/icons/dice.svg';

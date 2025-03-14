@@ -1,8 +1,8 @@
 part of '../tech_set_selection_bottom_sheet.dart';
 
-class _SelectedSkillListView extends ConsumerWidget
+class _SelectedTechSetListView extends ConsumerWidget
     with TechSelectionBottomSheetState, TechSelectionBottomSheetEvent {
-  const _SelectedSkillListView({super.key});
+  const _SelectedTechSetListView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,8 +33,7 @@ class _SelectedSkillListView extends ConsumerWidget
                             },
                           );
                         }, jobGroup: (jobGroup) {
-                          return Align(
-                            alignment: Alignment.topCenter,
+                          return Center(
                             child: ClosableFilledChip(
                               name: jobGroup.name,
                               onTap: () {

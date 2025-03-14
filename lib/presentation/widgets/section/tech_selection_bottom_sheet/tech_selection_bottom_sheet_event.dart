@@ -1,8 +1,11 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/searched_skills_provider.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/selected_skills_provider.dart';
+import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/section/tech_selection_bottom_sheet/provider/tech_selection_bottom_sheet_resource_provider.dart';
 import 'package:techtalk/presentation/widgets/section/tech_selection_bottom_sheet/tech_selection_bottom_sheet_state.dart';
 
@@ -58,15 +61,22 @@ mixin class TechSelectionBottomSheetEvent {
   }
 
   ///
-  /// 선택된 스킬에 추가
+  /// 검색된 스킬 리스트 아이템 항목이 탭 되었을 때
   ///
-  void onSearchedSkillTapped(WidgetRef ref,
-      {required SkillEntity targetSkill}) {
-    final techSetForm = TechSetEntity.skill(targetSkill);
+  void onSkillItemTapped(WidgetRef ref, {required SkillEntity skillItem}) {
     onSearchBarClearBtnTapped(ref);
     ref.read(searchedSkillsProvider.notifier).clear();
     ref.read(techSelectionBottomSheetResourceProvider
-        .select((p) => p.addTechSets(techSetForm)));
-    // ref.read(selectedSkillsProvider.notifier).add(targetSkill);
+        .select((p) => p.toggleTechSets(TechSetEntity.skill(skillItem))));
+  }
+
+  ///
+  /// 직군 리스트 아이템 항목이 탭 되었을 때
+  ///
+
+  void onJobGroupItemTapped(WidgetRef ref,
+      {required JobGroupEntity jobGroupItem}) {
+    ref.read(techSelectionBottomSheetResourceProvider
+        .select((p) => p.toggleTechSets(TechSetEntity.jobGroup(jobGroupItem))));
   }
 }

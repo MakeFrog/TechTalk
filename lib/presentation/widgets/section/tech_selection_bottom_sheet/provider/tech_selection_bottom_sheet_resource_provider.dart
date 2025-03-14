@@ -1,15 +1,20 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smooth_sheets/smooth_sheets.dart';
+import 'package:techtalk/app/router/navigation_context.dart';
+import 'package:techtalk/core/services/dialog_service.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
+import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 import 'package:techtalk/presentation/widgets/section/search_tech_set/constant/tech_set_type.enum.dart';
 
 final class TechSelectionBottomSheetResourceNotifier extends ChangeNotifier {
   final SheetController sheetController = SheetController();
   final TextEditingController textEditingController = TextEditingController();
   final ScrollController scrollController = ScrollController();
+  final PageController pageViewController = PageController();
 
   ///
   /// 선택된 스킬 및 직군
@@ -19,13 +24,31 @@ final class TechSelectionBottomSheetResourceNotifier extends ChangeNotifier {
   ///
   /// 테크셋 추가
   ///
-  void addTechSets(TechSetEntity techSet) {
+  void toggleTechSets(TechSetEntity techSet) {
+    final targetList = selectedTechSets.toList();
+
     if (selectedTechSets.firstWhereOrNull((e) => e.id() == techSet.id()) !=
         null) {
+      if (techSet is JobGroupSet) {
+        removeSelection(techSet);
+      }
       return;
     }
 
-    final targetList = selectedTechSets.toList();
+    if (selectedTechSets.length >= 4) {
+      DialogService.show(
+        dialog: AppDialog.singleBtn(
+          showContentImg: false,
+          title: '개수 제한',
+          description: '최대 4개까지 선택할 수 있어요',
+          btnContent: '확인',
+          onBtnClicked: () async {
+            (await navigationContext).pop();
+          },
+        ),
+      );
+      return;
+    }
 
     targetList.add(techSet);
     SchedulerBinding.instance.addPostFrameCallback(
@@ -60,13 +83,16 @@ final class TechSelectionBottomSheetResourceNotifier extends ChangeNotifier {
   ///
   /// 테크셋 유형 선택여부 토글
   ///
-  void toggleTechSetSelection(TechSetType type) {
-    if (type == selectedType) {
+  Future<void> toggleTechSetSelection(TechSetType type) async {
+    if (type.index == pageViewController.page?.floor()) {
       return;
     }
 
-    selectedType = type;
-    notifyListeners();
+    await pageViewController.animateToPage(type.index,
+        duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
+
+    // selectedType = type;
+    // notifyListeners();
   }
 
   void onDispose() {

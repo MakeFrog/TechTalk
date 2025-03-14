@@ -12,7 +12,7 @@ class _SearchedSkillListView extends HookConsumerWidget
     });
 
     return SearchedSkillListView(
-      padding: EdgeInsets.only(bottom: AppSize.ratioHeight(520), top: 8) +
+      padding: EdgeInsets.only(bottom: AppSize.ratioHeight(120), top: 8) +
           const EdgeInsets.symmetric(horizontal: 16),
       scrollPhysics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -20,7 +20,7 @@ class _SearchedSkillListView extends HookConsumerWidget
       items: searchedSkills(ref),
       searchedTerm: searchedKeyword,
       onItemTapped: (skill) {
-        onSearchedSkillTapped(ref, targetSkill: skill);
+        onSkillItemTapped(ref, skillItem: skill);
       },
     );
   }
