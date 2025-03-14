@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smooth_sheets/smooth_sheets.dart';
 import 'package:techtalk/app/router/navigation_context.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
@@ -11,7 +10,7 @@ import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 import 'package:techtalk/presentation/widgets/section/search_tech_set/constant/tech_set_type.enum.dart';
 
 final class TechSelectionBottomSheetResourceNotifier extends ChangeNotifier {
-  final SheetController sheetController = SheetController();
+  /// 각종 컨트롤러
   final TextEditingController textEditingController = TextEditingController();
   final ScrollController scrollController = ScrollController();
   final PageController pageViewController = PageController();
@@ -90,15 +89,12 @@ final class TechSelectionBottomSheetResourceNotifier extends ChangeNotifier {
 
     await pageViewController.animateToPage(type.index,
         duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
-
-    // selectedType = type;
-    // notifyListeners();
   }
 
   void onDispose() {
-    sheetController.dispose();
     textEditingController.dispose();
     scrollController.dispose();
+    pageViewController.dispose();
   }
 }
 

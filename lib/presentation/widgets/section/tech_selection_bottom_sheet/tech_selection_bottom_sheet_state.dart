@@ -54,13 +54,6 @@ mixin class TechSelectionBottomSheetState {
       techSelectionBottomSheetResourceProvider.select((p) => p.selectedType));
 
   ///
-  /// 바텀시트 컨트롤러
-  ///
-  SheetController sheetController(WidgetRef ref) =>
-      ref.watch(techSelectionBottomSheetResourceProvider
-          .select((p) => p.sheetController));
-
-  ///
   /// 페이지뷰 컨트롤러 스킬 <-> 직군
   ///
   PageController pageController(WidgetRef ref) =>
