@@ -71,9 +71,6 @@ class TechtalkTextField extends HookWidget {
           suffixIcon: activeSuffixIcon && !isFieldEmpty(controller)
               ? _buildClearIcon(controller)
               : null,
-          errorStyle: AppTextStyle.body2.copyWith(
-            color: AppColor.of.red2,
-          ),
           contentPadding: const EdgeInsets.symmetric(
                 vertical: 14,
               ) +
@@ -85,14 +82,21 @@ class TechtalkTextField extends HookWidget {
           ),
         );
 
+    final validateMessage = useListenableSelector(controller, () {
+      if (validator == null) return null;
+      final message = validator!(controller.text);
+      return message;
+    });
+
     return Stack(
+      clipBehavior: Clip.none,
       alignment: Alignment.centerLeft,
       children: [
         TextFormField(
           focusNode: focusNode,
           controller: controller,
           autofocus: autoFocus,
-          validator: validator,
+          // validator: validator,
           enabled: enabled,
           obscureText: obscureText,
           style: style ?? AppTextStyle.body1,
@@ -103,6 +107,21 @@ class TechtalkTextField extends HookWidget {
           decoration: inputDecoration,
           onChanged: onChanged,
           onEditingComplete: onEditingComplete,
+        ),
+        AnimatedPositioned(
+          duration: const Duration(milliseconds: 180),
+          bottom: validateMessage != null ? -26 : -16,
+          left: 8,
+          child: AnimatedOpacity(
+            opacity: validateMessage != null ? 1 : 0,
+            duration: const Duration(milliseconds: 180),
+            child: Text(
+              validateMessage ?? '',
+              style: AppTextStyle.alert2.copyWith(
+                color: AppColor.of.red2,
+              ),
+            ),
+          ),
         ),
         if (showPrefixIcon)
           Positioned(
