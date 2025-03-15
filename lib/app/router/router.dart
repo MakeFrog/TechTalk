@@ -35,7 +35,6 @@ import 'package:techtalk/presentation/pages/youtube/upload/submitted_youtube_con
 import 'package:techtalk/presentation/pages/youtube/upload/youtube_link_submit/youtube_link_submit_page.dart';
 import 'package:techtalk/presentation/pages/youtube/upload_failed/provider/youtube_upload_failed_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload_failed/youtube_upload_fail_page.dart';
-
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 part 'router.g.dart';
@@ -275,11 +274,11 @@ class StudyRoute extends GoRouteData {
 }
 
 class ProficiencyInterviewTopicSelectionRoute extends GoRouteData {
-  static const String path = 'search-tech-set';
+  static const String path = 'proficiency-interview-topic-selection';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const SearchTechSetPage();
+    return const ProficiencyInterviewTopicSelectionPage();
   }
 }
 

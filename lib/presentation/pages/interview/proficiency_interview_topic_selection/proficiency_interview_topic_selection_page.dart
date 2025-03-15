@@ -26,8 +26,9 @@ part 'widgets/search_bar.p.dart';
 
 part 'widgets/selected_tech_set_list_view.p.dart';
 
-class SearchTechSetPage extends BasePage with SearchTechSetState {
-  const SearchTechSetPage({super.key});
+class ProficiencyInterviewTopicSelectionPage extends BasePage
+    with ProficiencyInterviewTopicSelectionState {
+  const ProficiencyInterviewTopicSelectionPage({super.key});
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {

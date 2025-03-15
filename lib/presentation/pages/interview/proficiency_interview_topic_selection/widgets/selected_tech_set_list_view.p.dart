@@ -1,7 +1,9 @@
 part of '../proficiency_interview_topic_selection_page.dart';
 
 class _SelectedTechSetListView extends ConsumerWidget
-    with SearchTechSetState, SearchTechSetEvent {
+    with
+        ProficiencyInterviewTopicSelectionState,
+        ProficiencyInterviewTopicSelectionEvent {
   const _SelectedTechSetListView({super.key});
 
   @override

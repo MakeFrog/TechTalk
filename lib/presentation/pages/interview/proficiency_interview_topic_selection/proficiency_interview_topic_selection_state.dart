@@ -4,7 +4,7 @@ import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:techtalk/presentation/pages/interview/proficiency_interview_topic_selection/provider/selected_tech_sets_provider.dart';
 
-mixin class SearchTechSetState {
+mixin class ProficiencyInterviewTopicSelectionState {
   ///
   /// 선택된 직군 + 스킬
   ///
