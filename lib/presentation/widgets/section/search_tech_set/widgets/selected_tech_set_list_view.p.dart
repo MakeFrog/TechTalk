@@ -1,16 +1,17 @@
-part of '../tech_set_selection_bottom_sheet.dart';
+part of '../search_tech_set_page.dart';
 
 class _SelectedTechSetListView extends ConsumerWidget
-    with TechSelectionBottomSheetState, TechSelectionBottomSheetEvent {
+    with SearchTechSetState, SearchTechSetEvent {
   const _SelectedTechSetListView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TechSetListView(
       techSets: selectedTechSets(ref),
-      scrollController: scrollController(ref),
+      height: 60,
+      scrollController: context.getController<ScrollController>(),
       onItemTapped: (item) {
-        onSelectedTechSetTapped(ref, techSet: item);
+        removeTechSetItemFromSelection(ref, techSet: item);
       },
     );
   }

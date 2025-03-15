@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smooth_sheets/smooth_sheets.dart';
 import 'package:techtalk/core/modules/regex/app_validator.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
@@ -63,7 +62,9 @@ mixin class TechSelectionBottomSheetState {
   ///
   /// 선택된 스킬 리스트뷰 > 스크롤 컨트롤러
   ///
-  ScrollController scrollController(WidgetRef ref) =>
-      ref.read(techSelectionBottomSheetResourceProvider
-          .select((p) => p.scrollController));
+  ScrollController scrollController(WidgetRef ref) => ref.read(
+        techSelectionBottomSheetResourceProvider.select(
+          (p) => p.scrollController,
+        ),
+      );
 }

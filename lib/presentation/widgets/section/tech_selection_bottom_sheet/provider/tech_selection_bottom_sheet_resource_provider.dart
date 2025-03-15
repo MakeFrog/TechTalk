@@ -8,17 +8,20 @@ import 'package:techtalk/core/services/dialog_service.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 import 'package:techtalk/presentation/widgets/section/search_tech_set/constant/tech_set_type.enum.dart';
+import 'package:techtalk/presentation/widgets/section/tech_selection_bottom_sheet/provider/tech_set_selection_bottom_sheet_route_arg_provider.dart';
 
 final class TechSelectionBottomSheetResourceNotifier extends ChangeNotifier {
-  /// 각종 컨트롤러
-  final TextEditingController textEditingController = TextEditingController();
-  final ScrollController scrollController = ScrollController();
-  final PageController pageViewController = PageController();
+  TechSelectionBottomSheetResourceNotifier(this.selectedTechSets);
 
   ///
   /// 선택된 스킬 및 직군
   ///
-  List<TechSetEntity> selectedTechSets = [];
+  List<TechSetEntity> selectedTechSets;
+
+  /// 각종 컨트롤러
+  final TextEditingController textEditingController = TextEditingController();
+  final ScrollController scrollController = ScrollController();
+  final PageController pageViewController = PageController();
 
   ///
   /// 테크셋 추가
@@ -26,8 +29,7 @@ final class TechSelectionBottomSheetResourceNotifier extends ChangeNotifier {
   void toggleTechSets(TechSetEntity techSet) {
     final targetList = selectedTechSets.toList();
 
-    if (selectedTechSets.firstWhereOrNull((e) => e.id() == techSet.id()) !=
-        null) {
+    if (selectedTechSets.firstWhereOrNull((e) => e == techSet) != null) {
       if (techSet is JobGroupSet) {
         removeSelection(techSet);
       }
@@ -69,7 +71,7 @@ final class TechSelectionBottomSheetResourceNotifier extends ChangeNotifier {
   ///
   void removeSelection(TechSetEntity techSet) {
     final targetList = selectedTechSets.toList();
-    targetList.removeWhere((e) => e.id() == techSet.id());
+    targetList.removeWhere((e) => e == techSet);
     selectedTechSets = targetList;
     notifyListeners();
   }
@@ -88,7 +90,7 @@ final class TechSelectionBottomSheetResourceNotifier extends ChangeNotifier {
     }
 
     await pageViewController.animateToPage(type.index,
-        duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
+        duration: const Duration(milliseconds: 320), curve: Curves.easeInOut);
   }
 
   void onDispose() {
@@ -99,9 +101,16 @@ final class TechSelectionBottomSheetResourceNotifier extends ChangeNotifier {
 }
 
 final techSelectionBottomSheetResourceProvider =
-    AutoDisposeChangeNotifierProvider((ref) {
-  final notifier = TechSelectionBottomSheetResourceNotifier();
-  ref.onDispose(notifier.onDispose);
+    AutoDisposeChangeNotifierProvider(
+  (ref) {
+    final passedTechSetsSelection =
+        ref.read(techSetSelectionBottomSheetRouteArgProvider);
+    final notifier =
+        TechSelectionBottomSheetResourceNotifier(passedTechSetsSelection);
 
-  return notifier;
-});
+    ref.onDispose(notifier.onDispose);
+
+    return notifier;
+  },
+  dependencies: [techSetSelectionBottomSheetRouteArgProvider],
+);

@@ -13,6 +13,12 @@ abstract class TechSetEntity {
         : (this as JobGroupSet).value.id;
   }
 
+  String name() {
+    return this is SkillSet
+        ? (this as SkillSet).value.name
+        : (this as JobGroupSet).value.name;
+  }
+
   R fold<R>({
     required R Function(SkillEntity value) skill,
     required R Function(JobGroupEntity e) jobGroup,
@@ -21,6 +27,15 @@ abstract class TechSetEntity {
         ? skill((this as SkillSet).value)
         : jobGroup((this as JobGroupSet).value);
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is TechSetEntity && other.id() == id();
+  }
+
+  @override
+  int get hashCode => id().hashCode;
 }
 
 class SkillSet extends TechSetEntity {

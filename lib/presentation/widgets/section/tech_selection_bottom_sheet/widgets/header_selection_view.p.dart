@@ -53,9 +53,20 @@ class _HeaderSelectionView extends ConsumerWidget
                   );
                 },
               ),
-              ResetButton(
-                onTap: () {},
+              BounceTapper(
+                onTap: () {
+                  onConfirmBtnTapped(ref);
+                },
+                child: Text(
+                  '확인',
+                  style: AppTextStyle.body2.copyWith(
+                    color: AppColor.of.blue2,
+                  ),
+                ),
               ),
+              // ResetButton(
+              //   onTap: () {},
+              // ),
             ],
           );
         },

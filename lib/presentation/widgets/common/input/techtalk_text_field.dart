@@ -26,6 +26,7 @@ class TechtalkTextField extends HookWidget {
     this.inputFormatters,
     this.textInputAction,
     this.keyboardType,
+    this.useCustomValidation = false,
     this.hintText,
     this.hintTextStyle,
   }) : inputDecoration = inputDecoration ?? const InputDecoration();
@@ -37,6 +38,7 @@ class TechtalkTextField extends HookWidget {
   final InputDecoration inputDecoration;
   final ValueChanged<String>? onChanged;
   final void Function()? onEditingComplete;
+  final bool useCustomValidation;
   final bool obscureText;
   final bool enabled;
   final bool autoFocus;
@@ -71,6 +73,9 @@ class TechtalkTextField extends HookWidget {
           suffixIcon: activeSuffixIcon && !isFieldEmpty(controller)
               ? _buildClearIcon(controller)
               : null,
+          errorStyle: AppTextStyle.alert2.copyWith(
+            color: AppColor.of.red2,
+          ),
           contentPadding: const EdgeInsets.symmetric(
                 vertical: 14,
               ) +
@@ -96,7 +101,7 @@ class TechtalkTextField extends HookWidget {
           focusNode: focusNode,
           controller: controller,
           autofocus: autoFocus,
-          // validator: validator,
+          validator: useCustomValidation ? null : validator,
           enabled: enabled,
           obscureText: obscureText,
           style: style ?? AppTextStyle.body1,
@@ -108,21 +113,22 @@ class TechtalkTextField extends HookWidget {
           onChanged: onChanged,
           onEditingComplete: onEditingComplete,
         ),
-        AnimatedPositioned(
-          duration: const Duration(milliseconds: 180),
-          bottom: validateMessage != null ? -26 : -16,
-          left: 8,
-          child: AnimatedOpacity(
-            opacity: validateMessage != null ? 1 : 0,
+        if (useCustomValidation)
+          AnimatedPositioned(
             duration: const Duration(milliseconds: 180),
-            child: Text(
-              validateMessage ?? '',
-              style: AppTextStyle.alert2.copyWith(
-                color: AppColor.of.red2,
+            bottom: validateMessage != null ? -26 : -16,
+            left: 8,
+            child: AnimatedOpacity(
+              opacity: validateMessage != null ? 1 : 0,
+              duration: const Duration(milliseconds: 180),
+              child: Text(
+                validateMessage ?? '',
+                style: AppTextStyle.alert2.copyWith(
+                  color: AppColor.of.red2,
+                ),
               ),
             ),
           ),
-        ),
         if (showPrefixIcon)
           Positioned(
             top: 12,

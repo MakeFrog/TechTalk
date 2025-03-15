@@ -5,48 +5,27 @@ class _Scaffold extends HookConsumerWidget {
     super.key,
     required this.leadingView,
     required this.searchBar,
-    required this.techSetSelectionBottomSheet,
-    required this.tabBar,
-    required this.searchSkillListView,
-    required this.jobGroupSelectionListView,
+    required this.selectedTechSets,
+    required this.recommendedTechSets,
     required this.bottomFixedBtn,
   });
 
   final Widget leadingView;
   final Widget searchBar;
-  final Widget techSetSelectionBottomSheet;
-  final Widget tabBar;
-  final Widget searchSkillListView;
-  final Widget jobGroupSelectionListView;
+  final Widget selectedTechSets;
+  final Widget recommendedTechSets;
   final Widget bottomFixedBtn;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Stack(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            BackButtonAppBar(),
-            leadingView,
-            const Gap(24),
-            searchBar,
-            const Gap(12),
-          ],
-        ),
-        techSetSelectionBottomSheet,
-        // ScrollableSheet(
-        //   // maxPosition: const SheetAnchor.proportional(772 / 812),
-        //   // minPosition: const SheetAnchor.proportional(665 / 812),
-        //   child: Container(
-        //     height: 400,
-        //     width: double.infinity,
-        //     color: Colors.red,
-        //     child: const Text(
-        //       'data',
-        //     ),
-        //   ),
-        // ),
+        leadingView,
+        const Gap(24),
+        searchBar,
+        selectedTechSets,
+        recommendedTechSets,
       ],
     );
   }

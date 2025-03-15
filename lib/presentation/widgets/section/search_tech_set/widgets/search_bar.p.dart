@@ -9,22 +9,15 @@ class _SearchBar extends ConsumerWidget
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: BounceTapper(
-        onTap: () async {
-          await BottomSheetIntent.showScrollableModalSheet(
-            context,
-            scrollableSheet: const TechSetSelectionBottomSheet(),
-          );
+        onTap: () {
+          onSearchBarTapped(ref);
         },
         highlightBorderRadius: BorderRadius.circular(16),
-        child: Form(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          child: TechtalkTextField(
-            enabled: false,
-            showPrefixIcon: true,
-            inputDecoration: const InputDecoration(
-              hintText: '스킬 및 직군을 검색해 주세요',
-            ),
-            controller: textEditingController(ref),
+        child: const TechtalkTextField(
+          enabled: false,
+          showPrefixIcon: true,
+          inputDecoration: InputDecoration(
+            hintText: '스킬 및 직군을 검색해 주세요',
           ),
         ),
       ),

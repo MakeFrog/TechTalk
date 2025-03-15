@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
@@ -10,6 +11,16 @@ import 'package:techtalk/presentation/widgets/section/tech_selection_bottom_shee
 import '../search_tech_set/constant/tech_set_type.enum.dart';
 
 mixin class TechSelectionBottomSheetEvent {
+  ///
+  /// '확인' 버튼이 클릭 되었을 때
+  ///
+  void onConfirmBtnTapped(WidgetRef ref) {
+    final selectedTechSets =
+        TechSelectionBottomSheetState().selectedTechSets(ref);
+
+    ref.context.pop(selectedTechSets);
+  }
+
   ///
   /// '스킬' or '직군' 선택 활성화 버튼이 클릭 되었을 때
   ///
@@ -71,10 +82,18 @@ mixin class TechSelectionBottomSheetEvent {
   ///
   /// 직군 리스트 아이템 항목이 탭 되었을 때
   ///
-
   void onJobGroupItemTapped(WidgetRef ref,
       {required JobGroupEntity jobGroupItem}) {
     ref.read(techSelectionBottomSheetResourceProvider
         .select((p) => p.toggleTechSets(TechSetEntity.jobGroup(jobGroupItem))));
+  }
+
+  ///
+  /// '완료'버튼이 클릭 되었을 때 -> 바텀시트를 pop하고 이전 화면으로 선택된 테크셋 리스트 전달
+  ///
+  void onCompleteBtnTapped(WidgetRef ref) {
+    final selectedTechSets = ref.read(techSelectionBottomSheetResourceProvider
+        .select((p) => p.selectedTechSets));
+    selectedTechSets;
   }
 }

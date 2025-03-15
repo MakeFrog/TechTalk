@@ -19,7 +19,7 @@ class _LeadingView extends StatelessWidget {
           ),
           const Gap(12),
           Text(
-            '1개 이상 선택해 주세요',
+            '최대 4개까지 선택할 수 있어요',
             style: AppTextStyle.body1.copyWith(
               color: AppColor.of.gray4,
             ),

@@ -16,6 +16,7 @@ class _SkillPageView extends ConsumerWidget
             child: Form(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: TechtalkTextField(
+                useCustomValidation: true,
                 showPrefixIcon: true,
                 inputDecoration: const InputDecoration(
                   hintText: '스킬 및 직군을 검색해 주세요',

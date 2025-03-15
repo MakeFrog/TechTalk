@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 abstract final class BottomSheetIntent {
-  static Future<void> showScrollableModalSheet(
+  static Future<T?> showScrollableModalSheet<T>(
     BuildContext context, {
     required Widget scrollableSheet,
   }) async {
-    await showModalBottomSheet(
+    final T? result = await showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
@@ -33,6 +33,8 @@ abstract final class BottomSheetIntent {
         );
       },
     );
+
+    return result;
   }
 }
 
