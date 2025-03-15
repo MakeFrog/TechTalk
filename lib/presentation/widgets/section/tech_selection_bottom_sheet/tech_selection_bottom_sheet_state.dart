@@ -6,7 +6,7 @@ import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.d
 import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/searched_skills_provider.dart';
-import 'package:techtalk/presentation/widgets/section/search_tech_set/constant/tech_set_type.enum.dart';
+import 'package:techtalk/features/tech_set/repositories/enums/tech_set_type.enum.dart';
 import 'package:techtalk/presentation/widgets/section/tech_selection_bottom_sheet/provider/tech_selection_bottom_sheet_resource_provider.dart';
 
 mixin class TechSelectionBottomSheetState {

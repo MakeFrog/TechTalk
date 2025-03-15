@@ -3,7 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/presentation/widgets/common/bottom_sheet/bottom_sheet_intent.dart';
-import 'package:techtalk/presentation/widgets/section/search_tech_set/provider/selected_tech_sets_provider.dart';
+import 'package:techtalk/presentation/pages/interview/proficiency_interview_topic_selection/provider/selected_tech_sets_provider.dart';
 import 'package:techtalk/presentation/widgets/section/tech_selection_bottom_sheet/tech_set_selection_bottom_sheet.dart';
 
 mixin class SearchTechSetEvent {

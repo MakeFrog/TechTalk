@@ -6,8 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/navigation_context.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/enums/tech_set_type.enum.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
-import 'package:techtalk/presentation/widgets/section/search_tech_set/constant/tech_set_type.enum.dart';
 import 'package:techtalk/presentation/widgets/section/tech_selection_bottom_sheet/provider/tech_set_selection_bottom_sheet_route_arg_provider.dart';
 
 final class TechSelectionBottomSheetResourceNotifier extends ChangeNotifier {

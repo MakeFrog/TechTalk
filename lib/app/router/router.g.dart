@@ -279,8 +279,10 @@ extension $ProfileSettingRouteExtension on ProfileSettingRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $SearchTechSetExtension on SearchTechSet {
-  static SearchTechSet _fromState(GoRouterState state) => SearchTechSet();
+extension $SearchTechSetExtension on ProficiencyInterviewTopicSelectionRoute {
+  static ProficiencyInterviewTopicSelectionRoute _fromState(
+          GoRouterState state) =>
+      ProficiencyInterviewTopicSelectionRoute();
 
   String get location => GoRouteData.$location(
         '/search-tech-set',

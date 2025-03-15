@@ -1,4 +1,4 @@
-part of '../search_tech_set_page.dart';
+part of '../proficiency_interview_topic_selection_page.dart';
 
 class _RecommendedTechSetsView extends ConsumerWidget
     with SearchTechSetState, SearchTechSetEvent {

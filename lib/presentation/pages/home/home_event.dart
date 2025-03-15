@@ -95,7 +95,7 @@ mixin class HomeEvent {
     // InterviewLevelSelectionRoute().push(ref.context);
     //
     // return;
-    SearchTechSet().push(ref.context);
+    ProficiencyInterviewTopicSelectionRoute().push(ref.context);
   }
 
   ///

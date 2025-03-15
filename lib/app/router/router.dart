@@ -9,6 +9,7 @@ import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/interview_level_selection/interview_level_selection_page.dart';
+import 'package:techtalk/presentation/pages/interview/proficiency_interview_topic_selection/proficiency_interview_topic_selection_page.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/providers/select_question_count_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
@@ -34,7 +35,7 @@ import 'package:techtalk/presentation/pages/youtube/upload/submitted_youtube_con
 import 'package:techtalk/presentation/pages/youtube/upload/youtube_link_submit/youtube_link_submit_page.dart';
 import 'package:techtalk/presentation/pages/youtube/upload_failed/provider/youtube_upload_failed_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/upload_failed/youtube_upload_fail_page.dart';
-import 'package:techtalk/presentation/widgets/section/search_tech_set/search_tech_set_page.dart';
+
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 part 'router.g.dart';
@@ -160,9 +161,9 @@ class SignUpRoute extends GoRouteData {
       path: ProfileSettingRoute.name,
       name: ProfileSettingRoute.name,
     ),
-    TypedGoRoute<SearchTechSet>(
-      path: SearchTechSet.path,
-      name: SearchTechSet.path,
+    TypedGoRoute<ProficiencyInterviewTopicSelectionRoute>(
+      path: ProficiencyInterviewTopicSelectionRoute.path,
+      name: ProficiencyInterviewTopicSelectionRoute.path,
     ),
     TypedGoRoute<JobGroupSettingRoute>(
       path: JobGroupSettingRoute.name,
@@ -273,7 +274,7 @@ class StudyRoute extends GoRouteData {
   }
 }
 
-class SearchTechSet extends GoRouteData {
+class ProficiencyInterviewTopicSelectionRoute extends GoRouteData {
   static const String path = 'search-tech-set';
 
   @override

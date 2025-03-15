@@ -8,7 +8,7 @@ import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/sele
 import 'package:techtalk/presentation/widgets/section/tech_selection_bottom_sheet/provider/tech_selection_bottom_sheet_resource_provider.dart';
 import 'package:techtalk/presentation/widgets/section/tech_selection_bottom_sheet/tech_selection_bottom_sheet_state.dart';
 
-import '../search_tech_set/constant/tech_set_type.enum.dart';
+import '../../../../features/tech_set/repositories/enums/tech_set_type.enum.dart';
 
 mixin class TechSelectionBottomSheetEvent {
   ///
