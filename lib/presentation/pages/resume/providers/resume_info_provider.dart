@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/user/repositories/entities/document_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
@@ -9,6 +10,11 @@ part 'resume_info_provider.g.dart';
 
 @Riverpod()
 class ResumeInfo extends _$ResumeInfo {
+  // 초기 상태
+  ResumeEntity? _initialResume;
+  PortfolioEntity? _initialPortfolio;
+  bool _isSameState = true;
+
   @override
   FutureOr<DocumentEntity?> build() async {
     final result = await userRepository.loadDocument();
@@ -18,57 +24,85 @@ class ResumeInfo extends _$ResumeInfo {
       onFailure: (e) => null,
     );
 
+    _initialResume = doc?.resume;
+    _initialPortfolio = doc?.portfolio;
+
+    ref.listenSelf((previous, next) {
+      final newDoc = next.value;
+      _compareWithInitialData(newDoc);
+    });
+
     return doc;
+  }
+
+  ///
+  /// 초기 상태와 현재 상태 비교
+  ///
+  void _compareWithInitialData(DocumentEntity? newDoc) {
+    // 초기 상태
+    final initResume = _initialResume;
+    final initPortfolio = _initialPortfolio;
+
+    // 최종 상태
+    final newResume = newDoc?.resume;
+    final newPortfolio = newDoc?.portfolio;
+
+    // 비교
+    final sameResume = (initResume == null && newResume == null) ||
+        (initResume != null && initResume == newResume);
+
+    final samePortfolio = (initPortfolio == null && newPortfolio == null) ||
+        (initPortfolio != null && initPortfolio == newPortfolio);
+
+    _isSameState = sameResume && samePortfolio;
+
+    // 디버그 로그
+    debugPrint('resume 변동 여부: ${!sameResume}');
+    debugPrint('portfolio 변동 여부: ${!samePortfolio}');
+    debugPrint('결과적으로 _isSameState : $_isSameState');
   }
 
   ///
   /// 저장하기 버튼 활성화 기준
   ///
-  bool isFileChanged() {
-    final doc = state.valueOrNull;
-    return doc?.isFileChanged ?? false;
-  }
+  bool isFileChanged() => !_isSameState;
 
   ///
-  /// Document 상태 확인
+  /// Document 상태  확인
   ///
-  bool hasData() {
-    final doc = state.valueOrNull;
-
-    if (doc == null) {
-      return false;
-    }
-
-    return doc.hasFetchedAnyDocuments;
-  }
+  bool hasDocument() => state.valueOrNull?.hasFetchedAnyDocuments ?? false;
 
   ///
-  /// 이력서, 포트폴리오 상태 업데이트
+  /// Document 상태 업데이트
   ///
   Future<void> updateDocumentState(DocumentType type, dynamic newData) async {
-    state = state.whenData((doc) {
-      if (doc == null) return null;
+    state = state.whenData(
+      (doc) {
+        // doc이 null이면 새 DocumentEntity 생성
+        doc ??= DocumentEntity(resume: null, portfolio: null);
 
-      doc.isFileChanged = true;
+        // Document 업데이트/삭제 로직
+        DocumentEntity newDoc;
+        if (type == DocumentType.resume) {
+          final newResume = newData as ResumeEntity?;
+          newDoc = (newResume == null)
+              ? doc.deleteResume()
+              : doc.copyWith(resume: newResume);
+        } else {
+          final newPortfolio = newData as PortfolioEntity?;
+          newDoc = (newPortfolio == null)
+              ? doc.deletePortfolio()
+              : doc.copyWith(portfolio: newPortfolio);
+        }
 
-      // 이력서 상태 업데이트
-      if (type == DocumentType.resume) {
-        ResumeEntity? newResume = newData as ResumeEntity?;
+        // 만약 이력서, 포폴 모두 null => null 반환
+        // if (newDoc.resume == null && newDoc.portfolio == null) {
+        //   return null;
+        // }
 
-        return newResume == null
-            ? doc.deleteResume()
-            : doc.copyWith(resume: newResume);
-      }
-
-      // 포트폴리오 상태 업데이트
-      else {
-        PortfolioEntity? newPortfolio = newData as PortfolioEntity?;
-
-        return newPortfolio == null
-            ? doc.deletePortfolio()
-            : doc.copyWith(portfolio: newPortfolio);
-      }
-    });
+        return newDoc;
+      },
+    );
   }
 
   ///
@@ -106,9 +140,6 @@ class ResumeInfo extends _$ResumeInfo {
     // 각각 서버나 로컬에 저장
     await updateResume(doc.resume);
     await updatePortfolio(doc.portfolio);
-
-    // 모든 저장 로직이 끝나면 다시 파일 변경 false
-    doc.isFileChanged = false;
   }
 
   ///

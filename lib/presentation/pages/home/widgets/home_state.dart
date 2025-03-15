@@ -33,6 +33,6 @@ mixin class HomeState {
   ///
   /// 이력서 데이터 유무 판별
   ///
-  bool hasData(WidgetRef ref) =>
-      ref.read(resumeInfoProvider.notifier).hasData();
+  bool hasDocument(WidgetRef ref) =>
+      ref.read(resumeInfoProvider.notifier).hasDocument();
 }

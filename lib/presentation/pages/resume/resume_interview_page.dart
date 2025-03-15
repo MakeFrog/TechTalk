@@ -81,7 +81,7 @@ class ResumeInterviewPage extends BasePage
         ],
         BounceTapper(
           child: FilledButton(
-            onPressed: hasData(ref) ? () => startResumeInterview(ref) : null,
+            onPressed: hasDocument(ref) ? () => startResumeInterview(ref) : null,
             child: const Center(
               child: Text('면접 시작하기'),
             ),

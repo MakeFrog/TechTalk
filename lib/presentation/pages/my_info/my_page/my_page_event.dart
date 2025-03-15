@@ -12,6 +12,7 @@ import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/core/services/slack_notification_service.dart' as noti;
 import 'package:techtalk/features/user/user.dart';
+import 'package:techtalk/presentation/pages/resume/providers/resume_info_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/main/provider/selected_filter_category_provider.dart';
@@ -278,6 +279,8 @@ mixin class MyPageEvent {
   /// 이력서 관리 페이지로 이동
   ///
   void routeToResumeManagePage(WidgetRef ref) {
+    // 이전 상태가 혹시라도 남아있을까봐 추가한 안전장치 
+    ref.invalidate(resumeInfoProvider);
     const ResumeManageRoute().push(ref.context);
   }
 }

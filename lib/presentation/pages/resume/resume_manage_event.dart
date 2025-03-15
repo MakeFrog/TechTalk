@@ -129,6 +129,7 @@ mixin class ResumeManageEvent {
           title: fileTitle,
           uploadAt: fileUploadAt,
         );
+
         await resumeInfoNotifier.updateDocumentState(type, resume);
       } else {
         final portfolio = PortfolioEntity(
@@ -140,7 +141,7 @@ mixin class ResumeManageEvent {
       }
 
       // 추가적인 UI 표시
-      await ref.read(resumeInfoProvider.notifier).showTooltip();
+      ref.read(resumeInfoProvider.notifier).showTooltip();
     } catch (e, s) {
       debugPrint('파일 등록 중 오류 발생: $e\n$s');
     }
@@ -157,10 +158,7 @@ mixin class ResumeManageEvent {
         leftBtnContent: '취소',
         rightBtnContent: '다시 올리기',
         showContentImg: true,
-        onRightBtnClicked: () {
-          ref.context.pop();
-          // 이후 다시 파일 업로드하기
-        },
+        onRightBtnClicked: () => ref.context.pop(),
         onLeftBtnClicked: ref.context.pop,
         customAssetPath: Assets.iconsPolygonWarning,
       ),
@@ -213,13 +211,10 @@ mixin class ResumeManageEvent {
   Future<void> saveDocuments(WidgetRef ref) async {
     final state = ref.read(resumeInfoProvider);
     final doc = state.requireValue;
-    if (doc == null) {
-      debugPrint('문서 정보가 존재하지 않습니다.');
-      return;
-    }
+    if (doc == null) return;
 
     await ref.read(resumeInfoProvider.notifier).saveDocument();
-    debugPrint('저장이 완료되었습니다');
+    ref.invalidate(resumeInfoProvider);
   }
 
   ///
@@ -261,9 +256,7 @@ mixin class ResumeManageEvent {
 
     // 이력서 관리 파일에 변화가 있을 때에만 PDF 저장 로직 실행
     // TODO: 이력서/포트폴리오중 하나만 변경시 변경된 것만 저장하도록 예외처리 (yundal)
-    if (doc?.isFileChanged == true) {
-      await saveDocuments(ref);
-    }
+    await saveDocuments(ref);
 
     final router = GoRouter.of(ref.context);
     final summarizeUseCase = SummarizeGeminiResumeUseCase();

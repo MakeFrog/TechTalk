@@ -3,10 +3,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/presentation/pages/resume/providers/resume_info_provider.dart';
 import 'package:techtalk/presentation/pages/resume/resume_manage_event.dart';
 import 'package:techtalk/presentation/pages/resume/resume_manage_state.dart';
 import 'package:techtalk/presentation/pages/resume/widgets/resume_card.dart';
@@ -26,18 +28,14 @@ class ResumeManagePage extends BasePage
         return const Center(child: Text('에러가 발생했습니다.'));
       },
       data: (doc) {
-        if (doc == null) {
-          return const Center(child: Text('이력서 데이터가 없습니다.'));
-        }
-
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
               const Gap(16),
               buildGuideText(),
-              ResumeCard.resume(resume: doc.resume),
-              ResumeCard.portfolio(portfolio: doc.portfolio),
+              ResumeCard.resume(resume: doc?.resume),
+              ResumeCard.portfolio(portfolio: doc?.portfolio),
               const Spacer(),
               buildSaveBtn(ref),
             ],
@@ -85,5 +83,17 @@ class ResumeManagePage extends BasePage
 
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
-      const BackButtonAppBar(title: '내 이력서');
+      BackButtonAppBar(
+        title: '내 이력서',
+        onBackBtnTapped: () {
+          ref.invalidate(resumeInfoProvider);
+          ref.context.pop();
+        },
+      );
+
+  @override
+  void onWillPop(WidgetRef ref) {
+    ref.invalidate(resumeInfoProvider);
+    super.onWillPop(ref);
+  }
 }

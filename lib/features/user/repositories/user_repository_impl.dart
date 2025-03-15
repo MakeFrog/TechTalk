@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/rendering.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/app/util/app_logger.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
@@ -456,37 +455,34 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<DocumentEntity>> loadDocument() async {
+  Future<Result<DocumentEntity?>> loadDocument() async {
     try {
       final data = _userLocalDataSource.loadUserLocalInfo();
 
       final resumeBox = data.resume;
       final portfolioBox = data.portfolio;
 
-      ResumeEntity? resume;
-
-      if (resumeBox != null) {
-        resume = ResumeEntity(
-          path: resumeBox.resumePath,
-          title: resumeBox.resumeTitle,
-          uploadAt: resumeBox.resumeUploadAt,
-        );
+      // 둘 다 null => null 반환
+      if (resumeBox == null && portfolioBox == null) {
+        return Result.success(null);
       }
 
-      PortfolioEntity? portfolio;
+      // 둘 중 하나라도 있으면 => 실제 DocumentEntity 생성
+      final resume = (resumeBox == null)
+          ? null
+          : ResumeEntity(
+              path: resumeBox.resumePath,
+              title: resumeBox.resumeTitle,
+              uploadAt: resumeBox.resumeUploadAt,
+            );
 
-      if (portfolioBox != null) {
-        portfolio = PortfolioEntity(
-          path: portfolioBox.portfolioPath,
-          title: portfolioBox.portfolioTitle,
-          uploadAt: portfolioBox.portfolioUploadAt,
-        );
-      }
-
-      debugPrint('===== UserRepositoryImpl.loadDocumentData() =====');
-      debugPrint('이력서 제목 : ${resumeBox?.resumeTitle}');
-      debugPrint('이력서 존재하는가 : ${resumeBox != null}');
-      debugPrint('포트폴리오 존재하는가 : ${portfolioBox != null}');
+      final portfolio = (portfolioBox == null)
+          ? null
+          : PortfolioEntity(
+              path: portfolioBox.portfolioPath,
+              title: portfolioBox.portfolioTitle,
+              uploadAt: portfolioBox.portfolioUploadAt,
+            );
 
       return Result.success(
         DocumentEntity(
