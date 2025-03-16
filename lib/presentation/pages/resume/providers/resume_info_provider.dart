@@ -73,32 +73,45 @@ class ResumeInfo extends _$ResumeInfo {
   bool hasDocument() => state.valueOrNull?.hasFetchedAnyDocuments ?? false;
 
   ///
-  /// Document 상태 업데이트
+  /// 이력서 상태 업데이트
   ///
-  Future<void> updateDocumentState(DocumentType type, dynamic newData) async {
+  Future<void> updateResumeState(
+    DocumentType type,
+    ResumeEntity? newResume,
+  ) async {
     state = state.whenData(
       (doc) {
         // doc이 null이면 새 DocumentEntity 생성
         doc ??= DocumentEntity(resume: null, portfolio: null);
 
-        // Document 업데이트/삭제 로직
         DocumentEntity newDoc;
-        if (type == DocumentType.resume) {
-          final newResume = newData as ResumeEntity?;
-          newDoc = (newResume == null)
-              ? doc.deleteResume()
-              : doc.copyWith(resume: newResume);
-        } else {
-          final newPortfolio = newData as PortfolioEntity?;
-          newDoc = (newPortfolio == null)
-              ? doc.deletePortfolio()
-              : doc.copyWith(portfolio: newPortfolio);
-        }
 
-        // 만약 이력서, 포폴 모두 null => null 반환
-        // if (newDoc.resume == null && newDoc.portfolio == null) {
-        //   return null;
-        // }
+        newDoc = (newResume == null)
+            ? doc.deleteResume()
+            : doc.copyWith(resume: newResume);
+
+        return newDoc;
+      },
+    );
+  }
+
+  ///
+  /// 포트폴리오 상태 업데이트
+  ///
+  Future<void> updatePortfolioState(
+    DocumentType type,
+    PortfolioEntity? newPortfolio,
+  ) async {
+    state = state.whenData(
+      (doc) {
+        // doc이 null이면 새 DocumentEntity 생성
+        doc ??= DocumentEntity(resume: null, portfolio: null);
+
+        DocumentEntity newDoc;
+
+        newDoc = (newPortfolio == null)
+            ? doc.deletePortfolio()
+            : doc.copyWith(portfolio: newPortfolio);
 
         return newDoc;
       },

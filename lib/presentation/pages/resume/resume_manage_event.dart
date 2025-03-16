@@ -77,7 +77,15 @@ mixin class ResumeManageEvent {
         leftBtnContent: '취소',
         rightBtnContent: '삭제',
         onRightBtnClicked: () {
-          resumeInfo.updateDocumentState(type, null);
+          switch (type) {
+            case DocumentType.resume:
+              resumeInfo.updateResumeState(type, null);
+              break;
+
+            case DocumentType.portfolio:
+              resumeInfo.updatePortfolioState(type, null);
+              break;
+          }
           ref.context.pop();
         },
         onLeftBtnClicked: () => ref.context.pop(),
@@ -130,14 +138,14 @@ mixin class ResumeManageEvent {
           uploadAt: fileUploadAt,
         );
 
-        await resumeInfoNotifier.updateDocumentState(type, resume);
+        await resumeInfoNotifier.updateResumeState(type, resume);
       } else {
         final portfolio = PortfolioEntity(
           path: localCopied.path,
           title: fileTitle,
           uploadAt: fileUploadAt,
         );
-        await resumeInfoNotifier.updateDocumentState(type, portfolio);
+        await resumeInfoNotifier.updatePortfolioState(type, portfolio);
       }
 
       // 추가적인 UI 표시
