@@ -74,7 +74,7 @@ dependencies:
 
   # 모델링
   json_serializable: ^6.7.1
-  json_annotation: ^4.8.1
+  json_annotation: ^4.9.0
 
   # 영상 관련
   youtube_explode_dart: ^2.3.6

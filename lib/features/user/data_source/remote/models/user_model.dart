@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/modules/converter/time_stamp_converter.dart';
+import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/user_entity.dart';
 
 part 'user_model.g.dart';
@@ -64,10 +66,10 @@ class UserModel {
   final DateTime lastLoginDate;
 
   /// 이력서 메타데이터
-  final Map<String, dynamic>? resume;
+  final ResumeEntity? resume;
 
   /// 포트폴리오 메타데이터
-  final Map<String, dynamic>? portfolio;
+  final PortfolioEntity? portfolio;
 
   factory UserModel.fromEntity(UserEntity entity) {
     return UserModel(

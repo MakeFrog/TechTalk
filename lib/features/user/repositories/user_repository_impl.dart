@@ -56,27 +56,25 @@ final class UserRepositoryImpl implements UserRepository {
               .toList()
           : [];
 
-      final ResumeEntity? resume =
-          (localRes.resume != null || remoteRes.resume != null)
-              ? ResumeEntity(
-                  path: localRes.resume?.resumePath ??
-                      remoteRes.resume?['path'] as String?,
-                  title: localRes.resume?.resumeTitle ??
-                      remoteRes.resume?['title'] as String?,
-                  uploadAt: localRes.resume?.resumeUploadAt ??
-                      remoteRes.resume?['uploadAt'] as String?,
-                )
-              : null;
+      final ResumeEntity? resume = (localRes.resume != null ||
+              remoteRes.resume != null)
+          ? ResumeEntity(
+              path: localRes.resume?.resumePath ?? remoteRes.resume?.path,
+              title: localRes.resume?.resumeTitle ?? remoteRes.resume?.title,
+              uploadAt:
+                  localRes.resume?.resumeUploadAt ?? remoteRes.resume?.uploadAt,
+            )
+          : null;
 
       final PortfolioEntity? portfolio =
           (localRes.portfolio != null || remoteRes.portfolio != null)
               ? PortfolioEntity(
                   path: localRes.portfolio?.portfolioPath ??
-                      remoteRes.portfolio?['path'] as String?,
+                      remoteRes.portfolio?.path,
                   title: localRes.portfolio?.portfolioTitle ??
-                      remoteRes.portfolio?['title'] as String?,
+                      remoteRes.portfolio?.title,
                   uploadAt: localRes.portfolio?.portfolioUploadAt ??
-                      remoteRes.portfolio?['uploadAt'] as String?,
+                      remoteRes.portfolio?.uploadAt,
                 )
               : null;
 
