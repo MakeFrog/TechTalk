@@ -22,7 +22,9 @@ part 'widgets/search_bar.p.dart';
 part 'widgets/selected_tech_set_list_view.p.dart';
 
 class ProficiencyInterviewTopicSelectionPage extends BasePage
-    with ProficiencyInterviewTopicSelectionState {
+    with
+        ProficiencyInterviewTopicSelectionState,
+        ProficiencyInterviewTopicSelectionEvent {
   const ProficiencyInterviewTopicSelectionPage(this.argument, {super.key});
 
   final ProficiencyInterviewTopicSelectionRouteArgument argument;
@@ -48,9 +50,28 @@ class ProficiencyInterviewTopicSelectionPage extends BasePage
   }
 
   @override
+  FloatingActionButtonLocation? get floatingActionButtonLocation =>
+      FloatingActionButtonLocation.centerDocked;
+
+  @override
   Widget? buildFloatingActionButton(WidgetRef ref) {
-    // TODO: implement buildFloatingActionButton
-    return super.buildFloatingActionButton(ref);
+    final hasSelection = selectedTechSets(ref).isNotEmpty;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: BounceTapper(
+        enable: hasSelection,
+        onTap: () {
+          onConfirmBtnTapped(ref);
+        },
+        child: SizedBox(
+          width: double.infinity,
+          child: FilledButton(
+            onPressed: hasSelection ? () {} : null,
+            child: const Text('다음'),
+          ),
+        ),
+      ),
+    );
   }
 
   @override

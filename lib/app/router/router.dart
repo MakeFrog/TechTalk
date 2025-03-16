@@ -8,6 +8,7 @@ import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_route_arg.dart';
+import 'package:techtalk/presentation/pages/interview/interview_level_selection/constant/interview_level_selection_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/interview_level_selection/interview_level_selection_page.dart';
 import 'package:techtalk/presentation/pages/interview/proficiency_interview_topic_selection/constant/proficiency_interview_topic_selection_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/proficiency_interview_topic_selection/proficiency_interview_topic_selection_page.dart';
@@ -335,13 +336,15 @@ class YoutubeContentsMainListRoute extends GoRouteData {
 }
 
 class InterviewLevelSelectionRoute extends GoRouteData {
-  InterviewLevelSelectionRoute();
+  const InterviewLevelSelectionRoute(this.$extra);
 
   static const String path = 'interview-level-selection';
 
+  final InterviewLevelSelectionRouteArg $extra;
+
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const InterviewLevelSelectionPage();
+    return InterviewLevelSelectionPage($extra);
   }
 }
 

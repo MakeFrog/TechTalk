@@ -1,9 +1,7 @@
-import 'dart:async';
-
-import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
+import 'package:techtalk/features/interview/use_case/param/start_interview_flow_use_case_param.dart';
 
 final class ProficiencyInterviewTopicSelectionRouteArgument {
-  final Completer<List<TopicEntity>?> routeResCompleter;
+  StartInterviewFlowBaseParam useCaseParam;
 
-  const ProficiencyInterviewTopicSelectionRouteArgument(this.routeResCompleter);
+  ProficiencyInterviewTopicSelectionRouteArgument(this.useCaseParam);
 }

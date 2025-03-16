@@ -9,7 +9,8 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
-import 'package:techtalk/features/interview/use_case/proficiency_interview_entry_flow_use_case.dart';
+import 'package:techtalk/features/interview/use_case/param/start_interview_flow_use_case_param.dart';
+import 'package:techtalk/features/interview/use_case/start_interview_flow_use_case.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/practical_chat_room_list_provider.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
 import 'package:techtalk/presentation/providers/system/notification_status_provider.dart';
@@ -93,10 +94,14 @@ mixin class HomeEvent {
   /// AI 면접 카드가 탭 되었을 때
   ///
   void onAiInterviewCardTapped(WidgetRef ref) {
+    // ProficiencyInterviewTopicSelectionRoute().push(ref.context);
     // InterviewLevelSelectionRoute().push(ref.context);
     //
     // return;
-    ProficiencyInterviewEntryFlowUseCase().start();
+
+    final param = ProficiencyInterviewFlowParam.initial();
+
+    StartInterviewFlowUseCase(param).proficiencyInterview();
   }
 
   ///
