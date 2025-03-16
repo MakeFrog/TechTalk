@@ -7,12 +7,12 @@ part of 'select_question_count_route_arg.dart';
 // **************************************************************************
 
 String _$selectedQuestionCountRouteArgHash() =>
-    r'06f620592e1e63bc3945e28eef4612019a534555';
+    r'feeb9c9d286221ccd51dc5f061c67abc197a62ea';
 
 /// See also [selectedQuestionCountRouteArg].
 @ProviderFor(selectedQuestionCountRouteArg)
-final selectedQuestionCountRouteArgProvider = AutoDisposeProvider<
-    ({List<TopicEntity> topics, InterviewType type})>.internal(
+final selectedQuestionCountRouteArgProvider =
+    AutoDisposeProvider<SelectQuestionCountRouteArg>.internal(
   selectedQuestionCountRouteArg,
   name: r'selectedQuestionCountRouteArgProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -23,6 +23,6 @@ final selectedQuestionCountRouteArgProvider = AutoDisposeProvider<
 );
 
 typedef SelectedQuestionCountRouteArgRef
-    = AutoDisposeProviderRef<({List<TopicEntity> topics, InterviewType type})>;
+    = AutoDisposeProviderRef<SelectQuestionCountRouteArg>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

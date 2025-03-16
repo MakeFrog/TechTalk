@@ -135,7 +135,7 @@ class ChatRoomEntity {
       InterviewType.resume => <TopicEntity>[],
       InterviewType.youtube => <TopicEntity>[],
       // TODO: Handle this case.
-      InterviewType.ai => <TopicEntity>[],
+      InterviewType.proficiency => <TopicEntity>[],
     };
 
     return ChatRoomEntity(

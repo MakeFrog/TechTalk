@@ -7,6 +7,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/presentation/pages/interview/question_count_select/constant/select_question_count_route_argument.dart';
+import 'package:techtalk/presentation/pages/interview/question_count_select/providers/select_question_count_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/providers/selected_question_count_provider.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_event.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_state.dart';
@@ -17,7 +19,14 @@ class QuestionCountSelectPage extends BasePage
     with QuestionCountSelectState, QuestionCountSelectEvent {
   const QuestionCountSelectPage({
     Key? key,
+    required this.argument,
   }) : super(key: key);
+
+  final SelectQuestionCountRouteArg argument;
+
+  @override
+  Override? get argProviderOverrides =>
+      selectedQuestionCountRouteArgProvider.overrideWithValue(argument);
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
@@ -67,7 +76,7 @@ class QuestionCountSelectPage extends BasePage
         onTap: () {
           routeToChatPage(
             ref,
-            type: arg(ref).type,
+            type: arg(ref).interviewType,
             topics: arg(ref).topics,
           );
         },

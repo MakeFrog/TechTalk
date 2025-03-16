@@ -27,6 +27,7 @@ import 'package:techtalk/presentation/pages/interview/chat/providers/selected_ch
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_mode_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/speech_to_text_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_result/interview_result_dialog.dart';
+import 'package:techtalk/presentation/pages/interview/question_count_select/constant/select_question_count_route_argument.dart';
 import 'package:techtalk/presentation/pages/youtube/detail/youtube_detail_event.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
@@ -319,12 +320,10 @@ mixin class ChatEvent {
     /// 메인까지 pop
     GoRouter.of(ref.context).popUntilPath(MainRoute.path);
 
-    final route = QuestionCountSelectPageRoute(
-      type,
-      targetTopic.id,
-    );
+    final arg =
+        SelectQuestionCountRouteArg(interviewType: type, topics: [targetTopic]);
+    final route = QuestionCountSelectPageRoute(arg);
 
-    route.updateArg(type: type, topics: [targetTopic]);
     route.push(ref.context);
   }
 
@@ -339,13 +338,10 @@ mixin class ChatEvent {
     final room = ref.read(selectedChatRoomProvider);
     if (room.type.isPractical) {
       final selectedTopics = room.topics;
-      final route = QuestionCountSelectPageRoute(
-        room.type,
-        selectedTopics.singleOrNull?.id ??
-            selectedTopics.map((e) => e.id).toString(),
-      );
+      final arg = SelectQuestionCountRouteArg(
+          interviewType: room.type, topics: selectedTopics);
+      final route = QuestionCountSelectPageRoute(arg);
 
-      route.updateArg(type: room.type, topics: selectedTopics);
       route.push(ref.context);
     }
   }

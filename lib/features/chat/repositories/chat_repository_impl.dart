@@ -27,7 +27,7 @@ final class ChatRepositoryImpl implements ChatRepository {
       InterviewType.resume => getChatRooms(room.type),
       InterviewType.youtube => throw UnimplementedError('유튜브 면접은 채팅방을 생성하지 않음'),
       // TODO: Handle this case.
-      InterviewType.ai => throw UnimplementedError(),
+      InterviewType.proficiency => throw UnimplementedError(),
     }
         .then((value) => value.getOrThrow());
 
