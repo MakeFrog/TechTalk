@@ -12,6 +12,8 @@ import 'package:techtalk/presentation/pages/interview/interview_level_selection/
 import 'package:techtalk/presentation/pages/interview/interview_level_selection/interview_level_selection_page.dart';
 import 'package:techtalk/presentation/pages/interview/proficiency_interview_topic_selection/constant/proficiency_interview_topic_selection_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/proficiency_interview_topic_selection/proficiency_interview_topic_selection_page.dart';
+import 'package:techtalk/presentation/pages/interview/proficiency_question_creation/constant/proficiency_question_creation_route_arg.dart';
+import 'package:techtalk/presentation/pages/interview/proficiency_question_creation/proficiency_question_creation_page.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/constant/select_question_count_route_argument.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
@@ -188,6 +190,10 @@ class SignUpRoute extends GoRouteData {
       path: InterviewLevelSelectionRoute.path,
       name: InterviewLevelSelectionRoute.path,
     ),
+    TypedGoRoute<ProficiencyQuestionCreationRoute>(
+      path: ProficiencyQuestionCreationRoute.path,
+      name: ProficiencyQuestionCreationRoute.path,
+    ),
     TypedGoRoute<YoutubeDetailRoute>(
       path: YoutubeDetailRoute.path,
       name: YoutubeDetailRoute.name,
@@ -345,6 +351,19 @@ class InterviewLevelSelectionRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return InterviewLevelSelectionPage($extra);
+  }
+}
+
+class ProficiencyQuestionCreationRoute extends GoRouteData {
+  const ProficiencyQuestionCreationRoute(this.$extra);
+
+  static const String path = 'proficiency-question-creation';
+
+  final ProficiencyQuestionCreationRouteArg $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ProficiencyQuestionCreationPage($extra);
   }
 }
 

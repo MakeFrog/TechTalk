@@ -138,6 +138,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $InterviewLevelSelectionRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: 'proficiency-question-creation',
+          name: 'proficiency-question-creation',
+          factory: $ProficiencyQuestionCreationRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'youtube-detail/:contentId',
           name: 'youtube detail',
           factory: $YoutubeDetailRouteExtension._fromState,
@@ -400,6 +405,29 @@ extension $InterviewLevelSelectionRouteExtension
 
   String get location => GoRouteData.$location(
         '/interview-level-selection',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+extension $ProficiencyQuestionCreationRouteExtension
+    on ProficiencyQuestionCreationRoute {
+  static ProficiencyQuestionCreationRoute _fromState(GoRouterState state) =>
+      ProficiencyQuestionCreationRoute(
+        state.extra as ProficiencyQuestionCreationRouteArg,
+      );
+
+  String get location => GoRouteData.$location(
+        '/proficiency-question-creation',
       );
 
   void go(BuildContext context) => context.go(location, extra: $extra);

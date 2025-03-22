@@ -187,6 +187,8 @@ class Assets {
   static const String imagesWelcomeTechtalk =
       'assets/images/welcome_techtalk.svg';
   static const String jsonSkills = 'assets/json/skills.json';
+  static const String lottieDocumentLoading =
+      'assets/lottie/document_loading.json';
   static const String lottieVideoUploading =
       'assets/lottie/video_uploading.json';
   static const String pretendardPretendardBold =

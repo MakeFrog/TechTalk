@@ -37,6 +37,8 @@ enum InterviewType {
 
   bool get isPractical => this == InterviewType.commonPracticalTopic;
 
+  bool get isProficiency => this == InterviewType.proficiency;
+
   bool get isCommonQuestionType =>
       this == InterviewType.commonSingleTopic ||
       this == InterviewType.commonPracticalTopic;
