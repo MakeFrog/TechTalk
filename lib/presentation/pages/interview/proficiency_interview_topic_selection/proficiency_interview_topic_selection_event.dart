@@ -62,19 +62,23 @@ mixin class ProficiencyInterviewTopicSelectionEvent {
   ///
   /// '다음' 버튼이 클릭 되었을 때 -> 면접 질문 난이도 선택 페이지
   ///
-  void onConfirmBtnTapped(WidgetRef ref) {
-    final arg = ref.read(proficiencyInterviewTopicSelectionRouteArgProvider);
+  Future<void> onConfirmBtnTapped(WidgetRef ref) async {
+    final useCaseParam = ref
+        .read(proficiencyInterviewTopicSelectionRouteArgProvider)
+        .useCaseParam;
     final selectedTopics = ref.read(selectedTechSetsProvider);
 
-    switch (arg.useCaseParam) {
+    switch (useCaseParam) {
       case ProficiencyInterviewFlowParam():
-        final targetParam = arg.useCaseParam as ProficiencyInterviewFlowParam;
-        if (targetParam.topicSelectionCompleter.isCompleted) {
-          final param = targetParam.copyWith(
-              topicSelectionCompleter: Completer()..complete(selectedTopics));
-          StartInterviewFlowUseCase(param).proficiencyInterview();
+        // 이전에 pop되어 [StartInterviewFlowUseCase] flowUseCase가 종료된 경우
+        if (useCaseParam.topicSelectionCompleter.isCompleted) {
+          final targetParam = ProficiencyInterviewFlowParam.initial().copyWith(
+            topicSelectionCompleter: Completer()..complete(selectedTopics),
+          );
+          await StartInterviewFlowUseCase(targetParam)
+              .executeProficiencyInterviewFlow();
         } else {
-          targetParam.topicSelectionCompleter.complete(selectedTopics);
+          useCaseParam.topicSelectionCompleter.complete(selectedTopics);
         }
     }
   }
