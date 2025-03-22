@@ -54,19 +54,29 @@ class _HeaderSelectionView extends ConsumerWidget
                 },
               ),
               BounceTapper(
+                enable: selectedTechSets(ref).isNotEmpty,
                 onTap: () {
                   onConfirmBtnTapped(ref);
                 },
-                child: Text(
-                  '확인',
-                  style: AppTextStyle.body2.copyWith(
-                    color: AppColor.of.blue2,
+                child: FilledButton(
+                  style: FilledButton.styleFrom(
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    minimumSize: Size.zero,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 6,
+                    ),
+                  ),
+                  onPressed: selectedTechSets(ref).isNotEmpty ? () {} : null,
+                  child: Text(
+                    '완료',
+                    style: AppTextStyle.title3,
                   ),
                 ),
               ),
-              // ResetButton(
-              //   onTap: () {},
-              // ),
             ],
           );
         },
