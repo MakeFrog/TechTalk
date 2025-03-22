@@ -101,7 +101,7 @@ mixin class HomeEvent {
 
     final param = ProficiencyInterviewFlowParam.initial();
 
-    StartInterviewFlowUseCase(param).proficiencyInterview();
+    StartInterviewFlowUseCase(param).executeProficiencyInterviewFlow();
   }
 
   ///

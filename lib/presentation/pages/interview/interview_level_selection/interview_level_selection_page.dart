@@ -55,7 +55,9 @@ class InterviewLevelSelectionPage extends BasePage
         padding: const EdgeInsets.symmetric(horizontal: 16),
         width: double.infinity,
         child: FilledButton(
-          onPressed: () {},
+          onPressed: () {
+            onCompleteBtnTapped(ref);
+          },
           child: const Text(
             '다음',
           ),

@@ -10,28 +10,46 @@ sealed class StartInterviewFlowBaseParam {
   final InterviewType type;
 }
 
+///
+/// 역량별 면접
+///
 class ProficiencyInterviewFlowParam extends StartInterviewFlowBaseParam {
-  final Completer<List<TechSetEntity>?> topicSelectionCompleter;
-  final Completer<InterviewLevel?> levelSelectionCompleter;
-
   ProficiencyInterviewFlowParam({
     required this.topicSelectionCompleter,
     required this.levelSelectionCompleter,
-  }) : super(InterviewType.proficiency);
+    required this.questionCountCompleter,
+  }) : super(InterviewType.proficiency); // 부모 클래스 생성자 호출
 
-  factory ProficiencyInterviewFlowParam.initial() =>
-      ProficiencyInterviewFlowParam(
-        topicSelectionCompleter: Completer(),
-        levelSelectionCompleter: Completer(),
-      );
+  // Completer (단계별 선택 완료 시 결과 저장)
+  final Completer<List<TechSetEntity>?> topicSelectionCompleter;
+  final Completer<InterviewLevel?> levelSelectionCompleter;
+  final Completer<int?> questionCountCompleter;
+
+  factory ProficiencyInterviewFlowParam.initial() {
+    return ProficiencyInterviewFlowParam(
+      topicSelectionCompleter: Completer(),
+      levelSelectionCompleter: Completer(),
+      questionCountCompleter: Completer(),
+    );
+  }
 
   ProficiencyInterviewFlowParam copyWith({
     Completer<List<TechSetEntity>?>? topicSelectionCompleter,
     Completer<InterviewLevel?>? levelSelectionCompleter,
+    Completer<int?>? questionCountCompleter,
   }) {
     return ProficiencyInterviewFlowParam(
-      topicSelectionCompleter: topicSelectionCompleter ?? Completer(),
-      levelSelectionCompleter: levelSelectionCompleter ?? Completer(),
+      topicSelectionCompleter:
+          topicSelectionCompleter ?? this.topicSelectionCompleter,
+      levelSelectionCompleter:
+          levelSelectionCompleter ?? this.levelSelectionCompleter,
+      questionCountCompleter:
+          questionCountCompleter ?? this.questionCountCompleter,
     );
+  }
+
+  @override
+  String toString() {
+    return 'ProficiencyInterviewFlowParam{topicSelectionCompleter: $topicSelectionCompleter, levelSelectionCompleter: $levelSelectionCompleter, questionCountCompleter: $questionCountCompleter}';
   }
 }

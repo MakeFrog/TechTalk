@@ -60,8 +60,8 @@ class ProficiencyInterviewTopicSelectionPage extends BasePage
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: BounceTapper(
         enable: hasSelection,
-        onTap: () {
-          onConfirmBtnTapped(ref);
+        onTap: () async {
+          await onConfirmBtnTapped(ref);
         },
         child: SizedBox(
           width: double.infinity,
