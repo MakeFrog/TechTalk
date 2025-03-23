@@ -40,4 +40,20 @@ mixin class ChatListEvent {
       InterviewType.commonPracticalTopic,
     ).push(ref.context);
   }
+
+  ///
+  /// 이력서 면접 업로드 페이지로 이동
+  ///
+  void routeToResumeUploadPage(WidgetRef ref) {
+    const ResumeInterviewRoute(
+      InterviewType.resume,
+    ).push(ref.context);
+  }
+
+  ///
+  /// 이력서 관리 페이지로 이동
+  ///
+  void routeToResumeManagePage(WidgetRef ref) {
+    const ResumeManageRoute().push(ref.context);
+  }
 }

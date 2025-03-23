@@ -1,7 +1,7 @@
 part of '../my_page.dart';
 
 class _UserInfoCard extends ConsumerWidget with MyPageState, MyPageEvent {
-  const _UserInfoCard({super.key});
+  const _UserInfoCard();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -84,6 +84,57 @@ class _UserInfoCard extends ConsumerWidget with MyPageState, MyPageEvent {
                         const Gap(8),
                         ExpandableSkillWrappedListview(
                           items: user.skills,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Gap(16),
+
+                  // 내 이력서
+                  BounceTapper(
+                    onTap: () => routeToResumeManagePage(ref),
+                    highlightColor: Colors.transparent,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '내 이력서',
+                              style: AppTextStyle.title2,
+                            ),
+                            SvgPicture.asset(
+                              Assets.iconsArrowRight,
+                              height: 16,
+                              colorFilter: ColorFilter.mode(
+                                AppColor.of.gray3,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Gap(4),
+                        resumeAsync(ref).when(
+                          data: (_) {
+                            return Consumer(
+                              builder: (context, ref, _) {
+                                if (!hasDocument(ref)) {
+                                  return Text(
+                                    '이력서 등록 후 예상 질문을 경험해 보세요!',
+                                    style: AppTextStyle.body3
+                                        .copyWith(color: AppColor.of.gray3),
+                                  );
+                                } else {
+                                  return const EmptyBox();
+                                }
+                              },
+                            );
+                          },
+                          error: (e, __) => const Text('에러가 발생했습니다'),
+                          loading: () => const Center(
+                            child: CircularProgressIndicator(),
+                          ),
                         ),
                       ],
                     ),

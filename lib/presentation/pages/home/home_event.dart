@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -188,4 +187,18 @@ mixin class HomeEvent {
   /// 이력서 채팅 면접 페이지로 이동
   ///
   void routeToResumeInterviewChat(WidgetRef ref) {}
+
+  ///
+  /// 이력서 등록 안내 페이지로 이동
+  ///
+  void routeToResumeRegistGuidePage(WidgetRef ref) {
+    const ResumeRegistGuideRoute().push(ref.context);
+  }
+
+  ///
+  /// 이력서 등록 페이지로 이동
+  ///
+  void routeToResumeUploadPage(WidgetRef ref) {
+    const ResumeInterviewRoute(InterviewType.resume).push(ref.context);
+  }
 }

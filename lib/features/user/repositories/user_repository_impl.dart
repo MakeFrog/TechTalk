@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/app/util/app_logger.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
@@ -7,6 +6,9 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
+import 'package:techtalk/features/user/repositories/entities/document_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/data_source/remote/models/bookmarked_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/uploaded_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
@@ -54,11 +56,35 @@ final class UserRepositoryImpl implements UserRepository {
               .toList()
           : [];
 
+      final ResumeEntity? resume = (localRes.resume != null ||
+              remoteRes.resume != null)
+          ? ResumeEntity(
+              path: localRes.resume?.resumePath ?? remoteRes.resume?.path,
+              title: localRes.resume?.resumeTitle ?? remoteRes.resume?.title,
+              uploadAt:
+                  localRes.resume?.resumeUploadAt ?? remoteRes.resume?.uploadAt,
+            )
+          : null;
+
+      final PortfolioEntity? portfolio =
+          (localRes.portfolio != null || remoteRes.portfolio != null)
+              ? PortfolioEntity(
+                  path: localRes.portfolio?.portfolioPath ??
+                      remoteRes.portfolio?.path,
+                  title: localRes.portfolio?.portfolioTitle ??
+                      remoteRes.portfolio?.title,
+                  uploadAt: localRes.portfolio?.portfolioUploadAt ??
+                      remoteRes.portfolio?.uploadAt,
+                )
+              : null;
+
       final result = UserEntity.fromModel(
         remoteRes,
         skills: skills,
         box: localRes,
         jobGroups: jobGroups,
+        resume: resume,
+        portfolio: portfolio,
       );
 
       return Result.success(result);
@@ -198,11 +224,15 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<void>> updateBookMarkState(
-      {required String contentId, required bool targetState}) async {
+  Future<Result<void>> updateBookMarkState({
+    required String contentId,
+    required bool targetState,
+  }) async {
     try {
       await _userRemoteDataSource.updateBookMarkState(
-          contentId: contentId, targetState: targetState);
+        contentId: contentId,
+        targetState: targetState,
+      );
       return Result.success(null);
     } catch (e) {
       return Result.failure(Exception('UserRepository > $e'));
@@ -396,6 +426,69 @@ final class UserRepositoryImpl implements UserRepository {
       return Result.success(null);
     } catch (e) {
       logger.e(e);
+      return Result.failure(Exception(e));
+    }
+  }
+
+  @override
+  Future<Result<void>> updateResume(ResumeEntity? newResume) async {
+    try {
+      await _userLocalDataSource.updateResume(newResume);
+      await _userRemoteDataSource.updateResume(newResume);
+      return Result.success(null);
+    } catch (e) {
+      return Result.failure(Exception('UserRepository > updateResume > $e'));
+    }
+  }
+
+  @override
+  Future<Result<void>> updatePortfolio(PortfolioEntity? newPortfolio) async {
+    try {
+      await _userLocalDataSource.updatePortfolio(newPortfolio);
+      await _userRemoteDataSource.updatePortfolio(newPortfolio);
+      return Result.success(null);
+    } catch (e) {
+      return Result.failure(Exception('UserRepository > updatePortfolio > $e'));
+    }
+  }
+
+  @override
+  Future<Result<DocumentEntity?>> loadDocument() async {
+    try {
+      final data = _userLocalDataSource.loadUserLocalInfo();
+
+      final resumeBox = data.resume;
+      final portfolioBox = data.portfolio;
+
+      // 둘 다 null => null 반환
+      if (resumeBox == null && portfolioBox == null) {
+        return Result.success(null);
+      }
+
+      // 둘 중 하나라도 있으면 => 실제 DocumentEntity 생성
+      final resume = (resumeBox == null)
+          ? null
+          : ResumeEntity(
+              path: resumeBox.resumePath,
+              title: resumeBox.resumeTitle,
+              uploadAt: resumeBox.resumeUploadAt,
+            );
+
+      final portfolio = (portfolioBox == null)
+          ? null
+          : PortfolioEntity(
+              path: portfolioBox.portfolioPath,
+              title: portfolioBox.portfolioTitle,
+              uploadAt: portfolioBox.portfolioUploadAt,
+            );
+
+      return Result.success(
+        DocumentEntity(
+          resume: resume,
+          portfolio: portfolio,
+        ),
+      );
+    } catch (e) {
       return Result.failure(Exception(e));
     }
   }

@@ -56,6 +56,8 @@ mixin class SignUpEvent {
         completedInterviewCount: 0,
         isReviewRequestAvailable: true,
         signUpDate: DateTime.now(),
+        resume: null,
+        portfolio: null,
       );
 
       await ref.read(userInfoProvider.notifier).createData(userData).then(

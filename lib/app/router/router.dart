@@ -16,6 +16,11 @@ import 'package:techtalk/presentation/pages/my_info/job_group_setting/job_group_
 import 'package:techtalk/presentation/pages/my_info/my_youtube_board/my_youtube_board_page.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_setting_page.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/skill_setting_page.dart';
+import 'package:techtalk/presentation/pages/resume/resume_interview_loading_page.dart';
+import 'package:techtalk/presentation/pages/resume/resume_manage_page.dart';
+import 'package:techtalk/presentation/pages/resume/resume_preview_page.dart';
+import 'package:techtalk/presentation/pages/resume/resume_regist_guide_page.dart';
+import 'package:techtalk/presentation/pages/resume/resume_interview_page.dart';
 import 'package:techtalk/presentation/pages/sign_in/sign_in_page.dart';
 import 'package:techtalk/presentation/pages/sign_up/sign_up_page.dart';
 import 'package:techtalk/presentation/pages/splash/splash_page.dart';
@@ -220,6 +225,26 @@ class SignUpRoute extends GoRouteData {
           name: ChatPageRoute.name,
         ),
       ],
+    ),
+    TypedGoRoute<ResumeManageRoute>(
+      path: ResumeManageRoute.path,
+      name: ResumeManageRoute.name,
+    ),
+    TypedGoRoute<ResumePreviewRoute>(
+      path: ResumePreviewRoute.path,
+      name: ResumePreviewRoute.name,
+    ),
+    TypedGoRoute<ResumeRegistGuideRoute>(
+      path: ResumeRegistGuideRoute.path,
+      name: ResumeRegistGuideRoute.name,
+    ),
+    TypedGoRoute<ResumeInterviewRoute>(
+      path: ResumeInterviewRoute.path,
+      name: ResumeInterviewRoute.name,
+    ),
+    TypedGoRoute<ResumeInterviewLoadingRoute>(
+      path: ResumeInterviewLoadingRoute.path,
+      name: ResumeInterviewLoadingRoute.name,
     ),
   ],
 )
@@ -545,5 +570,71 @@ class ChatPageRoute extends GoRouteData {
   /// NOTE: $extra 이슈로 직접 업데이트
   void updateArg({required ChatRoomEntity room}) {
     arg = room;
+  }
+}
+
+class ResumeManageRoute extends GoRouteData {
+  const ResumeManageRoute();
+
+  static const String path = 'resume-manage';
+  static const String name = 'resume manage';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ResumeManagePage();
+  }
+}
+
+class ResumePreviewRoute extends GoRouteData {
+  const ResumePreviewRoute({required this.previewPath});
+
+  final String previewPath;
+
+  static const String path = 'resume-preview';
+  static const String name = 'resume preview';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ResumePreviewPage(previewPath: previewPath);
+  }
+}
+
+class ResumeRegistGuideRoute extends GoRouteData {
+  const ResumeRegistGuideRoute();
+
+  static const String path = 'resume-regist-guide';
+  static const String name = 'resume regist guide';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ResumeRegistGuidePage();
+  }
+}
+
+class ResumeInterviewRoute extends GoRouteData {
+  const ResumeInterviewRoute(this.type);
+
+  static const String path = 'resume-upload';
+  static const String name = 'resume upload';
+  static late InterviewType arg;
+
+  final InterviewType type;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    arg = type;
+    return ResumeInterviewPage();
+  }
+}
+
+class ResumeInterviewLoadingRoute extends GoRouteData {
+  const ResumeInterviewLoadingRoute();
+
+  static const String path = 'resume-interview-loading';
+  static const String name = 'resume interview loading';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ResumeInterviewLoadingPage();
   }
 }

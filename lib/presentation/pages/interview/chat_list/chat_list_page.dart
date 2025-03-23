@@ -74,7 +74,8 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
               case InterviewType.commonPracticalTopic:
                 routeToTopicSelectPage(ref);
               case InterviewType.resume:
-                throw Exception('타입을 지정해주어야 합니다1');
+                routeToResumeUploadPage(ref);
+                // throw Exception('타입을 지정해주어야 합니다1');
               case InterviewType.youtube:
                 throw Exception('유튜브 면접은 채팅방 면접 페이지에 진입하지 않음');
             }
@@ -107,6 +108,15 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
           // TODO: Handle this case.
           InterviewType.youtube => '',
         },
+              actions: selectedInterviewType(ref).isResume
+          ? [
+              // 이력서 인터뷰일 때만 표시
+              IconButton(
+                icon: SvgPicture.asset(Assets.iconsDocuments),
+                onPressed: () => routeToResumeManagePage(ref),
+              ),
+            ]
+          : const [],
       );
 
   @override

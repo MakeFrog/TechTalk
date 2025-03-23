@@ -7,7 +7,7 @@ part of 'channel_contents_pagination_provider.dart';
 // **************************************************************************
 
 String _$channelContentsPaginationHash() =>
-    r'f7aa01ede1b15f4e7c7fec127bc013e7c9db6d18';
+    r'c7fd37b646c0a34c15834256a59028934cc0d53b';
 
 /// Copied from Dart SDK
 class _SystemHash {

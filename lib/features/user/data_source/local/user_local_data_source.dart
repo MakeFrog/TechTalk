@@ -1,3 +1,5 @@
+import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 
 abstract interface class UserLocalDataSource {
@@ -22,6 +24,15 @@ abstract interface class UserLocalDataSource {
   Future<void> disableReviewAvailableState();
 
   ///
+  /// 유저 이력서 데이터 저장
+  ///
+  Future<void> updateResume(ResumeEntity? resume);
+
+  ///
+  /// 유저 포트폴리오 데이터 저장
+  ///
+  Future<void> updatePortfolio(PortfolioEntity? portfolio);
+
   /// 유저 로컬에 새로운 값 저장
   /// TODO
   /// 나머지 로컬 데이터 저장 로직들을 해당 메소드로 통합 필요

@@ -340,6 +340,7 @@ mixin class YoutubeDetailEvent {
 
   Future<void> secretManageBtnTapped(WidgetRef ref) async {
     final arg = ref.read(youtubeDetailRouteArgProvider);
+
     await showModalBottomSheet(
       context: await navigationContext,
       useSafeArea: true,
@@ -351,7 +352,7 @@ mixin class YoutubeDetailEvent {
           leadingText: '영상 관리',
           onCloseBtnTapped: context.pop,
           options: ['삭제', '재업로드'],
-          onOptionTapped: (int index, WidgetRef targetRef) async {
+          onOptionTapped: (int index) async {
             await EasyLoading.show();
 
             final response =
@@ -379,7 +380,7 @@ mixin class YoutubeDetailEvent {
                   await SubmittedYoutubeConfirmRoute(aimArg)
                       .push(await navigationContext);
                 } else {
-                  targetRef.context.pop();
+                  context.pop();
                 }
               },
               onFailure: (e) {
@@ -390,7 +391,7 @@ mixin class YoutubeDetailEvent {
                   description: '왜 실패 했지..',
                   btnContent: '확인',
                   onBtnClicked: () {
-                    targetRef.context.pop();
+                    context.pop();
                   },
                 );
               },
