@@ -7,18 +7,16 @@ import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/proficiency_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/enums/interview_level.enum.dart';
+import 'package:techtalk/features/interview/use_case/exception/ai_creation_failed_exception.dart';
 import 'package:techtalk/features/interview/use_case/param/start_interview_flow_use_case_param.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
-import 'package:techtalk/features/youtube/usecases/exception/youtube_upload_exception.dart';
 
 final class CreateProficiencyInterviewQnaUseCase extends BaseUseCase<
     ProficiencyInterviewFlowParam, List<ProficiencyQnaEntity>> {
   @override
   FutureOr<List<ProficiencyQnaEntity>> call(
       ProficiencyInterviewFlowParam req) async {
-    log('프롬프트 시작');
     final techSets = await req.topicSelectionCompleter.future;
     final List<SkillEntity> skills = [];
     final List<JobGroupEntity> jobGroups = [];
@@ -122,12 +120,10 @@ final class CreateProficiencyInterviewQnaUseCase extends BaseUseCase<
       final response = completion.choices.first.message.content?.first.text;
 
       if (response == null) {
-        throw const YtUnexceptedGptException();
+        throw const AiUnExpectedException();
       }
 
       final targetJson = jsonDecode(response);
-
-      log('결과 : ${targetJson}');
 
       final qnasFields = (targetJson["qnas"] as List<dynamic>)
           .map((e) => e as Map<String, dynamic>)
@@ -140,22 +136,22 @@ final class CreateProficiencyInterviewQnaUseCase extends BaseUseCase<
     } on RequestFailedException catch (e) {
       log('GetSummaryFromYoutubeContentUseCase / RequestFailedException / $e');
       if (e.message.contains('Please reduce the length of the messages')) {
-        throw const YtToManyTokenRequiredException();
+        throw const AiTimeoutException();
       }
       log('GetSummaryFromYoutubeContentUseCase : $e');
-      throw const YtUnexceptedGptException();
+      throw const AiUnExpectedException();
     } catch (e) {
       if (e is TimeoutException) {
         log('GetSummaryFromYoutubeContentUseCase / TimeoutException / $e');
-        throw const YtTimeoutException();
+        throw const AiTimeoutException();
       } else if (e is FormatException) {
         log('GetSummaryFromYoutubeContentUseCase / FormatException :$e');
-        throw const YtJsonFormatException();
+        throw const AiJsonFormatException();
       }
 
       log('GetSummaryFromYoutubeContentUseCase : 그 외 오류 :$e');
 
-      throw const YtUnknownException();
+      throw const AiUnExpectedException();
     }
   }
 }
