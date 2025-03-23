@@ -5,6 +5,8 @@ import 'package:lottie/lottie.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/constants/assets.dart';
+import 'package:techtalk/features/interview/use_case/create_proficiency_interview_qna_use_case.dart';
+import 'package:techtalk/features/interview/use_case/param/start_interview_flow_use_case_param.dart';
 import 'package:techtalk/presentation/pages/interview/proficiency_question_creation/constant/proficiency_question_creation_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/proficiency_question_creation/proficiency_question_creation_state.dart';
 import 'package:techtalk/presentation/pages/interview/proficiency_question_creation/provider/proficiency_question_creation_route_arg_provider.dart';
@@ -23,6 +25,15 @@ class ProficiencyQuestionCreationPage extends BasePage
   @override
   Override? get argProviderOverrides =>
       proficiencyRouteArgProvider.overrideWithValue(arg);
+
+  @override
+  void onInit(WidgetRef ref) async {
+    super.onInit(ref);
+    final result = await CreateProficiencyInterviewQnaUseCase()
+        .call(arg.useCaseParam as ProficiencyInterviewFlowParam);
+
+    print('매핑된 결과 : ${result.first.question}');
+  }
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {

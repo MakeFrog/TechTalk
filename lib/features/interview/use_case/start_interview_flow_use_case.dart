@@ -105,7 +105,9 @@ final class StartInterviewFlowUseCase {
     );
 
     QuestionCountSelectPageRoute(routeArgument).push(_context).whenComplete(() {
-      _interviewFlowParam.questionCountCompleter.complete(null);
+      if (!_interviewFlowParam.questionCountCompleter.isCompleted) {
+        _interviewFlowParam.questionCountCompleter.complete(null);
+      }
     });
   }
 

@@ -11,7 +11,6 @@ class SelectedQuestionCount extends _$SelectedQuestionCount {
 
   void update(int count) {
     state = count;
-    print('업데이트 됨 : ${state}');
   }
 
   static int defaultPlusCount = 4;
