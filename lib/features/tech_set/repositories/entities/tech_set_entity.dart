@@ -1,11 +1,25 @@
 import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
+import 'package:techtalk/features/tech_set/tech_set.dart';
 
 abstract class TechSetEntity {
   static TechSetEntity skill<T>(SkillEntity skill) => SkillSet(skill);
 
   static TechSetEntity jobGroup<T>(JobGroupEntity jobGroup) =>
       JobGroupSet(jobGroup);
+
+  static TechSetEntity mappedFromId(String id) {
+    /// 1. 스킬 매핑
+    final targetSkill = techSetRepository.getSkillById(id);
+    if (targetSkill.id != SkillEntity.undefinedKey) {
+      return SkillSet(targetSkill);
+    } else {
+      /// 스킬에서 매핑된게 없으면
+      /// 2. 직군 매핑
+      final targetJobGroup = techSetRepository.getJobGroupById(id);
+      return JobGroupSet(targetJobGroup);
+    }
+  }
 
   String id() {
     return this is SkillSet

@@ -38,4 +38,20 @@ final class JobGroupEntity {
       );
 
   bool get isUndefined => id == undefinedKey;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': this.id,
+      'name': this.name,
+      'youtubeContentCount': this.youtubeContentCount,
+    };
+  }
+
+  factory JobGroupEntity.fromMap(Map<String, dynamic> map) {
+    return JobGroupEntity(
+      id: map['id'] as String,
+      name: map['name'] as String,
+      youtubeContentCount: map['youtubeContentCount'] as int,
+    );
+  }
 }
