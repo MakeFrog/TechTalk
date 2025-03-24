@@ -295,8 +295,6 @@ PODS:
   - PromisesSwift (2.4.0):
     - PromisesObjC (= 2.4.0)
   - ReachabilitySwift (5.2.4)
-  - read_pdf_text (0.0.1):
-    - Flutter
   - RecaptchaInterop (100.0.0)
   - record_darwin (1.0.0):
     - Flutter
@@ -349,7 +347,6 @@ DEPENDENCIES:
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - pointer_interceptor_ios (from `.symlinks/plugins/pointer_interceptor_ios/ios`)
-  - read_pdf_text (from `.symlinks/plugins/read_pdf_text/ios`)
   - record_darwin (from `.symlinks/plugins/record_darwin/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
@@ -451,8 +448,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
   pointer_interceptor_ios:
     :path: ".symlinks/plugins/pointer_interceptor_ios/ios"
-  read_pdf_text:
-    :path: ".symlinks/plugins/read_pdf_text/ios"
   record_darwin:
     :path: ".symlinks/plugins/record_darwin/ios"
   shared_preferences_foundation:
@@ -535,7 +530,6 @@ SPEC CHECKSUMS:
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
   ReachabilitySwift: 32793e867593cfc1177f5d16491e3a197d2fccda
-  read_pdf_text: e29ee5e80e1dad2f855cdbfc0cbb2097a1cae569
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   record_darwin: 3b1a8e7d5c0cbf45ad6165b4d83a6ca643d929c3
   SDWebImage: f84b0feeb08d2d11e6a9b843cb06d75ebf5b8868

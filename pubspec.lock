@@ -1701,14 +1701,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.2"
-  read_pdf_text:
-    dependency: "direct main"
-    description:
-      name: read_pdf_text
-      sha256: dc909afeb16f57074ed035f2c111479ecca3b9f9429f1a3125f2f0049412fc63
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.3"
   record:
     dependency: "direct main"
     description:
@@ -2098,6 +2090,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  syncfusion_flutter_core:
+    dependency: transitive
+    description:
+      name: syncfusion_flutter_core
+      sha256: "59b6d2a7deacade6129d2f15615ca49ed56278fea055cd2e52cace78a343dd5e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "28.2.11"
+  syncfusion_flutter_pdf:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_pdf
+      sha256: f5a17ac2322d3e11140b2f5d2f4994b553d06c1e2287895897fa573c094bdee9
+      url: "https://pub.dev"
+    source: hosted
+    version: "28.2.11"
   synchronized:
     dependency: transitive
     description:

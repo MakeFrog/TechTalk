@@ -6,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_room_entity.dart';
@@ -79,11 +80,11 @@ mixin class ResumeManageEvent {
         onRightBtnClicked: () {
           switch (type) {
             case DocumentType.resume:
-              resumeInfo.updateResumeState(type, null);
+              resumeInfo.updateResumeState(null);
               break;
 
             case DocumentType.portfolio:
-              resumeInfo.updatePortfolioState(type, null);
+              resumeInfo.updatePortfolioState(null);
               break;
           }
           ref.context.pop();
@@ -98,7 +99,7 @@ mixin class ResumeManageEvent {
   /// 이력서, 포폴 문서 등록
   ///
   Future<void> registDocumentBtn(WidgetRef ref, DocumentType type) async {
-    const maxFileSizeInBytes = 50 * 1024 * 1024; // 50MB
+    const maxFileSizeInBytes = 10 * 1024 * 1024; // 10MB
 
     try {
       final result = await FilePicker.platform.pickFiles(
@@ -127,31 +128,33 @@ mixin class ResumeManageEvent {
       final Directory appDocDir = await getApplicationDocumentsDirectory();
       final targetPath = '${appDocDir.path}/$fileTitle.pdf';
       final localCopied = await pickedFile.copy(targetPath);
-
-      // Entity 생성
       final resumeInfoNotifier = ref.read(resumeInfoProvider.notifier);
 
-      if (type == DocumentType.resume) {
-        final resume = ResumeEntity(
-          path: localCopied.path,
-          title: fileTitle,
-          uploadAt: fileUploadAt,
-        );
+      switch (type) {
+        case DocumentType.resume:
+          final resume = ResumeEntity(
+            path: localCopied.path,
+            title: fileTitle,
+            uploadAt: fileUploadAt,
+          );
 
-        await resumeInfoNotifier.updateResumeState(type, resume);
-      } else {
-        final portfolio = PortfolioEntity(
-          path: localCopied.path,
-          title: fileTitle,
-          uploadAt: fileUploadAt,
-        );
-        await resumeInfoNotifier.updatePortfolioState(type, portfolio);
+          await resumeInfoNotifier.updateResumeState(resume);
+          break;
+
+        case DocumentType.portfolio:
+          final portfolio = PortfolioEntity(
+            path: localCopied.path,
+            title: fileTitle,
+            uploadAt: fileUploadAt,
+          );
+          await resumeInfoNotifier.updatePortfolioState(portfolio);
+          break;
       }
 
-      // 추가적인 UI 표시
       ref.read(resumeInfoProvider.notifier).showTooltip();
     } catch (e, s) {
       debugPrint('파일 등록 중 오류 발생: $e\n$s');
+      SnackBarService.showSnackBar('파일 등록에 실패하였습니다. 다시 시도해주세요.');
     }
   }
 
@@ -230,18 +233,20 @@ mixin class ResumeManageEvent {
   ///
   void onClickedPreviewBtn(WidgetRef ref, DocumentType type) {
     final state = ref.read(resumeInfoProvider);
-
-    // 미리보기용 pdf 경로
     late String? previewPath;
 
-    if (type == DocumentType.resume) {
-      previewPath = state.requireValue?.resume?.path;
-    } else {
-      previewPath = state.requireValue?.portfolio?.path;
+    switch (type) {
+      case DocumentType.resume:
+        previewPath = state.requireValue?.resume?.path;
+        break;
+
+      case DocumentType.portfolio:
+        previewPath = state.requireValue?.portfolio?.path;
+        break;
     }
 
     if (previewPath == null) {
-      debugPrint('PDF 경로가 올바르지 않습니다.');
+      SnackBarService.showSnackBar('PDF 경로가 올바르지 않습니다. 파일을 다시 등록해주세요.');
       return;
     }
 
@@ -249,69 +254,124 @@ mixin class ResumeManageEvent {
   }
 
   ///
+  /// [pdfPath]에 있는 PDF 파일을 텍스트로 추출하여 반환
+  ///
+  Future<String> readPdfText(String pdfPath) async {
+    try {
+      final fileBytes = await File(pdfPath).readAsBytes();
+      final document = PdfDocument(inputBytes: fileBytes);
+      final extractor = PdfTextExtractor(document);
+
+      // 텍스트 추출
+      final extractedText = extractor.extractText();
+
+      document.dispose();
+
+      return extractedText;
+    } catch (e) {
+      debugPrint('PDF 파일에서 텍스트를 추출하는 중 오류 발생: $e');
+      return '';
+    }
+  }
+
+  ///
   /// 이력서 면접 시작 (프롬프팅)
   ///
   Future<void> startResumeInterview(WidgetRef ref) async {
+    final totalStopwatch = Stopwatch()..start();
     final doc = ref.read(resumeInfoProvider).requireValue;
-    if ((doc?.resume?.path?.isEmpty ?? true) &&
-        (doc?.portfolio?.path?.isEmpty ?? true)) {
-      debugPrint('[에러] 이력서 및 포트폴리오 파일이 없습니다. 인터뷰를 진행할 수 없습니다.');
+    if (doc == null) {
+      SnackBarService.showSnackBar('면접을 시작할 수 없습니다. 이력서 정보를 확인해주세요.');
       return;
     }
 
-    // 로딩 화면
+    final resumePath = doc.resume?.path ?? '';
+    final portfolioPath = doc.portfolio?.path ?? '';
+
+    if (resumePath.isEmpty && portfolioPath.isEmpty) {
+      SnackBarService.showSnackBar('이력서와 포트폴리오가 모두 등록되지 않았습니다.');
+      return;
+    }
+
+    // 로딩 페이지로 이동 (분석중)
     routeToResumeInterviewLoadingPage(ref);
 
-    // 이력서 관리 파일에 변화가 있을 때에만 PDF 저장 로직 실행
-    // TODO: 이력서/포트폴리오중 하나만 변경시 변경된 것만 저장하도록 예외처리 (yundal)
-    await saveDocuments(ref);
+    try {
+      // 문서 저장
+      await saveDocuments(ref);
 
-    final router = GoRouter.of(ref.context);
-    final summarizeUseCase = SummarizeGeminiResumeUseCase();
+      // PDF 텍스트 추출
+      final stopwatch = Stopwatch()..start();
+      String resumePdfText = await readPdfText(resumePath);
+      String portfolioPdfText = await readPdfText(portfolioPath);
+      debugPrint('추출한 이력서 텍스트:\n$resumePdfText');
+      debugPrint('추출한 포트폴리오 텍스트:\n$portfolioPdfText');
+      stopwatch.stop();
+      debugPrint('PDF 텍스트 추출 소요시간: ${stopwatch.elapsedMilliseconds} ms');
 
-    final resumePath = doc?.resume?.path ?? '';
-    final portfolioPath = doc?.portfolio?.path ?? '';
+      // 텍스트가 모두 비어있을 경우에는 PDF가 Image로 랩핑되어있을 가능성이 있음
+      // OCR 예외처리 - Gemini에서는 pdf의 이미지 텍스트 추출도 가능한 점을 이용함
+      // TODO : 다음 커밋에 프롬프트 새로 적용할 예정 (yundal)
+      // if (resumePdfText.isEmpty && portfolioPdfText.isEmpty) {
+      //   debugPrint('OCR이 필요하여 Gemini 실행');
+      //   final geminiStopwatch = Stopwatch()..start();
+      //   final summarizeUseCase = SummarizeGeminiResumeUseCase();
+      //   final getGeminiParam =
+      //       (resumePath: resumePath, portfolioPath: portfolioPath);
 
-    debugPrint('startResumeInterview');
-    debugPrint('resumePath : $resumePath');
-    debugPrint('portfolioPath : $portfolioPath');
+      //   final geminiResult = await summarizeUseCase.call(getGeminiParam);
+      //   geminiStopwatch.stop();
+      //   debugPrint('Gemini 소요시간: ${geminiStopwatch.elapsedMilliseconds} ms');
 
-    // GEMINI로 요약하기
-    final getGeminiParam =
-        (resumePath: resumePath, portfolioPath: portfolioPath);
+      //   await geminiResult.fold(
+      //     onSuccess: (geminiArray) async {
+      //       resumePdfText = geminiArray[0]["content"] ?? '';
+      //       portfolioPdfText = geminiArray[1]["content"] ?? '';
 
-    final summarizeResult = await summarizeUseCase.call(getGeminiParam);
+      //       // OCR 인식을 했음에도 빈값을 반환한 경우 예외처리 - 빈 문서를 첨부했을 확률이 높음
+      //       if (resumePdfText.isEmpty && portfolioPdfText.isEmpty) {
+      //         debugPrint('Gemini 결과도 비어있음. 면접 질문 생성을 중단합니다.');
+      //         ref.context.pop();
+      //         SnackBarService.showSnackBar('문서를 인식할 수 없습니다. 파일 상태를 확인해주세요.');
+      //         return;
+      //       }
+      //     },
+      //     onFailure: (error) {
+      //       debugPrint('[에러] Gemini 요약 실패: $error');
+      //       ref.context.pop(); // 뒤로 이동
+      //       SnackBarService.showSnackBar('PDF 인식/요약에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      //       return;
+      //     },
+      //   );
+      // }
 
-    await summarizeResult.fold(
-      // 요약된 내용 기반으로 질문 생성하기
-      onSuccess: (map) async {
-        final resumeText = map[0]["content"];
-        final portfolioText = map[1]["content"];
+      // 텍스트 추출이 완료되었다는 전제하에 OpenAI를 통해 이력서 면접 질문 추출
+      final gptStopwatch = Stopwatch()..start();
+      final questionUseCase = CreateOpenAIResumeQuestionUseCase();
+      final getResumeParam =
+          (resumeContent: resumePdfText, portfolioContent: portfolioPdfText);
+      final questionResult = await questionUseCase.call(getResumeParam);
+      gptStopwatch.stop();
+      debugPrint('GPT 질문 생성 소요시간: ${gptStopwatch.elapsedMilliseconds} ms');
 
-        final questionUseCase = CreateOpenAIResumeQuestionUseCase();
-        final getResumeParam = (
-          resumeContent: resumeText ?? '',
-          portfolioContent: portfolioText ?? ''
-        );
-
-        final questionResult = await questionUseCase.call(getResumeParam);
-
-        questionResult.fold(
-          onSuccess: (qnaList) {
-            // 질문 생성 성공 => 채팅방 이동
-            final room = ChatRoomEntity.generateResumeInterview(qnas: qnaList);
-            final route = ChatPageRoute(roomId: room.id, type: room.type);
-            route.updateArg(room: room);
-            router.go(route.location);
-          },
-          onFailure: (error) {
-            debugPrint("[에러] 질문 생성 실패: $error");
-          },
-        );
-      },
-      onFailure: (error) {
-        debugPrint("[에러] PDF 요약 실패: $error");
-      },
-    );
+      questionResult.fold(
+        onSuccess: (qnaList) {
+          final room = ChatRoomEntity.generateResumeInterview(qnas: qnaList);
+          final route = ChatPageRoute(roomId: room.id, type: room.type);
+          route.updateArg(room: room);
+          GoRouter.of(ref.context).go(route.location);
+        },
+        onFailure: (error) {
+          debugPrint('[에러] GPT 질문 생성 실패: $error');
+          SnackBarService.showSnackBar('질문 생성에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+        },
+      );
+    } catch (e, s) {
+      debugPrint('[에러] startResumeInterview 예외 발생: $e\n$s');
+      SnackBarService.showSnackBar('면접 시작 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+    } finally {
+      totalStopwatch.stop();
+      debugPrint('전체 소요시간: ${totalStopwatch.elapsedMilliseconds} ms');
+    }
   }
 }

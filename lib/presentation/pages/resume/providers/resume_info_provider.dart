@@ -3,7 +3,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/features/user/repositories/entities/document_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
-import 'package:techtalk/features/user/repositories/enums/document_type.enum.dart';
 import 'package:techtalk/features/user/user.dart';
 
 part 'resume_info_provider.g.dart';
@@ -29,43 +28,44 @@ class ResumeInfo extends _$ResumeInfo {
 
     ref.listenSelf((previous, next) {
       final newDoc = next.value;
-      _compareWithInitialData(newDoc);
+      _isSameState = !isResumeChanged(newDoc) && !isPortfolioChanged(newDoc);
+      debugPrint('이력서 파일에 변화가 있는가? : ${isResumeChanged(newDoc)}');
+      debugPrint('포트폴리오 파일에 변화가 있는가? : ${isPortfolioChanged(newDoc)}');
+      debugPrint('리슨중 - 파일에 변화가 있는가? ${!_isSameState}');
     });
 
     return doc;
   }
 
   ///
-  /// 초기 상태와 현재 상태 비교
+  /// 이력서 - 초기 상태와 현재 상태 비교
   ///
-  void _compareWithInitialData(DocumentEntity? newDoc) {
-    // 초기 상태
+  bool isResumeChanged(DocumentEntity? newDoc) {
     final initResume = _initialResume;
-    final initPortfolio = _initialPortfolio;
-
-    // 최종 상태
     final newResume = newDoc?.resume;
-    final newPortfolio = newDoc?.portfolio;
-
-    // 비교
-    final sameResume = (initResume == null && newResume == null) ||
+    bool isResumeSame = (initResume == null && newResume == null) ||
         (initResume != null && initResume == newResume);
 
-    final samePortfolio = (initPortfolio == null && newPortfolio == null) ||
+    return !isResumeSame;
+  }
+
+  ///
+  /// 포트폴리오 - 초기 상태와 현재 상태 비교
+  ///
+  bool isPortfolioChanged(DocumentEntity? newDoc) {
+    final initPortfolio = _initialPortfolio;
+    final newPortfolio = newDoc?.portfolio;
+
+    bool isPortfolioSame = (initPortfolio == null && newPortfolio == null) ||
         (initPortfolio != null && initPortfolio == newPortfolio);
 
-    _isSameState = sameResume && samePortfolio;
-
-    // 디버그 로그
-    debugPrint('resume 변동 여부: ${!sameResume}');
-    debugPrint('portfolio 변동 여부: ${!samePortfolio}');
-    debugPrint('결과적으로 _isSameState : $_isSameState');
+    return !isPortfolioSame;
   }
 
   ///
   /// 저장하기 버튼 활성화 기준
   ///
-  bool isFileChanged() => !_isSameState;
+  bool isStateChanged() => !_isSameState;
 
   ///
   /// Document 상태  확인
@@ -75,10 +75,7 @@ class ResumeInfo extends _$ResumeInfo {
   ///
   /// 이력서 상태 업데이트
   ///
-  Future<void> updateResumeState(
-    DocumentType type,
-    ResumeEntity? newResume,
-  ) async {
+  Future<void> updateResumeState(ResumeEntity? newResume) async {
     state = state.whenData(
       (doc) {
         // doc이 null이면 새 DocumentEntity 생성
@@ -99,7 +96,6 @@ class ResumeInfo extends _$ResumeInfo {
   /// 포트폴리오 상태 업데이트
   ///
   Future<void> updatePortfolioState(
-    DocumentType type,
     PortfolioEntity? newPortfolio,
   ) async {
     state = state.whenData(
@@ -143,16 +139,27 @@ class ResumeInfo extends _$ResumeInfo {
   }
 
   ///
-  /// 실제 저장 로직(Repository 호출)을 모아서 수행하고,
-  /// 저장이 완료되면 _isFileChanged = false 로 변경
+  /// 변경된 문서의 상태를 파일로 최신화하는 로직
   ///
   Future<void> saveDocument() async {
     final doc = state.valueOrNull;
     if (doc == null) return;
 
-    // 각각 서버나 로컬에 저장
-    await updateResume(doc.resume);
-    await updatePortfolio(doc.portfolio);
+    if (isResumeChanged(doc)) {
+      final stopwatch = Stopwatch()..start();
+      debugPrint('이력서가 변경되어서 실행');
+      await updateResume(doc.resume);
+      stopwatch.stop();
+      debugPrint('이력서 PDF 저장 소요시간 : ${stopwatch.elapsedMilliseconds} ms');
+    }
+
+    if (isPortfolioChanged(doc)) {
+      final stopwatch = Stopwatch()..start();
+      debugPrint('포트폴리오가 변경되어서 실행');
+      await updatePortfolio(doc.portfolio);
+      stopwatch.stop();
+      debugPrint('포트폴리오 PDF 저장 소요시간 : ${stopwatch.elapsedMilliseconds} ms');
+    }
   }
 
   ///
