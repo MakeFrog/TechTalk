@@ -7,7 +7,7 @@ part of 'selected_question_count_provider.dart';
 // **************************************************************************
 
 String _$selectedQuestionCountHash() =>
-    r'92e0c23731369a66bd991fd4f462bd8607778771';
+    r'1502ddfcf15a06f2d38de3b9301bf7288e83225d';
 
 /// See also [SelectedQuestionCount].
 @ProviderFor(SelectedQuestionCount)

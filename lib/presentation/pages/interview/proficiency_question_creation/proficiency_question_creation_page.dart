@@ -1,17 +1,27 @@
+import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/src/consumer.dart';
 import 'package:gap/gap.dart';
 import 'package:lottie/lottie.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
-import 'package:techtalk/core/constants/assets.dart';
-import 'package:techtalk/features/interview/use_case/create_proficiency_interview_qna_use_case.dart';
-import 'package:techtalk/features/interview/use_case/param/start_interview_flow_use_case_param.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/interview/proficiency_question_creation/constant/proficiency_question_creation_route_arg.dart';
+import 'package:techtalk/presentation/pages/interview/proficiency_question_creation/proficiency_question_creation_event.dart';
 import 'package:techtalk/presentation/pages/interview/proficiency_question_creation/proficiency_question_creation_state.dart';
 import 'package:techtalk/presentation/pages/interview/proficiency_question_creation/provider/proficiency_question_creation_route_arg_provider.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
+import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
+import 'package:techtalk/presentation/widgets/common/button/see_all_question_button.dart';
+import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
+
+part 'widgets/app_bar.p.dart';
+part 'widgets/bottom_fixed_button.p.dart';
+part 'widgets/illust_view.p.dart';
+part 'widgets/leading_view.p.dart';
+part 'widgets/scaffold.p.dart';
 
 ///
 /// 역량별 면접 질문을 선택하는 페이지
@@ -27,53 +37,10 @@ class ProficiencyQuestionCreationPage extends BasePage
       proficiencyRouteArgProvider.overrideWithValue(arg);
 
   @override
-  void onInit(WidgetRef ref) async {
-    super.onInit(ref);
-    final result = await CreateProficiencyInterviewQnaUseCase()
-        .call(arg.useCaseParam as ProficiencyInterviewFlowParam);
-
-    print('매핑된 결과 : ${result.first.question}');
-  }
-
-  @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Gap(16),
-        Consumer(
-          builder: (context, ref, child) {
-            return FutureBuilder<String?>(
-              future: nicknameFuture(ref),
-              builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-                final nickname = snapshot.data ?? '익명';
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    '잠시만요 $nickname님,\n질문을 생성하고 있어요',
-                    style: AppTextStyle.headline1,
-                  ),
-                );
-              },
-            );
-          },
-        ),
-        const Spacer(
-          flex: 104,
-        ),
-        Center(
-          child: Transform.scale(
-            scale: 1.28, // 로티를 그대로 적용하면 디자인 시안과 안맞기 위해 임의로 scale를 줌
-            child: Lottie.asset(
-              Assets.lottieDocumentLoading,
-              fit: BoxFit.fitWidth,
-            ),
-          ),
-        ),
-        const Spacer(
-          flex: 166,
-        ),
-      ],
+    return const _Scaffold(
+      leadingView: _LeadingView(),
+      illustView: _IllustView(),
     );
   }
 
@@ -82,5 +49,17 @@ class ProficiencyQuestionCreationPage extends BasePage
 
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
-      const BackButtonAppBar();
+      const _AppBar();
+
+  @override
+  Widget? buildFloatingActionButton(WidgetRef ref) {
+    return const _BottomFixedButton();
+  }
+
+  @override
+  bool get canPop => false;
+
+  @override
+  FloatingActionButtonLocation? get floatingActionButtonLocation =>
+      FloatingActionButtonLocation.centerDocked;
 }
