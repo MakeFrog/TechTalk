@@ -1,4 +1,4 @@
-part of '../proficiency_question_creation_page.dart';
+part of '../question_creation_page.dart';
 
 class _Scaffold extends StatelessWidget {
   const _Scaffold({

@@ -3,10 +3,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/route_extension.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/presentation/pages/interview/proficiency_question_creation/proficiency_question_creation_state.dart';
+import 'package:techtalk/presentation/pages/interview/question_creation/question_creation_state.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
-mixin class ProficiencyQuestionCreationEvent {
+mixin class QuestionCreationEvent {
   ///
   /// 면접 시작하기 버튼이 클릭 되었을 때
   ///
@@ -21,8 +21,7 @@ mixin class ProficiencyQuestionCreationEvent {
   /// 백버튼이 클릭 되었을 때
   ///
   void onBackBtnTapped(WidgetRef ref) {
-    final isQuestionCreated =
-        ProficiencyQuestionCreationState().hasQuestionCreated(ref);
+    final isQuestionCreated = QuestionCreationState().hasQuestionCreated(ref);
 
     if (isQuestionCreated) {
     } else {
@@ -37,7 +36,7 @@ mixin class ProficiencyQuestionCreationEvent {
             ref.context.pop();
           },
           onLeftBtnClicked: () {
-            if (ProficiencyQuestionCreationState().hasQuestionCreated(ref)) {
+            if (QuestionCreationState().hasQuestionCreated(ref)) {
               SnackBarService.showSnackBar('잠깐! 방금 질문이 생성 되었어요');
               ref.context.pop();
             } else {

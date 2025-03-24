@@ -1,7 +1,6 @@
-part of '../proficiency_question_creation_page.dart';
+part of '../question_creation_page.dart';
 
-class _BottomFixedButton extends ConsumerWidget
-    with ProficiencyQuestionCreationState {
+class _BottomFixedButton extends ConsumerWidget with QuestionCreationState {
   const _BottomFixedButton({super.key});
 
   @override

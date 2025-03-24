@@ -1,7 +1,6 @@
-part of '../proficiency_question_creation_page.dart';
+part of '../question_creation_page.dart';
 
-class _LeadingView extends ConsumerWidget
-    with ProficiencyQuestionCreationState {
+class _LeadingView extends ConsumerWidget with QuestionCreationState {
   const _LeadingView({super.key});
 
   @override

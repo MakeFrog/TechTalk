@@ -12,10 +12,10 @@ import 'package:techtalk/presentation/pages/interview/interview_level_selection/
 import 'package:techtalk/presentation/pages/interview/interview_level_selection/interview_level_selection_page.dart';
 import 'package:techtalk/presentation/pages/interview/proficiency_interview_topic_selection/constant/proficiency_interview_topic_selection_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/proficiency_interview_topic_selection/proficiency_interview_topic_selection_page.dart';
-import 'package:techtalk/presentation/pages/interview/proficiency_question_creation/constant/proficiency_question_creation_route_arg.dart';
-import 'package:techtalk/presentation/pages/interview/proficiency_question_creation/proficiency_question_creation_page.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/constant/select_question_count_route_argument.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_page.dart';
+import 'package:techtalk/presentation/pages/interview/question_creation/constant/question_creation_route_arg.dart';
+import 'package:techtalk/presentation/pages/interview/question_creation/question_creation_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/job_group_setting_page.dart';
@@ -190,9 +190,9 @@ class SignUpRoute extends GoRouteData {
       path: InterviewLevelSelectionRoute.path,
       name: InterviewLevelSelectionRoute.path,
     ),
-    TypedGoRoute<ProficiencyQuestionCreationRoute>(
-      path: ProficiencyQuestionCreationRoute.path,
-      name: ProficiencyQuestionCreationRoute.path,
+    TypedGoRoute<QuestionCreationRoute>(
+      path: QuestionCreationRoute.path,
+      name: QuestionCreationRoute.path,
     ),
     TypedGoRoute<YoutubeDetailRoute>(
       path: YoutubeDetailRoute.path,
@@ -354,12 +354,12 @@ class InterviewLevelSelectionRoute extends GoRouteData {
   }
 }
 
-class ProficiencyQuestionCreationRoute extends GoRouteData {
-  const ProficiencyQuestionCreationRoute(this.$extra);
+class QuestionCreationRoute extends GoRouteData {
+  const QuestionCreationRoute(this.$extra);
 
   static const String path = 'proficiency-question-creation';
 
-  final ProficiencyQuestionCreationRouteArg $extra;
+  final QuestionCreationRouteArg $extra;
 
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) {
@@ -378,7 +378,7 @@ class ProficiencyQuestionCreationRoute extends GoRouteData {
           child: child,
         );
       },
-      child: ProficiencyQuestionCreationPage($extra),
+      child: QuestionCreationPage($extra),
     );
   }
 }

@@ -1,7 +1,7 @@
-part of '../proficiency_question_creation_page.dart';
+part of '../question_creation_page.dart';
 
 class _AppBar extends ConsumerWidget
-    with ProficiencyQuestionCreationState, ProficiencyQuestionCreationEvent
+    with QuestionCreationState, QuestionCreationEvent
     implements PreferredSizeWidget {
   const _AppBar({super.key});
 

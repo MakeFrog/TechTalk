@@ -7,10 +7,10 @@ import 'package:lottie/lottie.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/presentation/pages/interview/proficiency_question_creation/constant/proficiency_question_creation_route_arg.dart';
-import 'package:techtalk/presentation/pages/interview/proficiency_question_creation/proficiency_question_creation_event.dart';
-import 'package:techtalk/presentation/pages/interview/proficiency_question_creation/proficiency_question_creation_state.dart';
-import 'package:techtalk/presentation/pages/interview/proficiency_question_creation/provider/proficiency_question_creation_route_arg_provider.dart';
+import 'package:techtalk/presentation/pages/interview/question_creation/constant/question_creation_route_arg.dart';
+import 'package:techtalk/presentation/pages/interview/question_creation/provider/proficiency_question_creation_route_arg_provider.dart';
+import 'package:techtalk/presentation/pages/interview/question_creation/question_creation_event.dart';
+import 'package:techtalk/presentation/pages/interview/question_creation/question_creation_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
@@ -26,11 +26,10 @@ part 'widgets/scaffold.p.dart';
 ///
 /// 역량별 면접 질문을 선택하는 페이지
 ///
-class ProficiencyQuestionCreationPage extends BasePage
-    with ProficiencyQuestionCreationState {
-  const ProficiencyQuestionCreationPage(this.arg, {super.key});
+class QuestionCreationPage extends BasePage with QuestionCreationState {
+  const QuestionCreationPage(this.arg, {super.key});
 
-  final ProficiencyQuestionCreationRouteArg arg;
+  final QuestionCreationRouteArg arg;
 
   @override
   Override? get argProviderOverrides =>

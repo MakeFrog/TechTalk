@@ -7,12 +7,12 @@ part of 'proficiency_question_creation_route_arg_provider.dart';
 // **************************************************************************
 
 String _$proficiencyRouteArgHash() =>
-    r'88b52def96cdd158791b68bc28337e2b42814726';
+    r'09bb05555c8e4535790c11d0c9e422272e996ee2';
 
 /// See also [proficiencyRouteArg].
 @ProviderFor(proficiencyRouteArg)
 final proficiencyRouteArgProvider =
-    AutoDisposeProvider<ProficiencyQuestionCreationRouteArg>.internal(
+    AutoDisposeProvider<QuestionCreationRouteArg>.internal(
   proficiencyRouteArg,
   name: r'proficiencyRouteArgProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -23,6 +23,6 @@ final proficiencyRouteArgProvider =
 );
 
 typedef ProficiencyRouteArgRef
-    = AutoDisposeProviderRef<ProficiencyQuestionCreationRouteArg>;
+    = AutoDisposeProviderRef<QuestionCreationRouteArg>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

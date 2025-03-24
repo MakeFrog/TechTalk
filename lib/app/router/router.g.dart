@@ -140,7 +140,7 @@ RouteBase get $mainRoute => GoRouteData.$route(
         GoRouteData.$route(
           path: 'proficiency-question-creation',
           name: 'proficiency-question-creation',
-          factory: $ProficiencyQuestionCreationRouteExtension._fromState,
+          factory: $QuestionCreationRouteExtension._fromState,
         ),
         GoRouteData.$route(
           path: 'youtube-detail/:contentId',
@@ -419,11 +419,10 @@ extension $InterviewLevelSelectionRouteExtension
       context.replace(location, extra: $extra);
 }
 
-extension $ProficiencyQuestionCreationRouteExtension
-    on ProficiencyQuestionCreationRoute {
-  static ProficiencyQuestionCreationRoute _fromState(GoRouterState state) =>
-      ProficiencyQuestionCreationRoute(
-        state.extra as ProficiencyQuestionCreationRouteArg,
+extension $QuestionCreationRouteExtension on QuestionCreationRoute {
+  static QuestionCreationRoute _fromState(GoRouterState state) =>
+      QuestionCreationRoute(
+        state.extra as QuestionCreationRouteArg,
       );
 
   String get location => GoRouteData.$location(

@@ -8,8 +8,8 @@ import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/interview/use_case/param/start_interview_flow_use_case_param.dart';
 import 'package:techtalk/presentation/pages/interview/interview_level_selection/constant/interview_level_selection_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/proficiency_interview_topic_selection/constant/proficiency_interview_topic_selection_route_arg.dart';
-import 'package:techtalk/presentation/pages/interview/proficiency_question_creation/constant/proficiency_question_creation_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/constant/select_question_count_route_argument.dart';
+import 'package:techtalk/presentation/pages/interview/question_creation/constant/question_creation_route_arg.dart';
 
 /// AI 모의 면접 플로우를 관리하는 UseCase
 ///
@@ -113,10 +113,7 @@ final class StartInterviewFlowUseCase {
 
   /// 면접 질문 생성 페이지로 이동
   void _navigateToQuestionCreation() {
-    final routeArgument =
-        ProficiencyQuestionCreationRouteArg(_interviewFlowParam);
-    ProficiencyQuestionCreationRoute(routeArgument)
-        .push(_context)
-        .whenComplete(() {});
+    final routeArgument = QuestionCreationRouteArg(_interviewFlowParam);
+    QuestionCreationRoute(routeArgument).push(_context).whenComplete(() {});
   }
 }

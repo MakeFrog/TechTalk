@@ -1,6 +1,6 @@
-part of '../proficiency_question_creation_page.dart';
+part of '../question_creation_page.dart';
 
-class _IllustView extends ConsumerWidget with ProficiencyQuestionCreationState {
+class _IllustView extends ConsumerWidget with QuestionCreationState {
   const _IllustView({super.key});
 
   @override
