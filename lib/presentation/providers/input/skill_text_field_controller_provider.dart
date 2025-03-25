@@ -13,21 +13,6 @@ class SkillTextFieldController extends _$SkillTextFieldController {
   Raw<TextEditingController> build() {
     return TextEditingController();
   }
-
-  String? skillInputValidation(
-      {required String? input, required bool isResultEmpty}) {
-    final currentContext = rootNavigatorKey.currentContext;
-    if (rootNavigatorKey.currentContext == null) return '404';
-    if (input == null) {
-      return currentContext!.tr(LocaleKeys.jobSelection_needSearchKeyword);
-    } else if (input.containsKorean) {
-      return currentContext!.tr(LocaleKeys.jobSelection_needToSearchInEnglish);
-    } else if (isResultEmpty && input.isNotEmpty && !input.containsKorean) {
-      return currentContext!.tr(LocaleKeys.jobSelection_noResultFound);
-    } else {
-      return null;
-    }
-  }
 }
 
 // return 'Please search for a skill.';

@@ -144,7 +144,7 @@ class _InterviewInductionView extends HookConsumerWidget
           else
             Expanded(
               child: Image.asset(
-                room(ref).type.illusrationPath,
+                room(ref).type.interviewEndIllust,
               ),
             ),
           if (room(ref).type.isSingleTopic)

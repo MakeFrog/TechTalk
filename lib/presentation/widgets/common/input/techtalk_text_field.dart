@@ -21,10 +21,12 @@ class TechtalkTextField extends HookWidget {
     this.enabled = true,
     this.activeSuffixIcon = true,
     this.autoFocus = false,
+    this.showPrefixIcon = false,
     this.validator,
     this.inputFormatters,
     this.textInputAction,
     this.keyboardType,
+    this.useCustomValidation = false,
     this.hintText,
     this.hintTextStyle,
   }) : inputDecoration = inputDecoration ?? const InputDecoration();
@@ -36,6 +38,7 @@ class TechtalkTextField extends HookWidget {
   final InputDecoration inputDecoration;
   final ValueChanged<String>? onChanged;
   final void Function()? onEditingComplete;
+  final bool useCustomValidation;
   final bool obscureText;
   final bool enabled;
   final bool autoFocus;
@@ -45,6 +48,7 @@ class TechtalkTextField extends HookWidget {
   final String? Function(String? value)? validator;
   final String? hintText;
   final TextStyle? hintTextStyle;
+  final bool showPrefixIcon;
 
   /// 우측 아이콘을 활성화할지 여부
   final bool activeSuffixIcon;
@@ -69,35 +73,78 @@ class TechtalkTextField extends HookWidget {
           suffixIcon: activeSuffixIcon && !isFieldEmpty(controller)
               ? _buildClearIcon(controller)
               : null,
-          errorStyle: AppTextStyle.body2.copyWith(
+          errorStyle: AppTextStyle.alert2.copyWith(
             color: AppColor.of.red2,
           ),
           contentPadding: const EdgeInsets.symmetric(
                 vertical: 14,
               ) +
               const EdgeInsets.only(right: 16),
-          prefix: const Padding(
+          prefix: Padding(
             padding: EdgeInsets.only(
-              left: 16.0,
+              left: 16.0 + (showPrefixIcon ? 32 : 0),
             ),
           ),
         );
 
-    return TextFormField(
-      focusNode: focusNode,
-      controller: controller,
-      autofocus: autoFocus,
-      validator: validator,
-      enabled: enabled,
-      obscureText: obscureText,
-      style: style ?? AppTextStyle.body1,
-      cursorColor: AppColor.of.brand2,
-      inputFormatters: inputFormatters,
-      textInputAction: textInputAction,
-      keyboardType: keyboardType,
-      decoration: inputDecoration,
-      onChanged: onChanged,
-      onEditingComplete: onEditingComplete,
+    final validateMessage = useListenableSelector(controller, () {
+      if (validator == null) return null;
+      final message = validator!(controller.text);
+      return message;
+    });
+
+    return Stack(
+      clipBehavior: Clip.none,
+      alignment: Alignment.centerLeft,
+      children: [
+        TextFormField(
+          focusNode: focusNode,
+          controller: controller,
+          autofocus: autoFocus,
+          validator: useCustomValidation ? null : validator,
+          enabled: enabled,
+          obscureText: obscureText,
+          style: style ?? AppTextStyle.body1,
+          cursorColor: AppColor.of.brand2,
+          inputFormatters: inputFormatters,
+          textInputAction: textInputAction,
+          keyboardType: keyboardType,
+          decoration: inputDecoration,
+          onChanged: onChanged,
+          onEditingComplete: onEditingComplete,
+        ),
+        if (useCustomValidation)
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 180),
+            bottom: validateMessage != null ? -26 : -16,
+            left: 8,
+            child: AnimatedOpacity(
+              opacity: validateMessage != null ? 1 : 0,
+              duration: const Duration(milliseconds: 180),
+              child: Text(
+                validateMessage ?? '',
+                style: AppTextStyle.alert2.copyWith(
+                  color: AppColor.of.red2,
+                ),
+              ),
+            ),
+          ),
+        if (showPrefixIcon)
+          Positioned(
+            top: 12,
+            left: 16,
+            child: Align(
+              alignment: Alignment.centerLeft, // 중앙 정렬 유지
+              child: SvgPicture.asset(
+                Assets.iconsSearch,
+                colorFilter: ColorFilter.mode(
+                  AppColor.of.gray4,
+                  BlendMode.srcIn,
+                ),
+              ),
+            ),
+          ),
+      ],
     );
   }
 

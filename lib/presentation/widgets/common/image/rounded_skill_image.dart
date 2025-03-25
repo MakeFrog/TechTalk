@@ -14,19 +14,21 @@ class RoundedSkillImage extends StatelessWidget {
     required this.imagePath,
     this.size = 20,
     this.disableRound = false,
+    this.borderRadius,
     this.scale = 1.1,
   });
 
   final String? imagePath;
   final double size;
   final bool disableRound;
+  final BorderRadius? borderRadius;
   final double scale;
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius:
-          disableRound ? BorderRadius.zero : BorderRadius.circular(size / 2),
+      borderRadius: borderRadius ??
+          (disableRound ? BorderRadius.zero : BorderRadius.circular(size / 2)),
       child: ColoredBox(
         color: AppColor.of.white,
         child: Transform.scale(

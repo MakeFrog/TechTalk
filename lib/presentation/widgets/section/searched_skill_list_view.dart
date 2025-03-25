@@ -4,81 +4,100 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
-import 'package:techtalk/presentation/pages/sign_up/events/sign_up_event.dart';
 import 'package:techtalk/presentation/widgets/common/image/rounded_skill_image.dart';
 
-class SearchedSkillListView extends ConsumerWidget with SignUpEvent {
+class SearchedSkillListView extends ConsumerWidget {
   const SearchedSkillListView(
       {required this.items,
       required this.searchedTerm,
       required this.onItemTapped,
+      this.scrollPhysics,
+      this.hideKeyboardOnScroll = true,
+      this.shrinkWrap = false,
+      this.padding,
       super.key});
 
   final List<SkillEntity> items;
+  final ScrollPhysics? scrollPhysics;
   final String searchedTerm;
   final Function(SkillEntity item) onItemTapped;
+  final bool shrinkWrap;
+  final bool hideKeyboardOnScroll;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return GestureDetector(
-      onVerticalDragDown: (_) {
-        onSearchedListViewDrag(context);
-      },
-      child: ListView.builder(
-        itemCount: items.length,
-        padding: const EdgeInsets.only(
-          top: 8,
-        ),
-        itemBuilder: (context, index) {
-          final skill = items[index];
-          final separatedString = getProcessString(
-            ref,
-            skill: skill.name,
-            searchedTerm: searchedTerm,
-          );
+    if (hideKeyboardOnScroll) {
+      return GestureDetector(
+          onVerticalDragDown: (_) {
+            if (FocusScope.of(context).hasFocus) {
+              FocusScope.of(context).unfocus();
+            }
+          },
+          child: _buildListView(ref));
+    } else {
+      return _buildListView(ref);
+    }
+  }
 
-          return GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              onItemTapped(skill);
-            },
-            child: SizedBox(
-              height: 52,
-              child: Row(
-                children: [
-                  RoundedSkillImage(
-                    disableRound: true,
-                    imagePath: skill.imagePath,
-                  ),
-                  const Gap(6),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: separatedString.$1, // prefix
-                            style: TextStyle(color: AppColor.of.gray4),
-                          ),
-                          TextSpan(
-                            text: separatedString.$2, // match
-                            style: TextStyle(color: AppColor.of.black),
-                          ),
-                          TextSpan(
-                            text: separatedString.$3, // suffix
-                            style: TextStyle(color: AppColor.of.gray4),
-                          ),
-                        ],
-                      ),
-                      style: AppTextStyle.body2,
+  Widget _buildListView(WidgetRef ref) {
+    return ListView.builder(
+      shrinkWrap: shrinkWrap,
+      itemCount: items.length,
+      physics: scrollPhysics,
+      padding: padding ??
+          const EdgeInsets.only(
+            top: 8,
+          ),
+      itemBuilder: (context, index) {
+        final skill = items[index];
+        final separatedString = getProcessString(
+          ref,
+          skill: skill.name,
+          searchedTerm: searchedTerm,
+        );
+
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            onItemTapped(skill);
+          },
+          child: SizedBox(
+            height: 52,
+            child: Row(
+              children: [
+                RoundedSkillImage(
+                  disableRound: true,
+                  imagePath: skill.imagePath,
+                ),
+                const Gap(6),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: separatedString.$1, // prefix
+                          style: TextStyle(color: AppColor.of.gray4),
+                        ),
+                        TextSpan(
+                          text: separatedString.$2, // match
+                          style: TextStyle(color: AppColor.of.black),
+                        ),
+                        TextSpan(
+                          text: separatedString.$3, // suffix
+                          style: TextStyle(color: AppColor.of.gray4),
+                        ),
+                      ],
                     ),
+                    style: AppTextStyle.body2,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 

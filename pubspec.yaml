@@ -31,6 +31,7 @@ dependencies:
   cached_network_image: ^3.3.0 # 네트워크 이미지 캐싱
   flutter_layout_grid: ^2.0.7
   lottie: ^3.2.0
+  smooth_sheets: ^0.10.2
   bounce_tapper: ^1.1.4
   expandable_page_view: ^1.0.17
   measure_size_builder: ^1.0.3

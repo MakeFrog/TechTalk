@@ -6,7 +6,7 @@ part of 'selected_skills_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$selectedSkillsHash() => r'b67e6027cd48fc934a5e85428b915beecd2e7a38';
+String _$selectedSkillsHash() => r'3293c12d2100e5be5205bcd4957fbff7d2e0cc4a';
 
 /// See also [SelectedSkills].
 @ProviderFor(SelectedSkills)

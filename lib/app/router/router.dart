@@ -8,6 +8,8 @@ import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_route_arg.dart';
+import 'package:techtalk/presentation/pages/interview/interview_level_selection/interview_level_selection_page.dart';
+import 'package:techtalk/presentation/pages/interview/proficiency_interview_topic_selection/proficiency_interview_topic_selection_page.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/providers/select_question_count_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
@@ -54,12 +56,14 @@ part 'router.g.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
-GoRouter appRouter(WidgetRef ref) => GoRouter(
-      debugLogDiagnostics: true,
-      navigatorKey: rootNavigatorKey,
-      initialLocation: SplashRoute.path,
-      routes: $appRoutes,
-    );
+abstract final class AppRouter {
+  static GoRouter appRouter(WidgetRef ref) => GoRouter(
+        debugLogDiagnostics: true,
+        navigatorKey: rootNavigatorKey,
+        initialLocation: SplashRoute.path,
+        routes: $appRoutes,
+      );
+}
 
 ///
 /// splash
@@ -156,6 +160,10 @@ class SignUpRoute extends GoRouteData {
       path: ProfileSettingRoute.name,
       name: ProfileSettingRoute.name,
     ),
+    TypedGoRoute<ProficiencyInterviewTopicSelectionRoute>(
+      path: ProficiencyInterviewTopicSelectionRoute.path,
+      name: ProficiencyInterviewTopicSelectionRoute.path,
+    ),
     TypedGoRoute<JobGroupSettingRoute>(
       path: JobGroupSettingRoute.name,
       name: JobGroupSettingRoute.name,
@@ -175,6 +183,10 @@ class SignUpRoute extends GoRouteData {
     TypedGoRoute<YoutubeContentsMainListRoute>(
       path: YoutubeContentsMainListRoute.path,
       name: YoutubeContentsMainListRoute.name,
+    ),
+    TypedGoRoute<InterviewLevelSelectionRoute>(
+      path: InterviewLevelSelectionRoute.path,
+      name: InterviewLevelSelectionRoute.path,
     ),
     TypedGoRoute<YoutubeDetailRoute>(
       path: YoutubeDetailRoute.path,
@@ -261,6 +273,15 @@ class StudyRoute extends GoRouteData {
   }
 }
 
+class ProficiencyInterviewTopicSelectionRoute extends GoRouteData {
+  static const String path = 'proficiency-interview-topic-selection';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ProficiencyInterviewTopicSelectionPage();
+  }
+}
+
 class WrongAnswerNoteRoute extends GoRouteData {
   static const String path = 'wrong-answer-note';
   static const String name = 'wrong answer note';
@@ -307,6 +328,17 @@ class YoutubeContentsMainListRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const YoutubeMainPage();
+  }
+}
+
+class InterviewLevelSelectionRoute extends GoRouteData {
+  InterviewLevelSelectionRoute();
+
+  static const String path = 'interview-level-selection';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const InterviewLevelSelectionPage();
   }
 }
 
