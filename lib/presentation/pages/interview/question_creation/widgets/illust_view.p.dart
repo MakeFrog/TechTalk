@@ -1,24 +1,32 @@
 part of '../question_creation_page.dart';
 
-class _IllustView extends ConsumerWidget with QuestionCreationState {
+class _IllustView extends ConsumerWidget
+    with QuestionCreationState, QuestionCreationEvent {
   const _IllustView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return createdQnasAsync(ref).when(
       data: (_) {
-        return FutureBuilder(
-          future: Future.delayed(const Duration(milliseconds: 160)),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const SizedBox.shrink();
-            }
-            return Center(
-              child: Lottie.asset(
-                repeat: false,
-                Assets.lottieDone,
-                fit: BoxFit.fitWidth,
-              ),
+        return HookBuilder(
+          builder: (context) {
+            useEffect(() {
+              setQnaCompleter(ref);
+            }, []);
+            return FutureBuilder(
+              future: Future.delayed(const Duration(milliseconds: 160)),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const SizedBox.shrink();
+                }
+                return Center(
+                  child: Lottie.asset(
+                    repeat: false,
+                    Assets.lottieDone,
+                    fit: BoxFit.fitWidth,
+                  ),
+                );
+              },
             );
           },
         );

@@ -8,6 +8,8 @@ import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_route_arg.dart';
+import 'package:techtalk/presentation/pages/interview/created_question_list/constant/created_question_list_route_arg.dart';
+import 'package:techtalk/presentation/pages/interview/created_question_list/created_question_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/interview_level_selection/constant/interview_level_selection_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/interview_level_selection/interview_level_selection_page.dart';
 import 'package:techtalk/presentation/pages/interview/proficiency_interview_topic_selection/constant/proficiency_interview_topic_selection_route_arg.dart';
@@ -173,6 +175,9 @@ class SignUpRoute extends GoRouteData {
     TypedGoRoute<SkillSettingRoute>(
       path: SkillSettingRoute.name,
       name: SkillSettingRoute.name,
+    ),
+    TypedGoRoute<CreatedQuestionListRoute>(
+      path: CreatedQuestionListRoute.path,
     ),
     TypedGoRoute<StudyRoute>(
       path: StudyRoute.path,
@@ -354,6 +359,19 @@ class InterviewLevelSelectionRoute extends GoRouteData {
   }
 }
 
+class CreatedQuestionListRoute extends GoRouteData {
+  const CreatedQuestionListRoute(this.$extra);
+
+  static const String path = 'created-question-list';
+
+  final CreatedQuestionListRouteArg $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return CreatedQuestionListPage($extra);
+  }
+}
+
 class QuestionCreationRoute extends GoRouteData {
   const QuestionCreationRoute(this.$extra);
 
@@ -379,6 +397,21 @@ class QuestionCreationRoute extends GoRouteData {
         );
       },
       child: QuestionCreationPage($extra),
+    );
+  }
+}
+
+class CreatedQuestionList extends GoRouteData {
+  CreatedQuestionList(this.$extra);
+
+  static const String path = 'created-question-list';
+
+  final YoutubeDetailArg $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return YoutubeDetailPage(
+      argument: $extra,
     );
   }
 }

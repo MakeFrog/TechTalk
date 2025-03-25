@@ -1,8 +1,14 @@
+import 'dart:async';
+
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/route_extension.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/interview/use_case/param/start_interview_flow_use_case_param.dart';
+import 'package:techtalk/presentation/pages/interview/created_question_list/constant/created_question_list_route_arg.dart';
+import 'package:techtalk/presentation/pages/interview/question_creation/provider/created_proficiency_qnas_provider.dart';
+import 'package:techtalk/presentation/pages/interview/question_creation/provider/question_creation_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/interview/question_creation/question_creation_state.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
@@ -15,7 +21,27 @@ mixin class QuestionCreationEvent {
   ///
   /// '질문 고르기' 버튼이 클릭 되었을 때
   ///
-  void routeToListedQnasPage(WidgetRef ref) {}
+  Future<void> routeToListedQnasPage(WidgetRef ref) async {
+    final arg = CreatedQuestionListRouteArg(
+        ref.read(questionCreationRouteArgProvider).useCaseParam);
+    unawaited(CreatedQuestionListRoute(arg).push(ref.context));
+  }
+
+  ///
+  /// 면접 질문이 생성되면 [StartInterviewFlowBaseParam] completer 초기화
+  ///
+  Future<void> setQnaCompleter(WidgetRef ref) async {
+    final targetUseCaseParam = ref
+        .read(questionCreationRouteArgProvider)
+        .useCaseParam as ProficiencyInterviewFlowParam;
+
+    final createdQnas = await ref
+        .read(createdProficiencyQnasProvider(targetUseCaseParam).future);
+    (ref.read(questionCreationRouteArgProvider).useCaseParam
+            as ProficiencyInterviewFlowParam)
+        .createdQnasCompleter
+        .complete(createdQnas);
+  }
 
   ///
   /// 백버튼이 클릭 되었을 때

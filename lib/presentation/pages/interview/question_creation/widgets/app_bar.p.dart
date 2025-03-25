@@ -21,7 +21,9 @@ class _AppBar extends ConsumerWidget
               child: hasQuestionCreated(ref)
                   ? SeeAllQuestionButton(
                       padding: const EdgeInsets.only(right: 16),
-                      onTap: () {},
+                      onTap: () {
+                        routeToListedQnasPage(ref);
+                      },
                     )
                   : const EmptyBox(),
             );

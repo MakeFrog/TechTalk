@@ -8,7 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/interview/question_creation/constant/question_creation_route_arg.dart';
-import 'package:techtalk/presentation/pages/interview/question_creation/provider/proficiency_question_creation_route_arg_provider.dart';
+import 'package:techtalk/presentation/pages/interview/question_creation/provider/question_creation_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/interview/question_creation/question_creation_event.dart';
 import 'package:techtalk/presentation/pages/interview/question_creation/question_creation_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
@@ -33,7 +33,7 @@ class QuestionCreationPage extends BasePage with QuestionCreationState {
 
   @override
   Override? get argProviderOverrides =>
-      proficiencyRouteArgProvider.overrideWithValue(arg);
+      questionCreationRouteArgProvider.overrideWithValue(arg);
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
