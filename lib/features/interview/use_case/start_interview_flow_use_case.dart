@@ -71,6 +71,7 @@ final class StartInterviewFlowUseCase {
         await _interviewFlowParam.questionCountCompleter.future;
     if (selectedQuestionCount == null) {
       logger.i('문제 개수 선택이 취소되었습니다');
+      return;
     }
 
     _navigateToQuestionCreation();
