@@ -113,7 +113,7 @@ class SetAiFollowUpQuestionUseCase extends BaseNoFutureUseCase<
           return Messages(
             role: Role.system,
             content:
-                '면접주제는 ${TechSetEntity.mappedFromId(rootQna.qna.id.getFirstPartOfSpliited).id()} 프로그래밍 입니다.',
+                '면접주제는 ${TechSetEntity.mappedFromId(rootQna.qna.id.getFirstPartOfSpliited).id} 프로그래밍 입니다.',
           ).toJson();
         },
       ),

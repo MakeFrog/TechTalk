@@ -30,7 +30,7 @@ final class TechSelectionBottomSheetResourceNotifier extends ChangeNotifier {
     final targetList = selectedTechSets.toList();
 
     if (selectedTechSets.firstWhereOrNull((e) => e == techSet) != null) {
-      if (techSet is JobGroupSet) {
+      if (techSet is JobGroupEntity) {
         removeSelection(techSet);
       }
       return;

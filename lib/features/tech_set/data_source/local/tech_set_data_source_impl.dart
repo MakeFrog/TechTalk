@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/tech_set/data_source/local/boxes/tech_set_box.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 final class TechSetLocalDataSourceImpl implements TechSetLocalDataSource {

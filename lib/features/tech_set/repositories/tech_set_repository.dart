@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 
 abstract interface class TechSetRepository {
   /// 개발 직군 리스트 호출

@@ -20,7 +20,7 @@ class TechSetFilledChip extends StatelessWidget {
       },
       child: Container(
         height: 32,
-        padding: EdgeInsets.only(left: item is SkillSet ? 8 : 10, right: 10),
+        padding: EdgeInsets.only(left: item is SkillEntity ? 8 : 10, right: 10),
         decoration: BoxDecoration(
           color: AppColor.of.background1,
           borderRadius: BorderRadius.circular(8),
@@ -28,17 +28,17 @@ class TechSetFilledChip extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (item is SkillSet)
+            if (item is SkillEntity)
               Padding(
                 padding: const EdgeInsets.only(right: 4),
                 child: RoundedSkillImage(
                   size: 16,
                   borderRadius: BorderRadius.circular(3),
-                  imagePath: (item as SkillSet).value.imagePath,
+                  imagePath: (item as SkillEntity).imagePath,
                 ),
               ),
             Text(
-              item.name(),
+              item.name,
               style: AppTextStyle.body1,
             ),
           ],

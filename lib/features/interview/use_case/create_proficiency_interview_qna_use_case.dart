@@ -9,8 +9,7 @@ import 'package:techtalk/features/chat/repositories/entities/proficiency_qna_ent
 import 'package:techtalk/features/chat/repositories/enums/interview_level.enum.dart';
 import 'package:techtalk/features/interview/use_case/exception/ai_creation_failed_exception.dart';
 import 'package:techtalk/features/interview/use_case/param/start_interview_flow_use_case_param.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 
 final class CreateProficiencyInterviewQnaUseCase extends BaseUseCase<
     ProficiencyInterviewFlowParam, List<ProficiencyQnaEntity>> {
@@ -26,14 +25,12 @@ final class CreateProficiencyInterviewQnaUseCase extends BaseUseCase<
 
     techSets?.forEach(
       (e) {
-        e.fold(
-          skill: (skill) {
-            skills.add(skill);
-          },
-          jobGroup: (jobGroup) {
-            jobGroups.add(jobGroup);
-          },
-        );
+        switch (e) {
+          case SkillEntity():
+            skills.add(e);
+          case JobGroupEntity():
+            jobGroups.add(e);
+        }
       },
     );
 

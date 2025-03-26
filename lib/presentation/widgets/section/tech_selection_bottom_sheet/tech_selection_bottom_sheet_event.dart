@@ -1,7 +1,5 @@
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/searched_skills_provider.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/selected_skills_provider.dart';
@@ -76,7 +74,7 @@ mixin class TechSelectionBottomSheetEvent {
     onSearchBarClearBtnTapped(ref);
     ref.read(searchedSkillsProvider.notifier).clear();
     ref.read(techSelectionBottomSheetResourceProvider
-        .select((p) => p.toggleTechSets(TechSetEntity.skill(skillItem))));
+        .select((p) => p.toggleTechSets(skillItem)));
   }
 
   ///
@@ -85,7 +83,7 @@ mixin class TechSelectionBottomSheetEvent {
   void onJobGroupItemTapped(WidgetRef ref,
       {required JobGroupEntity jobGroupItem}) {
     ref.read(techSelectionBottomSheetResourceProvider
-        .select((p) => p.toggleTechSets(TechSetEntity.jobGroup(jobGroupItem))));
+        .select((p) => p.toggleTechSets(jobGroupItem)));
   }
 
   ///

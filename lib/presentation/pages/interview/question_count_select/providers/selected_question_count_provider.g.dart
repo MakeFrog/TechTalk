@@ -7,7 +7,7 @@ part of 'selected_question_count_provider.dart';
 // **************************************************************************
 
 String _$selectedQuestionCountHash() =>
-    r'1502ddfcf15a06f2d38de3b9301bf7288e83225d';
+    r'eaf103cc8eb0bf692e00c6a29236db1620830b68';
 
 /// See also [SelectedQuestionCount].
 @ProviderFor(SelectedQuestionCount)
@@ -18,8 +18,11 @@ final selectedQuestionCountProvider =
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$selectedQuestionCountHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[selectedQuestionCountRouteArgProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    selectedQuestionCountRouteArgProvider,
+    ...?selectedQuestionCountRouteArgProvider.allTransitiveDependencies
+  },
 );
 
 typedef _$SelectedQuestionCount = AutoDisposeNotifier<int>;
