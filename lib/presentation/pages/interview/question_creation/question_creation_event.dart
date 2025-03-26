@@ -31,7 +31,7 @@ mixin class QuestionCreationEvent {
 
     final route = ChatPageRoute(roomId: room.id, type: room.type);
     route.updateArg(room: room);
-    route.push(ref.context);
+    route.pushReplacement(ref.context);
   }
 
   ///
