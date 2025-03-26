@@ -6,6 +6,7 @@ import 'package:techtalk/features/chat/repositories/entities/proficiency_qna_ent
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_interview_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/enums/interview_level.enum.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 class ChatRoomEntity {
@@ -20,8 +21,13 @@ class ChatRoomEntity {
   final List<String>? qnaIds;
   final YoutubeInterviewRoomEntity? youtubeExtra;
 
+  /* TODO: 아래 필드 타입별로 상속 받는 방식으로 변경 필요*/
+
   /// [InterviewType.resume]
   final List<BaseQnaEntity> qnas;
+
+  /// [InterviewType.proficiency]
+  final InterviewLevel interviewLevel;
 
   const ChatRoomEntity({
     required this.type,
@@ -29,6 +35,7 @@ class ChatRoomEntity {
     required this.interviewer,
     required this.topics,
     required this.progressInfo,
+    this.interviewLevel = InterviewLevel.beginner,
     this.youtubeExtra,
     this.qnaIds,
     this.lastChatMessage,
@@ -93,6 +100,7 @@ class ChatRoomEntity {
   /// 역량별 면접 질문
   factory ChatRoomEntity.generateProficiencyInterview({
     required List<ProficiencyQnaEntity> qnas,
+    required InterviewLevel? level,
   }) {
     return ChatRoomEntity(
       isTemporary: true,
@@ -100,6 +108,7 @@ class ChatRoomEntity {
       id: StringGenerator.generateRandomString(),
       interviewer: Interviewer.getRandomInterviewer(),
       qnas: qnas,
+      interviewLevel: level ?? InterviewLevel.beginner,
       topics: [],
       progressInfo: ChatProgressInfoEntity.onInitial(
         totalQuestionCount: qnas.length,

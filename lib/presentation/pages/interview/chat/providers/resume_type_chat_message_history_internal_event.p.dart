@@ -12,14 +12,12 @@ extension ResumeTypeChatMessageHistoryInternalEvent on ChatMessageHistory {
 
   Future<void> _showProficiencyTypeIntroMessages() async {
     final firstQna = _getNewQna()!;
-    final String introMessage = '안녕하세요. 역량별 면접';
+    final String introMessage = '안녕하세요. 역량별 면접 질문을 여쭤볼게요';
 
     final introChat = GuideChatEntity.createStatic(
       message: introMessage,
       timestamp: DateTime.timestamp(),
     );
-
-    print('에이밍드');
 
     final firstQuestionChat = QuestionChatEntity.createStatic(
       qnaId: firstQna.qna.id,

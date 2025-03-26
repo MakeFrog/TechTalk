@@ -21,12 +21,14 @@ mixin class QuestionCreationEvent {
     final useCaseParam = ref.read(questionCreationRouteArgProvider).useCaseParam
         as ProficiencyInterviewFlowParam;
     final qnas = await useCaseParam.createdQnasCompleter.future;
+    final level = await useCaseParam.levelSelectionCompleter.future;
     if (qnas?.isEmpty ?? true) {
       GoRouter.of(ref.context).popUntilPath(MainRoute.path);
       return;
     }
     final room = ChatRoomEntity.generateProficiencyInterview(
       qnas: qnas!,
+      level: level,
     );
 
     final route = ChatPageRoute(roomId: room.id, type: room.type);

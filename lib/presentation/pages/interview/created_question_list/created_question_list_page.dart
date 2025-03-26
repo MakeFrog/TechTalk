@@ -62,9 +62,18 @@ class CreatedQuestionListPage extends BasePage
       color: Colors.white,
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: BounceTapper(
+        enable: hasSelectedQuestions(ref),
+        onTap: () {
+          onStartInterviewBtnTapped(ref);
+        },
         child: SizedBox(
           width: double.infinity,
-          child: FilledButton(onPressed: () {}, child: Text('면접 시작하기')),
+          child: FilledButton(
+            onPressed: hasSelectedQuestions(ref) ? () {} : null,
+            child: const Text(
+              '면접 시작하기',
+            ),
+          ),
         ),
       ),
     );
