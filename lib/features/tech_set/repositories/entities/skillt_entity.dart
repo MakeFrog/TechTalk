@@ -56,6 +56,7 @@ class SkillEntity {
   Map<String, dynamic> toMap() {
     return {
       'id': this.id,
+      'name': this.name,
     };
   }
 

@@ -43,7 +43,6 @@ final class JobGroupEntity {
     return {
       'id': this.id,
       'name': this.name,
-      'youtubeContentCount': this.youtubeContentCount,
     };
   }
 
