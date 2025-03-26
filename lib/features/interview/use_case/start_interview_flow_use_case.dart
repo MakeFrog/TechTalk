@@ -1,15 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:techtalk/app/router/navigation_context.dart';
+import 'package:techtalk/app/router/route_extension.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/app/util/app_logger.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/interview/use_case/param/start_interview_flow_use_case_param.dart';
+import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/interview_level_selection/constant/interview_level_selection_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/proficiency_interview_topic_selection/constant/proficiency_interview_topic_selection_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/constant/select_question_count_route_argument.dart';
 import 'package:techtalk/presentation/pages/interview/question_creation/constant/question_creation_route_arg.dart';
+import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
 
 /// AI 모의 면접 플로우를 관리하는 UseCase
 ///

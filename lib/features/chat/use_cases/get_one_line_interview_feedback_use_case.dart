@@ -94,6 +94,12 @@ class GetOneLineInterViewFeedbackUseCase extends BaseNoFutureUseCase<
             content: '프로그래밍 기술 주제로 면접 질문을 주고 받고 있습니다.',
           ).toJson();
         },
+        proficiency: (InterviewType type) {
+          return Messages(
+            role: Role.system,
+            content: '프로그래밍 기술 주제로 면접 질문을 주고 받고 있습니다.',
+          ).toJson();
+        },
       ),
       Messages(
         role: Role.system,

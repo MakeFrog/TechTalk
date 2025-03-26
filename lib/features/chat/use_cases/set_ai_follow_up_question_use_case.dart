@@ -8,6 +8,7 @@ import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_interview_room_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 
 /// AI를 사용하여 꼬리질문을 생성하는 use case
 class SetAiFollowUpQuestionUseCase extends BaseNoFutureUseCase<
@@ -107,6 +108,13 @@ class SetAiFollowUpQuestionUseCase extends BaseNoFutureUseCase<
                   content:
                       ' ${youtubeExtra?.contentTitle}라는 제목의 유튜브 프로그래밍 콘텐츠를 기반해 제시된 면접 질문입니다')
               .toJson();
+        },
+        proficiency: (InterviewType type) {
+          return Messages(
+            role: Role.system,
+            content:
+                '면접주제는 ${TechSetEntity.mappedFromId(rootQna.qna.id.getFirstPartOfSpliited).id()} 프로그래밍 입니다.',
+          ).toJson();
         },
       ),
       Messages(

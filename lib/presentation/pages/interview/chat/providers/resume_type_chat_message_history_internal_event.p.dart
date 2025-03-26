@@ -9,16 +9,17 @@ extension ResumeTypeChatMessageHistoryInternalEvent on ChatMessageHistory {
   /// 초기 인트로 메시지와
   /// 처음으로 질문을 제시
   ///
-  Future<void> _showResumeTypeIntroMessages() async {
-    final nickname = ref.watch(userInfoProvider).requireValue!.nickname!;
+
+  Future<void> _showProficiencyTypeIntroMessages() async {
     final firstQna = _getNewQna()!;
-    final String introMessage =
-        '안녕하세요 $nickname님 제출해주신 이력서, 포트폴리오 기반으로 면접 질문을 전달해 드릴게요';
+    final String introMessage = '안녕하세요. 역량별 면접';
 
     final introChat = GuideChatEntity.createStatic(
       message: introMessage,
       timestamp: DateTime.timestamp(),
     );
+
+    print('에이밍드');
 
     final firstQuestionChat = QuestionChatEntity.createStatic(
       qnaId: firstQna.qna.id,
@@ -27,30 +28,13 @@ extension ResumeTypeChatMessageHistoryInternalEvent on ChatMessageHistory {
       timestamp: DateTime.timestamp(),
     );
 
-    unawaited(
-      Future.wait(
-        [
-          createChatRoomUseCase(
-            room: ref.read(selectedChatRoomProvider),
-            messages: [firstQuestionChat, introChat],
-            qnas: ref.read(chatQnasProvider).requireValue,
-          ).then(
-            (_) {
-              ref
-                  .read(selectedChatRoomProvider.notifier)
-                  .updateInitialInfo(firstQuestionChat);
-            },
-          ),
-          showMessage(
-            message: introChat.overwriteToStream(),
-            onDone: () {
-              showMessage(
-                message: firstQuestionChat.overwriteToStream(),
-              );
-            },
-          ),
-        ],
-      ),
-    );
+    unawaited(showMessage(
+      message: introChat.overwriteToStream(),
+      onDone: () {
+        showMessage(
+          message: firstQuestionChat.overwriteToStream(),
+        );
+      },
+    ));
   }
 }

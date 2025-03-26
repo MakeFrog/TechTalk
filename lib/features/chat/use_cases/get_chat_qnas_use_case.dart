@@ -15,6 +15,10 @@ final class GetChatQnasUseCase {
         logger.e('유튜브 면접을 채팅 기록을 반환하지 않음');
         return Result.success([]);
       },
+      proficiency: (_) {
+        logger.e('역량별 면접을 채팅 기록을 반환하지 않음');
+        return Result.success([]);
+      },
     );
   }
 }

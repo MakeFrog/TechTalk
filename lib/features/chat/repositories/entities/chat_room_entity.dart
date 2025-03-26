@@ -2,6 +2,7 @@ import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/core/helper/string_generator.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/base_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/proficiency_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_interview_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
@@ -85,6 +86,23 @@ class ChatRoomEntity {
       topics: topics,
       progressInfo: ChatProgressInfoEntity.onInitial(
         totalQuestionCount: questionCount,
+      ),
+    );
+  }
+
+  /// 역량별 면접 질문
+  factory ChatRoomEntity.generateProficiencyInterview({
+    required List<ProficiencyQnaEntity> qnas,
+  }) {
+    return ChatRoomEntity(
+      isTemporary: true,
+      type: InterviewType.proficiency,
+      id: StringGenerator.generateRandomString(),
+      interviewer: Interviewer.getRandomInterviewer(),
+      qnas: qnas,
+      topics: [],
+      progressInfo: ChatProgressInfoEntity.onInitial(
+        totalQuestionCount: qnas.length,
       ),
     );
   }
