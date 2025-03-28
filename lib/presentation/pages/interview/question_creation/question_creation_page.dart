@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/src/consumer.dart';
 import 'package:gap/gap.dart';
 import 'package:lottie/lottie.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/interview/question_creation/constant/question_creation_route_arg.dart';

@@ -6,7 +6,7 @@ import 'package:techtalk/features/tech_set/repositories/enums/skill_category.enu
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 sealed class TechSetEntity {
-  final String id;
+  final String id;    
   final String name;
 
   TechSetEntity({required this.id, required this.name});
@@ -127,6 +127,11 @@ class SkillEntity extends TechSetEntity {
         youtubeContentCount: 0,
       );
 
+  factory SkillEntity.fromId(String id) {
+    final target = techSetRepository.getSkillById(id);
+    return target;
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': this.id,
@@ -187,5 +192,10 @@ final class JobGroupEntity extends TechSetEntity {
       name: map['name'] as String,
       youtubeContentCount: map['youtubeContentCount'] as int,
     );
+  }
+
+  factory JobGroupEntity.fromId(String id) {
+    final target = techSetRepository.getJobGroupById(id);
+    return target;
   }
 }
