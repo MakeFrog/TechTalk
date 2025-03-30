@@ -27,8 +27,11 @@ mixin class CreatedQuestionListEvent {
         .useCaseParma as ProficiencyInterviewFlowParam;
 
     final qnas = (await ref.read(listedSelectableQnasProviderProvider.future))
+        .where((e) => e.isSelected)
         .map((e) => e.qna as ProficiencyQnaEntity)
-        .toList();
+        .toList()
+      ..shuffle();
+
     final level = await useCaseParam.levelSelectionCompleter.future;
     if (qnas.isEmpty) {
       GoRouter.of(ref.context).popUntilPath(MainRoute.path);

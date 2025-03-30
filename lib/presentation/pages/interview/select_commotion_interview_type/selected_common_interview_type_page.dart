@@ -10,11 +10,10 @@ import 'package:techtalk/core/services/app_size.dart';
 import 'package:techtalk/features/chat/repositories/enums/interview_type.enum.dart';
 import 'package:techtalk/presentation/widgets/base/index.dart';
 import 'package:techtalk/presentation/pages/interview/select_commotion_interview_type/selected_common_interview_type_event.dart';
-import 'package:techtalk/presentation/pages/interview/select_commotion_interview_type/selected_common_interview_type_state.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 
 class SelectedCommonInterviewTypePage extends BasePage
-    with SelectedCommonInterviewTypeState, SelectedCommonInterviewTypeEvent {
+    with SelectedCommonInterviewTypeEvent {
   const SelectedCommonInterviewTypePage({super.key});
 
   @override
