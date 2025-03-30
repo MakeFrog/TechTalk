@@ -7,6 +7,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/chat/repositories/entities/proficiency_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_interview_room_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 
@@ -86,7 +87,7 @@ class SetAiFollowUpQuestionUseCase extends BaseNoFutureUseCase<
     return [
       Messages(
         role: Role.system,
-        content: '당신은 면접관, 유저는 지원자입니다. 유저의 마지막 답변을 기반으로 적절한 꼬리질문(연관질문)을 제공합니다.',
+        content: '당신은 면접관입니다. 아래 채팅 히스토리를 참고하여 면접자의 답변에 대한 꼬리질문을 생성해주세요.',
       ).toJson(),
       type.typedBranch(
         common: (_) {
@@ -113,14 +114,31 @@ class SetAiFollowUpQuestionUseCase extends BaseNoFutureUseCase<
           return Messages(
             role: Role.system,
             content:
-                '면접주제는 ${TechSetEntity.mappedFromId(rootQna.qna.id.getFirstPartOfSpliited).id} 프로그래밍 입니다.',
+                '면접주제는 ${TechSetEntity.mappedFromId((rootQna.qna as ProficiencyQnaEntity).techSetId).name} 프로그래밍 입니다.',
           ).toJson();
         },
       ),
       Messages(
         role: Role.system,
-        content:
-            '꼬리 질문은 유저의 면접 질문 답변에 대해 심화적이고 날카로운 질문을 제공하세요. ${AppLocale.currentLocale.languageCode}언어로 꼬리질문을 생성하세요',
+        content: '꼬리 질문은 유저의 면접 질문 답변에 대해 심화적이고 날카로운 질문을 제공하세요',
+      ).toJson(),
+      Messages(
+        role: Role.system,
+        content: '''### 꼬리질문 생성 규칙
+1. 면접자의 이전 답변을 기반으로 심화적인 질문을 생성
+2. 면접자의 답변에서 부족하거나 모호한 부분을 짚어내는 질문
+3. 실제 기술 면접에서 사용할 수 있는 수준의 질문
+4. 면접자의 답변과 직접적으로 연관된 질문만 생성
+5. 이전 대화의 맥락을 고려하여 자연스럽게 이어지는 문장 구성
+6. ${AppLocale.currentLocale.languageCode}언어로 질문 생성
+
+### 채팅 히스토리
+${chatHistory.map((element) => switch (element) {
+                  QuestionChatEntity() => '면접관: ${element.message.value}',
+                  FeedbackChatEntity() => '면접관 피드백: ${element.message.value}',
+                  AnswerChatEntity() => '면접자: ${element.message.value}',
+                  _ => '면접관: ${element.message.value}'
+                }).join('\n')}''',
       ).toJson(),
       ...chatHistory.map(
         (element) => switch (element) {
