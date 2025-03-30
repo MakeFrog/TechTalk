@@ -88,6 +88,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
       factory: $MainRouteExtension._fromState,
       routes: [
         GoRouteData.$route(
+          path: 'select-common-interview-type',
+          name: 'select-common-interview-type',
+          factory: $SelectedCommonInterviewTypeRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'topic-select',
           name: 'topic select',
           factory: $InterviewTopicSelectRouteExtension._fromState,
@@ -206,6 +211,25 @@ extension $MainRouteExtension on MainRoute {
 
   String get location => GoRouteData.$location(
         '/',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $SelectedCommonInterviewTypeRouteExtension
+    on SelectedCommonInterviewTypeRoute {
+  static SelectedCommonInterviewTypeRoute _fromState(GoRouterState state) =>
+      const SelectedCommonInterviewTypeRoute();
+
+  String get location => GoRouteData.$location(
+        '/select-common-interview-type',
       );
 
   void go(BuildContext context) => context.go(location);

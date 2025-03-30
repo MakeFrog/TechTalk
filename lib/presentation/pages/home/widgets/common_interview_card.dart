@@ -40,10 +40,7 @@ class CommonInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
               highlightColor: Colors.transparent,
               shrinkScaleFactor: 1.0,
               onTap: () {
-                routeToTopicSelectPage(
-                  context,
-                  type: InterviewType.commonSingleTopic,
-                );
+                routeToCommonInterviewTypeSelection(ref);
               },
               child: Row(
                 children: [

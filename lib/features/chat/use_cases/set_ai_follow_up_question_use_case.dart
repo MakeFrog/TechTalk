@@ -124,7 +124,7 @@ class SetAiFollowUpQuestionUseCase extends BaseNoFutureUseCase<
       ).toJson(),
       Messages(
         role: Role.system,
-        content: '''### 꼬리질문 생성 규칙
+        content: '''### 꼬리질문 생성 규칙  
 1. 면접자의 이전 답변을 기반으로 심화적인 질문을 생성
 2. 면접자의 답변에서 부족하거나 모호한 부분을 짚어내는 질문
 3. 실제 기술 면접에서 사용할 수 있는 수준의 질문

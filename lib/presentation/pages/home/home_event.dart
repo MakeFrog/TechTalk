@@ -93,6 +93,13 @@ mixin class HomeEvent {
   }
 
   ///
+  /// 단골 면접 > 실전 + 단일 주제 선택 페이지로 이동
+  ///
+  void routeToCommonInterviewTypeSelection(WidgetRef ref) {
+    const SelectedCommonInterviewTypeRoute().push(ref.context);
+  }
+
+  ///
   /// AI 면접 카드가 탭 되었을 때
   ///
   void onAiInterviewCardTapped(WidgetRef ref) {

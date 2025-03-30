@@ -59,6 +59,10 @@ class Assets {
   static const String iconsCloseThick = 'assets/icons/close_thick.svg';
   static const String iconsCommonInterviewLogo =
       'assets/icons/common_interview_logo.svg';
+  static const String iconsCommonPracticalTypeIllust =
+      'assets/icons/common_practical_type_illust.svg';
+  static const String iconsCommonSingleTypeIllust =
+      'assets/icons/common_single_type_illust.svg';
   static const String iconsCoreCircle = 'assets/icons/core_circle.svg';
   static const String iconsCorrect = 'assets/icons/correct.svg';
   static const String iconsCorrectIndicator =
