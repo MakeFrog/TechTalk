@@ -18,7 +18,7 @@ enum InterviewLevel {
   ),
   beginner(
     label: '하',
-    titleLabel: '초심자',
+    titleLabel: '신입',
     description: '기초 문법·로직 중심의 가벼운 질문',
     illustPath: Assets.iconsAdvancedIllust,
   );

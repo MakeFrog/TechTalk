@@ -8,10 +8,11 @@ import 'package:techtalk/presentation/pages/home/widgets/home_state.dart';
 import 'package:techtalk/presentation/pages/home/widgets/interview_indicator_card.dart';
 
 ///
-/// AI 면접 카드
+/// 역량별 면접 카드
 ///
-class AiInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
-  const AiInterviewCard({super.key});
+class ProficiencyInterviewCard extends ConsumerWidget
+    with HomeState, HomeEvent {
+  const ProficiencyInterviewCard({super.key});
 
   static const InterviewType interviewType = InterviewType.proficiency;
 

@@ -11,7 +11,7 @@ enum InterviewType {
   ),
   proficiency(
     logoPath: Assets.iconsAiInterviewLogo,
-    interviewEndIllust: Assets.imagesInductionResume,
+    interviewEndIllust: Assets.imagesInductionPractical,
   ),
   resume(
     logoPath: Assets.iconsResumeInterviewLogo,

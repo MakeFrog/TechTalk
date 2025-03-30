@@ -7,7 +7,7 @@ import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/home/home_event.dart';
-import 'package:techtalk/presentation/pages/home/widgets/ai_interview_card.dart';
+import 'package:techtalk/presentation/pages/home/widgets/proficiency_interview_card.dart';
 import 'package:techtalk/presentation/pages/home/widgets/cheer_up_message_card.dart';
 import 'package:techtalk/presentation/pages/home/widgets/common_interview_card.dart';
 import 'package:techtalk/presentation/pages/home/widgets/home_state.dart';
@@ -46,7 +46,7 @@ class HomePage extends BasePage with HomeState, HomeEvent {
               Gap(16),
               _YoutubeContentFeatureCard(),
               Gap(16),
-              AiInterviewCard(),
+              ProficiencyInterviewCard(),
               Gap(16),
               CommonInterviewCard(),
             ],

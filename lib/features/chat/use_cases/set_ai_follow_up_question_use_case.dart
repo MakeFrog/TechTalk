@@ -129,7 +129,7 @@ class SetAiFollowUpQuestionUseCase extends BaseNoFutureUseCase<
 2. 면접자의 답변에서 부족하거나 모호한 부분을 짚어내는 질문
 3. 실제 기술 면접에서 사용할 수 있는 수준의 질문
 4. 면접자의 답변과 직접적으로 연관된 질문만 생성
-5. 이전 대화의 맥락을 고려하여 자연스럽게 이어지는 문장 구성
+5. 이전 대화의 맥락을 고려하여 자연스럽게 이어지는 문장으로 구성
 6. ${AppLocale.currentLocale.languageCode}언어로 질문 생성
 
 ### 채팅 히스토리

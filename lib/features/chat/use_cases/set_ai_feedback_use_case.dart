@@ -12,6 +12,8 @@ import 'package:techtalk/features/chat/repositories/entities/feedback_response_e
 import 'package:techtalk/features/chat/repositories/entities/proficiency_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_interview_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/enums/interview_level.enum.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.dart';
 
 class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
@@ -111,39 +113,44 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
   /// 추후에 메세지 히스토리 기반으로 채팅을 구현할 수도 있을 것 같아 따로 분리했습니다.
   List<Map<String, dynamic>> _createChatMessage(
       GetQuestionFeedbackParam param) {
-    // 프롬프트는 추후 전부 한 언어로 통일할 것이므로 따로 localization은 필요하지 않아 보입니다.
-
+    print(
+      '면접 질문에 대한 모범답안은 다음과 같습니다: ${(param.qna.qna as ProficiencyQnaEntity).answers.map((str) => '-$str').join(' ')}',
+    );
     return [
       param.interviewType.typedBranch(
         common: (_) {
           return Messages(
             role: Role.system,
             content:
-                '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 이제부터 진행할 면접은 ${StoredTopics.getById(param.qna.qna.id.getFirstPartOfSpliited).text}와 관련된 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
+                '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 이제부터 진행할 면접은 ${StoredTopics.getById(param.qna.qna.id.getFirstPartOfSpliited).text}와 관련된 질문입니다.',
           ).toJson();
         },
         resume: (_) {
           return Messages(
             role: Role.system,
             content:
-                '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 유저의 개발자 이력서 또는 포트폴로리오에 관련된 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
+                '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 유저의 개발자 이력서 또는 포트폴로리오에 관련된 질문입니다.',
           ).toJson();
         },
         youtube: (_) {
           return Messages(
             role: Role.system,
             content:
-                '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. ${param.youtubeExtra}라는 제목의 유튜브 프로그래밍 콘텐츠를 기반해 제시된 면접 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
+                '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. ${param.youtubeExtra}라는 제목의 유튜브 프로그래밍 콘텐츠를 기반해 제시된 면접 질문입니다.',
           ).toJson();
         },
-        proficiency: (InterviewType type) {
+        proficiency: (_) {
           return Messages(
             role: Role.system,
             content:
-                '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 유저의 개발자 이력서 또는 포트폴로리오에 관련된 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
+                '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 ${param.level.titleLabel}수준의 역량을 가진 지원자입니다. 이제부터 진행할 면접은 ${TechSetEntity.mappedFromId((param.qna.qna as ProficiencyQnaEntity).techSetId).name}와 관련된 질문입니다.',
           ).toJson();
         },
       ),
+      Messages(
+        role: Role.system,
+        content: '${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다',
+      ).toJson(),
       ...param.chatHistory.map(
         (element) => switch (element) {
           QuestionChatEntity() => Messages(
@@ -292,6 +299,7 @@ typedef GetQuestionFeedbackParam = ({
   ChatQnaEntity qna,
   String userName,
   InterviewType interviewType,
+  InterviewLevel level,
   YoutubeInterviewRoomEntity? youtubeExtra,
   void Function(
       {required FeedbackResponseEntity feedbackResponse}) onFeedBackCompleted,

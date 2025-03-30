@@ -347,6 +347,14 @@ mixin class ChatEvent {
   }
 
   ///
+  /// 실전 단골 면접 질문 선택 페이지로 이동
+  ///
+  void startPracticalCommonInterviewProcess(WidgetRef ref) {
+    InterviewTopicSelectRoute(InterviewType.commonPracticalTopic.name)
+        .go(ref.context);
+  }
+
+  ///
   /// 홈으로 이동
   ///
   void routeToHome(BuildContext context) {

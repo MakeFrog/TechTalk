@@ -118,7 +118,7 @@ class _InterviewInductionView extends HookConsumerWidget
                   return Column(
                     children: <Widget>[
                       Text(
-                        tr(LocaleKeys.interview_tryRecap),
+                        '단골 질문 면접도\n진행해 보세요!',
                         maxLines: 2,
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
@@ -126,7 +126,7 @@ class _InterviewInductionView extends HookConsumerWidget
                       ),
                       const Gap(8),
                       Text(
-                        tr(LocaleKeys.interview_retryInterview),
+                        '실제 면접에서 자주 나오는 질문들을 모아두었어요!',
                         style: AppTextStyle.body3.copyWith(
                           color: AppColor.of.gray4,
                         ),
@@ -143,33 +143,31 @@ class _InterviewInductionView extends HookConsumerWidget
 
           /// ILLUSTRATION
 
-          if (room(ref).type.isYoutube)
-            Expanded(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: recommendYoutubeContent(ref).when(
-                      data: (video) {
-                        return ThumbnailImageView(url: video.thumbnailImgUrl);
-                      },
-                      error: (_, __) => ThumbnailImageView.createSkeleton(),
-                      loading: ThumbnailImageView.createSkeleton,
+          Expanded(
+            child: switch (room(ref).type) {
+              InterviewType.youtube => Column(
+                  children: [
+                    Expanded(
+                      child: recommendYoutubeContent(ref).when(
+                        data: (video) {
+                          return ThumbnailImageView(url: video.thumbnailImgUrl);
+                        },
+                        error: (_, __) => ThumbnailImageView.createSkeleton(),
+                        loading: ThumbnailImageView.createSkeleton,
+                      ),
                     ),
-                  ),
-                  const Gap(20),
-                  Text(
-                    tr(LocaleKeys.youtubeInterview_watchThisVideo),
-                    style: AppTextStyle.headline2,
-                  ),
-                ],
-              ),
-            )
-          else
-            Expanded(
-              child: Image.asset(
-                room(ref).type.interviewEndIllust,
-              ),
-            ),
+                    const Gap(20),
+                    Text(
+                      tr(LocaleKeys.youtubeInterview_watchThisVideo),
+                      style: AppTextStyle.headline2,
+                    ),
+                  ],
+                ),
+              _ => Image.asset(
+                  room(ref).type.interviewEndIllust,
+                ),
+            },
+          ),
           if (room(ref).type.isSingleTopic)
             Padding(
               padding: const EdgeInsets.only(top: 16),
@@ -178,6 +176,7 @@ class _InterviewInductionView extends HookConsumerWidget
                 style: AppTextStyle.headline3,
               ),
             ),
+
           const Gap(
             16,
           ),
@@ -236,7 +235,7 @@ class _InterviewInductionView extends HookConsumerWidget
                           onWatchRecommendVideoBtnTapped(ref);
                         },
                         proficiency: (InterviewType type) {
-                          retryThisInterview(ref);
+                          startPracticalCommonInterviewProcess(ref);
                         },
                       );
                     },
@@ -252,7 +251,7 @@ class _InterviewInductionView extends HookConsumerWidget
                               );
                             },
                             proficiency: (InterviewType type) {
-                              return tr(LocaleKeys.interview_tryAgain);
+                              return '면접 보기';
                             },
                           ),
                     ),
