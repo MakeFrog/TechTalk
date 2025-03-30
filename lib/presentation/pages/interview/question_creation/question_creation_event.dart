@@ -67,28 +67,34 @@ mixin class QuestionCreationEvent {
   void onBackBtnTapped(WidgetRef ref) {
     final isQuestionCreated = QuestionCreationState().hasQuestionCreated(ref);
 
-    if (isQuestionCreated) {
-    } else {
-      DialogService.show(
-        dialog: AppDialog.dividedBtn(
-          showContentImg: false,
-          title: '질문을 만드는 중이에요!',
-          description: '지금 나가면 면접을 위한 질문이 사라질 수 있어요\n정말 나가시겠어요?',
-          leftBtnContent: '나가기',
-          rightBtnContent: '면접 진행하기',
-          onRightBtnClicked: () {
+    DialogService.show(
+      dialog: AppDialog.dividedBtn(
+        showContentImg: false,
+        title: isQuestionCreated ? '면접을 시작할 수 있어요!' : '질문을 만드는 중이에요!',
+        description: isQuestionCreated
+            ? '면접 질문이 모두 준비되었어요\n정말 나가시겠어요?'
+            : '지금 나가면 면접을 위한 질문이 사라질 수 있어요\n정말 나가시겠어요?',
+        leftBtnContent: '나가기',
+        rightBtnContent: isQuestionCreated ? '면접 시작하기' : '면접 진행하기',
+        onRightBtnClicked: () {
+          if (!isQuestionCreated &&
+              QuestionCreationState().hasQuestionCreated(ref)) {
             ref.context.pop();
-          },
-          onLeftBtnClicked: () {
-            if (QuestionCreationState().hasQuestionCreated(ref)) {
-              SnackBarService.showSnackBar('잠깐! 방금 질문이 생성 되었어요');
-              ref.context.pop();
-            } else {
-              GoRouter.of(ref.context).popUntilPath(MainRoute.path);
-            }
-          },
-        ),
-      );
-    }
+          } else {
+            ref.context.pop();
+            onStartInterViewBtnTapped(ref);
+          }
+        },
+        onLeftBtnClicked: () {
+          if (!isQuestionCreated &&
+              QuestionCreationState().hasQuestionCreated(ref)) {
+            SnackBarService.showSnackBar('잠깐! 방금 질문이 생성 되었어요');
+            ref.context.pop();
+          } else {
+            GoRouter.of(ref.context).popUntilPath(MainRoute.path);
+          }
+        },
+      ),
+    );
   }
 }
