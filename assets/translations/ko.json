@@ -125,7 +125,7 @@
   },
   "gnb": {
     "home": "홈",
-    "learning": "학습",
+    "learning": "단골질문",
     "videoTutorial": "콘텐츠",
     "mistakeNote": "오답노트",
     "myInfo": "내 정보"
@@ -161,7 +161,14 @@
     "selectOneOrMore": "1개 이상 선택해 주세요.",
     "searchTechnologies": "관심 기술을 검색해 주세요",
     "searchInKorean": "영어로 스킬을 검색해주세요.",
-    "noSearchResults": "검색된 기술면접 주제가 없습니다."
+    "noSearchResults": "검색된 기술면접 주제가 없습니다.",
+    "complete": "완료",
+    "limit": {
+      "title": "개수 제한",
+      "description": "최대 4개까지 선택할 수 있어요",
+      "confirm": "확인"
+    },
+    "alreadySelected": "이미 선택된 항목입니다"
   },
   "interview": {
     "loadingFollowUpQuestion": "꼬리질문 생성중",
@@ -541,5 +548,11 @@
     "warning": "경고",
     "resignWarning": "회원탈퇴 시 모든 정보가 삭제되며 복구가 어렵습니다. 그래도 탈퇴 하시겠습니까?",
     "resignSuccess": "회원탈퇴가 완료되었습니다."
+  },
+  "techSet": {
+    "type": {
+      "jobGroup": "직군",
+      "skill": "스킬"
+    }
   }
 }

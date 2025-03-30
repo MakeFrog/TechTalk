@@ -1,8 +1,10 @@
 import 'package:collection/collection.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/navigation_context.dart';
 import 'package:techtalk/core/services/dialog_service.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
@@ -40,9 +42,9 @@ final class TechSelectionBottomSheetResourceNotifier extends ChangeNotifier {
       DialogService.show(
         dialog: AppDialog.singleBtn(
           showContentImg: false,
-          title: '개수 제한',
-          description: '최대 4개까지 선택할 수 있어요',
-          btnContent: '확인',
+          title: tr(LocaleKeys.techSelection_limit_title),
+          description: tr(LocaleKeys.techSelection_limit_description),
+          btnContent: tr(LocaleKeys.techSelection_limit_confirm),
           onBtnClicked: () async {
             (await navigationContext).pop();
           },

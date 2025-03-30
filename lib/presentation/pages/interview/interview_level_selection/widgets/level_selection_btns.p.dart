@@ -46,7 +46,7 @@ class _LevelSelectionBtns extends ConsumerWidget
                         onPressed: () {
                           onLevelBtnTapped(ref, index: index);
                         },
-                        child: Text(tr(item.labelKey)),
+                        child: FittedBox(child: Text(tr(item.labelKey))),
                       ),
                     ),
                   );

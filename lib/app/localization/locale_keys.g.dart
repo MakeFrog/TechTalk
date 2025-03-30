@@ -145,6 +145,12 @@ abstract class  LocaleKeys {
   static const techSelection_searchTechnologies = 'techSelection.searchTechnologies';
   static const techSelection_searchInKorean = 'techSelection.searchInKorean';
   static const techSelection_noSearchResults = 'techSelection.noSearchResults';
+  static const techSelection_complete = 'techSelection.complete';
+  static const techSelection_limit_title = 'techSelection.limit.title';
+  static const techSelection_limit_description = 'techSelection.limit.description';
+  static const techSelection_limit_confirm = 'techSelection.limit.confirm';
+  static const techSelection_limit = 'techSelection.limit';
+  static const techSelection_alreadySelected = 'techSelection.alreadySelected';
   static const techSelection = 'techSelection';
   static const interview_loadingFollowUpQuestion = 'interview.loadingFollowUpQuestion';
   static const interview_followUpQuestion = 'interview.followUpQuestion';
@@ -473,5 +479,9 @@ abstract class  LocaleKeys {
   static const undefined_resignWarning = 'undefined.resignWarning';
   static const undefined_resignSuccess = 'undefined.resignSuccess';
   static const undefined = 'undefined';
+  static const techSet_type_jobGroup = 'techSet.type.jobGroup';
+  static const techSet_type_skill = 'techSet.type.skill';
+  static const techSet_type = 'techSet.type';
+  static const techSet = 'techSet';
 
 }

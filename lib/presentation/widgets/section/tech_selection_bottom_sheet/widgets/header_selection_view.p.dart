@@ -72,7 +72,7 @@ class _HeaderSelectionView extends ConsumerWidget
                   ),
                   onPressed: selectedTechSets(ref).isNotEmpty ? () {} : null,
                   child: Text(
-                    '완료',
+                    tr(LocaleKeys.techSelection_complete),
                     style: AppTextStyle.title3,
                   ),
                 ),

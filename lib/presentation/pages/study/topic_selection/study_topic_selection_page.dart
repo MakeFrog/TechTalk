@@ -38,7 +38,7 @@ class StudyTopicSelectionPage extends BasePage
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) {
     return FoldableAppBar(
-      title: '단골 질문',
+      title: tr(LocaleKeys.common_commonQuestion),
       scrollController: scrollController(ref),
       animatedPosition: 20,
     );
