@@ -156,6 +156,8 @@ class Assets {
   static const String iconsYoutubeInterviewLogo =
       'assets/icons/youtube_interview_logo.svg';
   static const String iconsYoutubeLogo = 'assets/icons/youtube_logo.svg';
+  static const String iconsYoutubePromotionIllust =
+      'assets/icons/youtube_promotion_illust.svg';
   static const String imagesAppIcon = 'assets/images/app_icon.png';
   static const String imagesAvatar1 = 'assets/images/avatar_1.png';
   static const String imagesBlankProfile = 'assets/images/blank_profile.png';

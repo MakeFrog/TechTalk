@@ -16,7 +16,7 @@ class NewBadge extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
         color: const Color(
-          0xFFFFF5BE,
+          0xFFF4EDFF,
         ),
       ),
       alignment: Alignment.center,
@@ -24,7 +24,7 @@ class NewBadge extends StatelessWidget {
         'NEW',
         style: AppTextStyle.alert1.copyWith(
           fontWeight: FontWeight.w700,
-          color: const Color(0xFFFFA100),
+          color: const Color(0xFF8D3EFF),
         ),
       ),
     );

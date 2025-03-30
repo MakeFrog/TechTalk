@@ -3,7 +3,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/environment/app_version.dart';
 import 'package:techtalk/app/style/app_color.dart';
+import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/presentation/pages/home/home_event.dart';
@@ -17,6 +19,7 @@ import 'package:techtalk/presentation/widgets/base/controller_holder.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 part 'widgets/youtube_content_feature_card.p.dart';
+part 'widgets/new_feature_card.p.dart';
 
 class HomePage extends BasePage with HomeState, HomeEvent {
   const HomePage({super.key});
@@ -41,14 +44,20 @@ class HomePage extends BasePage with HomeState, HomeEvent {
             controller: scrollController,
             physics: const ScrollPhysics(),
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            children: const [
-              CheerUpMessageCard(),
-              Gap(16),
-              _YoutubeContentFeatureCard(),
-              Gap(16),
-              ProficiencyInterviewCard(),
-              Gap(16),
-              CommonInterviewCard(),
+            children: [
+              Builder(
+                builder: (context) {
+                  if (AppVersion().isOnReview) {
+                    return const CheerUpMessageCard();
+                  } else {
+                    return const _NewFeatureCard();
+                  }
+                },
+              ),
+              const Gap(16),
+              const ProficiencyInterviewCard(),
+              const Gap(16),
+              const CommonInterviewCard(),
             ],
           );
         },

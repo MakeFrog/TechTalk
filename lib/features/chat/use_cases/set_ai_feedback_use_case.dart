@@ -113,9 +113,6 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
   /// 추후에 메세지 히스토리 기반으로 채팅을 구현할 수도 있을 것 같아 따로 분리했습니다.
   List<Map<String, dynamic>> _createChatMessage(
       GetQuestionFeedbackParam param) {
-    print(
-      '면접 질문에 대한 모범답안은 다음과 같습니다: ${(param.qna.qna as ProficiencyQnaEntity).answers.map((str) => '-$str').join(' ')}',
-    );
     return [
       param.interviewType.typedBranch(
         common: (_) {

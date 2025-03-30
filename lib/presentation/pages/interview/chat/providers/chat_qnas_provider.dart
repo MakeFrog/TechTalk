@@ -23,7 +23,6 @@ class ChatQnas extends _$ChatQnas {
   @override
   FutureOr<List<ChatQnaEntity>> build() async {
     final room = ref.read(selectedChatRoomProvider);
-    print('아랑수만 : ${room.qnas.first.type}');
 
     return room.type.typedBranch(
       resume: (_) async {
