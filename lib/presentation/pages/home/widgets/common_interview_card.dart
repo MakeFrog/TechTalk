@@ -88,6 +88,12 @@ class CommonInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
                 return Container(
                   padding: const EdgeInsets.only(top: 14, bottom: 0),
                   child: BounceTapper(
+                    onTap: () {
+                      routeToTopicSelectPage(
+                        context,
+                        type: InterviewType.commonPracticalTopic,
+                      );
+                    },
                     highlightBorderRadius: BorderRadius.circular(16),
                     child: Container(
                       padding: const EdgeInsets.only(
