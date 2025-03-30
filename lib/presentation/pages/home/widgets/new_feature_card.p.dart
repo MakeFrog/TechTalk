@@ -27,7 +27,7 @@ class _NewFeatureCard extends ConsumerWidget with HomeEvent {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '유튜브 콘텐츠도\n테크톡에서!',
+                      tr(LocaleKeys.home_youtubeFeature_title),
                       style: AppTextStyle.headline2.copyWith(
                         color: AppColor.of.blue3,
                       ),
@@ -36,7 +36,7 @@ class _NewFeatureCard extends ConsumerWidget with HomeEvent {
                     Row(
                       children: [
                         Text(
-                          '지금 바로 학습하기',
+                          tr(LocaleKeys.home_youtubeFeature_subtitle),
                           style: AppTextStyle.body3.copyWith(
                             color: AppColor.of.gray6,
                           ),

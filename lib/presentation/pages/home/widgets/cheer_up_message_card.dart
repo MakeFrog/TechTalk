@@ -112,7 +112,7 @@ class CheerUpMessageCard extends HookWidget with HomeState {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'AI 면접관이 함께할 거예요!',
+                      tr(LocaleKeys.home_cheerUp_aiInterviewerMessage),
                       style: AppTextStyle.body3,
                     ),
                     Text(

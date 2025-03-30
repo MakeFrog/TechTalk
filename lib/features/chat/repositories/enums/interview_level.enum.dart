@@ -1,37 +1,39 @@
 import 'package:techtalk/core/constants/assets.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 
 ///
 /// 인터뷰 레벨
 ///
 enum InterviewLevel {
   advanced(
-    label: '상',
-    titleLabel: '시니어',
-    description: '심층적인 기술 역량을 확인하는 질문',
+    labelKey: LocaleKeys.interview_interviewLevel_advanced_label,
+    titleKey: LocaleKeys.interview_interviewLevel_advanced_title,
+    descriptionKey: LocaleKeys.interview_interviewLevel_advanced_description,
     illustPath: Assets.iconsBeginnerIllust,
   ),
   intermediate(
-    label: '중',
-    titleLabel: '주니어',
-    description: '핵심 기술·실전 감각을 확인하는 실무형 개발자 면접 질문',
+    labelKey: LocaleKeys.interview_interviewLevel_intermediate_label,
+    titleKey: LocaleKeys.interview_interviewLevel_intermediate_title,
+    descriptionKey:
+        LocaleKeys.interview_interviewLevel_intermediate_description,
     illustPath: Assets.iconsIntermediateIllust,
   ),
   beginner(
-    label: '하',
-    titleLabel: '신입',
-    description: '기초 문법·로직 중심의 가벼운 질문',
+    labelKey: LocaleKeys.interview_interviewLevel_beginner_label,
+    titleKey: LocaleKeys.interview_interviewLevel_beginner_title,
+    descriptionKey: LocaleKeys.interview_interviewLevel_beginner_description,
     illustPath: Assets.iconsAdvancedIllust,
   );
 
-  final String titleLabel;
-  final String label;
-  final String description;
+  final String titleKey;
+  final String labelKey;
+  final String descriptionKey;
   final String illustPath;
 
   const InterviewLevel({
-    required this.label,
-    required this.titleLabel,
-    required this.description,
+    required this.labelKey,
+    required this.titleKey,
+    required this.descriptionKey,
     required this.illustPath,
   });
 }

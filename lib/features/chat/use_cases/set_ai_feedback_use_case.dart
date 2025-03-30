@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
@@ -140,7 +141,7 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
           return Messages(
             role: Role.system,
             content:
-                '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 ${param.level.titleLabel}수준의 역량을 가진 지원자입니다. 이제부터 진행할 면접은 ${TechSetEntity.mappedFromId((param.qna.qna as ProficiencyQnaEntity).techSetId).name}와 관련된 질문입니다.',
+                '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 ${tr(param.level.titleKey)}수준의 역량을 가진 지원자입니다. 이제부터 진행할 면접은 ${TechSetEntity.mappedFromId((param.qna.qna as ProficiencyQnaEntity).techSetId).name}와 관련된 질문입니다.',
           ).toJson();
         },
       ),

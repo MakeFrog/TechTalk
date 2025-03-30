@@ -92,7 +92,9 @@
       "vrEngineer": "VR Engineer",
       "biEngineer": "BI Engineer",
       "rubyOnRailsDeveloper": "Ruby on Rails Developer"
-    }
+    },
+    "exit": "Exit",
+    "pleaseTryAgain": "Please try again"
   },
   "home": {
     "cheerUpMessage": "Hi, {nickname}!\nAlways rooting for you!",
@@ -100,7 +102,26 @@
     "practicalInterviewDesc": "Pick multiple skill topics and try Live Interview!",
     "topicInterview": "Topic Interview",
     "topicInterviewDesc": "Pick one skill topic and focus on it!",
-    "takeInterview": "Start"
+    "takeInterview": "Start",
+    "error": {
+      "title": "Error Occurred",
+      "description": "An unexpected error occurred.\nPlease try again",
+      "retryButton": "Retry"
+    },
+    "commonQuestion": {
+      "title": "Common Question Interview",
+      "practicalInterview": "Mock Interview"
+    },
+    "proficiencyInterview": {
+      "title": "Proficiency Interview"
+    },
+    "cheerUp": {
+      "aiInterviewerMessage": "AI interviewer will be with you!"
+    },
+    "youtubeFeature": {
+      "title": "YouTube content now on TechTalk!",
+      "subtitle": "Start learning now"
+    }
   },
   "gnb": {
     "home": "Home",
@@ -171,7 +192,7 @@
     "recordFailed": "Failed to recognize the voice. Please try again.",
     "hasPassed": "You passed!",
     "keepGoing": "Keep going, and you'll keep growing!",
-    "hasFailed": "You didn’t pass",
+    "hasFailed": "You didn't pass",
     "getCoureage": "Keep trying, and things will change!",
     "oneLineFeedback": "Feedback",
     "tryRecap": "Retry the questions\nyou missed.",
@@ -181,7 +202,102 @@
     "suggestSimilarTopicsLeading": "Candidates in your field are studying\n",
     "suggestSimilarTopicsEnd": " together",
     "letsTryInterviewAgain": "Ready for an interview?",
-    "generatingOneLineFeedback": "Generating Feedback"
+    "generatingOneLineFeedback": "Generating Feedback",
+    "interviewLevel": {
+      "title": "Select the difficulty level\nof interview questions",
+      "advanced": {
+        "label": "Advanced",
+        "title": "Senior",
+        "description": "Questions to verify in-depth technical capabilities"
+      },
+      "intermediate": {
+        "label": "Intermediate",
+        "title": "Junior",
+        "description": "Practical interview questions to verify core technical skills and real-world experience"
+      },
+      "beginner": {
+        "label": "Beginner",
+        "title": "Entry",
+        "description": "Light questions focusing on basic syntax and logic"
+      }
+    },
+    "interviewType": {
+      "title": "Choose your interview\nquestion type",
+      "description": "We've collected frequently asked questions from real interviews",
+      "practical": {
+        "title": "Mock Interview",
+        "description": "Select multiple topics and\npractice with real interview questions"
+      },
+      "topic": {
+        "title": "Topic Interview",
+        "description": "Select one topic and\nfocus on mastering it"
+      }
+    },
+    "proficiency": {
+      "title": "Tell us about the skills\nor positions you're interested in",
+      "maxSelection": "You can select up to 4 items",
+      "search_hint": "Search for skills and job groups",
+      "recommended": {
+        "jobGroup": "Recommended Positions",
+        "skill": "Recommended Skills"
+      }
+    },
+    "resume": {
+      "checkResume": "Review your resume and\ntry again",
+      "description": "Higher quality resumes lead to more specific\nand in-depth questions",
+      "greeting": "Nice to meet you! @{nickname}. I will present interview questions suitable for your @{level} proficiency level."
+    },
+    "common": {
+      "tryCommon": "Try the common questions\ninterview as well!",
+      "description": "We've collected frequently asked questions from real interviews!"
+    },
+    "evaluation": {
+      "title": "Evaluation Points"
+    },
+    "questionCreation": {
+      "title": "Select Questions",
+      "startInterview": "Start Interview",
+      "description": "Select questions for proficiency-based interview",
+      "loading": {
+        "title": "Please wait {nickname},\nGenerating questions...",
+        "description": "Questions will be ready in about 15 seconds"
+      },
+      "ready": {
+        "title": "Interview questions are ready\nfor you, {nickname}!"
+      },
+      "state": {
+        "noQuestions": "No questions generated",
+        "selectQuestions": "Please select questions",
+        "maxSelection": "You can select up to 4 questions"
+      },
+      "event": {
+        "startInterview": "Start Interview",
+        "selectQuestion": "Select Question",
+        "deselectQuestion": "Deselect Question",
+        "readyToStart": "Ready to start the interview!",
+        "generatingQuestions": "Generating questions!",
+        "readyToStartDescription": "All interview questions are ready\nAre you sure you want to leave?",
+        "generatingQuestionsDescription": "If you leave now, the questions for the interview may be lost\nAre you sure you want to leave?",
+        "continueInterview": "Continue Interview",
+        "questionsJustCreated": "Wait! Questions were just created"
+      }
+    },
+    "createdQuestion": {
+      "title": "Generated Questions",
+      "state": {
+        "noQuestions": "No questions generated",
+        "selectQuestions": "Please select questions",
+        "maxSelection": "You can select up to 4 questions"
+      },
+      "event": {
+        "startInterview": "Start Interview",
+        "selectQuestion": "Select Question",
+        "deselectQuestion": "Deselect Question"
+      }
+    },
+    "resumeInterview": "Resume Interview",
+    "contentInterview": "Content Interview",
+    "proficiencyInterview": "Proficiency Interview"
   },
   "qa": {
     "numberOfQa": " items",
@@ -189,7 +305,8 @@
     "noCompletedQa": "No history of completion.\nPlease answer the interview questions!",
     "answerInterviewQuestions": "Come back after answering the interview questions.",
     "myAnswer": "My Answer",
-    "modelAnswer": "Sample Answer"
+    "modelAnswer": "Sample Answer",
+    "failedToLoadQa": "Failed to load Q&A history."
   },
   "learning": {
     "hideAnswers": "Hide the Answers",
@@ -203,7 +320,7 @@
   },
   "mistakeNote": {
     "noMistakeRecords": "No wrong answers yet.",
-    "letsHaveInterview": "Let’s try a {tech} interview!",
+    "letsHaveInterview": "Let's try a {tech} interview!",
     "wrongManyTimes": "Frequently Wrong"
   },
   "videoTutorial": {

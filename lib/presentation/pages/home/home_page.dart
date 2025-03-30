@@ -3,7 +3,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:techtalk/app/environment/app_version.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/index.dart';
@@ -65,9 +67,9 @@ class HomePage extends BasePage with HomeState, HomeEvent {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const ExceptionIndicator(
-                title: '오류 발생',
-                subTitle: '예상하지 못한 오류가 발생했습니다.\n다시 시도해주세요',
+              ExceptionIndicator(
+                title: tr(LocaleKeys.home_error_title),
+                subTitle: tr(LocaleKeys.home_error_description),
               ),
               FilledButton(
                 onPressed: () => onRetryBtnTapped(ref),
@@ -77,7 +79,7 @@ class HomePage extends BasePage with HomeState, HomeEvent {
                     vertical: 14,
                   ),
                 ),
-                child: const Text('재시도'),
+                child: Text(tr(LocaleKeys.home_error_retryButton)),
               )
             ],
           ),

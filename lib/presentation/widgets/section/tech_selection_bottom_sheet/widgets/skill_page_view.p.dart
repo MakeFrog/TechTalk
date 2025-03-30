@@ -11,6 +11,7 @@ class _SkillPageView extends ConsumerWidget
         children: [
           Container(
             color: Colors.white,
+
             // Sticky Header 배경색 유지
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Form(
@@ -18,8 +19,8 @@ class _SkillPageView extends ConsumerWidget
               child: TechtalkTextField(
                 useCustomValidation: true,
                 showPrefixIcon: true,
-                inputDecoration: const InputDecoration(
-                  hintText: '스킬 및 직군을 검색해 주세요',
+                inputDecoration: InputDecoration(
+                  hintText: tr(LocaleKeys.interview_proficiency_search_hint),
                 ),
                 controller: textEditingController(ref),
                 validator: (input) => skillInputValidator(ref, input: input),

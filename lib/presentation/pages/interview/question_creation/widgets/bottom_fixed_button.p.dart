@@ -20,7 +20,9 @@ class _BottomFixedButton extends ConsumerWidget
                 child: SizedBox(
                     width: double.infinity,
                     child: FilledButton(
-                        onPressed: () {}, child: const Text('면접 시작하기'))),
+                        onPressed: () {},
+                        child: Text(tr(LocaleKeys
+                            .interview_questionCreation_startInterview)))),
               ),
             )
           : const EmptyBox(),

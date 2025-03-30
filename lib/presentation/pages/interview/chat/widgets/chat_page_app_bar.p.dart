@@ -16,13 +16,15 @@ class _AppBar extends HookConsumerWidget
           return '$firstTopic${otherTopicCount > 0 ? ' ${tr(LocaleKeys.undefined_and)} $otherTopicCount' : ''}';
         },
         resume: (_) {
-          return '이력서 면접';
+          return tr(LocaleKeys.interview_resumeInterview);
         },
         youtube: (_) {
-          return AppLocale.isKo ? '콘텐츠 면접' : '';
+          return tr(LocaleKeys.interview_contentInterview);
         },
         proficiency: (_) {
-          return '역량별 면접';
+          return AppLocale.isKo
+              ? tr(LocaleKeys.interview_proficiencyInterview)
+              : '';
         },
       );
     });

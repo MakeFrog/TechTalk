@@ -1,5 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/features/chat/repositories/entities/selectable_qna_entity.dart';
+import 'package:techtalk/presentation/pages/interview/created_question_list/constant/created_question_list_route_arg.dart';
+import 'package:techtalk/presentation/pages/interview/created_question_list/provider/created_question_list_rout_arg_provider.dart';
 import 'package:techtalk/presentation/pages/interview/created_question_list/provider/listed_selectable_qnas_provider.dart';
 
 mixin class CreatedQuestionListState {
@@ -11,7 +16,7 @@ mixin class CreatedQuestionListState {
   }
 
   ///
-  /// 활성화된 질문 존재 여부
+  /// 선택된 질문이 있는지 확인
   ///
   bool hasSelectedQuestions(WidgetRef ref) {
     return ref
@@ -20,4 +25,11 @@ mixin class CreatedQuestionListState {
             ?.any((e) => e.isSelected) ??
         false;
   }
+
+  String get noQuestionsText =>
+      tr(LocaleKeys.interview_createdQuestion_state_noQuestions);
+  String get selectQuestionsText =>
+      tr(LocaleKeys.interview_createdQuestion_state_selectQuestions);
+  String get maxSelectionText =>
+      tr(LocaleKeys.interview_createdQuestion_state_maxSelection);
 }

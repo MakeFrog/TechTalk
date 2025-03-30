@@ -21,7 +21,7 @@ class ProficiencyInterviewCard extends ConsumerWidget
     return InterviewIndicatorCard(
       showNewBadge: true,
       logoPath: interviewType.logoPath,
-      title: '역량별 면접',
+      title: tr(LocaleKeys.home_proficiencyInterview_title),
       subDescription: !(user(ref)?.hasPracticalInterviewRecord ?? false)
           ? tr(LocaleKeys.home_practicalInterviewDesc)
           : null,

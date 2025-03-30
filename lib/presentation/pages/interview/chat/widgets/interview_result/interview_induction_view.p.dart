@@ -76,7 +76,7 @@ class _InterviewInductionView extends HookConsumerWidget
                 resume: (_) => Column(
                   children: <Widget>[
                     Text(
-                      '이력서를 점검하고\n다시 도전해 보세요',
+                      tr(LocaleKeys.interview_resume_checkResume),
                       maxLines: 2,
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
@@ -84,7 +84,7 @@ class _InterviewInductionView extends HookConsumerWidget
                     ),
                     const Gap(8),
                     Text(
-                      '완성도를 높이면 더 구체적이고\n심층적인 질문을 받을 수 있어요',
+                      tr(LocaleKeys.interview_resume_description),
                       style: AppTextStyle.body3.copyWith(
                         color: AppColor.of.gray4,
                       ),
@@ -118,7 +118,7 @@ class _InterviewInductionView extends HookConsumerWidget
                   return Column(
                     children: <Widget>[
                       Text(
-                        '단골 질문 면접도\n진행해 보세요!',
+                        tr(LocaleKeys.interview_common_tryCommon),
                         maxLines: 2,
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
@@ -126,7 +126,7 @@ class _InterviewInductionView extends HookConsumerWidget
                       ),
                       const Gap(8),
                       Text(
-                        '실제 면접에서 자주 나오는 질문들을 모아두었어요!',
+                        tr(LocaleKeys.interview_common_description),
                         style: AppTextStyle.body3.copyWith(
                           color: AppColor.of.gray4,
                         ),
@@ -251,7 +251,7 @@ class _InterviewInductionView extends HookConsumerWidget
                               );
                             },
                             proficiency: (InterviewType type) {
-                              return '면접 보기';
+                              return tr(LocaleKeys.home_takeInterview);
                             },
                           ),
                     ),

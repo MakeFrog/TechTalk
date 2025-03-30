@@ -16,6 +16,8 @@ import 'package:techtalk/presentation/pages/interview/interview_level_selection/
 import 'package:techtalk/presentation/pages/interview/interview_level_selection/provider/interview_level_selection_route_arg_provider.dart';
 import 'package:techtalk/presentation/widgets/base/index.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 
 part 'widgets/leading_view.p.dart';
 part 'widgets/level_indicator_page_view.p.dart';
@@ -58,8 +60,8 @@ class InterviewLevelSelectionPage extends BasePage
           onPressed: () {
             onCompleteBtnTapped(ref);
           },
-          child: const Text(
-            '다음',
+          child: Text(
+            tr(LocaleKeys.common_next),
           ),
         ),
       ),

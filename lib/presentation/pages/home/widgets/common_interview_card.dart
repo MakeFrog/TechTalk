@@ -50,7 +50,7 @@ class CommonInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
                   const Gap(4),
                   Expanded(
                     child: Text(
-                      '단골 질문 면접',
+                      tr(LocaleKeys.home_commonQuestion_title),
                       style: AppTextStyle.headline3,
                     ),
                   ),
@@ -116,7 +116,8 @@ class CommonInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
                           ),
                           const Gap(8),
                           Text(
-                            '실전형 면접',
+                            tr(LocaleKeys
+                                .home_commonQuestion_practicalInterview),
                             style: AppTextStyle.title2,
                           ),
                           const Spacer(),

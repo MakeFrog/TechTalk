@@ -24,7 +24,7 @@ class _LevelIndicatorPageView extends ConsumerWidget
                   ),
                 ),
                 child: Text(
-                  item.titleLabel,
+                  tr(item.titleKey),
                   style: AppTextStyle.title1.copyWith(
                     color: AppColor.of.blue3,
                   ),
@@ -37,7 +37,7 @@ class _LevelIndicatorPageView extends ConsumerWidget
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
-                  item.description,
+                  tr(item.descriptionKey),
                   textAlign: TextAlign.center,
                   style: AppTextStyle.body2.copyWith(
                     color: AppColor.of.gray4,

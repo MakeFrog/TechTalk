@@ -15,13 +15,15 @@ class _RecommendedTechSetsView extends ConsumerWidget
         children: [
           _buildTechSetListView(
             ref,
-            title: '추천 직군',
+            title: context
+                .tr(LocaleKeys.interview_proficiency_recommended_jobGroup),
             techSets: userJobGroupCollection(ref),
           ),
           const Gap(16),
           _buildTechSetListView(
             ref,
-            title: '추천 스킬',
+            title:
+                context.tr(LocaleKeys.interview_proficiency_recommended_skill),
             techSets: userSkillCollection(ref),
           ),
         ],

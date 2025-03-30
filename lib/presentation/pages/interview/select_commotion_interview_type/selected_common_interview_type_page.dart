@@ -3,6 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/constants/assets.dart';
@@ -25,12 +27,12 @@ class SelectedCommonInterviewTypePage extends BasePage
         children: <Widget>[
           const Gap(16),
           Text(
-            '면접 질문 유형을\n선택해보세요',
+            tr(LocaleKeys.interview_interviewType_title),
             style: AppTextStyle.headline1,
           ),
           const Gap(12),
           Text(
-            '실제 면접에서 자주 나오는 질문들을 모아두었어요',
+            tr(LocaleKeys.interview_interviewType_description),
             style: AppTextStyle.body1.copyWith(
               color: AppColor.of.gray4,
             ),
@@ -39,8 +41,9 @@ class SelectedCommonInterviewTypePage extends BasePage
           Row(
             children: [
               _buildInterviewTypeCard(
-                title: '실전형',
-                description: '여러 주제를 선택해\n실전 연습을 해보세요',
+                title: tr(LocaleKeys.interview_interviewType_practical_title),
+                description: tr(
+                    LocaleKeys.interview_interviewType_practical_description),
                 onTap: () => routeToTopicSelectPage(
                   context,
                   type: InterviewType.commonPracticalTopic,
@@ -49,8 +52,9 @@ class SelectedCommonInterviewTypePage extends BasePage
               ),
               const Gap(16),
               _buildInterviewTypeCard(
-                title: '주제별',
-                description: '하나의 주제를 선택해\n집중 공략해 보세요',
+                title: tr(LocaleKeys.interview_interviewType_topic_title),
+                description:
+                    tr(LocaleKeys.interview_interviewType_topic_description),
                 onTap: () => routeToTopicSelectPage(
                   context,
                   type: InterviewType.commonSingleTopic,
