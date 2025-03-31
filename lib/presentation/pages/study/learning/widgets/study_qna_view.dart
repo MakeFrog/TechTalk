@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/index.dart';
@@ -11,6 +12,7 @@ import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.
 import 'package:techtalk/presentation/pages/study/learning/learning_detail_event.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/learning_detail_state.dart';
+import 'package:techtalk/presentation/widgets/common/button/book_mark_button.dart';
 import 'package:techtalk/presentation/widgets/common/divider/list_view_divider.dart';
 
 class StudyQnaView extends ConsumerWidget
@@ -49,10 +51,25 @@ class _StudyQna extends HookWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          _buildLeadingMarkedView(),
+          const Gap(12),
           _buildQuestion(),
           const Gap(24),
           _buildAnswers(),
         ],
+      ),
+    );
+  }
+
+  Widget _buildLeadingMarkedView() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16),
+      child: BookMarkButton(
+        onTap: () {},
+        isBookMarked: true,
+        iconWidth: 11.65,
+        size: 30,
+        radius: 8,
       ),
     );
   }
