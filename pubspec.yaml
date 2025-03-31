@@ -20,6 +20,7 @@ dependencies:
 
   record: ^5.1.2
   # UI
+  soft_edge_blur: ^0.1.3
   cupertino_will_pop_scope: ^1.2.1 #pop scope (스와이프 백 제스쳐 지원)
   flutter_svg: ^2.0.5 # SVG 아이콘
   flutter_easyloading: ^3.0.5 # 로딩 UI 처리 관련
@@ -46,8 +47,13 @@ dependencies:
   rxdart: ^0.27.7
   flutter_hooks: ^0.20.1
 
+
   # 라우팅
-  go_router: ^13.1.0
+  go_router: ^13.2.5
+
+
+
+
 
   # DI
   get_it: ^7.2.0

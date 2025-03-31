@@ -118,6 +118,10 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $SkillSettingRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: 'created-question-list',
+          factory: $CreatedQuestionListRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'study/:topicId',
           name: 'study',
           factory: $StudyRouteExtension._fromState,
@@ -136,6 +140,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           path: 'interview-level-selection',
           name: 'interview-level-selection',
           factory: $InterviewLevelSelectionRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'proficiency-question-creation',
+          name: 'proficiency-question-creation',
+          factory: $QuestionCreationRouteExtension._fromState,
         ),
         GoRouteData.$route(
           path: 'youtube-detail/:contentId',
@@ -333,6 +342,28 @@ extension $SkillSettingRouteExtension on SkillSettingRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
+extension $CreatedQuestionListRouteExtension on CreatedQuestionListRoute {
+  static CreatedQuestionListRoute _fromState(GoRouterState state) =>
+      CreatedQuestionListRoute(
+        state.extra as CreatedQuestionListRouteArg,
+      );
+
+  String get location => GoRouteData.$location(
+        '/created-question-list',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
 extension $StudyRouteExtension on StudyRoute {
   static StudyRoute _fromState(GoRouterState state) => StudyRoute(
         state.extra as TopicEntity,
@@ -400,6 +431,28 @@ extension $InterviewLevelSelectionRouteExtension
 
   String get location => GoRouteData.$location(
         '/interview-level-selection',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+extension $QuestionCreationRouteExtension on QuestionCreationRoute {
+  static QuestionCreationRoute _fromState(GoRouterState state) =>
+      QuestionCreationRoute(
+        state.extra as QuestionCreationRouteArg,
+      );
+
+  String get location => GoRouteData.$location(
+        '/proficiency-question-creation',
       );
 
   void go(BuildContext context) => context.go(location, extra: $extra);

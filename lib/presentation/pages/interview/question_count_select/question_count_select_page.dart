@@ -7,7 +7,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/features/interview/use_case/param/start_interview_flow_use_case_param.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/constant/select_question_count_route_argument.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/providers/select_question_count_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/providers/selected_question_count_provider.dart';
@@ -75,11 +74,7 @@ class QuestionCountSelectPage extends BasePage
       height: 56,
       child: BounceTapper(
         onTap: () async {
-          print(await (argument.useCaseParam as ProficiencyInterviewFlowParam)
-              .levelSelectionCompleter
-              .future);
-          return;
-          routeToChatPage(
+          await onConfirmBtnTapped(
             ref,
             type: arg(ref).interviewType,
             topics: arg(ref).topics,

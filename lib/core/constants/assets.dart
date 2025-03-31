@@ -81,6 +81,7 @@ class Assets {
   static const String iconsIncorrect = 'assets/icons/incorrect.svg';
   static const String iconsIntermediateIllust =
       'assets/icons/intermediate_illust.svg';
+  static const String iconsListedNote = 'assets/icons/listed_note.svg';
   static const String iconsMenuThick = 'assets/icons/menu_thick.svg';
   static const String iconsMistakeNoteIllust =
       'assets/icons/mistake_note_illust.svg';
@@ -187,6 +188,9 @@ class Assets {
   static const String imagesWelcomeTechtalk =
       'assets/images/welcome_techtalk.svg';
   static const String jsonSkills = 'assets/json/skills.json';
+  static const String lottieDocumentLoading =
+      'assets/lottie/document_loading.json';
+  static const String lottieDone = 'assets/lottie/done.json';
   static const String lottieVideoUploading =
       'assets/lottie/video_uploading.json';
   static const String pretendardPretendardBold =
