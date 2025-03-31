@@ -150,7 +150,8 @@ abstract interface class UserRepository {
   ///
   /// 단골 qna 북마크 상태 토글
   ///
-  Future<Result<void>> toggleBookmarkQna({
+  Future<Result<void>> togglCommonQnaBookMark({
     required CommonQnaEntity question,
+    required bool setBookMark,
   });
 }

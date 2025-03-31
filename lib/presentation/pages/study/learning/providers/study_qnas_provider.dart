@@ -30,14 +30,16 @@ class StudyQnas extends _$StudyQnas {
   ///
   /// 북마크 토글
   ///
-  Future<void> toggleBookmark(CommonQnaEntity question) async {
-    final response = await userRepository.toggleBookmarkQna(question: question);
+  Future<void> toggleBookmark(
+      SelectableQnaEntity<CommonQnaEntity> question) async {
+    final response = await userRepository.togglCommonQnaBookMark(
+        question: question.qna, setBookMark: !question.isSelected);
     response.fold(
       onSuccess: (_) {
         // 토글 성공 시 현재 상태 업데이트
         update((prev) {
           return prev.map((qna) {
-            if (qna.qna.id == question.id) {
+            if (qna.qna.id == question.qna.id) {
               return SelectableQnaEntity(
                 isSelected: !qna.isSelected,
                 qna: qna.qna,

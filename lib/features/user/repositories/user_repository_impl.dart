@@ -422,8 +422,9 @@ final class UserRepositoryImpl implements UserRepository {
       );
 
       // 2. 북마크된 질문 ID 목록 가져오기
-      final bookmarkedIds =
-          await _userRemoteDataSource.getBookmarkedCommonQnas();
+      final bookmarkedIds = await _userRemoteDataSource.getBookmarkedCommonQnas(
+        techSetId: techSet.id,
+      );
 
       // 3. 모든 질문을 SelectableQnaEntity로 변환하고 북마크 상태에 따라 isSelected 설정
       final entities = allQnas
@@ -443,14 +444,13 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<void>> toggleBookmarkQna(
-      {required CommonQnaEntity question}) async {
+  Future<Result<void>> togglCommonQnaBookMark(
+      {required CommonQnaEntity question, required bool setBookMark}) async {
     try {
-      final isBookmarked =
-          await _userRemoteDataSource.checkIfContentIsBooMarked(question.id);
       await _userRemoteDataSource.toggleBookmarkCommonQna(
-        questionId: question.id,
-        targetState: !isBookmarked,
+        techSetId: question.id.getFirstPartOfSpliited,
+        commonQnaId: question.id,
+        setBookMark: setBookMark,
       );
       return Result.success(null);
     } catch (e) {

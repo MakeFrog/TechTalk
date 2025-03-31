@@ -30,8 +30,7 @@ class StudyQnaView extends ConsumerWidget
       onPageChanged: (value) => onQuestionPageChanged(ref),
       itemCount: qnas(ref).length,
       itemBuilder: (context, index) => _StudyQna(
-        question: qnas(ref)[index].qna,
-        isSelected: qnas(ref)[index].isSelected,
+        selectableQna: qnas(ref)[index],
       ),
     );
   }
@@ -40,12 +39,10 @@ class StudyQnaView extends ConsumerWidget
 class _StudyQna extends HookConsumerWidget with LearningDetailEvent {
   const _StudyQna({
     super.key,
-    required this.question,
-    required this.isSelected,
+    required this.selectableQna,
   });
 
-  final CommonQnaEntity question;
-  final bool isSelected;
+  final SelectableQnaEntity<CommonQnaEntity> selectableQna;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -70,8 +67,8 @@ class _StudyQna extends HookConsumerWidget with LearningDetailEvent {
     return Padding(
       padding: const EdgeInsets.only(left: 16),
       child: BookMarkButton(
-        onTap: () => onToggleQnaItemBookmark(ref, question),
-        isBookMarked: isSelected,
+        onTap: () => onToggleQnaItemBookmark(ref, selectableQna),
+        isBookMarked: selectableQna.isSelected,
         iconWidth: 11.65,
         size: 30,
         radius: 8,
@@ -86,7 +83,7 @@ class _StudyQna extends HookConsumerWidget with LearningDetailEvent {
           ) +
           const EdgeInsets.only(right: 24),
       child: Text(
-        question.question,
+        selectableQna.qna.question,
         style: AppTextStyle.headline3,
         textAlign: TextAlign.left,
       ),
@@ -94,7 +91,7 @@ class _StudyQna extends HookConsumerWidget with LearningDetailEvent {
   }
 
   Widget _buildAnswers() {
-    final answers = question.answers;
+    final answers = selectableQna.qna.answers;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
@@ -105,7 +102,7 @@ class _StudyQna extends HookConsumerWidget with LearningDetailEvent {
           shrinkWrap: true,
           padding: const EdgeInsets.all(16),
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: question.answers.length,
+          itemCount: selectableQna.qna.answers.length,
           separatorBuilder: (_, __) => const ListViewDivider(),
           itemBuilder: (context, index) {
             final answer = answers[index];

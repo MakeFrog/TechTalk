@@ -306,10 +306,11 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }
 
   @override
-  Future<List<String>> getBookmarkedCommonQnas() async {
+  Future<List<String>> getBookmarkedCommonQnas(
+      {required String techSetId}) async {
     try {
       final snapshot =
-          await FirestoreUsersRef.markedCommonQuestionDoc('react').get();
+          await FirestoreUsersRef.markedCommonQuestionDoc(techSetId).get();
       if (!snapshot.exists) {
         return [];
       }
@@ -326,20 +327,32 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
   @override
   Future<void> toggleBookmarkCommonQna({
-    required String questionId,
-    required bool targetState,
+    required String techSetId,
+    required String commonQnaId,
+    required bool setBookMark,
   }) async {
     try {
-      final docRef = FirestoreUsersRef.markedCommonQuestionDoc('react');
-      final model = MarkedCommonQuestionModel(
-        ids: targetState
-            ? [...(await getBookmarkedCommonQnas()), questionId]
-            : (await getBookmarkedCommonQnas())
-                .where((id) => id != questionId)
-                .toList(),
-      );
+      final docRef = FirestoreUsersRef.markedCommonQuestionDoc(techSetId);
+      final doc = await docRef.get();
 
-      await docRef.set(model.toJson());
+      if (!doc.exists) {
+        // 문서가 없으면 새로 생성
+        await docRef.set({
+          'ids': setBookMark ? [commonQnaId] : [],
+        });
+        return;
+      }
+
+      // 문서가 있으면 업데이트
+      if (setBookMark) {
+        await docRef.update({
+          'ids': FieldValue.arrayUnion([commonQnaId]),
+        });
+      } else {
+        await docRef.update({
+          'ids': FieldValue.arrayRemove([commonQnaId]),
+        });
+      }
     } catch (e) {
       log('북마크 토글 실패: $e');
       rethrow;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/features/chat/repositories/entities/selectable_qna_entity.dart';
 import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/current_study_qna_index_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
@@ -43,7 +44,7 @@ mixin class LearningDetailEvent {
   }
 
   Future<void> onToggleQnaItemBookmark(
-      WidgetRef ref, CommonQnaEntity question) async {
+      WidgetRef ref, SelectableQnaEntity<CommonQnaEntity> question) async {
     try {
       await ref
           .read(studyQnasProvider(ref.read(selectedStudyTopicProvider).id)

@@ -216,7 +216,7 @@ class EntireQuestionListView extends HookConsumerWidget
     return BounceTapper(
       shrinkScaleFactor: 1.0,
       highlightColor: Colors.transparent,
-      onTap: () => onToggleQnaItemBookmark(ref, selectableQna.qna),
+      onTap: () => onToggleQnaItemBookmark(ref, selectableQna),
       child: Padding(
         padding: const EdgeInsets.only(right: 16),
         child: BookMarkButton(
@@ -224,7 +224,7 @@ class EntireQuestionListView extends HookConsumerWidget
           size: 24,
           radius: 6.4,
           iconWidth: 9.32,
-          onTap: () => onToggleQnaItemBookmark(ref, selectableQna.qna),
+          onTap: () => onToggleQnaItemBookmark(ref, selectableQna),
           isBookMarked: selectableQna.isSelected,
         ),
       ),
