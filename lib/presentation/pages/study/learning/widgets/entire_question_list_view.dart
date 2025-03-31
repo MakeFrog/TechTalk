@@ -13,6 +13,7 @@ import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/study/learning/learning_detail_event.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/current_study_qna_index_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/learning_detail_state.dart';
+import 'package:techtalk/presentation/widgets/common/animated/animated_size_and_fade.dart';
 import 'package:techtalk/presentation/widgets/common/button/app_back_button.dart';
 import 'package:techtalk/presentation/widgets/common/button/book_mark_button.dart';
 import 'package:techtalk/presentation/widgets/common/input/flat_switch.dart';
@@ -30,6 +31,12 @@ class EntireQuestionListView extends HookConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(currentStudyQnaIndexProvider);
+    final isBookmarkFilterActive = this.isBookmarkFilterActive(ref);
+
+    // 북마크 필터링된 리스트 생성
+    final filteredQnas = isBookmarkFilterActive
+        ? qnas(ref).where((qna) => qna.isSelected).toList()
+        : qnas(ref);
 
     final itemKeys = List.generate(
       qnas(ref).length,
@@ -37,11 +44,21 @@ class EntireQuestionListView extends HookConsumerWidget
     );
     final scrollController = useScrollController();
 
+    // 현재 아이템의 필터링된 인덱스 찾기
+    final filteredCurrentIndex = isBookmarkFilterActive
+        ? filteredQnas
+            .indexWhere((qna) => qna.qna.id == qnas(ref)[currentIndex].qna.id)
+        : currentIndex;
+
     usePostFrameEffect(
       () {
-        Scrollable.ensureVisible(itemKeys[currentIndex].currentContext!);
+        if (filteredCurrentIndex >= 0 &&
+            itemKeys[filteredCurrentIndex].currentContext != null) {
+          Scrollable.ensureVisible(
+              itemKeys[filteredCurrentIndex].currentContext!);
+        }
       },
-      [],
+      [filteredCurrentIndex],
     );
 
     return Scaffold(
@@ -61,7 +78,7 @@ class EntireQuestionListView extends HookConsumerWidget
             children: [
               FlatSwitch(
                 height: 24,
-                value: isBookmarkFilterActive(ref),
+                value: isBookmarkFilterActive,
                 bgColor: AppColor.of.blue2,
                 onTap: (_) => onToggleBookmarkFilter(ref),
               ),
@@ -78,15 +95,22 @@ class EntireQuestionListView extends HookConsumerWidget
         child: SafeArea(
           child: Column(
             children: [
-              ...qnas(ref).mapIndexed((index, e) {
+              ...filteredQnas.asMap().entries.map((entry) {
+                final index = entry.key;
+                final qna = entry.value;
+                final originalIndex =
+                    qnas(ref).indexWhere((q) => q.qna.id == qna.qna.id);
+
                 final item = _buildQuestion(
-                  itemKeys[index],
+                  itemKeys[originalIndex],
                   ref,
-                  index,
-                  qnas(ref)[index],
-                  index == currentIndex,
+                  index, // 필터링된 인덱스 (1부터 시작)
+                  qna,
+                  originalIndex == currentIndex,
+                  originalIndex, // 원본 인덱스
                 );
-                if (index != qnas(ref).length - 1) {
+
+                if (index != filteredQnas.length - 1) {
                   return Column(
                     children: [
                       item,
@@ -111,15 +135,16 @@ class EntireQuestionListView extends HookConsumerWidget
   Widget _buildQuestion(
     Key key,
     WidgetRef ref,
-    int index,
+    int displayIndex, // 표시될 인덱스 (1부터 시작)
     SelectableQnaEntity<CommonQnaEntity> selectableQna,
     bool isSelected,
+    int originalIndex, // 원본 인덱스
   ) {
     return Material(
       key: key,
       color: isSelected ? AppColor.of.brand1 : AppColor.of.white,
       child: BounceTapper(
-        onTap: () => Navigator.pop(ref.context, index),
+        onTap: () => Navigator.pop(ref.context, originalIndex),
         child: Padding(
           padding: const EdgeInsets.symmetric(
             vertical: 24,
@@ -129,7 +154,7 @@ class EntireQuestionListView extends HookConsumerWidget
               SizedBox(
                 width: 48,
                 child: Text(
-                  '${index + 1}',
+                  '${displayIndex + 1}',
                   textAlign: TextAlign.center,
                   style: AppTextStyle.body3.copyWith(
                     fontWeight: FontWeight.w700,
