@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/provider/selected_job_groups_provider.dart';
 import 'package:techtalk/presentation/providers/scroll/selected_job_group_scroll_controller.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';

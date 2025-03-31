@@ -13,7 +13,7 @@ class _JobGroupPageView extends ConsumerWidget
       itemBuilder: (context, index) {
         final jobGroup = totalJobGroups[index];
         final isSelected = selectedTechSets(ref)
-                .firstWhereOrNull((e) => e.id() == jobGroup.id) !=
+                .firstWhereOrNull((e) => e.id == jobGroup.id) !=
             null;
 
         return JobGroupListTile(

@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/core/modules/regex/app_validator.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/enums/tech_set_type.enum.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/searched_skills_provider.dart';
-import 'package:techtalk/features/tech_set/repositories/enums/tech_set_type.enum.dart';
 import 'package:techtalk/presentation/widgets/section/tech_selection_bottom_sheet/provider/tech_selection_bottom_sheet_resource_provider.dart';
 
 mixin class TechSelectionBottomSheetState {

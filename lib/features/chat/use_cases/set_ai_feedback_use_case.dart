@@ -9,6 +9,7 @@ import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/feedback_response_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/proficiency_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_interview_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.dart';
@@ -135,6 +136,13 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
                 '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. ${param.youtubeExtra}라는 제목의 유튜브 프로그래밍 콘텐츠를 기반해 제시된 면접 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
           ).toJson();
         },
+        proficiency: (InterviewType type) {
+          return Messages(
+            role: Role.system,
+            content:
+                '면접 질문을 물어보고 유저 답변의 정답 여부를 확인합니다. 당신은 면접관, 유저는 지원자입니다. 유저의 개발자 이력서 또는 포트폴로리오에 관련된 질문입니다. ${AppLocale.currentLocale.languageCode}언어로 면접을 진행합니다.',
+          ).toJson();
+        },
       ),
       ...param.chatHistory.map(
         (element) => switch (element) {
@@ -175,6 +183,13 @@ class SetAiFeedbackUseCase extends BaseNoFutureUseCase<GetQuestionFeedbackParam,
             role: Role.system,
             content:
                 '면접 질문에 대한 모범답안은 다음과 같습니다: ${(param.qna.qna as YoutubeQnaEntity).answer}',
+          ).toJson();
+        },
+        proficiency: (InterviewType type) {
+          return Messages(
+            role: Role.system,
+            content:
+                '면접 질문에 대한 모범답안은 다음과 같습니다: ${(param.qna.qna as ProficiencyQnaEntity).answers.map((str) => '-$str').join(' ')}',
           ).toJson();
         },
       ),

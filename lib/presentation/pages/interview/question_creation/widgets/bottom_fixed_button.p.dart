@@ -1,6 +1,7 @@
 part of '../question_creation_page.dart';
 
-class _BottomFixedButton extends ConsumerWidget with QuestionCreationState {
+class _BottomFixedButton extends ConsumerWidget
+    with QuestionCreationState, QuestionCreationEvent {
   const _BottomFixedButton({super.key});
 
   @override
@@ -13,7 +14,9 @@ class _BottomFixedButton extends ConsumerWidget with QuestionCreationState {
           ? Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: BounceTapper(
-                onTap: () {},
+                onTap: () {
+                  onStartInterViewBtnTapped(ref);
+                },
                 child: SizedBox(
                     width: double.infinity,
                     child: FilledButton(

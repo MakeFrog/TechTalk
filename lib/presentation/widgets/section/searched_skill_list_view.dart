@@ -3,7 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/presentation/widgets/common/image/rounded_skill_image.dart';
 
 class SearchedSkillListView extends ConsumerWidget {

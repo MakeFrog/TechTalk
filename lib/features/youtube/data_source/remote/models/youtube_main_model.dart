@@ -3,8 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:techtalk/core/modules/converter/time_stamp_converter.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/features/youtube/index.dart';
 
 part 'youtube_main_model.g.dart';

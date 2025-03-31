@@ -9,8 +9,7 @@ import 'package:techtalk/features/chat/repositories/entities/proficiency_qna_ent
 import 'package:techtalk/features/chat/repositories/enums/interview_level.enum.dart';
 import 'package:techtalk/features/interview/use_case/exception/ai_creation_failed_exception.dart';
 import 'package:techtalk/features/interview/use_case/param/start_interview_flow_use_case_param.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 
 final class CreateProficiencyInterviewQnaUseCase extends BaseUseCase<
     ProficiencyInterviewFlowParam, List<ProficiencyQnaEntity>> {
@@ -26,14 +25,12 @@ final class CreateProficiencyInterviewQnaUseCase extends BaseUseCase<
 
     techSets?.forEach(
       (e) {
-        e.fold(
-          skill: (skill) {
-            skills.add(skill);
-          },
-          jobGroup: (jobGroup) {
-            jobGroups.add(jobGroup);
-          },
-        );
+        switch (e) {
+          case SkillEntity():
+            skills.add(e);
+          case JobGroupEntity():
+            jobGroups.add(e);
+        }
       },
     );
 
@@ -41,37 +38,38 @@ final class CreateProficiencyInterviewQnaUseCase extends BaseUseCase<
       content: [
         OpenAIChatCompletionChoiceMessageContentItemModel.text(
           '''
-당신은 기술 면접 질문을 생성하는 전문 면접관입니다. 선택된 개발 스킬과 직군에 대한 기술 면접 질문을 생성해주세요.
+IT 회사의 면접관입니다. 선택된 개발 스킬과 직군과 관련된 프로그래밍 개념을 물어보는 면접 질문을 생성해주세요.
 
 ### 목표
-- 선택된 개발 스킬과 직군에 대한 실무 중심의 기술 면접 질문 생성
-- 난이도에 따른 기술 개념의 깊이 차이를 명확히 구분
-- 난이도가 높아짐에 따라 더 깊은 이해가 필요한 심층 질문 제시
+- 선택된 개발 스킬과 직군에 대한 실무 중심의 기술 면접 질문 생성  
+- 난이도가 높아짐에 따라 더 깊은 프로그래밍 개념 이해가 필요한 심층 질문 제시
 
 ### 요구사항  
-1. **질문 구성**  
+1. **질문 구성**    
    - 요청된 질문 개수만큼 생성
    - 선택된 스킬과 직군별로 균형 잡힌 질문 분포
    - 각 스킬/직군별 최소 1개 이상의 질문 포함
    - 예시 코드 작성을 답변으로 요구하는 질문 지양
-   - '심도 있게', '심화적인' 등 질문의 난이도를 직접적으로 표현하는 단어 사용 지양
-
+   - '상' 난이도는 심화 배경 지식을 요구하는 심층 질문 제시
+   - 'OO직군 개발자로서'라는 표현 지양 
+   -  각 질문의 구성과 표현 방식이 반복되지 않도록 문장을 구성 
+   - '심도 있게', '심화적인', '기본', '논의' 등의 단어 사용 지양
+   
 2. **난이도별 질문 특성**
    - 상: 선택된 스킬/직군의 심화된 기술 개념과 원리
    - 중: 선택된 스킬/직군의 핵심 기술 개념과 원리
-   - 하: 선택된 스킬/직군의 기본 기술 개념과 원리
+   - 하: 선택된 스킬/직군의 기초 기술 개념과 원리
 
 3. **답안 구성**
-   - 명확하고 구체적인 모범 답안 작성
-   - 실제 개발 현장에서 사용되는 전문 용어와 개념 포함
-   - 단계별 설명 (필요한 경우)
-   - 예시 코드 포함 (필요한 경우)
+   - 실제 개발자가 면접에서 답변하는 것처럼 *자연스럽*게 작성
+   - 명확한 모범 답안 작성
   
 ### 주의사항
 - 실제 기술 면접에서 사용할 수 있는 수준의 질문 작성
 - 선택된 스킬/직군 외의 내용은 제외
 - 모든 답안은 검증 가능한 기술적 사실에 기반
 - 질문과 답안은 지정된 언어로 작성
+
 
 ### 입력 데이터
 - 선택된 스킬: `${skills.map((e) => e.toMap()).toList()}`

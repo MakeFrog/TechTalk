@@ -21,6 +21,9 @@ class _AppBar extends HookConsumerWidget
         youtube: (_) {
           return AppLocale.isKo ? '콘텐츠 면접' : '';
         },
+        proficiency: (_) {
+          return '역량별 면접';
+        },
       );
     });
 

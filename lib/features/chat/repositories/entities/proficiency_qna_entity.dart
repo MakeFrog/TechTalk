@@ -1,7 +1,5 @@
 import 'package:techtalk/features/chat/repositories/entities/base_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/enums/qna_type.enum.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:uuid/uuid.dart';
 
@@ -18,7 +16,7 @@ class ProficiencyQnaEntity extends BaseQnaEntity {
     required this.techSet,
     required this.answers,
   }) : super(
-          type: QnaType.common,
+          type: QnaType.proficiency,
         );
 
   /// GPT 응답으로부터 엔티티 생성

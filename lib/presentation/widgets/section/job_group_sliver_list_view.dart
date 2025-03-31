@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 class JobGroupSliverListView extends SliverList {

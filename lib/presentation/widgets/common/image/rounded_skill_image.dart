@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/helper/string_extension.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 ///

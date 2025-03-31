@@ -56,6 +56,7 @@ enum InterviewType {
     required R Function(InterviewType type) common,
     required R Function(InterviewType type) resume,
     required R Function(InterviewType type) youtube,
+    required R Function(InterviewType type) proficiency,
   }) {
     switch (this) {
       case InterviewType.commonSingleTopic ||
@@ -65,6 +66,8 @@ enum InterviewType {
         return resume(this);
       case InterviewType.youtube:
         return youtube(this);
+      case InterviewType.proficiency:
+        return proficiency(this);
       default:
         throw Exception('잘못된 타입입니다 : $this');
     }
@@ -75,6 +78,7 @@ enum InterviewType {
     required R Function(InterviewType type) practical,
     required R Function(InterviewType type) resume,
     required R Function(InterviewType type) youtube,
+    required R Function(InterviewType type) proficiency,
   }) {
     switch (this) {
       case InterviewType.commonSingleTopic:
@@ -85,6 +89,8 @@ enum InterviewType {
         return resume(this);
       case InterviewType.youtube:
         return youtube(this);
+      case InterviewType.proficiency:
+        return proficiency(this);
       default:
         throw Exception('잘못된 타입입니다 : $this');
     }

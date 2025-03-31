@@ -4,7 +4,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/presentation/providers/scroll/selected_skill_scroll_controller.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
