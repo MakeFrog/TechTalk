@@ -112,6 +112,17 @@ class EntireQuestionListView extends HookConsumerWidget
     int currentIndex,
     List<GlobalKey> itemKeys,
   ) {
+    if (isShowBookMarkOnlyFilterActive(ref) && filteredQnas.isEmpty) {
+      return Center(
+        child: Text(
+          '북마크된 질문이 없습니다.',
+          style: AppTextStyle.body1.copyWith(
+            color: AppColor.of.gray3,
+          ),
+        ),
+      );
+    }
+
     return SingleChildScrollView(
       controller: scrollController,
       padding: const EdgeInsets.symmetric(
