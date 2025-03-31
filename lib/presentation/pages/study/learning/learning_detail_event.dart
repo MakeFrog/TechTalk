@@ -7,6 +7,7 @@ import 'package:techtalk/presentation/pages/study/learning/providers/study_answe
 import 'package:techtalk/presentation/pages/study/learning/providers/study_qna_controller.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/entire_question_list_view.dart';
+import 'package:techtalk/presentation/pages/study/learning/widgets/learning_detail_state.dart';
 import 'package:techtalk/presentation/pages/study/topic_selection/providers/selected_study_topic_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_bookmark_filter_provider.dart';
 
@@ -24,6 +25,17 @@ mixin class LearningDetailEvent {
   }
 
   Future<void> onTapEntireQuestion(WidgetRef ref) async {
+    /// 현재 화면에 보이고 있는 qna의 북마크 여부 확인
+    final currentQnaIndex = ref.read(currentStudyQnaIndexProvider);
+    final currentQna = ref
+        .read(studyQnasProvider(ref.read(selectedStudyTopicProvider).id))
+        .value?[currentQnaIndex];
+    final isCurrentQnaBookmarked = currentQna?.isSelected ?? false;
+
+    if (!isCurrentQnaBookmarked &&
+        LearningDetailState().isShowBookMarkOnlyFilterActive(ref)) {
+      ref.read(studyBookmarkFilterProvider.notifier).toggle();
+    }
     final selectedQuestionIndex = await Navigator.push<int>(
       ref.context,
       MaterialPageRoute(

@@ -33,7 +33,7 @@ class EntireQuestionListView extends HookConsumerWidget
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(currentStudyQnaIndexProvider);
-    final isBookmarkFilterActive = this.isBookmarkFilterActive(ref);
+    final isBookmarkFilterActive = this.isShowBookMarkOnlyFilterActive(ref);
 
     // 북마크 필터링된 리스트 생성
     final filteredQnas = getFilteredQnas(ref, isBookmarkFilterActive);
@@ -164,7 +164,7 @@ class EntireQuestionListView extends HookConsumerWidget
     return Material(
       key: key,
       color: isSelected ? AppColor.of.brand1 : AppColor.of.white,
-      child: BounceTapper(
+      child: InkWell(
         onTap: () => Navigator.pop(ref.context, originalIndex),
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -213,18 +213,17 @@ class EntireQuestionListView extends HookConsumerWidget
     WidgetRef ref,
     SelectableQnaEntity<CommonQnaEntity> selectableQna,
   ) {
-    return BounceTapper(
-      shrinkScaleFactor: 1.0,
-      highlightColor: Colors.transparent,
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () => onToggleQnaItemBookmark(ref, selectableQna),
       child: Padding(
-        padding: const EdgeInsets.only(right: 16),
+        padding: const EdgeInsets.only(left: 10, right: 16),
         child: BookMarkButton(
           bgColor: AppColor.of.background1,
           size: 24,
           radius: 6.4,
           iconWidth: 9.32,
-          onTap: () => onToggleQnaItemBookmark(ref, selectableQna),
+          onTap: () {},
           isBookMarked: selectableQna.isSelected,
         ),
       ),

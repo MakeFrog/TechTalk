@@ -144,7 +144,7 @@ abstract interface class UserRepository {
   /// 북마크된 질문 목록 호출
   ///
   Future<Result<List<SelectableQnaEntity<CommonQnaEntity>>>> getBookMarkedQnas({
-    required TechSetEntity techSet,
+    required String techSetId,
   });
 
   ///

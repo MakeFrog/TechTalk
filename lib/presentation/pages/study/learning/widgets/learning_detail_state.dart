@@ -43,7 +43,7 @@ mixin class LearningDetailState {
   ///
   /// 북마크 모아보기 필터 활성화 여부
   ///
-  bool isBookmarkFilterActive(WidgetRef ref) =>
+  bool isShowBookMarkOnlyFilterActive(WidgetRef ref) =>
       ref.watch(studyBookmarkFilterProvider);
 
   /// 북마크 필터링된 리스트를 반환

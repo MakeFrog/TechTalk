@@ -12,9 +12,7 @@ class StudyQnas extends _$StudyQnas {
   @override
   FutureOr<List<SelectableQnaEntity<CommonQnaEntity>>> build(
       String topicId) async {
-    final targetTechSet = TechSetEntity.mappedFromId(topicId);
-    final response =
-        await userRepository.getBookMarkedQnas(techSet: targetTechSet);
+    final response = await userRepository.getBookMarkedQnas(techSetId: topicId);
     return response.fold(
       onSuccess: (qnas) {
         logger.i('단골 질문 리스트 호출');

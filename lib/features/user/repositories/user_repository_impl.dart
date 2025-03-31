@@ -408,11 +408,11 @@ final class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<Result<List<SelectableQnaEntity<CommonQnaEntity>>>> getBookMarkedQnas({
-    required TechSetEntity techSet,
+    required String techSetId,
   }) async {
     try {
       // 1. 모든 질문 가져오기
-      final allQnasResult = await _topicRepository.getTopicQnas(techSet.id);
+      final allQnasResult = await _topicRepository.getTopicQnas(techSetId);
       final allQnas = allQnasResult.fold(
         onSuccess: (value) => value,
         onFailure: (e) {
@@ -423,7 +423,7 @@ final class UserRepositoryImpl implements UserRepository {
 
       // 2. 북마크된 질문 ID 목록 가져오기
       final bookmarkedIds = await _userRemoteDataSource.getBookmarkedCommonQnas(
-        techSetId: techSet.id,
+        techSetId: techSetId,
       );
 
       // 3. 모든 질문을 SelectableQnaEntity로 변환하고 북마크 상태에 따라 isSelected 설정
