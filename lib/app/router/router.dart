@@ -8,9 +8,11 @@ import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_route_arg.dart';
+import 'package:techtalk/presentation/pages/interview/interview_level_selection/constant/interview_level_selection_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/interview_level_selection/interview_level_selection_page.dart';
+import 'package:techtalk/presentation/pages/interview/proficiency_interview_topic_selection/constant/proficiency_interview_topic_selection_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/proficiency_interview_topic_selection/proficiency_interview_topic_selection_page.dart';
-import 'package:techtalk/presentation/pages/interview/question_count_select/providers/select_question_count_route_arg.dart';
+import 'package:techtalk/presentation/pages/interview/question_count_select/constant/select_question_count_route_argument.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
@@ -149,12 +151,10 @@ class SignUpRoute extends GoRouteData {
     TypedGoRoute<InterviewTopicSelectRoute>(
       path: InterviewTopicSelectRoute.path,
       name: InterviewTopicSelectRoute.name,
-      routes: [
-        TypedGoRoute<QuestionCountSelectPageRoute>(
-          path: QuestionCountSelectPageRoute.path,
-          name: QuestionCountSelectPageRoute.name,
-        ),
-      ],
+    ),
+    TypedGoRoute<QuestionCountSelectPageRoute>(
+      path: QuestionCountSelectPageRoute.path,
+      name: QuestionCountSelectPageRoute.name,
     ),
     TypedGoRoute<ProfileSettingRoute>(
       path: ProfileSettingRoute.name,
@@ -274,11 +274,15 @@ class StudyRoute extends GoRouteData {
 }
 
 class ProficiencyInterviewTopicSelectionRoute extends GoRouteData {
+  ProficiencyInterviewTopicSelectionRoute(this.$extra);
+
   static const String path = 'proficiency-interview-topic-selection';
+
+  final ProficiencyInterviewTopicSelectionRouteArgument $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const ProficiencyInterviewTopicSelectionPage();
+    return ProficiencyInterviewTopicSelectionPage($extra);
   }
 }
 
@@ -332,13 +336,15 @@ class YoutubeContentsMainListRoute extends GoRouteData {
 }
 
 class InterviewLevelSelectionRoute extends GoRouteData {
-  InterviewLevelSelectionRoute();
+  const InterviewLevelSelectionRoute(this.$extra);
 
   static const String path = 'interview-level-selection';
 
+  final InterviewLevelSelectionRouteArg $extra;
+
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const InterviewLevelSelectionPage();
+    return InterviewLevelSelectionPage($extra);
   }
 }
 
@@ -448,41 +454,32 @@ class WrongAnswerRoute extends GoRouteData {
 }
 
 class InterviewTopicSelectRoute extends GoRouteData {
-  InterviewTopicSelectRoute(this.type);
+  InterviewTopicSelectRoute(this.interviewType);
 
-  static const String path = 'interview/:type';
+  static const String path = 'topic-select';
   static const String name = 'topic select';
   static late InterviewType arg;
 
-  final InterviewType type;
+  final String interviewType;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    arg = type;
+    arg = InterviewType.getByName(interviewType);
     return const InterviewTopicSelectPage();
   }
 }
 
 class QuestionCountSelectPageRoute extends GoRouteData {
-  QuestionCountSelectPageRoute(this.type, this.topicId);
+  const QuestionCountSelectPageRoute(this.$extra);
 
-  static const String path = ':topicId';
+  final SelectQuestionCountRouteArg $extra;
+
+  static const String path = 'question-count-select';
   static const String name = 'question count select';
-
-  final String topicId;
-  final InterviewType type;
-
-  static late SelectQuestionCountRouteArg arg;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const QuestionCountSelectPage();
-  }
-
-  /// NOTE: $extra 이슈로 직접 업데이트
-  void updateArg(
-      {required InterviewType type, required List<TopicEntity> topics}) {
-    arg = (topics: topics, type: type);
+    return QuestionCountSelectPage(argument: $extra);
   }
 }
 

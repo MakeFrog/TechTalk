@@ -88,16 +88,14 @@ RouteBase get $mainRoute => GoRouteData.$route(
       factory: $MainRouteExtension._fromState,
       routes: [
         GoRouteData.$route(
-          path: 'interview/:type',
+          path: 'topic-select',
           name: 'topic select',
           factory: $InterviewTopicSelectRouteExtension._fromState,
-          routes: [
-            GoRouteData.$route(
-              path: ':topicId',
-              name: 'question count select',
-              factory: $QuestionCountSelectPageRouteExtension._fromState,
-            ),
-          ],
+        ),
+        GoRouteData.$route(
+          path: 'question-count-select',
+          name: 'question count select',
+          factory: $QuestionCountSelectPageRouteExtension._fromState,
         ),
         GoRouteData.$route(
           path: 'profile-setting',
@@ -105,9 +103,9 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $ProfileSettingRouteExtension._fromState,
         ),
         GoRouteData.$route(
-          path: 'search-tech-set',
-          name: 'search-tech-set',
-          factory: $SearchTechSetExtension._fromState,
+          path: 'proficiency-interview-topic-selection',
+          name: 'proficiency-interview-topic-selection',
+          factory: $ProficiencyInterviewTopicSelectionRouteExtension._fromState,
         ),
         GoRouteData.$route(
           path: 'job-group-setting',
@@ -214,11 +212,14 @@ extension $MainRouteExtension on MainRoute {
 extension $InterviewTopicSelectRouteExtension on InterviewTopicSelectRoute {
   static InterviewTopicSelectRoute _fromState(GoRouterState state) =>
       InterviewTopicSelectRoute(
-        _$InterviewTypeEnumMap._$fromName(state.pathParameters['type']!),
+        state.uri.queryParameters['interview-type']!,
       );
 
   String get location => GoRouteData.$location(
-        '/interview/${Uri.encodeComponent(_$InterviewTypeEnumMap[type]!)}',
+        '/topic-select',
+        queryParams: {
+          'interview-type': interviewType,
+        },
       );
 
   void go(BuildContext context) => context.go(location);
@@ -231,34 +232,27 @@ extension $InterviewTopicSelectRouteExtension on InterviewTopicSelectRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-const _$InterviewTypeEnumMap = {
-  InterviewType.commonSingleTopic: 'common-single-topic',
-  InterviewType.commonPracticalTopic: 'common-practical-topic',
-  InterviewType.ai: 'ai',
-  InterviewType.resume: 'resume',
-  InterviewType.youtube: 'youtube',
-};
-
 extension $QuestionCountSelectPageRouteExtension
     on QuestionCountSelectPageRoute {
   static QuestionCountSelectPageRoute _fromState(GoRouterState state) =>
       QuestionCountSelectPageRoute(
-        _$InterviewTypeEnumMap._$fromName(state.pathParameters['type']!),
-        state.pathParameters['topicId']!,
+        state.extra as SelectQuestionCountRouteArg,
       );
 
   String get location => GoRouteData.$location(
-        '/interview/${Uri.encodeComponent(_$InterviewTypeEnumMap[type]!)}/${Uri.encodeComponent(topicId)}',
+        '/question-count-select',
       );
 
-  void go(BuildContext context) => context.go(location);
+  void go(BuildContext context) => context.go(location, extra: $extra);
 
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
 
   void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
+      context.pushReplacement(location, extra: $extra);
 
-  void replace(BuildContext context) => context.replace(location);
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
 }
 
 extension $ProfileSettingRouteExtension on ProfileSettingRoute {
@@ -279,23 +273,28 @@ extension $ProfileSettingRouteExtension on ProfileSettingRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $SearchTechSetExtension on ProficiencyInterviewTopicSelectionRoute {
+extension $ProficiencyInterviewTopicSelectionRouteExtension
+    on ProficiencyInterviewTopicSelectionRoute {
   static ProficiencyInterviewTopicSelectionRoute _fromState(
           GoRouterState state) =>
-      ProficiencyInterviewTopicSelectionRoute();
-
-  String get location => GoRouteData.$location(
-        '/search-tech-set',
+      ProficiencyInterviewTopicSelectionRoute(
+        state.extra as ProficiencyInterviewTopicSelectionRouteArgument,
       );
 
-  void go(BuildContext context) => context.go(location);
+  String get location => GoRouteData.$location(
+        '/proficiency-interview-topic-selection',
+      );
 
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
 
   void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
+      context.pushReplacement(location, extra: $extra);
 
-  void replace(BuildContext context) => context.replace(location);
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
 }
 
 extension $JobGroupSettingRouteExtension on JobGroupSettingRoute {
@@ -395,20 +394,24 @@ extension $YoutubeContentsMainListRouteExtension
 extension $InterviewLevelSelectionRouteExtension
     on InterviewLevelSelectionRoute {
   static InterviewLevelSelectionRoute _fromState(GoRouterState state) =>
-      InterviewLevelSelectionRoute();
+      InterviewLevelSelectionRoute(
+        state.extra as InterviewLevelSelectionRouteArg,
+      );
 
   String get location => GoRouteData.$location(
         '/interview-level-selection',
       );
 
-  void go(BuildContext context) => context.go(location);
+  void go(BuildContext context) => context.go(location, extra: $extra);
 
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
 
   void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
+      context.pushReplacement(location, extra: $extra);
 
-  void replace(BuildContext context) => context.replace(location);
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
 }
 
 extension $YoutubeDetailRouteExtension on YoutubeDetailRoute {
@@ -623,6 +626,14 @@ extension $ChatListRouteExtension on ChatListRoute {
   void replace(BuildContext context) =>
       context.replace(location, extra: $extra);
 }
+
+const _$InterviewTypeEnumMap = {
+  InterviewType.commonSingleTopic: 'common-single-topic',
+  InterviewType.commonPracticalTopic: 'common-practical-topic',
+  InterviewType.proficiency: 'proficiency',
+  InterviewType.resume: 'resume',
+  InterviewType.youtube: 'youtube',
+};
 
 extension $ChatPageRouteExtension on ChatPageRoute {
   static ChatPageRoute _fromState(GoRouterState state) => ChatPageRoute(

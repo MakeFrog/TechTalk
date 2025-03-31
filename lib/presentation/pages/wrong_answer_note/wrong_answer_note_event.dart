@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/presentation/pages/interview/question_count_select/constant/select_question_count_route_argument.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/review_note_detail_page_controller.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/selected_wrong_answer_topic_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_blur_provider.dart';
@@ -38,9 +39,11 @@ mixin class WrongAnswerNoteEvent {
     final selectedTopic = ref.read(selectedWrongAnswerTopicProvider);
     const type = InterviewType.commonSingleTopic;
 
-    final route = QuestionCountSelectPageRoute(type, selectedTopic!.id);
+    final arg = SelectQuestionCountRouteArg(
+        interviewType: type,
+        topics: selectedTopic == null ? [] : [selectedTopic]);
 
-    route.updateArg(type: type, topics: [selectedTopic]);
+    final route = QuestionCountSelectPageRoute(arg);
 
     route.push(ref.context);
   }
@@ -49,7 +52,7 @@ mixin class WrongAnswerNoteEvent {
   /// 주제 선택 페이지로 이동
   ///
   void routeToTopicSelection(WidgetRef ref, {required InterviewType type}) {
-    InterviewTopicSelectRoute(type).push(ref.context);
+    InterviewTopicSelectRoute(type.name).push(ref.context);
   }
 
   ///

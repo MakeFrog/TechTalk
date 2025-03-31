@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/presentation/pages/interview/question_count_select/constant/select_question_count_route_argument.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/providers/interview_topic_select_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/providers/selected_interview_topics_provider.dart';
 
@@ -25,13 +26,10 @@ mixin class InterviewTopicSelectEvent {
   ) {
     final interviewType = ref.read(interviewTopicSelectRouteArgProvider);
     final selectedTopics = ref.read(selectedInterviewTopicsProvider);
-    final route = QuestionCountSelectPageRoute(
-      interviewType,
-      selectedTopics.singleOrNull?.id ??
-          selectedTopics.map((e) => e.id).toString(),
-    );
+    final arg = SelectQuestionCountRouteArg(
+        interviewType: interviewType, topics: selectedTopics);
+    final route = QuestionCountSelectPageRoute(arg);
 
-    route.updateArg(type: interviewType, topics: selectedTopics);
     route.push(ref.context);
   }
 }

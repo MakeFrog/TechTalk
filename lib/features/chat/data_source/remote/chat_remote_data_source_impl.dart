@@ -37,7 +37,7 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
           .get(),
       InterviewType.youtube => throw Exception('유튜브 면접은 면접 리스트를 생성 및 호출하지 않음'),
       // TODO: Handle this case.
-      InterviewType.ai => throw UnimplementedError(),
+      InterviewType.proficiency => throw UnimplementedError(),
     };
 
     return [

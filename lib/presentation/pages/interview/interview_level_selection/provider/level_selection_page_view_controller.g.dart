@@ -7,7 +7,7 @@ part of 'level_selection_page_view_controller.dart';
 // **************************************************************************
 
 String _$levelSelectionPageViewControllerHash() =>
-    r'61d28ce3de7aecbad03fc8a942e533e548415df4';
+    r'3b943a724dfa97e1b0f5b4a78f006362f73bd528';
 
 /// See also [LevelSelectionPageViewController].
 @ProviderFor(LevelSelectionPageViewController)

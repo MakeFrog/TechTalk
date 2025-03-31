@@ -17,7 +17,7 @@ mixin class ProfileSettingEvent {
   ///
   /// 프로필 이미지 탭 되었을 때
   ///
-  void onProfileImgTapped(WidgetRef ref) async {
+  Future<void> onProfileImgTapped(WidgetRef ref) async {
     await EasyLoading.show();
     if (FocusScope.of(ref.context).hasFocus) {
       FocusScope.of(ref.context).unfocus();
@@ -81,7 +81,7 @@ mixin class ProfileSettingEvent {
       },
     );
   }
-
+  
   ///
   /// 프로필 정보 저장
   ///

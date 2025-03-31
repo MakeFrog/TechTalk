@@ -18,15 +18,18 @@ class _Scaffold extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        leadingView,
-        const Gap(24),
-        searchBar,
-        selectedTechSets,
-        recommendedTechSets,
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          leadingView,
+          const Gap(24),
+          searchBar,
+          selectedTechSets,
+          recommendedTechSets,
+          const Gap(76)
+        ],
+      ),
     );
   }
 }

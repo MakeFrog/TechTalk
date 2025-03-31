@@ -9,7 +9,7 @@ enum InterviewType {
     logoPath: Assets.iconsCommonInterviewLogo,
     interviewEndIllust: Assets.imagesInductionSingle,
   ),
-  ai(
+  proficiency(
     logoPath: Assets.iconsAiInterviewLogo,
     interviewEndIllust: Assets.imagesInductionResume,
   ),
@@ -21,6 +21,11 @@ enum InterviewType {
     logoPath: Assets.iconsYoutubeInterviewLogo,
     interviewEndIllust: Assets.imagesInductionResume,
   );
+
+  static InterviewType getByName(String name) {
+    return InterviewType.values.firstWhere((e) => e.name == name,
+        orElse: () => throw Exception('잘못된 타입'));
+  }
 
   /// 대표 로고
   final String logoPath;

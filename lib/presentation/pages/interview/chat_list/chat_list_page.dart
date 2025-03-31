@@ -78,7 +78,7 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
                 throw Exception('타입을 지정해주어야 합니다1');
               case InterviewType.youtube:
                 throw Exception('유튜브 면접은 채팅방 면접 페이지에 진입하지 않음');
-              case InterviewType.ai:
+              case InterviewType.proficiency:
                 logger.e('지정 필요');
               // TODO: Handle this case.
             }
@@ -111,7 +111,7 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
           // TODO: Handle this case.
           InterviewType.youtube => '',
           // TODO: Handle this case.
-          InterviewType.ai => '',
+          InterviewType.proficiency => '',
         },
       );
 

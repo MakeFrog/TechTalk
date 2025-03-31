@@ -13,7 +13,7 @@ import 'package:techtalk/presentation/pages/home/widgets/interview_indicator_car
 class AiInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
   const AiInterviewCard({super.key});
 
-  static const InterviewType interviewType = InterviewType.ai;
+  static const InterviewType interviewType = InterviewType.proficiency;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
