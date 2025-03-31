@@ -19,6 +19,8 @@ import 'package:techtalk/presentation/widgets/common/button/book_mark_button.dar
 import 'package:techtalk/presentation/widgets/common/input/flat_switch.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_bookmark_filter_provider.dart';
 
+/// 전체 질문 목록을 보여주는 뷰
+/// 북마크 필터링 기능을 포함
 class EntireQuestionListView extends HookConsumerWidget
     with LearningDetailState, LearningDetailEvent {
   const EntireQuestionListView({
@@ -34,9 +36,7 @@ class EntireQuestionListView extends HookConsumerWidget
     final isBookmarkFilterActive = this.isBookmarkFilterActive(ref);
 
     // 북마크 필터링된 리스트 생성
-    final filteredQnas = isBookmarkFilterActive
-        ? qnas(ref).where((qna) => qna.isSelected).toList()
-        : qnas(ref);
+    final filteredQnas = getFilteredQnas(ref, isBookmarkFilterActive);
 
     final itemKeys = List.generate(
       qnas(ref).length,
@@ -45,88 +45,109 @@ class EntireQuestionListView extends HookConsumerWidget
     final scrollController = useScrollController();
 
     // 현재 아이템의 필터링된 인덱스 찾기
-    final filteredCurrentIndex = isBookmarkFilterActive
-        ? filteredQnas
-            .indexWhere((qna) => qna.qna.id == qnas(ref)[currentIndex].qna.id)
-        : currentIndex;
+    final filteredCurrentIndex = getFilteredCurrentIndex(
+      ref,
+      currentIndex,
+      isBookmarkFilterActive,
+      filteredQnas,
+    );
 
     usePostFrameEffect(
       () {
-        if (filteredCurrentIndex >= 0 &&
-            itemKeys[filteredCurrentIndex].currentContext != null) {
-          Scrollable.ensureVisible(
-              itemKeys[filteredCurrentIndex].currentContext!);
-        }
+        scrollToCurrentItem(
+          itemKeys,
+          filteredCurrentIndex,
+        );
       },
       [filteredCurrentIndex],
     );
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: const AppBackButton(),
-        title: Text(tr(LocaleKeys.learning_all_question)),
-        titleSpacing: 0,
-        actions: [
-          Text(
-            '북마크 모아보기',
-            style: AppTextStyle.alert1,
-          ),
-          const Gap(6),
-          Row(
-            children: [
-              FlatSwitch(
-                height: 24,
-                value: isBookmarkFilterActive,
-                bgColor: AppColor.of.blue2,
-                onTap: (_) => onToggleBookmarkFilter(ref),
-              ),
-              const Gap(16),
-            ],
-          ),
-        ],
+      appBar: _buildAppBar(ref, isBookmarkFilterActive),
+      body: _buildBody(
+        ref,
+        scrollController,
+        filteredQnas,
+        currentIndex,
+        itemKeys,
       ),
-      body: SingleChildScrollView(
-        controller: scrollController,
-        padding: const EdgeInsets.symmetric(
-          vertical: 8,
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar(
+    WidgetRef ref,
+    bool isBookmarkFilterActive,
+  ) {
+    return AppBar(
+      backgroundColor: Colors.white,
+      leading: const AppBackButton(),
+      title: Text(tr(LocaleKeys.learning_all_question)),
+      titleSpacing: 0,
+      actions: [
+        Text(
+          '북마크 모아보기',
+          style: AppTextStyle.alert1,
         ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              ...filteredQnas.asMap().entries.map((entry) {
-                final index = entry.key;
-                final qna = entry.value;
-                final originalIndex =
-                    qnas(ref).indexWhere((q) => q.qna.id == qna.qna.id);
+        const Gap(6),
+        Row(
+          children: [
+            FlatSwitch(
+              height: 24,
+              value: isBookmarkFilterActive,
+              bgColor: AppColor.of.blue2,
+              onTap: (_) => onToggleBookmarkFilter(ref),
+            ),
+            const Gap(16),
+          ],
+        ),
+      ],
+    );
+  }
 
-                final item = _buildQuestion(
-                  itemKeys[originalIndex],
-                  ref,
-                  index, // 필터링된 인덱스 (1부터 시작)
-                  qna,
-                  originalIndex == currentIndex,
-                  originalIndex, // 원본 인덱스
-                );
+  Widget _buildBody(
+    WidgetRef ref,
+    ScrollController scrollController,
+    List<SelectableQnaEntity<CommonQnaEntity>> filteredQnas,
+    int currentIndex,
+    List<GlobalKey> itemKeys,
+  ) {
+    return SingleChildScrollView(
+      controller: scrollController,
+      padding: const EdgeInsets.symmetric(
+        vertical: 8,
+      ),
+      child: SafeArea(
+        child: Column(
+          children: [
+            ...filteredQnas.asMap().entries.map((entry) {
+              final index = entry.key;
+              final qna = entry.value;
+              final originalIndex =
+                  qnas(ref).indexWhere((q) => q.qna.id == qna.qna.id);
 
-                if (index != filteredQnas.length - 1) {
-                  return Column(
-                    children: [
-                      item,
-                      Divider(
-                        color: AppColor.of.gray1,
-                        height: 1,
-                        thickness: 1,
-                      ),
-                    ],
-                  );
-                } else {
-                  return item;
-                }
-              })
-            ],
-          ),
+              final item = _buildQuestion(
+                itemKeys[originalIndex],
+                ref,
+                index,
+                qna,
+                originalIndex == currentIndex,
+                originalIndex,
+              );
+
+              return Column(
+                children: [
+                  item,
+                  if (index != filteredQnas.length - 1)
+                    Divider(
+                      color: AppColor.of.gray1,
+                      height: 1,
+                      thickness: 1,
+                    ),
+                ],
+              );
+            })
+          ],
         ),
       ),
     );
@@ -135,10 +156,10 @@ class EntireQuestionListView extends HookConsumerWidget
   Widget _buildQuestion(
     Key key,
     WidgetRef ref,
-    int displayIndex, // 표시될 인덱스 (1부터 시작)
+    int displayIndex,
     SelectableQnaEntity<CommonQnaEntity> selectableQna,
     bool isSelected,
-    int originalIndex, // 원본 인덱스
+    int originalIndex,
   ) {
     return Material(
       key: key,
@@ -151,45 +172,60 @@ class EntireQuestionListView extends HookConsumerWidget
           ),
           child: Row(
             children: [
-              SizedBox(
-                width: 48,
-                child: Text(
-                  '${displayIndex + 1}',
-                  textAlign: TextAlign.center,
-                  style: AppTextStyle.body3.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: isSelected ? AppColor.of.brand3 : AppColor.of.gray3,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 16),
-                  child: Text(
-                    selectableQna.qna.question,
-                    style: AppTextStyle.newBody,
-                  ),
-                ),
-              ),
-              BounceTapper(
-                shrinkScaleFactor: 1.0,
-                highlightColor: Colors.transparent,
-                onTap: () => onToggleQnaItemBookmark(ref, selectableQna.qna),
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 16),
-                  child: BookMarkButton(
-                    bgColor: AppColor.of.background1,
-                    size: 24,
-                    radius: 6.4,
-                    iconWidth: 9.32,
-                    onTap: () =>
-                        onToggleQnaItemBookmark(ref, selectableQna.qna),
-                    isBookMarked: selectableQna.isSelected,
-                  ),
-                ),
-              ),
+              _buildQuestionNumber(displayIndex, isSelected),
+              _buildQuestionText(selectableQna),
+              _buildBookmarkButton(ref, selectableQna),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuestionNumber(int displayIndex, bool isSelected) {
+    return SizedBox(
+      width: 48,
+      child: Text(
+        '${displayIndex + 1}',
+        textAlign: TextAlign.center,
+        style: AppTextStyle.body3.copyWith(
+          fontWeight: FontWeight.w700,
+          color: isSelected ? AppColor.of.brand3 : AppColor.of.gray3,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuestionText(
+      SelectableQnaEntity<CommonQnaEntity> selectableQna) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.only(right: 16),
+        child: Text(
+          selectableQna.qna.question,
+          style: AppTextStyle.newBody,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBookmarkButton(
+    WidgetRef ref,
+    SelectableQnaEntity<CommonQnaEntity> selectableQna,
+  ) {
+    return BounceTapper(
+      shrinkScaleFactor: 1.0,
+      highlightColor: Colors.transparent,
+      onTap: () => onToggleQnaItemBookmark(ref, selectableQna.qna),
+      child: Padding(
+        padding: const EdgeInsets.only(right: 16),
+        child: BookMarkButton(
+          bgColor: AppColor.of.background1,
+          size: 24,
+          radius: 6.4,
+          iconWidth: 9.32,
+          onTap: () => onToggleQnaItemBookmark(ref, selectableQna.qna),
+          isBookMarked: selectableQna.isSelected,
         ),
       ),
     );

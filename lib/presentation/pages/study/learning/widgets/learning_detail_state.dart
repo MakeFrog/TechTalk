@@ -45,4 +45,38 @@ mixin class LearningDetailState {
   ///
   bool isBookmarkFilterActive(WidgetRef ref) =>
       ref.watch(studyBookmarkFilterProvider);
+
+  /// 북마크 필터링된 리스트를 반환
+  List<SelectableQnaEntity<CommonQnaEntity>> getFilteredQnas(
+    WidgetRef ref,
+    bool isBookmarkFilterActive,
+  ) {
+    return isBookmarkFilterActive
+        ? qnas(ref).where((qna) => qna.isSelected).toList()
+        : qnas(ref);
+  }
+
+  /// 현재 아이템의 필터링된 인덱스를 반환
+  int getFilteredCurrentIndex(
+    WidgetRef ref,
+    int currentIndex,
+    bool isBookmarkFilterActive,
+    List<SelectableQnaEntity<CommonQnaEntity>> filteredQnas,
+  ) {
+    return isBookmarkFilterActive
+        ? filteredQnas
+            .indexWhere((qna) => qna.qna.id == qnas(ref)[currentIndex].qna.id)
+        : currentIndex;
+  }
+
+  /// 현재 아이템으로 스크롤
+  void scrollToCurrentItem(
+    List<GlobalKey> itemKeys,
+    int filteredCurrentIndex,
+  ) {
+    if (filteredCurrentIndex >= 0 &&
+        itemKeys[filteredCurrentIndex].currentContext != null) {
+      Scrollable.ensureVisible(itemKeys[filteredCurrentIndex].currentContext!);
+    }
+  }
 }
