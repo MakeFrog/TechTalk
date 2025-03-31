@@ -5,20 +5,22 @@ import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/core/constants/assets.dart';
 
 class BookMarkButton extends StatelessWidget {
-  const BookMarkButton({
-    super.key,
-    required this.onTap,
-    required this.isBookMarked,
-    this.size = 56,
-    this.iconWidth = 20,
-    this.radius = 16,
-  });
+  const BookMarkButton(
+      {super.key,
+      required this.onTap,
+      required this.isBookMarked,
+      this.size = 56,
+      this.iconWidth = 20,
+      this.radius = 16,
+      this.bgColor = const Color(0xFFEDEFFF) // blue1,
+      });
 
   final VoidCallback onTap;
   final bool isBookMarked;
   final double radius;
   final double size;
   final double iconWidth;
+  final Color? bgColor;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class BookMarkButton extends StatelessWidget {
         height: size,
         width: size,
         decoration: BoxDecoration(
-          color: AppColor.of.blue1,
+          color: bgColor,
           borderRadius: BorderRadius.circular(
             radius,
           ),

@@ -1,11 +1,16 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/app/util/app_logger.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/core/modules/error_handling/result.dart';
+import 'package:techtalk/features/chat/repositories/entities/selectable_qna_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
+import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.dart';
+import 'package:techtalk/features/topic/repositories/topic_repository.dart';
 import 'package:techtalk/features/user/data_source/remote/models/bookmarked_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/uploaded_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
@@ -18,12 +23,14 @@ final class UserRepositoryImpl implements UserRepository {
     this._userLocalDataSource,
     this._youtubeRemoteDataSource,
     this._techSetRepository,
+    this._topicRepository,
   );
 
   final UserRemoteDataSource _userRemoteDataSource;
   final UserLocalDataSource _userLocalDataSource;
   final YoutubeRemoteDataSource _youtubeRemoteDataSource;
   final TechSetRepository _techSetRepository;
+  final TopicRepository _topicRepository;
 
   @override
   Future<Result<void>> createUser(UserEntity data) async {
@@ -396,6 +403,59 @@ final class UserRepositoryImpl implements UserRepository {
     } catch (e) {
       logger.e(e);
       return Result.failure(Exception(e));
+    }
+  }
+
+  @override
+  Future<Result<List<SelectableQnaEntity<CommonQnaEntity>>>> getBookMarkedQnas({
+    required TechSetEntity techSet,
+  }) async {
+    try {
+      // 1. 모든 질문 가져오기
+      final allQnasResult = await _topicRepository.getTopicQnas(techSet.id);
+      final allQnas = allQnasResult.fold(
+        onSuccess: (value) => value,
+        onFailure: (e) {
+          log('Failed to fetch all QnAs: $e');
+          return [];
+        },
+      );
+
+      // 2. 북마크된 질문 ID 목록 가져오기
+      final bookmarkedIds =
+          await _userRemoteDataSource.getBookmarkedCommonQnas();
+
+      // 3. 모든 질문을 SelectableQnaEntity로 변환하고 북마크 상태에 따라 isSelected 설정
+      final entities = allQnas
+          .map(
+            (qna) => SelectableQnaEntity<CommonQnaEntity>(
+              qna: qna,
+              isSelected: bookmarkedIds.contains(qna.id),
+            ),
+          )
+          .toList();
+
+      return Result.success(entities);
+    } catch (e) {
+      log('Error in getBookMarkedQnas: $e');
+      return Result.failure(Exception('UserRepository > $e'));
+    }
+  }
+
+  @override
+  Future<Result<void>> toggleBookmarkQna(
+      {required CommonQnaEntity question}) async {
+    try {
+      final isBookmarked =
+          await _userRemoteDataSource.checkIfContentIsBooMarked(question.id);
+      await _userRemoteDataSource.toggleBookmarkCommonQna(
+        questionId: question.id,
+        targetState: !isBookmarked,
+      );
+      return Result.success(null);
+    } catch (e) {
+      log('Error in toggleBookmarkQna: $e');
+      return Result.failure(Exception('UserRepository > $e'));
     }
   }
 }

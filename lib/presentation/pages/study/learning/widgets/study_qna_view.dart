@@ -8,9 +8,11 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/chat/repositories/entities/selectable_qna_entity.dart';
 import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.dart';
 import 'package:techtalk/presentation/pages/study/learning/learning_detail_event.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/study_qna_controller.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/learning_detail_state.dart';
 import 'package:techtalk/presentation/widgets/common/button/book_mark_button.dart';
 import 'package:techtalk/presentation/widgets/common/divider/list_view_divider.dart';
@@ -28,22 +30,25 @@ class StudyQnaView extends ConsumerWidget
       onPageChanged: (value) => onQuestionPageChanged(ref),
       itemCount: qnas(ref).length,
       itemBuilder: (context, index) => _StudyQna(
-        question: qnas(ref)[index],
+        question: qnas(ref)[index].qna,
+        isSelected: qnas(ref)[index].isSelected,
       ),
     );
   }
 }
 
-class _StudyQna extends HookWidget {
+class _StudyQna extends HookConsumerWidget with LearningDetailEvent {
   const _StudyQna({
     super.key,
     required this.question,
+    required this.isSelected,
   });
 
   final CommonQnaEntity question;
+  final bool isSelected;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
     return Container(
       padding: const EdgeInsets.only(bottom: 182),
@@ -51,7 +56,7 @@ class _StudyQna extends HookWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildLeadingMarkedView(),
+          _buildLeadingMarkedView(ref),
           const Gap(12),
           _buildQuestion(),
           const Gap(24),
@@ -61,12 +66,12 @@ class _StudyQna extends HookWidget {
     );
   }
 
-  Widget _buildLeadingMarkedView() {
+  Widget _buildLeadingMarkedView(WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.only(left: 16),
       child: BookMarkButton(
-        onTap: () {},
-        isBookMarked: true,
+        onTap: () => onToggleQnaItemBookmark(ref, question),
+        isBookMarked: isSelected,
         iconWidth: 11.65,
         size: 30,
         radius: 8,

@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
+import 'package:techtalk/features/chat/repositories/entities/selectable_qna_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
+import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.dart';
 import 'package:techtalk/features/user/data_source/remote/models/bookmarked_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/uploaded_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
@@ -127,9 +130,6 @@ abstract interface class UserRepository {
   });
 
   ///
-  ///
-  ///
-  ///
   /// 내가 업로드한 유튜브 영상 호출
   ///
   Future<
@@ -138,5 +138,19 @@ abstract interface class UserRepository {
       getPagedUploadedYoutube({
     DocumentSnapshot<UploadedYoutubeModel>? lastDocument,
     required int limit,
+  });
+
+  ///
+  /// 북마크된 질문 목록 호출
+  ///
+  Future<Result<List<SelectableQnaEntity<CommonQnaEntity>>>> getBookMarkedQnas({
+    required TechSetEntity techSet,
+  });
+
+  ///
+  /// 단골 qna 북마크 상태 토글
+  ///
+  Future<Result<void>> toggleBookmarkQna({
+    required CommonQnaEntity question,
   });
 }

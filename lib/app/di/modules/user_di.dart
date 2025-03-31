@@ -26,6 +26,7 @@ final class UserDependencyInjection extends FeatureDependencyInjection {
         userLocalDataSource,
         youtubeRemoteDataSource,
         techSetRepository,
+        topicRepository,
       ),
     );
   }

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/features/chat/repositories/entities/selectable_qna_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/current_study_qna_index_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_qna_controller.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/study/topic_selection/providers/selected_study_topic_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/study_bookmark_filter_provider.dart';
 
 mixin class LearningDetailState {
   ///
   /// 선택된 주제의 문답 리스트
   ///
-  AsyncValue<List<CommonQnaEntity>> qnasAsync(WidgetRef ref) {
+  AsyncValue<List<SelectableQnaEntity<CommonQnaEntity>>> qnasAsync(
+      WidgetRef ref) {
     return ref.watch(studyQnasProvider(selectedTopic(ref).id));
   }
 
@@ -28,7 +31,7 @@ mixin class LearningDetailState {
   ///
   /// 문답 목록
   ///
-  List<CommonQnaEntity> qnas(WidgetRef ref) =>
+  List<SelectableQnaEntity<CommonQnaEntity>> qnas(WidgetRef ref) =>
       ref.watch(studyQnasProvider(selectedTopic(ref).id)).requireValue;
 
   ///
@@ -36,4 +39,10 @@ mixin class LearningDetailState {
   ///
   PageController controller(WidgetRef ref) =>
       ref.watch(studyQnaControllerProvider);
+
+  ///
+  /// 북마크 모아보기 필터 활성화 여부
+  ///
+  bool isBookmarkFilterActive(WidgetRef ref) =>
+      ref.watch(studyBookmarkFilterProvider);
 }

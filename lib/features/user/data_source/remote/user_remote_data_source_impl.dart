@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/user/data_source/remote/models/bookmarked_youtube_content_model.dart';
+import 'package:techtalk/features/user/data_source/remote/models/marked_common_question_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/uploaded_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
 import 'package:techtalk/features/user/user.dart';
@@ -300,6 +301,47 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       );
     } catch (e) {
       log('페이징 호출 실패: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<String>> getBookmarkedCommonQnas() async {
+    try {
+      final snapshot =
+          await FirestoreUsersRef.markedCommonQuestionDoc('react').get();
+      if (!snapshot.exists) {
+        return [];
+      }
+      final model = MarkedCommonQuestionModel.fromFirestore(
+        snapshot as DocumentSnapshot<Map<String, dynamic>>,
+        null,
+      );
+      return model.ids;
+    } catch (e) {
+      log('북마크된 공통 질문 목록 조회 실패: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> toggleBookmarkCommonQna({
+    required String questionId,
+    required bool targetState,
+  }) async {
+    try {
+      final docRef = FirestoreUsersRef.markedCommonQuestionDoc('react');
+      final model = MarkedCommonQuestionModel(
+        ids: targetState
+            ? [...(await getBookmarkedCommonQnas()), questionId]
+            : (await getBookmarkedCommonQnas())
+                .where((id) => id != questionId)
+                .toList(),
+      );
+
+      await docRef.set(model.toJson());
+    } catch (e) {
+      log('북마크 토글 실패: $e');
       rethrow;
     }
   }
