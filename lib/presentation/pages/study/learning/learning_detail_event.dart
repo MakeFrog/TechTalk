@@ -5,7 +5,7 @@ import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.
 import 'package:techtalk/presentation/pages/study/learning/providers/current_study_qna_index_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_qna_controller.dart';
-import 'package:techtalk/presentation/pages/study/learning/providers/study_qnas_provider.dart';
+import 'package:techtalk/presentation/providers/topic/selectable_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/entire_question_list_view.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/learning_detail_state.dart';
 import 'package:techtalk/presentation/pages/study/topic_selection/providers/selected_study_topic_provider.dart';
@@ -28,7 +28,7 @@ mixin class LearningDetailEvent {
     /// 현재 화면에 보이고 있는 qna의 북마크 여부 확인
     final currentQnaIndex = ref.read(currentStudyQnaIndexProvider);
     final currentQna = ref
-        .read(studyQnasProvider(ref.read(selectedStudyTopicProvider).id))
+        .read(selectableQnasProvider(ref.read(selectedStudyTopicProvider).id))
         .value?[currentQnaIndex];
     final isCurrentQnaBookmarked = currentQna?.isSelected ?? false;
 
@@ -59,7 +59,7 @@ mixin class LearningDetailEvent {
       WidgetRef ref, SelectableQnaEntity<CommonQnaEntity> question) async {
     try {
       await ref
-          .read(studyQnasProvider(ref.read(selectedStudyTopicProvider).id)
+          .read(selectableQnasProvider(ref.read(selectedStudyTopicProvider).id)
               .notifier)
           .toggleBookmark(question);
     } catch (e) {

@@ -5,10 +5,10 @@ import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/user/user.dart';
 
-part 'study_qnas_provider.g.dart';
+part 'selectable_qnas_provider.g.dart';
 
 @riverpod
-class StudyQnas extends _$StudyQnas {
+class SelectableQnas extends _$SelectableQnas {
   @override
   FutureOr<List<SelectableQnaEntity<CommonQnaEntity>>> build(
       String topicId) async {

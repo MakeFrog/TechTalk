@@ -15,6 +15,7 @@ import 'package:techtalk/presentation/pages/interview/question_count_select/ques
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
+import 'package:techtalk/presentation/widgets/common/button/see_all_question_button.dart';
 
 class QuestionCountSelectPage extends BasePage
     with QuestionCountSelectState, QuestionCountSelectEvent {
@@ -64,7 +65,14 @@ class QuestionCountSelectPage extends BasePage
 
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
-      const BackButtonAppBar();
+      BackButtonAppBar(
+        actions: [
+          SeeAllQuestionButton(
+            padding: const EdgeInsets.only(right: 16),
+            onTap: () {},
+          )
+        ],
+      );
 
   @override
   bool get wrapWithSafeArea => false;

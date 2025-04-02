@@ -4,7 +4,7 @@ import 'package:techtalk/features/chat/repositories/entities/selectable_qna_enti
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/current_study_qna_index_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_qna_controller.dart';
-import 'package:techtalk/presentation/pages/study/learning/providers/study_qnas_provider.dart';
+import 'package:techtalk/presentation/providers/topic/selectable_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/study/topic_selection/providers/selected_study_topic_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_bookmark_filter_provider.dart';
 
@@ -14,7 +14,7 @@ mixin class LearningDetailState {
   ///
   AsyncValue<List<SelectableQnaEntity<CommonQnaEntity>>> qnasAsync(
       WidgetRef ref) {
-    return ref.watch(studyQnasProvider(selectedTopic(ref).id));
+    return ref.watch(selectableQnasProvider(selectedTopic(ref).id));
   }
 
   ///
@@ -32,7 +32,7 @@ mixin class LearningDetailState {
   /// 문답 목록
   ///
   List<SelectableQnaEntity<CommonQnaEntity>> qnas(WidgetRef ref) =>
-      ref.watch(studyQnasProvider(selectedTopic(ref).id)).requireValue;
+      ref.watch(selectableQnasProvider(selectedTopic(ref).id)).requireValue;
 
   ///
   /// 컨트롤러(pageView)

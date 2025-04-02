@@ -2,7 +2,7 @@ name: techtalk
 description: A new Flutter project.
 
 publish_to: "none"
-
+  
 version: 1.1.2+1
 
 environment:
