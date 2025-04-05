@@ -81,7 +81,7 @@ mixin class HomeEvent {
     ref.invalidate(userInfoProvider);
     ref.invalidate(mainBottomNavigationProvider);
     ref.invalidate(userTopicsProvider);
-    SplashRoute().go(ref.context);
+    const SplashRoute().go(ref.context);
   }
 
   ///

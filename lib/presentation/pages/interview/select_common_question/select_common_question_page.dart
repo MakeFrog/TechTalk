@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
 import 'package:techtalk/presentation/pages/interview/select_common_question/constant/select_common_question_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/select_common_question/provider/select_common_question_route_arg_provider.dart';
-import 'package:techtalk/presentation/pages/interview/select_common_question/provider/selected_interview_topic_provider.dart';
 
 import 'package:techtalk/presentation/pages/interview/select_common_question/select_common_question_event.dart';
 import 'package:techtalk/presentation/pages/interview/select_common_question/select_common_question_state.dart';

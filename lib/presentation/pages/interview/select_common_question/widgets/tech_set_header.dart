@@ -13,8 +13,7 @@ class _TechSetHeader extends ConsumerWidget with SelectCommonQuestionState {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedTopic =
-        ref.watch(selectedInterviewTopicProvider(arg.topics.first));
+    final targetTopic = selectedTopic(ref);
 
     return Container(
       height: height,
@@ -32,7 +31,7 @@ class _TechSetHeader extends ConsumerWidget with SelectCommonQuestionState {
               return Padding(
                 padding: const EdgeInsets.only(right: 8),
                 child: SelectableChip(
-                  isSelected: selectedTopic.id == topic.id,
+                  isSelected: targetTopic.id == topic.id,
                   onTap: () {
                     pageController.animateToPage(
                       index,
