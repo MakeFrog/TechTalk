@@ -46,30 +46,19 @@ class SelectableCommonQnas extends _$SelectableCommonQnas {
   ///
   /// 북마크 토글
   ///
-  Future<void> toggleBookmark(
-      SelectableQnaEntity<CommonQnaEntity> question) async {
-    final response = await userRepository.togglCommonQnaBookMark(
-        question: question.qna, setBookMark: !question.isSelected);
-    response.fold(
-      onSuccess: (_) {
-        // 토글 성공 시 현재 상태 업데이트
-        update((prev) {
-          return prev.map((qna) {
-            if (qna.qna.id == question.qna.id) {
-              return SelectableQnaEntity(
-                isSelected: !qna.isSelected,
-                qna: qna.qna,
-              );
-            }
-            return qna;
-          }).toList();
-        });
-      },
-      onFailure: (e) {
-        logger.e(e);
-        throw e;
-      },
-    );
+  void toggleBookmark(SelectableQnaEntity<CommonQnaEntity> question) {
+    // 토글 성공 시 현재 상태 업데이트
+    update((prev) {
+      return prev.map((qna) {
+        if (qna.qna.id == question.qna.id) {
+          return SelectableQnaEntity(
+            isSelected: !qna.isSelected,
+            qna: qna.qna,
+          );
+        }
+        return qna;
+      }).toList();
+    });
   }
 
   ///
