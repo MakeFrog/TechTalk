@@ -119,6 +119,28 @@ class UserInfo extends _$UserInfo {
   }
 
   ///
+  /// 역량별 면접 기록 존재 여부 값을 로컬에 저장
+  ///
+  Future<void> storeUserProficiencyRecordExistInfo() async {
+    final user = state.requireValue!;
+
+    if (user.hasProficiencyInterviewRecord == true) return;
+
+    final updatedUser = user.copyWith(hasProficiencyInterviewRecord: true);
+    await update((_) => updatedUser);
+    final response = await storeUserLocalInfo.call(updatedUser);
+
+    response.fold(
+      onSuccess: (_) {
+        log('유저 로컬 정보 업데이트 성공');
+      },
+      onFailure: (e) {
+        log('유저 로컬 정보 업데이트 실패');
+      },
+    );
+  }
+
+  ///
   /// 회원탈퇴
   ///
   Future<void> resign() async {

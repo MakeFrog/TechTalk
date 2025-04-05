@@ -52,6 +52,7 @@ mixin class SignUpEvent {
         lastLoginDate: DateTime.now(),
         recordedTopics: [],
         hasPracticalInterviewRecord: false,
+        hasProficiencyInterviewRecord: false,
         email: ref.read(userAuthProvider)?.email,
         completedInterviewCount: 0,
         isReviewRequestAvailable: true,

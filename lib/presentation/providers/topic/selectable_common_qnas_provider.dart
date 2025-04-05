@@ -20,11 +20,6 @@ class SelectableCommonQnas extends _$SelectableCommonQnas {
       onSuccess: (qnas) {
         // 북마크된 ID 저장
         bookMarkedQnaIds.clear();
-        qnas.forEach((qna) {
-          if (qna.isSelected) {
-            print('북마크됨 문제 : ${qna.qna.question}');
-          }
-        });
 
         bookMarkedQnaIds.addAll(
           qnas.where((qna) => qna.isSelected).map((qna) => qna.qna.id),

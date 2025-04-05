@@ -14,6 +14,7 @@ import 'package:techtalk/features/interview/index.dart';
 import 'package:techtalk/features/interview/use_case/param/start_interview_flow_use_case_param.dart';
 import 'package:techtalk/features/interview/use_case/start_interview_flow_use_case.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
+import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/practical_chat_room_list_provider.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
 import 'package:techtalk/presentation/providers/system/notification_status_provider.dart';
@@ -112,6 +113,10 @@ mixin class HomeEvent {
     final param = ProficiencyInterviewFlowParam.initial();
 
     StartInterviewFlowUseCase(param).executeProficiencyInterviewFlow();
+
+    Future.delayed(const Duration(milliseconds: 120), () {
+      ref.read(userInfoProvider.notifier).storeUserProficiencyRecordExistInfo();
+    });
   }
 
   ///
