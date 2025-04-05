@@ -67,12 +67,13 @@ class QuestionCountSelectPage extends BasePage
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
       BackButtonAppBar(
         actions: [
-          SeeAllQuestionButton(
-            padding: const EdgeInsets.only(right: 16),
-            onTap: () async {
-              await onSelectQuestionsBtnTapped(ref);
-            },
-          ),
+          if (arg(ref).interviewType.isCommonQuestionType)
+            SeeAllQuestionButton(
+              padding: const EdgeInsets.only(right: 16),
+              onTap: () async {
+                await onSelectQuestionsBtnTapped(ref);
+              },
+            ),
         ],
       );
 
