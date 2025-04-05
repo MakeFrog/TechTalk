@@ -23,7 +23,7 @@ class ProficiencyInterviewCard extends ConsumerWidget
       logoPath: interviewType.logoPath,
       title: tr(LocaleKeys.home_proficiencyInterview_title),
       subDescription: !(user(ref)?.hasPracticalInterviewRecord ?? false)
-          ? tr(LocaleKeys.home_practicalInterviewDesc)
+          ? tr(LocaleKeys.home_customizedQuestionsSubDescription)
           : null,
       onCardTapped: () {
         onAiInterviewCardTapped(ref);

@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
@@ -40,7 +42,11 @@ mixin class SelectCommonQuestionEvent {
     final provider = ref.read(selectableCommonQnasProvider(topic.id).notifier);
 
     if (provider.bookMarkedQnaIds.isEmpty) {
-      SnackBarService.showSnackBar('북마크된 질문이 없어요');
+      SnackBarService.showSnackBar(
+        rootNavigatorKey.currentContext!.tr(
+          LocaleKeys.interview_selectCommonQuestion_noBookmarkedQuestions,
+        ),
+      );
       return;
     }
 

@@ -73,11 +73,10 @@ class CommonInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
               ),
             ),
           ),
-          // if (user(ref)?.recordedTopics.isEmpty ?? true)
-
           Builder(
             builder: (context) {
-              if (user(ref)?.recordedTopics.isEmpty ?? true) {
+              if ((user(ref)?.recordedTopics.isEmpty ?? true) &&
+                  targetedTopics(ref).isEmpty) {
                 return Padding(
                   padding: const EdgeInsets.only(
                     bottom: 12,
@@ -86,7 +85,7 @@ class CommonInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
                     top: 4,
                   ),
                   child: Text(
-                    tr(LocaleKeys.home_topicInterviewDesc),
+                    tr(LocaleKeys.home_commonQuestionSubDescription),
                     style: AppTextStyle.body1.copyWith(
                       color: AppColor.of.gray3,
                     ),
@@ -136,7 +135,6 @@ class CommonInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
               }
             },
           ),
-
           _buildTopics(),
         ],
       ),

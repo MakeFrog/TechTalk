@@ -12,6 +12,7 @@
     "confirm": "Confirm",
     "all": "All",
     "notice": "Notice",
+    "seeAllBookMarked": "View Bookmarks",
     "practicalInterviewFormat": "Mock\nInterview",
     "topicInterviewFormat": "Topic\nInterview",
     "alreadySelected": "This skill is already chosen.",
@@ -97,6 +98,8 @@
     "pleaseTryAgain": "Please try again"
   },
   "home": {
+    "customizedQuestionsSubDescription": "Tailored questions on various topics!",
+    "commonQuestionSubDescription": "Popular interview questions, all in one place!",
     "cheerUpMessage": "Hi, {nickname}!\nWe're rooting for you!",
     "practicalInterview": "Mock Interview",
     "practicalInterviewDesc": "Select multiple topics and try a live interview!",
@@ -228,6 +231,12 @@
         "description": "Covers basic syntax and logic."
       }
     },
+    "selectCommonQuestion": {
+      "title": "Questions",
+      "selectBookmarked": "Select Bookmarked",
+      "startInterview": "Start Interview",
+      "noBookmarkedQuestions": "No bookmarked questions available"
+    },
     "interviewType": {
       "title": "Select interview question type",
       "description": "Collected from real interviews.",
@@ -252,7 +261,7 @@
     "resume": {
       "checkResume": "Check your resume\nand try again",
       "description": "Better resumes get more specific questions.",
-      "greeting": "Hi @{nickname}, I'll give you questions for your @{level} level."
+      "greeting": "Hi {nickname}, I'll give you questions for your {level} level."
     },
     "common": {
       "tryCommon": "Try our common questions, too!",

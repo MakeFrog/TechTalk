@@ -82,7 +82,7 @@ class EntireQuestionListView extends HookConsumerWidget
       titleSpacing: 0,
       actions: [
         Text(
-          '북마크 모아보기',
+          tr(LocaleKeys.common_seeAllBookMarked),
           style: AppTextStyle.alert1,
         ),
         const Gap(6),

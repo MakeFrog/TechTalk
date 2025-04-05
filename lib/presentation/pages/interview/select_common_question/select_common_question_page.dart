@@ -1,8 +1,10 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/features/topic/repositories/entities/topic_entity.dart';
 import 'package:techtalk/presentation/pages/interview/select_common_question/constant/select_common_question_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/select_common_question/provider/select_common_question_route_arg_provider.dart';
@@ -91,7 +93,11 @@ class SelectCommonQuestionPage extends BasePage
           width: double.infinity,
           child: FilledButton(
             onPressed: selectedQnas(ref).isNotEmpty ? () {} : null,
-            child: const Text('면접 시작하기'),
+            child: Text(
+              tr(
+                LocaleKeys.interview_selectCommonQuestion_startInterview,
+              ),
+            ),
           ),
         ),
       ),
@@ -101,11 +107,11 @@ class SelectCommonQuestionPage extends BasePage
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) {
     return BackButtonAppBar(
-      title: '질문 고르기',
+      title: tr(LocaleKeys.interview_selectCommonQuestion_title),
       actions: [
         RoundedOutlinedButton(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          label: '북마크 질문 선택',
+          label: tr(LocaleKeys.interview_selectCommonQuestion_selectBookmarked),
           enabled: !isAllBookmarkedQnasSelected(ref, topic: selectedTopic(ref)),
           onTap: () => selectAllBookMarkedQnas(ref),
         ),
