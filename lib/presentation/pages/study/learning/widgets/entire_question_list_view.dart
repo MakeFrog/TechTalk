@@ -1,5 +1,3 @@
-import 'package:bounce_tapper/bounce_tapper.dart';
-import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -13,11 +11,9 @@ import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/study/learning/learning_detail_event.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/current_study_qna_index_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/learning_detail_state.dart';
-import 'package:techtalk/presentation/widgets/common/animated/animated_size_and_fade.dart';
 import 'package:techtalk/presentation/widgets/common/button/app_back_button.dart';
 import 'package:techtalk/presentation/widgets/common/button/book_mark_button.dart';
 import 'package:techtalk/presentation/widgets/common/input/flat_switch.dart';
-import 'package:techtalk/presentation/pages/study/learning/providers/study_bookmark_filter_provider.dart';
 
 /// 전체 질문 목록을 보여주는 뷰
 /// 북마크 필터링 기능을 포함

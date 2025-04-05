@@ -18,6 +18,8 @@ import 'package:techtalk/presentation/pages/interview/question_count_select/cons
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_page.dart';
 import 'package:techtalk/presentation/pages/interview/question_creation/constant/question_creation_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/question_creation/question_creation_page.dart';
+import 'package:techtalk/presentation/pages/interview/select_common_question/constant/select_common_question_route_arg.dart';
+import 'package:techtalk/presentation/pages/interview/select_common_question/select_common_question_page.dart';
 import 'package:techtalk/presentation/pages/interview/select_commotion_interview_type/selected_common_interview_type_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
@@ -156,6 +158,10 @@ class SignUpRoute extends GoRouteData {
     TypedGoRoute<SelectedCommonInterviewTypeRoute>(
       path: SelectedCommonInterviewTypeRoute.path,
       name: SelectedCommonInterviewTypeRoute.name,
+    ),
+    TypedGoRoute<SelectCommonQuestionRoute>(
+      path: SelectCommonQuestionRoute.path,
+      name: SelectCommonQuestionRoute.name,
     ),
     TypedGoRoute<InterviewTopicSelectRoute>(
       path: InterviewTopicSelectRoute.path,
@@ -659,5 +665,21 @@ class SelectedCommonInterviewTypeRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const SelectedCommonInterviewTypePage();
+  }
+}
+
+class SelectCommonQuestionRoute extends GoRouteData {
+  const SelectCommonQuestionRoute(this.$extra);
+
+  static const String path = 'select-common-question';
+  static const String name = 'select-common-question';
+
+  final SelectCommonQuestionRouteArg $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return SelectCommonQuestionPage(
+      arg: $extra,
+    );
   }
 }

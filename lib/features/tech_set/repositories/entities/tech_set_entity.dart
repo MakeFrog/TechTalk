@@ -6,14 +6,21 @@ import 'package:techtalk/features/tech_set/repositories/enums/skill_category.enu
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 sealed class TechSetEntity {
-  final String id;    
+  final String id;
   final String name;
 
   TechSetEntity({required this.id, required this.name});
 
   static TechSetEntity mappedFromId(String id) {
     /// 1. 스킬 매핑
+
+    /// 기존 topic <--> techSet 마이그레이션에서
+    /// id를 모두 lowerCase로 수정하는걸 누락해서
+    /// 임시로 해당 예외 케이스만 추가
+    /// TODO: 다음 강업 배포 때 수정해서 반영할  것
+
     final targetSkill = techSetRepository.getSkillById(id);
+
     if (targetSkill.id != SkillEntity.undefinedKey) {
       return targetSkill;
     } else {

@@ -15,6 +15,7 @@ mixin class InterviewTopicSelectEvent {
     required TopicEntity topic,
   }) {
     HapticFeedback.lightImpact();
+    print(topic.id);
     ref.read(selectedInterviewTopicsProvider.notifier).toggleOrRemove(topic);
   }
 

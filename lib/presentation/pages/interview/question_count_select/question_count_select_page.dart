@@ -69,8 +69,10 @@ class QuestionCountSelectPage extends BasePage
         actions: [
           SeeAllQuestionButton(
             padding: const EdgeInsets.only(right: 16),
-            onTap: () {},
-          )
+            onTap: () async {
+              await onSelectQuestionsBtnTapped(ref);
+            },
+          ),
         ],
       );
 
