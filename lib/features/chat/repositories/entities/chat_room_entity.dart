@@ -134,6 +134,8 @@ class ChatRoomEntity {
         roomModel.topicIds.map(StoredTopics.getById).toList(),
       InterviewType.resume => <TopicEntity>[],
       InterviewType.youtube => <TopicEntity>[],
+      // TODO: Handle this case.
+      InterviewType.proficiency => <TopicEntity>[],
     };
 
     return ChatRoomEntity(

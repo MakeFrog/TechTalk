@@ -66,7 +66,7 @@ mixin class MyYoutubeBoardEvent {
     ref.context.pop();
     ref
         .read(mainBottomNavigationProvider.notifier)
-        .changeTab(MainNavigationTab.videoTutorial);
+        .changeTab(MainNavigationTab.youtube);
   }
 
   ///

@@ -8,13 +8,18 @@ import 'package:techtalk/presentation/pages/home/widgets/interview_indicator_car
 class ResumeInterviewCard extends ConsumerWidget with HomeEvent, HomeState {
   const ResumeInterviewCard({super.key});
 
+  static const InterviewType type = InterviewType.resume;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return InterviewIndicatorCard(
       title: '이력서 면접',
       onCardTapped: () =>
           routeToChatListPage(context, type: InterviewType.resume),
+      //routeToResumeChatList(ref);
       onPlusSuffixedBtnTapped: () => routeToResumeUploadPage(ref),
+      //  routeToChatListPage(context, type: InterviewType.resume);
+      logoPath: type.logoPath,
       showNewBadge: true,
     );
   }

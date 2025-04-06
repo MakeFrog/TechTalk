@@ -68,7 +68,7 @@ class AnalyzeYoutubePage extends BasePage
           child: Transform.scale(
             scale: 0.84,
             child: Lottie.asset(
-              Assets.lottieVideoUploading,
+              Assets.lottieDocumentLoading,
               width: AppSize.ratioHeight(375),
               fit: BoxFit.fitWidth,
             ),

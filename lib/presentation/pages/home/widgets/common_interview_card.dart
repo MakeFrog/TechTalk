@@ -1,7 +1,6 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -11,13 +10,14 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/presentation/pages/home/home_event.dart';
-import 'package:techtalk/presentation/pages/home/home_page.dart';
 import 'package:techtalk/presentation/pages/home/widgets/home_state.dart';
 import 'package:techtalk/presentation/widgets/base/controller_holder.dart';
 
-class SingleTopicInterviewCard extends ConsumerWidget
-    with HomeState, HomeEvent {
-  const SingleTopicInterviewCard({super.key});
+///
+/// 단골 질문 인터뷰 카드
+///
+class CommonInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
+  const CommonInterviewCard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,14 +30,21 @@ class SingleTopicInterviewCard extends ConsumerWidget
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Gap(12),
           Padding(
-            padding: const EdgeInsets.only(left: 24),
+            padding: const EdgeInsets.only(
+              left: 16,
+            ),
             child: Row(
               children: [
+                SvgPicture.asset(
+                  Assets.iconsCommonInterviewLogo,
+                ),
+                const Gap(4),
                 Expanded(
                   child: Text(
-                    tr(LocaleKeys.home_topicInterview),
-                    style: AppTextStyle.headline2,
+                    '단골 질문 면접',
+                    style: AppTextStyle.headline3,
                   ),
                 ),
                 BounceTapper(
@@ -48,21 +55,73 @@ class SingleTopicInterviewCard extends ConsumerWidget
                       type: InterviewType.commonSingleTopic,
                     );
                   },
-                  child: SvgPicture.asset(Assets.iconsRoundBlueCircle),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: SvgPicture.asset(
+                      Assets.iconsRoundedPlus,
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-          if (user(ref)?.recordedTopics.isEmpty ?? true)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12, left: 24, right: 24),
-              child: Text(
-                tr(LocaleKeys.home_topicInterviewDesc),
-                style: AppTextStyle.body1.copyWith(
-                  color: AppColor.of.gray3,
-                ),
-              ),
-            ),
+          // if (user(ref)?.recordedTopics.isEmpty ?? true)
+
+          Builder(
+            builder: (context) {
+              if (user(ref)?.recordedTopics.isEmpty ?? true) {
+                return Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 12,
+                    left: 48,
+                    right: 24,
+                    top: 4,
+                  ),
+                  child: Text(
+                    tr(LocaleKeys.home_topicInterviewDesc),
+                    style: AppTextStyle.body1.copyWith(
+                      color: AppColor.of.gray3,
+                    ),
+                  ),
+                );
+              } else {
+                return Container(
+                  padding: const EdgeInsets.only(top: 14, bottom: 0),
+                  child: BounceTapper(
+                    highlightBorderRadius: BorderRadius.circular(16),
+                    child: Container(
+                      padding: const EdgeInsets.only(
+                        left: 16,
+                        right: 24,
+                      ),
+                      height: 52,
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            Assets.iconsDice,
+                          ),
+                          const Gap(8),
+                          Text(
+                            '실전형 면접',
+                            style: AppTextStyle.title2,
+                          ),
+                          const Spacer(),
+                          SvgPicture.asset(
+                            Assets.iconsNewRightArrow,
+                            colorFilter: ColorFilter.mode(
+                              AppColor.of.gray2,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
+
           _buildTopics(),
         ],
       ),
@@ -102,17 +161,21 @@ class SingleTopicInterviewCard extends ConsumerWidget
             );
           },
           child: Container(
-            padding: const EdgeInsets.only(right: 24, left: 24),
-            height: 64,
+            padding: const EdgeInsets.only(
+              left: 16,
+              right: 24,
+            ),
+            height: 52,
             decoration: BoxDecoration(
+              // color: Colors.red,
               color: AppColor.of.white,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
               children: [
                 SizedBox(
-                  height: 40,
-                  width: 40,
+                  height: 28,
+                  width: 28,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(imgSize / 2),
                     child: Image.asset(
@@ -121,39 +184,17 @@ class SingleTopicInterviewCard extends ConsumerWidget
                     ),
                   ),
                 ),
-                const Gap(16),
+                const Gap(8),
                 Text(
                   topic.text,
-                  style: AppTextStyle.title1,
+                  style: AppTextStyle.title2,
                 ),
                 const Spacer(),
-                BounceTapper(
-                  highlightColor: Colors.transparent,
-                  child: FilledButton(
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    style: FilledButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      backgroundColor: AppColor.of.background1,
-                      foregroundColor: AppColor.of.gray4,
-                    ),
-                    onPressed: () async {
-                      await Future.delayed(const Duration(milliseconds: 200));
-                      routeToChatListPage(
-                        context,
-                        type: InterviewType.commonSingleTopic,
-                        topicId: topic.id,
-                      );
-                    },
-                    child: Text(
-                      tr(LocaleKeys.home_takeInterview),
-                      style: AppTextStyle.body1,
-                    ),
+                SvgPicture.asset(
+                  Assets.iconsNewRightArrow,
+                  colorFilter: ColorFilter.mode(
+                    AppColor.of.gray2,
+                    BlendMode.srcIn,
                   ),
                 ),
               ],

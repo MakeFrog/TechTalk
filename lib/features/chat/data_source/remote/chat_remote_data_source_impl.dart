@@ -36,6 +36,8 @@ final class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
           .where(FirestoreChatRoomRef.typeField, isEqualTo: type.name)
           .get(),
       InterviewType.youtube => throw Exception('유튜브 면접은 면접 리스트를 생성 및 호출하지 않음'),
+      // TODO: Handle this case.
+      InterviewType.proficiency => throw UnimplementedError(),
     };
 
     return [

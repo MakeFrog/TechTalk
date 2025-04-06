@@ -1,17 +1,15 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:developer';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
-import 'package:techtalk/core/constants/job_group.enum.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
+import 'package:techtalk/features/interview/use_case/param/start_interview_flow_use_case_param.dart';
+import 'package:techtalk/features/interview/use_case/start_interview_flow_use_case.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/practical_chat_room_list_provider.dart';
 import 'package:techtalk/presentation/providers/main_bottom_navigation_provider.dart';
 import 'package:techtalk/presentation/providers/system/notification_status_provider.dart';
@@ -22,90 +20,6 @@ import 'package:techtalk/presentation/providers/user/user_topics_provider.dart';
 part 'internal_home_event.p.dart';
 
 mixin class HomeEvent {
-  Future<void> updateYouTubeContentCount() async {
-    final firestore = FirebaseFirestore.instance;
-
-    // YouTube 문서들을 가져옵니다.
-    final youtubeDocs = await firestore.collection('Youtube').get();
-
-    // 각 YouTube 문서에 대하여 처리합니다.
-    for (var youtubeDoc in youtubeDocs.docs) {
-      final data = youtubeDoc.data();
-
-      // 연관된 skill IDs를 처리합니다.
-      List<dynamic> skillIds = data['related_skill_ids'] ?? [];
-      for (var skillId in skillIds) {
-        firestore
-            .collection('Skill')
-            .doc(skillId)
-            .update({'youtube_content_count_ko': FieldValue.increment(1)});
-      }
-
-      // 연관된 job group IDs를 처리합니다.
-      List<dynamic> jobGroupIds = data['related_job_group_ids'] ?? [];
-      for (var jobGroupId in jobGroupIds) {
-        firestore
-            .collection('JobGroup')
-            .doc(jobGroupId)
-            .update({'youtube_content_count_ko': FieldValue.increment(1)});
-      }
-    }
-  }
-
-  Future<void> addJobGroupsToFirestore() async {
-    final collectionRef = FirebaseFirestore.instance.collection('JobGroup');
-
-    for (final job in JobGroupTypes.values) {
-      try {
-        // Firestore에 문서 추가
-        await collectionRef.doc(job.id).set({
-          'id': job.id,
-          'name': job.enName,
-          'ko_name': job.name, // 한글 이름
-          'youtube_content_count': 0, // 초기값은 0
-          'youtube_content_count_ko': 0, // 초기값은 0
-        });
-        print('Added job group: ${job.id}');
-      } catch (e) {
-        print('Failed to add job group ${job.id}: $e');
-      }
-    }
-  }
-
-  Future<void> saveSkillsFromJsonToFirestore() async {
-    final firestore = FirebaseFirestore.instance;
-
-    // JSON 파일 읽기
-    String jsonString = await rootBundle.loadString('assets/json/skills.json');
-    Map<String, dynamic> skills = jsonDecode(jsonString);
-
-    for (var category in skills.keys) {
-      final List skillList = skills[category];
-
-      for (var skill in skillList) {
-        String name = skill['name'];
-
-        // 특수문자 치환하여 documentId 생성
-        String documentId = name
-            .toLowerCase()
-            .replaceAll('#', 'sharp')
-            .replaceAll('+', 'plus')
-            .replaceAll(RegExp(r'[^\w]+'), ''); // 특수문자 제거
-
-        // Firestore에 데이터 저장
-        await firestore.collection('Skill').doc(documentId).set({
-          'name': name,
-          'ko_name': name, // 한국어 표기는 name과 동일
-          'category': category, // category 필드 추가
-          'youtube_content_count': 0,
-          'youtube_content_count_ko': 0, // 초기값은 0
-        });
-      }
-    }
-
-    print("모든 스킬 데이터를 Firestore에 저장 완료!");
-  }
-
   ///
   /// 실전 면접 카드(전체 영역)가 클릭 되었을 때
   /// 실전 면접 기록 여부에 따라 라우팅을 다르게 진행
@@ -141,7 +55,7 @@ mixin class HomeEvent {
   ///
   void routeToTopicSelectPage(BuildContext context,
       {required InterviewType type}) {
-    InterviewTopicSelectRoute(type).push(context);
+    InterviewTopicSelectRoute(type.name).push(context);
   }
 
   ///
@@ -164,6 +78,29 @@ mixin class HomeEvent {
     ref.invalidate(mainBottomNavigationProvider);
     ref.invalidate(userTopicsProvider);
     SplashRoute().go(ref.context);
+  }
+
+  ///
+  /// 유튜브 카드뷰가 클릭 되었을 때
+  ///
+  void onYoutubeFeatureCardTapped(WidgetRef ref) {
+    ref
+        .read(mainBottomNavigationProvider.notifier)
+        .changeTab(MainNavigationTab.youtube);
+  }
+
+  ///
+  /// AI 면접 카드가 탭 되었을 때
+  ///
+  void onAiInterviewCardTapped(WidgetRef ref) {
+    // ProficiencyInterviewTopicSelectionRoute().push(ref.context);
+    // InterviewLevelSelectionRoute().push(ref.context);
+    //
+    // return;
+
+    final param = ProficiencyInterviewFlowParam.initial();
+
+    StartInterviewFlowUseCase(param).executeProficiencyInterviewFlow();
   }
 
   ///

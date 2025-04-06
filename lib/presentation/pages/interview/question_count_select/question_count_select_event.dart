@@ -6,23 +6,46 @@ import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/services/slack_notification_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
+import 'package:techtalk/features/interview/use_case/param/start_interview_flow_use_case_param.dart';
+import 'package:techtalk/features/interview/use_case/start_interview_flow_use_case.dart';
 import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/presentation/pages/interview/question_count_select/providers/select_question_count_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/providers/selected_question_count_provider.dart';
 
 mixin class QuestionCountSelectEvent {
   ///
-  /// 채팅 페이지로 이동
+  /// 하단 '확인' 버튼이 클릭 되었을 때
   ///
-  Future<void> routeToChatPage(
+  Future<void> onConfirmBtnTapped(
     WidgetRef ref, {
     required InterviewType type,
     required List<TopicEntity> topics,
   }) async {
-    // 페이지 이동 및 채팅방 정보 조회 후 제거한다.
-    await EasyLoading.show();
+    final useCaseParam = ref
+        .read(selectedQuestionCountRouteArgProvider)
+        .useCaseParam as ProficiencyInterviewFlowParam;
 
     final questionCount = ref.read(selectedQuestionCountProvider) +
         SelectedQuestionCount.defaultPlusCount;
+
+    if (useCaseParam.type.isProficiency) {
+      if (useCaseParam.questionCountCompleter.isCompleted) {
+        final targetParam = useCaseParam.copyWith(
+            questionCountCompleter: Completer()..complete(questionCount));
+        await StartInterviewFlowUseCase(targetParam)
+            .executeProficiencyInterviewFlow();
+      } else {
+        useCaseParam.questionCountCompleter.complete(questionCount);
+      }
+
+      return;
+    }
+
+    /// ================ 기존 flow (단골면접) ===============
+    /// 이후에 [StartInterviewFlowUseCase]에 통합 작업 필요
+
+    // 페이지 이동 및 채팅방 정보 조회 후 제거한다.
+    await EasyLoading.show();
 
     final room = ChatRoomEntity.generateCommonInterview(
       type: type,

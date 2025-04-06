@@ -8,8 +8,16 @@ import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_route_arg.dart';
-import 'package:techtalk/presentation/pages/interview/question_count_select/providers/select_question_count_route_arg.dart';
+import 'package:techtalk/presentation/pages/interview/created_question_list/constant/created_question_list_route_arg.dart';
+import 'package:techtalk/presentation/pages/interview/created_question_list/created_question_list_page.dart';
+import 'package:techtalk/presentation/pages/interview/interview_level_selection/constant/interview_level_selection_route_arg.dart';
+import 'package:techtalk/presentation/pages/interview/interview_level_selection/interview_level_selection_page.dart';
+import 'package:techtalk/presentation/pages/interview/proficiency_interview_topic_selection/constant/proficiency_interview_topic_selection_route_arg.dart';
+import 'package:techtalk/presentation/pages/interview/proficiency_interview_topic_selection/proficiency_interview_topic_selection_page.dart';
+import 'package:techtalk/presentation/pages/interview/question_count_select/constant/select_question_count_route_argument.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_page.dart';
+import 'package:techtalk/presentation/pages/interview/question_creation/constant/question_creation_route_arg.dart';
+import 'package:techtalk/presentation/pages/interview/question_creation/question_creation_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/job_group_setting_page.dart';
@@ -59,12 +67,14 @@ part 'router.g.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
-GoRouter appRouter(WidgetRef ref) => GoRouter(
-      debugLogDiagnostics: true,
-      navigatorKey: rootNavigatorKey,
-      initialLocation: SplashRoute.path,
-      routes: $appRoutes,
-    );
+abstract final class AppRouter {
+  static GoRouter appRouter(WidgetRef ref) => GoRouter(
+        debugLogDiagnostics: true,
+        navigatorKey: rootNavigatorKey,
+        initialLocation: SplashRoute.path,
+        routes: $appRoutes,
+      );
+}
 
 ///
 /// splash
@@ -150,16 +160,18 @@ class SignUpRoute extends GoRouteData {
     TypedGoRoute<InterviewTopicSelectRoute>(
       path: InterviewTopicSelectRoute.path,
       name: InterviewTopicSelectRoute.name,
-      routes: [
-        TypedGoRoute<QuestionCountSelectPageRoute>(
-          path: QuestionCountSelectPageRoute.path,
-          name: QuestionCountSelectPageRoute.name,
-        ),
-      ],
+    ),
+    TypedGoRoute<QuestionCountSelectPageRoute>(
+      path: QuestionCountSelectPageRoute.path,
+      name: QuestionCountSelectPageRoute.name,
     ),
     TypedGoRoute<ProfileSettingRoute>(
       path: ProfileSettingRoute.name,
       name: ProfileSettingRoute.name,
+    ),
+    TypedGoRoute<ProficiencyInterviewTopicSelectionRoute>(
+      path: ProficiencyInterviewTopicSelectionRoute.path,
+      name: ProficiencyInterviewTopicSelectionRoute.path,
     ),
     TypedGoRoute<JobGroupSettingRoute>(
       path: JobGroupSettingRoute.name,
@@ -168,6 +180,9 @@ class SignUpRoute extends GoRouteData {
     TypedGoRoute<SkillSettingRoute>(
       path: SkillSettingRoute.name,
       name: SkillSettingRoute.name,
+    ),
+    TypedGoRoute<CreatedQuestionListRoute>(
+      path: CreatedQuestionListRoute.path,
     ),
     TypedGoRoute<StudyRoute>(
       path: StudyRoute.path,
@@ -180,6 +195,14 @@ class SignUpRoute extends GoRouteData {
     TypedGoRoute<YoutubeContentsMainListRoute>(
       path: YoutubeContentsMainListRoute.path,
       name: YoutubeContentsMainListRoute.name,
+    ),
+    TypedGoRoute<InterviewLevelSelectionRoute>(
+      path: InterviewLevelSelectionRoute.path,
+      name: InterviewLevelSelectionRoute.path,
+    ),
+    TypedGoRoute<QuestionCreationRoute>(
+      path: QuestionCreationRoute.path,
+      name: QuestionCreationRoute.path,
     ),
     TypedGoRoute<YoutubeDetailRoute>(
       path: YoutubeDetailRoute.path,
@@ -286,6 +309,19 @@ class StudyRoute extends GoRouteData {
   }
 }
 
+class ProficiencyInterviewTopicSelectionRoute extends GoRouteData {
+  ProficiencyInterviewTopicSelectionRoute(this.$extra);
+
+  static const String path = 'proficiency-interview-topic-selection';
+
+  final ProficiencyInterviewTopicSelectionRouteArgument $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ProficiencyInterviewTopicSelectionPage($extra);
+  }
+}
+
 class WrongAnswerNoteRoute extends GoRouteData {
   static const String path = 'wrong-answer-note';
   static const String name = 'wrong answer note';
@@ -332,6 +368,76 @@ class YoutubeContentsMainListRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const YoutubeMainPage();
+  }
+}
+
+class InterviewLevelSelectionRoute extends GoRouteData {
+  const InterviewLevelSelectionRoute(this.$extra);
+
+  static const String path = 'interview-level-selection';
+
+  final InterviewLevelSelectionRouteArg $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return InterviewLevelSelectionPage($extra);
+  }
+}
+
+class CreatedQuestionListRoute extends GoRouteData {
+  const CreatedQuestionListRoute(this.$extra);
+
+  static const String path = 'created-question-list';
+
+  final CreatedQuestionListRouteArg $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return CreatedQuestionListPage($extra);
+  }
+}
+
+class QuestionCreationRoute extends GoRouteData {
+  const QuestionCreationRoute(this.$extra);
+
+  static const String path = 'proficiency-question-creation';
+
+  final QuestionCreationRouteArg $extra;
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      fullscreenDialog: true,
+      transitionsBuilder: (_, animation, __, child) {
+        var begin = const Offset(1.0, 0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+      child: QuestionCreationPage($extra),
+    );
+  }
+}
+
+class CreatedQuestionList extends GoRouteData {
+  CreatedQuestionList(this.$extra);
+
+  static const String path = 'created-question-list';
+
+  final YoutubeDetailArg $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return YoutubeDetailPage(
+      argument: $extra,
+    );
   }
 }
 
@@ -441,41 +547,32 @@ class WrongAnswerRoute extends GoRouteData {
 }
 
 class InterviewTopicSelectRoute extends GoRouteData {
-  InterviewTopicSelectRoute(this.type);
+  InterviewTopicSelectRoute(this.interviewType);
 
-  static const String path = 'interview/:type';
+  static const String path = 'topic-select';
   static const String name = 'topic select';
   static late InterviewType arg;
 
-  final InterviewType type;
+  final String interviewType;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    arg = type;
+    arg = InterviewType.getByName(interviewType);
     return const InterviewTopicSelectPage();
   }
 }
 
 class QuestionCountSelectPageRoute extends GoRouteData {
-  QuestionCountSelectPageRoute(this.type, this.topicId);
+  const QuestionCountSelectPageRoute(this.$extra);
 
-  static const String path = ':topicId';
+  final SelectQuestionCountRouteArg $extra;
+
+  static const String path = 'question-count-select';
   static const String name = 'question count select';
-
-  final String topicId;
-  final InterviewType type;
-
-  static late SelectQuestionCountRouteArg arg;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const QuestionCountSelectPage();
-  }
-
-  /// NOTE: $extra 이슈로 직접 업데이트
-  void updateArg(
-      {required InterviewType type, required List<TopicEntity> topics}) {
-    arg = (topics: topics, type: type);
+    return QuestionCountSelectPage(argument: $extra);
   }
 }
 
