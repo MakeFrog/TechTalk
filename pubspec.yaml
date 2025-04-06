@@ -114,7 +114,7 @@ dependencies:
   pub_semver: ^2.1.4 # 주부수 버전 비교 연산
   dotted_border: ^2.1.0 # 점선 보더 적용
   flutter_pdfview: ^1.4.0
-  syncfusion_flutter_pdf: ^28.2.11
+  syncfusion_flutter_pdf: ^29.1.35
   pdf_gemini: ^0.0.3 # pdf 첨부시 gemini로 프롬프팅
   path: ^1.9.0
 

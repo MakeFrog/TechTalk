@@ -12,7 +12,7 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/enums/interview_type.enum.dart';
-import 'package:techtalk/features/chat/use_cases/create_openai_resume_question_use_case.dart';
+import 'package:techtalk/features/chat/use_cases/create_gemini_resume_question_use_case.dart';
 import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/repositories/enums/document_type.enum.dart';
@@ -20,7 +20,6 @@ import 'package:techtalk/features/user/repositories/enums/resume_setting_type.en
 import 'package:techtalk/presentation/pages/resume/providers/resume_info_provider.dart';
 import 'package:techtalk/presentation/widgets/common/bottom_sheet/option_list_bottom_sheet.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
-import '../../../features/chat/use_cases/summarize_gemini_resume_use_case.dart';
 
 mixin class ResumeManageEvent {
   ///
@@ -99,7 +98,7 @@ mixin class ResumeManageEvent {
   /// 이력서, 포폴 문서 등록
   ///
   Future<void> registDocumentBtn(WidgetRef ref, DocumentType type) async {
-    const maxFileSizeInBytes = 10 * 1024 * 1024; // 10MB
+    const maxFileSizeInBytes = 25 * 1024 * 1024; // 25MB
 
     try {
       final result = await FilePicker.platform.pickFiles(
@@ -309,6 +308,17 @@ mixin class ResumeManageEvent {
       stopwatch.stop();
       debugPrint('PDF 텍스트 추출 소요시간: ${stopwatch.elapsedMilliseconds} ms');
 
+      // GEMINI로 질문 추출
+      final aiStopWatch = Stopwatch()..start();
+      final geminiQuestionUseCase = CreateGeminiResumeQuestionUseCase();
+
+      final getGeminiParam =
+          (resumeContent: resumePdfText, portfolioContent: portfolioPdfText);
+
+      final questionResult = await geminiQuestionUseCase.call(getGeminiParam);
+      aiStopWatch.stop();
+      debugPrint('GEMINI 질문 생성 소요시간: ${aiStopWatch.elapsedMilliseconds} ms');
+
       // 텍스트가 모두 비어있을 경우에는 PDF가 Image로 랩핑되어있을 가능성이 있음
       // OCR 예외처리 - Gemini에서는 pdf의 이미지 텍스트 추출도 가능한 점을 이용함
       // TODO : 다음 커밋에 프롬프트 새로 적용할 예정 (yundal)
@@ -345,14 +355,15 @@ mixin class ResumeManageEvent {
       //   );
       // }
 
+      // TODO : OPEN AI 질문 생성 로직 (yundal)
       // 텍스트 추출이 완료되었다는 전제하에 OpenAI를 통해 이력서 면접 질문 추출
-      final gptStopwatch = Stopwatch()..start();
-      final questionUseCase = CreateOpenAIResumeQuestionUseCase();
-      final getResumeParam =
-          (resumeContent: resumePdfText, portfolioContent: portfolioPdfText);
-      final questionResult = await questionUseCase.call(getResumeParam);
-      gptStopwatch.stop();
-      debugPrint('GPT 질문 생성 소요시간: ${gptStopwatch.elapsedMilliseconds} ms');
+      // final gptStopwatch = Stopwatch()..start();
+      // final questionUseCase = CreateOpenAIResumeQuestionUseCase();
+      // final getResumeParam =
+      //     (resumeContent: resumePdfText, portfolioContent: portfolioPdfText);
+      // final questionResult = await questionUseCase.call(getResumeParam);
+      // gptStopwatch.stop();
+      // debugPrint('GPT 질문 생성 소요시간: ${gptStopwatch.elapsedMilliseconds} ms');
 
       questionResult.fold(
         onSuccess: (qnaList) {
@@ -362,7 +373,7 @@ mixin class ResumeManageEvent {
           GoRouter.of(ref.context).go(route.location);
         },
         onFailure: (error) {
-          debugPrint('[에러] GPT 질문 생성 실패: $error');
+          debugPrint('[에러] GEMINI 질문 생성 실패: $error');
           SnackBarService.showSnackBar('질문 생성에 실패했습니다. 잠시 후 다시 시도해 주세요.');
         },
       );
