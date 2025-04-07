@@ -56,27 +56,8 @@ final class UserRepositoryImpl implements UserRepository {
               .toList()
           : [];
 
-      final ResumeEntity? resume = (localRes.resume != null ||
-              remoteRes.resume != null)
-          ? ResumeEntity(
-              path: localRes.resume?.resumePath ?? remoteRes.resume?.path,
-              title: localRes.resume?.resumeTitle ?? remoteRes.resume?.title,
-              uploadAt:
-                  localRes.resume?.resumeUploadAt ?? remoteRes.resume?.uploadAt,
-            )
-          : null;
-
-      final PortfolioEntity? portfolio =
-          (localRes.portfolio != null || remoteRes.portfolio != null)
-              ? PortfolioEntity(
-                  path: localRes.portfolio?.portfolioPath ??
-                      remoteRes.portfolio?.path,
-                  title: localRes.portfolio?.portfolioTitle ??
-                      remoteRes.portfolio?.title,
-                  uploadAt: localRes.portfolio?.portfolioUploadAt ??
-                      remoteRes.portfolio?.uploadAt,
-                )
-              : null;
+      final resume = _mergeResume(localRes, remoteRes);
+      final portfolio = _mergePortfolio(localRes, remoteRes);
 
       final result = UserEntity.fromModel(
         remoteRes,
@@ -455,41 +436,74 @@ final class UserRepositoryImpl implements UserRepository {
   @override
   Future<Result<DocumentEntity?>> loadDocument() async {
     try {
-      final data = _userLocalDataSource.loadUserLocalInfo();
+      final localData = _userLocalDataSource.loadUserLocalInfo();
+      final remoteData = await _userRemoteDataSource.getUser();
 
-      final resumeBox = data.resume;
-      final portfolioBox = data.portfolio;
+      final resume = _mergeResume(localData, remoteData);
+      final portfolio = _mergePortfolio(localData, remoteData);
 
       // 둘 다 null => null 반환
-      if (resumeBox == null && portfolioBox == null) {
+      if (resume == null && portfolio == null) {
         return Result.success(null);
       }
 
-      // 둘 중 하나라도 있으면 => 실제 DocumentEntity 생성
-      final resume = (resumeBox == null)
-          ? null
-          : ResumeEntity(
-              path: resumeBox.resumePath,
-              title: resumeBox.resumeTitle,
-              uploadAt: resumeBox.resumeUploadAt,
-            );
-
-      final portfolio = (portfolioBox == null)
-          ? null
-          : PortfolioEntity(
-              path: portfolioBox.portfolioPath,
-              title: portfolioBox.portfolioTitle,
-              uploadAt: portfolioBox.portfolioUploadAt,
-            );
-
-      return Result.success(
-        DocumentEntity(
-          resume: resume,
-          portfolio: portfolio,
-        ),
+      final document = DocumentEntity(
+        resume: resume,
+        portfolio: portfolio,
       );
+
+      return Result.success(document);
     } catch (e) {
       return Result.failure(Exception(e));
     }
+  }
+
+  /// 이력서 - 로컬, 원격 데이터 존재 유무를 확인하고 우선순위에 따라 반환 (로컬 > 원격)
+  ResumeEntity? _mergeResume(UserBox localRes, UserModel remoteRes) {
+    final localResumeBox = localRes.resume;
+    final remoteResume = remoteRes.resume;
+
+    if (localResumeBox?.resumePath != null) {
+      return ResumeEntity(
+        path: localResumeBox!.resumePath,
+        title: localResumeBox.resumeTitle,
+        uploadAt: localResumeBox.resumeUploadAt,
+      );
+    }
+
+    if (remoteResume?.path != null) {
+      return ResumeEntity(
+        path: remoteResume!.path,
+        title: remoteResume.title,
+        uploadAt: remoteResume.uploadAt,
+      );
+    }
+
+    // 둘 다 없으면 null 반환
+    return null;
+  }
+
+  /// 포트폴리오 - 로컬, 원격 데이터 존재 유무를 확인하고 우선순위에 따라 반환 (로컬 > 원격)
+  PortfolioEntity? _mergePortfolio(UserBox localRes, UserModel remoteRes) {
+    final localPortfolioBox = localRes.portfolio;
+    final remotePortfolio = remoteRes.portfolio;
+
+    if (localPortfolioBox?.portfolioPath != null) {
+      return PortfolioEntity(
+        path: localPortfolioBox!.portfolioPath,
+        title: localPortfolioBox.portfolioTitle,
+        uploadAt: localPortfolioBox.portfolioUploadAt,
+      );
+    }
+
+    if (remotePortfolio?.path != null) {
+      return PortfolioEntity(
+        path: remotePortfolio!.path,
+        title: remotePortfolio.title,
+        uploadAt: remotePortfolio.uploadAt,
+      );
+    }
+
+    return null;
   }
 }
