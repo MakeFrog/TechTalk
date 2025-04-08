@@ -124,6 +124,7 @@ dependencies:
   syncfusion_flutter_pdf: ^29.1.35
   pdf_gemini: ^0.0.3 # pdf 첨부시 gemini로 프롬프팅
   path: ^1.9.0
+  webview_flutter: ^4.10.0
 
 
 dev_dependencies:

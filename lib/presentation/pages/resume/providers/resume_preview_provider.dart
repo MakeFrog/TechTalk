@@ -1,48 +1,146 @@
-import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:flutter/foundation.dart'; // for ChangeNotifier
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'dart:io';
-import 'package:path_provider/path_provider.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+enum PreviewMode {
+  none, // path == null
+  network, // URL
+  local, // 로컬 PDF
+}
 
 class PdfPreviewNotifier extends ChangeNotifier {
-  bool _isLoading = true;
-  bool _hasError = false;
+  // 아직 경로 판별을 끝내지 않았는지 여부
+  bool _isProcessingPath = false;
+  bool get isProcessingPath => _isProcessingPath;
+
+  PreviewMode _mode = PreviewMode.none;
+  PreviewMode get mode => _mode;
+
+  // PDF 상태
   String? _filePath;
+  PDFViewController? _pdfController;
   int _totalPages = 0;
   int _currentPage = 0;
-  PDFViewController? _controller;
 
-  bool get isLoading => _isLoading;
-  bool get hasError => _hasError;
   String? get filePath => _filePath;
+  PDFViewController? get pdfController => _pdfController;
   int get totalPages => _totalPages;
   int get currentPage => _currentPage;
-  PDFViewController? get controller => _controller;
 
-  ///
-  /// 파일 경로를 받아서 로드하고, 필요하면 상태 변경
-  ///
-  Future<void> loadFile(String previewPath) async {
-    // 이전 상태 초기화
-    _filePath = null;
-    _controller = null;
-    _totalPages = 0;
-    _currentPage = 0;
+  // WebView 상태
+  WebViewController? _webViewController;
+  int _webViewProgress = 0; // 0 ~ 100
+  WebViewController? get webViewController => _webViewController;
+  int get webViewProgress => _webViewProgress;
+  bool get isWebViewLoading =>
+      (webViewProgress < 100) && _mode == PreviewMode.network;
 
+  Future<void> setPreviewPath(String? path) async {
     try {
-      _isLoading = true;
-      _hasError = false;
-      notifyListeners();
+      // 초기화
+      _mode = PreviewMode.none;
+      _filePath = null;
+      _pdfController = null;
+      _totalPages = 0;
+      _currentPage = 0;
+      _webViewController = null;
+      _webViewProgress = 0;
 
-      final valid = await _getValidPath(previewPath);
-      _filePath = valid;
+      // 경로가 없으면 (null or empty)
+      if (path == null || path.isEmpty) {
+        // "경로가 없음" 상태
+        _mode = PreviewMode.none;
+        await EasyLoading.dismiss();
+        return;
+      }
+
+      // URL 이면
+      if (path.toLowerCase().startsWith('http')) {
+        _mode = PreviewMode.network;
+        // 웹뷰 로직
+        await _initWebView(path);
+      } else {
+        // 로컬 PDF
+        _mode = PreviewMode.local;
+        await _loadLocalPdf(path);
+      }
     } catch (e) {
-      _hasError = true;
+      await EasyLoading.dismiss();
+      await EasyLoading.showError('파일 로딩 실패: $e');
     } finally {
-      _isLoading = false;
+      // 로딩 끝
+      _isProcessingPath = false;
+      await EasyLoading.dismiss();
       notifyListeners();
     }
+  }
+
+  Future<void> _initWebView(String url) async {
+    final controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (progress) {
+            _webViewProgress = progress;
+            notifyListeners();
+
+            EasyLoading.show(status: '웹뷰 로딩중... $progress%');
+
+            if (progress >= 100) {
+              EasyLoading.dismiss();
+            }
+          },
+          onPageStarted: (url) {
+            EasyLoading.show(status: '웹뷰 로딩중...');
+          },
+          onPageFinished: (url) {
+            EasyLoading.dismiss();
+          },
+          onWebResourceError: (error) {
+            EasyLoading.showError('웹뷰 로딩 에러: $error');
+          },
+        ),
+      );
+
+    await controller.loadRequest(Uri.parse(url));
+    _webViewController = controller;
+    await EasyLoading.dismiss();
+  }
+
+  Future<void> _loadLocalPdf(String path) async {
+    await EasyLoading.show(status: 'PDF 파일 확인중...');
+
+    final validPath = await _getValidPath(path);
+    _filePath = validPath;
+
+    await EasyLoading.dismiss();
+  }
+
+  Future<String> _getValidPath(String storedPath) async {
+    final f = File(storedPath);
+    if (f.existsSync()) {
+      return storedPath;
+    }
+
+    final docDir = await getApplicationDocumentsDirectory();
+    final fallback = p.join(docDir.path, p.basename(storedPath));
+    final fallbackFile = File(fallback);
+    if (fallbackFile.existsSync()) {
+      return fallback;
+    }
+
+    throw Exception('파일이 존재하지 않습니다.');
+  }
+
+  // PDFView 콜백
+  void setPdfController(PDFViewController controller) {
+    _pdfController = controller;
+    notifyListeners();
   }
 
   void setTotalPages(int pages) {
@@ -54,40 +152,9 @@ class PdfPreviewNotifier extends ChangeNotifier {
     _currentPage = page;
     notifyListeners();
   }
-
-  void setHasError(bool value) {
-    _hasError = value;
-    notifyListeners();
-  }
-
-  void setController(PDFViewController c) {
-    _controller = c;
-    notifyListeners();
-  }
-
-  ///
-  /// 파일 상대 경로 -> 절대 경로로 변환
-  ///
-  Future<String> _getValidPath(String storedPath) async {
-    final storedFile = File(storedPath);
-    if (storedFile.existsSync()) {
-      return storedPath;
-    }
-
-    final docDir = await getApplicationDocumentsDirectory();
-    final fileName = p.basename(storedPath);
-    final fallbackPath = p.join(docDir.path, fileName);
-    final fallbackFile = File(fallbackPath);
-
-    if (fallbackFile.existsSync()) {
-      return fallbackPath;
-    }
-    throw Exception('파일을 찾을 수 없습니다.');
-  }
 }
 
-/// PROVIDER
 final pdfPreviewNotifierProvider =
-    ChangeNotifierProvider.autoDispose<PdfPreviewNotifier>((ref) {
-  return PdfPreviewNotifier();
-});
+    ChangeNotifierProvider.autoDispose<PdfPreviewNotifier>(
+  (ref) => PdfPreviewNotifier(),
+);

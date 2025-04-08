@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:techtalk/presentation/pages/resume/providers/resume_preview_provider.dart';
 
 class ResumePreviewPage extends HookConsumerWidget {
-  final String previewPath;
+  final String? previewPath;
 
   const ResumePreviewPage({
     Key? key,
@@ -14,64 +15,56 @@ class ResumePreviewPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pdf = ref.watch(pdfPreviewNotifierProvider);
+    final notifier = ref.watch(pdfPreviewNotifierProvider);
     final appBar = AppBar(title: const Text('미리보기'));
 
     useEffect(
       () {
-        Future.microtask(() {
-          ref.read(pdfPreviewNotifierProvider).loadFile(previewPath);
-        });
+        ref.read(pdfPreviewNotifierProvider).setPreviewPath(previewPath);
         return null;
       },
       [previewPath],
     );
 
-    if (pdf.isLoading) {
-      return Scaffold(
-        appBar: appBar,
-        body: const Center(child: CircularProgressIndicator()),
-      );
-    }
+    switch (notifier.mode) {
+      /// 경로가 없을 때
+      case PreviewMode.none:
+        return Scaffold(
+          appBar: appBar,
+          body: const Center(child: Text('파일 경로가 존재하지 않습니다.')),
+        );
 
-    if (pdf.hasError || pdf.filePath == null) {
-      return Scaffold(
-        appBar: appBar,
-        body: const Center(
-          child: Text(
-            'PDF 파일을 불러오지 못했습니다.\n파일 경로와 권한을 확인해 주세요.',
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
-    }
+      /// 원격 데이터만 존재할 때
+      case PreviewMode.network:
+        final controller = notifier.webViewController;
+        return Scaffold(
+          appBar: appBar,
+          body: controller == null
+              ? const Center(child: Text(''))
+              : WebViewWidget(controller: controller),
+        );
 
-    return Scaffold(
-      appBar: appBar,
-      body: Stack(
-        children: [
-          PDFView(
-            filePath: pdf.filePath,
-            autoSpacing: false,
-            pageSnap: false,
-            pageFling: false,
-            onRender: (pages) => pdf.setTotalPages(pages ?? 0),
-            onError: (error) {
-              debugPrint('PDFView onError: $error');
-              pdf.setHasError(true);
-            },
-            onPageError: (page, error) {
-              debugPrint('페이지 $page 에서 에러 발생: $error');
-              pdf.setHasError(true);
-            },
-            onViewCreated: pdf.setController,
+      /// 로컬 데이터가 존재할 때
+      case PreviewMode.local:
+        if (notifier.filePath == null) {
+          return Scaffold(
+            appBar: appBar,
+            body: const Center(child: Text('')),
+          );
+        }
+
+        return Scaffold(
+          appBar: appBar,
+          body: PDFView(
+            filePath: notifier.filePath,
+            onViewCreated: notifier.setPdfController,
+            onRender: (pages) => notifier.setTotalPages(pages ?? 0),
             onPageChanged: (current, total) {
-              pdf.setCurrentPage(current ?? 0);
-              pdf.setTotalPages(total ?? 0);
+              notifier.setCurrentPage(current ?? 0);
+              notifier.setTotalPages(total ?? 0);
             },
           ),
-        ],
-      ),
-    );
+        );
+    }
   }
 }
