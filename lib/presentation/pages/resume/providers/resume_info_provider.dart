@@ -139,27 +139,55 @@ class ResumeInfo extends _$ResumeInfo {
   }
 
   ///
-  /// 변경된 문서의 상태를 파일로 최신화하는 로직
+  /// 문서 저장 로직
   ///
   Future<void> saveDocument() async {
     final doc = state.valueOrNull;
     if (doc == null) return;
 
-    if (isResumeChanged(doc)) {
-      final stopwatch = Stopwatch()..start();
-      debugPrint('이력서가 변경되어서 실행');
-      await updateResume(doc.resume);
-      stopwatch.stop();
-      debugPrint('이력서 PDF 저장 소요시간 : ${stopwatch.elapsedMilliseconds} ms');
+    // 변경 여부 검사
+    final resumeChanged = isResumeChanged(doc);
+    final portfolioChanged = isPortfolioChanged(doc);
+
+    // 병렬 실행을 위해 담아둘 Future 리스트
+    final futures = <Future>[];
+
+    if (resumeChanged) {
+      futures.add(_saveResume(doc.resume));
     }
 
-    if (isPortfolioChanged(doc)) {
-      final stopwatch = Stopwatch()..start();
-      debugPrint('포트폴리오가 변경되어서 실행');
-      await updatePortfolio(doc.portfolio);
-      stopwatch.stop();
-      debugPrint('포트폴리오 PDF 저장 소요시간 : ${stopwatch.elapsedMilliseconds} ms');
+    if (portfolioChanged) {
+      futures.add(_savePortfolio(doc.portfolio));
     }
+
+    if (futures.isEmpty) {
+      debugPrint('이력서/포트폴리오 모두 변경되지 않음');
+      return;
+    }
+
+    await Future.wait(futures);
+  }
+
+  ///
+  /// 이력서 상태가 변경되었을 때 실행
+  ///
+  Future<void> _saveResume(ResumeEntity? newResume) async {
+    final stopwatch = Stopwatch()..start();
+    debugPrint('이력서가 변경되어서 실행');
+    await updateResume(newResume);
+    stopwatch.stop();
+    debugPrint('이력서 PDF 저장 소요시간 : ${stopwatch.elapsedMilliseconds} ms');
+  }
+
+  ///
+  /// 포트폴리오 상태가 변경되었을 때 실행
+  ///
+  Future<void> _savePortfolio(PortfolioEntity? newPortfolio) async {
+    final stopwatch = Stopwatch()..start();
+    debugPrint('포트폴리오가 변경되어서 실행');
+    await updatePortfolio(newPortfolio);
+    stopwatch.stop();
+    debugPrint('포트폴리오 PDF 저장 소요시간 : ${stopwatch.elapsedMilliseconds} ms');
   }
 
   ///
