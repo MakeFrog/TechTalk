@@ -24,7 +24,7 @@ import 'package:techtalk/presentation/pages/my_info/job_group_setting/job_group_
 import 'package:techtalk/presentation/pages/my_info/my_youtube_board/my_youtube_board_page.dart';
 import 'package:techtalk/presentation/pages/my_info/profile_setting/profile_setting_page.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/skill_setting_page.dart';
-import 'package:techtalk/presentation/pages/resume/resume_interview_loading_page.dart';
+import 'package:techtalk/presentation/pages/resume/interview_loading_page.dart';
 import 'package:techtalk/presentation/pages/resume/resume_manage_page.dart';
 import 'package:techtalk/presentation/pages/resume/resume_preview_page.dart';
 import 'package:techtalk/presentation/pages/resume/resume_regist_guide_page.dart';
@@ -732,6 +732,6 @@ class ResumeInterviewLoadingRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ResumeInterviewLoadingPage();
+    return InterviewLoadingPage();
   }
 }

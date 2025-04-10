@@ -14,9 +14,9 @@ import 'package:techtalk/presentation/widgets/base/index.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
-class ResumeInterviewLoadingPage extends BasePage
+class InterviewLoadingPage extends BasePage
     with ResumeManageEvent, ResumeManageState {
-  ResumeInterviewLoadingPage({super.key});
+  InterviewLoadingPage({super.key});
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
