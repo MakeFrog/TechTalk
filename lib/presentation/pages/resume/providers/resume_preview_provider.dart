@@ -14,35 +14,30 @@ enum PreviewMode {
 }
 
 class PdfPreviewNotifier extends ChangeNotifier {
-  // 아직 경로 판별을 끝내지 않았는지 여부
-  bool _isProcessingPath = false;
-  bool get isProcessingPath => _isProcessingPath;
-
+  bool _isProcessingPath = false; // 경로 확인했는가?
   PreviewMode _mode = PreviewMode.none;
-  PreviewMode get mode => _mode;
-
-  // PDF 상태
   String? _filePath;
   PDFViewController? _pdfController;
   int _totalPages = 0;
   int _currentPage = 0;
+  WebViewController? _webViewController;
+  int _webViewProgress = 0; // 0 ~ 100
 
+  /// GETTER
+  bool get isProcessingPath => _isProcessingPath;
+  PreviewMode get mode => _mode;
   String? get filePath => _filePath;
   PDFViewController? get pdfController => _pdfController;
   int get totalPages => _totalPages;
   int get currentPage => _currentPage;
-
-  // WebView 상태
-  WebViewController? _webViewController;
-  int _webViewProgress = 0; // 0 ~ 100
   WebViewController? get webViewController => _webViewController;
   int get webViewProgress => _webViewProgress;
   bool get isWebViewLoading =>
       (webViewProgress < 100) && _mode == PreviewMode.network;
 
+  /// 이력서 저장 경로별 분기처리 로직
   Future<void> setPreviewPath(String? path) async {
     try {
-      // 초기화
       _mode = PreviewMode.none;
       _filePath = null;
       _pdfController = null;
@@ -53,19 +48,18 @@ class PdfPreviewNotifier extends ChangeNotifier {
 
       // 경로가 없으면 (null or empty)
       if (path == null || path.isEmpty) {
-        // "경로가 없음" 상태
         _mode = PreviewMode.none;
         await EasyLoading.dismiss();
         return;
       }
 
-      // URL 이면
+      // 경로가 URL일 때
       if (path.toLowerCase().startsWith('http')) {
         _mode = PreviewMode.network;
-        // 웹뷰 로직
         await _initWebView(path);
-      } else {
-        // 로컬 PDF
+      } 
+      // 경로가 로컬일 때
+      else {
         _mode = PreviewMode.local;
         await _loadLocalPdf(path);
       }
@@ -80,38 +74,33 @@ class PdfPreviewNotifier extends ChangeNotifier {
     }
   }
 
+  /// 경로가 URL일 때 로직
   Future<void> _initWebView(String url) async {
-    final controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (progress) {
-            _webViewProgress = progress;
-            notifyListeners();
+    final controller = WebViewController();
 
-            EasyLoading.show(status: '웹뷰 로딩중... $progress%');
+    await controller.setJavaScriptMode(JavaScriptMode.unrestricted);
+    await controller.setNavigationDelegate(
+      NavigationDelegate(
+        onPageStarted: (url) {
+          EasyLoading.show(status: '웹뷰 로딩중...');
+        },
+        onPageFinished: (url) {
+          EasyLoading.dismiss();
+        },
+        onWebResourceError: (error) {
+          EasyLoading.showError('웹뷰 로딩 에러: $error');
+        },
+      ),
+    );
 
-            if (progress >= 100) {
-              EasyLoading.dismiss();
-            }
-          },
-          onPageStarted: (url) {
-            EasyLoading.show(status: '웹뷰 로딩중...');
-          },
-          onPageFinished: (url) {
-            EasyLoading.dismiss();
-          },
-          onWebResourceError: (error) {
-            EasyLoading.showError('웹뷰 로딩 에러: $error');
-          },
-        ),
-      );
-
+    // 웹페이지 불러오기
     await controller.loadRequest(Uri.parse(url));
+
     _webViewController = controller;
     await EasyLoading.dismiss();
   }
 
+  /// 경로가 로컬일 때 로직
   Future<void> _loadLocalPdf(String path) async {
     await EasyLoading.show(status: 'PDF 파일 확인중...');
 
@@ -121,6 +110,7 @@ class PdfPreviewNotifier extends ChangeNotifier {
     await EasyLoading.dismiss();
   }
 
+  /// 로컬 경로가 유효한지 확인
   Future<String> _getValidPath(String storedPath) async {
     final f = File(storedPath);
     if (f.existsSync()) {
@@ -137,7 +127,7 @@ class PdfPreviewNotifier extends ChangeNotifier {
     throw Exception('파일이 존재하지 않습니다.');
   }
 
-  // PDFView 콜백
+  /// PDFView 콜백
   void setPdfController(PDFViewController controller) {
     _pdfController = controller;
     notifyListeners();
@@ -154,6 +144,7 @@ class PdfPreviewNotifier extends ChangeNotifier {
   }
 }
 
+/// PROVIDER
 final pdfPreviewNotifierProvider =
     ChangeNotifierProvider.autoDispose<PdfPreviewNotifier>(
   (ref) => PdfPreviewNotifier(),
