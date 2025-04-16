@@ -15,8 +15,7 @@ import 'package:techtalk/presentation/pages/resume/widgets/resume_card.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 
-class ResumeManagePage extends BasePage
-    with ResumeManageEvent, ResumeManageState {
+class ResumeManagePage extends BasePage with ResumeEvent, ResumeState {
   ResumeManagePage({super.key});
 
   @override
@@ -28,7 +27,7 @@ class ResumeManagePage extends BasePage
         return const Center(child: Text('에러가 발생했습니다.'));
       },
       data: (doc) {
-        return Padding(
+        return SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
@@ -36,8 +35,6 @@ class ResumeManagePage extends BasePage
               buildGuideText(),
               ResumeCard.resume(resume: doc?.resume),
               ResumeCard.portfolio(portfolio: doc?.portfolio),
-              const Spacer(),
-              buildSaveBtn(ref),
             ],
           ),
         );
@@ -51,7 +48,7 @@ class ResumeManagePage extends BasePage
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          '50MB 이하의 PDF 파일만 등록할 수 있어요',
+          '25MB 이하의 PDF 파일만 등록할 수 있어요',
           style: AppTextStyle.body1.copyWith(color: AppColor.of.gray4),
         ),
         const Gap(12),
@@ -59,37 +56,47 @@ class ResumeManagePage extends BasePage
     );
   }
 
-  /// 저장 버튼
-  Widget buildSaveBtn(WidgetRef ref) {
-    return Column(
-      children: [
-        if (showTooltip(ref)) ...[
-          SvgPicture.asset(Assets.iconsOneMoreAddTooltip),
-          const Gap(8),
-        ],
-        BounceTapper(
-          child: FilledButton(
-            onPressed: isFileChanged(ref) ? () => onClickedSaveBtn(ref) : null,
-            child: Center(
-              child: Text(
-                ref.context.tr(LocaleKeys.common_save),
+  @override
+  Widget? buildBottomNavigationBar(BuildContext context) {
+    return Consumer(
+      builder: (ctx, ref, child) {
+        return Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (showTooltip(ref)) ...[
+                SvgPicture.asset(Assets.iconsOneMoreAddTooltip),
+                const Gap(8),
+              ],
+              BounceTapper(
+                child: FilledButton(
+                  onPressed:
+                      isFileChanged(ref) ? () => onClickedSaveBtn(ref) : null,
+                  child: Center(
+                    child: Text(
+                      context.tr(LocaleKeys.common_save),
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 
   @override
-  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
-      BackButtonAppBar(
-        title: '내 이력서',
-        onBackBtnTapped: () {
-          ref.invalidate(resumeInfoProvider);
-          ref.context.pop();
-        },
-      );
+  PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) {
+    return BackButtonAppBar(
+      title: '내 이력서',
+      onBackBtnTapped: () {
+        ref.invalidate(resumeInfoProvider);
+        context.pop();
+      },
+    );
+  }
 
   @override
   void onWillPop(WidgetRef ref) {

@@ -8,7 +8,7 @@ import 'package:techtalk/presentation/pages/resume/resume_manage_event.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
 
-class ResumeRegistGuidePage extends BasePage with ResumeManageEvent {
+class ResumeRegistGuidePage extends BasePage with ResumeEvent {
   const ResumeRegistGuidePage({super.key});
 
   @override
