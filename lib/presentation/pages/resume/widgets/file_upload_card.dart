@@ -12,7 +12,7 @@ import 'package:techtalk/presentation/pages/resume/resume_manage_event.dart';
 ///
 /// 이력서 파일을 새로 업로드할 때
 ///
-class FileUploadCard extends ConsumerWidget with ResumeManageEvent {
+class FileUploadCard extends ConsumerWidget with ResumeEvent {
   const FileUploadCard({Key? key, required this.type}) : super(key: key);
 
   final DocumentType type;
@@ -30,7 +30,7 @@ class FileUploadCard extends ConsumerWidget with ResumeManageEvent {
         const Gap(8),
         BounceTapper(
           highlightColor: Colors.transparent,
-          onTap: () => registDocumentBtn(ref, type),
+          onTap: () => registDocumentState(ref, type),
           child: DottedBorder(
             color: AppColor.of.gray2,
             dashPattern: const [6, 1],

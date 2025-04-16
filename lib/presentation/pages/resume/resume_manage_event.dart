@@ -10,6 +10,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/app/util/app_logger.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
@@ -24,7 +25,7 @@ import 'package:techtalk/presentation/pages/resume/providers/resume_info_provide
 import 'package:techtalk/presentation/widgets/common/bottom_sheet/option_list_bottom_sheet.dart';
 import 'package:techtalk/presentation/widgets/common/dialog/app_dialog.dart';
 
-mixin class ResumeManageEvent {
+mixin class ResumeEvent {
   ///
   /// 설정 bottom sheet 모달창 노출
   ///
@@ -50,7 +51,7 @@ mixin class ResumeManageEvent {
               targetCategory: ResumeSettingType.getByIndex(index),
               upload: (_) {
                 context.pop();
-                registDocumentBtn(ref, type);
+                registDocumentState(ref, type);
               },
               preview: (_) {
                 context.pop();
@@ -123,10 +124,13 @@ mixin class ResumeManageEvent {
   }
 
   ///
-  /// 이력서, 포폴 문서 등록
+  /// 이력서, 포폴 문서 상태 등록
+  /// [FileUploadCard] 혹은 [onRegisteredFileBtnTapped]에서 수행됨
+  /// 파일을 저장하는 로직은 아님. 저장하기 버튼을 눌러야 상태가 파일로 저장됨
   ///
-  Future<void> registDocumentBtn(WidgetRef ref, DocumentType type) async {
-    const maxFileSizeInBytes = 25 * 1024 * 1024; // 25MB
+  Future<void> registDocumentState(WidgetRef ref, DocumentType type) async {
+    const int textMinLength = 300;
+    const int maxFileSizeInBytes = 25 * 1024 * 1024; // 25MB
 
     try {
       final result = await FilePicker.platform.pickFiles(
@@ -135,18 +139,35 @@ mixin class ResumeManageEvent {
       );
       if (result == null || result.files.isEmpty) return;
 
+      await EasyLoading.show(status: '문서의 텍스트를 추출중입니다');
+
       final pickedPath = result.files.single.path;
       if (pickedPath == null) return;
 
       final pickedFile = File(pickedPath);
 
-      // 용량 초과 체크
+      /// =============== 예외처리 ===============
+      // 1) 용량 초과 체크
       if (pickedFile.lengthSync() > maxFileSizeInBytes) {
         exceedCapacityDialog(ref);
         return;
       }
 
-      // 파일명 설정
+      // 2) 추출한 텍스트가 면접 질문 추출에 유의미한 길이인가? (300자 이상)
+      final Uint8List pdfBytes = await pickedFile.readAsBytes();
+      final document = PdfDocument(inputBytes: pdfBytes);
+      final extractor = PdfTextExtractor(document);
+      final extractedText = extractor.extractText();
+      debugPrint('추출된 텍스트 : $extractedText');
+      document.dispose();
+
+      if (extractedText.length < textMinLength) {
+        await EasyLoading.dismiss();
+        showInsufficientTextDialog(ref);
+        return;
+      }
+
+      /// =============== 예외처리 통과 ===============
       final fileTitle = result.files.single.name
           .replaceAll(RegExp(r'\.pdf$', caseSensitive: false), '');
       final safeFileTitle = fileTitle.replaceAll(RegExp(r'[^\w\d_\-\.]+'), '_');
@@ -162,6 +183,7 @@ mixin class ResumeManageEvent {
             path: localCopied.path,
             title: fileTitle,
             uploadAt: fileUploadAt,
+            extractedText: extractedText,
           );
 
           await resumeInfoNotifier.updateResumeState(resume);
@@ -172,10 +194,13 @@ mixin class ResumeManageEvent {
             path: localCopied.path,
             title: fileTitle,
             uploadAt: fileUploadAt,
+            extractedText: extractedText,
           );
           await resumeInfoNotifier.updatePortfolioState(portfolio);
           break;
       }
+
+      await EasyLoading.dismiss();
 
       ref.read(resumeInfoProvider.notifier).showTooltip();
     } catch (e, s) {
@@ -203,17 +228,27 @@ mixin class ResumeManageEvent {
   }
 
   ///
+  /// 텍스트 길이가 300자 미만일 때 문서 상태 등록 에러 안내
+  ///
+  void showInsufficientTextDialog(WidgetRef ref) {
+    DialogService.show(
+      dialog: AppDialog.dividedBtn(
+        title: '추출된 텍스트가 너무 짧아요',
+        subTitle: '면접 질문 생성을 위해서는\n300자 이상의 텍스트가 추출되어야 합니다',
+        leftBtnContent: '취소',
+        rightBtnContent: '다시 올리기',
+        onRightBtnClicked: () => ref.context.pop(),
+        onLeftBtnClicked: ref.context.pop,
+        customAssetPath: Assets.iconsPolygonWarning,
+      ),
+    );
+  }
+
+  ///
   /// 이력서 면접 - 업로드 페이지로 이동
   ///
   void routeToResumeUploadPage(WidgetRef ref) {
     const ResumeInterviewRoute(InterviewType.resume).push(ref.context);
-  }
-
-  ///
-  /// 이력서 질문 프롬프팅 로딩 페이지로 이동
-  ///
-  void _routeToResumeInterviewLoadingPage(WidgetRef ref) {
-    const ResumeInterviewLoadingRoute().push(ref.context);
   }
 
   ///
@@ -234,7 +269,7 @@ mixin class ResumeManageEvent {
   /// 저장하기 버튼 클릭시
   ///
   Future<void> onClickedSaveBtn(WidgetRef ref) async {
-    await EasyLoading.show();
+    await EasyLoading.show(status: '문서를 저장중입니다');
     await saveDocuments(ref);
     await EasyLoading.dismiss();
     ref.invalidate(resumeInfoProvider);
@@ -268,24 +303,45 @@ mixin class ResumeManageEvent {
   Future<void> startResumeInterview(WidgetRef ref) async {
     await EasyLoading.show();
     final stopwatch = Stopwatch()..start();
-    final doc = ref.read(resumeInfoProvider).requireValue;
+    final nullableDoc = ref.read(resumeInfoProvider).requireValue;
     debugPrint('===== 면접 플로우 시작 =====');
 
-    // 1) 문서 유효성 체크
-    if (!_validateDocument(ref, doc)) {
+    // 1) 문서 유효성 체크 - 혹시 모를 안전장치
+    // doc이 null이거나 출력된 텍스트가 비어있는 경우
+    if (!_validateDocument(ref, nullableDoc)) {
       await EasyLoading.dismiss();
       return;
     }
+    final doc = nullableDoc!;
     await EasyLoading.dismiss();
 
-    try {
-      // 2) 로딩 페이지로 이동
-      _routeToResumeInterviewLoadingPage(ref);
+    // 2) 로딩 페이지로 이동
+    _routeToResumeInterviewLoadingPage(ref);
 
-      // 3) 면접 로직 진행 (문서 추출, 저장, 질문 생성 등)
-      await _performInterviewFlow(ref, doc);
+    try {
+      // 3) 병렬처리 -> 면접 질문 생성하기 && 문서 파일 저장하기 로직
+      // 문서 저장
+      final docSaveFuture = saveDocuments(ref);
+
+      // 질문 생성
+      final qnaList = await _createQuestionsFromGemini(doc, ref);
+      if (qnaList.isEmpty) {
+        // 질문 생성 실패 → pop + snackBar 등
+        ref.context.pop();
+        return;
+      }
+
+      // 질문 생성 즉시 면접 화면으로 이동
+      routeToResumeChatList(ref, qnaList);
+
+      // 문서 저장 피드백 - 디버그 프린트로 실행
+      await docSaveFuture.then((_) {
+        debugPrint('문서 저장 완료 (면접 화면은 이미 보여지는 중)');
+      }).catchError((err, st) {
+        debugPrint('문서 저장 중 오류 발생: $err');
+      });
     } catch (e, s) {
-      debugPrint('[에러] _performInterviewFlow 예외 발생: $e\n$s');
+      logger.e('에러 발생: $e\n$s');
       ref.context.pop();
       SnackBarService.showSnackBar('면접 시작 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     } finally {
@@ -295,16 +351,16 @@ mixin class ResumeManageEvent {
   }
 
   ///
-  /// 문서 유효성 체크
+  /// 1) 문서 유효성 체크
   ///
   bool _validateDocument(WidgetRef ref, DocumentEntity? doc) {
     if (doc == null) {
       SnackBarService.showSnackBar('면접을 시작할 수 없습니다. 파일을 다시 등록해주세요.');
       return false;
     }
-    final resumePath = doc.resume?.path ?? '';
-    final portfolioPath = doc.portfolio?.path ?? '';
-    if (resumePath.isEmpty && portfolioPath.isEmpty) {
+    final resumeText = doc.resume?.extractedText ?? '';
+    final portfolioText = doc.portfolio?.extractedText ?? '';
+    if (resumeText.isEmpty && portfolioText.isEmpty) {
       SnackBarService.showSnackBar('면접을 시작할 수 없습니다. 파일을 다시 등록해주세요.');
       return false;
     }
@@ -312,51 +368,23 @@ mixin class ResumeManageEvent {
   }
 
   ///
-  /// 면접 로직 처리 (텍스트 추출 -> 문서 저장 + 질문 생성 -> 채팅방 이동)
+  /// 2) 이력서 질문 프롬프팅 로딩 페이지로 이동
   ///
-  Future<void> _performInterviewFlow(WidgetRef ref, DocumentEntity? doc) async {
-    final resumePath = doc?.resume?.path ?? '';
-    final portfolioPath = doc?.portfolio?.path ?? '';
-
-    // PDF 텍스트 추출
-    final extractedText =
-        await _validatePdfText(ref, resumePath, portfolioPath);
-    if (extractedText == null) {
-      return;
-    }
-    final (resumeText, portfolioText) = extractedText;
-
-    // 문서 저장
-    final docSaveFuture = saveDocuments(ref);
-
-    // 질문 생성
-    final qnaList =
-        await _createQuestionsFromGemini(resumeText, portfolioText, ref);
-    if (qnaList.isEmpty) {
-      // 질문 생성 실패 → pop + snackBar 등
-      ref.context.pop();
-      return;
-    }
-
-    // 질문 생성 즉시 면접 화면으로 이동
-    routeToResumeChatList(ref, qnaList);
-
-    // 문서 저장 피드백 - 디버그 프린트로 실행
-    await docSaveFuture.then((_) {
-      debugPrint('문서 저장 완료 (면접 화면은 이미 보여지는 중)');
-    }).catchError((err, st) {
-      debugPrint('문서 저장 중 오류 발생: $err');
-      // 오류 토스트 or retry 등
-    });
+  void _routeToResumeInterviewLoadingPage(WidgetRef ref) {
+    const ResumeInterviewLoadingRoute().push(ref.context);
   }
 
   ///
-  /// 이력서 면접 질문 생성 로직
+  /// 3) 이력서 면접 질문 생성 로직
   ///
   Future<List<ResumeQnaEntity>> _createQuestionsFromGemini(
-      String resumeText, String portfolioText, WidgetRef ref) async {
+      DocumentEntity doc, WidgetRef ref) async {
     final stopWatch = Stopwatch()..start();
     debugPrint('GEMINI 질문 생성 시작');
+
+    // 문서에서 추출된 텍스트
+    final String resumeText = doc.resume?.extractedText ?? '';
+    final String portfolioText = doc.portfolio?.extractedText ?? '';
 
     final geminiQuestionUseCase = CreateGeminiResumeQuestionUseCase();
 
@@ -374,88 +402,10 @@ mixin class ResumeManageEvent {
       },
     );
   }
-
-  ///
-  /// PDF 텍스트 추출 - 로컬, 원격으로 분기처리
-  ///
-  Future<String> _extractPdfText(String pdfPath) async {
-    try {
-      // 원격 파일인지 파악하기
-      final bool isRemotePath = pdfPath.startsWith('http');
-      Uint8List pdfBytes;
-
-      // 원격 파일 분기처리
-      if (isRemotePath) {
-        final dio = Dio();
-        final response = await dio.get<List<int>>(
-          pdfPath,
-          options: Options(responseType: ResponseType.bytes),
-        );
-
-        if (response.statusCode == 200 && response.data != null) {
-          pdfBytes = Uint8List.fromList(response.data!);
-        } else {
-          debugPrint('PDF 다운로드 실패 - statusCode : ${response.statusCode}');
-          return '';
-        }
-      }
-
-      // 로컬 파일 분기처리
-      else {
-        pdfBytes = await File(pdfPath).readAsBytes();
-      }
-
-      // 텍스트 추출
-      final document = PdfDocument(inputBytes: pdfBytes);
-      final extractor = PdfTextExtractor(document);
-      final extractedText = extractor.extractText();
-      document.dispose();
-
-      // 추출된 텍스트를 로그로 표시
-      debugPrint('PDF 텍스트 추출 결과:\n$extractedText');
-
-      return extractedText;
-    } catch (e) {
-      debugPrint('PDF 텍스트 추출 중 오류 발생: $e');
-      return '';
-    }
-  }
-
-  ///
-  /// PDF에서 추출된 텍스트가 이력서 면접 질문 생성에 적합한지 검증
-  ///
-  Future<(String resumeText, String portfolioText)?> _validatePdfText(
-      WidgetRef ref, String resumePath, String portfolioPath) async {
-    final stopwatch = Stopwatch()..start();
-    debugPrint('=== PDF 텍스트 추출 시작 ===');
-
-    final resumeText = await _extractPdfText(resumePath);
-    debugPrint('이력서 경로 : $resumePath');
-    final portfolioText = await _extractPdfText(portfolioPath);
-    debugPrint('포트폴리오 경로 : $portfolioPath');
-
-    // 전체 길이 합산
-    final totalTextLength =
-        resumeText.trim().length + portfolioText.trim().length;
-
-    // 200자 미만 시 예외 처리
-    if (totalTextLength < 300) {
-      debugPrint('텍스트가 총 $totalTextLength자로 300자 미만입니다.');
-      ref.context.pop();
-      SnackBarService.showSnackBar('추출된 텍스트가 너무 적습니다. 300자 이상으로 적어주세요.');
-      return null;
-    }
-
-    stopwatch.stop();
-    debugPrint('PDF 텍스트 추출 소요시간: ${stopwatch.elapsedMilliseconds} ms');
-    // debugPrint('이력서 텍스트:\n$resumeText');
-    // debugPrint('포트폴리오 텍스트:\n$portfolioText');
-
-    return (resumeText, portfolioText);
-  }
 }
 
 // TODO : OPEN AI 질문 생성 로직 (yundal)
+// 아직 GEMINI vs OPENAI 중 어떤 플랫폼으로 질문 추출할지 결정하지 않아서 임시로 주석 처리
 // 텍스트 추출이 완료되었다는 전제하에 OpenAI를 통해 이력서 면접 질문 추출
 // final gptStopwatch = Stopwatch()..start();
 // final questionUseCase = CreateOpenAIResumeQuestionUseCase();

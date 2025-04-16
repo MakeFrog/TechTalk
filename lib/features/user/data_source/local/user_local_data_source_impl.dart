@@ -63,8 +63,10 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
           resumePath: resume.path,
           resumeTitle: resume.title,
           resumeUploadAt: resume.uploadAt,
+          resumeExtractedText: resume.extractedText,
         ),
       );
+
       await box.put(AppLocal.userBoxName, updatedUserBox);
     } catch (e, s) {
       debugPrint('[로컬] box.put 예외 발생: $e');
@@ -87,8 +89,10 @@ final class UserLocalDataSourceImpl implements UserLocalDataSource {
             portfolioPath: portfolio.path,
             portfolioTitle: portfolio.title,
             portfolioUploadAt: portfolio.uploadAt,
+            portfolioExtractedText: portfolio.extractedText,
           ),
         );
+
         await box.put(AppLocal.userBoxName, updatedUserBox);
       }
     } catch (e, s) {

@@ -20,19 +20,22 @@ class ResumeBoxAdapter extends TypeAdapter<ResumeBox> {
       resumePath: fields[0] as String?,
       resumeTitle: fields[1] as String?,
       resumeUploadAt: fields[2] as String?,
+      resumeExtractedText: fields[3] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ResumeBox obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.resumePath)
       ..writeByte(1)
       ..write(obj.resumeTitle)
       ..writeByte(2)
-      ..write(obj.resumeUploadAt);
+      ..write(obj.resumeUploadAt)
+      ..writeByte(3)
+      ..write(obj.resumeExtractedText);
   }
 
   @override

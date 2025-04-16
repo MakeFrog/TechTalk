@@ -12,6 +12,7 @@ PortfolioEntity _$PortfolioEntityFromJson(Map<String, dynamic> json) =>
       path: json['path'] as String?,
       title: json['title'] as String?,
       uploadAt: json['uploadAt'] as String?,
+      extractedText: json['extractedText'] as String?,
     );
 
 Map<String, dynamic> _$PortfolioEntityToJson(PortfolioEntity instance) =>
@@ -20,6 +21,7 @@ Map<String, dynamic> _$PortfolioEntityToJson(PortfolioEntity instance) =>
       'path': instance.path,
       'title': instance.title,
       'uploadAt': instance.uploadAt,
+      'extractedText': instance.extractedText,
     };
 
 const _$DocumentTypeEnumMap = {

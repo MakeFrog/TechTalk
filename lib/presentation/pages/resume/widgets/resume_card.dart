@@ -16,8 +16,7 @@ import 'package:techtalk/presentation/pages/resume/widgets/file_upload_card.dart
 ///
 /// 이력서 카드 / 포트폴리오 카드 위젯
 ///
-class ResumeCard extends ConsumerWidget
-    with ResumeManageEvent, ResumeManageState {
+class ResumeCard extends ConsumerWidget with ResumeEvent, ResumeState {
   final DocumentType type;
   final DocumentBaseEntity doc;
 

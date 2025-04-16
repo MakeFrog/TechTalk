@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:techtalk/app/util/app_logger.dart';
 import 'package:techtalk/features/user/repositories/entities/document_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
 import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
@@ -68,7 +69,7 @@ class ResumeInfo extends _$ResumeInfo {
   bool isStateChanged() => !_isSameState;
 
   ///
-  /// Document 상태  확인
+  /// Document 상태 확인
   ///
   bool hasDocument() => state.valueOrNull?.hasFetchedAnyDocuments ?? false;
 
@@ -153,11 +154,11 @@ class ResumeInfo extends _$ResumeInfo {
     final futures = <Future>[];
 
     if (resumeChanged) {
-      futures.add(_saveResume(doc.resume));
+      futures.add(saveResume(doc.resume));
     }
 
     if (portfolioChanged) {
-      futures.add(_savePortfolio(doc.portfolio));
+      futures.add(savePortfolio(doc.portfolio));
     }
 
     if (futures.isEmpty) {
@@ -171,7 +172,7 @@ class ResumeInfo extends _$ResumeInfo {
   ///
   /// 이력서 상태가 변경되었을 때 실행
   ///
-  Future<void> _saveResume(ResumeEntity? newResume) async {
+  Future<void> saveResume(ResumeEntity? newResume) async {
     final stopwatch = Stopwatch()..start();
     debugPrint('이력서가 변경되어서 실행');
     await updateResume(newResume);
@@ -182,7 +183,7 @@ class ResumeInfo extends _$ResumeInfo {
   ///
   /// 포트폴리오 상태가 변경되었을 때 실행
   ///
-  Future<void> _savePortfolio(PortfolioEntity? newPortfolio) async {
+  Future<void> savePortfolio(PortfolioEntity? newPortfolio) async {
     final stopwatch = Stopwatch()..start();
     debugPrint('포트폴리오가 변경되어서 실행');
     await updatePortfolio(newPortfolio);

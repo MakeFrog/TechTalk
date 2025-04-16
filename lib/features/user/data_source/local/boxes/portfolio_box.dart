@@ -13,21 +13,27 @@ class PortfolioBox extends HiveObject {
   @HiveField(2, defaultValue: null)
   final String? portfolioUploadAt;
 
+  @HiveField(3, defaultValue: null)
+  final String? portfolioExtractedText;
+
   PortfolioBox({
     this.portfolioPath,
     this.portfolioTitle,
     this.portfolioUploadAt,
+    this.portfolioExtractedText,
   });
 
   PortfolioBox copyWith({
     String? portfolioPath,
     String? portfolioTitle,
     String? portfolioUploadAt,
+    String? portfolioExtractedText,
   }) {
     return PortfolioBox(
       portfolioPath: portfolioPath ?? this.portfolioPath,
       portfolioTitle: portfolioTitle ?? this.portfolioTitle,
       portfolioUploadAt: portfolioUploadAt ?? this.portfolioUploadAt,
+      portfolioExtractedText: portfolioExtractedText ?? this.portfolioExtractedText,
     );
   }
 }

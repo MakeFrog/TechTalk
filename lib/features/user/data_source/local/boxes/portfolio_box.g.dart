@@ -20,19 +20,22 @@ class PortfolioBoxAdapter extends TypeAdapter<PortfolioBox> {
       portfolioPath: fields[0] as String?,
       portfolioTitle: fields[1] as String?,
       portfolioUploadAt: fields[2] as String?,
+      portfolioExtractedText: fields[3] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, PortfolioBox obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.portfolioPath)
       ..writeByte(1)
       ..write(obj.portfolioTitle)
       ..writeByte(2)
-      ..write(obj.portfolioUploadAt);
+      ..write(obj.portfolioUploadAt)
+      ..writeByte(3)
+      ..write(obj.portfolioExtractedText);
   }
 
   @override

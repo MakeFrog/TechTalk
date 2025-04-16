@@ -468,6 +468,7 @@ final class UserRepositoryImpl implements UserRepository {
         path: localResumeBox!.resumePath,
         title: localResumeBox.resumeTitle,
         uploadAt: localResumeBox.resumeUploadAt,
+        extractedText: localResumeBox.resumeExtractedText,
       );
     }
 
@@ -476,6 +477,7 @@ final class UserRepositoryImpl implements UserRepository {
         path: remoteResume!.path,
         title: remoteResume.title,
         uploadAt: remoteResume.uploadAt,
+        extractedText: remoteResume.extractedText,
       );
     }
 
@@ -493,6 +495,7 @@ final class UserRepositoryImpl implements UserRepository {
         path: localPortfolioBox!.portfolioPath,
         title: localPortfolioBox.portfolioTitle,
         uploadAt: localPortfolioBox.portfolioUploadAt,
+        extractedText: localPortfolioBox.portfolioExtractedText,
       );
     }
 
@@ -501,6 +504,7 @@ final class UserRepositoryImpl implements UserRepository {
         path: remotePortfolio!.path,
         title: remotePortfolio.title,
         uploadAt: remotePortfolio.uploadAt,
+        extractedText: remotePortfolio.extractedText,
       );
     }
 

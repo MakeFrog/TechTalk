@@ -11,10 +11,25 @@ final class PortfolioEntity extends DocumentBaseEntity {
     super.path,
     super.title,
     super.uploadAt,
+    super.extractedText,
   });
 
   factory PortfolioEntity.fromJson(Map<String, dynamic> json) =>
       _$PortfolioEntityFromJson(json);
 
   Map<String, dynamic> toJson() => _$PortfolioEntityToJson(this);
+
+  PortfolioEntity copyWith({
+    String? path,
+    String? title,
+    String? uploadAt,
+    String? extractedText,
+  }) {
+    return PortfolioEntity(
+      path: path ?? this.path,
+      title: title ?? this.title,
+      uploadAt: uploadAt ?? this.uploadAt,
+      extractedText: extractedText ?? this.extractedText,
+    );
+  }
 }

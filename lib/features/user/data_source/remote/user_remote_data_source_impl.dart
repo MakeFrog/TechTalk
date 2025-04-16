@@ -342,6 +342,7 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         path: downloadUrl,
         title: resume.title,
         uploadAt: resume.uploadAt,
+        extractedText: resume.extractedText,
       );
 
       // Firestore에 저장할 Map 형태로 변환
@@ -350,6 +351,7 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
           'path': newResume.path,
           'title': newResume.title,
           'uploadAt': newResume.uploadAt,
+          'extractedText': newResume.extractedText,
         },
       };
 
@@ -395,6 +397,7 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         path: downloadUrl,
         title: portfolio.title,
         uploadAt: portfolio.uploadAt,
+        extractedText: portfolio.extractedText,
       );
 
       // Firestore에 저장할 Map 형태로 변환
@@ -403,6 +406,7 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
           'path': newPortfolio.path,
           'title': newPortfolio.title,
           'uploadAt': newPortfolio.uploadAt,
+          'extractedText': newPortfolio.extractedText,
         },
       };
 

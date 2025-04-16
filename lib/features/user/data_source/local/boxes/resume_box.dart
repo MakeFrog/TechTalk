@@ -13,21 +13,27 @@ class ResumeBox extends HiveObject {
   @HiveField(2, defaultValue: null)
   final String? resumeUploadAt;
 
+  @HiveField(3, defaultValue: null)
+  final String? resumeExtractedText;
+
   ResumeBox({
     this.resumePath,
     this.resumeTitle,
     this.resumeUploadAt,
+    this.resumeExtractedText,
   });
 
   ResumeBox copyWith({
     String? resumePath,
     String? resumeTitle,
     String? resumeUploadAt,
+    String? resumeExtractedText,
   }) {
     return ResumeBox(
       resumePath: resumePath ?? this.resumePath,
       resumeTitle: resumeTitle ?? this.resumeTitle,
       resumeUploadAt: resumeUploadAt ?? this.resumeUploadAt,
+      resumeExtractedText: resumeExtractedText ?? this.resumeExtractedText,
     );
   }
 }

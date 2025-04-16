@@ -4,7 +4,7 @@ import 'package:techtalk/presentation/pages/resume/providers/resume_info_provide
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:techtalk/features/user/user.dart';
 
-mixin class ResumeManageState {
+mixin class ResumeState {
   ///
   /// 유저 정보 가져오기
   ///
