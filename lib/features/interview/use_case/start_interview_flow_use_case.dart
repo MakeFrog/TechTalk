@@ -115,6 +115,6 @@ final class StartInterviewFlowUseCase {
   /// 면접 질문 생성 페이지로 이동
   void _navigateToQuestionCreation() {
     final routeArgument = QuestionCreationRouteArg(_interviewFlowParam);
-    QuestionCreationRoute(routeArgument).push(_context).whenComplete(() {});
+    QuestionCreationRoute(routeArgument).go(_context);
   }
 }

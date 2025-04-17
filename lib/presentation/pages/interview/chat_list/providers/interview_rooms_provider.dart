@@ -53,7 +53,11 @@ class InterviewRooms extends _$InterviewRooms {
         );
       },
       youtube: (_) {
-        logger.e('유튜브 면접을 면섭실 페이지에 진입하지 않음');
+        logger.e('유튜브 면접을 면접실 페이지에 진입하지 않음');
+        throw Exception('알 수 없는 오류입니다');
+      },
+      proficiency: (InterviewType type) {
+        logger.e('역량별 면접은 면접실 페이지에 진입하지 않음');
         throw Exception('알 수 없는 오류입니다');
       },
     );

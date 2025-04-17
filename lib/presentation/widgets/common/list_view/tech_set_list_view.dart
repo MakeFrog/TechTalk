@@ -41,24 +41,14 @@ class TechSetListView extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final techSet = techSets[index];
                       return Center(
-                        child: techSet.fold(skill: (skill) {
-                          return ClosableFilledChip(
-                            logoPath: skill.imagePath,
-                            name: skill.name,
-                            onTap: () {
-                              onItemTapped(techSet);
-                            },
-                          );
-                        }, jobGroup: (jobGroup) {
-                          return Center(
-                            child: ClosableFilledChip(
-                              name: jobGroup.name,
-                              onTap: () {
-                                onItemTapped(techSet);
-                              },
-                            ),
-                          );
-                        }),
+                        child: ClosableFilledChip(
+                          logoPath:
+                              techSet is SkillEntity ? techSet.imagePath : null,
+                          name: techSet.name,
+                          onTap: () {
+                            onItemTapped(techSet);
+                          },
+                        ),
                       );
                     },
                   ),

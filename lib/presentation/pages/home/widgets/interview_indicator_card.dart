@@ -47,37 +47,39 @@ class InterviewIndicatorCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SvgPicture.asset(logoPath),
-                    const Gap(4),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              title,
-                              style: AppTextStyle.headline3.copyWith(),
-                            ),
-                            if (showNewBadge)
-                              const NewBadge(
-                                margin: EdgeInsets.only(left: 6),
-                              )
-                          ],
-                        ),
-                        const Gap(4),
-                        if (subDescription != null)
-                          Text(
-                            subDescription!,
-                            style: AppTextStyle.body1.copyWith(
-                              color: AppColor.of.gray3,
-                            ),
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SvgPicture.asset(logoPath),
+                      const Gap(4),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                title,
+                                style: AppTextStyle.headline3.copyWith(),
+                              ),
+                              if (showNewBadge)
+                                const NewBadge(
+                                  margin: EdgeInsets.only(left: 6),
+                                )
+                            ],
                           ),
-                      ],
-                    ),
-                  ],
+                          const Gap(4),
+                          if (subDescription != null)
+                            Text(
+                              subDescription!,
+                              style: AppTextStyle.body1.copyWith(
+                                color: AppColor.of.gray3,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
                 if (showPlustBtn)
                   BounceTapper(

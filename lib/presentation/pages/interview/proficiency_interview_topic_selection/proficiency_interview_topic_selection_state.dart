@@ -1,8 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
-import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:techtalk/presentation/pages/interview/proficiency_interview_topic_selection/provider/selected_tech_sets_provider.dart';
+import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 
 mixin class ProficiencyInterviewTopicSelectionState {
   ///
@@ -16,7 +15,7 @@ mixin class ProficiencyInterviewTopicSelectionState {
   ///
   List<TechSetEntity> userSkillCollection(WidgetRef ref) {
     final skillItems = ref.watch(userInfoProvider).valueOrNull?.skills ?? [];
-    return skillItems.map(TechSetEntity.skill).toList();
+    return skillItems;
   }
 
   ///
@@ -25,6 +24,6 @@ mixin class ProficiencyInterviewTopicSelectionState {
   List<TechSetEntity> userJobGroupCollection(WidgetRef ref) {
     final jobGroupItems =
         ref.watch(userInfoProvider).valueOrNull?.jobGroups ?? [];
-    return jobGroupItems.map(TechSetEntity.jobGroup).toList();
+    return jobGroupItems;
   }
 }
