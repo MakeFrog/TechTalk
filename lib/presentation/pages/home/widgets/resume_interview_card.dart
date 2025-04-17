@@ -14,6 +14,7 @@ class ResumeInterviewCard extends ConsumerWidget with HomeEvent, HomeState {
   Widget build(BuildContext context, WidgetRef ref) {
     return InterviewIndicatorCard(
       title: '이력서 면접',
+      subDescription: '이력서로 만든 예상 질문을 경험해 보세요!',
       onCardTapped: () =>
           routeToChatListPage(context, type: InterviewType.resume),
       //routeToResumeChatList(ref);
