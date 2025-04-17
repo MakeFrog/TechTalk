@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
@@ -168,6 +169,7 @@ mixin class ResumeEvent {
       }
 
       /// =============== 예외처리 통과 ===============
+      final resumeInfoNotifier = ref.read(resumeInfoProvider.notifier);
       final fileTitle = result.files.single.name
           .replaceAll(RegExp(r'\.pdf$', caseSensitive: false), '');
       final safeFileTitle = fileTitle.replaceAll(RegExp(r'[^\w\d_\-\.]+'), '_');
@@ -175,7 +177,6 @@ mixin class ResumeEvent {
       final Directory appDocDir = await getApplicationDocumentsDirectory();
       final targetPath = '${appDocDir.path}/$safeFileTitle.pdf';
       final localCopied = await pickedFile.copy(targetPath);
-      final resumeInfoNotifier = ref.read(resumeInfoProvider.notifier);
 
       switch (type) {
         case DocumentType.resume:
@@ -199,13 +200,12 @@ mixin class ResumeEvent {
           await resumeInfoNotifier.updatePortfolioState(portfolio);
           break;
       }
-
-      await EasyLoading.dismiss();
-
       ref.read(resumeInfoProvider.notifier).showTooltip();
     } catch (e, s) {
       debugPrint('파일 등록 중 오류 발생: $e\n$s');
       SnackBarService.showSnackBar('파일 등록에 실패하였습니다. 다시 시도해주세요.');
+    } finally {
+      await EasyLoading.dismiss();
     }
   }
 
@@ -269,12 +269,24 @@ mixin class ResumeEvent {
   /// 저장하기 버튼 클릭시
   ///
   Future<void> onClickedSaveBtn(WidgetRef ref) async {
+    // 1) 백그라운드 저장 로직
+    unawaited(
+      saveDocuments(ref).then((_) {
+        debugPrint('✅ 실제 문서 저장 완료');
+      }).catchError((e, s) {
+        debugPrint('❌ 실제 문서 저장 실패: $e');
+      }),
+    );
+
+    // 2) 원격 저장은 너무 오래걸려서 페이크 딜레이 2초 주기
     await EasyLoading.show(status: '문서를 저장중입니다');
-    await saveDocuments(ref);
+    await Future.delayed(const Duration(seconds: 2));
     await EasyLoading.dismiss();
-    ref.invalidate(resumeInfoProvider);
-    ref.context.pop();
-    SnackBarService.showSnackBar('저장이 완료되었습니다.');
+    if (ref.context.mounted) {
+      ref.invalidate(resumeInfoProvider);
+      ref.context.pop();
+      SnackBarService.showSnackBar('저장이 완료되었습니다.');
+    }
   }
 
   ///
