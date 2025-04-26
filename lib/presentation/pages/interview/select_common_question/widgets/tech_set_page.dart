@@ -21,7 +21,7 @@ class _TechSetPage extends ConsumerWidget
 
             return ListView.separated(
               key: ValueKey(qnas.length),
-              physics: const NeverScrollableScrollPhysics(),
+              // physics: const NeverScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(horizontal: 16) +
                   const EdgeInsets.only(
                     top: 16,

@@ -61,6 +61,7 @@ class SelectCommonQuestionPage extends BasePage
         ];
       },
       body: PageView.builder(
+        physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         itemCount: arg.topics.length,
         onPageChanged: (index) {
