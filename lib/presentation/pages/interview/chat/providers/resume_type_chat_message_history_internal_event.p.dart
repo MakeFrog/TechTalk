@@ -11,8 +11,20 @@ extension ResumeTypeChatMessageHistoryInternalEvent on ChatMessageHistory {
   ///
 
   Future<void> _showProficiencyTypeIntroMessages() async {
+    final InterviewLevel interviewLevel =
+        ref.read(selectedChatRoomProvider).interviewLevel;
+    final userName = (await ref.read(userInfoProvider.future))?.nickname ??
+        tr(LocaleKeys.common_emptyName);
+
     final firstQna = _getNewQna()!;
-    final String introMessage = '안녕하세요. 역량별 면접 질문을 여쭤볼게요';
+
+    final String introMessage = tr(
+      LocaleKeys.interview_resume_greeting,
+      namedArgs: {
+        'nickname': userName,
+        'level': tr(interviewLevel.titleKey),
+      },
+    );
 
     final introChat = GuideChatEntity.createStatic(
       message: introMessage,

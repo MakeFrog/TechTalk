@@ -7,7 +7,7 @@ part of 'chat_message_history_provider.dart';
 // **************************************************************************
 
 String _$chatMessageHistoryHash() =>
-    r'06cb1ddf993b09b7bb6b9a481695b026ba481c26';
+    r'5aae439a530db59170a2d8ac0b4d9dd164d8ea8d';
 
 /// See also [ChatMessageHistory].
 @ProviderFor(ChatMessageHistory)

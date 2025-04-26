@@ -13,12 +13,16 @@ import 'package:techtalk/app/util/app_logger.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/feedback_response_entity.dart';
+import 'package:techtalk/features/chat/repositories/enums/interview_level.enum.dart';
 import 'package:techtalk/features/chat/use_cases/set_ai_follow_up_question_use_case.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_qnas_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/is_follow_up_process_active_provider.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/selected_chat_room_provider.dart';
 import 'package:techtalk/presentation/providers/user/user_info_provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:techtalk/features/chat/repositories/entities/proficiency_qna_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
+import 'package:techtalk/presentation/pages/interview/proficiency_interview_topic_selection/provider/selected_tech_sets_provider.dart';
 
 part 'chat_message_history_internal_event.p.dart';
 part 'chat_message_history_provider.g.dart';
@@ -139,6 +143,7 @@ class ChatMessageHistory extends _$ChatMessageHistory {
         chatHistory: chatHistory,
         qna: rootQna,
         interviewType: room.type,
+        level: room.interviewLevel,
         userName: ref.read(userInfoProvider).requireValue!.nickname!,
         onError: _onAiFeedbackErrorOccured,
         youtubeExtra: room.youtubeExtra,
@@ -245,10 +250,21 @@ class ChatMessageHistory extends _$ChatMessageHistory {
             guideMessage = rootNavigatorKey.currentContext!.tr(
               LocaleKeys.undefined_next_question_prompt,
               namedArgs: {
-                'topic': room.type.isPractical
-                    ? StoredTopics.getById(newQna.qna.id.getFirstPartOfSpliited)
-                        .text
-                    : '',
+                'topic': room.type.typedBranch(
+                  common: (_) =>
+                      StoredTopics.getById(newQna.qna.id.getFirstPartOfSpliited)
+                          .text,
+                  resume: (_) => '',
+                  youtube: (_) => '',
+                  proficiency: (_) {
+                    final uniqueTechSetIds =
+                        room.techsetTopics.map((e) => e.id).toSet();
+                    if (uniqueTechSetIds.length > 1) {
+                      return (newQna.qna as ProficiencyQnaEntity).techSet.name;
+                    }
+                    return '';
+                  },
+                ),
               },
             );
           } else {

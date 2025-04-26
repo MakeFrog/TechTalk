@@ -9,6 +9,9 @@ import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/home/widgets/home_state.dart';
 
+///
+/// 첫 면접 진행 시 보여주는 메세지 카드 (일반)
+///
 class CheerUpMessageCard extends HookWidget with HomeState {
   const CheerUpMessageCard({super.key});
 
@@ -109,7 +112,7 @@ class CheerUpMessageCard extends HookWidget with HomeState {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'AI 면접관이 함께할 거예요!',
+                      tr(LocaleKeys.home_cheerUp_aiInterviewerMessage),
                       style: AppTextStyle.body3,
                     ),
                     Text(

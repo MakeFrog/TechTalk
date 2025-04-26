@@ -47,7 +47,9 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
           },
         );
       },
-      error: (e, _) => const Text('채팅을 불러오지 못하였습니다'),
+      error: (e, _) => Text(
+        tr(LocaleKeys.errors_errorOccurred),
+      ),
       loading: () {
         return ListView.builder(
           physics: const NeverScrollableScrollPhysics(),

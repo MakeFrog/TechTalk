@@ -1,6 +1,7 @@
 {
   "common": {
-    "errorDetectedTryLater": "An error occurred.\nPlease try again later.",
+    "commonQuestion": "Common Questions",
+    "errorDetectedTryLater": "Error occurred.\nPlease try again.",
     "emptyName": "Anonymous",
     "next": "Next",
     "close": "Close",
@@ -13,7 +14,7 @@
     "notice": "Notice",
     "practicalInterviewFormat": "Mock\nInterview",
     "topicInterviewFormat": "Topic\nInterview",
-    "alreadySelected": "This skill is already selected.",
+    "alreadySelected": "This skill is already chosen.",
     "responseResult": {
       "pass": "Pass",
       "fail": "Fail",
@@ -91,186 +92,310 @@
       "vrEngineer": "VR Engineer",
       "biEngineer": "BI Engineer",
       "rubyOnRailsDeveloper": "Ruby on Rails Developer"
-    }
+    },
+    "exit": "Exit",
+    "pleaseTryAgain": "Please try again"
   },
   "home": {
-    "cheerUpMessage": "Hi, {nickname}!\nAlways rooting for you!",
+    "cheerUpMessage": "Hi, {nickname}!\nWe're rooting for you!",
     "practicalInterview": "Mock Interview",
-    "practicalInterviewDesc": "Pick multiple skill topics and try Live Interview!",
+    "practicalInterviewDesc": "Select multiple topics and try a live interview!",
     "topicInterview": "Topic Interview",
-    "topicInterviewDesc": "Pick one skill topic and focus on it!",
-    "takeInterview": "Start"
+    "topicInterviewDesc": "Choose one skill topic and focus on it!",
+    "takeInterview": "Start",
+    "error": {
+      "title": "Error",
+      "description": "Unexpected error.\nPlease try again.",
+      "retryButton": "Retry"
+    },
+    "commonQuestion": {
+      "title": "Common Interview",
+      "practicalInterview": "Mock Interview"
+    },
+    "proficiencyInterview": {
+      "title": "Proficiency Interview"
+    },
+    "cheerUp": {
+      "aiInterviewerMessage": "Your AI interviewer is here to help!"
+    },
+    "youtubeFeature": {
+      "title": "Now featuring YouTube content!",
+      "subtitle": "Start learning!"
+    }
   },
   "gnb": {
     "home": "Home",
-    "learning": "Learning",
+    "learning": "Question",
     "videoTutorial": "Content",
     "mistakeNote": "Review",
     "myInfo": "My"
   },
   "onboarding": {
     "login": {
-      "talkTalkWithAiInterviewer": "Walk the Walk with\nAI Interviewer!",
-      "signUpWithGoogle": "Sign up with Google",
-      "signUpWithApple": "Sign up with Apple"
+      "talkTalkWithAiInterviewer": "Chat with\nYour AI Interviewer!",
+      "signUpWithGoogle": "Continue with Google",
+      "signUpWithApple": "Continue with Apple"
     },
     "nickname": {
-      "greeting": "Hi there! Ready to prepare\nyour next interview with Techtalk?",
-      "needNickname": "What should I call you?",
-      "enterNickname": "Please enter your nickname",
-      "nicknameAvailable": "The nickname is available.",
-      "nicknameTaken": "Sorry, this nickname is already taken.",
-      "profanityNotAllowed": "Please avoid offensive words",
-      "nicknameLength": "Please use 2-10 characters",
-      "invalidNickname": "Sorry, this nickname cannot be used.",
-      "noSpacesAllowed": "Nicknames cannot contain spaces."
+      "greeting": "Hi there! Ready for your next interview with TechTalk?",
+      "needNickname": "What should we call you?",
+      "enterNickname": "Enter your nickname",
+      "nicknameAvailable": "Nickname is available.",
+      "nicknameTaken": "Nickname is taken.",
+      "profanityNotAllowed": "Please avoid offensive language.",
+      "nicknameLength": "Use 2-10 characters.",
+      "invalidNickname": "Nickname not allowed.",
+      "noSpacesAllowed": "No spaces allowed."
     }
   },
   "jobSelection": {
-    "promptJobPositions": "What positions\nare you interested in?",
-    "selectOneOrMore": "Please select one or more.",
-    "needSearchKeyword": "Please search for a skill",
-    "needToSearchInEnglish": "Please search for skills in English",
+    "promptJobPositions": "Which positions\nare you interested in?",
+    "selectOneOrMore": "Select at least one.",
+    "needSearchKeyword": "Search for a skill.",
+    "needToSearchInEnglish": "Search in English.",
     "noResultFound": "No results found"
   },
   "techSelection": {
-    "promptTechInterviewTopics": "What skills are you\ninterested in?",
-    "searchInEnglish": "Please search in English.",
-    "selectOneOrMore": "Please select one or more.",
+    "promptTechInterviewTopics": "Which skills\ninterest you?",
+    "searchInEnglish": "Search in English.",
+    "selectOneOrMore": "Select at least one.",
     "searchTechnologies": "Search for your tech skill",
-    "searchInKorean": "Please search for skills in English.",
-    "noSearchResults": "Sorry, there are no search results"
+    "searchInKorean": "Please search in English.",
+    "noSearchResults": "No results found.",
+    "complete": "Complete",
+    "limit": {
+      "title": "Selection Limit",
+      "description": "You can select up to 4 items",
+      "confirm": "OK"
+    },
+    "alreadySelected": "This item is already selected"
   },
   "interview": {
-    "loadingFollowUpQuestion": "Loading Follow-up Question...",
-    "followUpQuestion": "Follow-up Questions",
-    "aiFeedbackErrorOccured": "An error occurred in verifying the answer. Please try again later.",
-    "noAudioDetected": "No input audio detected",
-    "answerVocally": "Answer vocally!",
-    "processingRecord": "Processing the recording",
-    "hello": "Hi, {}! Always rooting for you.",
-    "multipleTopics": "Pick multiple skill topics and try Live Interview!",
-    "focusOnOneTopic": "Pick one skill topic and focus on it!",
-    "selectInterviewTopic": "Choose your topics\nfor AI interview",
-    "chooseNumberOfQuestions": "Select the number\nof interview questions",
+    "loadingFollowUpQuestion": "Loading follow-up question...",
+    "followUpQuestion": "Follow-up",
+    "aiFeedbackErrorOccured": "Error checking the answer. Please try again.",
+    "noAudioDetected": "No audio detected.",
+    "answerVocally": "Answer by voice!",
+    "processingRecord": "Processing recording...",
+    "hello": "Hi, {}! We're cheering you on.",
+    "multipleTopics": "Pick multiple topics and try a live interview!",
+    "focusOnOneTopic": "Focus on one topic!",
+    "selectInterviewTopic": "Choose your topics\nfor the AI interview",
+    "chooseNumberOfQuestions": "How many questions\ndo you want?",
     "startInterview": "Start Interview",
-    "maxFourQuestions": "You can choose up to 4 skills",
+    "maxFourQuestions": "Up to 4 skills",
     "interviewer": "{ } Interviewer",
-    "waitPlease": "Please wait a moment.",
-    "provideAnswer": "Please provide your answer",
+    "waitPlease": "Please wait...",
+    "provideAnswer": "Provide your answer",
     "notification": "Notification",
-    "confirmEndInterview": "Are you sure you want to end the interview?",
-    "continueLater": "You can continue the interview later.",
-    "interviewEnded": "The interview has ended",
-    "noInterviewRecords": "No interview records",
-    "startYourInterviewByClicking": "Click the button at the bottom right\nto start the interview!",
-    "interviewHasEnd": "The interview has ended",
-    "errorHasDetected": "An error occurred, unable to send the response",
-    "waitForReply": "Wait for the interviewer to finish before replying",
-    "recordFailed": "Failed to recognize the voice. Please try again.",
+    "confirmEndInterview": "End the interview?",
+    "continueLater": "You can resume later.",
+    "interviewEnded": "Interview ended.",
+    "noInterviewRecords": "No records yet.",
+    "startYourInterviewByClicking": "Tap the button at the bottom right\nto start.",
+    "interviewHasEnd": "Interview ended.",
+    "errorHasDetected": "Error sending response.",
+    "waitForReply": "Please wait for the interviewer to finish.",
+    "recordFailed": "Couldn't recognize your voice. Try again.",
     "hasPassed": "You passed!",
-    "keepGoing": "Keep going, and you'll keep growing!",
-    "hasFailed": "You didn’t pass",
-    "getCoureage": "Keep trying, and things will change!",
+    "keepGoing": "Keep going—you're growing!",
+    "hasFailed": "You didn't pass.",
+    "getCoureage": "Keep at it—things will improve!",
     "oneLineFeedback": "Feedback",
-    "tryRecap": "Retry the questions\nyou missed.",
-    "retryInterview": "Get new questions and build a mountain of knowledge!",
-    "tryAgain": "Try Again",
-    "goToHome": "Go Home",
-    "suggestSimilarTopicsLeading": "Candidates in your field are studying\n",
-    "suggestSimilarTopicsEnd": " together",
-    "letsTryInterviewAgain": "Ready for an interview?",
-    "generatingOneLineFeedback": "Generating Feedback"
+    "tryRecap": "Review missed questions.",
+    "retryInterview": "Get new questions & boost your knowledge!",
+    "tryAgain": "Try again",
+    "goToHome": "Home",
+    "suggestSimilarTopicsLeading": "Others in your field are studying\n",
+    "suggestSimilarTopicsEnd": " together.",
+    "letsTryInterviewAgain": "Ready to interview again?",
+    "generatingOneLineFeedback": "Generating feedback",
+    "interviewLevel": {
+      "title": "Choose question difficulty\n",
+      "advanced": {
+        "label": "Advanced",
+        "title": "Senior",
+        "description": "For advanced technical expertise."
+      },
+      "intermediate": {
+        "label": "Intermediate",
+        "title": "Junior",
+        "description": "Core skills for real-world experience."
+      },
+      "beginner": {
+        "label": "Beginner",
+        "title": "Entry",
+        "description": "Covers basic syntax and logic."
+      }
+    },
+    "interviewType": {
+      "title": "Select interview question type",
+      "description": "Collected from real interviews.",
+      "practical": {
+        "title": "Mock Interview",
+        "description": "Multiple topics & real interview practice."
+      },
+      "topic": {
+        "title": "Topic Interview",
+        "description": "Focus on one topic and master it."
+      }
+    },
+    "proficiency": {
+      "title": "Choose the skills\nor positions you want.",
+      "maxSelection": "Up to 4 items.",
+      "search_hint": "Search for skills or roles",
+      "recommended": {
+        "jobGroup": "Recommended Roles",
+        "skill": "Recommended Skills"
+      }
+    },
+    "resume": {
+      "checkResume": "Check your resume\nand try again",
+      "description": "Better resumes get more specific questions.",
+      "greeting": "Hi @{nickname}, I'll give you questions for your @{level} level."
+    },
+    "common": {
+      "tryCommon": "Try our common questions, too!",
+      "description": "We've gathered real frequently asked questions!"
+    },
+    "evaluation": {
+      "title": "Focus Points"
+    },
+    "questionCreation": {
+      "title": "Select Your Questions",
+      "startInterview": "Start Interview",
+      "description": "Pick questions for your proficiency interview.",
+      "loading": {
+        "title": "Please wait {nickname},\nGenerating questions...",
+        "description": "Should be ready in ~15s."
+      },
+      "ready": {
+        "title": "Your questions are ready,\n{nickname}!"
+      },
+      "state": {
+        "noQuestions": "No questions generated yet",
+        "selectQuestions": "Select some questions",
+        "maxSelection": "Up to 4 questions"
+      },
+      "event": {
+        "startInterview": "Start Interview",
+        "selectQuestion": "Select Question",
+        "deselectQuestion": "Deselect Question",
+        "readyToStart": "Ready to begin?",
+        "generatingQuestions": "Generating questions...",
+        "readyToStartDescription": "Your questions are ready.\nLeave now?",
+        "generatingQuestionsDescription": "Leaving might lose generated questions.\nLeave anyway?",
+        "continueInterview": "Continue Interview",
+        "questionsJustCreated": "Wait! We just finished creating them."
+      }
+    },
+    "createdQuestion": {
+      "title": "Generated Questions",
+      "state": {
+        "noQuestions": "No questions generated",
+        "selectQuestions": "Select some questions",
+        "maxSelection": "Up to 4 questions"
+      },
+      "event": {
+        "startInterview": "Start Interview",
+        "selectQuestion": "Select Question",
+        "deselectQuestion": "Deselect Question"
+      }
+    },
+    "resumeInterview": "Resume Interview",
+    "contentInterview": "Content Interview",
+    "proficiencyInterview": "Proficiency Interview"
   },
   "qa": {
     "numberOfQa": " items",
-    "swiftAndTwoOthers": "Swift and 2 others",
-    "noCompletedQa": "No history of completion.\nPlease answer the interview questions!",
-    "answerInterviewQuestions": "Come back after answering the interview questions.",
+    "swiftAndTwoOthers": "Swift and 2 more",
+    "noCompletedQa": "No completed history.\nAnswer some questions!",
+    "answerInterviewQuestions": "Answer some interview questions first!",
     "myAnswer": "My Answer",
-    "modelAnswer": "Sample Answer"
+    "modelAnswer": "Sample Answer",
+    "failedToLoadQa": "Couldn't load Q&A."
   },
   "learning": {
-    "hideAnswers": "Hide the Answers",
-    "oneOutOfFifty": "1/50 Questions",
+    "hideAnswers": "Hide Answers",
+    "oneOutOfFifty": "1/50",
     "previous": "Prev",
     "all": "All",
     "all_question": "All",
     "next": "Next",
     "reviewNote": "Review Notes",
-    "reviewNoteDescription": "Improve your skills\nby reviewing incorrect answers!"
+    "reviewNoteDescription": "Review mistakes to improve!"
   },
   "mistakeNote": {
-    "noMistakeRecords": "No wrong answers yet.",
-    "letsHaveInterview": "Let’s try a {tech} interview!",
-    "wrongManyTimes": "Frequently Wrong"
+    "noMistakeRecords": "No mistakes yet.",
+    "letsHaveInterview": "Try a {tech} interview!",
+    "wrongManyTimes": "Frequent mistakes"
   },
   "videoTutorial": {
-    "name": "Video Tutorial"
+    "name": "Video"
   },
   "youtubeUploadFailed": {
     "goToVideo": "Go to video",
     "fetchAnotherVideo": "Get another video",
     "timeout": {
-      "title": "Failed to analyze the video in time",
-      "description": "Check the video length or network connection"
+      "title": "Video analysis timed out",
+      "description": "Please check the video length or your connection"
     },
     "jsonFormatError": {
-      "title": "A temporary error occurred",
-      "description": "Please try uploading again"
+      "title": "Temporary error",
+      "description": "Try again"
     },
     "invalidVideoContent": {
-      "title": "Not enough content to analyze",
-      "description": "Upload a video with enough interview questions and summary content"
+      "title": "Video is too short to analyze",
+      "description": "Upload a video with more content"
     },
     "tooManyTokensRequired": {
-      "title": "The video is too long",
-      "description": "Videos under 1 hour are recommended"
+      "title": "Video too long",
+      "description": "Use videos under an hour"
     },
     "unknownError": {
-      "title": "An unexpected error occurred",
-      "description": "Please try uploading again"
+      "title": "Unexpected error",
+      "description": "Try again"
     },
     "unexpectedGptError": {
-      "title": "A temporary error occurred",
-      "description": "Please try uploading again"
+      "title": "Temporary error",
+      "description": "Try again"
     },
     "isNotTechContent": {
-      "title": "This does not seem to be tech-related content",
-      "description": "Please upload a tech-related video"
+      "title": "Not tech content",
+      "description": "Upload a tech-related video"
     },
     "noCaption": {
-      "title": "No captions found, making analysis difficult",
-      "description": "Please upload a video with captions"
+      "title": "No captions found",
+      "description": "Upload a video with subtitles"
     },
     "youtubeVideoFetchedFailed": {
-      "title": "Failed to retrieve video information",
-      "description": "Please try uploading again"
+      "title": "Couldn't get video info",
+      "description": "Try again"
     },
     "tooShortVideo": {
-      "title": "The video is too short",
-      "description": "Please upload a video longer than 1 minute"
+      "title": "Video too short",
+      "description": "Use a video over 1 minute"
     },
     "alreadyUploaded": {
-      "title": "This video has already been uploaded",
-      "description": "You can go directly to this video"
+      "title": "Video already uploaded",
+      "description": "Go to this video"
     }
   },
   "youtubeBoard": {
-    "loadErrorTitle": "Failed to load data",
-    "loadErrorDescription": "It might be a temporary issue. Please try again.",
+    "loadErrorTitle": "Data load failed",
+    "loadErrorDescription": "Temporary issue. Try again.",
     "retryButton": "Retry",
-    "noItemFoundDescription": "No watch history yet",
+    "noItemFoundDescription": "No watch history",
     "watchVideoButton": "Watch Video",
-    "noFavoritesDescription": "No favorite videos yet",
-    "noUploadsDescription": "No uploaded videos yet",
+    "noFavoritesDescription": "No favorites",
+    "noUploadsDescription": "No uploads",
     "uploadVideoButton": "Upload Video"
   },
   "myInfo": {
     "myActivity": "My Activity",
     "content": "Content",
-    "myContents": "My contents",
-    "contentDescription": "Records, Favorites, Upload Management",
+    "myContents": "My Content",
+    "contentDescription": "History, Favorites, & Uploads",
     "watchHistory": "Watch History",
     "favorites": "Favorites",
     "uploadedVideos": "Uploaded Videos",
@@ -294,22 +419,22 @@
     "editMyInfo": {
       "editMyInfo": "Edit My Info",
       "profile": "Profile",
-      "topicsUpdated": "My skill has been updated.",
-      "noSearchResults": "Sorry, no skill topics found.",
-      "jobPositionsUpdated": "My position has been updated.",
-      "profileUpdated": "Profile information has been updated.",
-      "profileUpdatedFailed": "Failed to update profile information"
+      "topicsUpdated": "Skills updated.",
+      "noSearchResults": "No skill topics found.",
+      "jobPositionsUpdated": "Position updated.",
+      "profileUpdated": "Profile updated.",
+      "profileUpdatedFailed": "Profile update failed."
     },
     "deleteAccount": {
-      "confirmDeleteAccount": "Are you sure you want to delete your account?"
+      "confirmDeleteAccount": "Delete your account?"
     },
     "logout": {
-      "confirmLogout": "Are you sure you want to log out?"
+      "confirmLogout": "Log out?"
     }
   },
   "permission": {
     "permissionNeeded": "Permission Required",
-    "micRequired": "Please allow microphone permission in the settings.",
+    "micRequired": "Please allow microphone access in Settings.",
     "setUp": "Go to Settings",
     "alarmSetting": "Settings",
     "alarmDismissDesc": "Please disable the permission to turn off the alarm",
@@ -319,46 +444,46 @@
   },
   "youtube": {
     "noResults": "No results found",
-    "uploadPrompt": "Try uploading a video\nWe will generate a summary and questions for you",
+    "uploadPrompt": "Upload a video\nWe'll create a summary and questions!",
     "uploadButton": "Upload",
-    "loadErrorTitle": "Failed to load video",
-    "loadErrorDescription": "It might be a temporary issue. Please try again.",
+    "loadErrorTitle": "Video load failed",
+    "loadErrorDescription": "Temporary issue. Try again.",
     "retryButton": "Retry",
     "learnWithVideo": "Explore videos!",
-    "tryUploadPrompt": "Can Upload a video!"
+    "tryUploadPrompt": "You can upload a video!"
   },
   "youtubeUpload": {
-    "title": "Please provide the\nYouTube video link",
-    "title_only_for_review": "Please provide the\nContent video link.",
-    "description": "We will generate a summary and questions for you!",
+    "title": "Enter the YouTube video link",
+    "title_only_for_review": "Enter the content video link.",
+    "description": "We'll create a summary & questions.",
     "placeholder": "https://www.youtube.com/watch?v=...",
-    "fetchLinkButton": "Get YouTube Link",
+    "fetchLinkButton": "Fetch Link",
     "nextButton": "Next",
-    "emptyInput": "Please enter a YouTube video link or ID",
-    "containsSpace": "Links or IDs containing spaces cannot be entered",
-    "confirmationTitle": "Is this the correct video?",
-    "confirmationDescription": "Once uploaded, we will summarize the content\nand generate interview questions for you!",
+    "emptyInput": "Enter a YouTube link or ID",
+    "containsSpace": "No spaces allowed in the link or ID",
+    "confirmationTitle": "Is this the right video?",
+    "confirmationDescription": "We'll summarize & generate questions once uploaded.",
     "notFoundError": "This video does not exist on TechTalk yet",
-    "uploadingTitle": "Uploading your video\nPlease wait a moment",
-    "uploadWarning": "Closing the app will cancel the upload\n(May take up to 1 minute depending on video length)",
-    "uploadCompleteNotification": "You'll be notified when it's done",
-    "confirmationNotification": "Notify you when confirmed?"
+    "uploadingTitle": "Uploading your video...\nPlease wait.",
+    "uploadWarning": "Don't close the app or upload will stop.\n(It can take up to 1 minute.)",
+    "uploadCompleteNotification": "We'll notify you when done.",
+    "confirmationNotification": "Notify you when done?"
   },
   "notificationPermission": {
-    "title": "Notification Permission Required",
-    "description": "If you don't allow notifications, you won't receive an upload completion alert",
+    "title": "Allow notifications?",
+    "description": "Without notifications, you won't see upload completion alerts.",
     "exitButton": "Exit",
     "allowButton": "Allow",
     "uploadSuccessTitle": "Video uploaded",
-    "uploadSuccessDescription": "Check out the summarized content!",
+    "uploadSuccessDescription": "View the summary!",
     "uploadFailTitle": "Video upload failed"
   },
   "youtubeInterview": {
-    "introMessage": "Hi {nickname}! I'll ask interview questions based on '{contentTitle}' content.",
-    "cannotResumeLater": "Interview can't be resumed later.",
-    "similarApplicantsWatched": "Applicants in your field",
-    "suggestedVideo": "also watched this video",
-    "watchThisVideo": "Would you like to watch it?",
+    "introMessage": "Hi {nickname}! Let's ask questions on '{contentTitle}'.",
+    "cannotResumeLater": "Can't resume this interview.",
+    "similarApplicantsWatched": "Others in your field",
+    "suggestedVideo": "watched this too",
+    "watchThisVideo": "Watch it?",
     "watchVideoButton": "Watch Video"
   },
   "youtubeDetail": {
@@ -373,29 +498,29 @@
     "interviewQuestions": "Interview Questions",
     "selectAll": "Select All",
     "startInterview": "Start Interview",
-    "loadingVideo": "Waiting for video playback",
+    "loadingVideo": "Loading video...",
     "buttonConfirm": "OK",
-    "loadingTitle": "Please wait a moment",
-    "loadingDescription": "Fetching interview questions"
+    "loadingTitle": "Please wait...",
+    "loadingDescription": "Getting questions..."
   },
   "errors": {
     "error": "error",
-    "photoUploadError": "Failed to load the image from the photo album.",
-    "errorOccurred": "An error occurred.",
-    "networkUnstable": "[401] The network connection is unstable. Please check it and try again.",
-    "unexpectedErrorOccurred": "An unexpected error occurred",
-    "unknownErrorOccurred": "An unknown error has occurred.",
+    "photoUploadError": "Couldn't load image from the album.",
+    "errorOccurred": "Error occurred.",
+    "networkUnstable": "[401] Unstable connection. Please check and retry.",
+    "unexpectedErrorOccurred": "Unexpected error.",
+    "unknownErrorOccurred": "Unknown error occurred.",
     "setUp": "Set Up"
   },
   "undefined": {
-    "serviceLimitedForMaintenance": "Service is limited due to system maintenance",
+    "serviceLimitedForMaintenance": "Limited service due to maintenance.",
     "maintenanceNotice": "Maintenance Notice",
-    "temporaryServiceRestriction": "Temporary Service Restriction",
+    "temporaryServiceRestriction": "Temporary Restriction",
     "networkUnstable": "Network Unstable",
-    "enableWiFiOrData": "Please enable Wi-Fi or data.",
+    "enableWiFiOrData": "Enable Wi-Fi or data.",
     "updateNotice": "Update Notice",
-    "techtalkUpdated": "TechTalk has been updated!",
-    "pleaseUpdateForLatestFeatures": "Please update to enjoy the latest features",
+    "techtalkUpdated": "TechTalk updated!",
+    "pleaseUpdateForLatestFeatures": "Update for new features",
     "later": "Later",
     "update": "Update",
     "setUp": "Settings",
@@ -403,25 +528,31 @@
     "questionNumber": "Question{questionNumber}",
     "interviewTopic": "Interview Topic",
     "report": "Report",
-    "weirdResponse": "Is the interviewer's response weird?",
-    "helpImproveAccuracy": "Please help us improve accuracy by reporting the interviewer's response. Thank you.",
-    "thankYouForFeedback": "Thank you for your feedback.",
-    "errorOccurredPleaseTryAgain": "An error occurred. Please try again.",
-    "interview_prompt": "Ask the interview question and check if the user's answer is correct. You are the interviewer, and the user is the applicant. Please respond naturally as if you are having a real conversation.",
-    "user_name_prompt": "The applicant's name is {nickname}. Always refer to the user by their nickname.",
-    "model_answer_prompt": "This question is related to {relatedAnswer}. The given question is {question}. The model answer is as follows: {modelAnswer}",
-    "user_answer_prompt": "{nickname} answered the question with {answer}. Based on the provided model answer, determine whether the answer is correct. If {nickname}'s answer is correct, prepend the sentence with \"[c]\"; if incorrect, prepend with \"[w]\". Also, briefly explain the reason within 100 characters.",
-    "next_question_prompt": "I will ask the next {topic} question.",
-    "interview_ended": "The interview has ended.",
+    "weirdResponse": "Odd response?",
+    "helpImproveAccuracy": "Help improve accuracy by reporting. Thanks!",
+    "thankYouForFeedback": "Thanks for your feedback!",
+    "errorOccurredPleaseTryAgain": "Error. Please try again.",
+    "interview_prompt": "Ask the question, evaluate the user's answer. You are the interviewer, and they are the applicant. Provide a natural conversation.",
+    "user_name_prompt": "The applicant's name is {nickname}. Always refer to them by their nickname.",
+    "model_answer_prompt": "This question is about {relatedAnswer}. The question is {question}. The model answer is {modelAnswer}.",
+    "user_answer_prompt": "Based on the model answer, decide if {nickname}'s answer is correct. If correct, prepend [c]; if not, prepend [w]. Provide a brief reason under 100 characters.",
+    "next_question_prompt": "Next question on {topic}.",
+    "interview_ended": "Interview ended.",
     "and": "and",
     "realWorldInterview": "Mock Interview",
-    "failedToLoadWrongAnswerNotes": "Failed to load the wrong answer notes.",
-    "greetingMessageSingleTopic": "Nice to meet you! {nickname}. I will ask you a {topic} interview question.",
-    "greetingMessageMultipleTopics": "Nice to meet you! {nickname}. First, I will ask you a {firstTopic} question.",
+    "failedToLoadWrongAnswerNotes": "Could not load missed answers.",
+    "greetingMessageSingleTopic": "Hey {nickname}, let's do a {topic} question.",
+    "greetingMessageMultipleTopics": "Hey {nickname}, let's start with a {firstTopic} question.",
     "greetingMessage": "Nice to meet you, {nickname}.",
     "greetingWithNickname": "{nickname}!\n",
     "warning": "Warning",
-    "resignWarning": "All information will be deleted and cannot be recovered. Are you sure you want to resign?",
-    "resignSuccess": "Resignation completed successfully."
+    "resignWarning": "All data will be deleted permanently. Continue?",
+    "resignSuccess": "Your account was successfully deleted."
+  },
+  "techSet": {
+    "type": {
+      "jobGroup": "Position",
+      "skill": "Skill"
+    }
   }
 }

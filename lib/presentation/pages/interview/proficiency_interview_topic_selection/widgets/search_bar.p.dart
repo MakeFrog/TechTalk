@@ -15,11 +15,11 @@ class _SearchBar extends ConsumerWidget
           onSearchBarTapped(ref);
         },
         highlightBorderRadius: BorderRadius.circular(16),
-        child: const TechtalkTextField(
+        child: TechtalkTextField(
           enabled: false,
           showPrefixIcon: true,
           inputDecoration: InputDecoration(
-            hintText: '스킬 및 직군을 검색해 주세요',
+            hintText: tr(LocaleKeys.interview_proficiency_search_hint),
           ),
         ),
       ),

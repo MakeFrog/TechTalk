@@ -10,6 +10,8 @@ class ProficiencyQnaEntity extends BaseQnaEntity {
   final List<String> answers; // 모범 답변 리스트
   final TechSetEntity techSet; // 스킬 or 직군
 
+  String get techSetId => techSet.id;
+
   ProficiencyQnaEntity({
     required super.id,
     required super.question,

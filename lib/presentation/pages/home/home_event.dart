@@ -86,35 +86,17 @@ mixin class HomeEvent {
   ///
   /// 유튜브 카드뷰가 클릭 되었을 때
   ///
-  void onYoutubeFeatureCardTapped(WidgetRef ref) async {
-    final skillResponse = interviewRepository.getSkillQuestionHistory();
-    final jobGroupResponse = interviewRepository.getJobGroupQuestionHistory();
-
-    final skillResult = skillResponse.getOrThrow();
-    final jobGroupResult = jobGroupResponse.getOrThrow();
-
-    logger.i('=== 스킬별 질문 수 ===');
-    for (final skillMap in skillResult) {
-      for (final entry in skillMap.entries) {
-        final skill = entry.key;
-        final questions = entry.value;
-        logger.i('스킬: ${skill.name} | 질문 수: ${questions.length}');
-      }
-    }
-
-    logger.i('\n=== 직군별 질문 수 ===');
-    for (final jobGroupMap in jobGroupResult) {
-      for (final entry in jobGroupMap.entries) {
-        final jobGroup = entry.key;
-        final questions = entry.value;
-        logger.i('직군: ${jobGroup.name} | 질문 수: ${questions.length}');
-      }
-    }
-
-    return;
+  Future<void> onYoutubeFeatureCardTapped(WidgetRef ref) async {
     ref
         .read(mainBottomNavigationProvider.notifier)
         .changeTab(MainNavigationTab.youtube);
+  }
+
+  ///
+  /// 단골 면접 > 실전 + 단일 주제 선택 페이지로 이동
+  ///
+  void routeToCommonInterviewTypeSelection(WidgetRef ref) {
+    const SelectedCommonInterviewTypeRoute().push(ref.context);
   }
 
   ///

@@ -21,14 +21,13 @@ mixin class QuestionCountSelectEvent {
     required InterviewType type,
     required List<TopicEntity> topics,
   }) async {
-    final useCaseParam = ref
-        .read(selectedQuestionCountRouteArgProvider)
-        .useCaseParam as ProficiencyInterviewFlowParam;
+    final arg = ref.read(selectedQuestionCountRouteArgProvider).useCaseParam;
 
     final questionCount = ref.read(selectedQuestionCountProvider) +
         SelectedQuestionCount.defaultPlusCount;
 
-    if (useCaseParam.type.isProficiency) {
+    if (arg?.type.isProficiency ?? false) {
+      final useCaseParam = arg as ProficiencyInterviewFlowParam;
       if (useCaseParam.questionCountCompleter.isCompleted) {
         final targetParam = useCaseParam.copyWith(
             questionCountCompleter: Completer()..complete(questionCount));

@@ -5,6 +5,8 @@ import 'package:gap/gap.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/constants/assets.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 
 class SeeAllQuestionButton extends StatelessWidget {
   const SeeAllQuestionButton({super.key, required this.onTap, this.padding});
@@ -34,7 +36,7 @@ class SeeAllQuestionButton extends StatelessWidget {
               ),
               const Gap(4),
               Text(
-                '질문 고르기',
+                tr(LocaleKeys.interview_questionCreation_title),
                 style: AppTextStyle.alert1,
               )
             ],

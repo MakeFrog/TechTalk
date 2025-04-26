@@ -117,7 +117,7 @@ class Bubble extends StatelessWidget {
                               if (snapshot.connectionState ==
                                   ConnectionState.none) {
                                 return Text(
-                                  '오류가 발생했어요',
+                                  tr(LocaleKeys.errors_errorOccurred),
                                   style: AppTextStyle.alert2,
                                 );
                               }
@@ -135,7 +135,8 @@ class Bubble extends StatelessWidget {
                       );
                     } else {
                       return Text(
-                        item.message.valueOrNull ?? '알 수 없는 메세지 입니다',
+                        item.message.valueOrNull ??
+                            tr(LocaleKeys.errors_unknownErrorOccurred),
                         style: AppTextStyle.body2,
                       );
                     }

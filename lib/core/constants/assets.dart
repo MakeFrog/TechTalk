@@ -59,6 +59,10 @@ class Assets {
   static const String iconsCloseThick = 'assets/icons/close_thick.svg';
   static const String iconsCommonInterviewLogo =
       'assets/icons/common_interview_logo.svg';
+  static const String iconsCommonPracticalTypeIllust =
+      'assets/icons/common_practical_type_illust.svg';
+  static const String iconsCommonSingleTypeIllust =
+      'assets/icons/common_single_type_illust.svg';
   static const String iconsCoreCircle = 'assets/icons/core_circle.svg';
   static const String iconsCorrect = 'assets/icons/correct.svg';
   static const String iconsCorrectIndicator =
@@ -156,6 +160,8 @@ class Assets {
   static const String iconsYoutubeInterviewLogo =
       'assets/icons/youtube_interview_logo.svg';
   static const String iconsYoutubeLogo = 'assets/icons/youtube_logo.svg';
+  static const String iconsYoutubePromotionIllust =
+      'assets/icons/youtube_promotion_illust.svg';
   static const String imagesAppIcon = 'assets/images/app_icon.png';
   static const String imagesAvatar1 = 'assets/images/avatar_1.png';
   static const String imagesBlankProfile = 'assets/images/blank_profile.png';

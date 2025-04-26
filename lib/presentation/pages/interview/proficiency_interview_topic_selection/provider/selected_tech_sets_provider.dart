@@ -31,7 +31,8 @@ class SelectedTechSets extends _$SelectedTechSets {
   bool addItem(TechSetEntity techSet) {
     if (state.firstWhereOrNull((e) => e == techSet) != null) {
       HapticFeedback.vibrate();
-      SnackBarService.showSnackBar('이미 선택된 항목입니다');
+      SnackBarService.showSnackBar(
+          tr(LocaleKeys.techSelection_alreadySelected));
 
       return false;
     }

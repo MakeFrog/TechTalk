@@ -40,63 +40,73 @@ class InterviewIndicatorCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           color: AppColor.of.white,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SvgPicture.asset(logoPath),
-                      const Gap(4),
-                      Column(
+            Expanded(
+              child: Row(
+                crossAxisAlignment: subDescription != null
+                    ? CrossAxisAlignment.start
+                    : CrossAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(logoPath),
+                  const Gap(4),
+                  if (subDescription != null)
+                    Expanded(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Row(
-                            children: [
-                              Text(
-                                title,
-                                style: AppTextStyle.headline3.copyWith(),
-                              ),
-                              if (showNewBadge)
-                                const NewBadge(
-                                  margin: EdgeInsets.only(left: 6),
-                                )
-                            ],
-                          ),
+                          _buildTitleRow(),
                           const Gap(4),
-                          if (subDescription != null)
-                            Text(
+                          Padding(
+                            padding: const EdgeInsets.only(right: 20),
+                            child: Text(
                               subDescription!,
                               style: AppTextStyle.body1.copyWith(
                                 color: AppColor.of.gray3,
                               ),
+                              overflow: TextOverflow.visible,
                             ),
+                          ),
                         ],
                       ),
-                    ],
-                  ),
-                ),
-                if (showPlustBtn)
-                  BounceTapper(
-                    highlightColor: Colors.transparent,
-                    onTap: () {
-                      onPlusSuffixedBtnTapped?.call();
-                    },
-                    child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                        ),
-                        child: SvgPicture.asset(Assets.iconsRoundedPlus)),
-                  ),
-              ],
+                    )
+                  else
+                    Expanded(
+                      child: _buildTitleRow(),
+                    ),
+                ],
+              ),
             ),
+            if (showPlustBtn) _buildPlusButton(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildTitleRow() {
+    return Row(
+      children: [
+        Text(
+          title,
+          style: AppTextStyle.headline3.copyWith(),
+        ),
+        if (showNewBadge)
+          const NewBadge(
+            margin: EdgeInsets.only(left: 6),
+          )
+      ],
+    );
+  }
+
+  Widget _buildPlusButton() {
+    return BounceTapper(
+      highlightColor: Colors.transparent,
+      onTap: onPlusSuffixedBtnTapped,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: SvgPicture.asset(Assets.iconsRoundedPlus),
       ),
     );
   }

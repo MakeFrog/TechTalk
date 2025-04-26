@@ -18,6 +18,7 @@ import 'package:techtalk/presentation/pages/interview/question_count_select/cons
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_page.dart';
 import 'package:techtalk/presentation/pages/interview/question_creation/constant/question_creation_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/question_creation/question_creation_page.dart';
+import 'package:techtalk/presentation/pages/interview/select_commotion_interview_type/selected_common_interview_type_page.dart';
 import 'package:techtalk/presentation/pages/interview/topic_select/interview_topic_select_page.dart';
 import 'package:techtalk/presentation/pages/main/main_page.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/job_group_setting_page.dart';
@@ -152,6 +153,10 @@ class SignUpRoute extends GoRouteData {
   path: MainRoute.path,
   name: MainRoute.name,
   routes: [
+    TypedGoRoute<SelectedCommonInterviewTypeRoute>(
+      path: SelectedCommonInterviewTypeRoute.path,
+      name: SelectedCommonInterviewTypeRoute.name,
+    ),
     TypedGoRoute<InterviewTopicSelectRoute>(
       path: InterviewTopicSelectRoute.path,
       name: InterviewTopicSelectRoute.name,
@@ -642,5 +647,17 @@ class ChatPageRoute extends GoRouteData {
   /// NOTE: $extra 이슈로 직접 업데이트
   void updateArg({required ChatRoomEntity room}) {
     arg = room;
+  }
+}
+
+class SelectedCommonInterviewTypeRoute extends GoRouteData {
+  const SelectedCommonInterviewTypeRoute();
+
+  static const String path = 'select-common-interview-type';
+  static const String name = 'select-common-interview-type';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const SelectedCommonInterviewTypePage();
   }
 }

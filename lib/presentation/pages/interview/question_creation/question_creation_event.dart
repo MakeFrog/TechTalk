@@ -12,6 +12,8 @@ import 'package:techtalk/presentation/pages/interview/question_creation/provider
 import 'package:techtalk/presentation/pages/interview/question_creation/provider/question_creation_route_arg_provider.dart';
 import 'package:techtalk/presentation/pages/interview/question_creation/question_creation_state.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 
 mixin class QuestionCreationEvent {
   ///
@@ -67,28 +69,49 @@ mixin class QuestionCreationEvent {
   void onBackBtnTapped(WidgetRef ref) {
     final isQuestionCreated = QuestionCreationState().hasQuestionCreated(ref);
 
-    if (isQuestionCreated) {
-    } else {
-      DialogService.show(
-        dialog: AppDialog.dividedBtn(
-          showContentImg: false,
-          title: '질문을 만드는 중이에요!',
-          description: '지금 나가면 면접을 위한 질문이 사라질 수 있어요\n정말 나가시겠어요?',
-          leftBtnContent: '나가기',
-          rightBtnContent: '면접 진행하기',
-          onRightBtnClicked: () {
+    DialogService.show(
+      dialog: AppDialog.dividedBtn(
+        showContentImg: false,
+        title: isQuestionCreated
+            ? tr(LocaleKeys.interview_questionCreation_event_readyToStart)
+            : tr(LocaleKeys
+                .interview_questionCreation_event_generatingQuestions),
+        description: isQuestionCreated
+            ? tr(LocaleKeys
+                .interview_questionCreation_event_readyToStartDescription)
+            : tr(LocaleKeys
+                .interview_questionCreation_event_generatingQuestionsDescription),
+        leftBtnContent: tr(LocaleKeys.common_exit),
+        rightBtnContent: isQuestionCreated
+            ? tr(LocaleKeys.interview_questionCreation_event_startInterview)
+            : tr(LocaleKeys.interview_questionCreation_event_continueInterview),
+        onRightBtnClicked: () {
+          if (!isQuestionCreated &&
+              QuestionCreationState().hasQuestionCreated(ref)) {
             ref.context.pop();
-          },
-          onLeftBtnClicked: () {
-            if (QuestionCreationState().hasQuestionCreated(ref)) {
-              SnackBarService.showSnackBar('잠깐! 방금 질문이 생성 되었어요');
-              ref.context.pop();
-            } else {
-              GoRouter.of(ref.context).popUntilPath(MainRoute.path);
-            }
-          },
-        ),
-      );
-    }
+          } else {
+            ref.context.pop();
+            onStartInterViewBtnTapped(ref);
+          }
+        },
+        onLeftBtnClicked: () {
+          if (!isQuestionCreated &&
+              QuestionCreationState().hasQuestionCreated(ref)) {
+            SnackBarService.showSnackBar(tr(LocaleKeys
+                .interview_questionCreation_event_questionsJustCreated));
+            ref.context.pop();
+          } else {
+            GoRouter.of(ref.context).popUntilPath(MainRoute.path);
+          }
+        },
+      ),
+    );
   }
+
+  String get startInterviewText =>
+      tr(LocaleKeys.interview_questionCreation_event_startInterview);
+  String get selectQuestionText =>
+      tr(LocaleKeys.interview_questionCreation_event_selectQuestion);
+  String get deselectQuestionText =>
+      tr(LocaleKeys.interview_questionCreation_event_deselectQuestion);
 }

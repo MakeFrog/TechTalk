@@ -7,6 +7,7 @@ import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.d
 import 'package:techtalk/features/chat/repositories/entities/youtube_interview_room_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/enums/interview_level.enum.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 class ChatRoomEntity {
@@ -14,6 +15,11 @@ class ChatRoomEntity {
   final String id;
   final Interviewer interviewer;
   final List<TopicEntity> topics;
+
+  /// NOTE
+  /// 추후에 [TopicEntity]을
+  /// [TechSetEntity]로 통합 필요
+  final List<TechSetEntity> techsetTopics;
   final ChatProgressInfoEntity progressInfo;
   final String? lastChatMessage;
   final DateTime? lastChatDate;
@@ -42,6 +48,7 @@ class ChatRoomEntity {
     this.lastChatDate,
     this.isTemporary = false,
     this.qnas = const [],
+    this.techsetTopics = const [],
   });
 
   ChatRoomProgress get progressState {
@@ -110,6 +117,7 @@ class ChatRoomEntity {
       qnas: qnas,
       interviewLevel: level ?? InterviewLevel.beginner,
       topics: [],
+      techsetTopics: qnas.map((e) => e.techSet).toList(),
       progressInfo: ChatProgressInfoEntity.onInitial(
         totalQuestionCount: qnas.length,
       ),
@@ -192,7 +200,8 @@ class ChatRoomEntity {
           lastChatDate == other.lastChatDate &&
           isTemporary == other.isTemporary &&
           qnaIds == other.qnaIds &&
-          qnas == other.qnas;
+          qnas == other.qnas &&
+          techsetTopics == other.techsetTopics;
 
   @override
   int get hashCode =>
@@ -205,7 +214,8 @@ class ChatRoomEntity {
       lastChatDate.hashCode ^
       isTemporary.hashCode ^
       qnaIds.hashCode ^
-      qnas.hashCode;
+      qnas.hashCode ^
+      techsetTopics.hashCode;
 
   ChatRoomEntity copyWith({
     InterviewType? type,
@@ -219,6 +229,7 @@ class ChatRoomEntity {
     List<String>? qnaIds,
     YoutubeInterviewRoomEntity? youtubeExtra,
     List<BaseQnaEntity>? qnas,
+    List<TechSetEntity>? techsetTopics,
   }) {
     return ChatRoomEntity(
       type: type ?? this.type,
@@ -232,6 +243,7 @@ class ChatRoomEntity {
       qnaIds: qnaIds ?? this.qnaIds,
       youtubeExtra: youtubeExtra ?? this.youtubeExtra,
       qnas: qnas ?? this.qnas,
+      techsetTopics: techsetTopics ?? this.techsetTopics,
     );
   }
 }

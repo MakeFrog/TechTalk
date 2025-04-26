@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dart_openai/dart_openai.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/proficiency_qna_entity.dart';
@@ -106,7 +107,7 @@ IT 회사의 면접관입니다. 선택된 개발 스킬과 직군과 관련된 
 ### 입력 데이터
 - 선택된 스킬: `${skills.map((e) => e.toMap()).toList()}`
 - 선택된 직군: `${jobGroups.map((e) => e.toMap()).toList()}`
-- 선택된 레벨: `${level.label}`
+- 선택된 레벨: `${tr(level.labelKey)}`
 - 선택된 질문 개수: `${questionCount}`
 - 응답 언어: `${AppLocale.currentLocale.languageCode}`
 

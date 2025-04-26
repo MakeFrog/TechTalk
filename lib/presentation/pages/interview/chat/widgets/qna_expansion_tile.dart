@@ -115,9 +115,7 @@ class QnaExpansionTile extends HookConsumerWidget with ChatState {
               resume: (_) {
                 final targetQna = item.qna as ResumeQnaEntity;
                 return QnaDetailBox(
-                  /// TODO : XIMYA
-                  /// LOCALIZATION 처리 필요
-                  title: '평가요소',
+                  title: tr(LocaleKeys.interview_evaluation_title),
                   descriptions: [targetQna.evaluationPoint],
                 );
               },

@@ -1,7 +1,9 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/presentation/pages/interview/created_question_list/constant/created_question_list_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/created_question_list/created_question_list_event.dart';
 import 'package:techtalk/presentation/pages/interview/created_question_list/created_question_list_state.dart';
@@ -70,8 +72,8 @@ class CreatedQuestionListPage extends BasePage
           width: double.infinity,
           child: FilledButton(
             onPressed: hasSelectedQuestions(ref) ? () {} : null,
-            child: const Text(
-              '면접 시작하기',
+            child: Text(
+              tr(LocaleKeys.interview_questionCreation_startInterview),
             ),
           ),
         ),
@@ -84,5 +86,5 @@ class CreatedQuestionListPage extends BasePage
 
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
-      const BackButtonAppBar(title: '질문 고르기');
+      BackButtonAppBar(title: tr(LocaleKeys.interview_questionCreation_title));
 }

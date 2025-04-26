@@ -35,34 +35,42 @@ class CommonInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
             padding: const EdgeInsets.only(
               left: 16,
             ),
-            child: Row(
-              children: [
-                SvgPicture.asset(
-                  Assets.iconsCommonInterviewLogo,
-                ),
-                const Gap(4),
-                Expanded(
-                  child: Text(
-                    '단골 질문 면접',
-                    style: AppTextStyle.headline3,
+            child: BounceTapper(
+              delayedDurationBeforeGrow: Duration.zero,
+              highlightColor: Colors.transparent,
+              shrinkScaleFactor: 1.0,
+              onTap: () {
+                routeToCommonInterviewTypeSelection(ref);
+              },
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    Assets.iconsCommonInterviewLogo,
                   ),
-                ),
-                BounceTapper(
-                  highlightColor: Colors.transparent,
-                  onTap: () {
-                    routeToTopicSelectPage(
-                      context,
-                      type: InterviewType.commonSingleTopic,
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: SvgPicture.asset(
-                      Assets.iconsRoundedPlus,
+                  const Gap(4),
+                  Expanded(
+                    child: Text(
+                      tr(LocaleKeys.home_commonQuestion_title),
+                      style: AppTextStyle.headline3,
                     ),
                   ),
-                ),
-              ],
+                  BounceTapper(
+                    highlightColor: Colors.transparent,
+                    onTap: () {
+                      routeToTopicSelectPage(
+                        context,
+                        type: InterviewType.commonSingleTopic,
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: SvgPicture.asset(
+                        Assets.iconsRoundedPlus,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           // if (user(ref)?.recordedTopics.isEmpty ?? true)
@@ -86,8 +94,14 @@ class CommonInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
                 );
               } else {
                 return Container(
-                  padding: const EdgeInsets.only(top: 14, bottom: 0),
+                  padding: const EdgeInsets.only(top: 12, bottom: 0),
                   child: BounceTapper(
+                    onTap: () {
+                      routeToTopicSelectPage(
+                        context,
+                        type: InterviewType.commonPracticalTopic,
+                      );
+                    },
                     highlightBorderRadius: BorderRadius.circular(16),
                     child: Container(
                       padding: const EdgeInsets.only(
@@ -102,7 +116,8 @@ class CommonInterviewCard extends ConsumerWidget with HomeState, HomeEvent {
                           ),
                           const Gap(8),
                           Text(
-                            '실전형 면접',
+                            tr(LocaleKeys
+                                .home_commonQuestion_practicalInterview),
                             style: AppTextStyle.title2,
                           ),
                           const Spacer(),

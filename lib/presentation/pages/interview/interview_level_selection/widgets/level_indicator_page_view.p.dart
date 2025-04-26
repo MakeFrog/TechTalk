@@ -24,7 +24,7 @@ class _LevelIndicatorPageView extends ConsumerWidget
                   ),
                 ),
                 child: Text(
-                  item.titleLabel,
+                  tr(item.titleKey),
                   style: AppTextStyle.title1.copyWith(
                     color: AppColor.of.blue3,
                   ),
@@ -34,11 +34,14 @@ class _LevelIndicatorPageView extends ConsumerWidget
               const Gap(12),
 
               /// DESCRIPTION
-              Text(
-                item.description,
-                textAlign: TextAlign.center,
-                style: AppTextStyle.body2.copyWith(
-                  color: AppColor.of.gray4,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  tr(item.descriptionKey),
+                  textAlign: TextAlign.center,
+                  style: AppTextStyle.body2.copyWith(
+                    color: AppColor.of.gray4,
+                  ),
                 ),
               ),
               const Gap(12),

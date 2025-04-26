@@ -14,6 +14,8 @@ import 'package:techtalk/presentation/widgets/base/index.dart';
 import 'package:techtalk/presentation/widgets/common/chip/tech_set_filled_chip.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 import 'package:techtalk/presentation/widgets/common/list_view/tech_set_list_view.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 
 part 'widgets/leading_view.p.dart';
 part 'widgets/recommended_tech_set_view.p.dart';
@@ -67,7 +69,9 @@ class ProficiencyInterviewTopicSelectionPage extends BasePage
           width: double.infinity,
           child: FilledButton(
             onPressed: hasSelection ? () {} : null,
-            child: const Text('다음'),
+            child: Text(
+              tr(LocaleKeys.common_next),
+            ),
           ),
         ),
       ),

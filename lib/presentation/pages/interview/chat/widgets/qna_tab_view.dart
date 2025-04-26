@@ -70,12 +70,10 @@ class QnaTabView extends HookConsumerWidget with ChatState {
           },
           error: (_, __) => SizedBox(
             height: ChatPage.tabViewHeight,
-            child: const Center(
+            child: Center(
               child: ExceptionIndicator(
-                /// TODO : XIMYA
-                /// LOCALIZATION
-                subTitle: '다시 시도해주세요',
-                title: '문답 내역을 불러오지 못했어요.',
+                subTitle: tr(LocaleKeys.common_pleaseTryAgain),
+                title: tr(LocaleKeys.qa_failedToLoadQa),
               ),
             ),
           ),

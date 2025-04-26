@@ -8,7 +8,7 @@ class _LeadingView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Text(
-        '면접 질문 난이도를\n선택해주세',
+        tr(LocaleKeys.interview_interviewLevel_title),
         style: AppTextStyle.headline1,
       ),
     );
