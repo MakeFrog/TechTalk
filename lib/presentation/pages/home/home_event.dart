@@ -6,9 +6,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/app/util/app_logger.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
+import 'package:techtalk/features/interview/index.dart';
 import 'package:techtalk/features/interview/use_case/param/start_interview_flow_use_case_param.dart';
 import 'package:techtalk/features/interview/use_case/start_interview_flow_use_case.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/practical_chat_room_list_provider.dart';
@@ -84,7 +86,32 @@ mixin class HomeEvent {
   ///
   /// 유튜브 카드뷰가 클릭 되었을 때
   ///
-  void onYoutubeFeatureCardTapped(WidgetRef ref) {
+  void onYoutubeFeatureCardTapped(WidgetRef ref) async {
+    final skillResponse = interviewRepository.getSkillQuestionHistory();
+    final jobGroupResponse = interviewRepository.getJobGroupQuestionHistory();
+
+    final skillResult = skillResponse.getOrThrow();
+    final jobGroupResult = jobGroupResponse.getOrThrow();
+
+    logger.i('=== 스킬별 질문 수 ===');
+    for (final skillMap in skillResult) {
+      for (final entry in skillMap.entries) {
+        final skill = entry.key;
+        final questions = entry.value;
+        logger.i('스킬: ${skill.name} | 질문 수: ${questions.length}');
+      }
+    }
+
+    logger.i('\n=== 직군별 질문 수 ===');
+    for (final jobGroupMap in jobGroupResult) {
+      for (final entry in jobGroupMap.entries) {
+        final jobGroup = entry.key;
+        final questions = entry.value;
+        logger.i('직군: ${jobGroup.name} | 질문 수: ${questions.length}');
+      }
+    }
+
+    return;
     ref
         .read(mainBottomNavigationProvider.notifier)
         .changeTab(MainNavigationTab.youtube);

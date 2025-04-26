@@ -7,6 +7,7 @@ import 'package:techtalk/app/localization/app_locale.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/proficiency_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/enums/interview_level.enum.dart';
+import 'package:techtalk/features/interview/index.dart';
 import 'package:techtalk/features/interview/use_case/exception/ai_creation_failed_exception.dart';
 import 'package:techtalk/features/interview/use_case/param/start_interview_flow_use_case_param.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
@@ -34,6 +35,33 @@ final class CreateProficiencyInterviewQnaUseCase extends BaseUseCase<
       },
     );
 
+    // 기존 질문 히스토리 가져오기
+    final skillHistory =
+        interviewRepository.getSkillQuestionHistory().getOrThrow();
+    final jobGroupHistory =
+        interviewRepository.getJobGroupQuestionHistory().getOrThrow();
+
+    // 선택된 스킬/직군의 기존 질문만 필터링
+    final Map<String, List<String>> existingQuestions = {};
+
+    // 스킬 질문 필터링
+    for (final skillMap in skillHistory) {
+      for (final entry in skillMap.entries) {
+        if (skills.any((s) => s.id == entry.key.id)) {
+          existingQuestions[entry.key.id] = entry.value;
+        }
+      }
+    }
+
+    // 직군 질문 필터링
+    for (final jobGroupMap in jobGroupHistory) {
+      for (final entry in jobGroupMap.entries) {
+        if (jobGroups.any((j) => j.id == entry.key.id)) {
+          existingQuestions[entry.key.id] = entry.value;
+        }
+      }
+    }
+
     final systemMessage = OpenAIChatCompletionChoiceMessageModel(
       content: [
         OpenAIChatCompletionChoiceMessageContentItemModel.text(
@@ -43,6 +71,7 @@ IT 회사의 면접관입니다. 선택된 개발 스킬과 직군과 관련된 
 ### 목표
 - 선택된 개발 스킬과 직군에 대한 실무 중심의 기술 면접 질문 생성  
 - 난이도가 높아짐에 따라 더 깊은 프로그래밍 개념 이해가 필요한 심층 질문 제시
+- 기존에 사용된 질문과 중복되지 않는 새로운 질문 생성
 
 ### 요구사항  
 1. **질문 구성**    
@@ -52,15 +81,19 @@ IT 회사의 면접관입니다. 선택된 개발 스킬과 직군과 관련된 
    - 예시 코드 작성을 답변으로 요구하는 질문 지양
    - '상' 난이도는 심화 배경 지식을 요구하는 심층 질문 제시
    - 'OO직군 개발자로서'라는 표현 지양 
-   -  각 질문의 구성과 표현 방식이 반복되지 않도록 문장을 구성 
-   - '심도 있게', '심화적인', '기본', '논의' 등의 단어 사용 지양
+   -'심도 있게', '심화적인', '기본', '논의' 등의 단어 사용 자제
    
-2. **난이도별 질문 특성**
+2. **중복 방지**
+   - 아래 기존 질문들과 중복되지 않는 새로운 질문만 생성
+   - 기존 질문과 유사한 내용의 질문도 피하기
+   - 각 스킬/직군별로 새로운 관점의 질문 생성
+
+3. **난이도별 질문 특성**
    - 상: 선택된 스킬/직군의 심화된 기술 개념과 원리
    - 중: 선택된 스킬/직군의 핵심 기술 개념과 원리
    - 하: 선택된 스킬/직군의 기초 기술 개념과 원리
 
-3. **답안 구성**
+4. **답안 구성**
    - 실제 개발자가 면접에서 답변하는 것처럼 *자연스럽*게 작성
    - 명확한 모범 답안 작성
   
@@ -70,7 +103,6 @@ IT 회사의 면접관입니다. 선택된 개발 스킬과 직군과 관련된 
 - 모든 답안은 검증 가능한 기술적 사실에 기반
 - 질문과 답안은 지정된 언어로 작성
 
-
 ### 입력 데이터
 - 선택된 스킬: `${skills.map((e) => e.toMap()).toList()}`
 - 선택된 직군: `${jobGroups.map((e) => e.toMap()).toList()}`
@@ -78,20 +110,27 @@ IT 회사의 면접관입니다. 선택된 개발 스킬과 직군과 관련된 
 - 선택된 질문 개수: `${questionCount}`
 - 응답 언어: `${AppLocale.currentLocale.languageCode}`
 
+### 기존 질문 히스토리
+${existingQuestions.entries.map((e) => '''
+ID: ${e.key}
+질문들:
+${e.value.map((q) => '- $q').join('\n')}
+''').join('\n')}
+
 ### 응답 형식
-```json
+```json 
 {
   "qnas": [
     {
       "question": "면접 질문",
       "techSetId": "react", // or "server-developer" (직군 또는 스킬 id)
       "answer": [
-        "모범 답안1",
-        "모범 답안2"
-      ]
+        "모범 답안1", 
+        "모범 답안2"  
+      ] 
     }
   ]
-}
+} 
 ```
           ''',
         ),
@@ -114,7 +153,11 @@ IT 회사의 면접관입니다. 선택된 개발 스킬과 직군과 관련된 
       log('Qna 토큰사용량 : ${completion.usage}'); // 응답 결과 출력
       log('Qna 시간 : ${DateTime.now().difference(startTime).inSeconds}'); // 응답 결과 출력
       log('Qna 결과 : ${completion.choices.first.message.content}'); // 응답 결과 출력
-
+      log('기존 질문 : ${existingQuestions.entries.map((e) => '''
+ID: ${e.key}
+질문들:
+${e.value.map((q) => '- $q').join('\n')}  
+''').join('\n')}');
       final response = completion.choices.first.message.content?.first.text;
 
       if (response == null) {
@@ -130,6 +173,38 @@ IT 회사의 면접관입니다. 선택된 개발 스킬과 직군과 관련된 
       final result = qnasFields
           .map((e) => ProficiencyQnaEntity.fromGptResponse(json: e))
           .toList();
+
+      final List<Map<TechSetEntity, List<String>>> historyReq = [];
+
+      // 스킬별 질문 히스토리 구성
+      for (final skill in skills) {
+        final skillQuestions = result
+            .where((qna) => qna.techSet.id == skill.id)
+            .map((qna) => qna.question)
+            .toList();
+
+        if (skillQuestions.isNotEmpty) {
+          historyReq.add({skill: skillQuestions});
+        }
+      }
+
+      // 직군별 질문 히스토리 구성
+      for (final jobGroup in jobGroups) {
+        final jobGroupQuestions = result
+            .where((qna) => qna.techSet.id == jobGroup.id)
+            .map((qna) => qna.question)
+            .toList();
+
+        if (jobGroupQuestions.isNotEmpty) {
+          historyReq.add({jobGroup: jobGroupQuestions});
+        }
+      }
+
+      // 히스토리 저장
+      if (historyReq.isNotEmpty) {
+        await interviewRepository.storeTechSetQuestionHistory(historyReq);
+      }
+
       return result;
     } on RequestFailedException catch (e) {
       log('GetSummaryFromYoutubeContentUseCase / RequestFailedException / $e');
