@@ -488,6 +488,8 @@
     "uploadFailTitle": "Video upload failed"
   },
   "youtubeInterview": {
+    "title": "YouTube Content Interview",
+    "subDescription": "Watch videos and prepare for interviews",
     "introMessage": "Hi {nickname}! Let's ask questions on '{contentTitle}'.",
     "cannotResumeLater": "Can't resume this interview.",
     "similarApplicantsWatched": "Others in your field",

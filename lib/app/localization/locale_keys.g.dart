@@ -420,6 +420,8 @@ abstract class  LocaleKeys {
   static const notificationPermission_uploadSuccessDescription = 'notificationPermission.uploadSuccessDescription';
   static const notificationPermission_uploadFailTitle = 'notificationPermission.uploadFailTitle';
   static const notificationPermission = 'notificationPermission';
+  static const youtubeInterview_title = 'youtubeInterview.title';
+  static const youtubeInterview_subDescription = 'youtubeInterview.subDescription';
   static const youtubeInterview_introMessage = 'youtubeInterview.introMessage';
   static const youtubeInterview_cannotResumeLater = 'youtubeInterview.cannotResumeLater';
   static const youtubeInterview_similarApplicantsWatched = 'youtubeInterview.similarApplicantsWatched';

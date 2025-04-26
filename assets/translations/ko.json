@@ -488,6 +488,8 @@
     "uploadFailTitle": "영상을 업로드하는데 실패했어요"
   },
   "youtubeInterview": {
+    "title": "유튜브 콘텐츠 면접",
+    "subDescription": "영상을 시청하고 면접을 준비해보세요",
     "introMessage": "안녕하세요 {nickname}님! '{contentTitle}' 콘텐츠를 기반으로 면접 질문을 여쭤볼게요.",
     "cannotResumeLater": "나중에 면접을 이어서 진행할 수 없습니다.",
     "similarApplicantsWatched": "같은 직군의 지원자들은",
