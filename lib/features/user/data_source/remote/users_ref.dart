@@ -15,6 +15,7 @@ abstract class FirestoreUsersRef {
   static const String uploadedYoutubeName = 'UploadedYoutube';
   static const String bookmarkedYoutubeName = 'BookmarkedYoutube';
   static const String watchedYoutubeHistoryName = 'WatchedYoutubeHistory';
+  static const String markedCommonQuestionName = 'MarkedCommonQuestion';
 
   static String get _userUid => FirebaseAuth.instance.currentUser!.uid;
 
@@ -89,6 +90,13 @@ abstract class FirestoreUsersRef {
           .collection(name)
           .doc(id ?? _userUid)
           .collection(subCollectionName);
+
+  static DocumentReference markedCommonQuestionDoc(String docId) =>
+      FirebaseFirestore.instance
+          .collection(name)
+          .doc(_userUid)
+          .collection(markedCommonQuestionName)
+          .doc(docId);
 
   static Future<bool> isExist([String? uid]) async =>
       (await FirestoreUsersRef.doc(uid ?? _userUid).get()).exists;

@@ -18,31 +18,11 @@ class _BottomFloatingView extends ConsumerWidget
               final isBooMarkTapped =
                   isBookMarkCheckedAsync(ref).valueOrNull ?? false;
 
-              return BounceTapper(
+              return BookMarkButton(
                 onTap: () {
                   onBookmarkBtnTapped(ref);
                 },
-                child: Container(
-                  height: 56,
-                  width: 56,
-                  decoration: BoxDecoration(
-                    color: AppColor.of.blue1,
-                    borderRadius: BorderRadius.circular(
-                      16,
-                    ),
-                  ),
-                  child: Center(
-                    child: SvgPicture.asset(
-                      Assets.iconsBoomark,
-                      colorFilter: ColorFilter.mode(
-                        isBooMarkTapped
-                            ? AppColor.of.brand3
-                            : AppColor.of.white,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                  ),
-                ),
+                isBookMarked: isBooMarkTapped,
               );
             },
           ),

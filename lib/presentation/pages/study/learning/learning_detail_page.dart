@@ -34,7 +34,7 @@ class LearningDetailPage extends BasePage with LearningDetailState {
       ),
       data: (questions) {
         return ListView(
-          padding: const EdgeInsets.only(top: 24),
+          padding: const EdgeInsets.only(top: 8),
           physics: const ScrollPhysics(),
           shrinkWrap: true,
           // crossAxisAlignment: CrossAxisAlignment.start,
