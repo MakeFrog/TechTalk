@@ -30,6 +30,9 @@ class Assets {
   static const String characterRed05 = 'assets/character/red_05.svg';
   static const String characterRed06 = 'assets/character/red_06.svg';
   static const String characterRed07 = 'assets/character/red_07.svg';
+  static const String iconsAdvancedIllust = 'assets/icons/advanced_illust.svg';
+  static const String iconsAiInterviewLogo =
+      'assets/icons/ai_interview_logo.svg';
   static const String iconsAlarm = 'assets/icons/alarm.svg';
   static const String iconsArUpDown = 'assets/icons/ar_up_down.svg';
   static const String iconsArrowDown = 'assets/icons/arrow_down.svg';
@@ -42,6 +45,7 @@ class Assets {
   static const String iconsArrowUp = 'assets/icons/arrow_up.svg';
   static const String iconsArrowUpThick = 'assets/icons/arrow_up_thick.svg';
   static const String iconsAvatar1 = 'assets/icons/avatar_1.svg';
+  static const String iconsBeginnerIllust = 'assets/icons/beginner_illust.svg';
   static const String iconsBoomark = 'assets/icons/boomark.svg';
   static const String iconsBullet = 'assets/icons/bullet.svg';
   static const String iconsCamera = 'assets/icons/camera.svg';
@@ -53,12 +57,20 @@ class Assets {
       'assets/icons/circle_small_close.svg';
   static const String iconsClose = 'assets/icons/close.svg';
   static const String iconsCloseThick = 'assets/icons/close_thick.svg';
+  static const String iconsCommonInterviewLogo =
+      'assets/icons/common_interview_logo.svg';
+  static const String iconsCommonPracticalTypeIllust =
+      'assets/icons/common_practical_type_illust.svg';
+  static const String iconsCommonSingleTypeIllust =
+      'assets/icons/common_single_type_illust.svg';
   static const String iconsCoreCircle = 'assets/icons/core_circle.svg';
   static const String iconsCorrect = 'assets/icons/correct.svg';
   static const String iconsCorrectIndicator =
       'assets/icons/correct_indicator.svg';
+  static const String iconsDarkCheckBox = 'assets/icons/dark_check_box.svg';
   static const String iconsDataStructure = 'assets/icons/data_structure.svg';
   static const String iconsDeleteOrWrong = 'assets/icons/delete_or_wrong.svg';
+  static const String iconsDice = 'assets/icons/dice.svg';
   static const String iconsErrorIndicator = 'assets/icons/error_indicator.svg';
   static const String iconsExpansionArrowIndicator =
       'assets/icons/expansion_arrow_indicator.svg';
@@ -71,6 +83,9 @@ class Assets {
       'assets/icons/icon_app_bar_left.svg';
   static const String iconsIconMic = 'assets/icons/icon_mic.svg';
   static const String iconsIncorrect = 'assets/icons/incorrect.svg';
+  static const String iconsIntermediateIllust =
+      'assets/icons/intermediate_illust.svg';
+  static const String iconsListedNote = 'assets/icons/listed_note.svg';
   static const String iconsMenuThick = 'assets/icons/menu_thick.svg';
   static const String iconsMistakeNoteIllust =
       'assets/icons/mistake_note_illust.svg';
@@ -87,6 +102,9 @@ class Assets {
       'assets/icons/pondering_illusration.svg';
   static const String iconsRedAlert = 'assets/icons/red_alert.svg';
   static const String iconsRedWarnningBig = 'assets/icons/red_warnning_big.svg';
+  static const String iconsReset = 'assets/icons/reset.svg';
+  static const String iconsResumeInterviewLogo =
+      'assets/icons/resume_interview_logo.svg';
   static const String iconsRightAlignedRightArrow =
       'assets/icons/right_aligned_right_arrow.svg';
   static const String iconsRoundBlueCircle =
@@ -110,6 +128,7 @@ class Assets {
       'assets/icons/rounded_exclamation.svg';
   static const String iconsRoundedMore = 'assets/icons/rounded_more.svg';
   static const String iconsRoundedOs = 'assets/icons/rounded_os.svg';
+  static const String iconsRoundedPlus = 'assets/icons/rounded_plus.svg';
   static const String iconsRoundedPlusBig = 'assets/icons/rounded_plus_big.svg';
   static const String iconsRoundedSend = 'assets/icons/rounded_send.svg';
   static const String iconsRoundedSendInactive =
@@ -138,7 +157,11 @@ class Assets {
   static const String iconsWarning = 'assets/icons/warning.svg';
   static const String iconsWemoCheck = 'assets/icons/wemo_check.svg';
   static const String iconsWrongIndicator = 'assets/icons/wrong_indicator.svg';
+  static const String iconsYoutubeInterviewLogo =
+      'assets/icons/youtube_interview_logo.svg';
   static const String iconsYoutubeLogo = 'assets/icons/youtube_logo.svg';
+  static const String iconsYoutubePromotionIllust =
+      'assets/icons/youtube_promotion_illust.svg';
   static const String imagesAppIcon = 'assets/images/app_icon.png';
   static const String imagesAvatar1 = 'assets/images/avatar_1.png';
   static const String imagesBlankProfile = 'assets/images/blank_profile.png';
@@ -171,6 +194,9 @@ class Assets {
   static const String imagesWelcomeTechtalk =
       'assets/images/welcome_techtalk.svg';
   static const String jsonSkills = 'assets/json/skills.json';
+  static const String lottieDocumentLoading =
+      'assets/lottie/document_loading.json';
+  static const String lottieDone = 'assets/lottie/done.json';
   static const String lottieVideoUploading =
       'assets/lottie/video_uploading.json';
   static const String pretendardPretendardBold =

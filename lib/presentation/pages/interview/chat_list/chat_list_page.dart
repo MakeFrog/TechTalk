@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/app_color.dart';
+import 'package:techtalk/app/util/app_logger.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/services/app_size.dart';
 import 'package:techtalk/features/chat/repositories/enums/interview_type.enum.dart';
@@ -46,7 +47,9 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
           },
         );
       },
-      error: (e, _) => const Text('채팅을 불러오지 못하였습니다'),
+      error: (e, _) => Text(
+        tr(LocaleKeys.errors_errorOccurred),
+      ),
       loading: () {
         return ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
@@ -77,6 +80,9 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
                 throw Exception('타입을 지정해주어야 합니다1');
               case InterviewType.youtube:
                 throw Exception('유튜브 면접은 채팅방 면접 페이지에 진입하지 않음');
+              case InterviewType.proficiency:
+                logger.e('지정 필요');
+              // TODO: Handle this case.
             }
           },
           height: 56,
@@ -106,6 +112,8 @@ class ChatListPage extends BasePage with ChatListState, ChatListEvent {
           InterviewType.resume => '',
           // TODO: Handle this case.
           InterviewType.youtube => '',
+          // TODO: Handle this case.
+          InterviewType.proficiency => '',
         },
       );
 

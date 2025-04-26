@@ -38,7 +38,7 @@ class StudyTopicSelectionPage extends BasePage
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) {
     return FoldableAppBar(
-      title: tr(LocaleKeys.gnb_learning),
+      title: tr(LocaleKeys.common_commonQuestion),
       scrollController: scrollController(ref),
       animatedPosition: 20,
     );

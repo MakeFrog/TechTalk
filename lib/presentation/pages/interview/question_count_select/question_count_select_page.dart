@@ -7,22 +7,35 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/chat/repositories/enums/interview_type.enum.dart';
+import 'package:techtalk/presentation/pages/interview/question_count_select/constant/select_question_count_route_argument.dart';
+import 'package:techtalk/presentation/pages/interview/question_count_select/providers/select_question_count_route_arg.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/providers/selected_question_count_provider.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_event.dart';
 import 'package:techtalk/presentation/pages/interview/question_count_select/question_count_select_state.dart';
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/back_button_app_bar.dart';
+import 'package:techtalk/presentation/widgets/common/button/see_all_question_button.dart';
 
 class QuestionCountSelectPage extends BasePage
     with QuestionCountSelectState, QuestionCountSelectEvent {
   const QuestionCountSelectPage({
     Key? key,
+    required this.argument,
   }) : super(key: key);
+
+  final SelectQuestionCountRouteArg argument;
+
+  @override
+  Override? get argProviderOverrides =>
+      selectedQuestionCountRouteArgProvider.overrideWithValue(argument);
 
   @override
   Widget buildPage(BuildContext context, WidgetRef ref) {
     final List<int> countOptions = List.generate(
-        9, (index) => index + SelectedQuestionCount.defaultPlusCount); // 4 ~ 12
+        // 역량별 면접의 경우 질문 최대 4~8
+        (argument.useCaseParam?.type == InterviewType.proficiency) ? 5 : 9,
+        (index) => index + SelectedQuestionCount.defaultPlusCount); // 4 ~ 12
 
     return _Scaffold(
       introText: Text(
@@ -52,7 +65,17 @@ class QuestionCountSelectPage extends BasePage
 
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
-      const BackButtonAppBar();
+      BackButtonAppBar(
+        actions: [
+          if (arg(ref).interviewType.isCommonQuestionType)
+            SeeAllQuestionButton(
+              padding: const EdgeInsets.only(right: 16),
+              onTap: () async {
+                await onSelectQuestionsBtnTapped(ref);
+              },
+            ),
+        ],
+      );
 
   @override
   bool get wrapWithSafeArea => false;
@@ -64,10 +87,10 @@ class QuestionCountSelectPage extends BasePage
       padding: const EdgeInsets.symmetric(horizontal: 16),
       height: 56,
       child: BounceTapper(
-        onTap: () {
-          routeToChatPage(
+        onTap: () async {
+          await onConfirmBtnTapped(
             ref,
-            type: arg(ref).type,
+            type: arg(ref).interviewType,
             topics: arg(ref).topics,
           );
         },

@@ -8,6 +8,7 @@ import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/chat/repositories/entities/chat_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/proficiency_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/enums/follow_up_status.enum.dart';
@@ -114,9 +115,7 @@ class QnaExpansionTile extends HookConsumerWidget with ChatState {
               resume: (_) {
                 final targetQna = item.qna as ResumeQnaEntity;
                 return QnaDetailBox(
-                  /// TODO : XIMYA
-                  /// LOCALIZATION 처리 필요
-                  title: '평가요소',
+                  title: tr(LocaleKeys.interview_evaluation_title),
                   descriptions: [targetQna.evaluationPoint],
                 );
               },
@@ -125,6 +124,13 @@ class QnaExpansionTile extends HookConsumerWidget with ChatState {
                 return QnaDetailBox(
                   title: tr(LocaleKeys.qa_modelAnswer),
                   descriptions: [targetQna.answer],
+                );
+              },
+              proficiency: (_) {
+                final targetQna = item.qna as ProficiencyQnaEntity;
+                return QnaDetailBox(
+                  title: tr(LocaleKeys.qa_modelAnswer),
+                  descriptions: targetQna.answers,
                 );
               },
             ),

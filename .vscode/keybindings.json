@@ -1,0 +1,8 @@
+[
+    {
+        // Command + D를 눌렀을 때 현재 커서 위치의 코드를 드래그 선택
+        "key": "cmd+d",
+        "command": "editor.action.duplicateSelection",
+        "when": "editorTextFocus && !editorHasSelection"
+    }
+] 

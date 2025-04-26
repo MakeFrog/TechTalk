@@ -6,6 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/follow_up_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/proficiency_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
@@ -44,11 +45,19 @@ class ChatQnas extends _$ChatQnas {
       },
       common: (_) async {
         if (room.progressState.isInitial) {
-          final response = await getRandomQnaUseCase.call(room);
-          return response.fold(
-            onSuccess: (randomQnas) => randomQnas,
-            onFailure: (e) => _onError(e),
-          );
+          if (room.qnas.isNotEmpty) {
+            return room.qnas.map((e) {
+              dev.log('Question: ${(e as CommonQnaEntity).question}');
+              return ChatQnaEntity.fromQnaEntityAtInitial(e);
+            }).toList()
+              ..shuffle();
+          } else {
+            final response = await getRandomQnaUseCase.call(room);
+            return response.fold(
+              onSuccess: (randomQnas) => randomQnas,
+              onFailure: (e) => _onError(e),
+            );
+          }
         } else {
           final response = await getChatQnasUseCase.call(room);
           return response.fold(
@@ -62,6 +71,16 @@ class ChatQnas extends _$ChatQnas {
             .map(
               (e) => ChatQnaEntity.fromYoutubeQnaEntityAtInitial(
                 e as YoutubeQnaEntity,
+              ),
+            )
+            .toList()
+          ..shuffle();
+      },
+      proficiency: (InterviewType type) {
+        return room.qnas
+            .map(
+              (e) => ChatQnaEntity.fromProficiencyQnaEntityAtInitial(
+                e as ProficiencyQnaEntity,
               ),
             )
             .toList()

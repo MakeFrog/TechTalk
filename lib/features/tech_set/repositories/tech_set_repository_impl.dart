@@ -5,8 +5,7 @@ import 'dart:developer';
 import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
 import 'package:techtalk/features/tech_set/data_source/remote/tech_set_remote_data_source.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 final class TechSetRepositoryImpl implements TechSetRepository {
@@ -89,9 +88,14 @@ final class TechSetRepositoryImpl implements TechSetRepository {
 
   @override
   SkillEntity getSkillById(String id) {
-    final targetSkill =
-        _cachedSkillCollection.firstWhereOrNull((e) => e.id == id);
-    return targetSkill ?? SkillEntity.undefined();
+    final targetSkill = _cachedSkillCollection.firstWhereOrNull((e) {
+      return e.id.toLowerCase() == id.toLowerCase();
+    });
+    if (targetSkill == null) {
+      log('Undefined skill found with id: $id');
+      return SkillEntity.undefined();
+    }
+    return targetSkill;
   }
 
   @override
@@ -99,7 +103,8 @@ final class TechSetRepositoryImpl implements TechSetRepository {
 
   @override
   JobGroupEntity getJobGroupById(String id) {
-    final targetJobGroup = _cachedJobGroups.firstWhereOrNull((e) => e.id == id);
+    final targetJobGroup = _cachedJobGroups
+        .firstWhereOrNull((e) => e.id.toLowerCase() == id.toLowerCase());
     return targetJobGroup ?? JobGroupEntity.undefined();
   }
 }

@@ -6,9 +6,10 @@ extension SkillStepEvent on SignUpEvent {
   ///
   String? skillInputValidation(WidgetRef ref,
           {required String? searchedTerm}) =>
-      ref.read(skillTextFieldControllerProvider.notifier).skillInputValidation(
-          input: searchedTerm,
-          isResultEmpty: ref.read(searchedSkillsProvider).isEmpty);
+      AppValidator.skillInputValidation(
+        input: searchedTerm,
+        isResultEmpty: ref.read(searchedSkillsProvider).isEmpty,
+      );
 
   ///
   /// 검색된 스킬 리스트 호출

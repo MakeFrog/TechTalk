@@ -1,6 +1,5 @@
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/user/user.dart';
 
@@ -29,6 +28,9 @@ class UserEntity {
   /// 실전 면접 기록 존재 여부;
   final bool hasPracticalInterviewRecord;
 
+  /// 역량별 면접 기록 존재 여부
+  final bool hasProficiencyInterviewRecord;
+
   /// 완료된 면접 개수
   final int completedInterviewCount;
 
@@ -54,6 +56,7 @@ class UserEntity {
     required this.completedInterviewCount,
     required this.isReviewRequestAvailable,
     required this.hasPracticalInterviewRecord,
+    required this.hasProficiencyInterviewRecord,
     required this.recordedTopics,
     required this.lastLoginDate,
     required this.jobGroups,
@@ -79,6 +82,7 @@ class UserEntity {
           ? model.recordedTopicIds!.map(StoredTopics.getById).toList()
           : [],
       hasPracticalInterviewRecord: box.hasPracticalInterviewRecord,
+      hasProficiencyInterviewRecord: box.hasProficiencyInterviewRecord,
       skills: skills,
       lastLoginDate: model.lastLoginDate,
       email: model.email,
@@ -97,6 +101,7 @@ class UserEntity {
     List<SkillEntity>? skills,
     List<TopicEntity>? recordedTopics,
     bool? hasPracticalInterviewRecord,
+    bool? hasProficiencyInterviewRecord,
     int? completedInterviewCount,
     DateTime? lastLoginDate,
     DateTime? signUpDate,
@@ -113,6 +118,8 @@ class UserEntity {
       recordedTopics: recordedTopics ?? this.recordedTopics,
       hasPracticalInterviewRecord:
           hasPracticalInterviewRecord ?? this.hasPracticalInterviewRecord,
+      hasProficiencyInterviewRecord:
+          hasProficiencyInterviewRecord ?? this.hasProficiencyInterviewRecord,
       completedInterviewCount:
           completedInterviewCount ?? this.completedInterviewCount,
       lastLoginDate: lastLoginDate ?? this.lastLoginDate,

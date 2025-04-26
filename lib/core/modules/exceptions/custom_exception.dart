@@ -26,7 +26,7 @@ class AlreadyExistNicknameException extends CustomException {
 
 class NoTopicQuestionException extends CustomException {
   const NoTopicQuestionException(String topic)
-      : super('200002', '$topic 주제의 면접 질문이 없습니다.');
+      : super('200002', '$topic 주제의 면접 질문이 없습니다92.');
 }
 
 class NoTopicException extends CustomException {
@@ -64,7 +64,7 @@ class ChatReportFailed extends CustomException {
 
 class NoInterviewQuestionException extends CustomException {
   const NoInterviewQuestionException(String topic)
-      : super('000002', '$topic 주제의 면접 질문이 없습니다.');
+      : super('000002', '$topic 주제의 면접 질문이 없습니다32.');
 }
 
 class NoInterviewTopicException extends CustomException {

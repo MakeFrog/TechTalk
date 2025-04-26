@@ -93,4 +93,18 @@ abstract interface class UserRemoteDataSource {
     DocumentSnapshot<UploadedYoutubeModel>? lastDocument,
     required int limit,
   });
+
+  ///
+  /// 북마크된 공통 질문 목록
+  ///
+  Future<List<String>> getBookmarkedCommonQnas({required String techSetId});
+
+  ///
+  /// 공통 질문의 북마크 상태를 토글
+  ///
+  Future<void> toggleBookmarkCommonQna({
+    required String techSetId,
+    required String commonQnaId,
+    required bool setBookMark,
+  });
 }

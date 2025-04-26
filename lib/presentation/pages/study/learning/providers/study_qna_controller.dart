@@ -3,7 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/helper/riverpod_extension.dart';
 
-part 'study_qna_controller.g.dart';
+part '../../../../providers/topic/study_qna_controller.g.dart';
 
 @riverpod
 class StudyQnaController extends _$StudyQnaController {

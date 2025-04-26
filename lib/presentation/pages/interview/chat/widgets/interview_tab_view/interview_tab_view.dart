@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_event.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_state.dart';
 import 'package:techtalk/presentation/pages/interview/chat/providers/chat_message_history_provider.dart';
@@ -59,10 +61,10 @@ class InterviewTabView extends HookConsumerWidget with ChatState, ChatEvent {
                       ),
                     );
                   },
-                  error: (e, __) => const Center(
+                  error: (e, __) => Center(
                     child: ExceptionIndicator(
-                      subTitle: '다시 시도해주세요',
-                      title: '채팅 내역을 불러오지 못했어요.',
+                      subTitle: tr(LocaleKeys.common_pleaseTryAgain),
+                      title: tr(LocaleKeys.qa_failedToLoadQa),
                     ),
                   ),
                   loading: () =>

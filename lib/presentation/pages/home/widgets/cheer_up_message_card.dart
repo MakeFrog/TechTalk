@@ -9,6 +9,9 @@ import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/presentation/pages/home/widgets/home_state.dart';
 
+///
+/// 첫 면접 진행 시 보여주는 메세지 카드 (일반)
+///
 class CheerUpMessageCard extends HookWidget with HomeState {
   const CheerUpMessageCard({super.key});
 
@@ -32,7 +35,7 @@ class CheerUpMessageCard extends HookWidget with HomeState {
     return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.of.blue1,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Stack(
@@ -92,8 +95,8 @@ class CheerUpMessageCard extends HookWidget with HomeState {
                 child: SvgPicture.asset(
                   Assets.imagesSparkle,
                   width: 20,
-                  colorFilter: ColorFilter.mode(
-                    AppColor.of.brand1,
+                  colorFilter: const ColorFilter.mode(
+                    Color(0xFF9CA6FF),
                     BlendMode.srcIn,
                   ),
                 ),
@@ -102,18 +105,29 @@ class CheerUpMessageCard extends HookWidget with HomeState {
           ),
           Container(
             width: AppSize.screenWidth - 108,
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.fromLTRB(24, 26, 0, 22),
             child: Consumer(
               builder: (context, ref, child) {
-                return Text(
-                  tr(
-                    LocaleKeys.home_cheerUpMessage,
-                    namedArgs: {
-                      'nickname':
-                          user(ref)?.nickname ?? LocaleKeys.common_emptyName,
-                    },
-                  ),
-                  style: AppTextStyle.headline2,
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      tr(LocaleKeys.home_cheerUp_aiInterviewerMessage),
+                      style: AppTextStyle.body3,
+                    ),
+                    Text(
+                      tr(
+                        LocaleKeys.home_cheerUpMessage,
+                        namedArgs: {
+                          'nickname': user(ref)?.nickname ??
+                              LocaleKeys.common_emptyName,
+                        },
+                      ),
+                      style: AppTextStyle.headline2.copyWith(
+                        color: AppColor.of.blue3,
+                      ),
+                    ),
+                  ],
                 );
               },
             ),

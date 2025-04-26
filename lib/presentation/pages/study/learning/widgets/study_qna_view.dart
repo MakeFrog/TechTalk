@@ -3,14 +3,18 @@ import 'dart:ui';
 import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/features/chat/repositories/entities/selectable_qna_entity.dart';
 import 'package:techtalk/features/topic/repositories/entities/common_qna_entity.dart';
 import 'package:techtalk/presentation/pages/study/learning/learning_detail_event.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
+import 'package:techtalk/presentation/pages/study/learning/providers/study_qna_controller.dart';
 import 'package:techtalk/presentation/pages/study/learning/widgets/learning_detail_state.dart';
+import 'package:techtalk/presentation/widgets/common/button/book_mark_button.dart';
 import 'package:techtalk/presentation/widgets/common/divider/list_view_divider.dart';
 
 class StudyQnaView extends ConsumerWidget
@@ -26,22 +30,22 @@ class StudyQnaView extends ConsumerWidget
       onPageChanged: (value) => onQuestionPageChanged(ref),
       itemCount: qnas(ref).length,
       itemBuilder: (context, index) => _StudyQna(
-        question: qnas(ref)[index],
+        selectableQna: qnas(ref)[index],
       ),
     );
   }
 }
 
-class _StudyQna extends HookWidget {
+class _StudyQna extends HookConsumerWidget with LearningDetailEvent {
   const _StudyQna({
     super.key,
-    required this.question,
+    required this.selectableQna,
   });
 
-  final CommonQnaEntity question;
+  final SelectableQnaEntity<CommonQnaEntity> selectableQna;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     useAutomaticKeepAlive();
     return Container(
       padding: const EdgeInsets.only(bottom: 182),
@@ -49,10 +53,25 @@ class _StudyQna extends HookWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          _buildLeadingMarkedView(ref),
+          const Gap(12),
           _buildQuestion(),
           const Gap(24),
           _buildAnswers(),
         ],
+      ),
+    );
+  }
+
+  Widget _buildLeadingMarkedView(WidgetRef ref) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16),
+      child: BookMarkButton(
+        onTap: () => onToggleQnaItemBookmark(ref, selectableQna),
+        isBookMarked: selectableQna.isSelected,
+        iconWidth: 11.65,
+        size: 30,
+        radius: 8,
       ),
     );
   }
@@ -64,7 +83,7 @@ class _StudyQna extends HookWidget {
           ) +
           const EdgeInsets.only(right: 24),
       child: Text(
-        question.question,
+        selectableQna.qna.question,
         style: AppTextStyle.headline3,
         textAlign: TextAlign.left,
       ),
@@ -72,7 +91,7 @@ class _StudyQna extends HookWidget {
   }
 
   Widget _buildAnswers() {
-    final answers = question.answers;
+    final answers = selectableQna.qna.answers;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
@@ -83,7 +102,7 @@ class _StudyQna extends HookWidget {
           shrinkWrap: true,
           padding: const EdgeInsets.all(16),
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: question.answers.length,
+          itemCount: selectableQna.qna.answers.length,
           separatorBuilder: (_, __) => const ListViewDivider(),
           itemBuilder: (context, index) {
             final answer = answers[index];

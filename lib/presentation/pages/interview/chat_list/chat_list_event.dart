@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/presentation/pages/interview/question_count_select/constant/select_question_count_route_argument.dart';
 
 mixin class ChatListEvent {
   /// 채팅 페이지로 이동
@@ -23,12 +23,11 @@ mixin class ChatListEvent {
   }) {
     const type = InterviewType.commonSingleTopic;
 
-    final route = QuestionCountSelectPageRoute(
-      type,
-      topic.id,
-    );
+    final arg =
+        SelectQuestionCountRouteArg(interviewType: type, topics: [topic]);
 
-    route.updateArg(type: type, topics: [topic]);
+    final route = QuestionCountSelectPageRoute(arg);
+
     route.push(ref.context);
   }
 
@@ -37,7 +36,7 @@ mixin class ChatListEvent {
   ///
   void routeToTopicSelectPage(WidgetRef ref) {
     InterviewTopicSelectRoute(
-      InterviewType.commonPracticalTopic,
+      InterviewType.commonPracticalTopic.name,
     ).push(ref.context);
   }
 }

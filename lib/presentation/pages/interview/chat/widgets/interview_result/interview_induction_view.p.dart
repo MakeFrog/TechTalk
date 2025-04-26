@@ -76,7 +76,7 @@ class _InterviewInductionView extends HookConsumerWidget
                 resume: (_) => Column(
                   children: <Widget>[
                     Text(
-                      '이력서를 점검하고\n다시 도전해 보세요',
+                      tr(LocaleKeys.interview_resume_checkResume),
                       maxLines: 2,
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
@@ -84,7 +84,7 @@ class _InterviewInductionView extends HookConsumerWidget
                     ),
                     const Gap(8),
                     Text(
-                      '완성도를 높이면 더 구체적이고\n심층적인 질문을 받을 수 있어요',
+                      tr(LocaleKeys.interview_resume_description),
                       style: AppTextStyle.body3.copyWith(
                         color: AppColor.of.gray4,
                       ),
@@ -114,39 +114,60 @@ class _InterviewInductionView extends HookConsumerWidget
                     ],
                   );
                 },
+                proficiency: (InterviewType type) {
+                  return Column(
+                    children: <Widget>[
+                      Text(
+                        tr(LocaleKeys.interview_common_tryCommon),
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyle.headline2,
+                      ),
+                      const Gap(8),
+                      Text(
+                        tr(LocaleKeys.interview_common_description),
+                        style: AppTextStyle.body3.copyWith(
+                          color: AppColor.of.gray4,
+                        ),
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  );
+                },
               ),
 
           if (room(ref).type.isYoutube) const Gap(20) else const Gap(16),
 
           /// ILLUSTRATION
 
-          if (room(ref).type.isYoutube)
-            Expanded(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: recommendYoutubeContent(ref).when(
-                      data: (video) {
-                        return ThumbnailImageView(url: video.thumbnailImgUrl);
-                      },
-                      error: (_, __) => ThumbnailImageView.createSkeleton(),
-                      loading: ThumbnailImageView.createSkeleton,
+          Expanded(
+            child: switch (room(ref).type) {
+              InterviewType.youtube => Column(
+                  children: [
+                    Expanded(
+                      child: recommendYoutubeContent(ref).when(
+                        data: (video) {
+                          return ThumbnailImageView(url: video.thumbnailImgUrl);
+                        },
+                        error: (_, __) => ThumbnailImageView.createSkeleton(),
+                        loading: ThumbnailImageView.createSkeleton,
+                      ),
                     ),
-                  ),
-                  const Gap(20),
-                  Text(
-                    tr(LocaleKeys.youtubeInterview_watchThisVideo),
-                    style: AppTextStyle.headline2,
-                  ),
-                ],
-              ),
-            )
-          else
-            Expanded(
-              child: Image.asset(
-                room(ref).type.illusrationPath,
-              ),
-            ),
+                    const Gap(20),
+                    Text(
+                      tr(LocaleKeys.youtubeInterview_watchThisVideo),
+                      style: AppTextStyle.headline2,
+                    ),
+                  ],
+                ),
+              _ => Image.asset(
+                  room(ref).type.interviewEndIllust,
+                ),
+            },
+          ),
           if (room(ref).type.isSingleTopic)
             Padding(
               padding: const EdgeInsets.only(top: 16),
@@ -155,6 +176,7 @@ class _InterviewInductionView extends HookConsumerWidget
                 style: AppTextStyle.headline3,
               ),
             ),
+
           const Gap(
             16,
           ),
@@ -212,6 +234,9 @@ class _InterviewInductionView extends HookConsumerWidget
                         youtube: (_) {
                           onWatchRecommendVideoBtnTapped(ref);
                         },
+                        proficiency: (InterviewType type) {
+                          startPracticalCommonInterviewProcess(ref);
+                        },
                       );
                     },
                     child: Text(
@@ -222,7 +247,11 @@ class _InterviewInductionView extends HookConsumerWidget
                             resume: (_) => tr(LocaleKeys.interview_tryAgain),
                             youtube: (InterviewType type) {
                               return tr(
-                                  LocaleKeys.youtubeInterview_watchVideoButton);
+                                LocaleKeys.youtubeInterview_watchVideoButton,
+                              );
+                            },
+                            proficiency: (InterviewType type) {
+                              return tr(LocaleKeys.home_takeInterview);
                             },
                           ),
                     ),

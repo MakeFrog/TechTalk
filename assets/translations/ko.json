@@ -1,5 +1,6 @@
 {
   "common": {
+    "commonQuestion": "단골 질문",
     "errorDetectedTryLater": "오류가 발생했어요.\n잠시 후 다시 시도해 주세요",
     "emptyName": "익명",
     "next": "다음",
@@ -11,6 +12,7 @@
     "all": "전체",
     "confirm": "확인",
     "notice": "공지",
+    "seeAllBookMarked": "북마크 모아기",
     "practicalInterviewFormat": "실전형 면접",
     "topicInterviewFormat": "주제별 면접",
     "alreadySelected": "이미 선택된 기술입니다.",
@@ -91,19 +93,42 @@
       "vrEngineer": "VR 엔지니어",
       "biEngineer": "BI 엔지니어",
       "rubyOnRailsDeveloper": "로비온레일즈 개발자"
-    }
+    },
+    "exit": "나가기",
+    "pleaseTryAgain": "다시 시도해주세요"
   },
   "home": {
+    "customizedQuestionsSubDescription": "다양한 주제의 맞춤 질문!",
+    "commonQuestionSubDescription": "면접에 자주 나오는 질문들만 모아놨어요",
     "cheerUpMessage": "{nickname}님! \n테크톡이 항상 응원해요!",
     "practicalInterview": "실전형 면접",
     "practicalInterviewDesc": "여러 주제를 선택해 실전 연습을 해보세요!",
     "topicInterview": "주제별 면접",
     "topicInterviewDesc": "하나의 주제를 선택해 집중 공략해 보세요!",
-    "takeInterview": "면접 보기"
+    "takeInterview": "면접 보기",
+    "error": {
+      "title": "오류 발생",
+      "description": "예상하지 못한 오류가 발생했습니다.\n다시 시도해주세요",
+      "retryButton": "재시도"
+    },
+    "commonQuestion": {
+      "title": "단골 질문 면접",
+      "practicalInterview": "실전형 면접"
+    },
+    "proficiencyInterview": {
+      "title": "역량별 면접"
+    },
+    "cheerUp": {
+      "aiInterviewerMessage": "AI 면접관이 함께할 거예요!"
+    },
+    "youtubeFeature": {
+      "title": "유튜브 콘텐츠도\n테크톡에서!",
+      "subtitle": "지금 바로 학습하기"
+    }
   },
   "gnb": {
     "home": "홈",
-    "learning": "학습",
+    "learning": "단골질문",
     "videoTutorial": "콘텐츠",
     "mistakeNote": "오답노트",
     "myInfo": "내 정보"
@@ -139,7 +164,14 @@
     "selectOneOrMore": "1개 이상 선택해 주세요.",
     "searchTechnologies": "관심 기술을 검색해 주세요",
     "searchInKorean": "영어로 스킬을 검색해주세요.",
-    "noSearchResults": "검색된 기술면접 주제가 없습니다."
+    "noSearchResults": "검색된 기술면접 주제가 없습니다.",
+    "complete": "완료",
+    "limit": {
+      "title": "개수 제한",
+      "description": "최대 4개까지 선택할 수 있어요",
+      "confirm": "확인"
+    },
+    "alreadySelected": "이미 선택된 항목입니다"
   },
   "interview": {
     "loadingFollowUpQuestion": "꼬리질문 생성중",
@@ -180,7 +212,108 @@
     "suggestSimilarTopicsLeading": "같은 직군의 지원자들은\n",
     "suggestSimilarTopicsEnd": "를 같이 공부하고 있어요",
     "letsTryInterviewAgain": "한 번 면접을 진행해 볼까요?",
-    "generatingOneLineFeedback": "AI 면접관의 한줄평을 생성하고 있습니다"
+    "generatingOneLineFeedback": "AI 면접관의 한줄평을 생성하고 있습니다",
+    "interviewLevel": {
+      "title": "면접 질문 난이도를\n선택해주세요",
+      "advanced": {
+        "label": "상",
+        "title": "시니어",
+        "description": "심층적인 기술 역량을 확인하는 질문"
+      },
+      "intermediate": {
+        "label": "중",
+        "title": "주니어",
+        "description": "핵심 기술·실전 감각을 확인하는 실무형 개발자 면접 질문"
+      },
+      "beginner": {
+        "label": "하",
+        "title": "신입",
+        "description": "기초 문법·로직 중심의 가벼운 질문"
+      }
+    },
+    "selectCommonQuestion": {
+      "title": "질문 고르기",
+      "selectBookmarked": "북마크 질문 선택",
+      "startInterview": "면접 시작하기",
+      "noBookmarkedQuestions": "북마크된 질문이 없어요"
+    },
+    "interviewType": {
+      "title": "면접 질문 유형을\n선택해보세요",
+      "description": "실제 면접에서 자주 나오는 질문들을 모아두었어요",
+      "practical": {
+        "title": "실전형",
+        "description": "여러 주제를 선택해\n실전 연습을 해보세요"
+      },
+      "topic": {
+        "title": "주제별",
+        "description": "하나의 주제를 선택해\n집중 공략해 보세요"
+      }
+    },
+    "proficiency": {
+      "title": "기술 면접과 관련된\n스킬 또는 직군을 알려주세요",
+      "maxSelection": "최대 4개까지 선택할 수 있어요",
+      "search_hint": "스킬 및 직군을 검색해 주세요",
+      "recommended": {
+        "jobGroup": "추천 직군",
+        "skill": "추천 스킬"
+      }
+    },
+    "resume": {
+      "checkResume": "이력서를 점검하고\n다시 도전해 보세요",
+      "description": "완성도를 높이면 더 구체적이고\n심층적인 질문을 받을 수 있어요",
+      "greeting": "반가워요! {nickname}님 {level} 역량에 맞는 면접 질문을 제시해드릴게요"
+    },
+    "common": {
+      "tryCommon": "단골 질문 면접도\n진행해 보세요!",
+      "description": "실제 면접에서 자주 나오는 질문들을 모아두었어요!"
+    },
+    "evaluation": {
+      "title": "평가요소"
+    },
+    "questionCreation": {
+      "title": "질문 고르기",
+      "startInterview": "면접 시작하기",
+      "description": "역량별 면접 질문을 선택하는 페이지",
+      "loading": {
+        "title": "잠시만요 {nickname}님,\n질문을 생성하고 있어요",
+        "description": "15초 내외로 질문이 생성될 거예요"
+      },
+      "ready": {
+        "title": "{nickname}님을 위한\n면접 질문이 준비 됐어요!"
+      },
+      "state": {
+        "noQuestions": "생성된 질문이 없어요",
+        "selectQuestions": "질문을 선택해주세요",
+        "maxSelection": "최대 4개까지 선택할 수 있어요"
+      },
+      "event": {
+        "startInterview": "면접 시작하기",
+        "selectQuestion": "질문 선택",
+        "deselectQuestion": "질문 선택 해제",
+        "readyToStart": "면접을 시작할 수 있어요!",
+        "generatingQuestions": "질문을 만드는 중이에요!",
+        "readyToStartDescription": "면접 질문이 모두 준비되었어요\n정말 나가시겠어요?",
+        "generatingQuestionsDescription": "지금 나가면 면접을 위한 질문이 사라질 수 있어요\n정말 나가시겠어요?",
+        "continueInterview": "면접 진행하기",
+        "questionsJustCreated": "잠깐! 방금 질문이 생성 되었어요"
+      }
+    },
+    "createdQuestion": {
+      "title": "생성된 질문",
+      "state": {
+        "noQuestions": "생성된 질문이 없어요",
+        "selectQuestions": "질문을 선택해주세요",
+        "maxSelection": "최대 4개까지 선택할 수 있어요"
+      },
+      "event": {
+        "startInterview": "면접 시작하기",
+        "selectQuestion": "질문 선택",
+        "deselectQuestion": "질문 선택 해제"
+      }
+    },
+    "resumeInterview": "이력서 면접",
+    "contentInterview": "콘텐츠 면접",
+    "proficiencyInterview": "역량별 면접"
   },
   "qa": {
     "numberOfQa": "개의 문답",
@@ -188,7 +321,8 @@
     "noCompletedQa": "완료된 문답 항목이 없습니다.\n면접 질문에 답해보세요!",
     "answerInterviewQuestions": "면접 질문에 답해보세요!",
     "myAnswer": "내 답변",
-    "modelAnswer": "모범 답변"
+    "modelAnswer": "모범 답변",
+    "failedToLoadQa": "문답 내역을 불러오지 못했어요."
   },
   "learning": {
     "hideAnswers": "답안 가리기",
@@ -354,7 +488,9 @@
     "uploadFailTitle": "영상을 업로드하는데 실패했어요"
   },
   "youtubeInterview": {
-    "introMessage": "안녕하세요 {nickname}님! ‘{contentTitle}’ 콘텐츠를 기반으로 면접 질문을 여쭤볼게요.",
+    "title": "유튜브 콘텐츠 면접",
+    "subDescription": "영상을 시청하고 면접을 준비해보세요",
+    "introMessage": "안녕하세요 {nickname}님! '{contentTitle}' 콘텐츠를 기반으로 면접 질문을 여쭤볼게요.",
     "cannotResumeLater": "나중에 면접을 이어서 진행할 수 없습니다.",
     "similarApplicantsWatched": "같은 직군의 지원자들은",
     "suggestedVideo": "아래 영상도 시청했어요",
@@ -423,5 +559,11 @@
     "warning": "경고",
     "resignWarning": "회원탈퇴 시 모든 정보가 삭제되며 복구가 어렵습니다. 그래도 탈퇴 하시겠습니까?",
     "resignSuccess": "회원탈퇴가 완료되었습니다."
+  },
+  "techSet": {
+    "type": {
+      "jobGroup": "직군",
+      "skill": "스킬"
+    }
   }
 }

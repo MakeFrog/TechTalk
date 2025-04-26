@@ -1,0 +1,12 @@
+<svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0.24756 11.3149C0.247561 12.1792 0.948219 12.8799 1.81252 12.8799L10.4351 12.8799C11.2994 12.8799 12 12.1792 12 11.3149L12 1.8269C12 0.962597 11.2994 0.26194 10.4351 0.26194L1.81252 0.261941C0.948214 0.261941 0.247557 0.9626 0.247558 1.82691L0.24756 11.3149Z" fill="#F4F4F8"/>
+<path d="M5.1499 3.41919L9.66793 3.44966" stroke="#D9D9E8" stroke-width="0.780917" stroke-linecap="round"/>
+<path d="M5.15479 6.79187L9.67281 6.82234" stroke="#D9D9E8" stroke-width="0.780917" stroke-linecap="round"/>
+<path d="M5.15918 10.1646L9.6772 10.1955" stroke="#D9D9E8" stroke-width="0.780917" stroke-linecap="round"/>
+<circle cx="2.89318" cy="3.42382" r="1.01183" fill="#5C6DFF"/>
+<circle cx="2.89343" cy="3.42382" r="0.337277" fill="#EDEFFF"/>
+<circle cx="2.89318" cy="6.79662" r="1.01183" fill="#5C6DFF"/>
+<circle cx="2.89343" cy="6.79663" r="0.337277" fill="#EDEFFF"/>
+<circle cx="2.89318" cy="10.1693" r="1.01183" fill="#5C6DFF"/>
+<circle cx="2.89343" cy="10.1693" r="0.337277" fill="#EDEFFF"/>
+</svg>

@@ -1,6 +1,7 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
 import 'package:techtalk/core/constants/assets.dart';
@@ -13,16 +14,20 @@ class InterviewIndicatorCard extends StatelessWidget {
   const InterviewIndicatorCard({
     super.key,
     required this.title,
+    required this.logoPath,
     this.subDescription,
     required this.onCardTapped,
     this.showNewBadge = false,
+    this.showPlustBtn = true,
     this.onPlusSuffixedBtnTapped,
   });
 
   final String title;
+  final String logoPath;
   final String? subDescription;
   final VoidCallback onCardTapped;
   final VoidCallback? onPlusSuffixedBtnTapped;
+  final bool showPlustBtn;
   final bool showNewBadge;
 
   @override
@@ -30,52 +35,78 @@ class InterviewIndicatorCard extends StatelessWidget {
     return BounceTapper(
       onTap: onCardTapped,
       child: Container(
-        padding: const EdgeInsets.fromLTRB(24, 12, 0, 12),
+        padding: const EdgeInsets.fromLTRB(16, 20, 0, 20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           color: AppColor.of.white,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      title,
-                      style: AppTextStyle.headline2.copyWith(
-                        color: AppColor.of.brand3,
+            Expanded(
+              child: Row(
+                crossAxisAlignment: subDescription != null
+                    ? CrossAxisAlignment.start
+                    : CrossAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(logoPath),
+                  const Gap(4),
+                  if (subDescription != null)
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildTitleRow(),
+                          const Gap(4),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 20),
+                            child: Text(
+                              subDescription!,
+                              style: AppTextStyle.body1.copyWith(
+                                color: AppColor.of.gray3,
+                              ),
+                              overflow: TextOverflow.visible,
+                            ),
+                          ),
+                        ],
                       ),
+                    )
+                  else
+                    Expanded(
+                      child: _buildTitleRow(),
                     ),
-                    if (showNewBadge)
-                      const NewBadge(
-                        margin: EdgeInsets.only(left: 6),
-                      )
-                  ],
-                ),
-                BounceTapper(
-                  highlightColor: Colors.transparent,
-                  onTap: () {
-                    onPlusSuffixedBtnTapped?.call();
-                  },
-                  child: SvgPicture.asset(Assets.iconsRoundBlueCircle),
-                ),
-              ],
-            ),
-            if (subDescription != null)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 12, right: 24),
-                child: Text(
-                  subDescription!,
-                  style: AppTextStyle.body1.copyWith(
-                    color: AppColor.of.gray3,
-                  ),
-                ),
+                ],
               ),
+            ),
+            if (showPlustBtn) _buildPlusButton(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildTitleRow() {
+    return Row(
+      children: [
+        Text(
+          title,
+          style: AppTextStyle.headline3.copyWith(),
+        ),
+        if (showNewBadge)
+          const NewBadge(
+            margin: EdgeInsets.only(left: 6),
+          )
+      ],
+    );
+  }
+
+  Widget _buildPlusButton() {
+    return BounceTapper(
+      highlightColor: Colors.transparent,
+      onTap: onPlusSuffixedBtnTapped,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: SvgPicture.asset(Assets.iconsRoundedPlus),
       ),
     );
   }

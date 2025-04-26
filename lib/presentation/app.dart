@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -92,7 +93,7 @@ class App extends StatelessWidget {
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
-            routerConfig: appRouter(ref),
+            routerConfig: AppRouter.appRouter(ref),
             debugShowCheckedModeBanner: false,
             title: '테크톡',
             themeMode: ThemeMode.light,
