@@ -98,6 +98,7 @@ class SelectedCommonInterviewTypePage extends BasePage
               const Gap(4),
               Text(
                 description,
+                textAlign: TextAlign.center,
                 style: AppTextStyle.body3.copyWith(
                   color: AppColor.of.gray4,
                   height: 1.4,
