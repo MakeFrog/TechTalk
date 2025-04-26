@@ -1,12 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'study_qnas_provider.dart';
+part of 'selectable_common_qnas_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$studyQnasHash() => r'34d65388a54344391fadc0147c0fc6dc25cd464f';
+String _$selectableCommonQnasHash() =>
+    r'6b0942f9c4be6edc0ab3727e96bf35e98d523038';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,7 +30,7 @@ class _SystemHash {
   }
 }
 
-abstract class _$StudyQnas extends BuildlessAutoDisposeAsyncNotifier<
+abstract class _$SelectableCommonQnas extends BuildlessAutoDisposeAsyncNotifier<
     List<SelectableQnaEntity<CommonQnaEntity>>> {
   late final String topicId;
 
@@ -38,28 +39,28 @@ abstract class _$StudyQnas extends BuildlessAutoDisposeAsyncNotifier<
   );
 }
 
-/// See also [StudyQnas].
-@ProviderFor(StudyQnas)
-const studyQnasProvider = StudyQnasFamily();
+/// See also [SelectableCommonQnas].
+@ProviderFor(SelectableCommonQnas)
+const selectableCommonQnasProvider = SelectableCommonQnasFamily();
 
-/// See also [StudyQnas].
-class StudyQnasFamily
+/// See also [SelectableCommonQnas].
+class SelectableCommonQnasFamily
     extends Family<AsyncValue<List<SelectableQnaEntity<CommonQnaEntity>>>> {
-  /// See also [StudyQnas].
-  const StudyQnasFamily();
+  /// See also [SelectableCommonQnas].
+  const SelectableCommonQnasFamily();
 
-  /// See also [StudyQnas].
-  StudyQnasProvider call(
+  /// See also [SelectableCommonQnas].
+  SelectableCommonQnasProvider call(
     String topicId,
   ) {
-    return StudyQnasProvider(
+    return SelectableCommonQnasProvider(
       topicId,
     );
   }
 
   @override
-  StudyQnasProvider getProviderOverride(
-    covariant StudyQnasProvider provider,
+  SelectableCommonQnasProvider getProviderOverride(
+    covariant SelectableCommonQnasProvider provider,
   ) {
     return call(
       provider.topicId,
@@ -78,29 +79,30 @@ class StudyQnasFamily
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'studyQnasProvider';
+  String? get name => r'selectableCommonQnasProvider';
 }
 
-/// See also [StudyQnas].
-class StudyQnasProvider extends AutoDisposeAsyncNotifierProviderImpl<StudyQnas,
-    List<SelectableQnaEntity<CommonQnaEntity>>> {
-  /// See also [StudyQnas].
-  StudyQnasProvider(
+/// See also [SelectableCommonQnas].
+class SelectableCommonQnasProvider extends AutoDisposeAsyncNotifierProviderImpl<
+    SelectableCommonQnas, List<SelectableQnaEntity<CommonQnaEntity>>> {
+  /// See also [SelectableCommonQnas].
+  SelectableCommonQnasProvider(
     String topicId,
   ) : this._internal(
-          () => StudyQnas()..topicId = topicId,
-          from: studyQnasProvider,
-          name: r'studyQnasProvider',
+          () => SelectableCommonQnas()..topicId = topicId,
+          from: selectableCommonQnasProvider,
+          name: r'selectableCommonQnasProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$studyQnasHash,
-          dependencies: StudyQnasFamily._dependencies,
-          allTransitiveDependencies: StudyQnasFamily._allTransitiveDependencies,
+                  : _$selectableCommonQnasHash,
+          dependencies: SelectableCommonQnasFamily._dependencies,
+          allTransitiveDependencies:
+              SelectableCommonQnasFamily._allTransitiveDependencies,
           topicId: topicId,
         );
 
-  StudyQnasProvider._internal(
+  SelectableCommonQnasProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -114,7 +116,7 @@ class StudyQnasProvider extends AutoDisposeAsyncNotifierProviderImpl<StudyQnas,
 
   @override
   FutureOr<List<SelectableQnaEntity<CommonQnaEntity>>> runNotifierBuild(
-    covariant StudyQnas notifier,
+    covariant SelectableCommonQnas notifier,
   ) {
     return notifier.build(
       topicId,
@@ -122,10 +124,10 @@ class StudyQnasProvider extends AutoDisposeAsyncNotifierProviderImpl<StudyQnas,
   }
 
   @override
-  Override overrideWith(StudyQnas Function() create) {
+  Override overrideWith(SelectableCommonQnas Function() create) {
     return ProviderOverride(
       origin: this,
-      override: StudyQnasProvider._internal(
+      override: SelectableCommonQnasProvider._internal(
         () => create()..topicId = topicId,
         from: from,
         name: null,
@@ -138,14 +140,14 @@ class StudyQnasProvider extends AutoDisposeAsyncNotifierProviderImpl<StudyQnas,
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<StudyQnas,
+  AutoDisposeAsyncNotifierProviderElement<SelectableCommonQnas,
       List<SelectableQnaEntity<CommonQnaEntity>>> createElement() {
-    return _StudyQnasProviderElement(this);
+    return _SelectableCommonQnasProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is StudyQnasProvider && other.topicId == topicId;
+    return other is SelectableCommonQnasProvider && other.topicId == topicId;
   }
 
   @override
@@ -157,18 +159,20 @@ class StudyQnasProvider extends AutoDisposeAsyncNotifierProviderImpl<StudyQnas,
   }
 }
 
-mixin StudyQnasRef on AutoDisposeAsyncNotifierProviderRef<
+mixin SelectableCommonQnasRef on AutoDisposeAsyncNotifierProviderRef<
     List<SelectableQnaEntity<CommonQnaEntity>>> {
   /// The parameter `topicId` of this provider.
   String get topicId;
 }
 
-class _StudyQnasProviderElement extends AutoDisposeAsyncNotifierProviderElement<
-    StudyQnas, List<SelectableQnaEntity<CommonQnaEntity>>> with StudyQnasRef {
-  _StudyQnasProviderElement(super.provider);
+class _SelectableCommonQnasProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<SelectableCommonQnas,
+        List<SelectableQnaEntity<CommonQnaEntity>>>
+    with SelectableCommonQnasRef {
+  _SelectableCommonQnasProviderElement(super.provider);
 
   @override
-  String get topicId => (origin as StudyQnasProvider).topicId;
+  String get topicId => (origin as SelectableCommonQnasProvider).topicId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

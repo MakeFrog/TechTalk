@@ -88,9 +88,14 @@ final class TechSetRepositoryImpl implements TechSetRepository {
 
   @override
   SkillEntity getSkillById(String id) {
-    final targetSkill =
-        _cachedSkillCollection.firstWhereOrNull((e) => e.id == id);
-    return targetSkill ?? SkillEntity.undefined();
+    final targetSkill = _cachedSkillCollection.firstWhereOrNull((e) {
+      return e.id.toLowerCase() == id.toLowerCase();
+    });
+    if (targetSkill == null) {
+      log('Undefined skill found with id: $id');
+      return SkillEntity.undefined();
+    }
+    return targetSkill;
   }
 
   @override
@@ -98,7 +103,8 @@ final class TechSetRepositoryImpl implements TechSetRepository {
 
   @override
   JobGroupEntity getJobGroupById(String id) {
-    final targetJobGroup = _cachedJobGroups.firstWhereOrNull((e) => e.id == id);
+    final targetJobGroup = _cachedJobGroups
+        .firstWhereOrNull((e) => e.id.toLowerCase() == id.toLowerCase());
     return targetJobGroup ?? JobGroupEntity.undefined();
   }
 }

@@ -29,7 +29,7 @@ class ChatRoomEntity {
 
   /* TODO: 아래 필드 타입별로 상속 받는 방식으로 변경 필요*/
 
-  /// [InterviewType.resume]
+  /// [InterviewType.resume] // []
   final List<BaseQnaEntity> qnas;
 
   /// [InterviewType.proficiency]
@@ -91,6 +91,7 @@ class ChatRoomEntity {
     required InterviewType type,
     required List<TopicEntity> topics,
     required int questionCount,
+    List<CommonQnaEntity>? qnas,
   }) {
     return ChatRoomEntity(
       isTemporary: true,
@@ -98,6 +99,7 @@ class ChatRoomEntity {
       id: StringGenerator.generateRandomString(),
       interviewer: Interviewer.getRandomInterviewer(),
       topics: topics,
+      qnas: qnas ?? [],
       progressInfo: ChatProgressInfoEntity.onInitial(
         totalQuestionCount: questionCount,
       ),

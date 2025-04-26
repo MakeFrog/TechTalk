@@ -12,6 +12,7 @@
     "all": "전체",
     "confirm": "확인",
     "notice": "공지",
+    "seeAllBookMarked": "북마크 모아기",
     "practicalInterviewFormat": "실전형 면접",
     "topicInterviewFormat": "주제별 면접",
     "alreadySelected": "이미 선택된 기술입니다.",
@@ -97,6 +98,8 @@
     "pleaseTryAgain": "다시 시도해주세요"
   },
   "home": {
+    "customizedQuestionsSubDescription": "다양한 주제의 맞춤 질문!",
+    "commonQuestionSubDescription": "면접에 자주 나오는 질문들만 모아놨어요",
     "cheerUpMessage": "{nickname}님! \n테크톡이 항상 응원해요!",
     "practicalInterview": "실전형 면접",
     "practicalInterviewDesc": "여러 주제를 선택해 실전 연습을 해보세요!",
@@ -228,6 +231,12 @@
         "description": "기초 문법·로직 중심의 가벼운 질문"
       }
     },
+    "selectCommonQuestion": {
+      "title": "질문 고르기",
+      "selectBookmarked": "북마크 질문 선택",
+      "startInterview": "면접 시작하기",
+      "noBookmarkedQuestions": "북마크된 질문이 없어요"
+    },
     "interviewType": {
       "title": "면접 질문 유형을\n선택해보세요",
       "description": "실제 면접에서 자주 나오는 질문들을 모아두었어요",
@@ -252,7 +261,7 @@
     "resume": {
       "checkResume": "이력서를 점검하고\n다시 도전해 보세요",
       "description": "완성도를 높이면 더 구체적이고\n심층적인 질문을 받을 수 있어요",
-      "greeting": "반가워요! @{nickname}님 @{level} 역량에 맞는 면접 질문을 제시해드릴게요"
+      "greeting": "반가워요! {nickname}님 {level} 역량에 맞는 면접 질문을 제시해드릴게요"
     },
     "common": {
       "tryCommon": "단골 질문 면접도\n진행해 보세요!",
@@ -479,6 +488,8 @@
     "uploadFailTitle": "영상을 업로드하는데 실패했어요"
   },
   "youtubeInterview": {
+    "title": "유튜브 콘텐츠 면접",
+    "subDescription": "영상을 시청하고 면접을 준비해보세요",
     "introMessage": "안녕하세요 {nickname}님! '{contentTitle}' 콘텐츠를 기반으로 면접 질문을 여쭤볼게요.",
     "cannotResumeLater": "나중에 면접을 이어서 진행할 수 없습니다.",
     "similarApplicantsWatched": "같은 직군의 지원자들은",

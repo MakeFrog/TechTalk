@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'study_qna_controller.dart';
+part of '../../pages/study/learning/providers/study_qna_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator

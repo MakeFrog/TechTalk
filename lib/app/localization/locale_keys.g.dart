@@ -13,6 +13,7 @@ abstract class  LocaleKeys {
   static const common_confirm = 'common.confirm';
   static const common_all = 'common.all';
   static const common_notice = 'common.notice';
+  static const common_seeAllBookMarked = 'common.seeAllBookMarked';
   static const common_practicalInterviewFormat = 'common.practicalInterviewFormat';
   static const common_topicInterviewFormat = 'common.topicInterviewFormat';
   static const common_alreadySelected = 'common.alreadySelected';
@@ -91,6 +92,8 @@ abstract class  LocaleKeys {
   static const common_exit = 'common.exit';
   static const common_pleaseTryAgain = 'common.pleaseTryAgain';
   static const common = 'common';
+  static const home_customizedQuestionsSubDescription = 'home.customizedQuestionsSubDescription';
+  static const home_commonQuestionSubDescription = 'home.commonQuestionSubDescription';
   static const home_cheerUpMessage = 'home.cheerUpMessage';
   static const home_practicalInterview = 'home.practicalInterview';
   static const home_practicalInterviewDesc = 'home.practicalInterviewDesc';
@@ -205,6 +208,11 @@ abstract class  LocaleKeys {
   static const interview_interviewLevel_beginner_description = 'interview.interviewLevel.beginner.description';
   static const interview_interviewLevel_beginner = 'interview.interviewLevel.beginner';
   static const interview_interviewLevel = 'interview.interviewLevel';
+  static const interview_selectCommonQuestion_title = 'interview.selectCommonQuestion.title';
+  static const interview_selectCommonQuestion_selectBookmarked = 'interview.selectCommonQuestion.selectBookmarked';
+  static const interview_selectCommonQuestion_startInterview = 'interview.selectCommonQuestion.startInterview';
+  static const interview_selectCommonQuestion_noBookmarkedQuestions = 'interview.selectCommonQuestion.noBookmarkedQuestions';
+  static const interview_selectCommonQuestion = 'interview.selectCommonQuestion';
   static const interview_interviewType_title = 'interview.interviewType.title';
   static const interview_interviewType_description = 'interview.interviewType.description';
   static const interview_interviewType_practical_title = 'interview.interviewType.practical.title';
@@ -412,6 +420,8 @@ abstract class  LocaleKeys {
   static const notificationPermission_uploadSuccessDescription = 'notificationPermission.uploadSuccessDescription';
   static const notificationPermission_uploadFailTitle = 'notificationPermission.uploadFailTitle';
   static const notificationPermission = 'notificationPermission';
+  static const youtubeInterview_title = 'youtubeInterview.title';
+  static const youtubeInterview_subDescription = 'youtubeInterview.subDescription';
   static const youtubeInterview_introMessage = 'youtubeInterview.introMessage';
   static const youtubeInterview_cannotResumeLater = 'youtubeInterview.cannotResumeLater';
   static const youtubeInterview_similarApplicantsWatched = 'youtubeInterview.similarApplicantsWatched';

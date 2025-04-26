@@ -93,6 +93,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $SelectedCommonInterviewTypeRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: 'select-common-question',
+          name: 'select-common-question',
+          factory: $SelectCommonQuestionRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'topic-select',
           name: 'topic select',
           factory: $InterviewTopicSelectRouteExtension._fromState,
@@ -240,6 +245,28 @@ extension $SelectedCommonInterviewTypeRouteExtension
       context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
+}
+
+extension $SelectCommonQuestionRouteExtension on SelectCommonQuestionRoute {
+  static SelectCommonQuestionRoute _fromState(GoRouterState state) =>
+      SelectCommonQuestionRoute(
+        state.extra as SelectCommonQuestionRouteArg,
+      );
+
+  String get location => GoRouteData.$location(
+        '/select-common-question',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
 }
 
 extension $InterviewTopicSelectRouteExtension on InterviewTopicSelectRoute {

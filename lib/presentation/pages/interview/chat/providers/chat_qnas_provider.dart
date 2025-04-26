@@ -45,11 +45,19 @@ class ChatQnas extends _$ChatQnas {
       },
       common: (_) async {
         if (room.progressState.isInitial) {
-          final response = await getRandomQnaUseCase.call(room);
-          return response.fold(
-            onSuccess: (randomQnas) => randomQnas,
-            onFailure: (e) => _onError(e),
-          );
+          if (room.qnas.isNotEmpty) {
+            return room.qnas.map((e) {
+              dev.log('Question: ${(e as CommonQnaEntity).question}');
+              return ChatQnaEntity.fromQnaEntityAtInitial(e);
+            }).toList()
+              ..shuffle();
+          } else {
+            final response = await getRandomQnaUseCase.call(room);
+            return response.fold(
+              onSuccess: (randomQnas) => randomQnas,
+              onFailure: (e) => _onError(e),
+            );
+          }
         } else {
           final response = await getChatQnasUseCase.call(room);
           return response.fold(
@@ -69,7 +77,6 @@ class ChatQnas extends _$ChatQnas {
           ..shuffle();
       },
       proficiency: (InterviewType type) {
-        print('아수나');
         return room.qnas
             .map(
               (e) => ChatQnaEntity.fromProficiencyQnaEntityAtInitial(

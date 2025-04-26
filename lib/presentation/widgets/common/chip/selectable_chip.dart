@@ -43,18 +43,20 @@ class SelectableChip extends StatelessWidget {
         height: 22 / 15,
       ),
       side: BorderSide.none,
-      onSelected: (_) {
+      onSelected: (selected) {
         onTap();
       },
       label: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           if (imagePath != null)
             Padding(
-                padding: EdgeInsets.only(right: 4),
-                child: RoundedSkillImage(
-                  imagePath: imagePath,
-                  size: 18,
-                )),
+              padding: const EdgeInsets.only(right: 4),
+              child: RoundedSkillImage(
+                imagePath: imagePath,
+                size: 18,
+              ),
+            ),
           Text(
             label,
           ),

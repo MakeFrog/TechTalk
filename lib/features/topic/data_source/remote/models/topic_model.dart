@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:techtalk/app/localization/app_locale.dart';
+import 'package:techtalk/core/index.dart';
 import 'package:techtalk/core/modules/converter/time_stamp_converter.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
 
 part 'topic_model.g.dart';

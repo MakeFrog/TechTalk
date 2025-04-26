@@ -18,11 +18,16 @@ class UserBox extends HiveObject {
   @HiveField(3, defaultValue: false)
   final bool hasSeenNewYoutubeFeature;
 
+  /// 역량별 면접 기록 존재 여부
+  @HiveField(4, defaultValue: false)
+  final bool hasProficiencyInterviewRecord;
+
   UserBox({
     required this.hasPracticalInterviewRecord,
     required this.isReviewRequestAvailable,
     required this.hasEnteredFirstInterview,
     required this.hasSeenNewYoutubeFeature,
+    required this.hasProficiencyInterviewRecord,
   });
 
   factory UserBox.defaultValue() {
@@ -31,6 +36,7 @@ class UserBox extends HiveObject {
       isReviewRequestAvailable: true,
       hasEnteredFirstInterview: false,
       hasSeenNewYoutubeFeature: false,
+      hasProficiencyInterviewRecord: false,
     );
   }
 
@@ -44,6 +50,7 @@ class UserBox extends HiveObject {
     bool? isReviewRequestAvailable,
     bool? hasEnteredFirstInterview,
     bool? hasSeenNewYoutubeFeature,
+    bool? hasProficiencyInterviewRecord,
   }) {
     return UserBox(
       hasPracticalInterviewRecord:
@@ -54,6 +61,8 @@ class UserBox extends HiveObject {
           hasEnteredFirstInterview ?? this.hasEnteredFirstInterview,
       hasSeenNewYoutubeFeature:
           hasSeenNewYoutubeFeature ?? this.hasSeenNewYoutubeFeature,
+      hasProficiencyInterviewRecord:
+          hasProficiencyInterviewRecord ?? this.hasProficiencyInterviewRecord,
     );
   }
 }

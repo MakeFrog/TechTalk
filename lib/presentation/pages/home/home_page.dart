@@ -21,6 +21,7 @@ import 'package:techtalk/presentation/widgets/base/controller_holder.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 part 'widgets/youtube_content_feature_card.p.dart';
+part 'widgets/youtube_interview_card.p.dart';
 part 'widgets/new_feature_card.p.dart';
 
 class HomePage extends BasePage with HomeState, HomeEvent {
@@ -57,9 +58,14 @@ class HomePage extends BasePage with HomeState, HomeEvent {
                 },
               ),
               const Gap(16),
-              const ProficiencyInterviewCard(),
-              const Gap(16),
               const CommonInterviewCard(),
+              const Gap(16),
+              const ProficiencyInterviewCard(),
+              if (!AppVersion().isOnReview) ...[
+                const Gap(16),
+                const _YoutubeInterviewCard(),
+              ],
+              const Gap(48)
             ],
           );
         },
