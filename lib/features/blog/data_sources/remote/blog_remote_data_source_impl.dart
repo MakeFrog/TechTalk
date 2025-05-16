@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/features/blog/data_sources/remote/blog_remote_data_source.dart';
-import 'package:techtalk/features/blog/repository/entity/blog_shell_entity.dart';
+import 'package:techtalk/features/blog/data_sources/remote/models/blog_main_model.dart';
 
 class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   final FirebaseFirestore _firestore;
@@ -11,9 +11,9 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   BlogRemoteDataSourceImpl(this._firestore);
 
   @override
-  Future<FirebasePaginatedResult<BlogShellEntity, BlogShellEntity>>
+  Future<FirebasePaginatedResult<BlogMainModel, BlogMainModel>>
       getRandomPagedBlogContents({
-    required DocumentSnapshot<BlogShellEntity>? lastDocument,
+    required DocumentSnapshot<BlogMainModel>? lastDocument,
     required int limit,
     required String orderByField,
     required bool hasReversedQueryCallProceeded,
@@ -22,7 +22,7 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
     List<FirestoreQueryConstraint>? queryConstraints,
   }) async {
     try {
-      Query<BlogShellEntity> query = _buildInitialQuery(
+      Query<BlogMainModel> query = _buildInitialQuery(
         hasReversedQueryCallProceeded: hasReversedQueryCallProceeded,
         limit: limit,
         randomKey: randomKey,
@@ -43,7 +43,7 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
       print('Blog Query Result: ${snapshot.docs.length} items'); // 디버그 로그
 
       if (snapshot.docs.isEmpty && hasReversedQueryCallProceeded) {
-        return FirebasePaginatedResult<BlogShellEntity, BlogShellEntity>(
+        return FirebasePaginatedResult<BlogMainModel, BlogMainModel>(
           items: [],
           lastDocument: null,
           hasMore: false,
@@ -67,7 +67,7 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
       final items = snapshot.docs.map((e) => e.data()).toList()..shuffle();
       final hasMore = snapshot.docs.length >= limit;
 
-      return FirebasePaginatedResult<BlogShellEntity, BlogShellEntity>(
+      return FirebasePaginatedResult<BlogMainModel, BlogMainModel>(
         items: items,
         lastDocument: snapshot.docs.isNotEmpty ? snapshot.docs.last : null,
         hasMore: hasMore,
@@ -80,7 +80,7 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   }
 
   /// 조건별 쿼리
-  Query<BlogShellEntity> _buildInitialQuery({
+  Query<BlogMainModel> _buildInitialQuery({
     required bool hasReversedQueryCallProceeded,
     required String randomKey,
     required double randomValue,
@@ -88,7 +88,7 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   }) {
     final randomField = 'random.$randomKey';
     final query = _firestore.collection(_collectionName).withConverter(
-          fromFirestore: BlogShellEntity.fromFirestore,
+          fromFirestore: BlogMainModel.fromFirestore,
           toFirestore: (value, options) => value.toFirestore(),
         );
 
@@ -106,16 +106,16 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   }
 
   @override
-  Future<FirebasePaginatedResult<BlogShellEntity, BlogShellEntity>>
+  Future<FirebasePaginatedResult<BlogMainModel, BlogMainModel>>
       getPagedBlogContents({
-    required DocumentSnapshot<BlogShellEntity>? lastDocument,
+    required DocumentSnapshot<BlogMainModel>? lastDocument,
     required int limit,
     required String orderByField,
     List<FirestoreQueryConstraint>? queryConstraints,
   }) async {
-    Query<BlogShellEntity> query =
+    Query<BlogMainModel> query =
         _firestore.collection(_collectionName).withConverter(
-              fromFirestore: BlogShellEntity.fromFirestore,
+              fromFirestore: BlogMainModel.fromFirestore,
               toFirestore: (value, options) => value.toFirestore(),
             );
 

@@ -5,6 +5,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/app/di/app_binding.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
+import 'package:techtalk/features/blog/data_sources/remote/models/blog_main_model.dart';
 import 'package:techtalk/features/blog/repository/entity/blog_shell_entity.dart';
 import 'package:techtalk/features/blog/use_case/get_blog_contents_use_case.dart';
 import 'package:techtalk/presentation/widgets/common/constant/content_filter_category.dart';
@@ -12,7 +13,7 @@ import 'package:techtalk/presentation/widgets/common/constant/content_filter_cat
 part 'blog_content_pagination_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-Raw<PagingController<DocumentSnapshot<BlogShellEntity>?, BlogShellEntity>>
+Raw<PagingController<DocumentSnapshot<BlogMainModel>?, BlogShellEntity>>
     blogContentPagination(
   BlogContentPaginationRef ref, {
   required ContentFilterCategory category,
@@ -20,7 +21,7 @@ Raw<PagingController<DocumentSnapshot<BlogShellEntity>?, BlogShellEntity>>
   print('Blog Pagination Provider Created: ${category.id}'); // 디버그 로그
 
   final pagingController =
-      PagingController<DocumentSnapshot<BlogShellEntity>?, BlogShellEntity>(
+      PagingController<DocumentSnapshot<BlogMainModel>?, BlogShellEntity>(
     firstPageKey: null,
   );
 
@@ -57,7 +58,7 @@ Raw<PagingController<DocumentSnapshot<BlogShellEntity>?, BlogShellEntity>>
       final result = await useCase.call(params);
 
       result.fold(
-        onSuccess: (paginatedResult) {
+        onSuccess: (paginatedResult) async {
           print(
               'Blog Page Success: ${paginatedResult.items.length} items'); // 디버그 로그
           final newItems = paginatedResult.items..shuffle();
@@ -71,8 +72,10 @@ Raw<PagingController<DocumentSnapshot<BlogShellEntity>?, BlogShellEntity>>
           if (isLastPage) {
             pagingController.appendLastPage(newItems);
           } else {
-            final nextPageKey = paginatedResult.lastDocument;
-            pagingController.appendPage(newItems, nextPageKey);
+            pagingController.appendPage(
+                newItems,
+                paginatedResult.lastDocument
+                    as DocumentSnapshot<BlogMainModel>?);
           }
         },
         onFailure: (error) {

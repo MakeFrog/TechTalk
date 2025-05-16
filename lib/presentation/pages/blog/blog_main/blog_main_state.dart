@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:techtalk/features/blog/data_sources/remote/models/blog_main_model.dart';
 import 'package:techtalk/features/blog/repository/entity/blog_shell_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
@@ -13,7 +14,7 @@ mixin class BlogMainState {
   ///
   /// 페이지네이션 컨트롤러
   ///
-  PagingController<DocumentSnapshot<BlogShellEntity>?, BlogShellEntity>
+  PagingController<DocumentSnapshot<BlogMainModel>?, BlogShellEntity>
       pagingController(WidgetRef ref) {
     final selectedCategory =
         ref.watch(blogContentCategoryProvider).selectedCategory;

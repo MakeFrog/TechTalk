@@ -7,7 +7,7 @@ part of 'blog_content_pagination_provider.dart';
 // **************************************************************************
 
 String _$blogContentPaginationHash() =>
-    r'1efa449fb349a96f473ac89a55de511b7126d48b';
+    r'1cf2dca8b39150c0635d9657125c9c1aab268abe';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -36,7 +36,7 @@ const blogContentPaginationProvider = BlogContentPaginationFamily();
 
 /// See also [blogContentPagination].
 class BlogContentPaginationFamily extends Family<
-    PagingController<DocumentSnapshot<BlogShellEntity>?, BlogShellEntity>> {
+    PagingController<DocumentSnapshot<BlogMainModel>?, BlogShellEntity>> {
   /// See also [blogContentPagination].
   const BlogContentPaginationFamily();
 
@@ -75,7 +75,7 @@ class BlogContentPaginationFamily extends Family<
 
 /// See also [blogContentPagination].
 class BlogContentPaginationProvider extends Provider<
-    PagingController<DocumentSnapshot<BlogShellEntity>?, BlogShellEntity>> {
+    PagingController<DocumentSnapshot<BlogMainModel>?, BlogShellEntity>> {
   /// See also [blogContentPagination].
   BlogContentPaginationProvider({
     required ContentFilterCategory category,
@@ -110,7 +110,7 @@ class BlogContentPaginationProvider extends Provider<
 
   @override
   Override overrideWith(
-    PagingController<DocumentSnapshot<BlogShellEntity>?, BlogShellEntity>
+    PagingController<DocumentSnapshot<BlogMainModel>?, BlogShellEntity>
             Function(BlogContentPaginationRef provider)
         create,
   ) {
@@ -130,7 +130,7 @@ class BlogContentPaginationProvider extends Provider<
 
   @override
   ProviderElement<
-          PagingController<DocumentSnapshot<BlogShellEntity>?, BlogShellEntity>>
+          PagingController<DocumentSnapshot<BlogMainModel>?, BlogShellEntity>>
       createElement() {
     return _BlogContentPaginationProviderElement(this);
   }
@@ -150,13 +150,13 @@ class BlogContentPaginationProvider extends Provider<
 }
 
 mixin BlogContentPaginationRef on ProviderRef<
-    PagingController<DocumentSnapshot<BlogShellEntity>?, BlogShellEntity>> {
+    PagingController<DocumentSnapshot<BlogMainModel>?, BlogShellEntity>> {
   /// The parameter `category` of this provider.
   ContentFilterCategory get category;
 }
 
 class _BlogContentPaginationProviderElement extends ProviderElement<
-        PagingController<DocumentSnapshot<BlogShellEntity>?, BlogShellEntity>>
+        PagingController<DocumentSnapshot<BlogMainModel>?, BlogShellEntity>>
     with BlogContentPaginationRef {
   _BlogContentPaginationProviderElement(super.provider);
 

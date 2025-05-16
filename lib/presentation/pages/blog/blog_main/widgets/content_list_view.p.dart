@@ -16,7 +16,8 @@ class _ContentListView extends ConsumerWidget
             final targetController = pagingController(ref);
 
             return KeepAliveView(
-              child: PagedListView<DocumentSnapshot<Object?>?, BlogShellEntity>(
+              child: PagedListView<DocumentSnapshot<BlogMainModel>?,
+                  BlogShellEntity>(
                 pagingController: targetController,
                 physics: const BouncingScrollPhysics(),
                 builderDelegate: PagedChildBuilderDelegate<BlogShellEntity>(
@@ -55,7 +56,7 @@ class _ContentListView extends ConsumerWidget
   /// 호출 중 오류 발생
   ///
   Widget _buildErrorOccuredView(
-      PagingController<DocumentSnapshot<Object?>?, BlogShellEntity>
+      PagingController<DocumentSnapshot<BlogMainModel>?, BlogShellEntity>
           controller) {
     print('Blog Content Error Occurred'); // 디버그 로그
     return YoutubePaginationIndicatorView(
@@ -73,31 +74,19 @@ class _ContentListView extends ConsumerWidget
   ///
   Widget _buildNoItemFoundView(BuildContext context) {
     return YoutubePaginationIndicatorView(
-      title: tr(LocaleKeys.youtube_noResults),
-      description: tr(LocaleKeys.youtube_uploadPrompt),
-      btnText: tr(LocaleKeys.youtube_uploadButton),
-      onBtnTapped: () {
-        onVideoUploadBtnTapped(context);
-      },
+      title: 'tr(LocaleKeys.youtube_noItemFoundTitle)',
+      description: 'tr(LocaleKeys.youtube_noItemFoundDescription)',
+      btnText: '',
+      onBtnTapped: () {},
     );
   }
 
   ///
-  /// skeleton 로딩
+  /// 로딩 뷰
   ///
   Widget _buildLoadView() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const Gap(60),
-        ...List.generate(
-          6,
-          (_) => Padding(
-            padding: const EdgeInsets.only(bottom: 16),
-            child: YoutubeContentItemView.createSkeleton(),
-          ),
-        ),
-      ],
+    return const Center(
+      child: CircularProgressIndicator(),
     );
   }
 

@@ -21,6 +21,7 @@ final class BlogContentsDependencyInjection extends FeatureDependencyInjection {
     locator.registerLazySingleton<BlogRepository>(
       () => BlogRepositoryImpl(
         locator<BlogRemoteDataSource>(),
+        locator<TechSetRepository>(),
       ),
     );
   }
