@@ -11,7 +11,7 @@ import 'package:techtalk/presentation/widgets/common/constant/content_filter_cat
 ///
 /// 컨텐츠 카테고리를 관리하는 provider
 ///
-class YoutubeContentCategoryProvider extends ChangeNotifier {
+class BlogContentCategoryProvider extends ChangeNotifier {
   ///
   /// 페이지 컨트롤러
   ///
@@ -35,14 +35,14 @@ class YoutubeContentCategoryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  YoutubeContentCategoryProvider({
+  BlogContentCategoryProvider({
     required this.selectedCategory,
     required this.totalCategories,
   });
 }
 
-final youtubeContentCategoryProvider =
-    ChangeNotifierProvider<YoutubeContentCategoryProvider>(
+final blogContentCategoryProvider =
+    ChangeNotifierProvider<BlogContentCategoryProvider>(
   (ref) {
     final userInfo = ref.read(userInfoProvider).requireValue!;
     final userSkills = userInfo.skills;
@@ -102,7 +102,7 @@ final youtubeContentCategoryProvider =
       ...sortedCategories,
     ];
 
-    return YoutubeContentCategoryProvider(
+    return BlogContentCategoryProvider(
       selectedCategory: combined.first, // '전체' 카테고리는 디폴트 값
       totalCategories: combined,
     );

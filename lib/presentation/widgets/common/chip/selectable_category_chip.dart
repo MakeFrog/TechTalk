@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/constants/content_filter_category_type.enum.dart';
-import 'package:techtalk/presentation/pages/youtube/main/constant/yotubue_content_category.dart';
 import 'package:techtalk/presentation/pages/youtube/main/youtube_main_page.dart';
+import 'package:techtalk/presentation/widgets/common/constant/content_filter_category.dart';
 import 'package:techtalk/presentation/widgets/common/image/rounded_skill_image.dart';
 
 ///
@@ -18,7 +18,7 @@ class SelectableCategoryChip extends StatelessWidget {
 
   final bool isSelected;
   final VoidCallback onTap;
-  final YoutubeContentCategory item;
+  final ContentFilterCategory item;
 
   ContentFilterCategoryType get type => item.type;
 

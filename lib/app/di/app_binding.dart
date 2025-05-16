@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:techtalk/app/di/modules/auth_di.dart';
+import 'package:techtalk/app/di/modules/blog_di.dart';
 import 'package:techtalk/app/di/modules/chat_di.dart';
 import 'package:techtalk/app/di/modules/interview_di.dart';
 import 'package:techtalk/app/di/modules/system_di.dart';
@@ -45,6 +46,7 @@ final class AppBinder {
       TopicDependencyInjection(),
       YoutubeContentsDependencyInjection(),
       InterviewDepenencyInjection(),
+      BlogContentsDependencyInjection(),
     ]) {
       di.init();
     }

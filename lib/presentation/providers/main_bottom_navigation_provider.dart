@@ -7,6 +7,7 @@ enum MainNavigationTab {
   home('gnb.home', Assets.iconsHome),
   study('gnb.learning', Assets.iconsStudy),
   youtube('gnb.videoTutorial', Assets.iconsVideoStudy),
+  blog('gnb.videoTutorial', Assets.iconsVideoStudy),
   myInfo('gnb.myInfo', Assets.iconsUser);
 
   final String jsonKey;

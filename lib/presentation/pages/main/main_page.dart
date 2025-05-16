@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
+import 'package:techtalk/presentation/pages/blog/blog_main/blog_main_page.dart';
 import 'package:techtalk/presentation/pages/home/home_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/bubble_indicator.dart';
 import 'package:techtalk/presentation/pages/main/main_event.dart';
@@ -31,6 +32,9 @@ class MainPage extends BasePage with MainEvent, MainState {
       ),
       StudyTopicSelectionPage(
         key: ValueKey(MainNavigationTab.study),
+      ),
+      BlogMainPage(
+        key: ValueKey(MainNavigationTab.blog),
       ),
       YoutubeMainPage(
         key: ValueKey(MainNavigationTab.youtube),

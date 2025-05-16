@@ -5,7 +5,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/features/youtube/index.dart';
-import 'package:techtalk/presentation/pages/youtube/main/constant/yotubue_content_category.dart';
+import 'package:techtalk/presentation/widgets/common/constant/content_filter_category.dart';
 
 part 'youtube_content_pagination_provider.g.dart';
 
@@ -13,7 +13,7 @@ part 'youtube_content_pagination_provider.g.dart';
 Raw<PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>>
     youtubeContentPagination(
   YoutubeContentPaginationRef ref, {
-  required YoutubeContentCategory category,
+  required ContentFilterCategory category,
 }) {
   final pagingController =
       PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>(

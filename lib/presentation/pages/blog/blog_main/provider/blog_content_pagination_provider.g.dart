@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'youtube_content_pagination_provider.dart';
+part of 'blog_content_pagination_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$youtubeContentPaginationHash() =>
-    r'2bae170d753c4f60b267072266d828e99ecc7adf';
+String _$blogContentPaginationHash() =>
+    r'1efa449fb349a96f473ac89a55de511b7126d48b';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,28 +30,28 @@ class _SystemHash {
   }
 }
 
-/// See also [youtubeContentPagination].
-@ProviderFor(youtubeContentPagination)
-const youtubeContentPaginationProvider = YoutubeContentPaginationFamily();
+/// See also [blogContentPagination].
+@ProviderFor(blogContentPagination)
+const blogContentPaginationProvider = BlogContentPaginationFamily();
 
-/// See also [youtubeContentPagination].
-class YoutubeContentPaginationFamily extends Family<
-    PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>> {
-  /// See also [youtubeContentPagination].
-  const YoutubeContentPaginationFamily();
+/// See also [blogContentPagination].
+class BlogContentPaginationFamily extends Family<
+    PagingController<DocumentSnapshot<BlogShellEntity>?, BlogShellEntity>> {
+  /// See also [blogContentPagination].
+  const BlogContentPaginationFamily();
 
-  /// See also [youtubeContentPagination].
-  YoutubeContentPaginationProvider call({
+  /// See also [blogContentPagination].
+  BlogContentPaginationProvider call({
     required ContentFilterCategory category,
   }) {
-    return YoutubeContentPaginationProvider(
+    return BlogContentPaginationProvider(
       category: category,
     );
   }
 
   @override
-  YoutubeContentPaginationProvider getProviderOverride(
-    covariant YoutubeContentPaginationProvider provider,
+  BlogContentPaginationProvider getProviderOverride(
+    covariant BlogContentPaginationProvider provider,
   ) {
     return call(
       category: provider.category,
@@ -70,33 +70,33 @@ class YoutubeContentPaginationFamily extends Family<
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'youtubeContentPaginationProvider';
+  String? get name => r'blogContentPaginationProvider';
 }
 
-/// See also [youtubeContentPagination].
-class YoutubeContentPaginationProvider extends Provider<
-    PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>> {
-  /// See also [youtubeContentPagination].
-  YoutubeContentPaginationProvider({
+/// See also [blogContentPagination].
+class BlogContentPaginationProvider extends Provider<
+    PagingController<DocumentSnapshot<BlogShellEntity>?, BlogShellEntity>> {
+  /// See also [blogContentPagination].
+  BlogContentPaginationProvider({
     required ContentFilterCategory category,
   }) : this._internal(
-          (ref) => youtubeContentPagination(
-            ref as YoutubeContentPaginationRef,
+          (ref) => blogContentPagination(
+            ref as BlogContentPaginationRef,
             category: category,
           ),
-          from: youtubeContentPaginationProvider,
-          name: r'youtubeContentPaginationProvider',
+          from: blogContentPaginationProvider,
+          name: r'blogContentPaginationProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$youtubeContentPaginationHash,
-          dependencies: YoutubeContentPaginationFamily._dependencies,
+                  : _$blogContentPaginationHash,
+          dependencies: BlogContentPaginationFamily._dependencies,
           allTransitiveDependencies:
-              YoutubeContentPaginationFamily._allTransitiveDependencies,
+              BlogContentPaginationFamily._allTransitiveDependencies,
           category: category,
         );
 
-  YoutubeContentPaginationProvider._internal(
+  BlogContentPaginationProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -110,14 +110,14 @@ class YoutubeContentPaginationProvider extends Provider<
 
   @override
   Override overrideWith(
-    PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>
-            Function(YoutubeContentPaginationRef provider)
+    PagingController<DocumentSnapshot<BlogShellEntity>?, BlogShellEntity>
+            Function(BlogContentPaginationRef provider)
         create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: YoutubeContentPaginationProvider._internal(
-        (ref) => create(ref as YoutubeContentPaginationRef),
+      override: BlogContentPaginationProvider._internal(
+        (ref) => create(ref as BlogContentPaginationRef),
         from: from,
         name: null,
         dependencies: null,
@@ -130,15 +130,14 @@ class YoutubeContentPaginationProvider extends Provider<
 
   @override
   ProviderElement<
-      PagingController<DocumentSnapshot<YoutubeMainModel>?,
-          YoutubeMainEntity>> createElement() {
-    return _YoutubeContentPaginationProviderElement(this);
+          PagingController<DocumentSnapshot<BlogShellEntity>?, BlogShellEntity>>
+      createElement() {
+    return _BlogContentPaginationProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is YoutubeContentPaginationProvider &&
-        other.category == category;
+    return other is BlogContentPaginationProvider && other.category == category;
   }
 
   @override
@@ -150,20 +149,20 @@ class YoutubeContentPaginationProvider extends Provider<
   }
 }
 
-mixin YoutubeContentPaginationRef on ProviderRef<
-    PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>> {
+mixin BlogContentPaginationRef on ProviderRef<
+    PagingController<DocumentSnapshot<BlogShellEntity>?, BlogShellEntity>> {
   /// The parameter `category` of this provider.
   ContentFilterCategory get category;
 }
 
-class _YoutubeContentPaginationProviderElement extends ProviderElement<
-    PagingController<DocumentSnapshot<YoutubeMainModel>?,
-        YoutubeMainEntity>> with YoutubeContentPaginationRef {
-  _YoutubeContentPaginationProviderElement(super.provider);
+class _BlogContentPaginationProviderElement extends ProviderElement<
+        PagingController<DocumentSnapshot<BlogShellEntity>?, BlogShellEntity>>
+    with BlogContentPaginationRef {
+  _BlogContentPaginationProviderElement(super.provider);
 
   @override
   ContentFilterCategory get category =>
-      (origin as YoutubeContentPaginationProvider).category;
+      (origin as BlogContentPaginationProvider).category;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
