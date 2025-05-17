@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -691,26 +692,27 @@ class SelectCommonQuestionRoute extends GoRouteData {
 }
 
 class BlogOriginRotue extends GoRouteData {
-  const BlogOriginRotue();
+  const BlogOriginRotue({required this.blogUrl});
 
   static const String path = 'blog-origin';
   static const String name = 'blog-origin';
+  final String blogUrl;
 
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return CustomTransitionPage(
-      child: const BlogOriginPage(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        return SlideTransition(
-          position: animation.drive(
-            Tween(
-              begin: const Offset(0, 1),
-              end: Offset.zero,
-            ).chain(CurveTween(curve: Curves.easeOutCubic)),
-          ),
-          child: child,
-        );
-      },
+    return MaterialPage(
+      fullscreenDialog: true,
+      child: Builder(
+        builder: (context) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            showCupertinoModalPopup<void>(
+              context: context,
+              builder: (context) => BlogOriginPage(blogUrl: blogUrl),
+            );
+          });
+          return const SizedBox.shrink();
+        },
+      ),
     );
   }
 }

@@ -30,8 +30,21 @@ class _ContentListView extends ConsumerWidget
                         itemBuilder: (context, item, index) {
                           return BlogContentItemView(
                             item: item,
-                            onTap: () {
-                              const BlogOriginRotue().push(context);
+                            onTap: () async {
+                              print('아랑수요 : ${item.linkUrl}');
+                              await BottomSheetIntent.showScrollableModalSheet(
+                                context,
+                                scrollableSheet: BlogOriginPage(
+                                  blogUrl: item.linkUrl,
+                                ),
+                              );
+
+                              // showMaterialModalBottomSheet(
+                              //   context: context,
+                              //   builder: (context) => BlogOriginPage(),
+                              // );
+
+                              // const BlogOriginRotue().push(context);
                               // BlogOriginRotue().push(context);
                             },
                           );

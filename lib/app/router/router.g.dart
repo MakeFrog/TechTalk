@@ -711,11 +711,15 @@ extension $WrongAnswerRouteExtension on WrongAnswerRoute {
 }
 
 extension $BlogOriginRotueExtension on BlogOriginRotue {
-  static BlogOriginRotue _fromState(GoRouterState state) =>
-      const BlogOriginRotue();
+  static BlogOriginRotue _fromState(GoRouterState state) => BlogOriginRotue(
+        blogUrl: state.uri.queryParameters['blog-url']!,
+      );
 
   String get location => GoRouteData.$location(
         '/blog-origin',
+        queryParams: {
+          'blog-url': blogUrl,
+        },
       );
 
   void go(BuildContext context) => context.go(location);
