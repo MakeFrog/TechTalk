@@ -21,6 +21,7 @@ import 'package:techtalk/presentation/pages/youtube/main/widgets/youtube_paginat
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/techtalk_app_bar.dart';
 import 'package:techtalk/presentation/widgets/common/chip/selectable_category_chip.dart';
+import 'package:techtalk/presentation/widgets/common/item/blog_content_item_view.dart';
 
 import 'package:techtalk/presentation/widgets/common/state/keep_alive_view.dart';
 
@@ -44,26 +45,26 @@ class BlogMainPage extends BasePage with BlogMainState, BlogMainEvent {
   @override
   PreferredSizeWidget? buildAppBar(BuildContext context, WidgetRef ref) =>
       TechtalkAppBar(
-        title: 'tr(LocaleKeys.common_blog)',
+        title: '블로그',
         bgColor: AppColor.of.background1,
         padding: const EdgeInsets.only(left: 16, right: 0),
         actions: [
           Stack(
             clipBehavior: Clip.none,
             children: [
-              BounceTapper(
-                delayedDurationBeforeGrow: const Duration(milliseconds: 25),
-                onTap: () {
-                  onBlogUploadBtnTapped(context);
-                },
-                highlightBorderRadius: BorderRadius.circular(32),
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  child: SvgPicture.asset(
-                    Assets.iconsVideoUpload, // 블로그용 아이콘으로 변경 필요
-                  ),
-                ),
-              ),
+              // BounceTapper(
+              //   delayedDurationBeforeGrow: const Duration(milliseconds: 25),
+              //   onTap: () {
+              //     onBlogUploadBtnTapped(context);
+              //   },
+              //   highlightBorderRadius: BorderRadius.circular(32),
+              //   child: Container(
+              //     padding: const EdgeInsets.all(16),
+              //     child: SvgPicture.asset(
+              //       Assets.iconsVideoUpload, // 블로그용 아이콘으로 변경 필요
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ],

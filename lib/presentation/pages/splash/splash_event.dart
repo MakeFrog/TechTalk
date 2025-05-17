@@ -3,9 +3,11 @@ import 'dart:developer';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/router/router.dart';
+import 'package:techtalk/app/util/app_logger.dart';
 import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/core/services/slack_notification_service.dart';
+import 'package:techtalk/features/blog/index.dart';
 import 'package:techtalk/features/system/system.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/presentation/providers/user/user_auth_provider.dart';
@@ -19,11 +21,16 @@ mixin class SplashEvent {
 
   /// 면접 주제 등 초기 호출 후 재사용할 데이터를 초기화한다.
   Future<void> initStaticData(WidgetRef ref) async {
-    await Future.wait([
-      StoredTopics.initialize(),
-      techSetRepository.initSkills(),
-      techSetRepository.initJobGroups()
-    ]);
+    try {
+      await Future.wait([
+        StoredTopics.initialize(),
+        techSetRepository.initSkills(),
+        techSetRepository.initJobGroups(),
+        blogRepository.initCompanyList(),
+      ]);
+    } catch (e) {
+      logger.i('초기 필요 인스턴스 초기화 실패 : $e');
+    }
   }
 
   /// 유저 인증정보와 유저 정보를 토대로 라우팅을 분기한다.

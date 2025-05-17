@@ -14,7 +14,7 @@ class _Scaffold extends StatelessWidget {
     return Column(
       children: [
         categorySliderBar,
-        const Gap(16),
+        const Gap(6),
         Expanded(child: contentListView),
       ],
     );

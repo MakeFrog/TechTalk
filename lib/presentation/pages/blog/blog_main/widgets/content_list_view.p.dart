@@ -28,32 +28,7 @@ class _ContentListView extends ConsumerWidget
                       builderDelegate:
                           PagedChildBuilderDelegate<BlogShellEntity>(
                         itemBuilder: (context, item, index) {
-                          return Container(
-                            constraints: const BoxConstraints(minHeight: 100),
-                            margin: EdgeInsets.only(
-                              top: index == 0 ? 60 : 0,
-                              bottom: 16,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: BounceTapper(
-                              onTap: () {
-                                // routeToDetailPage(ref, overview: item);
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Text(
-                                  item.title,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
+                          return BlogContentItemView(item: item);
                         },
                         firstPageProgressIndicatorBuilder: (_) => const Center(
                           child: Padding(

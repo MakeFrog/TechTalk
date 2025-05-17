@@ -3,9 +3,9 @@ import 'dart:isolate';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:easy_isolate_mixin/easy_isolate_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:techtalk/app/router/navigation_context.dart';
+import 'package:techtalk/app/util/app_logger.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
@@ -13,7 +13,7 @@ import 'package:techtalk/features/blog/data_sources/remote/blog_remote_data_sour
 import 'package:techtalk/features/blog/data_sources/remote/models/blog_main_model.dart';
 import 'package:techtalk/features/blog/repository/blog_repository.dart';
 import 'package:techtalk/features/blog/repository/entity/blog_shell_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
+import 'package:techtalk/features/blog/repository/entity/company_set.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 class BlogRepositoryImpl implements BlogRepository {
@@ -34,7 +34,7 @@ class BlogRepositoryImpl implements BlogRepository {
             final response = await request.close();
             await response.drain<void>(); // 데이터를 읽어서 버퍼에 저장
           } catch (e) {
-            debugPrint('이미지 다운로드 실패 (Isolate): $url - $e');
+            logger.e('이미지 다운로드 실패 (Isolate): $url - $e');
           }
         }),
       );
@@ -72,7 +72,7 @@ class BlogRepositoryImpl implements BlogRepository {
         precacheImage(NetworkImage(url), context);
       }
     } catch (e) {
-      debugPrint('이미지 프리캐시 실패: $e');
+      logger.e('이미지 프리캐시 실패: $e');
     }
   }
 
@@ -139,6 +139,36 @@ class BlogRepositoryImpl implements BlogRepository {
       );
 
       return Result.success(paginatedResult);
+    } catch (e) {
+      return Result.failure(e is Exception ? e : Exception(e.toString()));
+    }
+  }
+
+  @override
+  Future<Result<List<CompanyInfoEntity>>> initCompanyList() async {
+    try {
+      final response = await _remoteDataSource.getCompanyList();
+
+      final result =
+          response.map((model) => CompanyInfoEntity.fromModel(model)).toList();
+
+      // 회사 로고 이미지 프리캐시
+      await Future.wait(
+        result.map((company) async {
+          if (company.logoUrl.isNotEmpty) {
+            try {
+              await precacheImage(
+                  NetworkImage(company.logoUrl), await navigationContext);
+            } catch (e) {
+              debugPrint(
+                  'Failed to precache company logo: ${company.name} - $e');
+            }
+          }
+        }),
+      );
+
+      CompanySet().addCompanies(result);
+      return Result.success(result);
     } catch (e) {
       return Result.failure(e is Exception ? e : Exception(e.toString()));
     }

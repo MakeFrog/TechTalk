@@ -6,6 +6,7 @@ class _CategorySliderBar extends ConsumerWidget
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    return const SizedBox();
     return Container(
       color: AppColor.of.background1,
       height: 58,

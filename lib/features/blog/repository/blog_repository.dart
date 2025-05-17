@@ -4,8 +4,12 @@ import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
 import 'package:techtalk/features/blog/data_sources/remote/models/blog_main_model.dart';
 import 'package:techtalk/features/blog/repository/entity/blog_shell_entity.dart';
+import 'package:techtalk/features/blog/repository/entity/company_set.dart';
 
 abstract interface class BlogRepository {
+  ///
+  /// 블로그 콘텐츠 리스트 페이지네이션 호출
+  ///
   Future<Result<FirebasePaginatedResult<BlogShellEntity, BlogMainModel>>>
       getRandomPagedBlogContents({
     required DocumentSnapshot<BlogShellEntity>? lastDocument,
@@ -16,4 +20,9 @@ abstract interface class BlogRepository {
     required String randomKey,
     List<FirestoreQueryConstraint>? queryConstraints,
   });
+
+  ///
+  /// 회사 리스트 초기화
+  ///
+  Future<Result<List<CompanyInfoEntity>>> initCompanyList();
 }

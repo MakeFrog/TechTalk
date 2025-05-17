@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:techtalk/features/blog/repository/entity/company_set.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/features/blog/repository/entity/blog_base_entity.dart';
 import 'package:techtalk/features/tech_set/repositories/enums/skill_category.enum.dart';
@@ -25,6 +26,8 @@ class BlogShellEntity extends BlogBaseEntity {
     required this.relatedSkills,
     required this.relatedJobGroups,
   });
+
+  bool get isCompanyBlog => CompanySet().getCompany(blogId) != null;
 
   factory BlogShellEntity.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,

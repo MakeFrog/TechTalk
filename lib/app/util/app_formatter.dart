@@ -1,4 +1,5 @@
 import 'package:techtalk/app/localization/app_locale.dart';
+import 'package:intl/intl.dart';
 
 abstract final class AppFormatter {
   /// 영싱 시간 formatter
@@ -100,6 +101,28 @@ abstract final class AppFormatter {
       }
     } else {
       return '-';
+    }
+  }
+
+  /// 날짜를 yyyy.MM.dd 형식으로 포맷
+  static String formatDateToYYYYMMDD(DateTime date) {
+    return DateFormat('yyyy.MM.dd').format(date);
+  }
+
+  /// 날짜를 yyyy.MM.dd 형식의 String으로 변환 (null 처리 포함)
+  static String? formatDateToYYYYMMDDNullable(DateTime? date) {
+    if (date == null) return null;
+    return DateFormat('yyyy.MM.dd').format(date);
+  }
+
+  /// String을 yyyy.MM.dd 형식의 DateTime으로 파싱 (null 처리 포함)
+  static DateTime? parseYYYYMMDD(String? dateStr) {
+    if (dateStr == null) return null;
+    try {
+      return DateFormat('yyyy.MM.dd').parse(dateStr);
+    } catch (e) {
+      print('날짜 파싱 실패: $dateStr - $e');
+      return null;
     }
   }
 }

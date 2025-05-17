@@ -3,12 +3,31 @@ import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/firebase_query_constraints.dart';
 import 'package:techtalk/features/blog/data_sources/remote/blog_remote_data_source.dart';
 import 'package:techtalk/features/blog/data_sources/remote/models/blog_main_model.dart';
+import 'package:techtalk/features/blog/data_sources/remote/models/company_model.dart';
 
 class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   final FirebaseFirestore _firestore;
   static const String _collectionName = 'Blogs';
+  static const String _companyCollectionName = 'Company';
 
   BlogRemoteDataSourceImpl(this._firestore);
+
+  @override
+  Future<List<CompanyModel>> getCompanyList() async {
+    try {
+      final snapshot = await _firestore
+          .collection(_companyCollectionName)
+          .withConverter(
+            fromFirestore: CompanyModel.fromFirestore,
+            toFirestore: (value, options) => value.toFirestore(),
+          )
+          .get();
+
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    } catch (e) {
+      throw Exception('Failed to fetch company list: $e');
+    }
+  }
 
   @override
   Future<FirebasePaginatedResult<BlogMainModel, BlogMainModel>>
