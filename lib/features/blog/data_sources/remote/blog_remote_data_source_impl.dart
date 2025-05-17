@@ -87,10 +87,13 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
     required int limit,
   }) {
     final randomField = 'random.$randomKey';
-    final query = _firestore.collection(_collectionName).withConverter(
+    final query = _firestore
+        .collection(_collectionName)
+        .withConverter(
           fromFirestore: BlogMainModel.fromFirestore,
           toFirestore: (value, options) => value.toFirestore(),
-        );
+        )
+        .where('is_valid', isEqualTo: true);
 
     if (!hasReversedQueryCallProceeded) {
       return query
@@ -113,11 +116,13 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
     required String orderByField,
     List<FirestoreQueryConstraint>? queryConstraints,
   }) async {
-    Query<BlogMainModel> query =
-        _firestore.collection(_collectionName).withConverter(
-              fromFirestore: BlogMainModel.fromFirestore,
-              toFirestore: (value, options) => value.toFirestore(),
-            );
+    Query<BlogMainModel> query = _firestore
+        .collection(_collectionName)
+        .withConverter(
+          fromFirestore: BlogMainModel.fromFirestore,
+          toFirestore: (value, options) => value.toFirestore(),
+        )
+        .where('is_valid', isEqualTo: true);
 
     // 쿼리 제약 조건 적용
     if (queryConstraints != null) {

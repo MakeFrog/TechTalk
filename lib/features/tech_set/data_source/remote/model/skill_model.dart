@@ -11,6 +11,8 @@ class SkillModel {
   final String category;
   final int youtubeContentCount;
   final int youtubeContentCountKo;
+  final int blogContentCount;
+  final int blogContentCountKo;
 
   SkillModel({
     required this.name,
@@ -18,6 +20,8 @@ class SkillModel {
     required this.category,
     required this.youtubeContentCount,
     required this.youtubeContentCountKo,
+    required this.blogContentCount,
+    required this.blogContentCountKo,
   });
 
   factory SkillModel.fromFirestore(

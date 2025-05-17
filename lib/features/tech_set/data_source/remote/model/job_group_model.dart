@@ -10,6 +10,8 @@ class JobGroupModel {
   final String koName;
   final int youtubeContentCount;
   final int youtubeContentCountKo;
+  final int blogContentCount;
+  final int blogContentCountKo;
 
   const JobGroupModel({
     required this.name,
@@ -17,6 +19,8 @@ class JobGroupModel {
     required this.id,
     required this.youtubeContentCount,
     required this.youtubeContentCountKo,
+    required this.blogContentCount,
+    required this.blogContentCountKo,
   });
 
   factory JobGroupModel.fromFirestore(

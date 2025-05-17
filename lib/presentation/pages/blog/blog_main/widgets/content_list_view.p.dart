@@ -6,50 +6,80 @@ class _ContentListView extends ConsumerWidget
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: PageView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: pageController(ref),
-          itemCount: totalCategories(ref).length,
-          itemBuilder: (context, index) {
-            final targetController = pagingController(ref);
+    return PageView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: pageController(ref),
+        itemCount: totalCategories(ref).length,
+        itemBuilder: (context, index) {
+          final targetController = pagingController(ref);
 
-            return KeepAliveView(
-              child: PagedListView<DocumentSnapshot<BlogMainModel>?,
-                  BlogShellEntity>(
-                pagingController: targetController,
-                physics: const BouncingScrollPhysics(),
-                builderDelegate: PagedChildBuilderDelegate<BlogShellEntity>(
-                  itemBuilder: (context, item, index) {
-                    return Container(
-                      padding: EdgeInsets.only(top: index == 0 ? 60 : 0),
-                      margin: const EdgeInsets.only(bottom: 16),
-                      child: BounceTapper(
-                        onTap: () {
-                          // routeToDetailPage(ref, overview: item);
+          return KeepAliveView(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return SizedBox(
+                  width: constraints.maxWidth,
+                  height: constraints.maxHeight,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: PagedListView<DocumentSnapshot<BlogMainModel>?,
+                        BlogShellEntity>(
+                      pagingController: targetController,
+                      physics: const BouncingScrollPhysics(),
+                      builderDelegate:
+                          PagedChildBuilderDelegate<BlogShellEntity>(
+                        itemBuilder: (context, item, index) {
+                          return Container(
+                            constraints: const BoxConstraints(minHeight: 100),
+                            margin: EdgeInsets.only(
+                              top: index == 0 ? 60 : 0,
+                              bottom: 16,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: BounceTapper(
+                              onTap: () {
+                                // routeToDetailPage(ref, overview: item);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  item.title,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
                         },
-                        child: Container(
-                          height: 100,
-                          width: double.infinity,
-                          child: Text(item.title),
+                        firstPageProgressIndicatorBuilder: (_) => const Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 100),
+                            child: CircularProgressIndicator(),
+                          ),
                         ),
+                        newPageProgressIndicatorBuilder: (_) => const Center(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 16),
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                        firstPageErrorIndicatorBuilder: (_) =>
+                            _buildErrorOccuredView(targetController),
+                        newPageErrorIndicatorBuilder: (_) =>
+                            _buildErrorOccuredView(targetController),
+                        noItemsFoundIndicatorBuilder: _buildNoItemFoundView,
                       ),
-                    );
-                  },
-                  firstPageProgressIndicatorBuilder: (_) => _buildLoadView(),
-                  newPageProgressIndicatorBuilder: (_) =>
-                      const Center(child: CircularProgressIndicator()),
-                  firstPageErrorIndicatorBuilder: (_) =>
-                      _buildErrorOccuredView(targetController),
-                  newPageErrorIndicatorBuilder: (_) =>
-                      _buildErrorOccuredView(targetController),
-                  noItemsFoundIndicatorBuilder: _buildNoItemFoundView,
-                ),
-              ),
-            );
-          }),
-    );
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        });
   }
 
   ///
@@ -78,15 +108,6 @@ class _ContentListView extends ConsumerWidget
       description: 'tr(LocaleKeys.youtube_noItemFoundDescription)',
       btnText: '',
       onBtnTapped: () {},
-    );
-  }
-
-  ///
-  /// 로딩 뷰
-  ///
-  Widget _buildLoadView() {
-    return const Center(
-      child: CircularProgressIndicator(),
     );
   }
 

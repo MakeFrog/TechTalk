@@ -7,7 +7,7 @@ part of 'blog_content_pagination_provider.dart';
 // **************************************************************************
 
 String _$blogContentPaginationHash() =>
-    r'1cf2dca8b39150c0635d9657125c9c1aab268abe';
+    r'2adf1b94b3698cad5aa837c5afbd71f4218ca84f';
 
 /// Copied from Dart SDK
 class _SystemHash {

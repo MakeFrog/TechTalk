@@ -115,8 +115,8 @@ class BlogMainModel {
       'publish_date':
           const TimeStampConverter().toJson(publishDate ?? DateTime.now()),
       'is_valid': isValid,
-      'related_skills': relatedSkillIds,
-      'related_job_groups': relatedJobGroupIds,
+      'related_skill_ids': relatedSkillIds,
+      'related_job_group_ids': relatedJobGroupIds,
     };
   }
 

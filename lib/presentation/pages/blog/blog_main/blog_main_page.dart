@@ -12,7 +12,6 @@ import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/features/blog/data_sources/remote/models/blog_main_model.dart';
 import 'package:techtalk/features/blog/repository/entity/blog_shell_entity.dart';
-import 'package:techtalk/features/tech_set/tech_set.dart';
 
 import 'package:techtalk/presentation/pages/blog/blog_main/blog_main_event.dart';
 import 'package:techtalk/presentation/pages/blog/blog_main/blog_main_state.dart';
@@ -22,8 +21,7 @@ import 'package:techtalk/presentation/pages/youtube/main/widgets/youtube_paginat
 import 'package:techtalk/presentation/widgets/base/base_page.dart';
 import 'package:techtalk/presentation/widgets/common/app_bar/techtalk_app_bar.dart';
 import 'package:techtalk/presentation/widgets/common/chip/selectable_category_chip.dart';
-import 'package:techtalk/presentation/widgets/common/constant/content_filter_category.dart';
-import 'package:techtalk/presentation/widgets/common/item/youtube_content_item_view.dart';
+
 import 'package:techtalk/presentation/widgets/common/state/keep_alive_view.dart';
 
 part 'widgets/category_slider_bar.p.dart';

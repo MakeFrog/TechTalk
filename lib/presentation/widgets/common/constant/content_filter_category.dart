@@ -20,21 +20,25 @@ final class ContentFilterCategory {
     this.imagePath,
   });
 
-  factory ContentFilterCategory.fromSkill(SkillEntity entity) =>
+  factory ContentFilterCategory.fromSkill(SkillEntity entity,
+          {bool isYoutube = true}) =>
       ContentFilterCategory(
         id: entity.id,
         name: entity.name,
         type: ContentFilterCategoryType.skill,
         imagePath: entity.imagePath,
-        contentCount: entity.youtubeContentCount,
+        contentCount:
+            isYoutube ? entity.youtubeContentCount : entity.blogContentCount,
       );
 
-  factory ContentFilterCategory.fromJob(JobGroupEntity job) =>
+  factory ContentFilterCategory.fromJob(JobGroupEntity job,
+          {bool isYoutube = true}) =>
       ContentFilterCategory(
         id: job.id,
         name: job.name,
         type: ContentFilterCategoryType.jobGroup,
-        contentCount: job.youtubeContentCount,
+        contentCount:
+            isYoutube ? job.youtubeContentCount : job.blogContentCount,
       );
 
   factory ContentFilterCategory.fromSkillOrJobGroup(
@@ -48,7 +52,8 @@ final class ContentFilterCategory {
                 ? ContentFilterCategoryType.jobGroup
                 : ContentFilterCategoryType.skill),
         contentCount:
-            job?.youtubeContentCount ?? skill?.youtubeContentCount ?? 0,
+            (job?.youtubeContentCount ?? skill?.youtubeContentCount ?? 0) +
+                (job?.blogContentCount ?? skill?.blogContentCount ?? 0),
       );
 
   @override

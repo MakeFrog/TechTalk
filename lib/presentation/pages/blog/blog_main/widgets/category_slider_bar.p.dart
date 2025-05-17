@@ -1,6 +1,7 @@
 part of '../blog_main_page.dart';
 
-class _CategorySliderBar extends ConsumerWidget with BlogMainState {
+class _CategorySliderBar extends ConsumerWidget
+    with BlogMainState, BlogMainEvent {
   const _CategorySliderBar();
 
   @override
@@ -18,6 +19,7 @@ class _CategorySliderBar extends ConsumerWidget with BlogMainState {
           return SelectableCategoryChip(
             isSelected: selectedCategory(ref).id == category.id,
             onTap: () {
+              onCategoryChipTapped(ref, targetCategory: category, index: index);
               // ref.read(selectedBlogSkillProvider.notifier).state = skill.id;
             },
             item: category,

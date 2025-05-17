@@ -52,12 +52,13 @@ final blogContentCategoryProvider =
 
     // 1. 전체 스킬, 직군 중 콘텐츠 개수가 가장 많은 6개씩 추출
     final topSkillCategories = totalSkills
-        .map((skill) => ContentFilterCategory.fromSkill(skill))
+        .map(
+            (skill) => ContentFilterCategory.fromSkill(skill, isYoutube: false))
         .toList()
       ..sort((a, b) => b.contentCount.compareTo(a.contentCount));
 
     final topJobGroupCategories = totalJobGroups
-        .map((job) => ContentFilterCategory.fromJob(job))
+        .map((job) => ContentFilterCategory.fromJob(job, isYoutube: false))
         .toList()
       ..sort((a, b) => b.contentCount.compareTo(a.contentCount));
 
@@ -66,11 +67,13 @@ final blogContentCategoryProvider =
 
     // 2. 유저의 관심 스킬 및 직군 추가 (중복 제거)
     final userSkillCategories = userSkills
-        .map((skill) => ContentFilterCategory.fromSkill(skill))
+        .map(
+            (skill) => ContentFilterCategory.fromSkill(skill, isYoutube: false))
         .toList();
 
-    final userJobGroupCategories =
-        userJobGroups.map((job) => ContentFilterCategory.fromJob(job)).toList();
+    final userJobGroupCategories = userJobGroups
+        .map((job) => ContentFilterCategory.fromJob(job, isYoutube: false))
+        .toList();
 
     final userOwnedCategories = [
       ...userSkillCategories,
