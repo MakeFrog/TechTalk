@@ -197,6 +197,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $WrongAnswerRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: 'blog-origin',
+          name: 'blog-origin',
+          factory: $BlogOriginRotueExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'chats/:type',
           name: 'chat list',
           factory: $ChatListRouteExtension._fromState,
@@ -693,6 +698,24 @@ extension $WrongAnswerRouteExtension on WrongAnswerRoute {
 
   String get location => GoRouteData.$location(
         '/wrong-answer/${Uri.encodeComponent(index.toString())}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $BlogOriginRotueExtension on BlogOriginRotue {
+  static BlogOriginRotue _fromState(GoRouterState state) =>
+      const BlogOriginRotue();
+
+  String get location => GoRouteData.$location(
+        '/blog-origin',
       );
 
   void go(BuildContext context) => context.go(location);

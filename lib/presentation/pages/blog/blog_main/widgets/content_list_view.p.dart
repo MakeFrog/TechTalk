@@ -28,7 +28,13 @@ class _ContentListView extends ConsumerWidget
                       builderDelegate:
                           PagedChildBuilderDelegate<BlogShellEntity>(
                         itemBuilder: (context, item, index) {
-                          return BlogContentItemView(item: item);
+                          return BlogContentItemView(
+                            item: item,
+                            onTap: () {
+                              const BlogOriginRotue().push(context);
+                              // BlogOriginRotue().push(context);
+                            },
+                          );
                         },
                         firstPageProgressIndicatorBuilder: (_) => const Center(
                           child: Padding(

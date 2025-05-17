@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:smooth_sheets/smooth_sheets.dart';
 import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/youtube/index.dart';
+import 'package:techtalk/presentation/pages/blog/blog_origin_page.dart/blog_origin_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/providers/chat_list_route_arg.dart';
@@ -241,6 +243,10 @@ class SignUpRoute extends GoRouteData {
     TypedGoRoute<WrongAnswerRoute>(
       path: WrongAnswerRoute.path,
       name: WrongAnswerRoute.name,
+    ),
+    TypedGoRoute<BlogOriginRotue>(
+      path: BlogOriginRotue.path,
+      name: BlogOriginRotue.name,
     ),
     TypedGoRoute<ChatListRoute>(
       path: ChatListRoute.path,
@@ -680,6 +686,31 @@ class SelectCommonQuestionRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return SelectCommonQuestionPage(
       arg: $extra,
+    );
+  }
+}
+
+class BlogOriginRotue extends GoRouteData {
+  const BlogOriginRotue();
+
+  static const String path = 'blog-origin';
+  static const String name = 'blog-origin';
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CustomTransitionPage(
+      child: const BlogOriginPage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position: animation.drive(
+            Tween(
+              begin: const Offset(0, 1),
+              end: Offset.zero,
+            ).chain(CurveTween(curve: Curves.easeOutCubic)),
+          ),
+          child: child,
+        );
+      },
     );
   }
 }

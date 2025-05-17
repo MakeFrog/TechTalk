@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
-import 'package:techtalk/app/util/app_format_handler.dart';
 import 'package:techtalk/app/util/app_formatter.dart';
 import 'package:techtalk/features/blog/repository/entity/company_set.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -24,17 +23,19 @@ class BlogContentItemView extends StatelessWidget {
     super.key,
     required this.item,
     this.isLoaded = true,
+    required this.onTap,
   });
 
   final BlogShellEntity item;
   final bool isLoaded;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: BounceTapper(
-        onTap: () {},
+        onTap: onTap,
         child: Container(
           padding: const EdgeInsets.fromLTRB(18, 20, 18, 16),
           decoration: BoxDecoration(
@@ -61,7 +62,6 @@ class BlogContentItemView extends StatelessWidget {
                   ),
                 ),
               ],
-              const Gap(6),
 
               /* THUMBNAIL */
               if (isLoaded && item.thumbnailUrl.isNotEmpty)
@@ -82,7 +82,7 @@ class BlogContentItemView extends StatelessWidget {
                           width: double.infinity,
                           height: double.infinity,
                           fit: BoxFit.cover,
-                          fadeInDuration: const Duration(milliseconds: 300),
+                          fadeInDuration: const Duration(milliseconds: 192),
                           fadeInCurve: Curves.easeInOut,
                           imageErrorBuilder: (context, error, stackTrace) {
                             return Container(
@@ -102,7 +102,10 @@ class BlogContentItemView extends StatelessWidget {
                   ),
                 )
               else
-                const SkeletonBox(),
+                const Padding(
+                  padding: EdgeInsets.only(top: 6),
+                  child: SkeletonBox(),
+                ),
 
               /* TECH SET LIST */ // --> 8 top
               HookBuilder(

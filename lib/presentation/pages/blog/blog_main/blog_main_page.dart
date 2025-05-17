@@ -7,7 +7,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:smooth_sheets/smooth_sheets.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
+import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/features/blog/data_sources/remote/models/blog_main_model.dart';
@@ -15,6 +17,7 @@ import 'package:techtalk/features/blog/repository/entity/blog_shell_entity.dart'
 
 import 'package:techtalk/presentation/pages/blog/blog_main/blog_main_event.dart';
 import 'package:techtalk/presentation/pages/blog/blog_main/blog_main_state.dart';
+import 'package:techtalk/presentation/pages/blog/blog_origin_page.dart/blog_origin_page.dart';
 
 import 'package:techtalk/presentation/pages/youtube/main/widgets/youtube_pagination_indicator_view.dart';
 
