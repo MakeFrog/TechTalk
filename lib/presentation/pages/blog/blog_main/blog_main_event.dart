@@ -34,7 +34,7 @@ mixin class BlogMainEvent {
   }
 
   Future<void> fetchNextPage() async {
-    // 추후 구현
+    // 추후 구현ㅊ
   }
 
   ///
@@ -45,7 +45,7 @@ mixin class BlogMainEvent {
     unawaited(
       noti.SlackNotificationService.sendNotification(
         type: SlackNotificationType.event,
-        message: '블로그를 읽고 있어요. 제목 : ${item.title}',
+        message: '블로그를 읽고 있어요! 제목 : ${item.title}',
       ),
     );
     await BottomSheetIntent.showScrollableModalSheet(

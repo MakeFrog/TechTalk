@@ -1,3 +1,4 @@
+import 'dart:isolate';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,20 +20,136 @@ class BlogOriginPage extends ConsumerStatefulWidget {
   ConsumerState<BlogOriginPage> createState() => _BlogOriginPageState();
 }
 
+/// 웹뷰 설정을 위한 유틸리티 클래스
+class WebViewInitializer {
+  static const String _injectionScript = '''
+    // 스크롤 방지하는 스타일 제거
+    document.body.style.overflow = 'auto';
+    document.documentElement.style.overflow = 'auto';
+    document.body.style.position = 'static';
+    
+    // fixed/sticky 요소 제거
+    document.querySelectorAll('.fixed, .sticky, [style*="position: fixed"], [style*="position: sticky"]').forEach(function(el) {
+      el.style.position = 'static';
+    });
+    
+    // 터치 이벤트 방지 제거
+    document.body.style.touchAction = 'auto';
+    document.documentElement.style.touchAction = 'auto';
+    
+    // 뷰포트 설정
+    var meta = document.querySelector('meta[name="viewport"]');
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.name = 'viewport';
+      document.head.appendChild(meta);
+    }
+    meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+
+    // 텍스트 선택 방지
+    document.body.style.webkitUserSelect = 'none';
+    document.body.style.userSelect = 'none';
+    
+    // 이미지 드래그 방지
+    document.querySelectorAll('img').forEach(function(img) {
+      img.style.webkitUserDrag = 'none';
+      img.style.userDrag = 'none';
+      img.draggable = false;
+    });
+    
+    // 컨텍스트 메뉴 방지
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
+    
+    // 터치 이벤트로 인한 선택 방지
+    document.addEventListener('touchstart', function(e) {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+    
+    // 복사 방지
+    document.addEventListener('copy', function(e) {
+      e.preventDefault();
+    });
+    
+    // 드래그 방지
+    document.addEventListener('dragstart', function(e) {
+      e.preventDefault();
+    });
+  ''';
+
+  static Future<InAppWebViewSettings> initializeSettings() async {
+    final receivePort = ReceivePort();
+    await Isolate.spawn(
+      _initializeSettingsIsolate,
+      receivePort.sendPort,
+    );
+
+    final settings = await receivePort.first as InAppWebViewSettings;
+    return settings;
+  }
+
+  static Future<void> _initializeSettingsIsolate(SendPort sendPort) async {
+    final settings = InAppWebViewSettings(
+      supportZoom: false,
+      useShouldOverrideUrlLoading: true,
+      mediaPlaybackRequiresUserGesture: false,
+      allowsInlineMediaPlayback: true,
+      javaScriptEnabled: true,
+      useOnLoadResource: true,
+      allowsBackForwardNavigationGestures: true,
+      transparentBackground: true,
+      disableVerticalScroll: false,
+      disableHorizontalScroll: false,
+      verticalScrollBarEnabled: true,
+      horizontalScrollBarEnabled: true,
+      useWideViewPort: true,
+      loadWithOverviewMode: true,
+      builtInZoomControls: false,
+      displayZoomControls: false,
+      cacheEnabled: true,
+      clearCache: false,
+      javaScriptCanOpenWindowsAutomatically: false,
+      preferredContentMode: UserPreferredContentMode.RECOMMENDED,
+      applicationNameForUserAgent: 'TechTalk-App',
+      contentBlockers: [
+        ContentBlocker(
+          trigger: ContentBlockerTrigger(
+            urlFilter: ".*",
+          ),
+          action: ContentBlockerAction(
+              type: ContentBlockerActionType.CSS_DISPLAY_NONE,
+              selector:
+                  ".fixed, .sticky, [style*='position: fixed'], [style*='position: sticky']"),
+        ),
+      ],
+    );
+
+    sendPort.send(settings);
+    Isolate.exit();
+  }
+
+  static String get injectionScript => _injectionScript;
+}
+
 class _BlogOriginPageState extends ConsumerState<BlogOriginPage> {
   bool _isLoading = true;
   InAppWebViewController? _webViewController;
+  late final Future<InAppWebViewSettings> _settingsFuture;
 
   @override
   void initState() {
     super.initState();
-    _preloadWebView();
+    _settingsFuture = _initializeWebView();
   }
 
-  Future<void> _preloadWebView() async {
+  Future<InAppWebViewSettings> _initializeWebView() async {
     if (kDebugMode) {
       await InAppWebViewController.setWebContentsDebuggingEnabled(true);
     }
+    return WebViewInitializer.initializeSettings();
   }
 
   @override
@@ -75,160 +192,76 @@ class _BlogOriginPageState extends ConsumerState<BlogOriginPage> {
                   //   trailing: CloseButton(),
                   // ),
                   Expanded(
-                    child: Stack(
-                      children: [
-                        InAppWebView(
-                          initialUrlRequest: URLRequest(
-                            url: WebUri(widget.blogUrl),
-                            headers: {
-                              'Cache-Control': 'max-age=3600',
-                            },
-                          ),
-                          onWebViewCreated: (controller) {
-                            _webViewController = controller;
-                          },
-                          initialSettings: InAppWebViewSettings(
-                            supportZoom: false,
-                            useShouldOverrideUrlLoading: true,
-                            mediaPlaybackRequiresUserGesture: false,
-                            allowsInlineMediaPlayback: true,
-                            javaScriptEnabled: true,
-                            useOnLoadResource: true,
-                            allowsBackForwardNavigationGestures: true,
-                            transparentBackground: true,
-                            disableVerticalScroll: false,
-                            disableHorizontalScroll: false,
-                            verticalScrollBarEnabled: true,
-                            horizontalScrollBarEnabled: true,
-                            useWideViewPort: true,
-                            loadWithOverviewMode: true,
-                            builtInZoomControls: false,
-                            displayZoomControls: false,
-                            cacheEnabled: true,
-                            clearCache: false,
-                            javaScriptCanOpenWindowsAutomatically: false,
-                            preferredContentMode:
-                                UserPreferredContentMode.RECOMMENDED,
-                            applicationNameForUserAgent: 'TechTalk-App',
-                            contentBlockers: [
-                              ContentBlocker(
-                                trigger: ContentBlockerTrigger(
-                                  urlFilter: ".*",
-                                ),
-                                action: ContentBlockerAction(
-                                    type: ContentBlockerActionType
-                                        .CSS_DISPLAY_NONE,
-                                    selector:
-                                        ".fixed, .sticky, [style*='position: fixed'], [style*='position: sticky']"),
-                              ),
-                            ],
-                          ),
-                          onLoadStart: (controller, url) {
-                            logger.d('블로그 웹뷰 로딩 시작');
-                            setState(() {
-                              _isLoading = true;
-                            });
-                          },
-                          onLoadStop: (controller, url) async {
-                            logger.d('블로그 웹뷰 로딩 완료');
-                            setState(() {
-                              _isLoading = false;
-                            });
-                            // 웹뷰 로드 완료 후 JavaScript 실행
-                            await controller.evaluateJavascript(source: '''
-                              // 스크롤 방지하는 스타일 제거
-                              document.body.style.overflow = 'auto';
-                              document.documentElement.style.overflow = 'auto';
-                              document.body.style.position = 'static';
-                              
-                              // fixed/sticky 요소 제거
-                              document.querySelectorAll('.fixed, .sticky, [style*="position: fixed"], [style*="position: sticky"]').forEach(function(el) {
-                                el.style.position = 'static';
-                              });
-                              
-                              // 터치 이벤트 방지 제거
-                              document.body.style.touchAction = 'auto';
-                              document.documentElement.style.touchAction = 'auto';
-                              
-                              // 뷰포트 설정
-                              var meta = document.querySelector('meta[name="viewport"]');
-                              if (!meta) {
-                                meta = document.createElement('meta');
-                                meta.name = 'viewport';
-                                document.head.appendChild(meta);
-                              }
-                              meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+                    child: FutureBuilder<InAppWebViewSettings>(
+                      future: _settingsFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState != ConnectionState.done) {
+                          return const Center(
+                            child: CupertinoActivityIndicator(radius: 13),
+                          );
+                        }
 
-                              // 텍스트 선택 방지
-                              document.body.style.webkitUserSelect = 'none';
-                              document.body.style.userSelect = 'none';
-                              
-                              // 이미지 드래그 방지
-                              document.querySelectorAll('img').forEach(function(img) {
-                                img.style.webkitUserDrag = 'none';
-                                img.style.userDrag = 'none';
-                                img.draggable = false;
-                              });
-                              
-                              // 컨텍스트 메뉴 방지
-                              document.addEventListener('contextmenu', function(e) {
-                                e.preventDefault();
-                              });
-                              
-                              // 터치 이벤트로 인한 선택 방지
-                              document.addEventListener('touchstart', function(e) {
-                                if (e.touches.length > 1) {
-                                  e.preventDefault();
-                                }
-                              }, { passive: false });
-                              
-                              // 복사 방지
-                              document.addEventListener('copy', function(e) {
-                                e.preventDefault();
-                              });
-                              
-                              // 드래그 방지
-                              document.addEventListener('dragstart', function(e) {
-                                e.preventDefault();
-                              });
-                            ''');
-                          },
-                          gestureRecognizers: {
-                            Factory<VerticalDragGestureRecognizer>(
-                              () => VerticalDragGestureRecognizer(),
-                            ),
-                          },
-                          onReceivedError: (controller, request, error) {
-                            logger.e('블로그 웹뷰 렌더링 실패 : ${error.description}');
-                          },
-                          onReceivedServerTrustAuthRequest:
-                              (controller, challenge) async {
-                            logger.d('SSL 인증서 검증 요청');
-                            return ServerTrustAuthResponse(
-                              action: ServerTrustAuthResponseAction.PROCEED,
-                            );
-                          },
-                          shouldOverrideUrlLoading:
-                              (controller, navigationAction) async {
-                            logger.d(
-                                'URL 로딩 요청: ${navigationAction.request.url}');
-                            return NavigationActionPolicy.ALLOW;
-                          },
-                          onScrollChanged: (controller, x, y) {
-                            logger.d('스크롤 변경: x=$x, y=$y');
-                          },
-                        ),
-                        if (_isLoading)
-                          Container(
-                            color: CupertinoColors.systemBackground
-                                .withOpacity(0.7),
-                            child: const Center(
-                              child: CupertinoActivityIndicator(
-                                radius: 13,
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Text('웹뷰 초기화 실패: ${snapshot.error}'),
+                          );
+                        }
+
+                        return Stack(
+                          children: [
+                            InAppWebView(
+                              initialUrlRequest: URLRequest(
+                                url: WebUri(widget.blogUrl),
+                                headers: {
+                                  'Cache-Control': 'max-age=3600',
+                                },
                               ),
+                              onWebViewCreated: (controller) {
+                                _webViewController = controller;
+                              },
+                              initialSettings: snapshot.data,
+                              onLoadStart: (controller, url) {
+                                logger.d('블로그 웹뷰 로딩 시작');
+                                setState(() => _isLoading = true);
+                              },
+                              onLoadStop: (controller, url) async {
+                                logger.d('블로그 웹뷰 로딩 완료');
+                                await controller.evaluateJavascript(
+                                  source: WebViewInitializer.injectionScript,
+                                );
+                                setState(() => _isLoading = false);
+                              },
+                              gestureRecognizers: {
+                                Factory<VerticalDragGestureRecognizer>(
+                                  () => VerticalDragGestureRecognizer(),
+                                ),
+                              },
+                              onReceivedError: (controller, request, error) {
+                                logger
+                                    .e('블로그 웹뷰 렌더링 실패 : ${error.description}');
+                              },
+                              onReceivedServerTrustAuthRequest:
+                                  (controller, challenge) async {
+                                return ServerTrustAuthResponse(
+                                  action: ServerTrustAuthResponseAction.PROCEED,
+                                );
+                              },
+                              shouldOverrideUrlLoading:
+                                  (controller, navigationAction) async {
+                                return NavigationActionPolicy.ALLOW;
+                              },
                             ),
-                          ),
-                      ],
+                            if (_isLoading)
+                              Container(
+                                color: CupertinoColors.systemBackground
+                                    .withOpacity(0.7),
+                                child: const Center(
+                                  child: CupertinoActivityIndicator(radius: 13),
+                                ),
+                              ),
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ],

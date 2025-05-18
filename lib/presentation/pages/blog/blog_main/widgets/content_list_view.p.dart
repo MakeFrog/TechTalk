@@ -13,37 +13,39 @@ class _ContentListView extends ConsumerWidget
         itemBuilder: (context, index) {
           final targetController = pagingController(ref);
 
-          return KeepAliveView(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return SizedBox(
-                  width: constraints.maxWidth,
-                  height: constraints.maxHeight,
-                  child: Padding(
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              return CustomScrollView(
+                physics: const BouncingScrollPhysics(),
+                slivers: [
+                  SliverPadding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: PagedListView<DocumentSnapshot<BlogMainModel>?,
+                    sliver: PagedSliverList<DocumentSnapshot<BlogMainModel>?,
                         BlogShellEntity>(
                       pagingController: targetController,
-                      physics: const BouncingScrollPhysics(),
                       builderDelegate:
                           PagedChildBuilderDelegate<BlogShellEntity>(
                         itemBuilder: (context, item, index) {
-                          return BlogContentItemView(
-                            item: item,
-                            onTap: () async {
-                              await onBlogContentTapped(context, item);
-                            },
+                          return KeepAliveView(
+                            child: BlogContentItemView(
+                              key: ValueKey(item.id),
+                              item: item,
+                              onTap: () async {
+                                await onBlogContentTapped(context, item);
+                              },
+                            ),
                           );
                         },
-                        firstPageProgressIndicatorBuilder: (_) => const Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 100),
+                        firstPageProgressIndicatorBuilder: (_) =>
+                            const SizedBox(
+                          height: 200,
+                          child: Center(
                             child: CircularProgressIndicator(),
                           ),
                         ),
-                        newPageProgressIndicatorBuilder: (_) => const Center(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 16),
+                        newPageProgressIndicatorBuilder: (_) => const SizedBox(
+                          height: 100,
+                          child: Center(
                             child: CircularProgressIndicator(),
                           ),
                         ),
@@ -55,9 +57,9 @@ class _ContentListView extends ConsumerWidget
                       ),
                     ),
                   ),
-                );
-              },
-            ),
+                ],
+              );
+            },
           );
         });
   }
@@ -68,14 +70,16 @@ class _ContentListView extends ConsumerWidget
   Widget _buildErrorOccuredView(
       PagingController<DocumentSnapshot<BlogMainModel>?, BlogShellEntity>
           controller) {
-    print('Blog Content Error Occurred'); // 디버그 로그
-    return YoutubePaginationIndicatorView(
-      title: tr(LocaleKeys.youtube_loadErrorTitle),
-      description: tr(LocaleKeys.youtube_loadErrorDescription),
-      btnText: tr(LocaleKeys.youtube_retryButton),
-      onBtnTapped: () {
-        controller.refresh();
-      },
+    return SizedBox(
+      height: 200,
+      child: YoutubePaginationIndicatorView(
+        title: tr(LocaleKeys.youtube_loadErrorTitle),
+        description: tr(LocaleKeys.youtube_loadErrorDescription),
+        btnText: tr(LocaleKeys.youtube_retryButton),
+        onBtnTapped: () {
+          controller.refresh();
+        },
+      ),
     );
   }
 
@@ -83,11 +87,14 @@ class _ContentListView extends ConsumerWidget
   /// 검색된 항목 없음
   ///
   Widget _buildNoItemFoundView(BuildContext context) {
-    return YoutubePaginationIndicatorView(
-      title: 'tr(LocaleKeys.youtube_noItemFoundTitle)',
-      description: 'tr(LocaleKeys.youtube_noItemFoundDescription)',
-      btnText: '',
-      onBtnTapped: () {},
+    return SizedBox(
+      height: 200,
+      child: YoutubePaginationIndicatorView(
+        title: '검색된 내용이 없습니다',
+        description: '다시 시도해 주세요',
+        btnText: '',
+        onBtnTapped: () {},
+      ),
     );
   }
 

@@ -38,7 +38,7 @@ Raw<PagingController<DocumentSnapshot<BlogMainModel>?, BlogShellEntity>>
     final params = GetBlogContentsOverviewsListParams(
       lastDocument: pageKey,
       limit: 15,
-      orderByField: 'created_at',
+      orderByField: 'published_at',
       queryConstraints: !category.type.isAll
           ? [
               // '전체' 카테고리가 아닐 경우 '필터링' 항목 설정

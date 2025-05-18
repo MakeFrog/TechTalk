@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:techtalk/app/util/app_formatter.dart';
+import 'package:techtalk/core/index.dart';
+import 'package:techtalk/core/services/app_size.dart';
 import 'package:techtalk/features/blog/repository/entity/company_set.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:techtalk/app/style/app_color.dart';
@@ -76,26 +78,30 @@ class BlogContentItemView extends StatelessWidget {
                       aspectRatio: 16 / 8.5,
                       child: Container(
                         color: const Color(0xFFE2E2E2),
-                        child: FadeInImage.memoryNetwork(
-                          placeholder: kTransparentImage,
-                          image: item.thumbnailUrl,
+                        child: CachedNetworkImage(
+                          imageUrl: item.thumbnailUrl,
                           width: double.infinity,
                           height: double.infinity,
                           fit: BoxFit.cover,
                           fadeInDuration: const Duration(milliseconds: 192),
-                          fadeInCurve: Curves.easeInOut,
-                          imageErrorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              color: const Color(0xFFE2E2E2),
-                              child: Center(
-                                child: Icon(
-                                  Icons.image_not_supported_outlined,
-                                  color: AppColor.of.gray4,
-                                  size: 32,
-                                ),
+                          fadeOutDuration: const Duration(milliseconds: 222),
+                          memCacheWidth:
+                              ((AppSize.screenWidth - 64).cacheSize(context) *
+                                      0.8)
+                                  .toInt(),
+                          placeholder: (context, url) => Container(
+                            color: const Color(0xFFE2E2E2),
+                          ),
+                          errorWidget: (context, url, error) => Container(
+                            color: const Color(0xFFE2E2E2),
+                            child: Center(
+                              child: Icon(
+                                Icons.image_not_supported_outlined,
+                                color: AppColor.of.gray4,
+                                size: 32,
                               ),
-                            );
-                          },
+                            ),
+                          ),
                         ),
                       ),
                     ),

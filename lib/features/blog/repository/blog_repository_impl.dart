@@ -46,31 +46,13 @@ class BlogRepositoryImpl implements BlogRepository {
   /// 이미지 프리캐시 처리
   Future<void> _precacheImages(List<BlogMainModel> models) async {
     try {
-      final imageUrls = models
-          .where((model) => model.thumbnailUrl.isNotEmpty)
-          .map((model) => model.thumbnailUrl)
-          .toList();
-
-      if (imageUrls.isEmpty) return;
-
-      // Isolate 생성 및 실행
-      final receivePort = ReceivePort();
-      await Isolate.spawn(
-        (List<String> urls) async {
-          await _isolateImagePrecache(urls);
-          Isolate.exit();
-        },
-        imageUrls,
-      );
-
-      // Isolate 완료 대기
-      await receivePort.first;
-
-      // UI 컨텍스트에서 실제 precacheImage 실행
-      final context = await navigationContext;
-      for (final url in imageUrls) {
-        precacheImage(NetworkImage(url), context);
-      }
+      // ignore: avoid_function_literals_in_foreach_calls
+      models.forEach((model) async {
+        if (model.thumbnailUrl.isNotEmpty) {
+          unawaited(precacheImage(
+              NetworkImage(model.thumbnailUrl), await navigationContext));
+        }
+      });
     } catch (e) {
       logger.e('이미지 프리캐시 실패: $e');
     }
@@ -99,7 +81,6 @@ class BlogRepositoryImpl implements BlogRepository {
         convertedLastDocument = snapshot;
       }
 
-      // Remote DataSource에서 페이징된 데이터 가져오기
       final result = await _remoteDataSource.getRandomPagedBlogContents(
         lastDocument: convertedLastDocument,
         limit: limit,
@@ -110,14 +91,11 @@ class BlogRepositoryImpl implements BlogRepository {
         randomKey: randomKey,
       );
 
-      // 이미지 프리캐시를 백그라운드에서 실행
       unawaited(_precacheImages(result.items));
 
-      // 스킬과 직군 정보 가져오기
       final skills = _techSetRepository.getSkills();
       final jobGroups = _techSetRepository.getJobs();
 
-      // Model을 Entity로 변환
       final items = result.items.map((model) {
         final relatedSkills = skills
             .where((skill) => model.relatedSkillIds.contains(skill.id))
@@ -129,7 +107,6 @@ class BlogRepositoryImpl implements BlogRepository {
         return model.toEntity(relatedSkills, relatedJobGroups);
       }).toList();
 
-      // 엔티티로 페이징된 결과 생성
       final paginatedResult =
           FirebasePaginatedResult<BlogShellEntity, BlogMainModel>(
         items: items,
@@ -148,25 +125,8 @@ class BlogRepositoryImpl implements BlogRepository {
   Future<Result<List<CompanyInfoEntity>>> initCompanyList() async {
     try {
       final response = await _remoteDataSource.getCompanyList();
-
       final result =
           response.map((model) => CompanyInfoEntity.fromModel(model)).toList();
-
-      // 회사 로고 이미지 프리캐시
-      await Future.wait(
-        result.map((company) async {
-          if (company.logoUrl.isNotEmpty) {
-            try {
-              await precacheImage(
-                  NetworkImage(company.logoUrl), await navigationContext);
-            } catch (e) {
-              debugPrint(
-                  'Failed to precache company logo: ${company.name} - $e');
-            }
-          }
-        }),
-      );
-
       CompanySet().addCompanies(result);
       return Result.success(result);
     } catch (e) {
