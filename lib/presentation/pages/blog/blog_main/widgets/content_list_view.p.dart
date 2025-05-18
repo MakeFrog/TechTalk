@@ -31,21 +31,7 @@ class _ContentListView extends ConsumerWidget
                           return BlogContentItemView(
                             item: item,
                             onTap: () async {
-                              print('아랑수요 : ${item.linkUrl}');
-                              await BottomSheetIntent.showScrollableModalSheet(
-                                context,
-                                scrollableSheet: BlogOriginPage(
-                                  blogUrl: item.linkUrl,
-                                ),
-                              );
-
-                              // showMaterialModalBottomSheet(
-                              //   context: context,
-                              //   builder: (context) => BlogOriginPage(),
-                              // );
-
-                              // const BlogOriginRotue().push(context);
-                              // BlogOriginRotue().push(context);
+                              await onBlogContentTapped(context, item);
                             },
                           );
                         },

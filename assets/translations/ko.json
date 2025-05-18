@@ -127,9 +127,10 @@
     }
   },
   "gnb": {
+    "blog": "블로그",
     "home": "홈",
     "learning": "단골질문",
-    "videoTutorial": "콘텐츠",
+    "videoTutorial": "영상학습",
     "mistakeNote": "오답노트",
     "myInfo": "내 정보"
   },

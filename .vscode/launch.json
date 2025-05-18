@@ -22,7 +22,7 @@
             "type": "dart",
             "program": "lib/app/entrypoints/main_prod.dart",
             "args": [
-                "--flavor", 
+                "--flavor",
                 "prod",
                 "-t",
                 "lib/app/entrypoints/main_prod.dart"

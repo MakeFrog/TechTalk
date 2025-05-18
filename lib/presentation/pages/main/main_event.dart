@@ -19,7 +19,7 @@ mixin class MainEvent {
     WidgetRef ref, {
     required int targetTabIndex,
   }) {
-    final targetTab = MainNavigationTab.values[targetTabIndex];
+    final targetTab = MainNavigationTab.visibleTabs[targetTabIndex];
     if (targetTab == MainNavigationTab.youtube &&
         ref.exists(showNewFeatureIndicatorProvider) &&
         ref.read(showNewFeatureIndicatorProvider)) {

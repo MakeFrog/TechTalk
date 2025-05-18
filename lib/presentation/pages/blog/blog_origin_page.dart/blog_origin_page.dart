@@ -21,6 +21,19 @@ class BlogOriginPage extends ConsumerStatefulWidget {
 
 class _BlogOriginPageState extends ConsumerState<BlogOriginPage> {
   bool _isLoading = true;
+  InAppWebViewController? _webViewController;
+
+  @override
+  void initState() {
+    super.initState();
+    _preloadWebView();
+  }
+
+  Future<void> _preloadWebView() async {
+    if (kDebugMode) {
+      await InAppWebViewController.setWebContentsDebuggingEnabled(true);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +78,15 @@ class _BlogOriginPageState extends ConsumerState<BlogOriginPage> {
                     child: Stack(
                       children: [
                         InAppWebView(
-                          initialUrlRequest:
-                              URLRequest(url: WebUri(widget.blogUrl)),
+                          initialUrlRequest: URLRequest(
+                            url: WebUri(widget.blogUrl),
+                            headers: {
+                              'Cache-Control': 'max-age=3600',
+                            },
+                          ),
+                          onWebViewCreated: (controller) {
+                            _webViewController = controller;
+                          },
                           initialSettings: InAppWebViewSettings(
                             supportZoom: false,
                             useShouldOverrideUrlLoading: true,
@@ -84,6 +104,12 @@ class _BlogOriginPageState extends ConsumerState<BlogOriginPage> {
                             loadWithOverviewMode: true,
                             builtInZoomControls: false,
                             displayZoomControls: false,
+                            cacheEnabled: true,
+                            clearCache: false,
+                            javaScriptCanOpenWindowsAutomatically: false,
+                            preferredContentMode:
+                                UserPreferredContentMode.RECOMMENDED,
+                            applicationNameForUserAgent: 'TechTalk-App',
                             contentBlockers: [
                               ContentBlocker(
                                 trigger: ContentBlockerTrigger(
@@ -169,7 +195,8 @@ class _BlogOriginPageState extends ConsumerState<BlogOriginPage> {
                           },
                           gestureRecognizers: {
                             Factory<VerticalDragGestureRecognizer>(
-                                () => VerticalDragGestureRecognizer()),
+                              () => VerticalDragGestureRecognizer(),
+                            ),
                           },
                           onReceivedError: (controller, request, error) {
                             logger.e('블로그 웹뷰 렌더링 실패 : ${error.description}');
