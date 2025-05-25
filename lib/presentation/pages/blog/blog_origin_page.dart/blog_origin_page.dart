@@ -185,86 +185,77 @@ class _BlogOriginPageState extends ConsumerState<BlogOriginPage> {
             ),
             // 컨텐츠
             Expanded(
-              child: Column(
-                children: [
-                  // const CupertinoNavigationBar(
-                  //   leading: SizedBox.shrink(),
-                  //   trailing: CloseButton(),
-                  // ),
-                  Expanded(
-                    child: FutureBuilder<InAppWebViewSettings>(
-                      future: _settingsFuture,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState != ConnectionState.done) {
-                          return const Center(
+              child: FutureBuilder<InAppWebViewSettings>(
+                future: _settingsFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return const Center(
+                      child: CupertinoActivityIndicator(radius: 13),
+                    );
+                  }
+
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text('웹뷰 초기화 실패: ${snapshot.error}'),
+                    );
+                  }
+
+                  return Stack(
+                    children: [
+                      InAppWebView(
+                        key: ValueKey(widget.blogUrl),
+                        initialUrlRequest: URLRequest(
+                          url: WebUri(widget.blogUrl),
+                          headers: {
+                            'Cache-Control': 'max-age=3600',
+                          },
+                        ),
+                        onWebViewCreated: (controller) {
+                          _webViewController = controller;
+                        },
+                        initialSettings: snapshot.data,
+                        onProgressChanged: (controller, progress) {
+                          if (progress >= 20) {
+                            // HTML이 렌더링되기 시작하는 시점
+                            setState(() => _isLoading = false);
+                          }
+                        },
+                        onLoadStop: (controller, url) async {
+                          logger.d('블로그 웹뷰 로딩 완료');
+                          await controller.evaluateJavascript(
+                            source: WebViewInitializer.injectionScript,
+                          );
+                        },
+                        gestureRecognizers: {
+                          Factory<VerticalDragGestureRecognizer>(
+                            () => VerticalDragGestureRecognizer(),
+                          ),
+                        },
+                        onReceivedError: (controller, request, error) {
+                          logger.e('블로그 웹뷰 렌더링 실패 : ${error.description}');
+                        },
+                        onReceivedServerTrustAuthRequest:
+                            (controller, challenge) async {
+                          return ServerTrustAuthResponse(
+                            action: ServerTrustAuthResponseAction.PROCEED,
+                          );
+                        },
+                        shouldOverrideUrlLoading:
+                            (controller, navigationAction) async {
+                          return NavigationActionPolicy.ALLOW;
+                        },
+                      ),
+                      if (_isLoading)
+                        Container(
+                          color:
+                              CupertinoColors.systemBackground.withOpacity(0.7),
+                          child: const Center(
                             child: CupertinoActivityIndicator(radius: 13),
-                          );
-                        }
-
-                        if (snapshot.hasError) {
-                          return Center(
-                            child: Text('웹뷰 초기화 실패: ${snapshot.error}'),
-                          );
-                        }
-
-                        return Stack(
-                          children: [
-                            InAppWebView(
-                              initialUrlRequest: URLRequest(
-                                url: WebUri(widget.blogUrl),
-                                headers: {
-                                  'Cache-Control': 'max-age=3600',
-                                },
-                              ),
-                              onWebViewCreated: (controller) {
-                                _webViewController = controller;
-                              },
-                              initialSettings: snapshot.data,
-                              onLoadStart: (controller, url) {
-                                logger.d('블로그 웹뷰 로딩 시작');
-                                setState(() => _isLoading = true);
-                              },
-                              onLoadStop: (controller, url) async {
-                                logger.d('블로그 웹뷰 로딩 완료');
-                                await controller.evaluateJavascript(
-                                  source: WebViewInitializer.injectionScript,
-                                );
-                                setState(() => _isLoading = false);
-                              },
-                              gestureRecognizers: {
-                                Factory<VerticalDragGestureRecognizer>(
-                                  () => VerticalDragGestureRecognizer(),
-                                ),
-                              },
-                              onReceivedError: (controller, request, error) {
-                                logger
-                                    .e('블로그 웹뷰 렌더링 실패 : ${error.description}');
-                              },
-                              onReceivedServerTrustAuthRequest:
-                                  (controller, challenge) async {
-                                return ServerTrustAuthResponse(
-                                  action: ServerTrustAuthResponseAction.PROCEED,
-                                );
-                              },
-                              shouldOverrideUrlLoading:
-                                  (controller, navigationAction) async {
-                                return NavigationActionPolicy.ALLOW;
-                              },
-                            ),
-                            if (_isLoading)
-                              Container(
-                                color: CupertinoColors.systemBackground
-                                    .withOpacity(0.7),
-                                child: const Center(
-                                  child: CupertinoActivityIndicator(radius: 13),
-                                ),
-                              ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                ],
+                          ),
+                        ),
+                    ],
+                  );
+                },
               ),
             ),
           ],

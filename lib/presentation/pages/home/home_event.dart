@@ -87,13 +87,6 @@ mixin class HomeEvent {
   /// 유튜브 카드뷰가 클릭 되었을 때
   ///
   Future<void> onYoutubeFeatureCardTapped(WidgetRef ref) async {
-    final skills = techSetRepository.getSkills();
-    final jobGroups = techSetRepository.getJobs();
-
-    log('Skills: ${skills.map((e) => e.id).toList()}');
-    log('JobGroups: ${jobGroups.map((e) => e.id).toList()}');
-
-    return;
     ref
         .read(mainBottomNavigationProvider.notifier)
         .changeTab(MainNavigationTab.youtube);
