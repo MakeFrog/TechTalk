@@ -56,6 +56,7 @@ dependencies:
 
   # WEB
   flutter_inappwebview: ^6.1.5
+  flutter_inappwebview_android: ^1.0.13
 
 
   # DI
@@ -136,6 +137,12 @@ dev_dependencies:
   analyzer: "6.4.1"
   hive_generator: ^2.0.1
 
+dependency_overrides:
+  flutter_inappwebview_android:
+    git:
+      url: https://github.com/holzgeist/flutter_inappwebview
+      path: flutter_inappwebview_android
+      ref: d89b1d32638b49dfc58c4b7c84153be0c269d057
 flutter:
   uses-material-design: true
 

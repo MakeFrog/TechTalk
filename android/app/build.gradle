@@ -104,6 +104,7 @@ android {
         }
     }
 
+    buildToolsVersion "34.0.0"
 }
 
 flutter {
@@ -117,4 +118,11 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics")    //Firebase Crashlystic
     implementation("com.google.firebase:firebase-analytics-ktx")
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
+    implementation 'com.android.tools:r8:8.7.14'
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'com.android.tools:r8:8.7.14'
+    }
 }
