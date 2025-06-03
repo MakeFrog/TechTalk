@@ -3,8 +3,8 @@ description: A new Flutter project.
 
 publish_to: "none"
   
-version: 1.1.2+70
-
+version: 1.1.4+75
+  
 environment:
   sdk: ">=3.0.6 <4.0.0"
 
@@ -33,7 +33,8 @@ dependencies:
   cached_network_image: ^3.3.0 # 네트워크 이미지 캐싱
   flutter_layout_grid: ^2.0.7
   lottie: ^3.2.0
-  smooth_sheets: ^0.10.2
+  smooth_sheets: 0.10.2
+  modal_bottom_sheet: ^3.0.0
   bounce_tapper: ^1.1.4
   expandable_page_view: ^1.0.17
   measure_size_builder: ^1.0.3
@@ -53,11 +54,13 @@ dependencies:
   go_router: ^13.2.5
 
 
-
+  # WEB
+  flutter_inappwebview: ^6.1.5
+  flutter_inappwebview_android: ^1.1.3
 
 
   # DI
-  get_it: ^7.2.0
+  get_it: ^7.2.0  
 
   # Firebase
   firebase_core: ^3.6.0
@@ -119,6 +122,7 @@ dependencies:
   # 앱 정보
   package_info_plus: ^8.0.2 # 현재 앱 버전 정보
   pub_semver: ^2.1.4 # 주부수 버전 비교 연산
+  transparent_image: ^2.0.1
 
 dev_dependencies:
   flutter_lints: ^2.0.1
@@ -132,6 +136,14 @@ dev_dependencies:
   freezed: ^2.4.3
   analyzer: "6.4.1"
   hive_generator: ^2.0.1
+
+dependency_overrides:
+  flutter_inappwebview_android:
+    git:
+      url: https://github.com/holzgeist/flutter_inappwebview
+      path: flutter_inappwebview_android
+      ref: d89b1d32638b49dfc58c4b7c84153be0c269d057
+  webview_flutter_android: 3.16.1
 
 flutter:
   uses-material-design: true

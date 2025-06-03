@@ -40,13 +40,13 @@ android {
 //    ndkVersion flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_21
-        targetCompatibility JavaVersion.VERSION_21
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
         coreLibraryDesugaringEnabled true
     }
 
     kotlinOptions {
-        jvmTarget = '21'
+        jvmTarget = '17'
     }
 
     sourceSets {
@@ -102,19 +102,31 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            minifyEnabled false
+            shrinkResources false
+        }
     }
 
+    buildToolsVersion "34.0.0"
 }
 
 flutter {
     source '../..'
+    target 'lib/app/entrypoints/main_prod.dart'
 }
 
-
+    
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.8.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation("com.google.firebase:firebase-crashlytics")    //Firebase Crashlystic
     implementation("com.google.firebase:firebase-analytics-ktx")
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'androidx.webkit:webkit:1.8.0'
+    }
 }

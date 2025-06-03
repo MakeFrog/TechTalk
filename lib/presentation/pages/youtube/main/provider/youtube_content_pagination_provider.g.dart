@@ -7,7 +7,7 @@ part of 'youtube_content_pagination_provider.dart';
 // **************************************************************************
 
 String _$youtubeContentPaginationHash() =>
-    r'5b341b4de7cabd8131a943ab019b3900e45101ad';
+    r'2bae170d753c4f60b267072266d828e99ecc7adf';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -42,7 +42,7 @@ class YoutubeContentPaginationFamily extends Family<
 
   /// See also [youtubeContentPagination].
   YoutubeContentPaginationProvider call({
-    required YoutubeContentCategory category,
+    required ContentFilterCategory category,
   }) {
     return YoutubeContentPaginationProvider(
       category: category,
@@ -78,7 +78,7 @@ class YoutubeContentPaginationProvider extends Provider<
     PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>> {
   /// See also [youtubeContentPagination].
   YoutubeContentPaginationProvider({
-    required YoutubeContentCategory category,
+    required ContentFilterCategory category,
   }) : this._internal(
           (ref) => youtubeContentPagination(
             ref as YoutubeContentPaginationRef,
@@ -106,7 +106,7 @@ class YoutubeContentPaginationProvider extends Provider<
     required this.category,
   }) : super.internal();
 
-  final YoutubeContentCategory category;
+  final ContentFilterCategory category;
 
   @override
   Override overrideWith(
@@ -153,7 +153,7 @@ class YoutubeContentPaginationProvider extends Provider<
 mixin YoutubeContentPaginationRef on ProviderRef<
     PagingController<DocumentSnapshot<YoutubeMainModel>?, YoutubeMainEntity>> {
   /// The parameter `category` of this provider.
-  YoutubeContentCategory get category;
+  ContentFilterCategory get category;
 }
 
 class _YoutubeContentPaginationProviderElement extends ProviderElement<
@@ -162,7 +162,7 @@ class _YoutubeContentPaginationProviderElement extends ProviderElement<
   _YoutubeContentPaginationProviderElement(super.provider);
 
   @override
-  YoutubeContentCategory get category =>
+  ContentFilterCategory get category =>
       (origin as YoutubeContentPaginationProvider).category;
 }
 // ignore_for_file: type=lint

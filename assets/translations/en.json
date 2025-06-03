@@ -128,8 +128,9 @@
   },
   "gnb": {
     "home": "Home",
+    "blog": "Blog",
     "learning": "Question",
-    "videoTutorial": "Content",
+    "videoTutorial": "Video",
     "mistakeNote": "Review",
     "myInfo": "My"
   },

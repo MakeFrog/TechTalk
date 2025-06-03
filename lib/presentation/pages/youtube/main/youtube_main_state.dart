@@ -4,8 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:techtalk/features/youtube/index.dart';
 import 'package:techtalk/presentation/pages/main/provider/show_new_feature_indicator_provider.dart';
-import 'package:techtalk/presentation/pages/youtube/main/constant/yotubue_content_category.dart';
 import 'package:techtalk/presentation/pages/youtube/main/provider/selected_filter_category_provider.dart';
+import 'package:techtalk/presentation/widgets/common/constant/content_filter_category.dart';
 
 import 'provider/youtube_content_pagination_provider.dart';
 
@@ -39,12 +39,12 @@ mixin class YoutubeMainState {
   ///
   /// 콘텐츠 카테고리 리스트
   ///
-  List<YoutubeContentCategory> totalCategories(WidgetRef ref) => ref
+  List<ContentFilterCategory> totalCategories(WidgetRef ref) => ref
       .watch(youtubeContentCategoryProvider.select((p) => p.totalCategories));
 
   ///
   /// 선택된 카테고리
   ///
-  YoutubeContentCategory selectedCategory(WidgetRef ref) => ref
+  ContentFilterCategory selectedCategory(WidgetRef ref) => ref
       .watch(youtubeContentCategoryProvider.select((p) => p.selectedCategory));
 }

@@ -53,9 +53,15 @@
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<true/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>웹뷰에서 카메라 접근이 필요합니다.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>앱이 음성 인식을 위해 마이크에 접근할 수 있도록 허용해주세요.</string>
+	<string>웹뷰에서 마이크 접근이 필요합니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>프로필 이미지를 변경하려면 앱에서 사진 라이브러리에 접근할 수 있어야 합니다.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>

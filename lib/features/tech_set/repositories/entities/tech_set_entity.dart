@@ -88,6 +88,7 @@ class SkillEntity extends TechSetEntity {
   final SkillCategory category;
   final String imagePath;
   final int youtubeContentCount;
+  final int blogContentCount;
 
   SkillEntity({
     required this.id,
@@ -95,6 +96,7 @@ class SkillEntity extends TechSetEntity {
     required this.imagePath,
     required this.category,
     required this.youtubeContentCount,
+    required this.blogContentCount,
   }) : super(id: id, name: name);
 
   factory SkillEntity.fromJson(
@@ -105,6 +107,7 @@ class SkillEntity extends TechSetEntity {
       imagePath: '${(json['name'] as String).skillNameToId}.png',
       category: SkillCategory.fromKey(category),
       youtubeContentCount: 0,
+      blogContentCount: 0,
     );
   }
 
@@ -115,6 +118,8 @@ class SkillEntity extends TechSetEntity {
       youtubeContentCount: AppLocale.isKo
           ? model.youtubeContentCountKo
           : model.youtubeContentCount,
+      blogContentCount:
+          AppLocale.isKo ? model.blogContentCountKo : model.blogContentCount,
       imagePath: '${model.name.skillNameToId}.png',
       category: SkillCategory.fromKey(
         model.category,
@@ -132,6 +137,7 @@ class SkillEntity extends TechSetEntity {
         imagePath: undefinedKey,
         category: SkillCategory.none,
         youtubeContentCount: 0,
+        blogContentCount: 0,
       );
 
   factory SkillEntity.fromId(String id) {
@@ -153,11 +159,13 @@ final class JobGroupEntity extends TechSetEntity {
   final String id;
   final String name;
   final int youtubeContentCount;
+  final int blogContentCount;
 
   JobGroupEntity({
     required this.id,
     required this.name,
     required this.youtubeContentCount,
+    required this.blogContentCount,
   }) : super(id: id, name: name);
 
   factory JobGroupEntity.fromModel(JobGroupModel model) => JobGroupEntity(
@@ -166,12 +174,15 @@ final class JobGroupEntity extends TechSetEntity {
         youtubeContentCount: AppLocale.isKo
             ? model.youtubeContentCountKo
             : model.youtubeContentCount,
+        blogContentCount:
+            AppLocale.isKo ? model.blogContentCountKo : model.blogContentCount,
       );
 
   factory JobGroupEntity.fromEnum(JobGroupTypes type) => JobGroupEntity(
         id: type.id,
         name: AppLocale.isEn ? type.enName : type.name,
         youtubeContentCount: 0,
+        blogContentCount: 0,
       );
 
   /// 1.0.12
@@ -182,6 +193,7 @@ final class JobGroupEntity extends TechSetEntity {
         id: undefinedKey,
         name: undefinedKey,
         youtubeContentCount: 0,
+        blogContentCount: 0,
       );
 
   bool get isUndefined => id == undefinedKey;
@@ -198,6 +210,7 @@ final class JobGroupEntity extends TechSetEntity {
       id: map['id'] as String,
       name: map['name'] as String,
       youtubeContentCount: map['youtubeContentCount'] as int,
+      blogContentCount: map['blogContentCount'] as int,
     );
   }
 

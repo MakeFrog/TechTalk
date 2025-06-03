@@ -116,6 +116,7 @@ abstract class  LocaleKeys {
   static const home_youtubeFeature = 'home.youtubeFeature';
   static const home = 'home';
   static const gnb_home = 'gnb.home';
+  static const gnb_blog = 'gnb.blog';
   static const gnb_learning = 'gnb.learning';
   static const gnb_videoTutorial = 'gnb.videoTutorial';
   static const gnb_mistakeNote = 'gnb.mistakeNote';

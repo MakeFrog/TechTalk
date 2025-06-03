@@ -1,6 +1,9 @@
 // youtube_repository_impl.dart
 
 import 'dart:developer';
+import 'dart:isolate';
+import 'dart:io';
+import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_isolate_mixin/easy_isolate_mixin.dart';
@@ -29,6 +32,60 @@ class YoutubeRepositoryImpl
   final YoutubeExplode _youtubeApiDataSource;
   final YoutubeRemoteDataSource _youtubeRemoteDataSource;
   final TechSetRepository _techSetRepository;
+
+  /// Isolate에서 실행될 이미지 프리캐시 작업
+  static Future<void> _isolateImagePrecache(List<String> imageUrls) async {
+    final client = HttpClient();
+    try {
+      await Future.wait(
+        imageUrls.map((url) async {
+          try {
+            final uri = Uri.parse(url);
+            final request = await client.getUrl(uri);
+            final response = await request.close();
+            await response.drain<void>(); // 데이터를 읽어서 버퍼에 저장
+          } catch (e) {
+            debugPrint('이미지 다운로드 실패 (Isolate): $url - $e');
+          }
+        }),
+      );
+    } finally {
+      client.close();
+    }
+  }
+
+  /// 이미지 프리캐시 처리
+  Future<void> _precacheImages(List<YoutubeMainModel> models) async {
+    try {
+      final imageUrls = models
+          .where((model) => model.thumbnailImgUrl.isNotEmpty)
+          .map((model) => model.thumbnailImgUrl)
+          .toList();
+
+      if (imageUrls.isEmpty) return;
+
+      // Isolate 생성 및 실행
+      final receivePort = ReceivePort();
+      await Isolate.spawn(
+        (List<String> urls) async {
+          await _isolateImagePrecache(urls);
+          Isolate.exit();
+        },
+        imageUrls,
+      );
+
+      // Isolate 완료 대기
+      await receivePort.first;
+
+      // UI 컨텍스트에서 실제 precacheImage 실행
+      final context = await navigationContext;
+      for (final url in imageUrls) {
+        precacheImage(NetworkImage(url), context);
+      }
+    } catch (e) {
+      debugPrint('이미지 프리캐시 실패: $e');
+    }
+  }
 
   @override
   Future<Result<YoutubeCoreVideoEntity>> getYoutubeVideoData(
@@ -80,12 +137,13 @@ class YoutubeRepositoryImpl
         randomKey: randomKey,
       );
 
+      // 이미지 프리캐시를 백그라운드에서 실행
+      unawaited(_precacheImages(remotePaginatedResult.items));
+
       final context = await navigationContext;
 
       // 모델을 엔티티로 변환
       final entities = remotePaginatedResult.items.map((model) {
-        precacheImage(NetworkImage(model.thumbnailImgUrl), context);
-
         final skills =
             model.relatedSkillIds.map(_techSetRepository.getSkillById).toList();
         final jobGroups = model.relatedJobGroupIds

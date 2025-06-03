@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/app/style/app_text_style.dart';
+import 'package:techtalk/presentation/pages/blog/blog_main/blog_main_page.dart';
 import 'package:techtalk/presentation/pages/home/home_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat/widgets/interview_tab_view/bubble_indicator.dart';
 import 'package:techtalk/presentation/pages/main/main_event.dart';
@@ -23,23 +24,31 @@ import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 class MainPage extends BasePage with MainEvent, MainState {
   const MainPage({super.key});
 
-  @override
-  Widget buildPage(BuildContext context, WidgetRef ref) {
-    const _pages = [
-      HomePage(
+  List<Widget> _getPages() {
+    final pages = [
+      const HomePage(
         key: ValueKey(MainNavigationTab.home),
       ),
-      StudyTopicSelectionPage(
-        key: ValueKey(MainNavigationTab.study),
+      const BlogMainPage(
+        key: ValueKey(MainNavigationTab.blog),
       ),
-      YoutubeMainPage(
+      const YoutubeMainPage(
         key: ValueKey(MainNavigationTab.youtube),
       ),
-      MyPage(
+      const StudyTopicSelectionPage(
+        key: ValueKey(MainNavigationTab.study),
+      ),
+      const MyPage(
         key: ValueKey(MainNavigationTab.myInfo),
       ),
     ];
 
+    return pages;
+  }
+
+  @override
+  Widget buildPage(BuildContext context, WidgetRef ref) {
+    final pages = _getPages();
     final mainTabController = usePageController();
 
     ref.listen(mainBottomNavigationProvider, (_, next) {
@@ -53,7 +62,7 @@ class MainPage extends BasePage with MainEvent, MainState {
       controller: mainTabController,
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        ..._pages.mapIndexed(
+        ...pages.mapIndexed(
           (index, e) => e
               .animate(
                 target: currentTab == index ? 1 : 0,
@@ -102,7 +111,7 @@ class _BottomNavigationBar extends ConsumerWidget with MainEvent, MainState {
     final currentTab = ref.watch(mainBottomNavigationProvider);
 
     return BottomNavigationBar(
-      currentIndex: currentTab.index,
+      currentIndex: MainNavigationTab.visibleTabs.indexOf(currentTab),
       backgroundColor: Colors.white,
       type: BottomNavigationBarType.fixed,
       showSelectedLabels: true,
@@ -116,7 +125,7 @@ class _BottomNavigationBar extends ConsumerWidget with MainEvent, MainState {
         targetTabIndex: index,
       ),
       items: [
-        ...MainNavigationTab.values.mapIndexed((index, e) {
+        ...MainNavigationTab.visibleTabs.mapIndexed((index, e) {
           return BottomNavigationBarItem(
             label: e.jsonKey.tr(),
             icon: Stack(
@@ -126,9 +135,7 @@ class _BottomNavigationBar extends ConsumerWidget with MainEvent, MainState {
                 SvgPicture.asset(
                   e.iconPath,
                   colorFilter: ColorFilter.mode(
-                    currentTab.index == index
-                        ? AppColor.of.gray5
-                        : AppColor.of.gray2,
+                    currentTab == e ? AppColor.of.gray5 : AppColor.of.gray2,
                     BlendMode.srcIn,
                   ),
                 ),

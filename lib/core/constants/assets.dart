@@ -46,6 +46,7 @@ class Assets {
   static const String iconsArrowUpThick = 'assets/icons/arrow_up_thick.svg';
   static const String iconsAvatar1 = 'assets/icons/avatar_1.svg';
   static const String iconsBeginnerIllust = 'assets/icons/beginner_illust.svg';
+  static const String iconsBlog = 'assets/icons/blog.svg';
   static const String iconsBoomark = 'assets/icons/boomark.svg';
   static const String iconsBullet = 'assets/icons/bullet.svg';
   static const String iconsCamera = 'assets/icons/camera.svg';

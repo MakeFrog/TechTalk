@@ -33,20 +33,24 @@ class _IllustView extends ConsumerWidget
       },
       loading: _buildLoadingView,
       error: (e, _) {
-        return HookBuilder(
-          builder: (context) {
-            useEffect(() {
-              DialogService.show(
-                dismissible: false,
-                dialog: AppDialog.singleBtn(
-                  title: '오류 발생',
-                  description: '$e',
-                  onBtnClicked: () {},
-                ),
-              );
-            }, []);
-            return _buildLoadingView();
-          },
+        logger.e('질문 생성 중 오류 발생: $e');
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                '질문 생성 중 오류가 발생했습니다',
+                style: AppTextStyle.headline2,
+                textAlign: TextAlign.center,
+              ),
+              const Gap(8),
+              Text(
+                e.toString(),
+                style: AppTextStyle.body2,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         );
       },
     );

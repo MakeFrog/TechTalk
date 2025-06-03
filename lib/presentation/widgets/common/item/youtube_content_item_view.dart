@@ -7,11 +7,11 @@ import 'package:techtalk/app/style/index.dart';
 import 'package:techtalk/app/util/app_formatter.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
-import 'package:techtalk/presentation/pages/youtube/main/constant/yotubue_content_category.dart';
 import 'package:techtalk/presentation/widgets/common/box/empty_box.dart';
 import 'package:techtalk/presentation/widgets/common/box/skeleton_box.dart';
 import 'package:techtalk/presentation/widgets/common/chip/dark_tranparent_chip.dart';
 import 'package:techtalk/presentation/widgets/common/chip/outlined_chip.dart';
+import 'package:techtalk/presentation/widgets/common/constant/content_filter_category.dart';
 
 ///
 /// 유튜브 콘텐츠 항목 뷰
@@ -161,10 +161,10 @@ class YoutubeContentItemView extends StatelessWidget {
                   if (isLoaded)
                     HookBuilder(
                       builder: (context) {
-                        List<YoutubeContentCategory> categories = useMemoized(
+                        List<ContentFilterCategory> categories = useMemoized(
                           () => [
-                            ...jobGroups.map(YoutubeContentCategory.fromJob),
-                            ...skills.map(YoutubeContentCategory.fromSkill)
+                            ...jobGroups.map(ContentFilterCategory.fromJob),
+                            ...skills.map(ContentFilterCategory.fromSkill)
                           ]..shuffle(),
                         );
                         if (categories.isNotEmpty) {

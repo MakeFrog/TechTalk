@@ -3,12 +3,24 @@ allprojects {
         google()
         mavenCentral()
     }
+    /// TODO: remove. hotfix for flutter_inappwebview (using androidx.webkit:webkit:1.8.0)
+    /// webview_flutter_android: ^3.16.2 androidx.webkit:webkit ^1.9.0 remove SUPPRESS_ERROR_PAGE
+    configurations.all {
+        resolutionStrategy {
+            force 'androidx.webkit:webkit:1.8.0'
+        }
+    }
 }
 
 
 rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
+    afterEvaluate {
+        if (it.name == "flutter_inappwebview_android") {
+            it.android.buildTypes.release.minifyEnabled = false
+        }
+    }
 }
 subprojects {
     afterEvaluate { project ->
