@@ -1,4 +1,4 @@
-import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 
 final class GetJobsUseCase {

@@ -23,6 +23,7 @@ import 'package:uuid/uuid.dart';
 part 'chat_message_history_internal_event.p.dart';
 part 'chat_message_history_provider.g.dart';
 part 'common_type_chat_message_history_internal_event.p.dart';
+part 'proficiency_type_chat_message_history_internal_event.p.dart';
 part 'resume_type_chat_message_history_internal_event.p.dart';
 part 'youtube_type_chat_message_history_internal_event.p.dart';
 
@@ -49,6 +50,9 @@ class ChatMessageHistory extends _$ChatMessageHistory {
             },
             youtube: (_) async {
               await _showYoutubeTypeIntroMessages();
+            },
+            proficiency: (_) {
+              return _showProficiencyTypeIntroMessages();
             },
           );
 

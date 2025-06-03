@@ -12,6 +12,7 @@ import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/index.dart';
 import 'package:techtalk/core/services/slack_notification_service.dart' as noti;
 import 'package:techtalk/features/user/user.dart';
+import 'package:techtalk/presentation/pages/resume/providers/resume_info_provider.dart';
 import 'package:techtalk/presentation/pages/study/learning/providers/study_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/wrong_answer_note/providers/wrong_answer_blur_provider.dart';
 import 'package:techtalk/presentation/pages/youtube/main/provider/selected_filter_category_provider.dart';
@@ -75,7 +76,6 @@ mixin class MyPageEvent {
         onRightBtnClicked: () {
           unawaited(noti.SlackNotificationService.sendNotification(
               type: SlackNotificationType.logOut));
-
           const SignInRoute().go(ref.context);
           _clearKeepAliveModules(ref);
         },
@@ -144,14 +144,18 @@ mixin class MyPageEvent {
           await EasyLoading.show();
           final response = await resignUserInfoUseCase
               .call(ref.read(userInfoProvider).requireValue!);
-          unawaited(noti.SlackNotificationService.sendNotification(
-              type: SlackNotificationType.withdraw));
+          unawaited(
+            noti.SlackNotificationService.sendNotification(
+              type: SlackNotificationType.withdraw,
+            ),
+          );
           response.fold(
             onSuccess: (_) {
               _clearKeepAliveModules(ref);
               const SignInRoute().go(ref.context);
               SnackBarService.showSnackBar(
-                  tr(LocaleKeys.undefined_resignSuccess));
+                tr(LocaleKeys.undefined_resignSuccess),
+              );
               EasyLoading.dismiss();
             },
             onFailure: (e) {},
@@ -200,7 +204,7 @@ mixin class MyPageEvent {
           options: ProfileSettingType.values
               .map((e) => context.tr(e.nameTrKey))
               .toList(),
-          onOptionTapped: (int index, WidgetRef ref) {
+          onOptionTapped: (int index) {
             ProfileSettingType.branch(
               targetCategory: ProfileSettingType.getByIndex(index),
               profile: (_) {
@@ -221,12 +225,62 @@ mixin class MyPageEvent {
 
   ///
   /// [ExpandableWrappedListview]
+  /// Wrap위젯이 overflow 되었을 때,
+  /// 첫 번째 행의 끝 위치와
+  /// 마지막 행의 끝 위치를 구하는 메소드
+  ///
+  void getListItemPosition(
+    List<({String text, GlobalKey key})> itemCollection,
+    ValueNotifier<double> firstRowElementY,
+    ValueNotifier<double> lastRowElementY,
+    double spacing,
+  ) {
+    int firstRowElementCount = 0;
+    int lastRowElementCount = 0;
+    final firstRowY = itemCollection[0].key.top;
+    final lastRowY = itemCollection.last.key.top;
+
+    for (var e in itemCollection) {
+      if (e.key.top == firstRowY) {
+        firstRowElementY.value += e.key.width;
+        firstRowElementCount++;
+      } else {
+        if (e.key.top == lastRowY) {
+          lastRowElementY.value += e.key.width;
+          lastRowElementCount++;
+        }
+      }
+    }
+
+    if (firstRowElementCount > 0) {
+      firstRowElementY.value += spacing * (firstRowElementCount - 1);
+    }
+
+    if (lastRowElementCount > 0) {
+      lastRowElementY.value += spacing * (lastRowElementCount - 1);
+    }
+  }
+
+  ///
+  /// [ExpandableWrappedListview]
   /// 상단에 위치한 [Wrap]의 자체 크기를
   /// 확인하여, overflow가 되었는지 계산하는 메소드
   ///
-  void getWrapWidgetSize(BuildContext context, ValueNotifier<Size> notifier,
-      ValueNotifier<double> originHeight) {
+  void getWrapWidgetSize(
+    BuildContext context,
+    ValueNotifier<Size> notifier,
+    ValueNotifier<double> originHeight,
+  ) {
     notifier.value = (context.findRenderObject() as RenderBox).size;
     originHeight.value = notifier.value.height;
+  }
+
+  ///
+  /// 이력서 관리 페이지로 이동
+  ///
+  void routeToResumeManagePage(WidgetRef ref) {
+    // 이전 상태가 혹시라도 남아있을까봐 추가한 안전장치 
+    ref.invalidate(resumeInfoProvider);
+    const ResumeManageRoute().push(ref.context);
   }
 }

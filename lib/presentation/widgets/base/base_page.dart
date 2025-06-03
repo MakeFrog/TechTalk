@@ -48,8 +48,7 @@ abstract class BasePage extends HookConsumerWidget {
 
     return PopScope(
       canPop: canPop,
-      onPopInvoked: (didPop) async {
-        if (didPop) return;
+      onPopInvokedWithResult: (didPop, result) async {
         onWillPop(ref);
       },
       child: ProviderScope(

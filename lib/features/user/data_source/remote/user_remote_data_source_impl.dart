@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
@@ -8,9 +7,12 @@ import 'package:techtalk/core/index.dart';
 import 'package:techtalk/features/user/data_source/remote/models/bookmarked_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/uploaded_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
+import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 
 final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
+  @override
   Future<bool> isExistNickname(
     String nickname,
   ) async {
@@ -301,6 +303,116 @@ final class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     } catch (e) {
       log('페이징 호출 실패: $e');
       rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateResume(ResumeEntity? resume) async {
+    final folderRef = FireStorageUserRef.resumeFolderRef;
+
+    // 이력서 삭제 로직
+    if (resume == null || resume.path == null) {
+      final mapData = {
+        'resume': FieldValue.delete(),
+      };
+      await FirestoreUsersRef.doc().update(mapData);
+      return;
+    }
+
+    // 파일명: resume_타임스탬프.pdf
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final safeTitle = resume.title?.replaceAll(' ', '_') ?? 'untitled';
+    final fileName = 'resume_${safeTitle}_$timestamp.pdf';
+
+    // 최종 경로: 'resume/{userUid}/resume_timestamp.pdf'
+    // 중복으로 여러 데이터를 저장하기 위해 이름에 고유값 부여
+    final finalRef = folderRef.child(fileName);
+
+    // 이력서 파일
+    final file = File(resume.path!);
+
+    // Storage 업로드
+    final snapshot = await finalRef.putFile(file);
+
+    if (snapshot.state == TaskState.success) {
+      // 업로드 성공 후, 파일의 다운로드 URL 얻기
+      final String downloadUrl = await finalRef.getDownloadURL();
+
+      final newResume = ResumeEntity(
+        path: downloadUrl,
+        title: resume.title,
+        uploadAt: resume.uploadAt,
+        extractedText: resume.extractedText,
+      );
+
+      // Firestore에 저장할 Map 형태로 변환
+      final mapData = {
+        'resume': {
+          'path': newResume.path,
+          'title': newResume.title,
+          'uploadAt': newResume.uploadAt,
+          'extractedText': newResume.extractedText,
+        },
+      };
+
+      await FirestoreUsersRef.doc().update(mapData);
+    } else {
+      throw Exception('이력서 파일 저장 실패');
+    }
+  }
+
+  @override
+  Future<void> updatePortfolio(PortfolioEntity? portfolio) async {
+    final folderRef = FireStorageUserRef.portfolioFolderRef;
+
+    // 포트폴리오 삭제 로직
+    if (portfolio == null || portfolio.path == null) {
+      final mapData = {
+        'portfolio': FieldValue.delete(),
+      };
+      await FirestoreUsersRef.doc().update(mapData);
+      return;
+    }
+
+    // 파일명: portfolio_타임스탬프.pdf
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final safeTitle = portfolio.title?.replaceAll(' ', '_') ?? 'untitled';
+    final fileName = 'portfolio_${safeTitle}_$timestamp.pdf';
+
+    // 최종 경로: 'portfolio/{userUid}/portfolio_timestamp.pdf'
+    // 중복으로 여러 데이터를 저장하기 위해 이름에 고유값 부여
+    final finalRef = folderRef.child(fileName);
+
+    // 포트폴리오 파일
+    final file = File(portfolio.path!);
+
+    // Storage 업로드
+    final snapshot = await finalRef.putFile(file);
+
+    if (snapshot.state == TaskState.success) {
+      // 업로드 성공 후, 파일의 다운로드 URL 얻기
+      final String downloadUrl = await snapshot.ref.getDownloadURL();
+
+      final newPortfolio = ResumeEntity(
+        path: downloadUrl,
+        title: portfolio.title,
+        uploadAt: portfolio.uploadAt,
+        extractedText: portfolio.extractedText,
+      );
+
+      // Firestore에 저장할 Map 형태로 변환
+      final mapData = {
+        'portfolio': {
+          'path': newPortfolio.path,
+          'title': newPortfolio.title,
+          'uploadAt': newPortfolio.uploadAt,
+          'extractedText': newPortfolio.extractedText,
+        },
+      };
+
+      await FirestoreUsersRef.doc().update(mapData);
+    } else {
+      throw Exception('포트폴리오 파일 저장 실패');
     }
   }
 }

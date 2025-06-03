@@ -20,7 +20,7 @@ mixin class MainEvent {
     required int targetTabIndex,
   }) {
     final targetTab = MainNavigationTab.values[targetTabIndex];
-    if (targetTab == MainNavigationTab.videoTutorial &&
+    if (targetTab == MainNavigationTab.youtube &&
         ref.exists(showNewFeatureIndicatorProvider) &&
         ref.read(showNewFeatureIndicatorProvider)) {
       ref.read(showNewFeatureIndicatorProvider.notifier).disable();

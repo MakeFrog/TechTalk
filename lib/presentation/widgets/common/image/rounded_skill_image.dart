@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:techtalk/app/style/app_color.dart';
 import 'package:techtalk/core/constants/assets.dart';
 import 'package:techtalk/core/helper/string_extension.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
 import 'package:techtalk/presentation/widgets/common/common.dart';
 
 ///
@@ -14,19 +13,21 @@ class RoundedSkillImage extends StatelessWidget {
     required this.imagePath,
     this.size = 20,
     this.disableRound = false,
+    this.borderRadius,
     this.scale = 1.1,
   });
 
   final String? imagePath;
   final double size;
   final bool disableRound;
+  final BorderRadius? borderRadius;
   final double scale;
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius:
-          disableRound ? BorderRadius.zero : BorderRadius.circular(size / 2),
+      borderRadius: borderRadius ??
+          (disableRound ? BorderRadius.zero : BorderRadius.circular(size / 2)),
       child: ColoredBox(
         color: AppColor.of.white,
         child: Transform.scale(

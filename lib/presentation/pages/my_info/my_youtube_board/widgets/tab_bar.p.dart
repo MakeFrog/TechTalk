@@ -22,7 +22,7 @@ class _TabBar extends StatelessWidget {
           onTap: (_) {
             FocusScope.of(context).unfocus();
           },
-          overlayColor: WidgetStateProperty.all<Color>(Colors.grey.shade200),
+          overlayColor: MaterialStateProperty.all<Color>(Colors.grey.shade200),
           labelColor: AppColor.of.black,
           unselectedLabelColor: AppColor.of.gray3,
           indicatorColor: AppColor.of.black,

@@ -10,9 +10,9 @@ import 'package:techtalk/app/localization/locale_keys.g.dart';
 import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/core/index.dart';
+import 'package:techtalk/core/modules/regex/app_validator.dart';
 import 'package:techtalk/core/services/slack_notification_service.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 import 'package:techtalk/presentation/pages/my_info/job_group_setting/provider/selected_job_groups_provider.dart';
 import 'package:techtalk/presentation/pages/my_info/skill_setting/providers/searched_skills_provider.dart';
@@ -56,6 +56,8 @@ mixin class SignUpEvent {
         completedInterviewCount: 0,
         isReviewRequestAvailable: true,
         signUpDate: DateTime.now(),
+        resume: null,
+        portfolio: null,
       );
 
       await ref.read(userInfoProvider.notifier).createData(userData).then(

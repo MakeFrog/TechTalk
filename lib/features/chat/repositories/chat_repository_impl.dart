@@ -26,6 +26,8 @@ final class ChatRepositoryImpl implements ChatRepository {
       InterviewType.commonPracticalTopic => getChatRooms(room.type),
       InterviewType.resume => getChatRooms(room.type),
       InterviewType.youtube => throw UnimplementedError('유튜브 면접은 채팅방을 생성하지 않음'),
+      // TODO: Handle this case.
+      InterviewType.proficiency => throw UnimplementedError(),
     }
         .then((value) => value.getOrThrow());
 
@@ -73,12 +75,12 @@ final class ChatRepositoryImpl implements ChatRepository {
     }
   }
 
-  @override
-  Future<Result<ChatRoomEntity>> getChatRoom(String roomId) async {
-    final roomModel = await _remoteDataSource.getChatRoom(roomId);
+  // @override
+  // Future<Result<ChatRoomEntity>> getChatRoom(String roomId) async {
+  //   final roomModel = await _remoteDataSource.getChatRoom(roomId);
 
-    return Result.success(ChatRoomEntity.fromModel(roomModel));
-  }
+  //   return Result.success(ChatRoomEntity.fromModel(roomModel));
+  // }
 
   @override
   Future<Result<void>> uploadChats(

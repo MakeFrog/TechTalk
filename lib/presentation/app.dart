@@ -92,7 +92,7 @@ class App extends StatelessWidget {
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
-            routerConfig: appRouter(ref),
+            routerConfig: AppRouter.appRouter(ref),
             debugShowCheckedModeBanner: false,
             title: '테크톡',
             themeMode: ThemeMode.light,

@@ -114,6 +114,29 @@ class _InterviewInductionView extends HookConsumerWidget
                     ],
                   );
                 },
+                proficiency: (InterviewType type) {
+                  return Column(
+                    children: <Widget>[
+                      Text(
+                        tr(LocaleKeys.interview_tryRecap),
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyle.headline2,
+                      ),
+                      const Gap(8),
+                      Text(
+                        tr(LocaleKeys.interview_retryInterview),
+                        style: AppTextStyle.body3.copyWith(
+                          color: AppColor.of.gray4,
+                        ),
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  );
+                },
               ),
 
           if (room(ref).type.isYoutube) const Gap(20) else const Gap(16),
@@ -144,7 +167,7 @@ class _InterviewInductionView extends HookConsumerWidget
           else
             Expanded(
               child: Image.asset(
-                room(ref).type.illusrationPath,
+                room(ref).type.interviewEndIllust,
               ),
             ),
           if (room(ref).type.isSingleTopic)
@@ -212,6 +235,9 @@ class _InterviewInductionView extends HookConsumerWidget
                         youtube: (_) {
                           onWatchRecommendVideoBtnTapped(ref);
                         },
+                        proficiency: (InterviewType type) {
+                          retryThisInterview(ref);
+                        },
                       );
                     },
                     child: Text(
@@ -222,7 +248,11 @@ class _InterviewInductionView extends HookConsumerWidget
                             resume: (_) => tr(LocaleKeys.interview_tryAgain),
                             youtube: (InterviewType type) {
                               return tr(
-                                  LocaleKeys.youtubeInterview_watchVideoButton);
+                                LocaleKeys.youtubeInterview_watchVideoButton,
+                              );
+                            },
+                            proficiency: (InterviewType type) {
+                              return tr(LocaleKeys.interview_tryAgain);
                             },
                           ),
                     ),

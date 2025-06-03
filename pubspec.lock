@@ -441,6 +441,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  dotted_border:
+    dependency: "direct main"
+    description:
+      name: dotted_border
+      sha256: "108837e11848ca776c53b30bc870086f84b62ed6e01c503ed976e8f8c7df9c04"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   easy_isolate_mixin:
     dependency: "direct main"
     description:
@@ -529,6 +537,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.1"
+  file_picker:
+    dependency: "direct main"
+    description:
+      name: file_picker
+      sha256: ab13ae8ef5580a411c458d6207b6774a6c237d77ac37011b13994879f68a8810
+      url: "https://pub.dev"
+    source: hosted
+    version: "8.3.7"
   file_selector_linux:
     dependency: transitive
     description:
@@ -835,6 +851,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_pdfview:
+    dependency: "direct main"
+    description:
+      name: flutter_pdfview
+      sha256: "2e3fa359524e9865ec25a64593b65092b4a9974c5871228c1a771300a003d150"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -1446,13 +1470,21 @@ packages:
     source: hosted
     version: "3.0.2"
   path:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path
       sha256: "087ce49c3f0dc39180befefc60fdb4acd8f8620e5682fe2476afd0b3688bb4af"
       url: "https://pub.dev"
     source: hosted
     version: "1.9.0"
+  path_drawing:
+    dependency: transitive
+    description:
+      name: path_drawing
+      sha256: bbb1934c0cbb03091af082a6389ca2080345291ef07a5fa6d6e078ba8682f977
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   path_parsing:
     dependency: transitive
     description:
@@ -1509,6 +1541,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.0"
+  pdf_gemini:
+    dependency: "direct main"
+    description:
+      name: pdf_gemini
+      sha256: eaf4b0ecc34db4785efafe5452459e0b036f83bb60b33dd07de8215bb6e071c3
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   permission_handler:
     dependency: "direct main"
     description:
@@ -1922,6 +1962,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0+3"
+  smooth_sheets:
+    dependency: "direct main"
+    description:
+      name: smooth_sheets
+      sha256: f673e448418f3e9e02f17a991691eef1c8a85b59e4438f47c5f28580787920f9
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.2"
+  soft_edge_blur:
+    dependency: "direct main"
+    description:
+      name: soft_edge_blur
+      sha256: "3e9a6c981d298d6aa2bf98716bc521fb043708833a570cd9f559a7d523973c51"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.3"
   source_gen:
     dependency: transitive
     description:
@@ -2050,6 +2106,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  syncfusion_flutter_core:
+    dependency: transitive
+    description:
+      name: syncfusion_flutter_core
+      sha256: be5eff439bb6c16eb2f297aa3dde779cc5352485f2df1825557d14f09d5b26b6
+      url: "https://pub.dev"
+    source: hosted
+    version: "29.1.35"
+  syncfusion_flutter_pdf:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_pdf
+      sha256: e921849cac9b2b0e59d7938e5a2d055c0255e2e7e0298617a915550ab9bb8cdf
+      url: "https://pub.dev"
+    source: hosted
+    version: "29.1.35"
   synchronized:
     dependency: transitive
     description:
@@ -2363,7 +2435,7 @@ packages:
     source: hosted
     version: "1.2.1"
   webview_flutter:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: webview_flutter
       sha256: "889a0a678e7c793c308c68739996227c9661590605e70b1f6cf6b9a6634f7aec"

@@ -7,7 +7,7 @@ part of 'bookmarked_paging_controller_provider.dart';
 // **************************************************************************
 
 String _$bookmarkedPagingControllerHash() =>
-    r'ad95deb2accfe186e1f7674d25ec02d22ccffc87';
+    r'33ce0d0231721abff2995cebbab39433469c85b4';
 
 /// See also [bookmarkedPagingController].
 @ProviderFor(bookmarkedPagingController)

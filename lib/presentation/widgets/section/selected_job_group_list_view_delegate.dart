@@ -3,9 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:techtalk/app/style/app_color.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/presentation/widgets/common/animated/animated_size_and_fade.dart';
-import 'package:techtalk/presentation/widgets/common/chip/closable_rect_filled_chip.dart';
 import 'package:techtalk/presentation/widgets/common/chip/closable_skill_filled_chip.dart';
 
 class SelectedJobGroupListViewDelegate extends SliverPersistentHeaderDelegate {

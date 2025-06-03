@@ -1,6 +1,5 @@
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
 import 'package:techtalk/features/youtube/index.dart';
 

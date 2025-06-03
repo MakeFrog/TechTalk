@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/modules/error_handling/result.dart';
+import 'package:techtalk/features/user/repositories/entities/document_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/data_source/remote/models/bookmarked_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/uploaded_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
@@ -99,9 +102,6 @@ abstract interface class UserRepository {
   Future<Result<void>> updateYoutubeWatchHistory(String contentId);
 
   ///
-  ///
-  ///
-  ///
   /// 유튜브 영상 기록 호출
   ///
   Future<
@@ -112,9 +112,6 @@ abstract interface class UserRepository {
     required int limit,
   });
 
-  ///
-  ///
-  ///
   ///
   /// 북마크한 유튜브 영상 기록 호출
   ///
@@ -127,9 +124,6 @@ abstract interface class UserRepository {
   });
 
   ///
-  ///
-  ///
-  ///
   /// 내가 업로드한 유튜브 영상 호출
   ///
   Future<
@@ -139,4 +133,19 @@ abstract interface class UserRepository {
     DocumentSnapshot<UploadedYoutubeModel>? lastDocument,
     required int limit,
   });
+
+  ///
+  /// 만약 Resume 만 업데이트하는 API가 별도로 필요하다면:
+  ///
+  Future<Result<void>> updateResume(ResumeEntity? resume);
+
+  ///
+  /// 만약 Portfolio 만 업데이트하는 API가 별도로 필요하다면:
+  ///
+  Future<Result<void>> updatePortfolio(PortfolioEntity? portfolio);
+
+  ///
+  /// 로컬 저장소의 PDF 메타 데이터 호출
+  ///
+  Future<Result<DocumentEntity?>> loadDocument();
 }

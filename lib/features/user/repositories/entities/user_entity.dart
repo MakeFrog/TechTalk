@@ -1,7 +1,9 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
+import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 
 class UserEntity {
@@ -44,6 +46,12 @@ class UserEntity {
   /// 로그인 횟수
   final int? loginCount;
 
+  /// 이력서 메타데이터
+  final ResumeEntity? resume;
+
+  /// 포트폴리오 메타데이터
+  final PortfolioEntity? portfolio;
+
   const UserEntity({
     required this.uid,
     this.profileImgUrl,
@@ -58,6 +66,8 @@ class UserEntity {
     required this.lastLoginDate,
     required this.jobGroups,
     required this.skills,
+    required this.resume,
+    required this.portfolio,
   });
 
   factory UserEntity.fromModel(
@@ -65,6 +75,8 @@ class UserEntity {
     required List<SkillEntity> skills,
     required List<JobGroupEntity> jobGroups,
     required UserBox box,
+    required ResumeEntity? resume,
+    required PortfolioEntity? portfolio,
   }) {
     return UserEntity(
       loginCount: model.loginCount ?? 0,
@@ -85,6 +97,8 @@ class UserEntity {
       completedInterviewCount: model.completedInterviewCount ?? 0,
       isReviewRequestAvailable: box.isReviewRequestAvailable,
       signUpDate: model.signUpDate,
+      resume: resume,
+      portfolio: portfolio,
     );
   }
 
@@ -102,6 +116,8 @@ class UserEntity {
     DateTime? signUpDate,
     bool? isReviewRequestAvailable,
     int? loginCount,
+    ResumeEntity? resume,
+    PortfolioEntity? portfolio,
   }) {
     return UserEntity(
       uid: uid ?? this.uid,
@@ -120,6 +136,8 @@ class UserEntity {
       isReviewRequestAvailable:
           isReviewRequestAvailable ?? this.isReviewRequestAvailable,
       loginCount: loginCount ?? this.loginCount,
+      resume: resume ?? this.resume,
+      portfolio: portfolio ?? this.portfolio,
     );
   }
 }

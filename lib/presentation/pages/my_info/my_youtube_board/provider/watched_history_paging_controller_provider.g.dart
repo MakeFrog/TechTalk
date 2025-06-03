@@ -7,7 +7,7 @@ part of 'watched_history_paging_controller_provider.dart';
 // **************************************************************************
 
 String _$watchedHistoryPagingControllerHash() =>
-    r'6a3e0f2ecf977a7307dffcba7087cbfde232022e';
+    r'086930c07415c4e137416f6533a0fcda6154f029';
 
 /// See also [watchedHistoryPagingController].
 @ProviderFor(watchedHistoryPagingController)

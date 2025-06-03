@@ -5,6 +5,8 @@ import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/features/user/data_source/remote/models/bookmarked_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/uploaded_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
+import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/user.dart';
 
 abstract interface class UserRemoteDataSource {
@@ -93,4 +95,14 @@ abstract interface class UserRemoteDataSource {
     DocumentSnapshot<UploadedYoutubeModel>? lastDocument,
     required int limit,
   });
+
+  ///
+  /// 이력서 업데이트
+  ///
+  Future<void> updateResume(ResumeEntity? newResume);
+
+  ///
+  /// 이력서 업데이트
+  ///
+  Future<void> updatePortfolio(PortfolioEntity? newPortfolio);
 }

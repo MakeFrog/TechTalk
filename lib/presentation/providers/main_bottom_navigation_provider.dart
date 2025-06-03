@@ -5,8 +5,8 @@ part 'main_bottom_navigation_provider.g.dart';
 
 enum MainNavigationTab {
   home('gnb.home', Assets.iconsHome),
-  videoTutorial('gnb.videoTutorial', Assets.iconsVideoStudy),
   study('gnb.learning', Assets.iconsStudy),
+  youtube('gnb.videoTutorial', Assets.iconsVideoStudy),
   myInfo('gnb.myInfo', Assets.iconsUser);
 
   final String jsonKey;

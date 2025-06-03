@@ -29,11 +29,11 @@ class MainPage extends BasePage with MainEvent, MainState {
       HomePage(
         key: ValueKey(MainNavigationTab.home),
       ),
-      YoutubeMainPage(
-        key: ValueKey(MainNavigationTab.videoTutorial),
-      ),
       StudyTopicSelectionPage(
         key: ValueKey(MainNavigationTab.study),
+      ),
+      YoutubeMainPage(
+        key: ValueKey(MainNavigationTab.youtube),
       ),
       MyPage(
         key: ValueKey(MainNavigationTab.myInfo),
@@ -134,7 +134,7 @@ class _BottomNavigationBar extends ConsumerWidget with MainEvent, MainState {
                 ),
                 // if(bottom)
                 Consumer(builder: (context, ref, _) {
-                  if (e == MainNavigationTab.videoTutorial &&
+                  if (e == MainNavigationTab.youtube &&
                       showNewFeatureIndicator(ref)) {
                     return Positioned(
                       top: -36.4,

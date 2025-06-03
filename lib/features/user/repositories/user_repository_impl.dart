@@ -1,12 +1,13 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techtalk/app/util/app_logger.dart';
 import 'package:techtalk/core/firebase_pagination_result.dart';
 import 'package:techtalk/core/index.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/job_group_entity.dart';
-import 'package:techtalk/features/tech_set/repositories/entities/skillt_entity.dart';
+import 'package:techtalk/features/tech_set/repositories/entities/tech_set_entity.dart';
 import 'package:techtalk/features/tech_set/tech_set.dart';
+import 'package:techtalk/features/user/repositories/entities/document_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/portfolio_entity.dart';
+import 'package:techtalk/features/user/repositories/entities/resume_entity.dart';
 import 'package:techtalk/features/user/data_source/remote/models/bookmarked_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/uploaded_youtube_content_model.dart';
 import 'package:techtalk/features/user/data_source/remote/models/watched_youtube_content_model.dart';
@@ -54,11 +55,16 @@ final class UserRepositoryImpl implements UserRepository {
               .toList()
           : [];
 
+      final resume = _mergeResume(localRes, remoteRes);
+      final portfolio = _mergePortfolio(localRes, remoteRes);
+
       final result = UserEntity.fromModel(
         remoteRes,
         skills: skills,
         box: localRes,
         jobGroups: jobGroups,
+        resume: resume,
+        portfolio: portfolio,
       );
 
       return Result.success(result);
@@ -198,11 +204,15 @@ final class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<void>> updateBookMarkState(
-      {required String contentId, required bool targetState}) async {
+  Future<Result<void>> updateBookMarkState({
+    required String contentId,
+    required bool targetState,
+  }) async {
     try {
       await _userRemoteDataSource.updateBookMarkState(
-          contentId: contentId, targetState: targetState);
+        contentId: contentId,
+        targetState: targetState,
+      );
       return Result.success(null);
     } catch (e) {
       return Result.failure(Exception('UserRepository > $e'));
@@ -398,5 +408,105 @@ final class UserRepositoryImpl implements UserRepository {
       logger.e(e);
       return Result.failure(Exception(e));
     }
+  }
+
+  @override
+  Future<Result<void>> updateResume(ResumeEntity? newResume) async {
+    try {
+      await _userLocalDataSource.updateResume(newResume);
+      await _userRemoteDataSource.updateResume(newResume);
+      return Result.success(null);
+    } catch (e) {
+      return Result.failure(Exception('UserRepository > updateResume > $e'));
+    }
+  }
+
+  @override
+  Future<Result<void>> updatePortfolio(PortfolioEntity? newPortfolio) async {
+    try {
+      await _userLocalDataSource.updatePortfolio(newPortfolio);
+      await _userRemoteDataSource.updatePortfolio(newPortfolio);
+      return Result.success(null);
+    } catch (e) {
+      return Result.failure(Exception('UserRepository > updatePortfolio > $e'));
+    }
+  }
+
+  @override
+  Future<Result<DocumentEntity?>> loadDocument() async {
+    try {
+      final localData = _userLocalDataSource.loadUserLocalInfo();
+      final remoteData = await _userRemoteDataSource.getUser();
+
+      final resume = _mergeResume(localData, remoteData);
+      final portfolio = _mergePortfolio(localData, remoteData);
+
+      // 둘 다 null => null 반환
+      if (resume == null && portfolio == null) {
+        return Result.success(null);
+      }
+
+      final document = DocumentEntity(
+        resume: resume,
+        portfolio: portfolio,
+      );
+
+      return Result.success(document);
+    } catch (e) {
+      return Result.failure(Exception(e));
+    }
+  }
+
+  /// 이력서 - 로컬, 원격 데이터 존재 유무를 확인하고 우선순위에 따라 반환 (로컬 > 원격)
+  ResumeEntity? _mergeResume(UserBox localRes, UserModel remoteRes) {
+    final localResumeBox = localRes.resume;
+    final remoteResume = remoteRes.resume;
+
+    if (localResumeBox?.resumePath != null) {
+      return ResumeEntity(
+        path: localResumeBox!.resumePath,
+        title: localResumeBox.resumeTitle,
+        uploadAt: localResumeBox.resumeUploadAt,
+        extractedText: localResumeBox.resumeExtractedText,
+      );
+    }
+
+    if (remoteResume?.path != null) {
+      return ResumeEntity(
+        path: remoteResume!.path,
+        title: remoteResume.title,
+        uploadAt: remoteResume.uploadAt,
+        extractedText: remoteResume.extractedText,
+      );
+    }
+
+    // 둘 다 없으면 null 반환
+    return null;
+  }
+
+  /// 포트폴리오 - 로컬, 원격 데이터 존재 유무를 확인하고 우선순위에 따라 반환 (로컬 > 원격)
+  PortfolioEntity? _mergePortfolio(UserBox localRes, UserModel remoteRes) {
+    final localPortfolioBox = localRes.portfolio;
+    final remotePortfolio = remoteRes.portfolio;
+
+    if (localPortfolioBox?.portfolioPath != null) {
+      return PortfolioEntity(
+        path: localPortfolioBox!.portfolioPath,
+        title: localPortfolioBox.portfolioTitle,
+        uploadAt: localPortfolioBox.portfolioUploadAt,
+        extractedText: localPortfolioBox.portfolioExtractedText,
+      );
+    }
+
+    if (remotePortfolio?.path != null) {
+      return PortfolioEntity(
+        path: remotePortfolio!.path,
+        title: remotePortfolio.title,
+        uploadAt: remotePortfolio.uploadAt,
+        extractedText: remotePortfolio.extractedText,
+      );
+    }
+
+    return null;
   }
 }

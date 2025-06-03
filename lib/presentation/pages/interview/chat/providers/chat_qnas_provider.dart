@@ -6,6 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:techtalk/core/services/snack_bar_service.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/chat/repositories/entities/follow_up_qna_entity.dart';
+import 'package:techtalk/features/chat/repositories/entities/proficiency_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/resume_qna_entity.dart';
 import 'package:techtalk/features/chat/repositories/entities/youtube_qna_entity.dart';
 import 'package:techtalk/features/topic/topic.dart';
@@ -22,6 +23,7 @@ class ChatQnas extends _$ChatQnas {
   @override
   FutureOr<List<ChatQnaEntity>> build() async {
     final room = ref.read(selectedChatRoomProvider);
+    print('아랑수만 : ${room.qnas.first.type}');
 
     return room.type.typedBranch(
       resume: (_) async {
@@ -62,6 +64,17 @@ class ChatQnas extends _$ChatQnas {
             .map(
               (e) => ChatQnaEntity.fromYoutubeQnaEntityAtInitial(
                 e as YoutubeQnaEntity,
+              ),
+            )
+            .toList()
+          ..shuffle();
+      },
+      proficiency: (InterviewType type) {
+        print('아수나');
+        return room.qnas
+            .map(
+              (e) => ChatQnaEntity.fromProficiencyQnaEntityAtInitial(
+                e as ProficiencyQnaEntity,
               ),
             )
             .toList()
