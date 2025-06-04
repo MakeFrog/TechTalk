@@ -113,6 +113,11 @@ RouteBase get $mainRoute => GoRouteData.$route(
           factory: $ProfileSettingRouteExtension._fromState,
         ),
         GoRouteData.$route(
+          path: 'blog-detail',
+          name: 'blog-detail',
+          factory: $BlogDetailRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: 'proficiency-interview-topic-selection',
           name: 'proficiency-interview-topic-selection',
           factory: $ProficiencyInterviewTopicSelectionRouteExtension._fromState,
@@ -336,6 +341,27 @@ extension $ProfileSettingRouteExtension on ProfileSettingRoute {
       context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
+}
+
+extension $BlogDetailRouteExtension on BlogDetailRoute {
+  static BlogDetailRoute _fromState(GoRouterState state) => BlogDetailRoute(
+        state.extra as BlogDetailRouteArg,
+      );
+
+  String get location => GoRouteData.$location(
+        '/blog-detail',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
 }
 
 extension $ProficiencyInterviewTopicSelectionRouteExtension
