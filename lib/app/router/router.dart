@@ -7,6 +7,8 @@ import 'package:techtalk/core/constants/stored_topic.dart';
 import 'package:techtalk/features/chat/chat.dart';
 import 'package:techtalk/features/topic/topic.dart';
 import 'package:techtalk/features/youtube/index.dart';
+import 'package:techtalk/presentation/pages/blog/blog_detail/blog_detail_page.dart';
+import 'package:techtalk/presentation/pages/blog/blog_detail/constant/blog_detail_route_arg.dart';
 import 'package:techtalk/presentation/pages/blog/blog_origin_page.dart/blog_origin_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat/chat_page.dart';
 import 'package:techtalk/presentation/pages/interview/chat_list/chat_list_page.dart';
@@ -177,6 +179,10 @@ class SignUpRoute extends GoRouteData {
     TypedGoRoute<ProfileSettingRoute>(
       path: ProfileSettingRoute.name,
       name: ProfileSettingRoute.name,
+    ),
+    TypedGoRoute<BlogDetailRoute>(
+      path: BlogDetailRoute.path,
+      name: BlogDetailRoute.path,
     ),
     TypedGoRoute<ProficiencyInterviewTopicSelectionRoute>(
       path: ProficiencyInterviewTopicSelectionRoute.path,
@@ -430,6 +436,21 @@ class CreatedQuestionList extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return YoutubeDetailPage(
       argument: $extra,
+    );
+  }
+}
+
+class BlogDetailRoute extends GoRouteData {
+  BlogDetailRoute(this.$extra);
+
+  static const String path = 'blog-detail';
+
+  final BlogDetailRouteArg $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return BlogDetailPage(
+      arg: $extra,
     );
   }
 }

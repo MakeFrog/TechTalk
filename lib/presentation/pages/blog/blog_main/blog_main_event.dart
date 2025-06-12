@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:techtalk/app/router/router.dart';
 import 'package:techtalk/core/constants/slack_notification_type.enum.dart';
 import 'package:techtalk/features/blog/repository/entity/blog_shell_entity.dart';
+import 'package:techtalk/presentation/pages/blog/blog_detail/blog_detail_page.dart';
+import 'package:techtalk/presentation/pages/blog/blog_detail/constant/blog_detail_route_arg.dart';
 import 'package:techtalk/presentation/pages/blog/blog_main/provider/blog_category_provider.dart';
 import 'package:techtalk/presentation/pages/blog/blog_origin_page.dart/blog_origin_page.dart';
 import 'package:techtalk/presentation/widgets/common/bottom_sheet/bottom_sheet_intent.dart';
@@ -45,14 +48,15 @@ mixin class BlogMainEvent {
     unawaited(
       noti.SlackNotificationService.sendNotification(
         type: SlackNotificationType.event,
-        message: '블로그를 읽고 있어요! 제목 : ${item.title}',
+        message: '블로그 상세 페이지에 진입했어요. 제목 : ${item.title}',
       ),
     );
-    await BottomSheetIntent.showScrollableModalSheet(
-      context,
-      scrollableSheet: BlogOriginPage(
-        blogUrl: item.linkUrl,
-      ),
-    );
+    await BlogDetailRoute(BlogDetailRouteArg(item: item)).push(context);
+    // await BottomSheetIntent.showScrollableModalSheet(
+    //   context,
+    //   scrollableSheet: BlogOriginPage(
+    //     blogUrl: 'https://techtalk-xim-yas-projects.vercel.app/blog/${item.id}',
+    //   ),
+    // );
   }
 }
